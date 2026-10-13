@@ -1,0 +1,17 @@
+Use case: precise-object-edit / infographic-diagram.
+Edit the supplied mini-loop layered architecture base into a sibling iteration highlight image. Preserve its navy engineering poster style, all five rows, all cards and correct arrows. This image documents the role-policy change and resource-conscious validation continuation, without claiming full migration acceptance.
+Keep exact layer titles: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层.
+Preserve all six L4 backend cards including explicitly registered custom tools, all seven orchestration cards and all five L5 cards including operator contractaudit.
+Critical arrows: Session Agent ↔ Model Provider; Session Agent → ToolGate routed ABOVE Model Provider; ToolGate → L4; L4 tool results → Session Agent. There must be NO Provider → ToolGate arrow.
+Highlight the existing L2 会话资源 / 工具目录 card and existing L3 Session Agent 循环 / Context card with amber borders and a small 本轮修改 badge. Do not add a new architecture component. The host validation budget is an engineering workflow note, never a runtime service or tool capability.
+Set subtitle to: "2026-10-13 · 角色权限对齐与资源受控验收".
+Replace the right explanatory column with title "本轮修改与验收边界" and these six numbered notes:
+1 "角色名沿用 Python Unicode 规则"
+2 "İ 与 i 的能力集合保持独立"
+3 "重复配置顺序与真实子代理对照"
+4 "测试串行，Go 并发 2"
+5 "内存压力升高即停，保留中止证据"
+6 "完整验收仍在进行，不提升部分覆盖率"
+At the bottom of that column add two clear concise lines: "Go 软内存目标 512 MiB" and "主机进程树采样预算 3 GiB".
+Small footer: "资源限制用于测试流程；不是运行时硬上限。无新增组件，基础图保持不变。"
+Preserve independent Python and Go framing, explicitly selected optional/custom tool cards, readonly/depth/owner authority boundaries and the above-Provider Session-to-Gate routing. Do not imply full migration completion, broader authority, default diagnostics availability or new durable state. This sibling image must not replace the base diagram.

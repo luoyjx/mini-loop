@@ -2,8 +2,16 @@
   "date": "2026-10-13",
   "baseline": "fabe9bd",
   "branch": "codex/go-role-policy-profiles",
-  "status": "resource_blocked_before_full_acceptance",
-  "delivery": "Source capture committed separately at 0f5c95b. Runtime, Go tests and architecture edits remain in this branch worktree pending required race/full Python gates; no main integration or push.",
+  "status": "validated_current_slice_with_known_parser_gap",
+  "delivery": {
+    "source_capture_commit": "0f5c95b",
+    "prior_incomplete_evidence_commit": "9edd208",
+    "implementation_commit": "0671295cb1c0e1b4cab6d0d708e187a3b9bbe596",
+    "validation": "Required gates completed in segments with identical recorded program fingerprints; parser inventory remains the explicit known gap.",
+    "integration_target": "local main, fast-forward only",
+    "integration_evidence": "Git ancestry records integration; this receipt does not self-reference its containing commit.",
+    "push_requested": false
+  },
   "source_contract": {
     "selection_cases": 34,
     "real_children": 7,
@@ -32,13 +40,6 @@
       "selected": "read_file"
     }
   },
-  "worktree_implementation": [
-    "Python-compatible Unicode role strip/lower, including dotted-I and contextual sigma",
-    "Raw duplicate keys retain first insertion position and last value before normalized collisions",
-    "Literal policy capability sets permit empty text; actual tool registration rejects empty/all-Python-whitespace capability names",
-    "Valid tool capability duplicates collapse into detached first-occurrence order",
-    "Unknown roles use Python repr and child labels lowercase the original role without stripping"
-  ],
   "native_additional_controls": [
     "Native owner identity remains bound to the parent session",
     "Input/profile and returned metadata are detached",
@@ -824,6 +825,199 @@
           "sha256": "0073a25ca784c5fc23f8f3447cc65e87d2a1962b83bfff120a84689d1e0aa573"
         }
       }
+    },
+    {
+      "name": "completion",
+      "status": "passed_missing_gates",
+      "gates": [
+        {
+          "name": "race",
+          "cwd": "/Users/yanjixiong/github/mini-loop/go",
+          "command": [
+            "go",
+            "test",
+            "-parallel=2",
+            "-race",
+            "-p=1",
+            "-count=1",
+            "-timeout=300s",
+            "-covermode=atomic",
+            "-coverpkg=./...",
+            "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/completion/coverage.out",
+            "./..."
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 479488,
+          "peak_cpu_percent": 186.29999999999998,
+          "samples": 540,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 554.083
+        },
+        {
+          "name": "python",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            ".venv/bin/python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 472560,
+          "peak_cpu_percent": 295.5,
+          "samples": 111,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 113.042
+        },
+        {
+          "name": "invariants",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            ".venv/bin/python",
+            "python/tools/verify_invariants.py"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 256,
+          "peak_cpu_percent": 0.0,
+          "samples": 2,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 1.268
+        },
+        {
+          "name": "scans",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            ".venv/bin/python",
+            "python/tools/verify_scans.py"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 86928,
+          "peak_cpu_percent": 94.0,
+          "samples": 19,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 18.884
+        },
+        {
+          "name": "guards-explore",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            ".venv/bin/python",
+            "python/tools/verify_guards.py",
+            "-k",
+            "explore-"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 70624,
+          "peak_cpu_percent": 47.8,
+          "samples": 4,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 3.27
+        },
+        {
+          "name": "guards-depth",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            ".venv/bin/python",
+            "python/tools/verify_guards.py",
+            "-k",
+            "subagent-depth-unenforced"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 256,
+          "peak_cpu_percent": 0.0,
+          "samples": 2,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 1.216
+        },
+        {
+          "name": "diff",
+          "cwd": "/Users/yanjixiong/github/mini-loop",
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "limits": {
+            "rss_kib": 3145728,
+            "gomaxprocs": 2,
+            "gomemlimit": "512MiB",
+            "goflags": "-p=1",
+            "cpu_percent_sustained": 250,
+            "cpu_grace_seconds": 30,
+            "sample_seconds": 1.0
+          },
+          "peak_rss_kib": 224,
+          "peak_cpu_percent": 0.0,
+          "samples": 2,
+          "status": "passed",
+          "exit_code": 0,
+          "seconds": 1.233
+        }
+      ],
+      "frozen_inputs": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/frozen.json",
+        "sha256": "d91218e3dcdbe7e28519da79b2fb03e169b4bfc509e0a1dd075af61e4ded764a"
+      },
+      "gate_file": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/gates.json",
+        "sha256": "9ba7e3269ac26f069e8f466d33a1a9ef3a0d2a98057cb15bdffff7fc1332232d"
+      },
+      "peak_rss_kib": 479488,
+      "peak_cpu_percent": 295.5
     }
   ],
   "frozen_inputs": {
@@ -841,15 +1035,32 @@
         "delivery_sha256": "479a9830f11c545c98dad89ce2bfea20b3234f86b95cc8363c67c875c3c4939c",
         "change": "After terminal resource stop, replace pending final-evidence path with truthful incomplete status and receipt link. No architecture Mermaid or program changes."
       }
+    },
+    "completion_inputs_unchanged_at_terminal": true,
+    "initial_cohort_names": [
+      "verified",
+      "resumed"
+    ],
+    "completion_post_validation_documentation_corrections": {
+      "README.md": {
+        "at_completion_sha256": "c522e783b84732029e49f0f2e63587a6e0f404fafd5fa3c53510e8be69ed644a",
+        "delivery_sha256": "eff04a404787c2ea05d02e4e21e4583a9d92c9ab645101261406ade4c09117dd",
+        "change": "After all gates terminated, replace incomplete validation status with the completed segmented slice acceptance. Canonical Mermaid unchanged."
+      },
+      "EXTENDING.md": {
+        "at_completion_sha256": "479a9830f11c545c98dad89ce2bfea20b3234f86b95cc8363c67c875c3c4939c",
+        "delivery_sha256": "cc1e619cebcd1e3c9feedd72c6ecc6bbb9a6608bb3f259fff25e13074fac2c55",
+        "change": "After all gates terminated, replace incomplete validation status with the completed segmented slice acceptance. Canonical Mermaid unchanged."
+      }
     }
   },
   "resources": {
-    "scope": "both_incomplete_cohorts",
+    "scope": "all three retained cohorts; two stopped and one missing-gate completion",
     "host_ram_bytes": 17179869184,
     "all_stages_serial": true,
     "resource_stops": 2,
     "peak_rss_kib": 590608,
-    "peak_cpu_percent": 199.8,
+    "peak_cpu_percent": 295.5,
     "limits": {
       "rss_kib": 3145728,
       "gomaxprocs": 2,
@@ -860,7 +1071,21 @@
       "sample_seconds": 1.0
     },
     "all_owned_processes_stopped": true,
-    "recovery_before_only_resumption": {
+    "policy_after_second_stop": "No further heavy retry in the original goal turn. A later continuation observed 120 consecutive normal-pressure seconds before resuming only missing gates.",
+    "caveat": "Sampled task-owned process-tree guard, not OS hard caps. GOMEMLIMIT is a soft Go target. Host pressure stops do not establish which process caused host pressure. Unrelated processes were not terminated.",
+    "recovery_before_completion": {
+      "path": "var/go-role-policy-profiles-2026-10-13/host-recovery-continuation.jsonl",
+      "sha256": "01981ef7a33026080ba5bb573cfe6c3c68103fe84eac3adab4e9d051615722c1",
+      "last_sample": {
+        "elapsed_seconds": 120.36,
+        "host_pressure": 1,
+        "continuous_normal_seconds": 120.36
+      }
+    },
+    "completion_resource_stops": 0,
+    "accepted_gate_peak_rss_kib": 479488,
+    "accepted_gate_peak_cpu_percent": 295.5,
+    "recovery_before_first_resumption": {
       "path": "var/go-role-policy-profiles-2026-10-13/host-recovery.jsonl",
       "sha256": "26fd8dec83fc200d70099d62909da857bf828144463a2ba057b636f69790fa81",
       "last_sample": {
@@ -869,8 +1094,27 @@
         "continuous_normal_seconds": 60.14
       }
     },
-    "policy_after_second_stop": "Defer heavy validation; no further retry in this iteration.",
-    "caveat": "Sampled task-owned process-tree guard, not OS hard caps. GOMEMLIMIT is a soft Go target. Host pressure stops do not establish which process caused host pressure. Unrelated processes were not terminated."
+    "cpu_over_250_sample_spans_seconds": {
+      "race": 0.0,
+      "python": 0.0,
+      "invariants": 0.0,
+      "scans": 0.0,
+      "guards-explore": 0.0,
+      "guards-depth": 0.0,
+      "diff": 0.0
+    },
+    "above_250_cpu_samples": [
+      {
+        "stage": "python",
+        "seconds": 58.599,
+        "cpu_percent": 295.5
+      },
+      {
+        "stage": "python",
+        "seconds": 61.663,
+        "cpu_percent": 290.4
+      }
+    ]
   },
   "source_manifest": {
     "path": "var/go-role-policy-profiles-2026-10-13/resumed/source-manifest.json",
@@ -941,19 +1185,25 @@
     "limitations": "Compiler observations are not caller/escape/interprocedural/runtime/generic/foreign/other-profile closure."
   },
   "focused_python": "15 passed in 0.17s",
-  "not_completed": [
-    "Full race/atomic coverage",
-    "Full Python",
-    "Invariants",
-    "19 scans",
-    "Selected Explore/depth guards",
-    "Full acceptance and main integration"
-  ],
   "coverage": {
-    "refreshed": false,
-    "reason": "Race cohort interrupted by host memory pressure; partial profile is not accepted coverage.",
-    "last_accepted_receipt": "docs/audits/go-coverage-public-run-context-2026-10-13.json",
-    "baseline": "fabe9bd"
+    "refreshed": true,
+    "receipt": "docs/audits/go-coverage-role-policy-profiles-2026-10-13.json",
+    "app": {
+      "covered": 33575,
+      "statements": 37551,
+      "percent": 89.41173337594205
+    },
+    "all": {
+      "covered": 33941,
+      "statements": 38066,
+      "percent": 89.16355803078864
+    },
+    "provider": {
+      "covered": 1522,
+      "statements": 1756,
+      "percent": 86.67425968109339
+    },
+    "interrupted_profiles_used": false
   },
   "architecture": {
     "base": "docs/mini-loop-layered-architecture.png",
@@ -974,12 +1224,15 @@
       "errors": 0,
       "warnings": 0
     },
-    "visual": "Raster inspected: five layers, six backend/seven orchestration/five persistence cards; Session/Provider, Session/Gate, Gate/L4 and result-return arrows retained. Existing L2/L3 cards highlighted. No rendered-browser acceptance."
+    "visual": "Raster inspected: five layers, six backend/seven orchestration/five persistence cards; Session/Provider, Session/Gate, Gate/L4 and result-return arrows retained. Existing L2/L3 cards highlighted. No rendered-browser acceptance.",
+    "validation_continuation_image": "docs/audits/go-role-policy-validation-infographic-2026-10-13.png",
+    "validation_continuation_prompt": "docs/audits/go-role-policy-validation-infographic-2026-10-13.prompt.txt",
+    "validation_continuation_visual": "Built-in imagegen edits the unchanged base. L2 catalogue and L3 Session highlighted; all five layers, six/seven/five cards and correct arrows retained. Side text describes validation-only resource budgets without claiming runtime hard limits or full migration acceptance."
   },
   "remaining": [
-    "Resume required acceptance only when resource conditions support it",
     "Pending default Python parser approval/adoption",
-    "Full public/default/host/platform/performance and original P0/P1/G0-G7 acceptance; historical timing failures remain open"
+    "Arbitrary Python objects/custom mappings/concurrent constructor mutation beyond captured typed profiles",
+    "Full public/default/host/platform/performance and original P0/P1/G0-G7 acceptance; historical timing failures remain open; passing completion does not explain past host-pressure causes."
   ],
   "source_files": {
     "python/mini_loop/tool_policy.py": "289d4697d1bb546850e52d9f30f0aae637d2aba8a71a748832426fd15cdf42c1",
@@ -998,14 +1251,704 @@
   },
   "post_cohort_checks": {
     "git_diff_check": "passed",
-    "implementation_and_source_hashes": "unchanged from both terminal cohorts",
+    "implementation_source_test_fixtures": "unchanged from accepted gates",
     "frozen_input_deltas": [
       "README.md",
       "EXTENDING.md"
     ],
-    "delta_scope": "Recorded status/evidence references only; canonical Mermaid and architecture JSON/HTML unchanged after gates.",
+    "delta_scope": "Explicit post-terminal validation-status corrections only; Mermaid and architecture JSON/HTML unchanged after gates.",
     "architecture_base_matches_main": true,
     "partial_coverage_promoted": false
   },
-  "source_capture_commit": "0f5c95b"
+  "source_capture_commit": "0f5c95b",
+  "previous_incomplete_status": {
+    "status": "resource_blocked_before_full_acceptance",
+    "not_completed_at_previous_turn": [
+      "Full race/atomic coverage",
+      "Full Python",
+      "Invariants",
+      "19 scans",
+      "Selected Explore/depth guards",
+      "Full acceptance and main integration"
+    ],
+    "coverage_at_previous_turn": {
+      "refreshed": false,
+      "reason": "Race cohort interrupted by host memory pressure; partial profile is not accepted coverage.",
+      "last_accepted_receipt": "docs/audits/go-coverage-public-run-context-2026-10-13.json",
+      "baseline": "fabe9bd"
+    },
+    "commit": "9edd208"
+  },
+  "acceptance": {
+    "scope": "Segmented validation of this role-policy slice, not one uninterrupted cohort or whole migration acceptance.",
+    "counts": {
+      "stages": 19,
+      "passed": 18,
+      "known_parser_gap": 1
+    },
+    "gates": [
+      {
+        "cohort": "resumed",
+        "name": "source",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check",
+          "--manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/resumed/source-manifest.json"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 408608,
+        "peak_cpu_percent": 96.1,
+        "samples": 97,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 98.669
+      },
+      {
+        "cohort": "resumed",
+        "name": "focused-go",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "./agent",
+          "./protocol",
+          "-run",
+          "TestPublicRole|TestRoleCapability|TestRealTask|TestSubagent|TestEverySubagent|TestCatalog|TestTypedExtension|TestExplore|TestDefaultTask|TestWorkflow",
+          "-count=1"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 87920,
+        "peak_cpu_percent": 61.0,
+        "samples": 4,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 3.264
+      },
+      {
+        "cohort": "resumed",
+        "name": "focused-python",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "python/tests/test_go_role_policy.py",
+          "python/tests/test_role_tool_policy.py",
+          "python/tests/test_subagent_provider.py",
+          "python/tests/test_subagent_depth.py"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 256,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.211
+      },
+      {
+        "cohort": "resumed",
+        "name": "types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 736,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.212
+      },
+      {
+        "cohort": "resumed",
+        "name": "public-types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 720,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.214
+      },
+      {
+        "cohort": "resumed",
+        "name": "private-types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 176,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.216
+      },
+      {
+        "cohort": "resumed",
+        "name": "variables",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 1152,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.221
+      },
+      {
+        "cohort": "resumed",
+        "name": "collector-tests",
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/resumed/compiler-collector",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-count=1",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 656,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.229
+      },
+      {
+        "cohort": "resumed",
+        "name": "body-inventory",
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/resumed/compiler-collector",
+        "command": [
+          "go",
+          "run",
+          ".",
+          "/Users/yanjixiong/github/mini-loop/go"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 79536,
+        "peak_cpu_percent": 63.8,
+        "samples": 3,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 2.244
+      },
+      {
+        "cohort": "resumed",
+        "name": "ordinary",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=300s",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 391632,
+        "peak_cpu_percent": 189.7,
+        "samples": 200,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 203.662
+      },
+      {
+        "cohort": "resumed",
+        "name": "inventory",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/contractaudit",
+          "-root",
+          ".",
+          "-manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/resumed/source-manifest.json",
+          "-results",
+          "/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/resumed/ordinary.log",
+          "-require-results"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 75040,
+        "peak_cpu_percent": 63.6,
+        "samples": 3,
+        "status": "failed",
+        "exit_code": 1,
+        "seconds": 2.235
+      },
+      {
+        "cohort": "resumed",
+        "name": "vet",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 117216,
+        "peak_cpu_percent": 19.6,
+        "samples": 4,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 3.255
+      },
+      {
+        "cohort": "completion",
+        "name": "race",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-race",
+          "-p=1",
+          "-count=1",
+          "-timeout=300s",
+          "-covermode=atomic",
+          "-coverpkg=./...",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/completion/coverage.out",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 479488,
+        "peak_cpu_percent": 186.29999999999998,
+        "samples": 540,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 554.083
+      },
+      {
+        "cohort": "completion",
+        "name": "python",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 472560,
+        "peak_cpu_percent": 295.5,
+        "samples": 111,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 113.042
+      },
+      {
+        "cohort": "completion",
+        "name": "invariants",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 256,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.268
+      },
+      {
+        "cohort": "completion",
+        "name": "scans",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 86928,
+        "peak_cpu_percent": 94.0,
+        "samples": 19,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 18.884
+      },
+      {
+        "cohort": "completion",
+        "name": "guards-explore",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_guards.py",
+          "-k",
+          "explore-"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 70624,
+        "peak_cpu_percent": 47.8,
+        "samples": 4,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 3.27
+      },
+      {
+        "cohort": "completion",
+        "name": "guards-depth",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_guards.py",
+          "-k",
+          "subagent-depth-unenforced"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 256,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.216
+      },
+      {
+        "cohort": "completion",
+        "name": "diff",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 224,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.233
+      }
+    ],
+    "program_input_fingerprints_identical": true,
+    "fingerprint_scope": "Go/Python/JSON files under go/ and python/, go.mod/go.sum, plus named repository instructions and canonical architecture sources. C/header and embedded text assets are separately compared with Git main at delivery; environment/dependency internals are not fully hashed.",
+    "frozen_inputs_count": 1719,
+    "documentation_only_deltas_before_completion": [
+      "README.md",
+      "EXTENDING.md"
+    ],
+    "completion_frozen_inputs": {
+      "path": "var/go-role-policy-profiles-2026-10-13/completion/frozen.json",
+      "sha256": "d91218e3dcdbe7e28519da79b2fb03e169b4bfc509e0a1dd075af61e4ded764a"
+    },
+    "completion_environment": {
+      "python": "3.11.3 (main, Apr  7 2023, 20:13:31) [Clang 14.0.0 (clang-1400.0.29.202)]",
+      "go_env": [
+        "go1.23.3",
+        "darwin",
+        "arm64",
+        "1",
+        "auto"
+      ],
+      "resource_monitor_sha256": "eaec033e8e94955a108e9692453477ddccba408d9f1c2db4eea80970367c9336",
+      "scope": "Captured at completion-cohort startup. Same existing watch implementation and commands/limits as earlier cohorts; no toolchain/dependency/selector/timeout change was performed."
+    },
+    "completion_logs": {
+      "race": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/race.log",
+        "sha256": "8064f6fc6bcb27f302a4a33ed75dd6ee4873eb774c0f350c988e1624d3e572c7"
+      },
+      "python": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/python.log",
+        "sha256": "7f1a31b097238588320c295a9151e7917da1e657c36a92c56c3b7f9f394c11cf"
+      },
+      "invariants": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/invariants.log",
+        "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+      },
+      "scans": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/scans.log",
+        "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+      },
+      "guards-explore": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/guards-explore.log",
+        "sha256": "44ec251ea7fc5d19e78f0da01b804a32e89622320c7e4e499714a4389564c662"
+      },
+      "guards-depth": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/guards-depth.log",
+        "sha256": "dfd270e2f0666ceeebb785f15197777ea4e02fcee64bd90a9aa6cd5b9657229d"
+      },
+      "diff": {
+        "path": "var/go-role-policy-profiles-2026-10-13/completion/diff.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "python_result": "2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 111.61s (0:01:51)",
+  "verifiers": {
+    "invariants": "77 modules checked\nevery module states its invariant posture.",
+    "scans": "pins       test_block_access.py::test_the_scan_reaches_the_package\n  green-blind test_block_access.py::test_no_module_reads_a_block_by_attribute\n  pins       test_discarded_results.py::test_the_scan_finds_something\n  pins       test_discarded_results.py::test_the_allow_list_has_no_dead_entries\n  green-blind test_discarded_results.py::test_no_error_carrying_result_is_silently_discarded\n  pins       test_durable_writes.py::test_the_package_writes_through_the_helper_somewhere\n  pins       test_effective_posture.py::test_construction_sites_pass_the_same_configuration\n  pins       test_entry_points.py::test_the_scan_finds_the_direct_callers\n  pins       test_entry_points.py::test_the_exemptions_are_still_callers\n  green-blind test_entry_points.py::test_only_sessionless_callers_bypass_the_session\n  pins       test_harness.py::test_the_guard_actually_finds_the_construction_sites\n  green-blind test_harness.py::test_every_agent_construction_goes_through_a_harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.",
+    "guards-explore": "verifying 2 guard(s) with unmodified baselines\n\n  caught    explore-subagent-not-read-only  (r155: an Explore subagent runs read-only: the task tool promises the model it is, but interactive mode runs a plain `echo x > file` via bash with no approval, so the promise has to be enforced by the permission gate)\n  caught    explore-registry-offers-bash  (r155: the read-only explorer capability policy offers no process.exec/bash: offering a tool read-only mode denies is a capability the model is told it has and cannot use)\n\nall 2 guards are load-bearing (passing baseline, failed test call).",
+    "guards-depth": "verifying 1 guard(s) with unmodified baselines\n\n  caught    subagent-depth-unenforced  (r234: delegation depth is enforced at the seam every provider passes through; unenforced, any programmatic caller or capability-annotated task tool nests agents without bound (roadmap G8))\n\nall 1 guards are load-bearing (passing baseline, failed test call)."
+  },
+  "supplemental_terminal_asset_baseline": {
+    "go/httpapi/docsassets/oauth2-redirect.html": {
+      "sha256": "f45d60bb9f054b1712b3f9e60547eb9e1d523afd6472a4137b89eb503b37f058",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/docsassets/redoc.html": {
+      "sha256": "c100b65b4d6d73e79d4c2d1dffe0994ac69f0804b4806e5b37441ccdd57421b1",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/docsassets/swagger.html": {
+      "sha256": "a742584684629e8b02fe2f04d7d6cb9202b8441174a9be2469cbc0a663f14ded",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/uiassets/app.css": {
+      "sha256": "4bd42b8a6309683cc58b1edf096d16dee134dc25753dacc8880bfc2d9285c464",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/uiassets/app.js": {
+      "sha256": "64d77137ab17c75bbae2002fdf335c713ef59b3c9b047944e857fe76e0715b40",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/uiassets/console.html": {
+      "sha256": "eee88f77cf761b16d1fd39edae13703b3d4abfbcfd801a714e5a2784442a86a0",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/httpapi/uiassets/index.html": {
+      "sha256": "2368a7b53ab2abad7e504ec80a9e69b0e928217e511c9fb6ddfb306946ab2770",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/reload/native_events_darwin.c": {
+      "sha256": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/reload/native_events_darwin.h": {
+      "sha256": "97be072cc681e9cd61b8f7641c7c4a95bf858dc685c8d102b3edaa6d1af4372e",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/traceview/filter.js": {
+      "sha256": "e7dae22ab55134d066de2dd51bf9fff0812ebfb08bfdae25569c5669ca09fd57",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "go/traceview/style.css": {
+      "sha256": "95766eb20c688299b3c5268672334a745eb48b4d58b15bed1ca97b3275e7b2dc",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "python/mini_loop/webui/app.css": {
+      "sha256": "4bd42b8a6309683cc58b1edf096d16dee134dc25753dacc8880bfc2d9285c464",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "python/mini_loop/webui/app.js": {
+      "sha256": "64d77137ab17c75bbae2002fdf335c713ef59b3c9b047944e857fe76e0715b40",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    },
+    "python/mini_loop/webui/index.html": {
+      "sha256": "2368a7b53ab2abad7e504ec80a9e69b0e928217e511c9fb6ddfb306946ab2770",
+      "matches_main": "fabe9bd",
+      "scope": "Terminal comparison; not part of original cohort frozen manifest."
+    }
+  },
+  "implementation_commit": "0671295cb1c0e1b4cab6d0d708e187a3b9bbe596",
+  "implementation": [
+    "Python-compatible Unicode role strip/lower, including dotted-I and contextual sigma",
+    "Raw duplicate keys retain first insertion position and last value before normalized collisions",
+    "Literal policy capability sets permit empty text; actual tool registration rejects empty/all-Python-whitespace capability names",
+    "Valid tool capability duplicates collapse into detached first-occurrence order",
+    "Unknown roles use Python repr and child labels lowercase the original role without stripping"
+  ]
 }

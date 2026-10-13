@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-13",
+  "baseline": "fabe9bd",
+  "mode": "race+atomic",
+  "profile_sha256": "833b86dfaec1f5eb08590ad2d667ff07d88f5e2720966c5189f81d60f6fd77d5",
+  "retained_profile": "var/go-role-policy-profiles-2026-10-13/completion/coverage.out",
+  "raw_rows": 1302630,
+  "unique_blocks": 26583,
+  "method": "Union maximum hits over identical spans within the single complete successful race profile; equal statement counts required. App excludes tools/ only; command mains included. Earlier interrupted profiles excluded.",
+  "app": {
+    "covered": 33575,
+    "statements": 37551,
+    "percent": 89.41173337594205
+  },
+  "all": {
+    "covered": 33941,
+    "statements": 38066,
+    "percent": 89.16355803078864
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-parallel=2",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-role-policy-profiles-2026-10-13/completion/coverage.out",
+      "./..."
+    ],
+    "limits": {
+      "rss_kib": 3145728,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB",
+      "goflags": "-p=1",
+      "cpu_percent_sustained": 250,
+      "cpu_grace_seconds": 30,
+      "sample_seconds": 1.0
+    },
+    "peak_rss_kib": 479488,
+    "peak_cpu_percent": 186.29999999999998,
+    "samples": 540,
+    "status": "passed",
+    "exit_code": 0,
+    "seconds": 554.083
+  },
+  "scope": "Darwin statements only; not Python, native C, child-process interiors, branches, other platforms or full migration acceptance."
+}

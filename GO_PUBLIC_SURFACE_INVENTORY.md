@@ -3,7 +3,8 @@
 ## 2026-10-13 public role profiles and child capability isolation
 
 Branch `codex/go-role-policy-profiles`, review baseline `fabe9bd`. Source capture
-is committed as `0f5c95b`; runtime/Go tests/README/interactive map remain uncommitted.
+is committed as `0f5c95b`; implementation is `0671295`. Segmented delivery
+evidence is recorded in the validation receipt.
 Preserve the
 original P0/P1/G0–G7 scope. An actual Source/native probe found the same `İ` role
 selects a read tool in Python but a write tool in Go when an `i` profile follows.
@@ -11,7 +12,7 @@ The retained before logs prove a capability-selection divergence. This slice
 captures 34 public policy selections, seven real fresh child runs and six
 invalid capability registrations from the current Python implementation.
 
-In the pending worktree implementation, role lookup uses the existing Python Unicode strip/lower implementation,
+Role lookup uses the existing Python Unicode strip/lower implementation,
 including dotted-I expansion and contextual final sigma. Ordered profile entries
 first preserve raw mapping keys (last value at first insertion position), then
 resolve normalized key collisions. Empty role/profile capability text is legal;
@@ -27,44 +28,54 @@ still precedes construction. No new default, dependency, service or topology.
 Only trusted callers supply custom role profiles. Selection does not bypass the
 ToolGate or widen owner/workspace scope.
 
-Acceptance: **resource-blocked; runtime not merged**. Both cohorts used the same
-1719 frozen inputs and resource limits. The first stopped in ordinary Go tests
-on host memory pressure. After 60 consecutive normal-pressure seconds, one
-resumed cohort passed full ordinary Go and vet, then stopped in race on host
-pressure again. Both task process trees exited; no further heavy retry was run.
+Acceptance: **required gates complete for this slice; full migration remains open**.
+Validation is segmented across the retained `resumed` and `completion` cohorts:
+12 earlier stages plus seven missing stages, 19 total. Eighteen pass; consumer
+inspection exits 1 only for the unreferenced default Python parser. All recorded
+Go/Python/JSON/dependency input fingerprints match across the segments. The two
+README/EXTENDING status-reference edits between them are explicitly hashed;
+this is not one uninterrupted 19-stage cohort.
 
-Source export passes 252 files. Consumer inspection observes 252 passing roots
-among 253 candidates; only the default Python parser is unreferenced. Focused
-Python passes 15 tests. Four type audits have zero findings (465 production
-files, 1473 named types, 1206 public roots, 278 private roots, 172 variables);
-body inventory retains 51 packages, 22288 declarations and 130 open observations.
-Actual role selection/child assertions pass in the ordinary suite, including
-complete model results separately from observer denied/failed flags. An initial
-new-test inference error and its corrected Source capture remain recorded.
+Source export passes 252 files; 252 of 253 consumer candidates have observed
+passing roots. Four type audits have zero findings: 465 production files / 1473
+named types, 1206 public roots, 278 private roots and 172 package variables.
+Body inventory retains 51 packages / 22288 declarations / 130 open observations.
+Actual role selections, child effects, model result blocks and observer flags
+pass. The initial mistaken new-test inference and its correction are retained.
 
-Race, full Python, invariants/scans/selected guards and full acceptance remain
-incomplete. No new coverage is accepted. Last accepted main coverage remains
-application **89.40%**, all Go **89.15%**, Provider **86.67%**, from the previous
-RunContext cohort; these are Darwin statements, not complete migration coverage.
+Full ordinary Go, vet, complete race, full Python, invariants, 19 scan guards,
+two Explore guards, one depth guard and diff checks pass.
+Python: 2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 111.61s (0:01:51).
+Fresh Darwin statement coverage: app **89.41%** (33575/37551),
+all Go **89.16%** (33941/38066), Provider **86.67%** (1522/1756).
+Only the complete successful race profile contributes; interrupted profiles are
+excluded. These statements do not cover Python, native C, child-process interiors,
+branches, other platforms or complete migration acceptance.
 
-Heavy stages ran serially with nice 10, Go concurrency 2 / build parallelism 1,
-serial pytest, a 512MiB soft Go target and a sampled 3GiB owned-tree RSS budget.
-Across both incomplete cohorts, peak sampled RSS was 590608 KiB (576.8 MiB),
-peak CPU 199.8%, and two host-pressure stops occurred. Sampling is not a hard
-OS cap; host pressure does not identify which process caused system pressure.
+Both earlier host-pressure stops and empty remaining-process lists are retained.
+The continuation observed 120 consecutive normal-pressure seconds before running
+only missing gates, with unchanged selectors/timeouts/limits. Heavy stages stayed
+serial: nice 10, Go concurrency 2/build parallelism 1, serial pytest, 512MiB soft
+Go target and 3GiB sampled task-tree RSS budget. Across all retained cohorts,
+peak RSS was 590608 KiB (576.8 MiB); accepted-gate peak was
+479488 KiB (468.2 MiB). Peak sampled CPU was 295.5%,
+with two isolated above-250% samples, not a sustained 30-second breach. No new resource
+stop occurred during completion. Sampling and GOMEMLIMIT are not OS hard caps,
+and these results do not establish the cause of the earlier host pressure.
 
-[Incomplete validation receipt](docs/audits/go-role-policy-profiles-2026-10-13.json),
-[last accepted coverage](docs/audits/go-coverage-public-run-context-2026-10-13.json),
-[iteration image](docs/audits/go-role-policy-profiles-infographic-2026-10-13.png)
-and [exact prompt](docs/audits/go-role-policy-profiles-infographic-2026-10-13.prompt.txt).
-Archify structural checks pass 9/9; no new rendered-browser acceptance.
-Broader dynamic Python objects/custom mappings/concurrent input mutation,
-historical timing/platform failures and full migration acceptance remain open.
+[Validation receipt](docs/audits/go-role-policy-profiles-2026-10-13.json),
+[coverage](docs/audits/go-coverage-role-policy-profiles-2026-10-13.json),
+[validation continuation image](docs/audits/go-role-policy-validation-infographic-2026-10-13.png)
+and [exact prompt](docs/audits/go-role-policy-validation-infographic-2026-10-13.prompt.txt).
+The first [role-change image](docs/audits/go-role-policy-profiles-infographic-2026-10-13.png)
+is retained. Archify passed 9/9; no new rendered-browser acceptance.
+Broader dynamic objects/custom mappings/concurrent mutation, original P0/P1/G0–G7,
+public/default/host/platform/performance and historical timing closure stay open.
 
-The base image stays unchanged. Pending worktree README/JSON changes annotate
+The base image stays unchanged. README/JSON changes annotate
 existing session/catalogue selection; a sibling image highlights L2 tool resources and L3 Session/Context.
-Both incomplete cohorts are retained under
-`var/go-role-policy-profiles-2026-10-13/verified` and `resumed`.
+The two incomplete cohorts remain under `var/go-role-policy-profiles-2026-10-13/`
+(`verified` and `resumed`); `completion` contains the successful missing gates.
 
 ## Public RunContext constructor follow-up — 2026-10-13
 
@@ -393,7 +404,7 @@ backend is the known default CLI gap.
 | `ConciseResponsePolicySettings` | `token_efficiency` | `efficiency.StableResponseSettings` | Rename/composition candidate; semantic review required |
 | `install_token_efficiency_tools` | `token_tools` | `agent.InstallTokenArtifactTool` | Rename/composition candidate; semantic review required |
 | `RoleToolPolicy` | `tool_policy` | `agent.RoleToolPolicy` | Name candidate; semantic review required |
-| `CapabilityRoleToolPolicy` | `tool_policy` | `agent.CapabilityRoleToolPolicy` | 34 public selections, seven actual children and six invalid tool-capability registrations captured; declared text profiles only; ordinary selection/child assertions pass, race/full acceptance resource-blocked |
+| `CapabilityRoleToolPolicy` | `tool_policy` | `agent.CapabilityRoleToolPolicy` | 34 public selections, seven actual children and six invalid tool-capability registrations captured; declared text profiles only; actual selection/child effects and complete required gates pass |
 | `DefaultRecovery` | `recovery` | `agent.DefaultRecovery` | Name candidate; semantic review required |
 | `DirectRecovery` | `recovery` | `agent.DirectRecovery` | Name candidate; semantic review required |
 | `TaskStore` | `tasks` | `tasks.Store` | Rename/composition candidate; semantic review required |
