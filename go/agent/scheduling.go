@@ -67,26 +67,32 @@ func (s *Session) dispatchBatch(ctx context.Context, run RunContext, blocks []pr
 	if err == nil {
 		err = flush(len(attempts))
 	}
-	if err == nil {
-		err = ctx.Err()
+	if err == nil || errors.Is(err, protocol.ErrResultUTF8) {
+		// Parent cancellation retains its repair path even when an observer
+		// cancels immediately before output hashing fails.
+		if cancelled := ctx.Err(); cancelled != nil {
+			err = cancelled
+		}
 	}
 	if err != nil {
-		s.repairAttempts(attempts)
+		if !errors.Is(err, protocol.ErrResultUTF8) {
+			s.repairAttempts(attempts)
+		}
 		return nil, err
 	}
 	results = make([]protocol.Block, 0, len(attempts))
+	steps := make([]ToolStep, 0, len(attempts))
 	for _, attempt := range attempts {
 		results = append(results, protocol.NewToolResult(attempt.use.ID, attempt.outcome.Output, false))
-		if err = s.recordToolStep(attempt.use.Input.Name(), attempt.outcome); err != nil {
-			// Source publishes the result event, then hashes, then returns the
-			// batch to its transcript. Ordinary UTF-8 hash failure leaves that
-			// batch unanswered; cancellation/other recovery retains repair.
-			if !errors.Is(err, protocol.ErrResultUTF8) {
-				s.repairAttempts(attempts)
-			}
-			return nil, err
+		if attempt.outcome.inputHash == "" || attempt.outcome.outputHash == "" {
+			s.repairAttempts(attempts)
+			return nil, errors.New("tool outcome missing prepared step hashes")
 		}
+		steps = append(steps, ToolStep{attempt.use.Input.Name(), attempt.outcome.inputHash, attempt.outcome.outputHash, attempt.outcome.Failed, attempt.outcome.Denied})
 	}
+	// Source drains its batch-local ledger only after every group/barrier
+	// succeeds, in model order. A failed batch admits no partial prefix.
+	s.recordToolSteps(steps)
 	return results, nil
 }
 
@@ -120,7 +126,7 @@ func (s *Session) parallelGroup(ctx context.Context, run RunContext, attempts []
 			}()
 			attempt.outcome, attempt.err = s.dispatchToolAnnounced(group, run, attempt.use, announce)
 			attempt.completed = attempt.err == nil
-			if attempt.err != nil {
+			if attempt.err != nil && !errors.Is(attempt.err, protocol.ErrResultUTF8) {
 				cancel(attempt.err)
 			}
 		}(&attempts[i])

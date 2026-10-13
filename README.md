@@ -570,8 +570,34 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `115f147`; this iteration reviews the public
-spill text/effect boundary. ToolResultBudget encodes every original target before
+Runtime review baseline: local main `fbe8ad4`; this iteration reviews output-step
+hashing and admission of a mixed tool batch. Thirty-two actual Source `Agent.run`
+profiles combine four exclusive/parallel layouts, three failure positions plus
+valid controls, and semaphore capacities one and two. The initial native
+comparison failed 22 profiles: later exclusive effects could run after a hash
+fault, and a failed batch could retain a valid prefix in its step ledger.
+
+Each dispatched call now emits its `tool_result` event before computing the
+output hash. A UTF-8 hash failure stops later exclusive calls and later parallel
+groups; calls already scheduled in the same parallel group finish. The session
+prepares steps locally and admits them only after the entire batch succeeds.
+A failed batch appends neither steps nor a tool-result message to history and
+sends no second model request; earlier tool effects and emitted events remain
+observable. This ordinary hash error does not trigger cancellation repair.
+Parent cancellation takes precedence over a simultaneous hash error and keeps
+the repair path, including cancellation by a result observer. Other errors keep
+their existing recovery behavior.
+
+The fixture covers immediate handlers; delayed peers, broader cancellation,
+host/platform behavior and full migration acceptance remain separate. Final
+frozen gates and fresh coverage are recorded under
+`var/go-batch-step-boundary-2026-10-13`.
+The existing Go Session node carries this boundary in README Mermaid and the
+interactive JSON. There is no new component, permission, dependency or default;
+the architecture base image remains unchanged.
+[Batch admission seam](EXTENDING.md#go-mixed-batch-step-admission).
+
+Previous verified review: local main `115f147`, public spill text/effect boundary. ToolResultBudget encodes every original target before
 budget/clock/mask/filesystem effects, so masking cannot rescue surrogate text.
 25 actual public Source profiles compare zero/large budgets, later invalid targets,
 older ignored batches, directory-first callbacks, partial files, unchanged messages
@@ -852,7 +878,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]

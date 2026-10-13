@@ -4763,3 +4763,36 @@ message. Known event output remains observable, no step enters the ledger, and
 no second model request is sent. Native cancellation and other recovery retain
 their established repair behavior. Eight actual Source Agent profiles strengthen
 the previous direct Tool/SDK-only evidence; all those original fields remain.
+
+## Go mixed batch step admission
+
+Session dispatch computes `OutputStepHash` after publishing the call's
+`tool_result` event, before returning that call to the scheduler. The private
+`ToolOutcome.outputHash` is a named `StepHash`, prepared beside the input hash;
+it introduces no executable payload or callback authority. Direct ToolGate
+callers do not become session-ledger writers through this field.
+
+An ordinary `protocol.ErrResultUTF8` failure ends the current exclusive call
+before later calls or groups can execute. Within an already scheduled parallel
+group, this error does not cancel sibling calls: the scheduler joins the group
+and then returns the error in model order. Parent cancellation, other failures,
+worker joining and shared-pool release keep their existing rules. Parent cancellation
+also takes precedence when a result observer cancels just before UTF-8 hashing
+fails; deterministic exclusive/parallel controls retain the repair path. The 32 actual
+Source profiles use immediate callbacks at capacities one and two; they do not
+certify every delayed-peer or cancellation interleaving.
+
+The scheduler prepares `ToolStep` values in a local batch, then publishes them
+with `recordToolSteps` only after every group and exclusive call succeeds.
+Successful steps retain model order and the existing bounded ledger window.
+A failed batch contributes no ledger prefix and no tool-result history message,
+and it does not issue a second model request. Events and effects produced before
+the error remain observable. This ordinary hash failure skips cancellation
+repair; it does not roll back tool effects or synthesize missing results.
+
+`python-batch-step-boundary.json` captures four three-call layouts, valid output
+and each invalid-output position, and two semaphore capacities. It compares
+actual Source events, effects, request/history counts and step hashes; the
+initial native run retained 22 failed profiles. Final frozen validation and
+coverage are recorded under `var/go-batch-step-boundary-2026-10-13`.
+No new service, dependency, registration, permission or default is introduced.

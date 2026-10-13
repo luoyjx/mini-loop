@@ -518,5 +518,11 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 		command = &metadata
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventToolResult, toolResult: ToolResultEvent{use.Input.Name(), truncateRunes(outcome.Output, DisplayCap), use.ID, span, s.lastModelSpan, outcome.ActionID, outcome.Failed, outcome.Denied, outcome.Replayed, float64(time.Since(started).Microseconds()) / 1000, command}}, trajectoryDetails{kind: EventToolResult, text: outcome.Output})
+	// Source hashes within the call after emitting its result event. A failed
+	// exclusive call must stop later barriers before the batch reaches history.
+	outcome.outputHash, err = OutputStepHash(outcome.Output)
+	if err != nil {
+		return outcome, err
+	}
 	return outcome, nil
 }

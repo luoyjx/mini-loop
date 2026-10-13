@@ -313,7 +313,7 @@
       "id": "goSession",
       "type": "backend",
       "label": "Go Session / managed handle",
-      "sublabel": "MCP scalar-key mapping → staged gate/query faults",
+      "sublabel": "Result event → hash → batch admission",
       "pos": [
         850,
         1180
@@ -322,7 +322,7 @@
         330,
         76
       ],
-      "tag": "typed turns / explicit verified proposals"
+      "tag": "exclusive stop / parallel group join"
     },
     {
       "id": "goGate",
@@ -1655,6 +1655,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Mixed batch step admission, review baseline fbe8ad4:32 actual Source Agent.run profiles compare immediate exclusive/parallel callbacks at capacities one and two. The first native comparison failed22 profiles. Session dispatch emits each tool_result event before output hashing; an ordinary UTF-8 failure stops later exclusive calls/groups while already scheduled parallel peers finish. Only the complete successful batch enters the model-ordered step ledger and result history; failed batches retain earlier events/effects but admit no step prefix or result message and send no second model request. Parent cancellation wins a simultaneous hash error and retains repair, including observer cancellation. Other repair remains. Final frozen gates and coverage are recorded under var/go-batch-step-boundary-2026-10-13; broader delayed/cancellation/host/platform/public/default acceptance remains open. No new component, permission, dependency or default; base unchanged.",
         "Public spill text boundary:25 actual Source profiles pin raw UTF-8 before budget/directory/clock/mask, guarded directory creation before callbacks, retained partial files and unchanged transcript on failure. Existing ErrResultUTF8 and immutable code-point helpers preserve surrogate ID sanitizing/cap. Files.EnsureDirectory is a trusted library primitive, not a new model tool or OS/cross-process confinement. No new component/default/authority; broader public/filesystem/host/platform acceptance remains open. Eight real AST Agent loops now pin result event before UTF-8 step-hash failure, no batch/history append or second call. Raw hashing rejects before JSON replacement; ordinary encoding failure keeps Source unanswered batch while cancellation repair remains.",
         "Typed public helper composition: ToolResultBudget, SelectRelevantMemories, PrepareMemoryContext and ConsolidateMemories use explicit bound workspace/store and closed callbacks.61 Source profiles compare public effects. Zero/negative slicing/thresholds, origins and failure stages remain; no new default, service or authority. Runtime Context and capture share the cores. Exact UnknownResult and existing TrajectorySchema are public. Broader public/host/platform acceptance remains open.",
         "Explicit contractaudit CLI maps Source fixture hashes and active Go literal/direct-function candidate test links to root test terminal actions. This operator produces repo inspection evidence, grants no runtime authority and cannot certify actual reads or semantic parity. Separate Linux captures remain distinct; default Python parser and final G7 inventory remain open.",

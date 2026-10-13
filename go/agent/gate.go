@@ -61,6 +61,7 @@ type ToolOutcome struct {
 	reconciliation *ActionReconciliation
 	commandResult  *shell.Metadata
 	inputHash      StepHash
+	outputHash     StepHash
 }
 
 // CommandResult is present only for a newly executed structured Bash call.

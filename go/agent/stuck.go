@@ -221,21 +221,14 @@ type StopHook interface {
 func (s *Session) stuckState() StuckState {
 	return StuckState{append([]ToolStep(nil), s.recentSteps...), s.roundsWithoutTools}
 }
-func (s *Session) recordToolStep(name protocol.ToolName, outcome ToolOutcome) error {
-	output, err := OutputStepHash(outcome.Output)
-	if err != nil {
-		return err
-	}
-	if outcome.inputHash == "" {
-		return errors.New("tool outcome missing final input step hash")
-	}
-	s.recentSteps = append(s.recentSteps, ToolStep{name, outcome.inputHash, output, outcome.Failed, outcome.Denied})
+func (s *Session) recordToolSteps(steps []ToolStep) {
+	s.recentSteps = append(s.recentSteps, steps...)
 	if len(s.recentSteps) > StuckWindow {
 		s.recentSteps = append([]ToolStep(nil), s.recentSteps[len(s.recentSteps)-StuckWindow:]...)
 	}
 	s.publishLive()
-	return nil
 }
+
 func (s *Session) nudgeOrHalt(signal StuckSignal) (bool, string) {
 	halted := s.stuckNudges >= s.stuckDetector.MaxNudges()
 	s.events.append(SessionEvent{kind: EventStuck, stuck: StuckEvent{signal.clone(), halted, s.stuckNudges}})
