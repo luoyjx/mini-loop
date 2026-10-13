@@ -1,5 +1,85 @@
 # Go port plan
 
+## 2026-10-14 raw HTTP query decoding and authentication faults
+
+Iteration started from local main baseline `51bdcc0` on branch
+`codex/go-http-query-wire`. This G3/G7 slice has captured **24 actual ASGI-byte cases**: 12 authentication and 12 limit
+cases covering malformed percent escapes, bare/encoded semicolons, encoded
+keys, valid/invalid percent-decoded UTF-8, literal valid UTF-8, last-value order,
+header precedence and owner/validation order. The original 99 encoded-query
+Source cases were recaptured and remain byte-identical.
+
+The first Source capture failed because the recorder did not retain the actual
+authentication exception; that attempt remains recorded. In the corrected
+`source-capture-faults` capture, two non-ASCII token cases produce an actual
+plain 500 response with only the content-type among captured headers, followed
+by `TypeError` after response start: `comparing strings with non-ASCII characters
+is not supported`. Response bytes and the propagated fault are separate Source
+observations; neither case is inferred to be a 401 rejection.
+
+The native implementation now uses a named six-field query parser and one
+request-admission value cached in request context, clearing the fallback token
+after authentication. The additive typed `ResultAuthenticator` path preserves
+accepted/rejected/failed distinctions. The compatibility `Authenticate` bool
+method cannot express the fault; real HTTP admission uses `AuthenticateResult`
+when provided. This adds no arbitrary query map or new authority. Existing
+defaults, header precedence and owner gates pass the new 24-case and old
+99-case focused consumers. The native Unicode-configuration controls are based
+on the comparison algorithm; they are not actual Source configuration captures.
+
+**Finite slice validation complete; full migration acceptance remains open.**
+Code checkpoint `1e9fb10` is committed and fast-forwarded into local main.
+The new 24 cases and old 99 cases pass focused native comparison;
+baseline `51bdcc0` passed 13 and failed 11 of the new 24 cases. Full HTTP passed
+103 top-level tests / one skip and 1,885 subtests; focused Python passed nine
+tests. Complete Go with atomic coverage passed all 51 packages, with 1,453
+top-level passes / six skips and 11,592 subtest passes / one skip, in 397.668
+seconds. Successful statement coverage is application **89.470771%
+(33947/37942)**, all Go **89.224328% (34313/38457)** and provider **86.206897%
+(1575/1827)**. Vet passed in 4.49 seconds. Source export verified 258 current
+fixtures in 121.402 seconds. Full Python passed 2,268 tests / 28 skips, with
+104 warnings and 24 subtests (pytest 105.06 seconds; monitored stage 106.245
+seconds). All 77 invariant modules and 19 scans passed. Each selected mutation
+guard—SSE-only query token, hidden owner and trajectory export owner—caught its
+intended mutant. Four type audits have zero findings: syntax 468 production
+files / 1,485 types; public 51 packages / 1,212 types; private 51 / 284 roots;
+variables 51 / 172 variables.
+
+Every final serial gate retained the same 1,791 frozen inputs. Maximum sampled
+tree RSS was 448,496 KiB for complete Go and 439,504 KiB for Python, with sampled
+CPU peaks 198.3% and 297.7% respectively. The final serial cohort had no budget
+stops or observed owned-process leftovers. Sampled RSS is not a hard memory cap
+and can miss fast descendants or double-count shared pages.
+
+Consumer inventory remains **failed, exit 1**: 257/259 associations have
+`test_pass_observed`; only IDNA and the default parser are unreferenced.
+Candidate links do not establish full semantic parity. Race was not rerun;
+prior full race evidence applies only to `f913d20`. The exact completed record
+is [the committed receipt](docs/audits/go-http-query-wire-2026-10-14.json).
+
+The final allocation cohort ran three 200 ms samples for the query component.
+Each row shows prior → new allocation and median time per operation:
+
+| Query profile | Bytes/op | Allocations/op | Median ns/op |
+| --- | --- | --- | --- |
+| No query | 72 → 72 | 2 → 2 | 67.41 → 95.27 |
+| Short | 936 → 224 | 10 → 2 | 647.9 → 185 |
+| Repeated | 9512 → 224 | 34 → 2 | 10135 → 1314 |
+| Unrelated | 5256 → 224 | 24 → 2 | 87667 → 1679 |
+
+The no-query path is slower and has unchanged allocation. This instrument
+excludes stores, transport, responses, authentication comparison and models;
+it does not measure total application memory reduction. Attempts are retained under
+`var/go-http-query-wire-2026-10-14/`. Successful Source SSE cases still use
+durable cursor 1 → sequence 2 and actual disconnect cleanup. These ASGI bytes
+do not establish Uvicorn/proxy admission or complete HTTP wire parity; raw
+invalid UTF-8 rejected earlier by URL construction is outside this corpus.
+Complete public authentication-fault scope also remains open.
+Source exception provenance is separate from native TCP response observations.
+IDNA approval, default syntax-parser adoption, fresh fixed-environment Linux
+gates, the escaped lone-surrogate SDK caller/next-request probe and the finite
+stuck-threshold candidate remain open. Original G0–G7 criteria are unchanged.
+
 ## 2026-10-14 HTTP scalar query selection
 
 Baseline `7a295d9`, branch `codex/go-http-query-selection`. This G3/G7 slice
@@ -69,6 +149,11 @@ been completed; the earlier 224/8/3 caller slice does not cover that boundary.
 Original P0/P1/G0–G7 acceptance criteria remain unchanged.
 
 ### Next candidate: raw query decoding before scalar selection
+
+Historical proposal from the completed encoded-query slice. The
+[current raw-query iteration](#2026-10-14-raw-http-query-decoding-and-authentication-faults)
+now records 24 actual Source cases; the ten-case plan below is retained as its
+pre-capture scope, not the current acceptance state.
 
 Static source review identifies an upstream decoding difference: Starlette
 `QueryParams` decodes raw bytes as Latin-1, then uses `parse_qsl` with `&`
@@ -8907,7 +8992,24 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Current pointer, **2026-10-14**: validated runtime `7aa79ce` is on local main; the
+Current pointer, **2026-10-14**: runtime `1e9fb10` is on local main.
+Implementation branch `codex/go-http-query-wire` delivers
+[raw query decoding and typed authentication faults](#2026-10-14-raw-http-query-decoding-and-authentication-faults).
+Source capture has 24 actual ASGI-byte cases and the old 99-case fixture is
+byte-identical. Checkpoint `1e9fb10` is committed and integrated; focused native
+24 + 99, full HTTP and complete Go/atomic (51 packages) pass. Baseline `51bdcc0`
+fails 11/24. Current coverage is app 89.470771%, all Go 89.224328% and provider
+86.206897%. Vet, Source 258, Python 2,268 / 28 skipped, invariants 77, scans 19,
+three selected mutation guards and four zero-finding type audits pass on the
+same 1,791 frozen inputs. Consumer inventory remains failed at 257/259 observed
+passing associations, with IDNA/parser unreferenced; current race was not rerun.
+This finite slice's validation is complete, with global migration acceptance
+still open. The query-component allocation
+measurement above includes a slower no-query path and makes no whole-application
+memory claim. The retained Source recorder failure and two
+actual 500-plus-TypeError observations are described in the current entry.
+
+Previous completed checkpoint: validated runtime `7aa79ce` is on local main; the
 [HTTP scalar query selection slice](#2026-10-14-http-scalar-query-selection)
 has completed finite slice validation for 99 actual Source cases. Its first
 native comparison was 94/99; after five error-text corrections the focused

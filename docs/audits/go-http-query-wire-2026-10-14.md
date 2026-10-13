@@ -92,10 +92,35 @@ remain separate retained attempts; only the final cohort is summarized above.
 
 ## Validation and delivery
 
-Complete Go/atomic coverage, vet, Source export, full Python, invariants/scans,
-selected guards and four type audits are currently pending. No incomplete or
-stopped stage is reported as passed. Existing IDNA/parser consumer gaps and the
-broader original acceptance criteria remain open.
+Code checkpoint `1e9fb10612e6ddbdebf049ce901468d01a433aba` was fast-forwarded
+into local main after validation. Final evidence is a separate documentation
+commit; remote refs, push and CI remain unrefreshed.
+All following gates used the same unchanged 1,791 frozen inputs:
+
+| Gate | Observed result |
+| --- | --- |
+| Complete Go / atomic statement coverage | 51 packages; 1,453 top-level passes / six skips; 11,592 subtest passes / one skip; 397.668 s |
+| Go vet | Passed, 4.490 s |
+| Source export | 258 fixtures current, 121.402 s |
+| Full Python | 2,268 passed; 28 skipped; 104 warnings; 24 subtests passed; 106.245 s including runner |
+| Python invariants / scans | 77 modules / 19 anchored scans passed |
+| Selected mutation guards | SSE-only query token, hidden owner, trajectory export owner: each passing baseline and caught mutation |
+| Four Go type audits | Syntax 468 files / 1,485 types; public 1,212 types; private 284 roots; 172 variables; zero findings |
+| Consumer audit | **Failed (exit 1)**: 257 of 259 observed passing links; IDNA and syntax parser remain unreferenced |
+
+Successful statement coverage is application **89.470771% (33,947/37,942)**,
+all Go **89.224328% (34,313/38,457)** and provider **86.206897% (1,575/1,827)**.
+The atomic profile was streamed and merged by statement span; it does not
+measure branch, Python, CGO or child-process coverage. Race was not rerun for
+this checkpoint; prior full race evidence belongs only to `f913d20`.
+
+Full Go sampled task-tree RSS reached 448,496 KiB (437.98 MiB), Python
+439,504 KiB (429.20 MiB); sampled CPU maxima were 198.3% and 297.7%.
+The final serial cohort did not trigger a budget stop and left no observed
+owned process identities. Samples can miss short-lived children, so these
+values are observations rather than a hard bound or actual peak. Earlier
+Source and baseline-native failures remain retained; no stopped or incomplete
+stage is reported as passed. The original G0–G7 acceptance remains open.
 
 Heavy stages are serialized under the approved relaxed profile: GOMAXPROCS=2,
 `-p=1`, `-parallel=2`, nice 10, GOGC 75, soft GOMEMLIMIT=512MiB, sampled task-tree
