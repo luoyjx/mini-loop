@@ -567,7 +567,27 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation `48f7b85`, based on main `6cb887e`, with finite MCP model-root
+Runtime review baseline: Source prerequisite based on main `778315e`; Go programs remain unchanged.
+Actual Agent.run/register_mcp captures25 key profiles × auto/readonly × single/batch:
+100 required Source observations. Existing52-root fixture bytes are unchanged.
+Current native required comparison fails88/100;12 text-key profiles pass. Hashable
+non-text keys reach binding after auto permission, unhashable keys fail whole-batch
+preparation, and mixed-key ordering faults can happen near result recording after
+earlier effects. Readonly blocks invocation but does not prevent every later
+comparison fault. These are open native defects, not accepted adaptations.
+Frozen1689 inputs pass Source246/manifest,
+11 focused Python tests, ordinary Go/vet,19 scans and diff. Full Python fails the
+unchanged memory-scaling cost guard: 0.25ms/1.55ms at100/800 records exceeds4×.
+2245 tests pass,28 skip; no threshold or runtime fix. Main integration is held.
+Two later wall/CPU/GC histories do not reproduce that failure and prove no cause.
+Consumer
+inspection exits1 with two absent consumers: native syntax parser and new mapping
+keys. The read-only overlay comparison is retained separately from normal gates.
+[Current Source receipt](docs/audits/go-mcp-mapping-keys-source-2026-10-13.json).
+Latest race/coverage and type/body receipts remain at the previous unchanged Go
+programs; no fresh race, type or body closure is claimed by this Source slice.
+
+Previous verified runtime baseline: implementation `48f7b85`, based on main `6cb887e`, with finite MCP model-root
 observations and whole-batch preparation. Fifty-two actual Source profiles and
 four native SQLite reopen/owner-restore cases pass;48 original failures retained.
 The first full cohort exposed one obsolete model-null assertion; its failed log

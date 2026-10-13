@@ -8,13 +8,6 @@ from pathlib import Path
 
 
 def mcp_model_root_contracts() -> dict:
-    from mini_loop.agent import Agent
-    from mini_loop.config import Settings
-    from mini_loop.fake_llm import FakeAsyncAnthropic, ToolUseBlock, text
-    from mini_loop.mcp import MCPClient, register_mcp
-    from mini_loop.permissions import PermissionHook
-    from mini_loop.registry import Hook, Hooks
-
     recipes=[
         ("object",{"x":1}), ("empty-object",{}), ("null",None), ("false",False), ("true",True),
         ("zero",0), ("integer",7), ("negative",-2), ("float-zero",0.0), ("negative-zero",-0.0),
@@ -24,6 +17,22 @@ def mcp_model_root_contracts() -> dict:
         ("unicode-pair",["用户"]), ("integer-row",[1]), ("empty-row",[[]]),
         ("short-row",[["x"]]), ("long-row",[["x",1,2]]),
     ]
+
+    return dict(cases=capture_mcp_model_root_cases(recipes, batch_names=("true", "pair-array", "integer-row")),limits=[
+            "Actual finite MCP roots in Source model loop; no non-string pair keys/nonfinite root profile claimed.",
+            "All batch arguments are copied before effects. MCP readonly hint never lowers external risk.",
+            "Original assistant model input remains unchanged while execution receives the prepared object.",
+        ])
+
+
+def capture_mcp_model_root_cases(recipes, *, batch_names=(), batch_all=False) -> list[dict]:
+    from mini_loop.agent import Agent
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, ToolUseBlock, text
+    from mini_loop.mcp import MCPClient, register_mcp
+    from mini_loop.permissions import PermissionHook
+    from mini_loop.registry import Hook, Hooks
+
 
     async def capture(name,value,mode,batch,root):
         trace,results,calls,requests=[],[],[],[]
@@ -54,19 +63,15 @@ def mcp_model_root_contracts() -> dict:
         except Exception as failure:output=None;error=dict(kind=type(failure).__name__,message=str(failure))
         return dict(name=mode+"/"+name+("/batch" if batch else ""),mode=mode,input_json=json.dumps(value,ensure_ascii=False),
                     batch=batch,output=output,error=error,trace=trace,calls=calls,results=results,
-                    model_input_unchanged=agent.messages[1]["content"][-1]["input"]==value,
+                    model_input_unchanged=json.dumps(agent.messages[1]["content"][-1]["input"],ensure_ascii=True)==json.dumps(value,ensure_ascii=True),
                     requests=len(requests))
     with tempfile.TemporaryDirectory(prefix="mini-loop-mcp-model-root-") as scratch:
         async def collect():
             rows=[]
             for mode in ["auto","readonly"]:
                 for name,value in recipes:
-                    for batch in [False,True] if name in ["true","pair-array","integer-row"] else [False]:
+                    for batch in [False,True] if batch_all or name in batch_names else [False]:
                         root=Path(scratch)/(mode+"-"+name+("-batch" if batch else ""));root.mkdir()
                         rows.append(await capture(name,value,mode,batch,root))
             return rows
-        return dict(cases=asyncio.run(collect()),limits=[
-            "Actual finite MCP roots in Source model loop; no non-string pair keys/nonfinite root profile claimed.",
-            "All batch arguments are copied before effects. MCP readonly hint never lowers external risk.",
-            "Original assistant model input remains unchanged while execution receives the prepared object.",
-        ])
+        return asyncio.run(collect())
