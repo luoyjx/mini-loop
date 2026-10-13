@@ -397,7 +397,7 @@
         330,
         76
       ],
-      "tag": "typed callbacks / owner-bound store + workspace"
+      "tag": "raw UTF-8 before spill / step hash effects"
     },
     {
       "id": "goActions",
@@ -472,7 +472,7 @@
         330,
         76
       ],
-      "tag": "workspace files"
+      "tag": "guarded directory before clock / mask"
     },
     {
       "id": "goManaged",
@@ -1655,6 +1655,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Public spill text boundary:25 actual Source profiles pin raw UTF-8 before budget/directory/clock/mask, guarded directory creation before callbacks, retained partial files and unchanged transcript on failure. Existing ErrResultUTF8 and immutable code-point helpers preserve surrogate ID sanitizing/cap. Files.EnsureDirectory is a trusted library primitive, not a new model tool or OS/cross-process confinement. No new component/default/authority; broader public/filesystem/host/platform acceptance remains open. Eight real AST Agent loops now pin result event before UTF-8 step-hash failure, no batch/history append or second call. Raw hashing rejects before JSON replacement; ordinary encoding failure keeps Source unanswered batch while cancellation repair remains.",
         "Typed public helper composition: ToolResultBudget, SelectRelevantMemories, PrepareMemoryContext and ConsolidateMemories use explicit bound workspace/store and closed callbacks.61 Source profiles compare public effects. Zero/negative slicing/thresholds, origins and failure stages remain; no new default, service or authority. Runtime Context and capture share the cores. Exact UnknownResult and existing TrajectorySchema are public. Broader public/host/platform acceptance remains open.",
         "Explicit contractaudit CLI maps Source fixture hashes and active Go literal/direct-function candidate test links to root test terminal actions. This operator produces repo inspection evidence, grants no runtime authority and cannot certify actual reads or semantic parity. Separate Linux captures remain distinct; default Python parser and final G7 inventory remain open.",
         "Operator go/tools/typeaudit now has compiler-resolved private roots, separate from its public closure and all-platform syntax modes. Active source/CGO files resolve imported aliases and generic arguments even for private roots unreachable from exported API. Foreign named capabilities remain opaque; package variables, function-local types, bodies, runtime flow and inactive compiler profiles remain outside this mode. No runtime component/default/owner/authority changed.",

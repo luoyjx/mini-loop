@@ -2,6 +2,7 @@ package agent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 
@@ -77,7 +78,12 @@ func (s *Session) dispatchBatch(ctx context.Context, run RunContext, blocks []pr
 	for _, attempt := range attempts {
 		results = append(results, protocol.NewToolResult(attempt.use.ID, attempt.outcome.Output, false))
 		if err = s.recordToolStep(attempt.use.Input.Name(), attempt.outcome); err != nil {
-			s.repairAttempts(attempts)
+			// Source publishes the result event, then hashes, then returns the
+			// batch to its transcript. Ordinary UTF-8 hash failure leaves that
+			// batch unanswered; cancellation/other recovery retains repair.
+			if !errors.Is(err, protocol.ErrResultUTF8) {
+				s.repairAttempts(attempts)
+			}
 			return nil, err
 		}
 	}

@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"unicode/utf8"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -27,9 +28,18 @@ func InputStepHash(input protocol.ToolInput) (StepHash, error) {
 	return shortStepHash(encoded), nil
 }
 func OutputStepHash(output string) (StepHash, error) {
+	// Python's ensure_ascii=False JSON retains original surrogate characters
+	// until encode("utf-8"). Reject them before a Go JSON encoder can replace
+	// them, and before a failed hash enters the step ledger or transcript.
+	if !utf8.ValidString(output) {
+		return "", protocol.ErrResultUTF8
+	}
 	encoded, err := protocol.PythonJSON(output, false, false)
 	if err != nil {
 		return "", err
+	}
+	if !utf8.ValidString(encoded) {
+		return "", protocol.ErrResultUTF8
 	}
 	return shortStepHash(encoded), nil
 }

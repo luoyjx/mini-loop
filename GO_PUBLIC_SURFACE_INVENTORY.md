@@ -1,5 +1,35 @@
 # Go public surface inventory
 
+## Public spill text follow-up — 2026-10-13
+
+Review baseline115f147:25 additional public budget and8 actual AST Agent Source profiles compare
+public ToolResultBudget. Original UTF-8 errors precede budget and every effect;
+guarded directory creation precedes clock/mask; callback/output faults preserve
+partial files and original messages. Result IDs retain Source surrogate code-point
+sanitizing and100-character limits. No namespace-count or default changes. The
+previous61 profiles remain unchanged. [Evidence](docs/audits/go-public-helper-text-2026-10-13.json).
+Broader public/default/host/filesystem/platform/P0/P1/G0–G7 scope remains open.
+
+Final verified cohort:1706 inputs unchanged across20 stages;19 pass, consumer
+inventory exits1 only for the unreferenced default parser. Fresh Source249 files;
+consumer250 including a separate Linux fixture has249 observed passing candidates.
+All33 new Source budget/AST Agent profiles and previous61 helpers pass; old eight
+AST Tool/SDK fields remain unchanged. Go full/vet/race+atomic; Python2250 passed,
+28 skipped,96 warnings,24 subtests in100.26s. Four type audits remain465 production/
+1472 named,1205 public/278 private roots/172 variables withzero findings. Body51
+packages/22278 declarations/130 open observations. Invariants,19 scans,18 memory,
+one budget-spill andone spill-masking guard and diff pass. Darwin statements:
+app89.38% (33553/37538), all89.14%
+(33919/38053), Provider86.45%
+(1518/1756). No C/subprocess/Python/branch/all-platform coverage claim.
+First ordinary cohort failed five AST roots and was stopped during race. New
+actual Source loops and substantive raw-hash/transcript repair precede this
+separate verified cohort; failed logs/frozen inputs remain. No threshold relaxed
+or unchanged retry-to-green. Base unchanged; built-in imagegen highlights Context
+preflight/hash and Files directory primitive; Archify9/9, zero errors/warnings.
+No new rendered-browser acceptance. Provider observed coverage is86.45% versus86.67% previously: unchanged retry-wait/cancellation spans lose five covered statements and gain one. The exact span delta is retained; no threshold change or percentage-raising retry. Other historical temporal failures and original
+full public/default/provider/filesystem/host/platform/performance/release remain open.
+
 ## Current evidence — 2026-10-13
 
 Review baseline: local main `3269424`; original P0/P1/G0–G7 scope is preserved.

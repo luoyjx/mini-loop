@@ -61,6 +61,11 @@ func ToolResultBudget(ctx context.Context, value ToolResultBudgetContext, option
 	total := 0
 	for i, block := range blocks {
 		if output, ok := block.ToolResult(); ok {
+			// Source encodes every original target before checking the budget or
+			// creating directories. Masking cannot rescue an invalid original.
+			if !utf8.ValidString(output.Content) {
+				return result, protocol.ErrResultUTF8
+			}
 			total += len(output.Content)
 			targets = append(targets, target{i, output, utf8.RuneCountInString(output.Content)})
 		}
@@ -70,6 +75,9 @@ func ToolResultBudget(ctx context.Context, value ToolResultBudgetContext, option
 	}
 	if value.Files == nil {
 		return result, errors.New("tool result budget requires a bound workspace")
+	}
+	if err := value.Files.EnsureDirectory(ctx, filepath.Join(".task_outputs", "tool-results")); err != nil {
+		return result, err
 	}
 	sort.SliceStable(targets, func(i, j int) bool { return targets[i].weight > targets[j].weight })
 	persisted := 0

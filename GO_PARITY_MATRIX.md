@@ -1,5 +1,74 @@
 # Python to Go parity matrix
 
+## 2026-10-13 public spill UTF-8 and directory ordering
+
+Branch `codex/go-public-helper-text`, review baseline115f147. Original P0/P1/G0–G7
+scope remains. Independent Source/native probes demonstrate invalid original
+surrogate text failing before budget, directory, clock or mask in Source; the old
+native returned success at large budget and could write masked text at zero.
+25 actual public Source profiles pin original UTF-8 preflight, whole latest-batch
+failure, ignored older batches, directory-before-clock/mask order, partial files,
+unchanged messages and code-point-based result-ID sanitizing/cap. Initial native
+comparison failed22 profiles; the exact first log/fixture is retained. Two capture
+issues (temporary error path and adjacent literal-surrogate JSON normalization)
+were repaired separately, retaining every case and exact text assertion.
+
+Native ToolResultBudget now rejects invalid original UTF-8 with existing typed
+protocol.ErrResultUTF8 before all effects, even when the byte budget would fit.
+A guarded workspace.Files.EnsureDirectory matches Source directory creation before
+clock/mask, including callback/output-encoding failures. Path checks happen before
+and after creation; cancellation/escape remain refusals. This primitive is neither
+OS confinement nor atomic cross-process symlink fencing. Safe result IDs use the
+existing immutable legacy-text code-point helpers, preserving one underscore per
+surrogate and the100-character cap. No arbitrary state/JSON, dependency, service,
+new model tool, authority or default. Existing61 public-helper profiles remain.
+
+Focused Source and Go text/directory/old-helper guards pass. Freeze the final
+program/README/EXTENDING/graph cohort for fresh Source/consumer, type/body audits,
+full Go/vet/race+atomic/Python, invariants/scans/selected guards and diff. Actual
+exits and coverage belong in the final delivery receipt; historical temporal and
+other platform acceptance are not waived. README/JSON/HTML share the updated spill
+boundary; no component addition/deletion, base unchanged. Imagegen highlights
+Context preflight and the existing Files directory primitive.
+
+
+Actual Source AST Agent follow-up: the first full ordinary Go cohort failed five
+old AST success expectations and was stopped during race; its logs/frozen inputs
+remain. Eight real Source Agent runs now prove five surrogate results emit their
+tool_result event, then fail output step_hash UTF-8 before returning the batch:
+one model call, two transcript messages, no result message and no budget directory.
+Three scalar/nonfinite-text controls complete with two calls/four messages. The
+old eight direct Tool/SDK fields are byte-equivalent after omitting the new agent
+field. Native OutputStepHash now checks raw text before JSON replacement and leaves
+this ordinary UTF-8-failed batch unanswered; cancellation and other repair remain.
+Exact event text, hash error, model counts, messages, directory and ledger assertions
+pass. This is a substantive new Source/runtime repair cohort, not an unchanged retry.
+
+Final verified cohort:1706 inputs unchanged across20 stages;19 pass, consumer
+inventory exits1 only for the unreferenced default parser. Fresh Source249 files;
+consumer250 including a separate Linux fixture has249 observed passing candidates.
+All33 new Source budget/AST Agent profiles and previous61 helpers pass; old eight
+AST Tool/SDK fields remain unchanged. Go full/vet/race+atomic; Python2250 passed,
+28 skipped,96 warnings,24 subtests in100.26s. Four type audits remain465 production/
+1472 named,1205 public/278 private roots/172 variables withzero findings. Body51
+packages/22278 declarations/130 open observations. Invariants,19 scans,18 memory,
+one budget-spill andone spill-masking guard and diff pass. Darwin statements:
+app89.38% (33553/37538), all89.14%
+(33919/38053), Provider86.45%
+(1518/1756). No C/subprocess/Python/branch/all-platform coverage claim.
+First ordinary cohort failed five AST roots and was stopped during race. New
+actual Source loops and substantive raw-hash/transcript repair precede this
+separate verified cohort; failed logs/frozen inputs remain. No threshold relaxed
+or unchanged retry-to-green. Base unchanged; built-in imagegen highlights Context
+preflight/hash and Files directory primitive; Archify9/9, zero errors/warnings.
+No new rendered-browser acceptance. Provider observed coverage is86.45% versus86.67% previously: unchanged retry-wait/cancellation spans lose five covered statements and gain one. The exact span delta is retained; no threshold change or percentage-raising retry. Other historical temporal failures and original
+full public/default/provider/filesystem/host/platform/performance/release remain open.
+
+[Text contract receipt](docs/audits/go-public-helper-text-2026-10-13.json);
+[iteration image](docs/audits/go-public-helper-text-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-public-helper-text-infographic-2026-10-13.prompt.txt).
+
+
 ## 2026-10-13 typed public helper composition
 
 Branch `codex/go-public-helpers`, review baseline3269424. Preserve original P0/P1/

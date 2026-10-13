@@ -570,25 +570,33 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `3269424`; this iteration reviews typed public
-helper composition. Go now exports `ToolResultBudget`, `SelectRelevantMemories`,
-`PrepareMemoryContext`, `ConsolidateMemories` and the exact `UnknownResult` text.
-The existing `TrajectorySchema` constant is also matched to Source.61 direct
-Source public-helper cases compare external Go callers, request/effect boundaries,
-zero/negative parameters, origins and owner isolation. Runtime context/capture
-reuse the same core and retain trusted caller parsing profiles. Initial memory
-List and lexical fallback faults escape; ordinary side-query faults are contained.
-Budget spill keeps earlier file writes but applies transcript replacement only
-after all writes succeed. Public callbacks are explicit caller composition;
-they cannot infer live Session history or execution authority.
+Runtime review baseline: local main `115f147`; this iteration reviews the public
+spill text/effect boundary. ToolResultBudget encodes every original target before
+budget/clock/mask/filesystem effects, so masking cannot rescue surrogate text.
+25 actual public Source profiles compare zero/large budgets, later invalid targets,
+older ignored batches, directory-first callbacks, partial files, unchanged messages
+and result-ID code points/cap. The prior native probe could accept or write masked
+invalid text; its probe and22 failing comparisons remain in the delivery evidence.
 
-[Public helper inventory](GO_PUBLIC_SURFACE_INVENTORY.md) and
-[typed composition seam](EXTENDING.md#go-public-memory-and-result-budget-helpers)
-record defaults, lifetime and admission limits. Components and routes are unchanged;
-README Mermaid and interactive JSON now label the public helper seam inside the
-existing Context pipeline. The base image remains unchanged; the iteration image
-highlights L1 composition, L3 Context and L5 files. Full frozen validation is
-recorded separately in the delivery receipt; final migration acceptance remains open.
+Actual Source Agent loops add8 required AST profiles: invalid raw result text
+emits the result event, fails output step_hash UTF-8, and returns no result batch
+or second request. Native checks raw output before JSON can replace it, retaining
+Source's ordinary unanswered-batch state. Cancellation/other repair remains.
+The first full ordinary cohort's five AST failures are retained separately.
+
+`workspace.Files.EnsureDirectory` supplies the same guarded immutable workspace
+boundary and creates the output directory before clock/mask. It checks before and
+after creation; it is not OS confinement or cross-process symlink fencing. The
+existing typed UTF-8 error and immutable legacy-text helpers are reused. No new
+service, dependency, model tool, default, owner or authority. Existing public helper
+composition/lifetime rules and61 previous profiles remain. README Mermaid and
+interactive JSON reflect preflight before spill and guarded directory creation;
+architecture components and base image are unchanged. Full frozen gates and final
+migration limits remain recorded separately in the delivery receipt.
+
+[Public helper contract](GO_PUBLIC_SURFACE_INVENTORY.md);
+[text/effect receipt](docs/audits/go-public-helper-text-2026-10-13.json);
+[composition seam](EXTENDING.md#go-public-spill-text-and-directory-order).
 
 Previous verified implementation review: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
@@ -845,12 +853,12 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
+        GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival model snapshots / metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
-        GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
+        GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts<br/>guarded directory before spill clock / mask"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases · audit<br/>explicit caller store · operator restore<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate

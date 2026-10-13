@@ -199,6 +199,26 @@ func (files *Files) Read(ctx context.Context, input protocol.ReadFileInput) (str
 	return capOutput(strings.Join(lines, "\n")), nil
 }
 
+// EnsureDirectory creates a directory beneath the immutable workspace root.
+// It checks the path before and after creation, like Write's parent guard; this
+// does not supply OS confinement or cross-process protection from symlink races.
+func (files *Files) EnsureDirectory(ctx context.Context, path string) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	resolved, err := files.Resolve(path)
+	if err != nil {
+		return err
+	}
+	if err := makeParents(resolved); err != nil {
+		return fileError(err)
+	}
+	if _, err := files.Resolve(path); err != nil {
+		return err
+	}
+	return ctx.Err()
+}
+
 func (files *Files) Write(ctx context.Context, input protocol.WriteFileInput) (string, error) {
 	if err := ctx.Err(); err != nil {
 		return "", err

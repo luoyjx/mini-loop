@@ -9,6 +9,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/workspace"
@@ -212,15 +213,24 @@ func (compactor DefaultCompactor) validate(value CompactionContext) error {
 
 func safeResultID(value string) string {
 	if value == "" {
-		value = "tool-result"
+		return "tool-result"
 	}
-	runes := []rune(value)
-	for i, r := range runes {
-		if !((r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == '.' || r == '_' || r == '-') {
-			runes[i] = '_'
+	value = jsonvalue.TextPrefix(value, 100)
+	var result strings.Builder
+	for len(value) > 0 {
+		character := jsonvalue.TextPrefix(value, 1)
+		if len(character) == 1 {
+			c := character[0]
+			if (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '.' || c == '_' || c == '-' {
+				result.WriteByte(c)
+				value = value[1:]
+				continue
+			}
 		}
+		result.WriteByte('_')
+		value = value[len(character):]
 	}
-	return string(runes[:min(100, len(runes))])
+	return result.String()
 }
 
 func (compactor DefaultCompactor) budget(ctx context.Context, value CompactionContext) (CompactionResult, error) {

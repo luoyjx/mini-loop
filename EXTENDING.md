@@ -4725,3 +4725,41 @@ compactor retains its existing validated nonnegative configuration.
 `mini-loop.trajectory.v1`. The61 captured public helper profiles do not cover
 arbitrary legacy Python agent/dict shapes, custom callbacks/host stacks, branch
 coverage or all platforms; they do not authorize a default diagnostics backend.
+
+## Go public spill text and directory order
+
+ToolResultBudget checks every original text target in the selected newest batch
+for strict UTF-8 before even comparing the byte budget. `protocol.ErrResultUTF8`
+is the existing named error; invalid original surrogatepass text cannot be repaired
+by a masker. Invalid text in an older unselected batch does not enter this preflight.
+This preserves Source's original `.encode("utf-8")` failure priority. These are
+observations until a caller selects the public helper; decoding history grants no
+actor, path or execution authority.
+
+`workspace.Files.EnsureDirectory(ctx, path)` is a trusted file-library primitive,
+not a registered model tool. It checks the immutable root before and after creating
+the directory and propagates cancellation/path escape/filesystem errors. As with
+Write's parent creation, this is not OS confinement or cross-process symlink fencing.
+The budget helper creates `.task_outputs/tool-results` after successful raw preflight
+and budget overflow, before timestamp or masking callbacks. A failing directory
+prevents those callbacks; mask/encoded-output failures retain the directory and any
+prior files without replacing the transcript. Mask callback panics remain caller
+errors; the synchronous Source helper has no best-effort catch around masking.
+
+Result IDs are cleaned and capped by Source code points, including one underscore
+per surrogatepass code point. The existing closed jsonvalue text helpers provide
+this iteration/counting; no raw JSON is retained in the helper context. Adjacent
+literal surrogate points in tests stay separate instead of being normalized through
+JSON into an emoji. Valid scalar Unicode and existing result-budget defaults remain.
+The25 Source profiles do not certify arbitrary filesystem roots/umasks, callbacks,
+other host stacks, all public surface semantics or platform/final G7 acceptance.
+
+The actual Agent AST loop has a distinct earlier result boundary. Source emits
+its result event before output `step_hash`; surrogate text then fails the final
+UTF-8 hash encoding before the batch can be appended to history. OutputStepHash
+checks raw text before JSON replacement; the existing ErrResultUTF8 propagates.
+Ordinary hash failure does not invoke cancellation repair or fabricate a result
+message. Known event output remains observable, no step enters the ledger, and
+no second model request is sent. Native cancellation and other recovery retain
+their established repair behavior. Eight actual Source Agent profiles strengthen
+the previous direct Tool/SDK-only evidence; all those original fields remain.
