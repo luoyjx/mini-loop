@@ -1,0 +1,498 @@
+{
+  "date": "2026-10-13",
+  "baseline": "778315e",
+  "branch": "codex/go-mcp-key-boundaries",
+  "scope": "Actual Source mapping-key prerequisite; no native runtime adoption. Original migration scope remains unchanged.",
+  "source_profiles": 100,
+  "roots": 25,
+  "case_names": [
+    "auto/integer-key",
+    "auto/integer-key/batch",
+    "auto/negative-key",
+    "auto/negative-key/batch",
+    "auto/float-key",
+    "auto/float-key/batch",
+    "auto/true-key",
+    "auto/true-key/batch",
+    "auto/false-key",
+    "auto/false-key/batch",
+    "auto/null-key",
+    "auto/null-key/batch",
+    "auto/nan-key",
+    "auto/nan-key/batch",
+    "auto/positive-infinity-key",
+    "auto/positive-infinity-key/batch",
+    "auto/negative-infinity-key",
+    "auto/negative-infinity-key/batch",
+    "auto/array-key",
+    "auto/array-key/batch",
+    "auto/empty-array-key",
+    "auto/empty-array-key/batch",
+    "auto/object-key",
+    "auto/object-key/batch",
+    "auto/empty-object-key",
+    "auto/empty-object-key/batch",
+    "auto/text-then-integer",
+    "auto/text-then-integer/batch",
+    "auto/integer-then-text",
+    "auto/integer-then-text/batch",
+    "auto/null-then-text",
+    "auto/null-then-text/batch",
+    "auto/true-then-text",
+    "auto/true-then-text/batch",
+    "auto/float-then-text",
+    "auto/float-then-text/batch",
+    "auto/equal-number-keys",
+    "auto/equal-number-keys/batch",
+    "auto/integer-and-text-keys",
+    "auto/integer-and-text-keys/batch",
+    "auto/empty-text-key",
+    "auto/empty-text-key/batch",
+    "auto/keyword-text",
+    "auto/keyword-text/batch",
+    "auto/spaced-text-key",
+    "auto/spaced-text-key/batch",
+    "auto/later-short-row",
+    "auto/later-short-row/batch",
+    "auto/later-unhashable-key",
+    "auto/later-unhashable-key/batch",
+    "readonly/integer-key",
+    "readonly/integer-key/batch",
+    "readonly/negative-key",
+    "readonly/negative-key/batch",
+    "readonly/float-key",
+    "readonly/float-key/batch",
+    "readonly/true-key",
+    "readonly/true-key/batch",
+    "readonly/false-key",
+    "readonly/false-key/batch",
+    "readonly/null-key",
+    "readonly/null-key/batch",
+    "readonly/nan-key",
+    "readonly/nan-key/batch",
+    "readonly/positive-infinity-key",
+    "readonly/positive-infinity-key/batch",
+    "readonly/negative-infinity-key",
+    "readonly/negative-infinity-key/batch",
+    "readonly/array-key",
+    "readonly/array-key/batch",
+    "readonly/empty-array-key",
+    "readonly/empty-array-key/batch",
+    "readonly/object-key",
+    "readonly/object-key/batch",
+    "readonly/empty-object-key",
+    "readonly/empty-object-key/batch",
+    "readonly/text-then-integer",
+    "readonly/text-then-integer/batch",
+    "readonly/integer-then-text",
+    "readonly/integer-then-text/batch",
+    "readonly/null-then-text",
+    "readonly/null-then-text/batch",
+    "readonly/true-then-text",
+    "readonly/true-then-text/batch",
+    "readonly/float-then-text",
+    "readonly/float-then-text/batch",
+    "readonly/equal-number-keys",
+    "readonly/equal-number-keys/batch",
+    "readonly/integer-and-text-keys",
+    "readonly/integer-and-text-keys/batch",
+    "readonly/empty-text-key",
+    "readonly/empty-text-key/batch",
+    "readonly/keyword-text",
+    "readonly/keyword-text/batch",
+    "readonly/spaced-text-key",
+    "readonly/spaced-text-key/batch",
+    "readonly/later-short-row",
+    "readonly/later-short-row/batch",
+    "readonly/later-unhashable-key",
+    "readonly/later-unhashable-key/batch"
+  ],
+  "source_fixture_sha256": "c2b67e034ad6939b308ba79f2513be836f25967ad32e88df6c135294c46b2d4c",
+  "source_files": {
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/mcp.py": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+    "python/mini_loop/permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "python/tools/mcp_model_root_contracts.py": "ca38e64d3d81e81d5932f895222e0a0a5dacbd35e283f00ce9b40dc17fc83ed7",
+    "python/tools/mcp_mapping_key_contracts.py": "65e5df922b54edce3ec66e253f931a0f098c145cd66bf83e877f5fb57fc7d9f2",
+    "python/tests/test_go_mcp_mapping_contracts.py": "42547c4f91ea1cb2f63235408338e000de038e848cbe0dd3ea8605da8010a224"
+  },
+  "outcomes": {
+    "Counter": {
+      "completed-run": 52,
+      "TypeError:unhashable type: 'list'": 12,
+      "TypeError:unhashable type: 'dict'": 8,
+      "TypeError:'<' not supported between instances of 'int' and 'str'": 4,
+      "TypeError:'<' not supported between instances of 'str' and 'int'": 8,
+      "TypeError:'<' not supported between instances of 'str' and 'NoneType'": 4,
+      "TypeError:'<' not supported between instances of 'str' and 'bool'": 4,
+      "TypeError:'<' not supported between instances of 'str' and 'float'": 4,
+      "ValueError:dictionary update sequence element #1 has length 1; 2 is required": 4
+    },
+    "phases": "Hashable non-text keys fail kwargs after auto permission, but readonly denies before binding. Unhashable keys fail whole-batch preparation. Mixed text/nontext ordering faults occur near result recording; auto after hook may have run, readonly may fail before after/result. Earlier auto batch effects can remain."
+  },
+  "native_comparison": {
+    "command": [
+      "go",
+      "test",
+      "-overlay=/Users/yanjixiong/github/mini-loop/var/go-mcp-key-boundaries-2026-10-13/native-overlay.json",
+      "./agent",
+      "-run",
+      "TestMCPMappingKeysMatchActualSourceBatchAndGate",
+      "-count=1"
+    ],
+    "exit_code": 1,
+    "total_profiles": 100,
+    "failures": 88,
+    "passed_profiles": 12,
+    "method": "Required existing Source comparison body reused through read-only Go overlay, changing only fixture path/count and test name. Production Go/test files unchanged. All88 discrepancies remain open, not adapted/accepted.",
+    "overlay_sha256": "78804f19020d4ff307ddb92171784a9f3e21e079991fa94769d4a963403391a2",
+    "probe_sha256": "c71b85612ee7b5daca5c2422fce45992c266bff89f50742379a128c1833a683c",
+    "log": "var/go-mcp-key-boundaries-2026-10-13/native-before.log"
+  },
+  "setup_diagnostic": "First probe setup was invoked from go/ with root-relative .venv path, so overlay was not created. Setup log retained; corrected root setup then actual Go comparison exit1/88 failures. Setup failure is not semantic evidence.",
+  "go_programs": {
+    "count": 964,
+    "previous_frozen_path": "var/go-mcp-model-roots-2026-10-13/frozen.json",
+    "previous_frozen_sha256": "583631ed5b4857773dbe1a1c2bece40717ff8b9f88d14aec38d0f6986730b939",
+    "unchanged": true
+  },
+  "existing_root_fixture": {
+    "path": "go/testdata/python-mcp-model-roots.json",
+    "sha256": "7b81a5884105194bcddb73fc8b423e566436dc9b516babcd50a07fb0cd13e646",
+    "profiles": 52,
+    "unchanged_from_baseline": true,
+    "evidence": "Fresh producer bytes match baseline Git blob; dedicated regression checks existing52 captures and new finite envelope."
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-key-boundaries-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 124.523
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_mcp_mapping_contracts.py",
+        "python/tests/test_go_export_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.641
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 201.529
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-key-boundaries-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-key-boundaries-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 1.158
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.927
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 1,
+      "seconds": 135.42
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": null,
+      "note": "Executed independently after full Python failed; observed terminal tool session88103 exit0, elapsed duration not recorded."
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.041
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1689,
+    "path": "var/go-mcp-key-boundaries-2026-10-13/frozen.json",
+    "sha256": "53f1cab9e24fb412a73f9032c515a4da9cc60b4ee0434bf35fe5b9bb7d605d8e",
+    "changes_during_gates": []
+  },
+  "source_manifest": {
+    "files": 246,
+    "path": "var/go-mcp-key-boundaries-2026-10-13/source-manifest.json",
+    "sha256": "8b4910433b5cbb3b582b2de9a4681ecb11734808d5c7f39dfdf7895a781d1889"
+  },
+  "consumer_inventory": {
+    "files": 247,
+    "counts": {
+      "test_pass_observed": 245,
+      "unreferenced": 2
+    },
+    "gaps": [
+      {
+        "name": "python-mcp-mapping-keys.json",
+        "sha256": "c2b67e034ad6939b308ba79f2513be836f25967ad32e88df6c135294c46b2d4c",
+        "references": [],
+        "candidate_callers": [],
+        "status": "unreferenced",
+        "producer_scope": "current_export"
+      },
+      {
+        "name": "python-syntax-parser.json",
+        "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+        "references": [],
+        "candidate_callers": [],
+        "status": "unreferenced",
+        "producer_scope": "current_export"
+      }
+    ],
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "1 failed, 2245 passed, 28 skipped, 96 warnings, 24 subtests passed in 134.83s (0:02:14)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "logs": {
+    "source": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/source.log",
+      "sha256": "d288d43a749cb7ee06532093d6ae4e1b470edb1e7328ad27df2c7b2306eba46e",
+      "bytes": 79118
+    },
+    "focused-python": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/focused-python.log",
+      "sha256": "b4cf5fa27b26e4dc5f5cb23a53f424e67ce09d580ef46740ff53639acac198c3",
+      "bytes": 99
+    },
+    "ordinary": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/ordinary.log",
+      "sha256": "3d3af9ab17424b7c8f0408b35fec3f31c1f3c4ab6c865a2050bdc97b50ac8444",
+      "bytes": 10776054
+    },
+    "inventory": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/inventory.log",
+      "sha256": "acd68e6a33ab2f113f6ec9ae92af0cf623c62e3c0d877ff45f61ca0354e15fa9",
+      "bytes": 316636
+    },
+    "vet": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "python": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/python.log",
+      "sha256": "ea5d3d6a961d3d2d43983f22a560d5d1118e54671d06d9d2f936c8be7acd6d5a",
+      "bytes": 52872
+    },
+    "scans": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "diff": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "native-before": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/native-before.log",
+      "sha256": "cf8b20f42da9f0e7d2e3a5ac7c343baf78d0021291629be0522aeb50a612388f",
+      "bytes": 23217
+    },
+    "native-overlay-setup": {
+      "path": "var/go-mcp-key-boundaries-2026-10-13/native-overlay-setup.log",
+      "sha256": "5842946236640c45df44aa51c382b275884068e38458488166ecd0494a5656c8",
+      "bytes": 150
+    }
+  },
+  "python_failure": {
+    "test": "test_write_cost_does_not_grow_with_the_store",
+    "small_per_write_ms": 0.2453099999911501,
+    "large_per_write_ms": 1.5538011462467693,
+    "unchanged_threshold": "large < small * 4",
+    "memory_source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+    "merge_allowed": false,
+    "diagnostic": {
+      "method": "Two sequential diagnostic histories, same actual MemoryStore/count/body; per-phase wall/CPU/GC observations. No pytest assertion or retry-to-green acceptance.",
+      "observations": [
+        {
+          "arm": "fresh-process",
+          "count": 100,
+          "write_seconds": 0.02292483400015044,
+          "flush_seconds": 0.004065291999722831,
+          "total_seconds": 0.02699012599987327,
+          "cpu_seconds": 0.024610999999999994,
+          "per_write_seconds": 0.00026990125999873274,
+          "max_write_seconds": 0.00046620899956906214,
+          "quartile_write_seconds": [
+            0.0063793320005061105,
+            0.005136753014085116,
+            0.0061613360048795585,
+            0.005216872985329246
+          ],
+          "gc_collections": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "fresh-process",
+          "count": 800,
+          "write_seconds": 0.2201303750007355,
+          "flush_seconds": 0.02491066700167721,
+          "total_seconds": 0.24504104200241272,
+          "cpu_seconds": 0.17575899999999997,
+          "per_write_seconds": 0.0003063013025030159,
+          "max_write_seconds": 0.005148583000845974,
+          "quartile_write_seconds": [
+            0.07346537803459796,
+            0.041390530997887254,
+            0.06953944396809675,
+            0.03562345697719138
+          ],
+          "gc_collections": [
+            5,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "after-source-capture",
+          "count": 100,
+          "write_seconds": 0.018646917000296526,
+          "flush_seconds": 0.0029034580002189614,
+          "total_seconds": 0.021550375000515487,
+          "cpu_seconds": 0.01993800000000001,
+          "per_write_seconds": 0.00021550375000515488,
+          "max_write_seconds": 0.0003099999994446989,
+          "quartile_write_seconds": [
+            0.005030502001318382,
+            0.0041679130008560605,
+            0.004581502998917131,
+            0.004847415995755
+          ],
+          "gc_collections": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "after-source-capture",
+          "count": 800,
+          "write_seconds": 0.17481533399768523,
+          "flush_seconds": 0.02280879099998856,
+          "total_seconds": 0.1976241249976738,
+          "cpu_seconds": 0.16424800000000006,
+          "per_write_seconds": 0.0002470301562470922,
+          "max_write_seconds": 0.003301166998426197,
+          "quartile_write_seconds": [
+            0.03508619997592177,
+            0.061950405019160826,
+            0.0375720849915524,
+            0.04011662397897453
+          ],
+          "gc_collections": [
+            3,
+            0,
+            0
+          ]
+        }
+      ],
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f"
+    },
+    "diagnostic_sha256": "64cf50573af2898c0fbd6e6d92f9352ec736d3731d2c1eee6bc56f59128a9068",
+    "limits": "Two later wall/CPU/GC diagnostic histories do not reproduce the full-suite failure; names/descriptions differ from the original test though counts/body/store match. They do not establish a cause or replace the failed gate. No retry-to-green, threshold or runtime fix."
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "components_added_or_removed": false,
+    "graph_changed": false,
+    "iteration": "docs/audits/go-mcp-mapping-keys-infographic-2026-10-13.png",
+    "iteration_sha256": "69071769f9f42ee2ce4cb61cc0d2ecb7b6392c76d6ddcac1a37f3cc5aaaa2f8b",
+    "prompt": "docs/audits/go-mcp-mapping-keys-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "bdb0f97405bcaa0d15dea4b128553ecbd844d82c999dba2141581805e8231172",
+    "visual_review": "Exact five headings and all cards retained. Highlight only L5 operator contractaudit, MCP Source pending note. Session/Provider bidirectional, separate Session-to-Gate above Provider, Gate-to-L4 and result-to-Session; no Provider-to-Gate. Side prose states100 Source profiles/88 native failures; no native completion claim.",
+    "html": "Canonical runtime map/JSON/generated HTML unchanged because this only extends Source contract observations. No fresh structural/rendered browser claim."
+  },
+  "retained_coverage": "docs/audits/go-coverage-mcp-model-roots-2026-10-13.json",
+  "coverage_scope": "No new coverage run; previous passing Darwin race/atomic receipt belongs to unchanged Go programs, app89.40/all89.15/provider86.67. It does not accept new mapping-key contracts.",
+  "next_required": [
+    "Named ordered closed key/value mapping with Python hashability/equality and duplicate-key behavior; no any/RawMessage/open domain map.",
+    "Defer hashable non-string-key binding failure until common gate permission/execute stage; unhashable/later malformed rows must retain exact whole-batch preparation priority.",
+    "Retain mixed-key comparison fault stage, earlier effects, history/mask/identity/events and readonly behavior; obtain managed/journal and broader transport profiles before claiming closure.",
+    "Convert all100 new profiles into required committed native assertions and verify recovery/authority without weakening original gates."
+  ],
+  "remaining": "Original P0/P1/G0-G7, default CPython/IDNA decisions, historical temporal failures and broader public/type/feature/platform/performance/release acceptance remain open.",
+  "skipped": [
+    "No Go program changes: prior race/coverage and four type/body audits retained, not refreshed.",
+    "No Python runtime package-module or guarded runtime/anchor changes: invariant and mutation gates not applicable.",
+    "No new dependency, paid provider, remote fetch/push or Linux full gates."
+  ],
+  "source_commit": "d477f534bf6f6a184ea5cf8feaa16ccebea80639",
+  "integration": "Not merged: failed full Python memory scaling gate. Main remains778315e. Native mapping-key implementation remains required."
+}

@@ -567,7 +567,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: Source prerequisite based on main `778315e`; Go programs remain unchanged.
+Runtime review baseline: Source prerequisite `d477f53`; Go programs remain unchanged.
 Actual Agent.run/register_mcp captures25 key profiles × auto/readonly × single/batch:
 100 required Source observations. Existing52-root fixture bytes are unchanged.
 Current native required comparison fails88/100;12 text-key profiles pass. Hashable
@@ -580,8 +580,7 @@ Frozen1689 inputs pass Source246/manifest,
 unchanged memory-scaling cost guard: 0.25ms/1.55ms at100/800 records exceeds4×.
 2245 tests pass,28 skip; no threshold or runtime fix. Main integration is held.
 Two later wall/CPU/GC histories do not reproduce that failure and prove no cause.
-Consumer
-inspection exits1 with two absent consumers: native syntax parser and new mapping
+Consumer inspection exits1 with two absent consumers: native syntax parser and new mapping
 keys. The read-only overlay comparison is retained separately from normal gates.
 [Current Source receipt](docs/audits/go-mcp-mapping-keys-source-2026-10-13.json).
 Latest race/coverage and type/body receipts remain at the previous unchanged Go
