@@ -1,5 +1,57 @@
 # Go public surface inventory
 
+## Public RunContext constructor follow-up — 2026-10-13
+
+Review baseline `2ca0266`: 70 actual Source `Agent.run` cases compare 14
+constructor recipes across five new-message/peer modes through public Go APIs.
+Optional actor/parent and explicit empty provenance survive real tools and event
+correlation. Human channel/stamp use `*string` (nil defaults, explicit empty
+retained); callers that initialize either field must migrate to pointers.
+Standalone peer construction fixes nonhuman authority and accepts no approvals.
+Snapshots cannot restore live authority. Separate native tests cover detached
+inputs/snapshots, rejected zero contexts, two managed archive profiles and a
+peer with capability membership being refused by real goal create/resume tools.
+
+Final cohort: 1715 frozen program and architecture inputs remained unchanged
+across 19 serial stages. Eighteen passed; the consumer inventory exited 1 solely
+for the unreferenced default Python parser awaiting approval. Source export has
+251 files; all 251 referenced consumer candidates passed, including the new
+70-case public constructor fixture. Separate native controls cover copied
+inputs/snapshots, zero-value refusal, two managed archive profiles, and actual
+peer goal-create/resume refusal despite workflow capability membership.
+
+Full Go tests, vet and race with atomic coverage passed. Python: 2252 passed,
+28 skipped, 96 warnings and 24 subtests in 90.81s. Invariants, 19 scan guards,
+the goal-authority and cron-authority mutation guards, and diff checks passed.
+All four type audits have zero findings: 465 production files / 1473 named
+types, 1206 public roots, 278 private roots and 172 package variables. Body
+inventory retains 51 packages / 22282 declarations / 130 open observations.
+
+Fresh Darwin statement coverage: application 89.40%
+(33564/37545), all Go 89.15% (33930/38060), Provider 86.67%
+(1522/1756). These are current observed statement totals; this context
+change does not claim causation for Provider coverage movement. Python, native C,
+subprocess interiors, branches and other platforms are outside this metric.
+
+No resource stop occurred. Nice 10, Go concurrency 2 / build parallelism 1,
+serial pytest and a 512MiB Go soft target were used with a 3GiB sampled owned-tree
+budget and host-pressure monitoring. Peak owned RSS was 578960 KiB (565.4 MiB).
+Sampled CPU briefly reached 299.3%; the sustained 250% / 30-second stop threshold
+was not reached. These are sampled controls, not hard process/OS memory caps.
+Historical temporal/platform failures and original P0/P1/G0–G7, broader public,
+default parser, host/performance/release acceptance remain open.
+
+[Validation receipt](docs/audits/go-public-run-context-2026-10-13.json),
+[coverage](docs/audits/go-coverage-public-run-context-2026-10-13.json),
+[iteration image](docs/audits/go-public-run-context-infographic-2026-10-13.png)
+and [exact prompt](docs/audits/go-public-run-context-infographic-2026-10-13.prompt.txt).
+Archify passed 9/9 with no errors/warnings; no new rendered-browser acceptance.
+
+Arbitrary Python dataclass overrides, non-text objects, full public namespace,
+P0/P1/G0–G7, default parser, host/platform/performance/release acceptance remain
+open. The previous batch evidence below is historical; its RunContext candidate
+is now covered only within the bounded text/capability scope above.
+
 ## Batch step admission follow-up — 2026-10-13
 
 Review baseline `fbe8ad4`: 32 actual Source batch profiles now compare per-call
@@ -175,7 +227,7 @@ backend is the known default CLI gap.
 | `build_client` | `config` | `launcher.New`, `provider.New` | Rename/composition candidate; semantic review required |
 | `TrajectoryStore` | `trajectory` | `trajectory.New`, `trajectory.Store` | Rename/composition candidate; semantic review required |
 | `TRAJECTORY_SCHEMA_VERSION` | `trajectory` | `agent.TrajectorySchema` | Explicit candidate; bounded public helper evidence |
-| `RunContext` | `run_context` | `agent.RunContext` | Name candidate; semantic review required |
+| `RunContext` | `run_context` | `agent.RunContext` | 70 actual Source constructor/derivation and live tool/event cases; typed text/capability scope only; arbitrary dataclass overrides and non-text inputs open |
 | `EXPLICIT_HUMAN` | `run_context` | `agent.AuthorityExplicitHuman` | Rename/composition candidate; semantic review required |
 | `PEER_AGENT` | `run_context` | `agent.AuthorityPeerAgent` | Rename/composition candidate; semantic review required |
 | `UNTRUSTED` | `run_context` | `agent.AuthorityUntrusted` | Rename/composition candidate; semantic review required |

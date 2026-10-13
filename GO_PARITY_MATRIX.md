@@ -1,5 +1,76 @@
 # Python to Go parity matrix
 
+## 2026-10-13 public RunContext constructors and provenance
+
+Branch `codex/go-public-run-context`, review baseline `2ca0266`. Original
+P0/P1/G0–G7 scope remains. The Source producer captures 70 actual `Agent.run`
+cases: 14 default/human/peer constructor recipes crossed with five identity,
+new-message and peer-derivation modes. The literal
+`python-public-run-context.json` fixture compares optional/explicit-empty text,
+capability membership, real tool contexts/results, event correlation and fresh
+message/parent relationships; only generated UUID identities are normalized.
+The retained `var/go-public-run-context-2026-10-13/native-before.log` proves the
+old native constructor replaced explicit-empty human channel/stamp with defaults.
+
+`HumanRunConfig.Channel` and `StampedBy` now use `*string`: nil selects the
+existing defaults while supplied text, including empty text, is retained.
+This is a Go caller source migration for either explicitly initialized field:
+use pointers for supplied values and omit/use nil for defaults. New
+`PeerRunConfig` and `PeerAgentRunContext` create fresh fixed peer authority.
+The required delegated-by string may be empty; actor/stamp/parent are optional,
+and the config accepts no approvals or authority selector. Peer derivation
+uses the constructor and clears inherited approvals. `WithNewMessage` keeps
+its existing fresh-identity, provenance and supplied-capability behavior.
+Capability membership alone does not promote authority. Validation removes only
+empty channel/stamp rejection; nonempty message identity and closed authority
+checks remain. Snapshots cannot reconstruct live authority.
+
+Final cohort: 1715 frozen program and architecture inputs remained unchanged
+across 19 serial stages. Eighteen passed; the consumer inventory exited 1 solely
+for the unreferenced default Python parser awaiting approval. Source export has
+251 files; all 251 referenced consumer candidates passed, including the new
+70-case public constructor fixture. Separate native controls cover copied
+inputs/snapshots, zero-value refusal, two managed archive profiles, and actual
+peer goal-create/resume refusal despite workflow capability membership.
+
+Full Go tests, vet and race with atomic coverage passed. Python: 2252 passed,
+28 skipped, 96 warnings and 24 subtests in 90.81s. Invariants, 19 scan guards,
+the goal-authority and cron-authority mutation guards, and diff checks passed.
+All four type audits have zero findings: 465 production files / 1473 named
+types, 1206 public roots, 278 private roots and 172 package variables. Body
+inventory retains 51 packages / 22282 declarations / 130 open observations.
+
+Fresh Darwin statement coverage: application 89.40%
+(33564/37545), all Go 89.15% (33930/38060), Provider 86.67%
+(1522/1756). These are current observed statement totals; this context
+change does not claim causation for Provider coverage movement. Python, native C,
+subprocess interiors, branches and other platforms are outside this metric.
+
+No resource stop occurred. Nice 10, Go concurrency 2 / build parallelism 1,
+serial pytest and a 512MiB Go soft target were used with a 3GiB sampled owned-tree
+budget and host-pressure monitoring. Peak owned RSS was 578960 KiB (565.4 MiB).
+Sampled CPU briefly reached 299.3%; the sustained 250% / 30-second stop threshold
+was not reached. These are sampled controls, not hard process/OS memory caps.
+Historical temporal/platform failures and original P0/P1/G0–G7, broader public,
+default parser, host/performance/release acceptance remain open.
+
+[Validation receipt](docs/audits/go-public-run-context-2026-10-13.json),
+[coverage](docs/audits/go-coverage-public-run-context-2026-10-13.json),
+[iteration image](docs/audits/go-public-run-context-infographic-2026-10-13.png)
+and [exact prompt](docs/audits/go-public-run-context-infographic-2026-10-13.prompt.txt).
+Archify passed 9/9 with no errors/warnings; no new rendered-browser acceptance.
+
+The captured text/capability profiles do not cover arbitrary direct Python
+dataclass overrides, non-text Python objects or every host/platform/exhaustion
+case. Prior temporal/platform failures and full migration acceptance stay open.
+
+README Mermaid and JSON annotate the existing Go Session constructor boundary.
+The 37 components, 55 connections and five boundaries are preserved; there is
+no new permission, trust boundary, dependency or default. The base image stays
+unchanged; the iteration image highlights provenance and peer-approval clearing.
+Generated HTML receives Archify validation separately; rendered-browser
+acceptance is not implied.
+
 ## 2026-10-13 mixed batch output-step admission
 
 Branch `codex/go-batch-step-boundary`, review baseline `fbe8ad4`. Original

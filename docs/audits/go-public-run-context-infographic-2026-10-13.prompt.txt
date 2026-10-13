@@ -1,0 +1,17 @@
+Use case: precise-object-edit / infographic-diagram.
+Edit the supplied mini-loop layered architecture base into a sibling iteration highlight image. Preserve its navy engineering poster style, all five rows, all cards, and correct arrows.
+Keep exact layer titles: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层.
+Preserve all six L4 backend cards, including explicitly registered custom tools, all seven orchestration cards, and all five L5 cards, including operator contractaudit.
+Critical arrows: Session Agent ↔ Model Provider; Session Agent → ToolGate routed ABOVE Model Provider; ToolGate → L4; L4 tool results → Session Agent. There must be NO Provider → ToolGate arrow.
+Only highlight the existing L3 Session Agent 循环 / Context card with an amber border and a small badge 本轮修改. This is a typed caller-context API and provenance correction within the existing component, not a new architecture box.
+Set subtitle to: "2026-10-13 · RunContext 调用上下文 · 迁移验收仍在进行".
+Replace the right explanatory column with title "本轮修改与边界" and the following six numbered notes:
+1 "区分省略字段与显式空文本"
+2 "新增类型化 Peer 调用构造器"
+3 "新消息与派生保留来源关系"
+4 "Peer 始终不具有人类授权"
+5 "70 个 Python Source 对照场景"
+6 "校验串行、低并发、监测内存"
+At the bottom of that column add: "无新增组件，基础图不变；快照不能恢复旧授权。"
+Small footer: "HumanRunConfig 的可选文本改用指针；调用方需迁移。完整迁移验收仍有未完成项。"
+Preserve truthful independent Python and Go framing and explicitly selected optional/custom tool cards. Do not imply full migration completion, broader authority, new durable state, or runtime CPU/memory limits. This iteration image must not replace the base diagram.
