@@ -1,0 +1,17 @@
+Use case: precise-object-edit / infographic-diagram.
+Edit the supplied mini-loop layered architecture base into a sibling iteration highlight image. Preserve its navy engineering poster style, all five rows, all cards and correct arrows.
+Keep exact layer titles: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层.
+Preserve all six L4 backend cards including explicitly registered custom tools, all seven orchestration cards and all five L5 cards including operator contractaudit.
+Critical arrows: Session Agent ↔ Model Provider; Session Agent → ToolGate routed ABOVE Model Provider; ToolGate → L4; L4 tool results → Session Agent. There must be NO Provider → ToolGate arrow.
+Highlight the existing L2 会话资源 / 工具目录 card and existing L3 Session Agent 循环 / Context card with amber borders and a small 本轮修改 badge. Do not add a new architecture component.
+Set subtitle to: "2026-10-13 · 角色能力选择 · 迁移验收仍在进行".
+Replace the right explanatory column with title "本轮修改与边界" and these six numbered notes:
+1 "角色名按 Python 规则归一化"
+2 "İ 与 i 保持独立能力集合"
+3 "重复配置遵循映射覆盖顺序"
+4 "能力去重，空白名称拒绝注册"
+5 "真实子代理验证工具与权限"
+6 "保留只读与委派深度门禁"
+At the bottom of that column add: "无新增组件，基础图不变；模型 task 角色范围保持原样。"
+Small footer: "调用方配置决定能力子集；执行仍经过 ToolGate。测试串行、低并发并监测内存。"
+Preserve truthful independent Python and Go framing and explicitly selected optional/custom tool cards. Do not imply full migration completion, broader authority, new durable state or runtime CPU/memory limits. This iteration image must not replace the base diagram.

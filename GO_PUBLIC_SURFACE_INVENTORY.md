@@ -1,5 +1,71 @@
 # Go public surface inventory
 
+## 2026-10-13 public role profiles and child capability isolation
+
+Branch `codex/go-role-policy-profiles`, review baseline `fabe9bd`. Source capture
+is committed as `0f5c95b`; runtime/Go tests/README/interactive map remain uncommitted.
+Preserve the
+original P0/P1/G0–G7 scope. An actual Source/native probe found the same `İ` role
+selects a read tool in Python but a write tool in Go when an `i` profile follows.
+The retained before logs prove a capability-selection divergence. This slice
+captures 34 public policy selections, seven real fresh child runs and six
+invalid capability registrations from the current Python implementation.
+
+In the pending worktree implementation, role lookup uses the existing Python Unicode strip/lower implementation,
+including dotted-I expansion and contextual final sigma. Ordered profile entries
+first preserve raw mapping keys (last value at first insertion position), then
+resolve normalized key collisions. Empty role/profile capability text is legal;
+capability names are literal and are not lowercased or trimmed. Actual tool
+registration still refuses empty/all-Python-whitespace capabilities. Valid tool
+capabilities form a detached set, preserving first occurrence order in Go.
+Uncategorized tools remain excluded. Unknown roles retain Source diagnostic
+quoting. Child labels use lower on the original role without stripping whitespace.
+
+Model `task` role admission remains closed, Explore runs readonly, every child
+runs with peer authority without inherited human grants, and depth admission
+still precedes construction. No new default, dependency, service or topology.
+Only trusted callers supply custom role profiles. Selection does not bypass the
+ToolGate or widen owner/workspace scope.
+
+Acceptance: **resource-blocked; runtime not merged**. Both cohorts used the same
+1719 frozen inputs and resource limits. The first stopped in ordinary Go tests
+on host memory pressure. After 60 consecutive normal-pressure seconds, one
+resumed cohort passed full ordinary Go and vet, then stopped in race on host
+pressure again. Both task process trees exited; no further heavy retry was run.
+
+Source export passes 252 files. Consumer inspection observes 252 passing roots
+among 253 candidates; only the default Python parser is unreferenced. Focused
+Python passes 15 tests. Four type audits have zero findings (465 production
+files, 1473 named types, 1206 public roots, 278 private roots, 172 variables);
+body inventory retains 51 packages, 22288 declarations and 130 open observations.
+Actual role selection/child assertions pass in the ordinary suite, including
+complete model results separately from observer denied/failed flags. An initial
+new-test inference error and its corrected Source capture remain recorded.
+
+Race, full Python, invariants/scans/selected guards and full acceptance remain
+incomplete. No new coverage is accepted. Last accepted main coverage remains
+application **89.40%**, all Go **89.15%**, Provider **86.67%**, from the previous
+RunContext cohort; these are Darwin statements, not complete migration coverage.
+
+Heavy stages ran serially with nice 10, Go concurrency 2 / build parallelism 1,
+serial pytest, a 512MiB soft Go target and a sampled 3GiB owned-tree RSS budget.
+Across both incomplete cohorts, peak sampled RSS was 590608 KiB (576.8 MiB),
+peak CPU 199.8%, and two host-pressure stops occurred. Sampling is not a hard
+OS cap; host pressure does not identify which process caused system pressure.
+
+[Incomplete validation receipt](docs/audits/go-role-policy-profiles-2026-10-13.json),
+[last accepted coverage](docs/audits/go-coverage-public-run-context-2026-10-13.json),
+[iteration image](docs/audits/go-role-policy-profiles-infographic-2026-10-13.png)
+and [exact prompt](docs/audits/go-role-policy-profiles-infographic-2026-10-13.prompt.txt).
+Archify structural checks pass 9/9; no new rendered-browser acceptance.
+Broader dynamic Python objects/custom mappings/concurrent input mutation,
+historical timing/platform failures and full migration acceptance remain open.
+
+The base image stays unchanged. Pending worktree README/JSON changes annotate
+existing session/catalogue selection; a sibling image highlights L2 tool resources and L3 Session/Context.
+Both incomplete cohorts are retained under
+`var/go-role-policy-profiles-2026-10-13/verified` and `resumed`.
+
 ## Public RunContext constructor follow-up — 2026-10-13
 
 Review baseline `2ca0266`: 70 actual Source `Agent.run` cases compare 14
@@ -327,7 +393,7 @@ backend is the known default CLI gap.
 | `ConciseResponsePolicySettings` | `token_efficiency` | `efficiency.StableResponseSettings` | Rename/composition candidate; semantic review required |
 | `install_token_efficiency_tools` | `token_tools` | `agent.InstallTokenArtifactTool` | Rename/composition candidate; semantic review required |
 | `RoleToolPolicy` | `tool_policy` | `agent.RoleToolPolicy` | Name candidate; semantic review required |
-| `CapabilityRoleToolPolicy` | `tool_policy` | `agent.CapabilityRoleToolPolicy` | Name candidate; semantic review required |
+| `CapabilityRoleToolPolicy` | `tool_policy` | `agent.CapabilityRoleToolPolicy` | 34 public selections, seven actual children and six invalid tool-capability registrations captured; declared text profiles only; ordinary selection/child assertions pass, race/full acceptance resource-blocked |
 | `DefaultRecovery` | `recovery` | `agent.DefaultRecovery` | Name candidate; semantic review required |
 | `DirectRecovery` | `recovery` | `agent.DirectRecovery` | Name candidate; semantic review required |
 | `TaskStore` | `tasks` | `tasks.Store` | Rename/composition candidate; semantic review required |
