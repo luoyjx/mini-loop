@@ -1,5 +1,40 @@
 # Python to Go parity matrix
 
+## 2026-10-13 public namespace and default scope inventory
+
+Audit `4684918`, review baseline `e4c5aff`, branch `codex/go-public-scope-audit`. Original P0/P1/G0–G7
+scope preserved. Current AST/source inventory enumerates157 root Python exports:
+52 name candidates,99 explicit rename/composition candidates and6 names without
+an identified public Go namespace binding. Four are standalone helpers
+(tool_result_budget and three memory helpers); two are public constants. Runtime
+adoption/internal values may exist, so this is not a missing-runtime verdict.
+Exact public caller signatures, owner/effect/callback semantics and constant values
+remain required evidence; declaration matching proves no semantic equivalence.
+
+All12 README default-posture rows and18 curriculum labels covering s01–s20 now
+link actual Source test paths.49 Settings fields all occur in the64-case fixture;
+57 feature definitions/14 registry profiles/8 manager profiles,44 HTTP operations
+across40 paths and3 actual SDK request producers are indexed. Current selected
+Go gates pass31 public/config/feature/authority roots plus5 provider-wire roots;
+Source22 feature/wire tests pass. Initial Source wire capture hit sandbox loopback
+bind refusal; same assertions pass with local listening permitted, with the initial
+error retained. No Source/Go program or fixture change, new dependency or threshold.
+
+Provider scope summary no longer presents the repaired dotted-I pair as pending
+or claims this already-integrated work is unmerged. Historical snapshots retain
+original receipts. Full-feature CLI parser decision, broader IDNA/custom transport,
+129 body observations, historical temporal failures and final public/default/
+platform/performance/release scope remain open. No new full-suite/type/coverage
+or rendered-browser acceptance claim. Previous e4c5aff full gates/coverage retained.
+
+[Public matrix](GO_PUBLIC_SURFACE_INVENTORY.md);
+[machine inventory](docs/audits/go-public-default-inventory-2026-10-13.json);
+[iteration image](docs/audits/go-public-scope-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-public-scope-infographic-2026-10-13.prompt.txt).
+Canonical graph/JSON/base unchanged; regenerated HTML matches its previous bytes,
+Archify9/9 structural checks pass. Built-in imagegen highlights only L1 entrypoints
+and L5 operator contractaudit; all five layers/connections/cards preserved.
+
 ## 2026-10-13 native MCP ordered scalar keys and staged faults
 
 Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
@@ -852,6 +887,16 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-13
 
+Reviewed public/default scope **2026-10-13**, based on runtime `e4c5aff`.
+[Public inventory](GO_PUBLIC_SURFACE_INVENTORY.md) indexes157 exports,12 posture
+rows, s01–s20 labels,49 configuration fields,44 HTTP operations and3 SDK producers.
+Six public names lack an identified Go namespace binding; semantic review of
+all candidates remains distinct from runtime adoption. Selected gates pass;
+full runtime/coverage evidence below retains its previous implementation cohort.
+No runtime/default/dependency change or complete P0/G7 closure claimed.
+
+Previous verified implementation checkpoint:
+
 Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
 required assertions, including original88 differences and added nonfinite roots/
@@ -911,6 +956,7 @@ remain open. No connection, risk, authority, default or new dependency changes.
 | Custom child callback scope | [Eighteen actual Source role/capability/risk profiles](docs/audits/go-extension-subagents-2026-10-13.json) | Typed adapters survive capability pruning; current Session stamps fixed label/depth; peer clears human approvals and Explore remains readonly. Scope grants no permission or quota. Arbitrary mutable Agent/state and wider lifecycle/parallel/remote profiles remain |
 | MCP finite model roots | [Actual Source batch/gate and native SQLite reopen](docs/audits/go-mcp-model-roots-2026-10-13.json) |52 profiles compare preparation before effects, original history and external-risk readonly refusal;4 reopen/owner-restore profiles retain current authority without replay. Explicit MCP arguments stay object-only; nonfinite/non-string-key/wider roots remain |
 | MCP ordered scalar keys | [116 direct/116 journal Source profiles and native SQLite](docs/audits/go-mcp-mapping-native-2026-10-13.json) | Native stages/effects/hashes and original roots now match required profiles; seven reopen/owner-restore cases check event persistence/current authority/no replay. Broader comparison/NaN identity/nonfinite callable object/managed/transport profiles remain |
+| Public namespace/default inventory | [157-export/49-setting/44-operation inventory](GO_PUBLIC_SURFACE_INVENTORY.md) |52 name and99 rename/composition candidates;6 namespaces lack identified bindings, including4 helpers. Candidate names/test paths are not semantic proof. Default parser/IDNA and wider P0/G7 remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Current ordinary/race+atomic gates](docs/audits/go-mcp-mapping-native-2026-10-13.json), raw C and same-subscription queue/control receipts | Current ordinary/vet/race/Python pass in the new implementation cohort; prior memory scaling failure remains retained without a runtime/threshold fix. Prior SQLite/background/native temporal failures and broader reliability remain open; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
 | Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-mcp-mapping-native-2026-10-13.json) | 463 files/1465 named types;1198 public types/278 private roots/172 variables;zero findings in four established gates. Historical body inventory retains139 observations; current inventory reports129 at51 packages/22207 declarations, with no memory_context RawMessage locals. RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |

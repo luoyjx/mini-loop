@@ -5370,5 +5370,7 @@
       "sha256": "fd78a3b981dbc6ef39ff8c1c6600526a7f38931f174508d1b856cefeaa76bd10",
       "bytes": 6745
     }
-  }
+  },
+  "inventory_commit": "4684918265d2f9f6b46ce800d0b303093332f10c",
+  "delivery": "Documentation/inventory only; explicit runtime/namespace/default semantic gaps retained. Local main fast-forward planned after clean-document validation; no remote push."
 }

@@ -570,7 +570,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: based on local main `e4c5aff`, with the public/default
+Runtime review baseline: audit `4684918`, based on local main `e4c5aff`, with the public/default
 scope inventory reviewed.157 Python root exports are indexed with52 name and99
 rename/composition candidates;6 names lack a public Go namespace binding identified,
 including4 standalone helpers. This is lookup inventory, not semantic equivalence.

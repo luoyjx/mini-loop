@@ -1,5 +1,40 @@
 # Go port plan
 
+## 2026-10-13 public namespace and default scope inventory
+
+Audit `4684918`, review baseline `e4c5aff`, branch `codex/go-public-scope-audit`. Original P0/P1/G0–G7
+scope preserved. Current AST/source inventory enumerates157 root Python exports:
+52 name candidates,99 explicit rename/composition candidates and6 names without
+an identified public Go namespace binding. Four are standalone helpers
+(tool_result_budget and three memory helpers); two are public constants. Runtime
+adoption/internal values may exist, so this is not a missing-runtime verdict.
+Exact public caller signatures, owner/effect/callback semantics and constant values
+remain required evidence; declaration matching proves no semantic equivalence.
+
+All12 README default-posture rows and18 curriculum labels covering s01–s20 now
+link actual Source test paths.49 Settings fields all occur in the64-case fixture;
+57 feature definitions/14 registry profiles/8 manager profiles,44 HTTP operations
+across40 paths and3 actual SDK request producers are indexed. Current selected
+Go gates pass31 public/config/feature/authority roots plus5 provider-wire roots;
+Source22 feature/wire tests pass. Initial Source wire capture hit sandbox loopback
+bind refusal; same assertions pass with local listening permitted, with the initial
+error retained. No Source/Go program or fixture change, new dependency or threshold.
+
+Provider scope summary no longer presents the repaired dotted-I pair as pending
+or claims this already-integrated work is unmerged. Historical snapshots retain
+original receipts. Full-feature CLI parser decision, broader IDNA/custom transport,
+129 body observations, historical temporal failures and final public/default/
+platform/performance/release scope remain open. No new full-suite/type/coverage
+or rendered-browser acceptance claim. Previous e4c5aff full gates/coverage retained.
+
+[Public matrix](GO_PUBLIC_SURFACE_INVENTORY.md);
+[machine inventory](docs/audits/go-public-default-inventory-2026-10-13.json);
+[iteration image](docs/audits/go-public-scope-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-public-scope-infographic-2026-10-13.prompt.txt).
+Canonical graph/JSON/base unchanged; regenerated HTML matches its previous bytes,
+Archify9/9 structural checks pass. Built-in imagegen highlights only L1 entrypoints
+and L5 operator contractaudit; all five layers/connections/cards preserved.
+
 ## 2026-10-13 native MCP ordered scalar keys and staged faults
 
 Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
@@ -8130,6 +8165,16 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
+Reviewed public/default scope **2026-10-13**, based on runtime `e4c5aff`.
+[Public inventory](GO_PUBLIC_SURFACE_INVENTORY.md) indexes157 exports,12 posture
+rows, s01–s20 labels,49 configuration fields,44 HTTP operations and3 SDK producers.
+Six public names lack an identified Go namespace binding; semantic review of
+all candidates remains distinct from runtime adoption. Selected gates pass;
+full runtime/coverage evidence below retains its previous implementation cohort.
+No runtime/default/dependency change or complete P0/G7 closure claimed.
+
+Previous verified implementation checkpoint:
+
 Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
 required assertions, including original88 differences and added nonfinite roots/
@@ -8210,7 +8255,7 @@ work-package acceptance.
 
 | Package | Current implementation and evidence | Remaining acceptance |
 | --- | --- | --- |
-| P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
+| P0 | [Current public/default inventory](GO_PUBLIC_SURFACE_INVENTORY.md):157 exports,12 README capability rows/source tests,49 settings,44 HTTP operations,3 SDK generators | Semantic export bindings/signatures and final field/default/consumer/feature scope remain;6 namespace bindings not identified |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
 | G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies129 open boundary observations at51 packages/22207 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
@@ -8219,7 +8264,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes247 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass on current frozen inputs; prior scaling failure remains retained;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes247 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass on current frozen inputs; prior scaling failure remains retained;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Public namespace/default inventory now concrete;157 bindings still need semantic review,6 namespaces lack candidates. Broader type/performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
