@@ -146,6 +146,19 @@ single serializable model rather than a call signature.
 `Agent(...)` calls and fails if one omits `harness=` or passes a seam alongside
 it.
 
+### Go typed Harness composition
+
+The sixteen Source `Harness` fields map to named `RuntimeConfig` and
+`ManagerServices` fields/interfaces. Construct the selected typed values before
+creating a runtime or manager; Go exposes no generic string-keyed
+`resolve`/`derive`. Nil chooses the documented native default, while an explicit
+empty injector slice replaces the default injector set. Actual Source value
+operations and real default/custom-catalogue parent/child consumers are linked
+in the [public contract receipt](docs/audits/go-public-contract-closure-2026-10-14.md).
+A custom immutable catalogue owns its precomposed handler dependencies; setting
+`RuntimeConfig.Spill` does not retarget an executor already captured by a custom
+handler. Default catalogue composition binds the selected spill dependency
+before the fresh child is published.
 
 ---
 

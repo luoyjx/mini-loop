@@ -576,6 +576,10 @@ The real startup consumer compares store presence, effective TTL/capacity limits
 and post-stop closure against all nine existing Source startup fixtures.
 This observation returns no raw content, recovery reference or backend authority;
 expiry timing and capacity-full behavior remain separate store acceptance.
+Actual Source evidence also covers all sixteen public Harness fields, including
+immutable derivation and real default/custom-catalogue parent/child composition.
+Native consumers use named runtime and manager fields; custom catalogues retain
+the executor dependencies explicitly bound by their caller.
 See [the iteration evidence](docs/audits/go-public-contract-closure-2026-10-14.md).
 
 Previous runtime review baseline: local main `da43c18`. That iteration aligns

@@ -1,0 +1,424 @@
+{
+  "cleared_agent_types": {
+    "cache_policy": "DefaultCachePolicy",
+    "compactor": "DefaultCompactor",
+    "hooks": "Hooks",
+    "injectors": "list",
+    "recovery": "DefaultRecovery",
+    "role_tool_policy": "CapabilityRoleToolPolicy",
+    "sandbox": "NullSandbox",
+    "secrets": "NullSecretRegistry",
+    "skills": "SkillLoader",
+    "spill": "NoneType",
+    "stuck_detector": "DefaultStuckDetector",
+    "subagents": "InProcessSubagents",
+    "system_builder": "function",
+    "token_efficiency": "TokenEfficiencyRuntime",
+    "tools": "ToolRegistry",
+    "transport": "DirectTransport"
+  },
+  "construction": [
+    {
+      "bindings": {
+        "cache_policy": true,
+        "compactor": true,
+        "hooks": true,
+        "injectors": true,
+        "recovery": true,
+        "role_tool_policy": true,
+        "sandbox": true,
+        "secrets": true,
+        "skills": true,
+        "spill": true,
+        "stuck_detector": true,
+        "subagents": true,
+        "system_builder": true,
+        "token_efficiency": true,
+        "tools": true,
+        "transport": true
+      },
+      "name": "harness-only"
+    },
+    {
+      "bindings": {
+        "cache_policy": true,
+        "compactor": true,
+        "hooks": true,
+        "injectors": true,
+        "recovery": true,
+        "role_tool_policy": true,
+        "sandbox": true,
+        "secrets": true,
+        "skills": true,
+        "spill": true,
+        "stuck_detector": true,
+        "subagents": true,
+        "system_builder": true,
+        "token_efficiency": true,
+        "tools": true,
+        "transport": true
+      },
+      "name": "explicit-none-inherits"
+    },
+    {
+      "bindings": {
+        "cache_policy": true,
+        "compactor": true,
+        "hooks": true,
+        "injectors": true,
+        "recovery": true,
+        "role_tool_policy": true,
+        "sandbox": true,
+        "secrets": true,
+        "skills": true,
+        "spill": true,
+        "stuck_detector": true,
+        "subagents": true,
+        "system_builder": true,
+        "token_efficiency": true,
+        "tools": true,
+        "transport": true
+      },
+      "name": "explicit-values-win"
+    },
+    {
+      "bindings": {
+        "cache_policy": true,
+        "compactor": true,
+        "hooks": true,
+        "injectors": true,
+        "recovery": true,
+        "role_tool_policy": true,
+        "sandbox": true,
+        "secrets": true,
+        "skills": true,
+        "spill": true,
+        "stuck_detector": true,
+        "subagents": true,
+        "system_builder": true,
+        "token_efficiency": true,
+        "tools": true,
+        "transport": true
+      },
+      "name": "derived-values-win"
+    }
+  ],
+  "default_injectors_empty_tuple": true,
+  "default_none_fields": [
+    "tools",
+    "transport",
+    "hooks",
+    "skills",
+    "system_builder",
+    "compactor",
+    "recovery",
+    "stuck_detector",
+    "cache_policy",
+    "secrets",
+    "sandbox",
+    "spill",
+    "subagents",
+    "token_efficiency",
+    "role_tool_policy"
+  ],
+  "empty_derive_new_value": true,
+  "errors": {
+    "frozen_assignment": {
+      "exception_class": "FrozenInstanceError",
+      "message": "cannot assign to field 'tools'"
+    },
+    "unknown_derive": {
+      "exception_class": "TypeError",
+      "message": "Harness has no field(s): ['a_unknown', 'z_unknown']"
+    },
+    "unknown_resolve_none": {
+      "exception_class": "AttributeError",
+      "message": "'Harness' object has no attribute 'unknown'"
+    }
+  },
+  "explicit_empty_injectors_replace": true,
+  "fields": [
+    "tools",
+    "transport",
+    "hooks",
+    "skills",
+    "system_builder",
+    "compactor",
+    "recovery",
+    "stuck_detector",
+    "cache_policy",
+    "secrets",
+    "sandbox",
+    "spill",
+    "subagents",
+    "token_efficiency",
+    "role_tool_policy",
+    "injectors"
+  ],
+  "producer_sha256": "9ff80c600b481e8de46e4fb917a5b9c2db624c90d9a45b36daa75c8c44640294",
+  "runtime": {
+    "child_depth": 1,
+    "child_dynamic_system": false,
+    "child_fields": {
+      "cache_policy": {
+        "same_identity": true
+      },
+      "compactor": {
+        "same_identity": true
+      },
+      "hooks": {
+        "same_identity": true
+      },
+      "injectors": {
+        "entries_inherited": true,
+        "same_identity": false
+      },
+      "recovery": {
+        "same_identity": true
+      },
+      "role_tool_policy": {
+        "same_identity": true
+      },
+      "sandbox": {
+        "same_identity": true
+      },
+      "secrets": {
+        "same_identity": true
+      },
+      "skills": {
+        "same_identity": true
+      },
+      "spill": {
+        "same_identity": true
+      },
+      "stuck_detector": {
+        "same_identity": true
+      },
+      "subagents": {
+        "same_identity": true
+      },
+      "system_builder": {
+        "same_identity": true
+      },
+      "token_efficiency": {
+        "same_identity": true
+      },
+      "tools": {
+        "expected_names": [
+          "bash"
+        ],
+        "same_identity": false,
+        "selected_names": [
+          "bash"
+        ]
+      },
+      "transport": {
+        "same_identity": true
+      }
+    },
+    "child_output": "harness-ok",
+    "child_system": "You are a general-purpose subagent in $WORKSPACE. Use tools to complete the task, then give a concise final summary. No preamble.",
+    "injector_calls": [
+      "a",
+      "a"
+    ],
+    "injector_child_seen": true,
+    "injector_parent_seen": true,
+    "parent_depth": 0,
+    "parent_history_unchanged_by_child": true,
+    "parent_model_calls": 2,
+    "parent_output": "harness-ok"
+  },
+  "scope": [
+    "Actual root-public Harness; all sixteen dataclass fields, shallow derive, None fallback and explicit values including False.",
+    "Four real Agent construction profiles bind every field. Cleared derive selects Agent defaults; None is not an instruction to disable an inherited seam.",
+    "Actual parent run and default in-process child run use the observed direct transport and injected fake SDK, with no remote model or shell execution.",
+    "Child tools are capability-selected; system is fixed despite retaining the Source builder handle; injector containers are copied and runtime facts remain appended.",
+    "Go uses typed RuntimeConfig and ManagerServices, with Provider/stream policy and BashFactory/sandbox/spill adapters. It has no stringly derive/resolve method or arbitrary object attribute contract.",
+    "This is one sixteen-field finite composition contract, not proof of every tool/backend, workflow worker, Launcher default or future field inheritance."
+  ],
+  "source_sha256": {
+    "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+    "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "mini_loop/harness.py": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+    "mini_loop/subagents.py": "d4dd47a98fd5840e06c0da49b940db34b5ee8b671ccc214886fad3812034d102"
+  },
+  "value_rows": [
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "tools",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "transport",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "hooks",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "skills",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "system_builder",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "compactor",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "recovery",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "stuck_detector",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "cache_policy",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "secrets",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "sandbox",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "spill",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "subagents",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "token_efficiency",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "role_tool_policy",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    },
+    {
+      "derive_none_clears": true,
+      "derive_replaces": true,
+      "explicit_false_wins": true,
+      "explicit_none_inherits": true,
+      "explicit_value_wins": true,
+      "field": "injectors",
+      "omitted_inherits": true,
+      "original_unchanged": true,
+      "untouched_fields_shared": true
+    }
+  ]
+}
