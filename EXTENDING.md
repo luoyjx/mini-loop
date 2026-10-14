@@ -4,6 +4,10 @@ mini-loop is built so you add **your** business on top without editing core
 files. The agent loop never changes; every capability around it is a swappable
 seam you inject at construction time.
 
+Go public composition and observation review: baseline `48fd26d`. The
+[2026-10-14 receipt](docs/audits/go-public-contract-closure-2026-10-14.md)
+records the finite contracts, final gates and row dispositions below.
+
 ```
                          the loop  (agent.py, do not touch)
                               │
@@ -141,6 +145,7 @@ single serializable model rather than a call signature.
 `tests/test_harness.py` enforces it structurally: it AST-scans the package for
 `Agent(...)` calls and fails if one omits `harness=` or passes a seam alongside
 it.
+
 
 ---
 
@@ -3972,6 +3977,29 @@ workspace preparation. Configured metadata is not proof of OS confinement;
 native Seatbelt/default platform selection remain pending.
 The null-store report uses Source's `NullStateStore` marker, because its remote
 auditor checks that exact marker to detect process-local transcripts.
+
+### Go managed raw artifact store status
+
+For a trusted `*agent.ManagedSession` already obtained through the caller's
+existing admission path, inspect the effective masked RAM store without
+obtaining a backend handle:
+
+```go
+status, present := session.RawArtifactStoreStatus()
+if present {
+    fmt.Println(status.Limits.TTLSeconds, status.Closed)
+}
+```
+
+`present == false` means no raw artifact store is selected. A retained closed
+store still returns `true`; `Closed` can be inspected after manager stop.
+`Limits` is detached, including its integer byte caps, so changing the returned
+values cannot reconfigure the live store. This observation exposes no store
+pointer, raw content or recovery references, provides no owner/execution
+authority, and transfers no lifecycle ownership. The nine startup comparisons
+observe TTL/capacity selection and closure; expiry timing and capacity-full
+behavior remain separate store tests. Component observations are not an atomic
+fleet transaction.
 
 ### Go local deployment audit observation
 

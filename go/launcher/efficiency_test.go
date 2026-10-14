@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/big"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -39,6 +40,9 @@ type efficiencyHTTPCase struct {
 	Minimum                                        int
 	Requests                                       []efficiencyHTTPObservation
 	Receipts                                       []agent.OptimizationMetrics
+	StorePresent                                   bool            `json:"store_present"`
+	Limits                                         *[3]json.Number `json:"limits"`
+	StoreClosed                                    bool            `json:"store_closed"`
 }
 type efficiencyHTTPRequest struct {
 	guardianHTTPRequest
@@ -167,8 +171,27 @@ func TestEfficiencyLauncherMatchesSourceHTTP(t *testing.T) {
 				want, _ := json.Marshal(row.Receipts)
 				t.Fatalf("HTTP receipts differ\ngot %s\nwant %s", got, want)
 			}
+			storeStatus, present := managed.RawArtifactStoreStatus()
+			if present != row.StorePresent || (row.Limits != nil) != present {
+				t.Fatalf("effective store presence: native=%t Source=%t", present, row.StorePresent)
+			}
+			if present {
+				ttl, err := row.Limits[0].Float64()
+				maximum, validItem := new(big.Int).SetString(string(row.Limits[1]), 10)
+				total, validTotal := new(big.Int).SetString(string(row.Limits[2]), 10)
+				if err != nil || !validItem || !validTotal {
+					t.Fatal("invalid Source artifact limits")
+				}
+				if storeStatus.Closed || storeStatus.Limits.TTLSeconds != ttl || storeStatus.Limits.MaxArtifactBytes.Cmp(maximum) != 0 || storeStatus.Limits.MaxTotalBytes.Cmp(total) != 0 {
+					t.Fatalf("actual launcher store limits differ: native=%+v Source=%v", storeStatus, row.Limits)
+				}
+			}
 			cancel()
 			stopped(t, done)
+			closedStatus, afterPresent := managed.RawArtifactStoreStatus()
+			if afterPresent != present || (!afterPresent || closedStatus.Closed) != row.StoreClosed {
+				t.Fatalf("actual store shutdown: native=%+v present=%t SourceClosed=%t", closedStatus, afterPresent, row.StoreClosed)
+			}
 			state := app.manager.EfficiencyStatus()
 			if state.Initialize == nil || state.Close == nil || state.InitializeError != nil || state.CloseError != nil {
 				t.Fatalf("manager lifecycle: %+v", state)
