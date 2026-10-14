@@ -1,0 +1,8 @@
+Use case: infographic-diagram. Asset type: repository iteration architecture PNG.
+Edit target: /Users/yanjixiong/github/mini-loop/docs/mini-loop-layered-architecture.png, the complete five-layer mini-loop base diagram shown in context.
+Primary request: create a new iteration image derived from this exact base, preserving its complete L1–L5 architecture, topology, component names, right-hand boundary explanations, dark navy/cyan/gold/violet visual style, landscape layout and readable Chinese typography.
+Keep the existing main title "mini-loop 整体分层架构" and migration-in-progress subtitle. Add a compact iteration heading "本轮：配置空白对齐 · 原始验收清单".
+Highlight ONLY the existing L1 "Launcher / 配置 / 环境" box with a bright cyan outline and a numbered small callout: "① Python strip 对齐" then "U+001C–U+001F · 数字解析仍单独校验". Do not suggest a new component. Explain in a short adjacent annotation "仅空白回退；非空路径保留原值".
+Highlight ONLY the existing L5 rightmost "操作契约审计" box with a violet outline and a numbered callout "② 逐项核对原始验收". Add a brief evidence annotation "配置：64 → 128 个 Source 场景" and "修复前 52 项失败；定向验证已通过".
+In a clearly amber status note, put "完整门禁进行中 · Linux 平台继续验证". Preserve the existing right-column sixth boundary that default full-feature CLI diagnostics and final migration acceptance remain incomplete. No universal parity, coverage percentage or Linux passing claim.
+Do not add or remove layers, services, tools, stores, components or arrows. Do not paint all layers as changed. Retain the ToolGate permission flow and recovery/AST/opt-in boundary wording. Keep a quiet footer: "2026-10-14 · 基于基础图标注本轮变更". No watermark. Opaque background.

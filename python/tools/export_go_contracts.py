@@ -3771,6 +3771,44 @@ def _configuration_contracts(scratch: Path) -> dict:
     ]
     positive = ["MAX_TOKENS","TOKEN_THRESHOLD","MAX_CONCURRENT_LLM","MAX_CONCURRENT_TOOLS","MAX_TURNS","SUBAGENT_MAX_ROUNDS","SUBAGENT_MAX_DEPTH","BASH_TIMEOUT","APPROVAL_TIMEOUT","TEAM_IDLE_POLL","TEAM_IDLE_TIMEOUT","TOKEN_EFFICIENCY_RAW_MIN_BYTES","TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS","TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES","TOKEN_EFFICIENCY_MAX_TOTAL_BYTES","AST_OUTLINE_TIMEOUT","AST_OUTLINE_MAX_OUTPUT_BYTES","WORKFLOW_MAX_CONCURRENT_AGENTS","WORKFLOW_MAX_ROUNDS","WORKFLOW_WALL_TIME_SECONDS"]
     cases.extend((f"nonpositive-{name.lower()}-{v}", {f"MINILOOP_{name}":str(v)}) for name in positive for v in (0,-1))
+    # Preserve the original 64 recipes as a stable prefix. Python str.strip
+    # includes these four information separators, but int/float parse the
+    # original nonempty spelling: stripping before conversion changes meaning.
+    boolean_fields = ("TOKEN_EFFICIENCY_PERSIST_RAW", "AST_OUTLINE_ENABLED",
+                      "TRAJECTORIES", "TRAJECTORY_CAPTURE_CONTENT", "GUARDIAN",
+                      "EXPERIMENTAL_WORKFLOWS")
+    for codepoint in range(0x1c, 0x20):
+        separator = chr(codepoint)
+        padded = lambda value: separator + value + separator
+        pin = "a" * 64
+        cases.extend((f"information-separator-{codepoint:04x}-{name}", env) for name, env in [
+            ("boolean-true", {
+                **{f"MINILOOP_{field}": padded("true") for field in boolean_fields},
+                "MINILOOP_AST_OUTLINE_BINARY": "/operator/ast-outline",
+                "MINILOOP_AST_OUTLINE_SHA256": pin,
+            }),
+            ("boolean-false", {f"MINILOOP_{field}": padded("false") for field in boolean_fields}),
+            ("mode", {"MINILOOP_TOKEN_EFFICIENCY_MODE": padded("enforce")}),
+            ("style", {"MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE": padded("concise")}),
+            ("ast-binary", {"MINILOOP_AST_OUTLINE_ENABLED": "true",
+                            "MINILOOP_AST_OUTLINE_BINARY": padded("/operator/ast-outline"),
+                            "MINILOOP_AST_OUTLINE_SHA256": pin}),
+            ("ast-digest", {"MINILOOP_AST_OUTLINE_ENABLED": "true",
+                            "MINILOOP_AST_OUTLINE_BINARY": "/operator/ast-outline",
+                            "MINILOOP_AST_OUTLINE_SHA256": padded(pin.upper())}),
+            ("decision-mode", {"MINILOOP_DECISIONS": padded("llm")}),
+            ("numeric-defaults", {f"MINILOOP_{field}": separator for field in
+                                  [*positive, "RATE_LIMIT_PER_MINUTE", "WORKFLOW_MAX_AGENTS"]}),
+            ("integer-nonempty-rejected", {"MINILOOP_MAX_TOKENS": padded("123")}),
+            ("float-nonempty-rejected", {"MINILOOP_TEAM_IDLE_POLL": padded("1.25")}),
+            ("decision-model-empty-rejected", {"MINILOOP_DECISION_MODEL": separator}),
+            ("jev-key-empty-rejected", {"MINILOOP_DECISIONS": "jev", "TYPESAFE_API_KEY": separator}),
+            ("path-empty", {"MINILOOP_BINDABLE_ROOTS": separator, "MINILOOP_SPILL_DIR": separator}),
+            ("path-nonempty-literal", {"MINILOOP_BINDABLE_ROOTS": padded("named"),
+                                       "MINILOOP_SPILL_DIR": padded("named")}),
+            ("ast-binary-empty-rejected", {"MINILOOP_AST_OUTLINE_BINARY": separator}),
+            ("ast-digest-empty", {"MINILOOP_AST_OUTLINE_SHA256": separator}),
+        ])
     rows=[]
     cwd=Path.cwd()
     try:

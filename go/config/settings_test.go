@@ -29,10 +29,31 @@ func TestActualPythonSettings(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 64 {
+	if len(fixture.Cases) != 128 {
 		t.Fatalf("source cases: %d", len(fixture.Cases))
 	}
-	for _, row := range fixture.Cases {
+	separatorProfiles := []string{
+		"boolean-true", "boolean-false", "mode", "style", "ast-binary", "ast-digest",
+		"decision-mode", "numeric-defaults", "integer-nonempty-rejected", "float-nonempty-rejected",
+		"decision-model-empty-rejected", "jev-key-empty-rejected", "path-empty", "path-nonempty-literal",
+		"ast-binary-empty-rejected", "ast-digest-empty",
+	}
+	for index, row := range fixture.Cases {
+		if index < 64 {
+			if strings.HasPrefix(row.Name, "information-separator-") {
+				t.Fatal("new profiles replaced an original configuration recipe")
+			}
+		} else {
+			offset := index - 64
+			want := fmt.Sprintf("information-separator-%04x-%s", 0x1c+offset/len(separatorProfiles), separatorProfiles[offset%len(separatorProfiles)])
+			if row.Name != want {
+				t.Fatalf("Source separator inventory row %d = %q, want %q", index, row.Name, want)
+			}
+			wantRejection := strings.HasSuffix(row.Name, "-rejected")
+			if (row.Error != nil) != wantRejection {
+				t.Fatalf("Source separator observation changed for %q: %v", row.Name, row.Error)
+			}
+		}
 		t.Run(row.Name, func(t *testing.T) {
 			directory := t.TempDir()
 			settings, err := Load(row.Env, LoadOptions{Directory: directory})

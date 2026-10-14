@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/workspace"
 	"math"
 	"net/url"
@@ -215,7 +216,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	}
 	integer := func(name string, fallback int) (int, error) {
 		raw := text(name, "")
-		if strings.TrimSpace(raw) == "" {
+		if pytext.Strip(raw) == "" {
 			return fallback, nil
 		}
 		normalized, err := numberText(raw)
@@ -230,7 +231,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	}
 	real := func(name string, fallback float64) (Seconds, error) {
 		raw := text(name, "")
-		if strings.TrimSpace(raw) == "" {
+		if pytext.Strip(raw) == "" {
 			return Seconds(fallback), nil
 		}
 		normalized, err := numberText(raw)
@@ -248,7 +249,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 		if !ok {
 			return fallback, nil
 		}
-		switch strings.ToLower(strings.TrimSpace(raw)) {
+		switch strings.ToLower(pytext.Strip(raw)) {
 		case "1", "true", "yes", "on":
 			return true, nil
 		case "", "0", "false", "no", "off":
@@ -280,8 +281,8 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	if err != nil {
 		return s, err
 	}
-	s.TokenEfficiencyMode = OptimizationMode(strings.ToLower(strings.TrimSpace(text("MINILOOP_TOKEN_EFFICIENCY_MODE", "off"))))
-	s.TokenEfficiencyResponseStyle = ResponseStyle(strings.ToLower(strings.TrimSpace(text("MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "normal"))))
+	s.TokenEfficiencyMode = OptimizationMode(strings.ToLower(pytext.Strip(text("MINILOOP_TOKEN_EFFICIENCY_MODE", "off"))))
+	s.TokenEfficiencyResponseStyle = ResponseStyle(strings.ToLower(pytext.Strip(text("MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "normal"))))
 	s.TokenEfficiencyPersistRaw, err = boolean("MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW", true)
 	if err != nil {
 		return s, err
@@ -306,8 +307,8 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	if err != nil {
 		return s, err
 	}
-	s.ASTOutlineBinary = strings.TrimSpace(text("MINILOOP_AST_OUTLINE_BINARY", "ast-outline"))
-	s.ASTOutlineSHA256 = optional(strings.ToLower(strings.TrimSpace(text("MINILOOP_AST_OUTLINE_SHA256", ""))))
+	s.ASTOutlineBinary = pytext.Strip(text("MINILOOP_AST_OUTLINE_BINARY", "ast-outline"))
+	s.ASTOutlineSHA256 = optional(strings.ToLower(pytext.Strip(text("MINILOOP_AST_OUTLINE_SHA256", ""))))
 	s.ASTOutlineTimeout, err = real("MINILOOP_AST_OUTLINE_TIMEOUT", 10)
 	if err != nil {
 		return s, err
@@ -356,7 +357,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	}
 	s.BindableRoots = []string{}
 	for _, raw := range strings.Split(text("MINILOOP_BINDABLE_ROOTS", ""), string(os.PathListSeparator)) {
-		if strings.TrimSpace(raw) == "" {
+		if pytext.Strip(raw) == "" {
 			continue
 		}
 		value, err := path(raw)
@@ -366,7 +367,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 		s.BindableRoots = append(s.BindableRoots, value)
 	}
 	rawSpillDir := text("MINILOOP_SPILL_DIR", "./var/spill")
-	if strings.TrimSpace(rawSpillDir) != "" {
+	if pytext.Strip(rawSpillDir) != "" {
 		value, err := path(rawSpillDir)
 		if err != nil {
 			return s, err
@@ -435,7 +436,7 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	if err != nil {
 		return s, err
 	}
-	s.DecisionMode = DecisionMode(strings.ToLower(strings.TrimSpace(text("MINILOOP_DECISIONS", "off"))))
+	s.DecisionMode = DecisionMode(strings.ToLower(pytext.Strip(text("MINILOOP_DECISIONS", "off"))))
 	s.DecisionModel = text("MINILOOP_DECISION_MODEL", "jev-latest")
 	s.TypesafeAPIKey = Secret{text("TYPESAFE_API_KEY", "")}
 	s.EnableWorkflows, err = boolean("MINILOOP_EXPERIMENTAL_WORKFLOWS", false)
@@ -464,6 +465,8 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 // Python accepts decimal Unicode digits and underscores between digits. The
 // normalized spelling still goes through integer/float parsers; nothing is guessed.
 func numberText(raw string) (string, error) {
+	// Python numeric constructors reject nonempty text padded with information
+	// separators, although str.strip treats separator-only input as blank.
 	runes := []rune(strings.TrimSpace(raw))
 	for i, r := range runes {
 		for _, entry := range unicode.Nd.R16 {
@@ -524,10 +527,10 @@ func (s Settings) Validate() error {
 	if s.DecisionMode != DecisionsOff && s.DecisionMode != DecisionsLLM && s.DecisionMode != DecisionsJev {
 		return errors.New("decision_mode must be one of: off, llm, jev")
 	}
-	if strings.TrimSpace(s.DecisionModel) == "" {
+	if pytext.Strip(s.DecisionModel) == "" {
 		return errors.New("decision_model must not be empty")
 	}
-	if s.DecisionMode == DecisionsJev && strings.TrimSpace(s.TypesafeAPIKey.Reveal()) == "" {
+	if s.DecisionMode == DecisionsJev && pytext.Strip(s.TypesafeAPIKey.Reveal()) == "" {
 		return errors.New("Jev decisions require TYPESAFE_API_KEY")
 	}
 	if s.TokenEfficiencyMode != OptimizationOff && s.TokenEfficiencyMode != OptimizationShadow && s.TokenEfficiencyMode != OptimizationEnforce {

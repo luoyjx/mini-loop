@@ -570,7 +570,18 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `6ea2fd2`. The stuck-detector iteration
+Current runtime review baseline: `9950878`. Configuration parsing now follows
+Python `str.strip` for U+001C–U+001F in booleans, modes, AST settings, blank
+numeric defaults, blank path selection and decision credential validation.
+Nonempty numeric input still uses the numeric parser's narrower whitespace
+rules; nonempty paths retain their literal spelling. The actual Source corpus
+has 128 settings recipes: the original 64 are unchanged, and the new 64 expose
+52 failures on the previous native implementation. The focused config suite
+passes after this fix; complete gates and the original required-row audit are
+recorded in [this iteration](docs/audits/go-required-row-closure-2026-10-14.md).
+No component, dependency or feature selector is added.
+
+Previous runtime review baseline: `6ea2fd2`. The stuck-detector iteration
 accepts the public Source's six integer threshold fields without blanket
 constructor rejection. An explicit all-zero configuration remains distinct
 from the Go zero-value detector's default policy. Monologue runs first;
@@ -1022,7 +1033,7 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>owned routes / raw query decode / named admission cache<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]

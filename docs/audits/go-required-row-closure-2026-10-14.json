@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "baseline": "995087896e502218fe845ce1639dcb709e831231",
+  "branch": "codex/go-required-row-closure",
+  "status": "finite_configuration_fix_validated",
+  "full_port_acceptance": false,
+  "recorded_utc": "2026-10-14T00:11:05.675067+00:00",
+  "raw_evidence_root": "var/go-required-row-closure-2026-10-14",
+  "source": {
+    "fixture": {
+      "path": "go/testdata/python-configuration.json",
+      "bytes": 138533,
+      "sha256": "2302be7a94aedf7dc53cdacfe7907b12dd3b898ad057a86ffd3150298c4d7687"
+    },
+    "cases": 128,
+    "original_cases": 64,
+    "original_prefix_unchanged": true,
+    "builtin_and_runtime_source_hash_unchanged": true,
+    "new_successes": 44,
+    "new_refusals": 20,
+    "rejection_comparison": "Refusal only, not Python diagnostic class/text."
+  },
+  "before_native": {
+    "baseline_config_sha256_matches": true,
+    "failed_new_subcases": 52,
+    "total_failed_events_including_parent": 53
+  },
+  "stages": {
+    "source-configuration": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "-c",
+        "import sys,tempfile; sys.path.insert(0,\"python\"); from pathlib import Path; from tools.export_go_contracts import _configuration_contracts,_json_bytes; temporary=tempfile.TemporaryDirectory(prefix=\"mini-loop-config-separators-\"); root=Path(temporary.name); body=_json_bytes(_configuration_contracts(root/\"configuration\")); Path(\"go/testdata/python-configuration.json\").write_bytes(body); print(\"configuration captured\",len(body)); temporary.cleanup()"
+      ],
+      "seconds": 1.338,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "frozen_inputs": 506,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/source-configuration/resources.json",
+        "bytes": 3221,
+        "sha256": "098c10179ee8349818152fb7d6cc6729d1cc2305dfc6404910f3e9b649dc2096"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/source-configuration/stdout.log",
+        "bytes": 30,
+        "sha256": "72d3e809c13a5240c1307e42dcb86448d0c7a5821953b146e6a970d869241618"
+      }
+    },
+    "go-before-config": {
+      "status": "failed",
+      "exit_code": 1,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./config",
+        "-run",
+        "^TestActualPythonSettings$"
+      ],
+      "seconds": 2.378,
+      "peak_rss_kib": 25312,
+      "peak_cpu_percent": 4.4,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/go-before-config/resources.json",
+        "bytes": 2739,
+        "sha256": "723a678160d1413b3f1ab597dc598a98f2ea7c482aa2d1c61b729b603dfce660"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/go-before-config/stdout.log",
+        "bytes": 170141,
+        "sha256": "9b084d76a1f3ee4578b6f98d48500d66a23b8eba2fe5f5c9230df1f9045fcd70"
+      },
+      "events": {
+        "sub:pass": 76,
+        "sub:fail": 52,
+        "top:fail": 1,
+        "package:fail": 1
+      }
+    },
+    "go-config-focused": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./config"
+      ],
+      "seconds": 2.384,
+      "peak_rss_kib": 24880,
+      "peak_cpu_percent": 3.6,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/go-config-focused/resources.json",
+        "bytes": 2647,
+        "sha256": "687104d199f76e8e70a5866c5caad6ae177c38e85055650ea4d69c64118ab67d"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/go-config-focused/stdout.log",
+        "bytes": 146901,
+        "sha256": "24392b4a6b7ad177a5882d110f53409b916158432b04fa316c14cb2ebf72f9c8"
+      },
+      "events": {
+        "sub:pass": 151,
+        "top:pass": 11,
+        "package:pass": 1
+      }
+    },
+    "architecture": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "seconds": 1.344,
+      "peak_rss_kib": 224,
+      "peak_cpu_percent": 0.7,
+      "frozen_inputs": 7,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/architecture/resources.json",
+        "bytes": 2912,
+        "sha256": "cc25e0d4b369055f234b5d3978d5b197f35118554928c95836eb9fe93b746519"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/architecture/stdout.log",
+        "bytes": 692,
+        "sha256": "12ad31490eeff55bd7975694c7d08b6f2e9abe0ced0f44af97d1c65a1f392bde"
+      }
+    },
+    "source-export": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "var/go-required-row-closure-2026-10-14/source-manifest.json",
+        "--diagnostics-dir",
+        "var/go-required-row-closure-2026-10-14/source-drift"
+      ],
+      "seconds": 103.176,
+      "peak_rss_kib": 399184,
+      "peak_cpu_percent": 97.8,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/source-export/resources.json",
+        "bytes": 5287,
+        "sha256": "47d88f0d2d89c39c46a839fcbe4f1ac16a42412f89b22c6baabbe3542906c6a4"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/source-export/stdout.log",
+        "bytes": 87014,
+        "sha256": "e8ef2c6b179c483b6eb427263fa18c9e962dc4fdfafcf3e35acdc0acb2c33348"
+      }
+    },
+    "go-full-coverage": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-timeout=300s",
+        "-json",
+        "-covermode=atomic",
+        "-coverprofile=../var/go-required-row-closure-2026-10-14/coverage.out",
+        "./..."
+      ],
+      "seconds": 241.423,
+      "peak_rss_kib": 593952,
+      "peak_cpu_percent": 199.8,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/go-full-coverage/resources.json",
+        "bytes": 17349,
+        "sha256": "dd0d79f33a771316092e0f1ae473a78a5d1c48fa51ac9c037bb9d35cb93a0121"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/go-full-coverage/stdout.log",
+        "bytes": 12566685,
+        "sha256": "870c3e43217b27c3f7f85b1219a644ce5355cfeffec7891be20254e24c438211"
+      },
+      "events": {
+        "top:pass": 1457,
+        "sub:pass": 11733,
+        "package:pass": 51,
+        "top:skip": 6,
+        "sub:skip": 1
+      }
+    },
+    "go-vet": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "seconds": 8.674,
+      "peak_rss_kib": 533968,
+      "peak_cpu_percent": 198.0,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/go-vet/resources.json",
+        "bytes": 2792,
+        "sha256": "5e00f66ab6a2ecfdd6f09bd9765ae608315d7dbe122b81230550c50ee1d070ad"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/go-vet/stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "go-race-full": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-count=1",
+        "-timeout=300s",
+        "-json",
+        "./..."
+      ],
+      "seconds": 453.784,
+      "peak_rss_kib": 544928,
+      "peak_cpu_percent": 194.3,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/go-race-full/resources.json",
+        "bytes": 18749,
+        "sha256": "ebed42d3c9a28e1ea2e0861cd919ba1beb7b25e627a40ac5b069f54f5763b38a"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/go-race-full/stdout.log",
+        "bytes": 12564945,
+        "sha256": "f7df181309c00caeed01830602368ae75b8fb64e4716d048a0ccaf8f18ade6f6"
+      },
+      "events": {
+        "top:pass": 1457,
+        "sub:pass": 11733,
+        "package:pass": 49,
+        "top:skip": 6,
+        "package:skip": 2,
+        "sub:skip": 1
+      }
+    },
+    "python-full": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "seconds": 106.245,
+      "peak_rss_kib": 380672,
+      "peak_cpu_percent": 298.9,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/python-full/resources.json",
+        "bytes": 7664,
+        "sha256": "8bf5bc7ae21b64ca2bb872b3f23dcbf3a9d74f956744d514f1badfd1adb39deb"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/python-full/stdout.log",
+        "bytes": 60258,
+        "sha256": "819e97550dfbbcb0897d55df822f6ff8a478daa2ec4c45ef92cb8eeb01ec564b"
+      }
+    },
+    "invariants": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "seconds": 1.389,
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/invariants/resources.json",
+        "bytes": 2611,
+        "sha256": "018f018beb8f01537163c2855c76ff5025dc95fc6ba926fff4d246376e4fe4ee"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/invariants/stdout.log",
+        "bytes": 62,
+        "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+      }
+    },
+    "scans": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "seconds": 10.73,
+      "peak_rss_kib": 86624,
+      "peak_cpu_percent": 70.4,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/scans/resources.json",
+        "bytes": 3074,
+        "sha256": "a8ac8d38ccf9114520bdcbc365c1ee475387f26594f6921e80d29258b32040b4"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/scans/stdout.log",
+        "bytes": 1663,
+        "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+      }
+    },
+    "coverage-summary": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": [
+        ".venv/bin/python",
+        "var/go-required-row-closure-2026-10-14/summarize-coverage.py"
+      ],
+      "seconds": 1.388,
+      "peak_rss_kib": 192,
+      "peak_cpu_percent": 0,
+      "frozen_inputs": 1795,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "resource_receipt": {
+        "path": "var/go-required-row-closure-2026-10-14/coverage-summary/resources.json",
+        "bytes": 2671,
+        "sha256": "51f25e92a7bfe647d8dc06aceda3952c7bfe1f02e874700593095c1b8426ecb9"
+      },
+      "stdout": {
+        "path": "var/go-required-row-closure-2026-10-14/coverage-summary/stdout.log",
+        "bytes": 582,
+        "sha256": "f5a6e381aab812ae959aee4299b04fadbd27ab753dfa75b8e9fa435c1fb9da67"
+      }
+    }
+  },
+  "complete_gate_input_equality": {
+    "stages": [
+      "source-export",
+      "go-full-coverage",
+      "go-vet",
+      "go-race-full",
+      "python-full",
+      "invariants",
+      "scans",
+      "coverage-summary"
+    ],
+    "files": 1795,
+    "all_equal": true,
+    "input_manifest": {
+      "path": "var/go-required-row-closure-2026-10-14/go-full-coverage/freeze.before.json",
+      "bytes": 192069,
+      "sha256": "b9f9b5fd4383dfcc7a86b47ece4b71c665b8e1f0a4fa19e96ef9e2134da114d6"
+    }
+  },
+  "coverage": {
+    "profile": {
+      "path": "var/go-required-row-closure-2026-10-14/coverage.out",
+      "bytes": 2050640,
+      "sha256": "003e785f573bce159d974e4f4ffe8bccc636b033f556873ad8442bbad6d20cd9"
+    },
+    "rows": 28871,
+    "unique_spans": 26879,
+    "method": "Stream atomic rows, OR coverage across duplicate file/location/statement spans; application excludes /tools/.",
+    "all_go": {
+      "covered": 32759,
+      "statements": 38468,
+      "percent": 85.15909327233024
+    },
+    "application": {
+      "covered": 32393,
+      "statements": 37953,
+      "percent": 85.35030168893105
+    },
+    "provider": {
+      "covered": 1505,
+      "statements": 1827,
+      "percent": 82.37547892720306
+    },
+    "instrumentation": "per-package (no -coverpkg flag)",
+    "prior_measurement": {
+      "receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json",
+      "instrumentation": "all packages: -coverpkg=./...",
+      "application_percent": 89.48699707533001,
+      "comparable": false,
+      "reason": "Different instrumentation scopes; no coverage regression is inferred from the two percentages."
+    }
+  },
+  "validation_summary": {
+    "go_ordinary": {
+      "top:pass": 1457,
+      "sub:pass": 11733,
+      "package:pass": 51,
+      "top:skip": 6,
+      "sub:skip": 1
+    },
+    "go_race": {
+      "top:pass": 1457,
+      "sub:pass": 11733,
+      "package:pass": 49,
+      "top:skip": 6,
+      "package:skip": 2,
+      "sub:skip": 1
+    },
+    "python": "2269 passed,28 skipped,104 warnings,24 subtests;105.22 pytest seconds",
+    "source_exports": 259,
+    "invariants": 77,
+    "scans": 19,
+    "git_diff_check_exit_code": 0
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "df2a6e10fb62d9c51bbf9151a313b3bf74ac5cc809141a6f0d1fedd69eb2c2d3",
+      "bytes": 158235
+    },
+    "artifact": {
+      "sha256": "fe8b737df24c5e4bfc3325f55efd55b56e220a90a31e5a5fb0a9923a6743b199",
+      "bytes": 813013
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "image": {
+    "path": "docs/audits/go-required-row-closure-infographic-2026-10-14.png",
+    "bytes": 1852346,
+    "sha256": "65beb66bf8e7446d060e38d04e2cf7f6dc393b1ab65be5d2518ca89b602c9976"
+  },
+  "image_generation": {
+    "tool": "built-in image_gen",
+    "mode": "edit",
+    "base": {
+      "path": "docs/mini-loop-layered-architecture.png",
+      "bytes": 1793371,
+      "sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba"
+    },
+    "prompt": {
+      "path": "docs/audits/go-required-row-closure-infographic-2026-10-14.prompt.txt",
+      "bytes": 1870,
+      "sha256": "0bc5c22e3f891eff5458fe3d390e6c93d9a7898de3f326d9a164a7f7067d7fd3"
+    },
+    "visual_review": "Generated PNG inspected. No HTML browser visual acceptance claimed.",
+    "topology_changed": false
+  },
+  "limitations": [
+    "Sampled process-tree RSS/CPU are observations, not hard caps or true peaks; fast descendants may escape sampling. GOMEMLIMIT is soft.",
+    "No new dependency, component, feature selector or authority is introduced.",
+    "Full original P0/P1/G0–G7 acceptance remains open.",
+    "Prior four type audits are unchanged-input historical proof; not rerun for this no-new-type fix.",
+    "No git fetch, push or CI refresh.",
+    "Full Linux/race and actual same-platform Source capture are separate unfinished acceptance."
+  ],
+  "evidence_tools": {
+    "run.py": {
+      "path": "var/go-required-row-closure-2026-10-14/run.py",
+      "bytes": 6806,
+      "sha256": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e"
+    },
+    "run-source.py": {
+      "path": "var/go-required-row-closure-2026-10-14/run-source.py",
+      "bytes": 6517,
+      "sha256": "a26075338ee97c1347f5efa10be83a5e8a259dfbe5681de421c184e50d3c2b9f"
+    },
+    "resource_watch.py": {
+      "path": "var/go-required-row-closure-2026-10-14/resource_watch.py",
+      "bytes": 17037,
+      "sha256": "d2112faf728651ad3de4994ef456d4b65d5058447b3df24c43b6dfb1e58165ed"
+    },
+    "summarize-coverage.py": {
+      "path": "var/go-required-row-closure-2026-10-14/summarize-coverage.py",
+      "bytes": 1309,
+      "sha256": "29fde7fc27cf3fa76283bd0d0623488b7d94f4ea0b8844ea81ac94ccb21ef8b4"
+    }
+  }
+}
