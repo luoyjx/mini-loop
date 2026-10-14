@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -80,6 +81,7 @@ func TestManagerFullFeaturesSelectsSourceCataloguesAndOverrides(t *testing.T) {
 }
 
 func TestManagerFullCustomCatalogueOverrideDoesNotRequireNativeBackgroundExecutor(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
 	config := managerTestConfig(t.TempDir(), &FakeProvider{})
 	config.EnableFeatures = true
 	config.Services.Injectors = []MessageInjector{}
@@ -97,12 +99,43 @@ func TestManagerFullCustomCatalogueOverrideDoesNotRequireNativeBackgroundExecuto
 	}
 }
 
+func TestManagerFullFeaturesUsesActualDefaultCPython(t *testing.T) {
+	path := "broken.py"
+	config := managerTestConfig(t.TempDir(), resourceProvider{[]protocol.Block{diagnosticCall("default-diag", &path)}})
+	config.EnableFeatures = true
+	off := false
+	config.Services.MemoryAuto = &off
+	manager := makeManager(t, config)
+	session := createManaged(t, manager, CreateSessionRequest{Owner: "owner"})
+	if err := os.WriteFile(filepath.Join(session.Info().Workspace, path), []byte("answer = 1\nif True\n    pass\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := session.Run(context.Background(), "check syntax"); err != nil {
+		t.Fatal(err)
+	}
+	if output := diagnosticResult(t, session.core, "default-diag"); output != "[scope: "+diagnostics.PythonSyntaxScope+"]\nbroken.py:2 [error] expected ':'" {
+		t.Fatal(output)
+	}
+	if config.Services.DiagnosticsProvider != nil {
+		t.Fatal("default selection mutated caller configuration")
+	}
+	t.Run("explicit-provider-replaces-default", func(t *testing.T) {
+		t.Setenv("PATH", t.TempDir())
+		selected := managerTestConfig(t.TempDir(), &FakeProvider{})
+		selected.EnableFeatures = true
+		selected.Services.DiagnosticsProvider = inventoryDiagnostics{}
+		manager := makeManager(t, selected)
+		createManaged(t, manager, CreateSessionRequest{Owner: "owner"})
+	})
+}
+
 func TestManagerFullFeaturesMissingParserFailsBeforeWorkspaceEffects(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
 	root := filepath.Join(t.TempDir(), "not-created")
 	config := managerTestConfig(root, &FakeProvider{})
 	config.EnableFeatures = true
 	manager, err := NewSessionManager(config)
-	if manager != nil || err == nil || !strings.Contains(err.Error(), "explicit diagnostics provider") {
+	if manager != nil || err == nil || !strings.Contains(err.Error(), "CPython") {
 		t.Fatal(manager, err)
 	}
 	if _, err := os.Stat(root); !os.IsNotExist(err) {
@@ -110,5 +143,23 @@ func TestManagerFullFeaturesMissingParserFailsBeforeWorkspaceEffects(t *testing.
 	}
 	if config.Services.TaskTools || config.Services.TeamTools || config.Services.BackgroundTools {
 		t.Fatal("constructor mutated caller settings")
+	}
+}
+
+func TestManagerFullFeaturesWrongPythonVersionFailsBeforeWorkspaceEffects(t *testing.T) {
+	bin := t.TempDir()
+	wrong := "#!/bin/sh\nprintf '%s' '{\"implementation\":\"cpython\",\"version\":\"3.12.0\",\"kind\":\"ready\",\"class\":\"\",\"line\":0,\"message\":\"\"}'\n"
+	if err := os.WriteFile(filepath.Join(bin, "python3.11"), []byte(wrong), 0700); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", bin)
+	root := filepath.Join(t.TempDir(), "not-created")
+	config := managerTestConfig(root, &FakeProvider{})
+	config.EnableFeatures = true
+	if manager, err := NewSessionManager(config); manager != nil || err == nil || !strings.Contains(err.Error(), "3.11.3") {
+		t.Fatal(manager, err)
+	}
+	if _, err := os.Stat(root); !os.IsNotExist(err) {
+		t.Fatal("wrong-version rejection allocated workspace", err)
 	}
 }

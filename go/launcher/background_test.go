@@ -115,8 +115,9 @@ func TestBackgroundOptionsPreserveComprehensiveFeatureRefusalAndDefault(t *testi
 		t.Fatal("availability loses explicit activation")
 	}
 	settings.EnableFeatures = true
-	if _, err := NewWithOptions(context.Background(), settings, server, nil, Options{BackgroundTools: true}); err == nil || !strings.Contains(err.Error(), "MINILOOP_FEATURES") {
-		t.Fatal("accepted incomplete full feature bundle", err)
+	t.Setenv("PATH", t.TempDir())
+	if _, err := NewWithOptions(context.Background(), settings, server, nil, Options{BackgroundTools: true}); err == nil || !strings.Contains(err.Error(), "CPython") {
+		t.Fatal("accepted full profile without its interpreter", err)
 	}
 	if _, err := os.Stat(settings.WorkspaceRoot); !os.IsNotExist(err) {
 		t.Fatal("unsupported bundle created workspace")

@@ -1,5 +1,48 @@
 # Hardening notes
 
+## 2026-10-15 fixed CPython diagnostics admission and process guards
+
+The user approved external CPython 3.11.3 `ast.parse`. The default full profile
+selects this backend only when no explicit diagnostics provider replaces it;
+custom Manager catalogues remain authoritative. Launcher/deployment audit probe
+the exact implementation/version before constructing resources. Pure inspection
+reports selection without launching a child or proving local availability.
+Wrong or missing interpreters fail without a grammar approximation.
+
+The fixed helper uses `-I -S -B` and an empty environment. Target source is data
+for `ast.parse`, never an imported or executed program or a bytecode artifact.
+Base64 preserves surrogatepass bytes until the parser observes them. Syntax
+line/message and actual non-SyntaxError class/message remain distinct; an empty
+MemoryError message is still a named fault, never a clean result or IO warning.
+The ordinary workspace/tool/gate authority is unchanged.
+
+All parser instances share two child slots. The five-second deadline includes
+queueing; the base64 copy is allocated after acquiring a slot. Source/stdin bounds
+are 3,000,000/4,000,000 bytes, stdout/stderr bounds are 64 KiB/4 KiB, and output
+overflow cancels the operation. The macOS/Linux helper sets CPU soft/hard limits to
+four/five seconds and Linux `RLIMIT_AS` to 512 MiB while preserving lower inherited
+limits. An address-space limit is not a portable RSS measurement. Darwin has no
+equivalent hard RAM cap here; input/concurrency/deadline limits do not establish
+an instantaneous AST RSS ceiling. Owned-process monitoring remains necessary.
+
+macOS/Linux create an owned process group and cancel that group. `Run` joins the
+interpreter and pipe copies before releasing the slot, with a one-second
+`WaitDelay`. Other platforms only terminate the direct child. The fixed helper
+does not fork; an explicit executable/wrapper is trusted operator code and must
+not launch independent background work. This is not an OS sandbox or arbitrary
+wrapper-tree supervisor.
+
+The actual 62 CPython recipes, existing 37 scanner recipes and six injected-provider
+recipes passed the focused diagnostics package gate. Complete integration, full,
+vet, race and current Linux evidence remain pending. IDNA is only an unapplied
+prepared patch: provider/module files were restored and module approval is still
+outstanding. No required-row delta follows; the effective ledger remains 339/0/5.
+The three historical diagnostics notes below are superseded only where they state
+that the default backend or full-feature selection is unavailable; their other
+scanner, authority and caller-lifetime boundaries remain relevant.
+
+See the [current implementation draft](audits/go-idna-parser-implementation-2026-10-15.md).
+
 ## 2026-10-14 SDK text, filesystem argv and team view boundaries
 
 SDK transport observations preserve escaped lone Unicode surrogates in five
@@ -8058,6 +8101,10 @@ tested through an injected typed store; this still does not prove native SQLite.
 
 ### Go migration — explicit language diagnostics provider boundary
 
+> Historical slice note: default-backend/full-profile availability statements in
+> this section are superseded by the 2026-10-15 guard section at the top of this
+> document. The injected-provider authority and lifecycle boundaries remain.
+
 The optional diagnostics input cannot name a provider, owner, session or root.
 Its provider sees an immutable workspace/target selection after explicit-path
 resolution and refusal. Nil configuration does not register the tool. Current
@@ -8077,6 +8124,10 @@ confinement. The Source tree symlink-file observation remains recorded separatel
 
 ### Go migration — diagnostic scan and parser result separation
 
+> Historical slice note: the pending parser-selection statement is superseded by
+> the 2026-10-15 fixed CPython guard section. Scanner fixtures remain separate
+> evidence from actual backend parsing and complete platform validation.
+
 The native Python diagnostic scanner requires a selected parser and rejects an
 invalid/zero SyntaxResult; a parser error cannot become a clean report or a file
 warning. Scope relies on the parser's declared CPython profile. Actual input hashes
@@ -8094,6 +8145,10 @@ phases without returning a successful partial report. Backend/parser selection r
 separate from model input and execution authority.
 
 ### Go migration — diagnostics launcher lifetime
+
+> Historical slice note: explicit-only forwarding, nil/full refusal and pending
+> default selection below are superseded by the 2026-10-15 guard section. Explicit
+> caller-owned providers retain their lifetime and workspace-authority boundaries.
 
 The launcher forwards only an explicitly supplied diagnostics.Provider. Inspection
 reports selection without calling Scope/Diagnose or allocating a workspace. Session

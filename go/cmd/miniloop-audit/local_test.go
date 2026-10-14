@@ -44,7 +44,7 @@ func localSourceCases(t *testing.T) []localSourceCase {
 func TestLocalCommandMatchesActualSourceConstruction(t *testing.T) {
 	matched := 0
 	for _, row := range localSourceCases(t) {
-		if row.Name == "full-features" || row.Fault != nil {
+		if row.Fault != nil {
 			continue
 		}
 		t.Run(row.Name, func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestLocalCommandMatchesActualSourceConstruction(t *testing.T) {
 		})
 		matched++
 	}
-	if matched != 11 {
+	if matched != 12 {
 		t.Fatal("unexpected matched profile count", matched)
 	}
 }
@@ -101,6 +101,9 @@ func TestLocalCommandReportsOperationalFailuresAndPendingBackends(t *testing.T) 
 		env := map[string]string{"MINILOOP_FAKE_LLM": "1", "MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "workspaces")}
 		for key, value := range extra {
 			env[key] = value
+		}
+		if _, full := extra["MINILOOP_FEATURES"]; full {
+			t.Setenv("PATH", t.TempDir())
 		}
 		var out, fault bytes.Buffer
 		if code := executeWithEnvironment(context.Background(), nil, env, &out, &fault); code != 1 || out.Len() != 0 || fault.Len() == 0 {

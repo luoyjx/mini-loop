@@ -4,6 +4,18 @@ mini-loop is built so you add **your** business on top without editing core
 files. The agent loop never changes; every capability around it is a swappable
 seam you inject at construction time.
 
+Current Go diagnostics selection — **2026-10-15**: full features select the
+approved external CPython 3.11.3 `ast.parse` backend when the built-in catalogue
+needs diagnostics and no explicit provider is supplied. Startup checks runtime
+availability before resource construction; inspection is pure. Explicit providers
+replace the default, and custom Manager catalogues retain their authority.
+The [current diagnostics seam](#go-language-diagnostics-providers) supersedes
+older per-slice full-bundle refusal and missing-default-parser statements here.
+The actual 62 parser, 37 scanner and six injected-provider recipes passed the
+focused diagnostics gate; integration/full/vet/race/Linux gates remain pending.
+IDNA is only an unapplied prepared patch with module approval outstanding.
+See the [current delivery draft](docs/audits/go-idna-parser-implementation-2026-10-15.md).
+
 Go SDK observation and filesystem argument review: baseline `a378a2b`.
 The [current finite contract receipt](docs/audits/go-remaining-contract-evidence-2026-10-14.md)
 records actual SDK, HTTP and subprocess recipes and their typed adaptations.
@@ -3387,7 +3399,10 @@ workspace.Files and a resolved caller path. Omitted/null/empty paths select the 
 explicit escaping paths return Source's refusal before any provider callback.
 
 RuntimeConfig.DiagnosticsProvider and ManagerServices.DiagnosticsProvider explicitly
-install the schema/read/parallel tool when nonnil. SelectTools and role policy still
+install the schema/read/parallel tool when nonnil. Full Manager selection with the
+built-in catalogue now supplies the approved CPython backend when this handle is nil;
+an explicit provider replaces it, and a caller-supplied catalogue remains authoritative.
+SelectTools and role policy still
 control its visibility. The optional string input rejects provider/root/session fields
 and malformed JSON types; absent versus null survives canonical identity and masked
 recording. Input construction/accessors detach pointers. The runtime captures the
@@ -3406,15 +3421,42 @@ permissions, result observers, paired transcript and panic recovery remain in us
 launcher.Options.DiagnosticsProvider forwards the caller-owned handle into managed
 sessions. InspectWithOptions reports diagnostics_tools without invoking Scope or
 Diagnose, allocating workspaces or exposing provider data. App shutdown drains its
-sessions but does not close the provider. Nil selection keeps the tool absent; an
-explicit provider does not bypass MINILOOP_FEATURES bundle refusal. Six actual Source
-HTTP/model traces compare catalogues, results and bound root/target observations.
-No default Python syntax backend or CLI selection is installed yet.
-The six Source injected-provider recipes are replayed; the expanded 37 real Python
-file/AST recipes now also record actual parser inputs/results. The selected provider owns its
-scope/work bounds and tree traversal semantics; explicit-target confinement does not
-prove arbitrary provider tree traversal confinement. A regex or another language's
-parser is not evidence of ast.parse parity. No dependency was added.
+sessions but does not close the provider. Without full selection, nil still keeps
+the tool absent. With full selection, Launcher startup and deployment audit resolve
+the default backend before constructing resources; pure inspection does not prove
+the installed interpreter is available. Explicit providers skip this probe.
+Six actual Source injected-provider recipes retain their catalogue, result and
+bound root/target comparisons. The selected provider owns its scope/work bounds
+and tree traversal semantics; explicit-target confinement does not prove arbitrary
+provider tree traversal confinement.
+
+`diagnostics.NewCPythonParser(ctx, executable)` and
+`NewDefaultPythonSyntaxDiagnostics(ctx)` select the approved external CPython
+3.11.3 `ast.parse` backend. An empty executable resolves trusted `python3.11`;
+construction and every response check the exact implementation/version. Missing
+or different runtimes fail, with no approximate parser fallback. The fixed helper
+uses `-I -S -B` and an empty environment; source is parsed as data and is not
+imported, executed or written as bytecode. Base64 retains surrogatepass input.
+Syntax results keep line/message, while actual non-SyntaxError values remain
+named `ParserFault` errors, including a valid empty MemoryError message.
+
+The process budget is shared across instances: two admitted operations, a
+five-second deadline including queue time, 3,000,000 source bytes, 4,000,000
+base64 stdin bytes, 64 KiB stdout and 4 KiB stderr. Encoding occurs after admission.
+The macOS/Linux helper preserves lower inherited limits while setting CPU soft/hard
+limits of four/five seconds and Linux address space to 512 MiB. Linux address
+space is not a cross-platform RSS metric; Darwin has no equivalent hard RAM cap
+here. macOS/Linux cancellation targets the owned process group and joins the
+interpreter and pipe copies before releasing its slot. The fixed helper does not
+fork. An explicit executable/wrapper is trusted operator code and must not start
+independent background work; this is not arbitrary wrapper-tree supervision or
+an OS sandbox.
+
+The actual 62 CPython recipes, 37 scanner recipes and six injected-provider
+recipes passed the focused diagnostics package gate. Complete default-full/CLI/
+HTTP integration and full/vet/race/Linux acceptance remain pending. See the
+[delivery draft](docs/audits/go-idna-parser-implementation-2026-10-15.md) for the
+recorded gate and pending boundaries.
 
 ### Native Python diagnostic file scanning
 
@@ -3441,10 +3483,12 @@ reading and before/after parser callbacks; failures do not become clean output.
 
 Thirty-four valid Source recipes replay their actual parser input hashes/results
 through a test-only parser seam. Three malformed keyword/list inputs remain native
-strict admission refusals. This proves file/read/control-flow behavior without
-claiming a native Python grammar. The user has been asked to select an installed
-Python compiler or fully native parser; no compiler dependency/default is chosen
-before their reply. CLI/default parser selection and full activation remain pending.
+strict admission refusals. These 37 scanner recipes establish file/read/control-flow
+behavior separately from the new real CPython backend's 62 parser recipes. Both
+sets, and the six injected-provider recipes, passed the focused diagnostics gate.
+The backend is an approved fixed external runtime rather than a native Go grammar;
+clean output remains syntax-only. Complete default-full/CLI integration and final
+platform gates remain pending.
 
 ## Go AST configuration and version-output contract
 
@@ -3966,13 +4010,14 @@ observations or remove tool access.
 ### Go Manager full-feature profile
 
 Set `ManagerConfig.EnableFeatures` to publish the Source full registry when
-`ManagerServices.Tools` is nil. Supply `DiagnosticsProvider`; missing default
-parsing fails before workspace or journal effects. Caller catalogues replace
+`ManagerServices.Tools` is nil. An explicit `DiagnosticsProvider` replaces the
+approved CPython 3.11.3 default; a missing or different default interpreter fails
+before workspace or journal effects. Caller catalogues replace
 the automatic registry, while explicit independent options keep their meaning.
 Nil injectors enable full-profile background/team lifecycle binding even for
 custom catalogues; explicit lists replace those notifications. Workflow/AST/
-decision options remain independent. This Manager API does not enable the
-Launcher/CLI environment switch or install a default parser.
+decision options remain independent. Launcher/CLI full selection now resolves the
+same default backend; complete integration and final platform gates are pending.
 
 ### Go Launcher full feature availability
 

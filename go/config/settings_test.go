@@ -152,6 +152,10 @@ func TestUnsupportedActivationAndNetworkSettings(t *testing.T) {
 	if len(defaults.Unsupported()) != 0 || defaults.RequireSupported() != nil {
 		t.Fatal(defaults.Unsupported())
 	}
+	full, err := Load(map[string]string{"MINILOOP_FEATURES": "1"}, LoadOptions{Directory: t.TempDir()})
+	if err != nil || !full.EnableFeatures || len(full.Unsupported()) != 0 || full.RequireSupported() != nil {
+		t.Fatal("approved default full profile remains unsupported", full.Unsupported(), err)
+	}
 	supported, err := Load(map[string]string{"MINILOOP_TRAJECTORIES": "0", "MINILOOP_SPILL_DIR": ""}, LoadOptions{Directory: t.TempDir()})
 	if err != nil || supported.RequireSupported() != nil {
 		t.Fatal(err, supported.Unsupported())

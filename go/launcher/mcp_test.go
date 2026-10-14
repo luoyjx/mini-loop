@@ -323,8 +323,9 @@ func TestMCPLauncherInspectionStaysPureAndFullBundleUnsupported(t *testing.T) {
 		t.Fatal("inspect allocated workspace")
 	}
 	settings.EnableFeatures = true
-	if _, err := NewWithOptions(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil, options); err == nil || !strings.Contains(err.Error(), "MINILOOP_FEATURES") {
-		t.Fatal("MCP flag bypassed full bundle refusal", err)
+	t.Setenv("PATH", t.TempDir())
+	if _, err := NewWithOptions(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil, options); err == nil || !strings.Contains(err.Error(), "CPython") {
+		t.Fatal("MCP flag bypassed missing interpreter refusal", err)
 	}
 	if factoryCalls.Load() != 0 {
 		t.Fatal("unsupported startup invoked factory")

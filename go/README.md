@@ -1,5 +1,29 @@
 # Go implementation
 
+## Current full-profile status — 2026-10-15
+
+The approved default Python syntax backend now uses external **CPython 3.11.3
+`ast.parse`**. Full features remain opt-in. With `MINILOOP_FEATURES=all`, the
+Launcher selects this backend when no `DiagnosticsProvider` is supplied and
+checks the interpreter before constructing resources. Missing or different
+runtimes fail startup. An explicit provider replaces the default without an
+interpreter probe; a caller-owned Manager tool catalogue remains authoritative.
+Inspection reports selection without starting a parser process.
+
+This section supersedes older per-slice statements below that comprehensive
+`MINILOOP_FEATURES` is unsupported or that the default syntax backend is absent.
+The focused diagnostics package passed the actual 62 CPython recipes, the
+existing 37 scanner recipes and six injected-provider recipes. Default
+Manager/full HTTP and CLI integration are covered by focused tests. The
+iteration evidence linked below records the final full/vet/race and Linux gates;
+focused results alone do not establish whole-port acceptance.
+
+IDNA is retained only as an **unapplied prepared patch**, pending explicit
+approval of `x/net v0.43.0` and `x/text v0.28.0`. The provider implementation and
+module files have been restored; neither dependency has been adopted or
+downloaded. The remaining required-row ledger is recorded with the final evidence. See the
+[current implementation and evidence boundary](../docs/audits/go-idna-parser-implementation-2026-10-15.md).
+
 This directory is the independent Go port of the Python runtime in `../python/`.
 It is under construction. The httpapi package provides an embeddable HTTP/SSE
 handler; `cmd/miniloop` now provides standalone HTTP startup and signal shutdown.
@@ -1277,7 +1301,8 @@ Select `RuntimeConfig.PlanModeTools`, `ManagerServices.PlanModeTools`,
 `launcher.Options.PlanModeTools` or `cmd/miniloop --plan-mode-tools`. This adds
 `enter_plan_mode` and `exit_plan_mode` with named `ExitPlanModeInput{Plan}`.
 Both stay in the fitted catalog while off; both are exclusive read-risk tools.
-The default tool set stays ten. Full feature activation remains unsupported.
+The default tool set stays ten. Full feature activation is opt-in and requires
+the fixed CPython backend or an explicitly supplied diagnostics provider.
 
 Entry sets the active boolean and emits `plan_mode` even when already active.
 Exit requires active planning and full Markdown beginning with `#` after Python

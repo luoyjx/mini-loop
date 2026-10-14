@@ -265,6 +265,8 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
+The Go runtime assembly includes an explicitly marked external CPython parser;
+that process is a selected dependency and does not represent a native Go grammar.
 
 Go custom tools can explicitly bind a concrete `ExtensionInput`,
 `ExtensionInputCodec[T]` and `ExtensionToolHandler[T]` with
@@ -335,13 +337,15 @@ exhaustion, broader side effects and full memory acceptance remain open.
 Go built-in feature catalogues publish tools in Python registry order, including
 independently selected decisions, workflows and AST additions. Caller-supplied
 catalogues keep their order; capability filtering retains the selected subsequence.
-`ManagerConfig.EnableFeatures` selects all 48 Source tools when an explicit
-diagnostics provider is available. Custom catalogues retain their inventory;
+`ManagerConfig.EnableFeatures` selects all 48 Source tools using the fixed
+CPython 3.11.3 diagnostics backend unless a provider is explicitly supplied.
+Custom catalogues retain their inventory;
 full-profile lifecycle binding still supports default background/team notices.
 Independently selected workflow/AST/decision additions retain Source order. The full
-`MINILOOP_FEATURES` is accepted by `Launcher.NewWithOptions` when the caller
-supplies a diagnostics provider. Default CLI startup still refuses this setting
-pending a default Python syntax backend. Explicit injector lists (including empty lists) replace default
+`MINILOOP_FEATURES` is accepted by the launcher and CLI when the fixed interpreter
+is available, or by embedding callers that supply a diagnostics provider. A missing
+or wrong-version default interpreter fails before resource construction.
+Explicit injector lists (including empty lists) replace default
 background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
 Go `/healthz.features` reports deployment `EnableFeatures`, including caller-backed
@@ -412,7 +416,7 @@ point does not activate the workflow environment setting; explicit SDK workflow
 options remain available. Construction may create workspace/shared-resource
 roots; serving still refuses unauthenticated public binds, while local audit
 reports that configuration. From `go/`: `go run ./cmd/miniloop-audit`.
-Full CLI features still require the pending default diagnostics backend.
+Full CLI features use the fixed CPython backend and verify it before construction.
 Native providers now allow an absent API key during construction/inspection,
 report `<absent>` and refuse model requests before HTTP or retries. Non-streaming
 token-ceiling checks retain Source priority over missing authentication. The
@@ -570,7 +574,20 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `e9b6390`. The original P0/P1/G0–G7
+Current runtime review baseline: `30ccaff` plus this CPython slice. The Go full-feature profile
+now selects a fixed external CPython 3.11.3 `ast.parse` diagnostics backend when
+no explicit provider replaces it. The parser receives decoded source over stdin,
+uses isolated interpreter startup, never executes that source, and has two shared
+process slots, bounded input/output and cancellation. Missing or mismatched Python
+fails before launcher/audit resources are created. The real 62-case parser suite
+and default Manager/HTTP/CLI integration checks pass. Current host full Go, vet,
+race, exact Python suite, Source contracts and four type audits also pass; current
+Linux validation and the final required-row delta are pending.
+The IDNA algorithm, fixed Source property tables and unchanged 84-case consumer
+are preserved as a prepared patch pending explicit module approval; they are not
+adopted runtime behavior. See [this iteration](docs/audits/go-idna-parser-implementation-2026-10-15.md).
+
+Previous runtime review baseline: local main `e9b6390`. The original P0/P1/G0–G7
 criteria have been reconciled against current implementation and the 24-gate
 host/Linux receipt. Native persistence/restart evidence now has a seven-group
 recipe ledger, with matching 25 top-level and 49 subtest pass names in all four
@@ -976,7 +993,7 @@ and actual HTTP/model replay, plus diagnostics HTTP Source contracts,
 native diagnostic file scanning and
 closed parser results, plus diagnostics parser-boundary Source observations
 and explicit typed diagnostics provider/tool
-composition (default Python syntax backend pending), managed stored-request reconstruction
+composition with the fixed CPython 3.11.3 default syntax backend, managed stored-request reconstruction
 and typed historical request reconstruction
 and independent transcript-search launcher/CLI
 selection and actual Source runtime replay, plus explicit session-bound transcript_search
@@ -1088,12 +1105,12 @@ flowchart LR
         Trace["Events · trajectory JSONL · trace viewer<br/>audit · problems · runtime posture"]
     end
 
-    subgraph GoPort["Independent Go port · in progress<br/>operator type gates: syntax / public / private / variables · no runtime grants"]
+    subgraph GoPort["Go runtime assembly · independent Go code + explicit external parser · in progress<br/>operator type gates: syntax / public / private / variables · no runtime grants"]
         GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET / injection / idle turns"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>streamed artifact content ID · shared process identity<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>streamed artifact content ID · shared process identity<br/>full profile: fixed CPython diagnostics or explicit provider · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
         GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>Cron ordered field-level 422 before owner lookup<br/>owned team view / non-consuming peek / opaque internal errors<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
@@ -1125,7 +1142,8 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
         GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>literal capability subset · duplicates collapse · blank names refused<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>Session-stamped informational label / depth<br/>callback panic diagnostics: type only"]
         GoBash["Workspace shell.Executor<br/>selected sandbox argv → filesystem codec → process launch<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · CPython 3.11.3 ast.parse<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
+        GoPythonParser["External CPython 3.11.3<br/>isolated ast.parse child · source stdin only<br/>no source execution · bounded process lifetime"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1178,6 +1196,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|prepare all call inputs, then parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
+        GoFiles -. default syntax provider: source stdin / typed result .-> GoPythonParser
         GoManager -. owner / admission / lease / preview + commit .-> GoDraftLibrary
         GoSession -. standalone non-live preview .-> GoDraftLibrary
         GoSession -. caller JSON admission / owner memory .-> GoFiles
@@ -3333,7 +3352,7 @@ kills and joins those groups before settling the same error text, preserving its
 resource-ownership boundary. NaN uses the unguarded Source profile's immediate timeout. An outer Python
 watchdog changes that profile to completion; exact timer-heap parity is not claimed. Native direct/SSE and SQLite message close/reopen preserve all 48 option inputs.
 The 48 captured SDK and managed optional profiles are checked separately below;
-broader SDK consumers, full-state recovery and default diagnostics remain open.
+broader SDK consumers and full-state recovery remain open.
 
 The captured SDK forwarding path rejects nonfinite request observations before
 credential fetch or HTTP. Go direct and streaming adapters classify this as

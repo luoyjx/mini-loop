@@ -230,7 +230,8 @@ func TestGuardianInspectionDoesNotAllocateAndDefaultRemainsOff(t *testing.T) {
 		t.Fatal("inspection allocated workspace", err)
 	}
 	settings.EnableFeatures = true
-	if _, err := New(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil); err == nil || !strings.Contains(err.Error(), "MINILOOP_FEATURES") {
-		t.Fatal("Guardian bypassed unsupported bundle refusal", err)
+	t.Setenv("PATH", t.TempDir())
+	if _, err := New(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil); err == nil || !strings.Contains(err.Error(), "CPython") {
+		t.Fatal("Guardian bypassed missing interpreter refusal", err)
 	}
 }

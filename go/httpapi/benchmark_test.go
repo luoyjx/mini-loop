@@ -152,12 +152,15 @@ func TestBenchmarkPrivateConfigurationFailure(t *testing.T) {
 	if w.Code != 500 || strings.Contains(w.Body.String(), "private-invalid-value") {
 		t.Fatal("configuration failure leaked")
 	}
-	t.Setenv("MINILOOP_MAX_TURNS", "50")
+}
+
+func TestBenchmarkFullEnvironmentKeepsSourceFakeProfiles(t *testing.T) {
+	// Source benchmark.run_arm constructs SessionManager(settings, client)
+	// without enable_features. Replay the existing five captured reports with
+	// this additional native environment control; it is not a new Source capture.
 	t.Setenv("MINILOOP_FEATURES", "all")
-	w = request(s, "POST", "/benchmark", "", "")
-	if w.Code != 500 {
-		t.Fatal("unsupported activation silently ignored")
-	}
+	t.Setenv("PATH", t.TempDir())
+	compareBenchmarkSource(t, "python-benchmark-http.json", 5)
 }
 
 func TestBenchmarkRecordingProjection(t *testing.T) {

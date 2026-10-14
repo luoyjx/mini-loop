@@ -74,8 +74,8 @@ type RuntimeConfig struct {
 	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
 	ASTConfig *astcontext.Config
-	// A nonnil provider explicitly installs diagnostics. The default Python
-	// syntax backend is not yet implemented; nil leaves the tool unregistered.
+	// A nonnil provider explicitly installs diagnostics. Full Manager/Launcher
+	// profiles select CPython when absent; a bare runtime nil leaves it unregistered.
 	DiagnosticsProvider diagnostics.Provider
 	// TokenArtifactTools explicitly installs recovery only; caller owns store lifetime.
 	TokenArtifactTools bool

@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4580,7 +4580,7 @@
         <text x="1768" y="538" class="t-security" font-size="9" font-weight="600">Guarded host effects</text>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" x="288" y="844" width="1954" height="792" rx="12" class="c-region" stroke-width="1"/>
-        <text x="296" y="862" class="t-cloud" font-size="9" font-weight="600">Independent Go port - in progress</text>
+        <text x="296" y="862" class="t-cloud" font-size="9" font-weight="600">Go runtime assembly · explicit external parser</text>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" x="306" y="776" width="378" height="120" rx="12" class="c-region" stroke-width="1"/>
         <text x="314" y="794" class="t-cloud" font-size="9" font-weight="600">Go startup / HTTP admission</text>
@@ -4642,6 +4642,7 @@
         <path data-edge-from="goContractInputs" data-edge-to="goContractAudit" data-edge-key="53" data-edge-id="goContractRead" data-composition-points="650,1858;990,1858" d="M 650 1858 L 990 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goContractAudit" data-edge-to="goContractEvidence" data-edge-key="54" data-edge-id="goContractRecord" data-composition-points="1310,1858;1650,1858" d="M 1310 1858 L 1650 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goSession" data-edge-label="permission events" data-edge-key="55" data-edge-id="goPermissionEvents" data-composition-points="1370,1218;1180,1218" d="M 1370 1218 L 1180 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goFiles" data-edge-to="goPythonParser" data-edge-key="56" data-edge-id="goDefaultPythonSyntax" data-composition-points="2060,1436;2060,1460" d="M 2060 1436 L 2060 1460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4817,8 +4818,8 @@
         <text data-detail="fine" x="2220" y="608" class="t-external" font-size="7" text-anchor="middle">off by default</text>
         </g>
 
-        <g id="node-goFake" data-node-id="goFake" data-node-label="Go model providers" tabindex="0" role="button" aria-label="Focus Go model providers, SDK paths / owned wire transport, Independent Go port - in progress" aria-pressed="false" data-node-kind="external" data-node-sublabel="SDK paths / owned wire transport" data-node-context="Independent Go port - in progress">
-          <title>Go model providers · SDK paths / owned wire transport · Independent Go port - in progress</title>
+        <g id="node-goFake" data-node-id="goFake" data-node-label="Go model providers" tabindex="0" role="button" aria-label="Focus Go model providers, SDK paths / owned wire transport, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="external" data-node-sublabel="SDK paths / owned wire transport" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go model providers · SDK paths / owned wire transport · Go runtime assembly · explicit external parser</title>
           <rect x="330" y="1180" width="220" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="1180" width="220" height="76" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(336 1186) scale(0.6875)">
@@ -4829,8 +4830,8 @@
         <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">SDK paths / owned wire transport</text>
         </g>
 
-        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session / managed handle" tabindex="0" role="button" aria-label="Focus Go Session / managed handle, Python role text → exact capability subset, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Python role text → exact capability subset" data-node-tag="raw child label / readonly Explore" data-node-context="Independent Go port - in progress">
-          <title>Go Session / managed handle · Python role text → exact capability subset · Independent Go port - in progress · raw child label / readonly Explore</title>
+        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session / managed handle" tabindex="0" role="button" aria-label="Focus Go Session / managed handle, Python role text → exact capability subset, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Python role text → exact capability subset" data-node-tag="raw child label / readonly Explore" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Session / managed handle · Python role text → exact capability subset · Go runtime assembly · explicit external parser · raw child label / readonly Explore</title>
           <rect x="850" y="1180" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="1180" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1186) scale(0.6875)">
@@ -4841,8 +4842,8 @@
         <text data-detail="fine" x="1015" y="1248" class="t-backend" font-size="7" text-anchor="middle">raw child label / readonly Explore</text>
         </g>
 
-        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, Literal capabilities; empty names refused, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="Literal capabilities; empty names refused" data-node-tag="deduped capabilities / same gate" data-node-context="Independent Go port - in progress">
-          <title>Go ToolGate · Literal capabilities; empty names refused · Independent Go port - in progress · deduped capabilities / same gate</title>
+        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, Literal capabilities; empty names refused, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="security" data-node-sublabel="Literal capabilities; empty names refused" data-node-tag="deduped capabilities / same gate" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go ToolGate · Literal capabilities; empty names refused · Go runtime assembly · explicit external parser · deduped capabilities / same gate</title>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1376 1186) scale(0.6875)">
@@ -4854,8 +4855,8 @@
         <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">deduped capabilities / same gate</text>
         </g>
 
-        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, foreground / background · opt-in Seatbelt, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="foreground / background · opt-in Seatbelt" data-node-tag="default host / explicit confinement" data-node-context="Independent Go port - in progress">
-          <title>Workspace shell.Executor · foreground / background · opt-in Seatbelt · Independent Go port - in progress · default host / explicit confinement</title>
+        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, foreground / background · opt-in Seatbelt, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="foreground / background · opt-in Seatbelt" data-node-tag="default host / explicit confinement" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Workspace shell.Executor · foreground / background · opt-in Seatbelt · Go runtime assembly · explicit external parser · default host / explicit confinement</title>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 1186) scale(0.6875)">
@@ -4866,20 +4867,20 @@
         <text data-detail="fine" x="2060" y="1248" class="t-backend" font-size="7" text-anchor="middle">default host / explicit confinement</text>
         </g>
 
-        <g id="node-goFiles" data-node-id="goFiles" data-node-label="Filesystem libraries" tabindex="0" role="button" aria-label="Focus Filesystem libraries, files / typed AST model tools, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="files / typed AST model tools" data-node-tag="AST: pinned environment / default off" data-node-context="Independent Go port - in progress">
-          <title>Filesystem libraries · files / typed AST model tools · Independent Go port - in progress · AST: pinned environment / default off</title>
+        <g id="node-goFiles" data-node-id="goFiles" data-node-label="Filesystem libraries" tabindex="0" role="button" aria-label="Focus Filesystem libraries, files / typed AST / diagnostics, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="files / typed AST / diagnostics" data-node-tag="AST optional · full diagnostics" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Filesystem libraries · files / typed AST / diagnostics · Go runtime assembly · explicit external parser · AST optional · full diagnostics</title>
           <rect x="1920" y="1360" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="1360" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 1366) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="2060" y="1396" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Filesystem libraries</text>
-        <text data-detail="context" x="2060" y="1412" class="t-muted" font-size="9" text-anchor="middle">files / typed AST model tools</text>
-        <text data-detail="fine" x="2060" y="1428" class="t-backend" font-size="7" text-anchor="middle">AST: pinned environment / default off</text>
+        <text data-detail="context" x="2060" y="1412" class="t-muted" font-size="9" text-anchor="middle">files / typed AST / diagnostics</text>
+        <text data-detail="fine" x="2060" y="1428" class="t-backend" font-size="7" text-anchor="middle">AST optional · full diagnostics</text>
         </g>
 
-        <g id="node-goResources" data-node-id="goResources" data-node-label="Session Resources" tabindex="0" role="button" aria-label="Focus Session Resources, Optional workflow / team / goal / recovery; bound Todo / skill / task, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Optional workflow / team / goal / recovery; bound Todo / skill / task" data-node-tag="optional masked RAM recovery" data-node-context="Independent Go port - in progress">
-          <title>Session Resources · Optional workflow / team / goal / recovery; bound Todo / skill / task · Independent Go port - in progress · optional masked RAM recovery</title>
+        <g id="node-goResources" data-node-id="goResources" data-node-label="Session Resources" tabindex="0" role="button" aria-label="Focus Session Resources, Optional workflow / team / goal / recovery; bound Todo / skill / task, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Optional workflow / team / goal / recovery; bound Todo / skill / task" data-node-tag="optional masked RAM recovery" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Session Resources · Optional workflow / team / goal / recovery; bound Todo / skill / task · Go runtime assembly · explicit external parser · optional masked RAM recovery</title>
           <rect x="1920" y="1540" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="1540" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 1546) scale(0.6875)">
@@ -4890,8 +4891,8 @@
         <text data-detail="fine" x="2060" y="1608" class="t-backend" font-size="7" text-anchor="middle">optional masked RAM recovery</text>
         </g>
 
-        <g id="node-goContext" data-node-id="goContext" data-node-label="Go Context Pipeline" tabindex="0" role="button" aria-label="Focus Go Context Pipeline, public helpers / schemas / memory / cache / plan, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="public helpers / schemas / memory / cache / plan" data-node-tag="raw UTF-8 before spill / step hash effects" data-node-context="Independent Go port - in progress">
-          <title>Go Context Pipeline · public helpers / schemas / memory / cache / plan · Independent Go port - in progress · raw UTF-8 before spill / step hash effects</title>
+        <g id="node-goContext" data-node-id="goContext" data-node-label="Go Context Pipeline" tabindex="0" role="button" aria-label="Focus Go Context Pipeline, public helpers / schemas / memory / cache / plan, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="public helpers / schemas / memory / cache / plan" data-node-tag="raw UTF-8 before spill / step hash effects" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Context Pipeline · public helpers / schemas / memory / cache / plan · Go runtime assembly · explicit external parser · raw UTF-8 before spill / step hash effects</title>
           <rect x="850" y="1360" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="1360" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1366) scale(0.6875)">
@@ -4902,8 +4903,8 @@
         <text data-detail="fine" x="1015" y="1428" class="t-backend" font-size="7" text-anchor="middle">raw UTF-8 before spill / step hash effects</text>
         </g>
 
-        <g id="node-goActions" data-node-id="goActions" data-node-label="Go Replay / State" tabindex="0" role="button" aria-label="Focus Go Replay / State, sessions / epochs / audit / leases, Independent Go port - in progress" aria-pressed="false" data-node-kind="database" data-node-sublabel="sessions / epochs / audit / leases" data-node-tag="optional / caller-owned" data-node-context="Independent Go port - in progress">
-          <title>Go Replay / State · sessions / epochs / audit / leases · Independent Go port - in progress · optional / caller-owned</title>
+        <g id="node-goActions" data-node-id="goActions" data-node-label="Go Replay / State" tabindex="0" role="button" aria-label="Focus Go Replay / State, sessions / epochs / audit / leases, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="database" data-node-sublabel="sessions / epochs / audit / leases" data-node-tag="optional / caller-owned" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Replay / State · sessions / epochs / audit / leases · Go runtime assembly · explicit external parser · optional / caller-owned</title>
           <rect x="1370" y="1360" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1360" width="280" height="76" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1376 1366) scale(0.6875)">
@@ -4915,8 +4916,8 @@
         <text data-detail="fine" x="1510" y="1428" class="t-database" font-size="7" text-anchor="middle">optional / caller-owned</text>
         </g>
 
-        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Fresh Child Sessions" tabindex="0" role="button" aria-label="Focus Go Fresh Child Sessions, task roles / readonly auditors, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="task roles / readonly auditors" data-node-tag="tasks: depth 2 / review: per action" data-node-context="Independent Go port - in progress">
-          <title>Go Fresh Child Sessions · task roles / readonly auditors · Independent Go port - in progress · tasks: depth 2 / review: per action</title>
+        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Fresh Child Sessions" tabindex="0" role="button" aria-label="Focus Go Fresh Child Sessions, task roles / readonly auditors, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="task roles / readonly auditors" data-node-tag="tasks: depth 2 / review: per action" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Fresh Child Sessions · task roles / readonly auditors · Go runtime assembly · explicit external parser · tasks: depth 2 / review: per action</title>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 1546) scale(0.6875)">
@@ -4927,8 +4928,8 @@
         <text data-detail="fine" x="1535" y="1608" class="t-backend" font-size="7" text-anchor="middle">tasks: depth 2 / review: per action</text>
         </g>
 
-        <g id="node-goSecrets" data-node-id="goSecrets" data-node-label="Go Secret Registry" tabindex="0" role="button" aria-label="Focus Go Secret Registry, cached values / masked copies, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="cached values / masked copies" data-node-tag="optional deployment binding" data-node-context="Independent Go port - in progress">
-          <title>Go Secret Registry · cached values / masked copies · Independent Go port - in progress · optional deployment binding</title>
+        <g id="node-goSecrets" data-node-id="goSecrets" data-node-label="Go Secret Registry" tabindex="0" role="button" aria-label="Focus Go Secret Registry, cached values / masked copies, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="security" data-node-sublabel="cached values / masked copies" data-node-tag="optional deployment binding" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Secret Registry · cached values / masked copies · Go runtime assembly · explicit external parser · optional deployment binding</title>
           <rect x="330" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="980" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(336 986) scale(0.6875)">
@@ -4940,8 +4941,8 @@
         <text data-detail="fine" x="470" y="1048" class="t-security" font-size="7" text-anchor="middle">optional deployment binding</text>
         </g>
 
-        <g id="node-goApprovals" data-node-id="goApprovals" data-node-label="Go Approval Broker" tabindex="0" role="button" aria-label="Focus Go Approval Broker, grants / opt-in Guardian / questions, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="grants / opt-in Guardian / questions" data-node-tag="human default / env Guardian" data-node-context="Independent Go port - in progress">
-          <title>Go Approval Broker · grants / opt-in Guardian / questions · Independent Go port - in progress · human default / env Guardian</title>
+        <g id="node-goApprovals" data-node-id="goApprovals" data-node-label="Go Approval Broker" tabindex="0" role="button" aria-label="Focus Go Approval Broker, grants / opt-in Guardian / questions, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="security" data-node-sublabel="grants / opt-in Guardian / questions" data-node-tag="human default / env Guardian" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go Approval Broker · grants / opt-in Guardian / questions · Go runtime assembly · explicit external parser · human default / env Guardian</title>
           <rect x="1920" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="980" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1926 986) scale(0.6875)">
@@ -4953,8 +4954,8 @@
         <text data-detail="fine" x="2060" y="1048" class="t-security" font-size="7" text-anchor="middle">human default / env Guardian</text>
         </g>
 
-        <g id="node-goArchives" data-node-id="goArchives" data-node-label="Compaction Artifacts" tabindex="0" role="button" aria-label="Focus Compaction Artifacts, .task_outputs / .transcripts, Independent Go port - in progress" aria-pressed="false" data-node-kind="database" data-node-sublabel=".task_outputs / .transcripts" data-node-tag="guarded directory before clock / mask" data-node-context="Independent Go port - in progress">
-          <title>Compaction Artifacts · .task_outputs / .transcripts · Independent Go port - in progress · guarded directory before clock / mask</title>
+        <g id="node-goArchives" data-node-id="goArchives" data-node-label="Compaction Artifacts" tabindex="0" role="button" aria-label="Focus Compaction Artifacts, .task_outputs / .transcripts, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="database" data-node-sublabel=".task_outputs / .transcripts" data-node-tag="guarded directory before clock / mask" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Compaction Artifacts · .task_outputs / .transcripts · Go runtime assembly · explicit external parser · guarded directory before clock / mask</title>
           <rect x="330" y="1540" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="1540" width="330" height="76" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(336 1546) scale(0.6875)">
@@ -4966,8 +4967,8 @@
         <text data-detail="fine" x="495" y="1608" class="t-database" font-size="7" text-anchor="middle">guarded directory before clock / mask</text>
         </g>
 
-        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, owner snapshots / memory / self-audit / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owner snapshots / memory / self-audit / cleanup" data-node-tag="owned efficiency lifecycle / raw stores" data-node-context="Independent Go port - in progress">
-          <title>Go SessionManager · owner snapshots / memory / self-audit / cleanup · Independent Go port - in progress · owned efficiency lifecycle / raw stores</title>
+        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, owner snapshots / memory / self-audit / cleanup, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owner snapshots / memory / self-audit / cleanup" data-node-tag="owned efficiency lifecycle / raw stores" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go SessionManager · owner snapshots / memory / self-audit / cleanup · Go runtime assembly · explicit external parser · owned efficiency lifecycle / raw stores</title>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 986) scale(0.6875)">
@@ -4990,8 +4991,8 @@
         <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">public browser / authenticated documents + data</text>
         </g>
 
-        <g id="node-goCron" data-node-id="goCron" data-node-label="Go managed cron" tabindex="0" role="button" aria-label="Focus Go managed cron, typed jobs / native SQL session restore, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="typed jobs / native SQL session restore" data-node-tag="operator arm; type-only panic" data-node-context="Independent Go port - in progress">
-          <title>Go managed cron · typed jobs / native SQL session restore · Independent Go port - in progress · operator arm; type-only panic</title>
+        <g id="node-goCron" data-node-id="goCron" data-node-label="Go managed cron" tabindex="0" role="button" aria-label="Focus Go managed cron, typed jobs / native SQL session restore, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="typed jobs / native SQL session restore" data-node-tag="operator arm; type-only panic" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go managed cron · typed jobs / native SQL session restore · Go runtime assembly · explicit external parser · operator arm; type-only panic</title>
           <rect x="1310" y="886" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="1310" y="886" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1316 892) scale(0.6875)">
@@ -5051,8 +5052,8 @@
         <text data-detail="fine" x="832.5" y="868" class="t-database" font-size="7" text-anchor="middle">GET / injection / idle turns</text>
         </g>
 
-        <g id="node-goWorkflow" data-node-id="goWorkflow" data-node-label="Go manager-owned WorkflowService" tabindex="0" role="button" aria-label="Focus Go manager-owned WorkflowService, 18 observations / UTF-8 archives; local DAG, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="18 observations / UTF-8 archives; local DAG" data-node-context="Independent Go port - in progress">
-          <title>Go manager-owned WorkflowService · 18 observations / UTF-8 archives; local DAG · Independent Go port - in progress</title>
+        <g id="node-goWorkflow" data-node-id="goWorkflow" data-node-label="Go manager-owned WorkflowService" tabindex="0" role="button" aria-label="Focus Go manager-owned WorkflowService, 18 observations / UTF-8 archives; local DAG, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="backend" data-node-sublabel="18 observations / UTF-8 archives; local DAG" data-node-context="Go runtime assembly · explicit external parser">
+          <title>Go manager-owned WorkflowService · 18 observations / UTF-8 archives; local DAG · Go runtime assembly · explicit external parser</title>
           <rect x="1370" y="1030" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1030" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 1036) scale(0.6875)">
@@ -5096,6 +5097,18 @@
           </g>
           <text data-detail-anchor x="1815" y="1856" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Repository contract inventory receipts</text>
         <text data-detail="context" x="1815" y="1872" class="t-muted" font-size="9" text-anchor="middle">locations / branches / candidate test results</text>
+        </g>
+
+        <g id="node-goPythonParser" data-node-id="goPythonParser" data-node-label="CPython 3.11.3" tabindex="0" role="button" aria-label="Focus CPython 3.11.3, external ast.parse · full profile, Go runtime assembly · explicit external parser" aria-pressed="false" data-node-kind="external" data-node-sublabel="external ast.parse · full profile" data-node-context="Go runtime assembly · explicit external parser">
+          <title>CPython 3.11.3 · external ast.parse · full profile · Go runtime assembly · explicit external parser</title>
+          <rect x="1940" y="1460" width="240" height="64" rx="6" class="c-mask"/>
+          <rect x="1940" y="1460" width="240" height="64" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1946 1466) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="2060" y="1490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">CPython 3.11.3</text>
+        <text data-detail="context" x="2060" y="1506" class="t-muted" font-size="9" text-anchor="middle">external ast.parse · full profile</text>
         </g>
 
         <!-- Connection labels -->
@@ -5263,6 +5276,7 @@
           <rect x="1194.2" y="1168" width="91.6" height="14" rx="3" class="c-mask"/>
           <text x="1240" y="1178" class="t-messagebus" font-size="8" text-anchor="middle">permission events</text>
         </g>
+
 
         <!-- Legend -->
         <g data-legend-bridge>
@@ -5545,6 +5559,7 @@
           <h3>Language layout</h3>
         </div>
         <ul>
+          <li>&bull; Review baseline 30ccaff: the approved fixed CPython 3.11.3 ast.parse backend is selected by the full-feature profile only when no explicit diagnostics provider replaces it. Isolated stdin-only parsing never executes source; two shared slots, bounded input/output, context/CPU limits and joined interpreter lifetime apply. Exact-version/missing-runtime failures occur before launcher/audit resource creation. The real 62-case parser gate and focused default Manager/HTTP/CLI integration gate have passed; host full/vet/race, exact Python, Source and type gates also pass; current Linux gates and the final row delta remain pending. IDNA implementation/property tables/84-case consumer are retained as a prepared patch awaiting explicit module approval; no unapproved dependency or IDNA runtime adoption occurs. Prior 339/0/5 row status is unchanged until the new evidence receipt applies a delta.</li>
           <li>&bull; Review baseline e9b6390: original P0/P1/G0-G7 criteria are reconciled against the committed runtime, exact current inputs and 24 completed host/Linux gates. Native SQLite persistence and restart evidence includes a seven-group recipe ledger with the same 25 top-level and 49 subtest pass names in each host ordinary/race and Linux ordinary/race cohort. The original required-row ledger is 339 bounded verified, zero evidence-incomplete and five dependency-blocked. The remaining IDNA module and default CPython parser decisions require explicit approval, implementation and real consumers; approval alone is not completion. The CPython parser backend is proposed, not implemented in Go. Architecture components, control/data flow, authority and defaults are unchanged; full port acceptance remains open. Root pytest.ini scopes the documented Python test command to python/tests; retained var evidence copies stay outside default discovery. No runtime component or feature default changes.</li>
           <li>&bull; Review baseline a378a2b: SDK escaped Unicode remains in five existing named text fields and closed input/caller observations; escaped inspection snapshots preserve code points while the subsequent model request keeps strict UTF-8 admission before credentials/HTTP. Six negative Source profiles retain an explicit native typed protocol/snapshot adaptation, rather than SDK-internal phase identity. The shell encodes the complete selected sandbox argv before process creation, including UTF-8/surrogateescape DC80–DCFF byte recovery and explicit pre-child errors for other surrogates; native raw-byte embedding remains supported. Default managed teams remain bound. Real HTTP tests use a test-only absent-team assembly and compare owner/auth, mailbox preservation and opaque corrupt-mailbox 500 projections. Existing architecture components and authority/defaults remain unchanged; fixed-platform full gates, IDNA and default diagnostics decisions retain separate evidence.</li>
           <li>&bull; Review baseline 48fd26d: native identity streams executable bytes into a cached content fingerprint and shares one package-initialization process start/PID/wall-clock uptime across Launcher and HTTP. Failed fingerprint reads remain explicit and retryable; explicit embedding build labels remain supported. Python hashes package source, so digests are language-specific. ManagedSession.RawArtifactStoreStatus returns detached limits and closed state without raw content, recovery references or store authority. Actual startup consumers compare store presence, TTL/caps and post-stop closure. Public Harness evidence covers all sixteen fields with typed runtime/manager/child adaptations; audit, owner-resource and plain/layered skill consumers retain precise Source bindings. SDK, teamless HTTP, dependencies and full platform/original migration acceptance remain open.</li>

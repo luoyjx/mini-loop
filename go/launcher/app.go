@@ -120,7 +120,7 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 }
 
 // Options selects individual Go services and explicit operator backends. Full
-// settings require DiagnosticsProvider until a default parser is implemented.
+// full settings use the approved CPython parser unless DiagnosticsProvider is supplied.
 type Options struct {
 	// ProviderTransport is an optional borrowed HTTP boundary for model and token
 	// requests. The caller owns its lifetime; nil uses a private default clone.
@@ -178,12 +178,12 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 	if options.StateStore != nil {
 		state = InjectedState
 	}
-	full := settings.EnableFeatures && options.DiagnosticsProvider != nil
+	full := settings.EnableFeatures
 	sandbox := shell.InspectSandbox(options.Sandbox)
 	if sandbox.Name == "None" {
 		sandbox.Name = "none"
 	}
-	return Report{FullFeatures: full, TaskTools: full, WorktreeTools: full, GuardianEnabled: settings.GuardianEnabled, ASTTools: settings.ASTOutlineEnabled, DiagnosticsTools: options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: supportedSettings(settings, options).Unsupported(), StateStore: state, Sandbox: sandbox.Name, SandboxReason: sandbox.Reason, DotEnvDiscovery: false}
+	return Report{FullFeatures: full, TaskTools: full, WorktreeTools: full, GuardianEnabled: settings.GuardianEnabled, ASTTools: settings.ASTOutlineEnabled, DiagnosticsTools: full || options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: supportedSettings(settings, options).Unsupported(), StateStore: state, Sandbox: sandbox.Name, SandboxReason: sandbox.Reason, DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct {
@@ -236,6 +236,11 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	}
 	if strings.TrimSpace(settings.Model) == "" {
 		return nil, errors.New("MODEL_ID must not be empty for the Go runtime")
+	}
+	var err error
+	options, err = resolveDiagnostics(ctx, settings, options)
+	if err != nil {
+		return nil, err
 	}
 	return buildApp(ctx, settings, server, auth, options)
 }

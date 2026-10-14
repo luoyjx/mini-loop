@@ -72,14 +72,8 @@ type UnsupportedSetting struct {
 }
 
 func (s Settings) Unsupported() []UnsupportedSetting {
-	result := []UnsupportedSetting{}
-	add := func(enabled bool, variable, reason string) {
-		if enabled {
-			result = append(result, UnsupportedSetting{variable, reason})
-		}
-	}
-	add(s.EnableFeatures, "MINILOOP_FEATURES", "default Python syntax diagnostics backend is not implemented")
-	return result
+	// Runtime availability is checked before launcher resource construction.
+	return []UnsupportedSetting{}
 }
 func (s Settings) RequireSupported() error {
 	missing := s.Unsupported()

@@ -1,0 +1,15 @@
+Edit target: the attached complete mini-loop layered architecture base image. Create an iteration diagram for 2026-10-15 while preserving the original complete five layers, all cards, topology, mountain background, typography, and right-hand authority boundary column. This is an edit of the base diagram, not a newly invented architecture.
+
+Highlight only the implementation delivered in this iteration with vivid cyan/green outlines and small numbered callouts:
+1. L4 Diagnostics and its external “CPython 3.11.3 · ast.parse” child process card: add a clear green “本轮新增” badge. Keep “隔离子进程 · 不执行源码” and “完整功能档默认；显式 Provider 可替换” legible.
+2. L1 Launcher / 配置 / 环境: green emphasis and a compact callout “完整功能档接入；缺失或版本不符时启动前拒绝”. Preserve the existing CLI / HTTP / SSE / browser entries.
+3. L2 tool catalogue and L3 ToolGate: a light cyan trace connecting the selected full catalogue to Diagnostics and the parser, preserving all existing directions and gate order. State “显式工具目录与 Provider 仍可替换”.
+
+Use a concise new annotation panel above the lower-right mountain area, with exact Chinese text:
+“本轮：固定 CPython 语法诊断与完整功能档”
+“62 个真实解析场景通过；源码只解析、不执行”
+“2 个进程槽位 · 5 秒期限 · 有界输入与输出”
+“IDNA：实现补丁已准备，新增依赖待明确批准”
+“整体 Go 迁移验收仍在进行”
+
+Use a small amber accent for IDNA pending approval. Do not imply the IDNA patch is active, do not add IDNA into the runtime topology, and do not claim all tests/platforms or the whole migration are complete. Do not show coverage or total acceptance counts. Keep every existing architectural component, including SQLite, journals, owner skills/Markdown memory, trajectory/audit, optional orchestration and custom tools. Preserve right-column boundary text; the iteration annotation can be a clean inset replacing only decorative mountain space or extending the canvas slightly downward, never covering layers/cards. Maintain the polished dark-blue technical infographic style and readable Chinese labels.

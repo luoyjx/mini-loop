@@ -1,19 +1,31 @@
 package launcher
 
-import "github.com/luoyjx/mini-loop/go/config"
+import (
+	"context"
 
-// Config alone has no diagnostics backend. An embedding caller can supply one;
-// remove only that resolved startup limitation from a detached validation copy.
-// The original settings still select the full Manager profile.
-func supportedSettings(settings config.Settings, options Options) config.Settings {
-	if options.DiagnosticsProvider != nil {
-		settings.EnableFeatures = false
+	"github.com/luoyjx/mini-loop/go/config"
+	"github.com/luoyjx/mini-loop/go/diagnostics"
+)
+
+func resolveDiagnostics(ctx context.Context, settings config.Settings, options Options) (Options, error) {
+	if settings.EnableFeatures && options.DiagnosticsProvider == nil {
+		selected, err := diagnostics.NewDefaultPythonSyntaxDiagnostics(ctx)
+		if err != nil {
+			return options, err
+		}
+		options.DiagnosticsProvider = selected
 	}
+	return options, nil
+}
+
+// Inspection is pure. Startup checks interpreter availability; an explicitly
+// supplied provider replaces the default without probing that interpreter.
+func supportedSettings(settings config.Settings, _ Options) config.Settings {
 	return settings
 }
 
 func selectedFeatureOptions(settings config.Settings, options Options) Options {
-	if settings.EnableFeatures && options.DiagnosticsProvider != nil {
+	if settings.EnableFeatures {
 		options.SessionQueryTools = true
 		options.MCPTools = true
 		options.TeamTools = true

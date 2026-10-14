@@ -1,5 +1,28 @@
 # Go port plan
 
+## 2026-10-15 approved fixed CPython diagnostics and prepared IDNA implementation
+
+Baseline `30ccaff`; branch `codex/go-provider-idna`. The user explicitly approved
+CPython 3.11.3 `ast.parse`. Its real isolated backend and default full-profile
+Manager/Launcher/audit/CLI integration are implemented; the first diagnostics
+package gate passes all 62 actual parser cases plus retained scanner/injection
+recipes. Host full Go/vet/race, the exact Python suite, Source contracts, repository
+verifiers and four type audits pass. Current-commit Linux validation and the final
+required-row delta are pending.
+
+The two fixed IDNA modules were not explicitly approved: automatic approval
+rejected the download after the generic continuation. No module was downloaded
+or added. The complete proposed runtime/property tables/84-case consumer is
+preserved in [a prepared patch](docs/audits/go-idna-prepared-2026-10-15.patch),
+outside compilation; the last actual baseline remains 6 pass / 78 fail. This
+preserves progress without making the approved backend depend on unapproved
+modules. A separate explicit approval question is pending.
+
+The existing 339 bounded-verified / 0 evidence-incomplete / 5 blocked rows remain
+unchanged until current evidence and an explicit row delta are delivered. The
+[iteration article](docs/audits/go-idna-parser-implementation-2026-10-15.md) records
+profile, resource, authority and validation boundaries. Full migration is pending.
+
 ## 2026-10-14 original acceptance criteria and remaining implementation decisions
 
 Baseline local main `e9b6390`, runtime `a6bf1d5`; current implementation hashes

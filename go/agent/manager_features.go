@@ -1,6 +1,10 @@
 package agent
 
-import "errors"
+import (
+	"context"
+
+	"github.com/luoyjx/mini-loop/go/diagnostics"
+)
 
 // Full features select Source's twelve registry groups. Independent workflow,
 // AST and decision options keep their own selection. A caller catalogue replaces
@@ -11,7 +15,11 @@ func normalizeManagerFeatures(config *ManagerConfig) error {
 	}
 	services := &config.Services
 	if services.DiagnosticsProvider == nil {
-		return errors.New("full features require an explicit diagnostics provider; the default Python syntax parser is not implemented")
+		provider, err := diagnostics.NewDefaultPythonSyntaxDiagnostics(context.Background())
+		if err != nil {
+			return err
+		}
+		services.DiagnosticsProvider = provider
 	}
 	services.TaskTools = true
 	services.BackgroundTools = true

@@ -30,6 +30,10 @@ func AuditDeployment(ctx context.Context, settings config.Settings, environment 
 	if strings.TrimSpace(settings.Model) == "" {
 		return nil, errors.New("MODEL_ID must not be empty for the Go runtime")
 	}
+	options, err = resolveDiagnostics(ctx, settings, options)
+	if err != nil {
+		return nil, err
+	}
 	if environment == nil {
 		environment = make(map[string]string)
 		for name, value := range secrets.CurrentEnvironment() {

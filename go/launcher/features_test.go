@@ -65,12 +65,15 @@ func TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects(t *testing.T
 	if report.WorkflowTools || report.ASTTools || !report.Settings.Settings.EnableFeatures {
 		t.Fatal("independent selections/caller settings changed")
 	}
-	if len(Inspect(settings, config.ServerSettings{}, nil).Unsupported) != 1 || len(settings.Unsupported()) != 1 {
-		t.Fatal("missing parser/caller settings refusal lost")
+	if len(Inspect(settings, config.ServerSettings{}, nil).Unsupported) != 0 || len(settings.Unsupported()) != 0 {
+		t.Fatal("implemented default full profile reported unsupported")
 	}
-	unavailable := Inspect(settings, config.ServerSettings{}, nil)
-	if unavailable.FullFeatures || unavailable.TaskTools || unavailable.WorktreeTools || unavailable.BackgroundTools || unavailable.TeamTools {
-		t.Fatal("missing backend advertised available full feature groups")
+	// Inspection reports implementation availability and remains pure even
+	// when no interpreter can be found. Startup performs the actual probe.
+	t.Setenv("PATH", t.TempDir())
+	available := Inspect(settings, config.ServerSettings{}, nil)
+	if !available.FullFeatures || !available.TaskTools || !available.WorktreeTools || !available.BackgroundTools || !available.TeamTools || !available.DiagnosticsTools {
+		t.Fatal("default full feature selection omitted", available)
 	}
 	if options.BackgroundTools || options.TeamTools || options.MemoryTools {
 		t.Fatal("inspection mutated caller options")
