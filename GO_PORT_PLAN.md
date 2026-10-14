@@ -1,5 +1,51 @@
 # Go port plan
 
+## 2026-10-14 public identity, typed composition and runtime-store observations
+
+Branch `codex/go-public-contract-closure`, baseline local main `48fd26d`.
+The [iteration receipt](docs/audits/go-public-contract-closure-2026-10-14.md)
+owns final serial gate outcomes and the eleven-row delta; this entry does not
+declare complete P0/P1/G0–G7 or Linux runtime acceptance.
+
+All twenty required gates passed; the applied hash-bound delta composes the
+original 344 rows to **336 bounded verified / three evidence-incomplete / five
+dependency-blocked**. SDK direct/stream surrogate probes and teamless HTTP remain
+the three evidence gaps. The receipt fixes runtime commit `87df820`; coverage is
+85.35% application / 82.57% provider with per-package instrumentation.
+
+`go/identity` supplies a streamed, 32 KiB-buffered SHA256 executable fingerprint,
+cached after success. Source `build_id` hashes Python package source; native
+artifact bytes are the necessary language adaptation. VCS revision/modified
+metadata is supplementary and cannot identify two distinct dirty artifacts.
+Failures remain explicit and retryable, matching Source's success-only
+`lru_cache`; repaired reads can succeed and then remain cached. Default launcher
+construction checks the fingerprint before external resources are created.
+An explicit `httpapi.Config.Build` remains an embedding override and requires
+no implicit fingerprint read from health.
+
+All native HTTP instances share PID and the identity package's initialization
+time. This is the analogue of Source module `STARTED_AT`, not OS process-birth
+recovery. Uptime follows Source wall-clock subtraction without clamping negative
+values. Eight actual Source controls compare clock advances/reversals, decimal
+ties and signed zero. Native VCS metadata remains separately inspectable.
+
+Actual public Harness captures reconcile all sixteen fields with typed
+`RuntimeConfig`/`ManagerServices`, including nil/default/explicit-empty rules
+and real parent/child consumers using both default and precomposed catalogues.
+The five identity/audit export rows combine new direct public contracts with
+existing complete manager findings and renderer assertions. Four skill/resource
+rows correct links to the actual existing `_skill_contracts`,
+`_layered_skill_contracts` and `_owner_resource_contracts` producers and their
+native consumers; their implementations are retained.
+
+`ManagedSession.RawArtifactStoreStatus()` adds a detached, typed observation:
+presence distinguishes absence from a retained closed store, limits are copied,
+and `Closed` remains observable after manager stop. It exposes no store pointer,
+raw payload or recovery reference, and confers no authority. Nine actual startup
+profiles now compare selected TTL/capacity values and post-stop closure. They do
+not wait seven seconds for expiry or fill the store to its capacity limit;
+separate store tests retain those behavioral responsibilities.
+
 ## 2026-10-14 HTTP validation, authentication and actual feature catalogues
 
 Branch `codex/go-http-feature-closure`, baseline local main `da43c18`.

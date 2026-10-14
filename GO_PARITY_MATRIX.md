@@ -1,5 +1,46 @@
 # Python to Go parity matrix
 
+## 2026-10-14 public identity and composition closure
+
+Baseline local main `48fd26d`, branch `codex/go-public-contract-closure`.
+Final gates and the eleven-row disposition belong to the
+[iteration receipt](docs/audits/go-public-contract-closure-2026-10-14.md).
+These finite comparisons do not establish full migration or Linux acceptance.
+
+The [applied eleven-row delta](docs/audits/go-required-public-contract-delta-2026-10-14.json)
+verifies the final twenty-gate receipt and composes the original audit to
+**336 bounded verified / three evidence-incomplete / five dependency-blocked**.
+The three remaining evidence rows are SDK direct/stream surrogate ingress and
+teamless HTTP; dependency/default-parser and full-platform gates remain open.
+
+| Surface | Actual Source/native evidence and retained boundary |
+|---|---|
+| `build_id` | Source package-content hash, edit/cache controls and read-failure recovery; native executable-content SHA256[:12], streamed through a 32 KiB buffer. Only successful fingerprints are cached, failed reads remain retryable, and VCS metadata stays supplementary. Python source and Go artifact hashes need not match. |
+| `runtime_identity` | Three public Source manager/no-manager profiles plus eight wall-clock forward/backward, negative-time, tie and signed-zero controls. Native launcher/health share PID and one package-initialization start, not OS birth or server-construction time. Explicit `Config.Build` retains its embedding-label semantics. |
+| `audit`, `render_audit`, `Finding` | Direct public alias/value/complete-text recipes link to the existing thirteen real manager audits, sixteen live compositions and full renderer comparisons. Native typed values reject invalid severities at Render; Source rejects them at Finding construction. |
+| `Harness` | All sixteen public fields map to explicit native typed seams. Actual construction and parent/child consumers cover default and precomposed catalogues, nil/default/explicit-empty dispositions and model-visible child behavior; Go has no generic string-keyed resolve/derive API. |
+| `SkillLoader`, `LayeredSkillLoader`, `UserResourceResolver`, `UserResources` | Correct existing actual producer/fixture/consumer links are reconciled; these are evidence repairs. Plain, two-source layered and owner-resource recipes remain distinct. |
+| Startup raw artifact store | Nine actual startup profiles compare observed store presence, effective TTL/byte caps and post-stop closure through detached `ManagedSession.RawArtifactStoreStatus()`. This does not measure expiry after seven seconds or exercise a capacity-full boundary. |
+
+Default native construction refuses an unavailable content fingerprint before
+external composition. An explicitly supplied HTTP build label bypasses that
+fingerprint dependency; health reads shared process timing without extra file
+I/O. Store status exports neither mutable backend pointers nor raw artifacts or
+recovery references and carries no owner or execution authority.
+
+The existing skill/resource recipes are
+[`_skill_contracts`](python/tools/export_go_contracts.py#L299),
+[`_layered_skill_contracts`](python/tools/export_go_contracts.py#L5246) and
+[`_owner_resource_contracts`](python/tools/export_go_contracts.py#L5373).
+The five identity/audit rows use actual
+[`public_identity_audit_contracts`](python/tools/public_identity_audit_contracts.py)
+and existing [`audit_live_contracts`](python/tools/audit_live_contracts.py) /
+[`audit_posture_contracts`](python/tools/audit_posture_contracts.py), paired with
+the real manager and full-text native consumers. Harness uses
+[`public_harness_contracts`](python/tools/public_harness_contracts.py).
+Their scope and the new public contracts' adaptations remain finite; final row
+statuses are applied only from the receipt's authoritative gates.
+
 ## 2026-10-14 HTTP validation, authentication and actual feature catalogues
 
 Branch `codex/go-http-feature-closure`, baseline local main `da43c18`.

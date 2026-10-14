@@ -1,0 +1,21 @@
+Use case: precise-object-edit
+Asset type: mini-loop iteration infographic, based on the newly updated complete layered base.
+Preserve all five architecture layers, original component labels, arrows, icons, the new L1 Go content/process identity caption, the new L2 RAM store observation caption, style, title and footer.
+Use thin transparent orange outlines and small numbered circles at the outer edges of L1, L2, L3 and L5. Do not put large callout boxes over any component or arrow. Keep L4 unchanged.
+Replace only the right sidebar with readable iteration notes:
+本轮：2026-10-14
+原生身份 · 真实状态 · 公开契约
+① L1 内容指纹 / 进程身份
+流式哈希；成功缓存、失败可重试
+共享启动时刻；墙上时钟 uptime
+② L2 RAM 产物状态
+真实 TTL / 容量 / 关闭状态
+只读快照，不返回内容与恢复引用
+③ L3 Harness 16 字段
+resolve / derive / None / 明确覆盖
+管理器与子代理真实绑定
+④ L5 审计 · 资源 · 技能
+实际 Source 与原生消费者逐项绑定
+plain / layered 技能范围分开
+仍待：SDK、Teamless、默认后端、全平台验收
+Use clear Chinese typography and generous vertical spacing. Sidebar numbers must match layer outlines. No percentages, gate-success claims, new serving routes, execution authority, durable RAM or migration completion claims. Opaque background.

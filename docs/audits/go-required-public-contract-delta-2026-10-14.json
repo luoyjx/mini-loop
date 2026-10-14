@@ -1,0 +1,3348 @@
+{
+  "schema_version": 1,
+  "status": "applied_after_finite_validation",
+  "applied": true,
+  "full_port_acceptance": false,
+  "created_utc": "2026-10-14T11:15:14.036295+00:00",
+  "runtime_commit": "87df8202560a3d858a0933fc61333a972ca364df",
+  "original_audit": {
+    "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+    "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359"
+  },
+  "preceding_applied_deltas": [
+    {
+      "path": "docs/audits/go-required-row-delta-2026-10-14.json",
+      "sha256": "22b0d48c3e805db54262d21e88ef6945f58d837e33f078055da6df9b0ee025fa"
+    },
+    {
+      "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+      "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f"
+    }
+  ],
+  "proposal": {
+    "path": "var/go-public-contract-closure-2026-10-14/combined-row-delta.proposed.json",
+    "sha256": "ed349e2fb7895ce120dc5295c2c55b46f223808d6404d802985d815ab8de1fba"
+  },
+  "validation_receipt": {
+    "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+    "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+  },
+  "original_cardinality": 344,
+  "delta_row_count": 11,
+  "other_rows_unchanged": 333,
+  "previous_status_counts": {
+    "verified": 325,
+    "dependency_blocked": 5,
+    "evidence_incomplete": 14
+  },
+  "current_status_counts": {
+    "verified": 336,
+    "dependency_blocked": 5,
+    "evidence_incomplete": 3
+  },
+  "count_derivation": "Recomputed from all 344 original row statuses, applied the 7 old transitions and then 26 previous transitions after validating disjoint row IDs and previous statuses; projected these eleven new unique transitions only in an in-memory copy. No authoritative audit or applied delta was changed.",
+  "rows": [
+    {
+      "id": "export:SkillLoader",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "SkillLoader",
+        "seam": "skills",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/skills.py",
+          "symbol": "SkillLoader",
+          "line": 90,
+          "line_kind": "current_definition",
+          "sha256": "33dd1717a5cb5c710a65edebecea00ef038e50dab3817a12080302b49b86c0c3"
+        },
+        "native_named_bindings": [
+          {
+            "package": "skills",
+            "name": "Catalog",
+            "kind": "type",
+            "file": "skills/catalog.go",
+            "line": 52
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Bind layered Source recipe and distinguish plain/layered public scopes; existing consumers remain valid.",
+        "id": "export:SkillLoader",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.skills"
+      },
+      "new_evidence_group": "plain_skills",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Actual plain construction from a deployment skill directory: 19 file recipes, exact descriptions, names/body and source digests, finite load success/error hashes, path/encoding/duplicate/missing/truncation and post-construction file mutation diagnostics. Plain qualified agent loads and user-source refusal remain distinct from two-source construction."
+      ],
+      "remaining_scope": [
+        "All custom SkillLoader subclasses or arbitrary Mapping snapshots",
+        "Arbitrary Python runtime types accepted by dynamic load scope/name",
+        "Mutable public Python skills dict introspection as a Go API",
+        "Full filesystem security proof on every platform",
+        "Owner resource authority or publication merely from a plain catalogue"
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/owner-skills-review.json",
+        "sha256": "481e4967ff11f6fafc0f3d454bc44ca4c4fe5ebffc1d8e6f7fafc1460d785961"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:LayeredSkillLoader",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "LayeredSkillLoader",
+        "seam": "skills",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/skills.py",
+          "symbol": "LayeredSkillLoader",
+          "line": 280,
+          "line_kind": "current_definition",
+          "sha256": "33dd1717a5cb5c710a65edebecea00ef038e50dab3817a12080302b49b86c0c3"
+        },
+        "native_named_bindings": [
+          {
+            "package": "skills",
+            "name": "LayeredCatalog",
+            "kind": "type",
+            "file": "skills/layered.go",
+            "line": 16
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Bind layered Source recipe and distinguish plain/layered public scopes; existing consumers remain valid.",
+        "id": "export:LayeredSkillLoader",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.skills"
+      },
+      "new_evidence_group": "layered_skills",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Actual two concrete source catalogues: 16 recipes, shared-name collision refusal, explicit agent/user selection, Unicode scope normalization, exact combined provenance descriptions under one budget, finite load output/error hashes and independent source/layered problem logs after changed/removed/identical/newline mutations. Native extra concurrency checks are native-specific evidence."
+      ],
+      "remaining_scope": [
+        "Omitted source is interchangeable with an empty source",
+        "Python optional caller-injected ProblemLog has the same public constructor shape",
+        "All custom loader snapshots or malformed source types",
+        "Owner identity derives from the catalogue",
+        "Foreign owner access or publication can be admitted by a skill name"
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/owner-skills-review.json",
+        "sha256": "481e4967ff11f6fafc0f3d454bc44ca4c4fe5ebffc1d8e6f7fafc1460d785961"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:UserResourceResolver",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "UserResourceResolver",
+        "seam": "owner-resources",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/user_resources.py",
+          "symbol": "UserResourceResolver",
+          "line": 181,
+          "line_kind": "current_definition",
+          "sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+        },
+        "native_named_bindings": [
+          {
+            "package": "userresources",
+            "name": "Resolver",
+            "kind": "type",
+            "file": "userresources/resolver.go",
+            "line": 30
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Bind existing actual owner-resource fixture to its precise Source recipe; no new implementation inferred.",
+        "id": "export:UserResourceResolver",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.owner-resources"
+      },
+      "new_evidence_group": "owner_resources",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Four actual resource recipes, 28 ordered steps: exact trusted owner IDs (Alice/Bob, surrounding spaces, composed/decomposed Unicode), digest-root bindings and same-resolver cache identity; scoped skill collision and missing foreign user skill; mutable bound memory write/index isolation; old catalogue retained after external file creation until a new resolver; owner-local problem logs and fresh operator aggregate; an explicit SecretRegistry masks one memory write. UserResources is the actual bundle constructed by for_owner and consumed by both sides, with private immutable native bindings and a mutable bound memory service."
+      ],
+      "remaining_scope": [
+        "Every arbitrary direct Python UserResources dataclass construction has a Go equivalent constructor",
+        "Untrusted model input can select the owner or resource root",
+        "All secrets callback implementations, callback panic behavior, None and explicit-null behavior are equivalent",
+        "This fixture proves process restart, SQLite persistence or a team scheduler",
+        "Resources are immutable memory contents or cross-process snapshot refresh"
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/owner-skills-review.json",
+        "sha256": "481e4967ff11f6fafc0f3d454bc44ca4c4fe5ebffc1d8e6f7fafc1460d785961"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:UserResources",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "UserResources",
+        "seam": "owner-resources",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/user_resources.py",
+          "symbol": "UserResources",
+          "line": 134,
+          "line_kind": "current_definition",
+          "sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+        },
+        "native_named_bindings": [
+          {
+            "package": "userresources",
+            "name": "Resources",
+            "kind": "type",
+            "file": "userresources/resolver.go",
+            "line": 16
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Bind existing actual owner-resource fixture to its precise Source recipe; no new implementation inferred.",
+        "id": "export:UserResources",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.owner-resources"
+      },
+      "new_evidence_group": "owner_resources",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Four actual resource recipes, 28 ordered steps: exact trusted owner IDs (Alice/Bob, surrounding spaces, composed/decomposed Unicode), digest-root bindings and same-resolver cache identity; scoped skill collision and missing foreign user skill; mutable bound memory write/index isolation; old catalogue retained after external file creation until a new resolver; owner-local problem logs and fresh operator aggregate; an explicit SecretRegistry masks one memory write. UserResources is the actual bundle constructed by for_owner and consumed by both sides, with private immutable native bindings and a mutable bound memory service."
+      ],
+      "remaining_scope": [
+        "Every arbitrary direct Python UserResources dataclass construction has a Go equivalent constructor",
+        "Untrusted model input can select the owner or resource root",
+        "All secrets callback implementations, callback panic behavior, None and explicit-null behavior are equivalent",
+        "This fixture proves process restart, SQLite persistence or a team scheduler",
+        "Resources are immutable memory contents or cross-process snapshot refresh"
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/owner-skills-review.json",
+        "sha256": "481e4967ff11f6fafc0f3d454bc44ca4c4fe5ebffc1d8e6f7fafc1460d785961"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:build_id",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "build_id",
+        "seam": "identity",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/identity.py",
+          "symbol": "build_id",
+          "line": 40,
+          "line_kind": "current_definition",
+          "sha256": "a18a4e703595095e317035aa6261b640890764e918cdd7ac8cf7ca30bc097913"
+        },
+        "native_named_bindings": [
+          {
+            "package": "launcher",
+            "name": "CurrentBuild",
+            "kind": "function",
+            "file": "launcher/app.go",
+            "line": 39
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Record native build/process identity adaptation and bind finite output assertions; do not require equal cross-language source hashes.",
+        "id": "export:build_id",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.identity"
+      },
+      "new_evidence_group": "public_identity_audit",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Actual Source package-content/cached/edit/non-source and failure-recovery behavior; native 12-digit SHA256 artifact adaptation with streamed32KiB read, one cached success and explicit retryable failure. No equal cross-language hash claim."
+      ],
+      "remaining_scope": [
+        "Source hashes Python source paths+contents; native hashes executable bytes. Byte-identical relocation preserves native identity, while builds with distinct bytes differ.",
+        "Process package initialization timestamp is the native analogue of Source module STARTED_AT, not OS creation-time recovery.",
+        "Pending direct bounded two-artifact probe required before final verified disposition."
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+          "symbol": "public_identity_audit_contracts",
+          "line": 22,
+          "end_line": 198
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/identity/identity_test.go",
+          "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+          "symbol": "TestBuildFingerprintContentCacheAndFailures",
+          "line": 21
+        },
+        {
+          "path": "go/identity/identity_test.go",
+          "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+          "symbol": "TestRuntimeIdentityMatchesActualPythonRelationships",
+          "line": 161
+        },
+        {
+          "path": "go/launcher/public_identity_contract_test.go",
+          "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+          "symbol": "TestPublicRuntimeIdentityReachesLauncherAndSharedHTTPProcess",
+          "line": 24
+        },
+        {
+          "path": "go/launcher/public_identity_contract_test.go",
+          "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+          "symbol": "TestPublicIdentityUnavailableExecutableFailsBeforeComposition",
+          "line": 129
+        }
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:runtime_identity",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "runtime_identity",
+        "seam": "identity",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/identity.py",
+          "symbol": "runtime_identity",
+          "line": 180,
+          "line_kind": "current_definition",
+          "sha256": "a18a4e703595095e317035aa6261b640890764e918cdd7ac8cf7ca30bc097913"
+        },
+        "native_named_bindings": [
+          {
+            "package": "launcher",
+            "name": "Inspect",
+            "kind": "function",
+            "file": "launcher/app.go",
+            "line": 109
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Record native build/process identity adaptation and bind finite output assertions; do not require equal cross-language source hashes.",
+        "id": "export:runtime_identity",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.identity"
+      },
+      "new_evidence_group": "public_identity_audit",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Three actual public Source no-manager/default-manager/authenticated-manager profiles plus eight wall-clock backward/forward, negative elapsed, decimal rounding/tie/signed-zero controls. Native Runtime emits the same manager-free JSON keys; launcher/HTTP compose shared PID/package-start/wall elapsed rounded to3 decimals and actual manager posture."
+      ],
+      "remaining_scope": [
+        "Posture remains manager-owned; existing native null-component labels are retained as declared adapters.",
+        "Config.Now remains request/rate time, not a process-start injector. Explicit Config.Build override intentionally remains available."
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+          "symbol": "public_identity_audit_contracts",
+          "line": 22,
+          "end_line": 198
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/identity/identity_test.go",
+          "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+          "symbol": "TestRuntimeIdentityMatchesActualPythonRelationships",
+          "line": 161
+        },
+        {
+          "path": "go/launcher/public_identity_contract_test.go",
+          "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+          "symbol": "TestPublicRuntimeIdentityReachesLauncherAndSharedHTTPProcess",
+          "line": 24
+        },
+        {
+          "path": "go/launcher/public_identity_contract_test.go",
+          "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+          "symbol": "TestPublicIdentityUnavailableExecutableFailsBeforeComposition",
+          "line": 129
+        },
+        {
+          "path": "go/identity/identity_test.go",
+          "symbol": "TestProcessSnapshotMatchesActualPythonWallClock",
+          "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+          "line": 114
+        }
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:audit",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "audit",
+        "seam": "audit",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/audit.py",
+          "symbol": "audit",
+          "line": 176,
+          "line_kind": "current_definition",
+          "sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f"
+        },
+        "native_named_bindings": [
+          {
+            "package": "audit",
+            "name": "Check",
+            "kind": "type",
+            "file": "audit/remote.go",
+            "line": 23
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Reconcile exact actual Source audit/render functions and native textual renderer assertions; existing live findings implementation is not considered missing.",
+        "id": "export:audit",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.audit"
+      },
+      "new_evidence_group": "public_identity_audit",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Public audit alias is the exact function executed by existing Source live corpus. Thirteen actual native manager profiles compare all Finding fields and exact renderer text without creating sessions; all16 captured profiles also compare pure live composition."
+      ],
+      "remaining_scope": [
+        "Three Source dynamic fault/log profiles use typed composition plus separate native agent fault/log evidence; not arbitrary Python manager attributes or an atomic fleet transaction."
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+          "symbol": "public_identity_audit_contracts",
+          "line": 22,
+          "end_line": 198
+        },
+        {
+          "path": "python/tools/audit_live_contracts.py",
+          "sha256": "674c4af5a628ac904b2f6212b5f7ee10c93d4b3e8ead42f0271a421a7d94350f",
+          "symbol": "audit_live_contracts",
+          "line": 62,
+          "end_line": 156
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/audit/manager_test.go",
+          "sha256": "051bacb0ee6848182d545a9b885a48c9659836df862acd968ff91055c964fdc5",
+          "symbol": "TestManagerAuditMatchesActualSourceProfilesWithoutCreatingSessions",
+          "line": 35
+        },
+        {
+          "path": "go/audit/live_test.go",
+          "sha256": "25a8510c9f5d13fceb1237303665ebb1698a31d0aa22483485540e11e059956a",
+          "symbol": "TestComposeLiveMatchesFullActualSourceManagerAudits",
+          "line": 18
+        },
+        {
+          "path": "go/audit/public_contract_test.go",
+          "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+          "symbol": "TestPublicFindingAndRendererMatchActualPython",
+          "line": 10
+        }
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:render_audit",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "render_audit",
+        "seam": "audit",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/audit.py",
+          "symbol": "render",
+          "line": 493,
+          "line_kind": "current_definition",
+          "sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f"
+        },
+        "native_named_bindings": [
+          {
+            "package": "audit",
+            "name": "Render",
+            "kind": "function",
+            "file": "audit/remote.go",
+            "line": 211
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Reconcile exact actual Source audit/render functions and native textual renderer assertions; existing live findings implementation is not considered missing.",
+        "id": "export:render_audit",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.audit"
+      },
+      "new_evidence_group": "public_identity_audit",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Six direct root-public Finding/render recipes preserve all four string fields, caller order, exact complete text, severity-order summary, repeated counts, empty findings, Unicode/newline/control text; five invalid severities refuse without partial text."
+      ],
+      "remaining_scope": [
+        "Source frozen dataclass construction validates severity; Go typed Finding values are validated at Render, an explicit native API-boundary adaptation.",
+        "No Python dataclass slots/identity/mutation or arbitrary-object equivalence claim."
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+          "symbol": "public_identity_audit_contracts",
+          "line": 22,
+          "end_line": 198
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/audit/public_contract_test.go",
+          "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+          "symbol": "TestPublicFindingAndRendererMatchActualPython",
+          "line": 10
+        }
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:Finding",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "Finding",
+        "seam": "audit",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/audit.py",
+          "symbol": "Finding",
+          "line": 55,
+          "line_kind": "current_definition",
+          "sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f"
+        },
+        "native_named_bindings": [
+          {
+            "package": "audit",
+            "name": "Finding",
+            "kind": "type",
+            "file": "audit/remote.go",
+            "line": 41
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Reconcile exact actual Source audit/render functions and native textual renderer assertions; existing live findings implementation is not considered missing.",
+        "id": "export:Finding",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.audit"
+      },
+      "new_evidence_group": "public_identity_audit",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Six direct root-public Finding/render recipes preserve all four string fields, caller order, exact complete text, severity-order summary, repeated counts, empty findings, Unicode/newline/control text; five invalid severities refuse without partial text."
+      ],
+      "remaining_scope": [
+        "Source frozen dataclass construction validates severity; Go typed Finding values are validated at Render, an explicit native API-boundary adaptation.",
+        "No Python dataclass slots/identity/mutation or arbitrary-object equivalence claim."
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+          "symbol": "public_identity_audit_contracts",
+          "line": 22,
+          "end_line": 198
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/audit/public_contract_test.go",
+          "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+          "symbol": "TestPublicFindingAndRendererMatchActualPython",
+          "line": 10
+        }
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "export:Harness",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "Harness",
+        "seam": "harness",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/harness.py",
+          "symbol": "Harness",
+          "line": 39,
+          "line_kind": "current_definition",
+          "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "RuntimeConfig",
+            "kind": "type",
+            "file": "agent/runtime.go",
+            "line": 64
+          },
+          {
+            "package": "agent",
+            "name": "ManagerServices",
+            "kind": "type",
+            "file": "agent/manager_config.go",
+            "line": 54
+          },
+          {
+            "package": "launcher",
+            "name": "Options",
+            "kind": "type",
+            "file": "launcher/app.go",
+            "line": 115
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Complete16-field derive/resolve/nil/explicit inheritance evidence table.",
+        "id": "export:Harness",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.harness"
+      },
+      "new_evidence_group": "public_harness",
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Complete sixteen-field finite composition mapping. Source public Harness value operations plus concrete Agent consumers; native typed RuntimeConfig/ManagerServices/default-child adapters. Not arbitrary Python object or identical method-spelling compatibility.",
+        "All sixteen original fields are enumerated with actual Source value-object operations and finite concrete Agent/default-child consumers plus typed native RuntimeConfig/ManagerServices seams."
+      ],
+      "remaining_scope": [
+        "No native public Harness.derive/resolve was added; Source None fallback is observed in Source and the resolved selection enters typed native composition explicitly. Native zero values are not mislabeled as Source explicit-None fallback.",
+        "No dynamic string-keyed fields, any, reflection on production attributes, unsafe accessor, new dependency, or production behavior change introduced.",
+        "The Go fixture consumer uses reflection only to assert that an explicit empty test-owned injector slice is nonnil, not to emulate Harness fields or production dispatch.",
+        "A real single-tool bash catalogue makes child capability selection nonvacuous; the model profile returns text and does not execute a tool. Separate bounded operator backend probes validate native sandbox/spill binding.",
+        "Manager bridge test invokes the actual production baseManagedRuntimeConfig and NewRuntimeSession with all finite bindings; it does not claim a new full Launcher or workflow-worker acceptance gate.",
+        "Existing Source Hook callbacks are mapped across GateHooks/UserPromptHooks/StopHooks; new finite binding evidence selects a before hook. Full hook semantics remain under prior dedicated contracts.",
+        "Source False resolution is a value-object observation, not a claim that every Agent seam accepts a boolean as a valid implementation.",
+        "Unknown Source derive names fail with sorted TypeError; frozen assignment fails. Native configuration fields are compile-time selected; no run-time typo string API is invented.",
+        "Source child.spill identity and separate Toolset construction do not impose native executor pointer identity. Explicit native catalogue handlers retain their operator-selected backend; the test composes that backend before catalogue freezing rather than mutating production handlers."
+      ],
+      "review_source": {
+        "path": "var/go-public-contract-closure-2026-10-14/harness-review.json",
+        "sha256": "7ea8a97c805926ed44b74c8498208758eb74fb3f400d49ce006e1e45bc30e857"
+      },
+      "source_recipes": [
+        {
+          "path": "python/tools/public_harness_contracts.py",
+          "sha256": "9ff80c600b481e8de46e4fb917a5b9c2db624c90d9a45b36daa75c8c44640294",
+          "symbol_or_anchor": "def public_harness_contracts",
+          "line": 11
+        },
+        {
+          "path": "python/tests/test_public_harness_contracts.py",
+          "sha256": "7f72359e0f537f0813be08a23ce91a55f5203262847d37f9379f13d3cf8b1937",
+          "symbol_or_anchor": "def test_actual_public_harness_contracts",
+          "line": 8
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessTypedCompositionMatchesActualSource",
+          "line": 279
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessManagerBridgeRetainsEveryTypedSeam",
+          "line": 331
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessNilAndExplicitEmptyTypedDispositions",
+          "line": 406
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessDefaultCatalogueBindsSpillIntoFreshChild",
+          "line": 366
+        }
+      ],
+      "proposal_status": "accepted_after_finite_validation"
+    },
+    {
+      "id": "capability:08",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "id": "capability:08",
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "capability": "Token-efficiency pipeline and semantic code tools",
+        "source_default": "**Off**",
+        "selector": "Explicit `shadow`/`enforce` and pinned `ast-outline` settings",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_token_efficiency.py",
+            "python/tests/test_ast_context.py"
+          ]
+        },
+        "native_assertion": {
+          "paths": [
+            "go/efficiency/request_test.go",
+            "go/launcher/ast_test.go"
+          ]
+        },
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ],
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "Startup store TTL/capacity/closed fields captured by Source but current launcher consumer compares only request/receipt and manager lifecycle."
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json"
+      },
+      "new_evidence_group": "startup_raw_store_posture",
+      "requirements": [
+        "P0",
+        "G7"
+      ],
+      "application": "Accepted only for the preserved bounded scope after all twenty current gates; historical failures, declared adaptations and unrelated rows remain unchanged.",
+      "bounded_scope": [
+        "Adds direct consumption of the three previously omitted actual startup fields (store_present, limits, store_closed) in all nine Source profiles. Launcher creates the real native store; a detached per-session observation checks presence, TTL=7 and 20000/40000 byte limits while live, then reads the same retained store after actual server/manager shutdown. Existing opt-in/AST tool evidence is retained."
+      ],
+      "remaining_scope": [
+        "Comparing configured effective TTL and size limits does not itself execute elapsed TTL eviction or force per-item/total capacity exhaustion; existing dedicated store tests remain separate.",
+        "Nine captured startup profiles close the original omitted store fields only; no all-values token-efficiency API, custom provider, arbitrary AST backend or full migration acceptance claim."
+      ],
+      "proposal_status": "accepted_after_finite_validation"
+    }
+  ],
+  "evidence_groups": {
+    "plain_skills": {
+      "source_recipe": {
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_skill_contracts",
+        "line": 299,
+        "end_line": 384,
+        "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce",
+        "body_sha256": "3ae4f3eeaa9c2ad72590e09e3cbe90a84dafdd024f8b0117e7ae6a9e0cea6bc5"
+      },
+      "source_actual_calls": [
+        "SkillLoader(root)",
+        "loader.descriptions()",
+        "loader.skills.items()",
+        "loader.load(**request)"
+      ],
+      "fixture": {
+        "path": "go/testdata/python-skills.json",
+        "sha256": "63644f6070d867b5b09eef4701df18d5ffd58171afe8687fd01b12d0597d1c66",
+        "bytes": 371683,
+        "case_count": 19,
+        "case_names": [
+          "basic",
+          "newlines",
+          "multiline",
+          "metadata_separators",
+          "malformed",
+          "immediate",
+          "empty_frontmatter",
+          "empty_body",
+          "invalid_name",
+          "exact_body",
+          "oversized",
+          "unreadable",
+          "links",
+          "missing",
+          "changed",
+          "removed",
+          "identical",
+          "equivalent_newlines",
+          "catalogue_cap"
+        ],
+        "load_count": 44,
+        "step_count": 0
+      },
+      "exporter_bindings": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 6955,
+          "code": "skill_contracts = _skill_contracts(Path(scratch) / \"skills\")",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        },
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 7049,
+          "code": "\"python-skills.json\": _json_bytes(skill_contracts),",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        }
+      ],
+      "native_consumer": {
+        "path": "go/skills/catalog_test.go",
+        "symbol": "TestCatalogMatchesPythonSkillContracts",
+        "sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+      },
+      "native_assertions": [
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 99,
+          "code": "if len(contract.Cases) != 19 || contract.BodyCap != MaxBody || contract.DescriptionCap != MaxDescription || contract.CatalogueCap != MaxCatalogue {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        },
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 124,
+          "code": "if got := catalog.Descriptions(); got != fixture.Descriptions {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        },
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 131,
+          "code": "if !reflect.DeepEqual(entries, fixture.Entries) {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        },
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 139,
+          "code": "if (err != nil) != load.Failed {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        },
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 146,
+          "code": "if hex.EncodeToString(digest[:]) != load.SHA256 {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        },
+        {
+          "path": "go/skills/catalog_test.go",
+          "line": 155,
+          "code": "if !reflect.DeepEqual(problems, fixture.Problems) {",
+          "file_sha256": "b5c1df298a04285147c277b2dca875cc358a34fcf97588ede5d244313fec04ea"
+        }
+      ],
+      "bounded_scope": "Actual plain construction from a deployment skill directory: 19 file recipes, exact descriptions, names/body and source digests, finite load success/error hashes, path/encoding/duplicate/missing/truncation and post-construction file mutation diagnostics. Plain qualified agent loads and user-source refusal remain distinct from two-source construction.",
+      "not_claimed": [
+        "All custom SkillLoader subclasses or arbitrary Mapping snapshots",
+        "Arbitrary Python runtime types accepted by dynamic load scope/name",
+        "Mutable public Python skills dict introspection as a Go API",
+        "Full filesystem security proof on every platform",
+        "Owner resource authority or publication merely from a plain catalogue"
+      ]
+    },
+    "layered_skills": {
+      "source_recipe": {
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_layered_skill_contracts",
+        "line": 5246,
+        "end_line": 5296,
+        "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce",
+        "body_sha256": "130863c31f31385bb590919718d4a7c014ba86519c2c8c44ce12e6a0265dcb5c"
+      },
+      "source_actual_calls": [
+        "SkillLoader(roots[source])",
+        "LayeredSkillLoader(agent,user)",
+        "layered.descriptions()",
+        "layered.load(**request)",
+        "loader.problems"
+      ],
+      "fixture": {
+        "path": "go/testdata/python-layered-skills.json",
+        "sha256": "609d201c689fcfb0c7579b65d8b219d12368c5f6065339a76b8f90a4a4c1bbbe",
+        "bytes": 128165,
+        "case_count": 16,
+        "case_names": [
+          "collision",
+          "empty",
+          "agent-only",
+          "user-only",
+          "agent-changed",
+          "agent-removed",
+          "agent-identical",
+          "agent-newlines",
+          "user-changed",
+          "user-removed",
+          "user-identical",
+          "user-newlines",
+          "agent-flood",
+          "user-flood",
+          "both-flood",
+          "available-cap"
+        ],
+        "load_count": 47,
+        "step_count": 0
+      },
+      "exporter_bindings": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 7003,
+          "code": "layered_skill_contracts = _layered_skill_contracts(Path(scratch) / \"layered-skills\")",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        },
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 7097,
+          "code": "\"python-layered-skills.json\": _json_bytes(layered_skill_contracts),",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        }
+      ],
+      "native_consumer": {
+        "path": "go/skills/layered_test.go",
+        "symbol": "TestLayeredMatchesActualPython",
+        "sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+      },
+      "native_assertions": [
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 79,
+          "code": "layered, err := NewLayeredCatalog(agent, user)",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        },
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 84,
+          "code": "if got := layered.Descriptions(); got != row.Descriptions || utf8.RuneCountInString(got) > MaxCatalogue {",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        },
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 106,
+          "code": "if (err != nil) != load.Failed || hex.EncodeToString(sum[:]) != load.SHA256 {",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        },
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 124,
+          "code": "check(layered.Problems(), row.Problems)",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        },
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 125,
+          "code": "check(agent.Problems(), row.AgentProblems)",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        },
+        {
+          "path": "go/skills/layered_test.go",
+          "line": 126,
+          "code": "check(user.Problems(), row.UserProblems)",
+          "file_sha256": "f1bb3a33ce2dce4de1d47e32fc18d50908b048a37391fcebf2b14ded3e5bdeb0"
+        }
+      ],
+      "bounded_scope": "Actual two concrete source catalogues: 16 recipes, shared-name collision refusal, explicit agent/user selection, Unicode scope normalization, exact combined provenance descriptions under one budget, finite load output/error hashes and independent source/layered problem logs after changed/removed/identical/newline mutations. Native extra concurrency checks are native-specific evidence.",
+      "not_claimed": [
+        "Omitted source is interchangeable with an empty source",
+        "Python optional caller-injected ProblemLog has the same public constructor shape",
+        "All custom loader snapshots or malformed source types",
+        "Owner identity derives from the catalogue",
+        "Foreign owner access or publication can be admitted by a skill name"
+      ]
+    },
+    "owner_resources": {
+      "source_recipe": {
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_owner_resource_contracts",
+        "line": 5373,
+        "end_line": 5429,
+        "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce",
+        "body_sha256": "faf0e2280bfaf556a7ea14d45d0859437dba89b8d92c5d39b4534b31e97bfd60"
+      },
+      "source_actual_calls": [
+        "UserResourceResolver(root,agent,secrets)",
+        "resolver.for_owner(owner)",
+        "resource.scope",
+        "resource.root.name",
+        "resource.skills.descriptions()",
+        "resource.skills.load(name)",
+        "ScopedMemory(resource.memory,owner).write(...)",
+        "resolver.problems"
+      ],
+      "fixture": {
+        "path": "go/testdata/python-owner-resources.json",
+        "sha256": "94f41cc3f45459acaef1eca96d5468fefe690185c3cc46aede955d4063a9ab82",
+        "bytes": 10737,
+        "case_count": 4,
+        "case_names": [
+          "owners",
+          "snapshot",
+          "problems",
+          "masked"
+        ],
+        "load_count": 0,
+        "step_count": 28
+      },
+      "exporter_bindings": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 7005,
+          "code": "owner_resource_contracts = _owner_resource_contracts(Path(scratch) / \"owner-resources\")",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        },
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "line": 7099,
+          "code": "\"python-owner-resources.json\": _json_bytes(owner_resource_contracts),",
+          "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce"
+        }
+      ],
+      "native_consumer": {
+        "path": "go/userresources/resolver_test.go",
+        "symbol": "TestResourcesMatchActualPython",
+        "sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+      },
+      "native_assertions": [
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 127,
+          "code": "if cached != step.Cached || string(resource.Scope()) != step.Scope || string(resource.Directories().Key()) != step.Key || resource.Skills().Descriptions() != step.Descriptions {",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        },
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 130,
+          "code": "if resource.Owner() != owner || resource.Memory().Owner() != memory.OwnerID(owner) {",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        },
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 138,
+          "code": "if output != step.Output || (err != nil) != step.Failed {",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        },
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 142,
+          "code": "output, err := resource.Memory().Write(ctx, memory.Input{Name: step.Name, Body: step.Body})",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        },
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 147,
+          "code": "output, err := resource.Memory().Index(ctx)",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        },
+        {
+          "path": "go/userresources/resolver_test.go",
+          "line": 156,
+          "code": "if !reflect.DeepEqual(problems, step.Problems) || !reflect.DeepEqual(local, step.LocalProblems) {",
+          "file_sha256": "1492d981f819e85935cdbdc69916abc768bc583a69318be4632982a1acfb1e9a"
+        }
+      ],
+      "bounded_scope": "Four actual resource recipes, 28 ordered steps: exact trusted owner IDs (Alice/Bob, surrounding spaces, composed/decomposed Unicode), digest-root bindings and same-resolver cache identity; scoped skill collision and missing foreign user skill; mutable bound memory write/index isolation; old catalogue retained after external file creation until a new resolver; owner-local problem logs and fresh operator aggregate; an explicit SecretRegistry masks one memory write. UserResources is the actual bundle constructed by for_owner and consumed by both sides, with private immutable native bindings and a mutable bound memory service.",
+      "not_claimed": [
+        "Every arbitrary direct Python UserResources dataclass construction has a Go equivalent constructor",
+        "Untrusted model input can select the owner or resource root",
+        "All secrets callback implementations, callback panic behavior, None and explicit-null behavior are equivalent",
+        "This fixture proves process restart, SQLite persistence or a team scheduler",
+        "Resources are immutable memory contents or cross-process snapshot refresh"
+      ]
+    },
+    "managed_supplement": {
+      "source_recipe": {
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_user_session_resource_contracts",
+        "line": 5539,
+        "end_line": 5600,
+        "file_sha256": "bd805bc11da450a58619e997a2ba7b42c5174492f17c8dbe9d92a0b65a4040ce",
+        "body_sha256": "1f87ae510669849bf11e9610a1a9a6266e990943b59f643f8fca00af9f91f2e7"
+      },
+      "fixture": {
+        "path": "go/testdata/python-user-session-resources.json",
+        "sha256": "4ff670bc37cc8a4b2205054a97e4ea697d3dd5eb3c4a8a6082ab05e6d15ec306",
+        "bytes": 9743,
+        "frame_count": 9,
+        "load_count": 36
+      },
+      "native_consumer": {
+        "path": "go/agent/user_resources_test.go",
+        "symbol": "TestManagedUserResourceFramesMatchActualPython",
+        "sha256": "3892e8bbd138ba6e129f174a62d8629737b81c53d0ef14774f87760c489bd794"
+      },
+      "bounded_scope": "Supplemental managed bundle evidence only: nine frames and 36 gated loads check admitted owners, pinned live/fork catalogues, explicit child inheritance, source publication refresh visible at restore, scheduled anonymous construction and resolver-disabled construction.",
+      "limitations": [
+        "The Source producer uses actual SQLiteStateStore, but this native test uses newRuntimeStateStore; this test alone is not native SQLite close/reopen evidence.",
+        "The Source producer spawns an actual teammate, but this native test maps that frame to explicitly constructed NewRuntimeSession with the inherited bundle; this test alone is not native team scheduler parity.",
+        "This supplemental consumer is not needed to turn the four public rows into a whole manager or lifecycle acceptance claim."
+      ]
+    },
+    "public_identity_audit": {
+      "review": {
+        "path": "var/go-public-contract-closure-2026-10-14/identity-audit-review.json",
+        "sha256": "d2d316fde9c901d5d8824f2988360b22f0a8a6c2e43a9598c80efc1011878c0c"
+      },
+      "rows": [
+        {
+          "id": "export:build_id",
+          "from_status": "evidence_incomplete",
+          "proposed_status": "verified",
+          "status": "pending_gates",
+          "applied": false,
+          "source_recipes": [
+            {
+              "path": "python/tools/public_identity_audit_contracts.py",
+              "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+              "symbol": "public_identity_audit_contracts",
+              "line": 22,
+              "end_line": 198
+            }
+          ],
+          "execution": {
+            "source_capture": "not_run",
+            "focused": "not_run",
+            "full_go": "not_run",
+            "race": "not_run",
+            "full_python": "not_run"
+          },
+          "bounded_scope": "Actual Source package-content/cached/edit/non-source and failure-recovery behavior; native 12-digit SHA256 artifact adaptation with streamed32KiB read, one cached success and explicit retryable failure. No equal cross-language hash claim.",
+          "native_assertions": [
+            {
+              "path": "go/identity/identity_test.go",
+              "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+              "symbol": "TestBuildFingerprintContentCacheAndFailures",
+              "line": 21
+            },
+            {
+              "path": "go/identity/identity_test.go",
+              "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+              "symbol": "TestRuntimeIdentityMatchesActualPythonRelationships",
+              "line": 161
+            },
+            {
+              "path": "go/launcher/public_identity_contract_test.go",
+              "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+              "symbol": "TestPublicRuntimeIdentityReachesLauncherAndSharedHTTPProcess",
+              "line": 24
+            },
+            {
+              "path": "go/launcher/public_identity_contract_test.go",
+              "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+              "symbol": "TestPublicIdentityUnavailableExecutableFailsBeforeComposition",
+              "line": 129
+            }
+          ],
+          "limitations": [
+            "Source hashes Python source paths+contents; native hashes executable bytes. Byte-identical relocation preserves native identity, while builds with distinct bytes differ.",
+            "Process package initialization timestamp is the native analogue of Source module STARTED_AT, not OS creation-time recovery.",
+            "Pending direct bounded two-artifact probe required before final verified disposition."
+          ]
+        },
+        {
+          "id": "export:runtime_identity",
+          "from_status": "evidence_incomplete",
+          "proposed_status": "verified",
+          "status": "pending_gates",
+          "applied": false,
+          "source_recipes": [
+            {
+              "path": "python/tools/public_identity_audit_contracts.py",
+              "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+              "symbol": "public_identity_audit_contracts",
+              "line": 22,
+              "end_line": 198
+            }
+          ],
+          "execution": {
+            "source_capture": "not_run",
+            "focused": "not_run",
+            "full_go": "not_run",
+            "race": "not_run",
+            "full_python": "not_run"
+          },
+          "bounded_scope": "Three actual public Source no-manager/default-manager/authenticated-manager profiles plus eight wall-clock backward/forward, negative elapsed, decimal rounding/tie/signed-zero controls. Native Runtime emits the same manager-free JSON keys; launcher/HTTP compose shared PID/package-start/wall elapsed rounded to3 decimals and actual manager posture.",
+          "native_assertions": [
+            {
+              "path": "go/identity/identity_test.go",
+              "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+              "symbol": "TestRuntimeIdentityMatchesActualPythonRelationships",
+              "line": 161
+            },
+            {
+              "path": "go/launcher/public_identity_contract_test.go",
+              "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+              "symbol": "TestPublicRuntimeIdentityReachesLauncherAndSharedHTTPProcess",
+              "line": 24
+            },
+            {
+              "path": "go/launcher/public_identity_contract_test.go",
+              "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4",
+              "symbol": "TestPublicIdentityUnavailableExecutableFailsBeforeComposition",
+              "line": 129
+            },
+            {
+              "path": "go/identity/identity_test.go",
+              "symbol": "TestProcessSnapshotMatchesActualPythonWallClock",
+              "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6",
+              "line": 114
+            }
+          ],
+          "limitations": [
+            "Posture remains manager-owned; existing native null-component labels are retained as declared adapters.",
+            "Config.Now remains request/rate time, not a process-start injector. Explicit Config.Build override intentionally remains available."
+          ]
+        },
+        {
+          "id": "export:audit",
+          "from_status": "evidence_incomplete",
+          "proposed_status": "verified",
+          "status": "pending_gates",
+          "applied": false,
+          "source_recipes": [
+            {
+              "path": "python/tools/public_identity_audit_contracts.py",
+              "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+              "symbol": "public_identity_audit_contracts",
+              "line": 22,
+              "end_line": 198
+            },
+            {
+              "path": "python/tools/audit_live_contracts.py",
+              "sha256": "674c4af5a628ac904b2f6212b5f7ee10c93d4b3e8ead42f0271a421a7d94350f",
+              "symbol": "audit_live_contracts",
+              "line": 62,
+              "end_line": 156
+            }
+          ],
+          "execution": {
+            "source_capture": "not_run",
+            "focused": "not_run",
+            "full_go": "not_run",
+            "race": "not_run",
+            "full_python": "not_run"
+          },
+          "bounded_scope": "Public audit alias is the exact function executed by existing Source live corpus. Thirteen actual native manager profiles compare all Finding fields and exact renderer text without creating sessions; all16 captured profiles also compare pure live composition.",
+          "native_assertions": [
+            {
+              "path": "go/audit/manager_test.go",
+              "sha256": "051bacb0ee6848182d545a9b885a48c9659836df862acd968ff91055c964fdc5",
+              "symbol": "TestManagerAuditMatchesActualSourceProfilesWithoutCreatingSessions",
+              "line": 35
+            },
+            {
+              "path": "go/audit/live_test.go",
+              "sha256": "25a8510c9f5d13fceb1237303665ebb1698a31d0aa22483485540e11e059956a",
+              "symbol": "TestComposeLiveMatchesFullActualSourceManagerAudits",
+              "line": 18
+            },
+            {
+              "path": "go/audit/public_contract_test.go",
+              "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+              "symbol": "TestPublicFindingAndRendererMatchActualPython",
+              "line": 10
+            }
+          ],
+          "limitations": [
+            "Three Source dynamic fault/log profiles use typed composition plus separate native agent fault/log evidence; not arbitrary Python manager attributes or an atomic fleet transaction."
+          ]
+        },
+        {
+          "id": "export:render_audit",
+          "from_status": "evidence_incomplete",
+          "proposed_status": "verified",
+          "status": "pending_gates",
+          "applied": false,
+          "source_recipes": [
+            {
+              "path": "python/tools/public_identity_audit_contracts.py",
+              "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+              "symbol": "public_identity_audit_contracts",
+              "line": 22,
+              "end_line": 198
+            }
+          ],
+          "execution": {
+            "source_capture": "not_run",
+            "focused": "not_run",
+            "full_go": "not_run",
+            "race": "not_run",
+            "full_python": "not_run"
+          },
+          "bounded_scope": "Six direct root-public Finding/render recipes preserve all four string fields, caller order, exact complete text, severity-order summary, repeated counts, empty findings, Unicode/newline/control text; five invalid severities refuse without partial text.",
+          "native_assertions": [
+            {
+              "path": "go/audit/public_contract_test.go",
+              "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+              "symbol": "TestPublicFindingAndRendererMatchActualPython",
+              "line": 10
+            }
+          ],
+          "limitations": [
+            "Source frozen dataclass construction validates severity; Go typed Finding values are validated at Render, an explicit native API-boundary adaptation.",
+            "No Python dataclass slots/identity/mutation or arbitrary-object equivalence claim."
+          ]
+        },
+        {
+          "id": "export:Finding",
+          "from_status": "evidence_incomplete",
+          "proposed_status": "verified",
+          "status": "pending_gates",
+          "applied": false,
+          "source_recipes": [
+            {
+              "path": "python/tools/public_identity_audit_contracts.py",
+              "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+              "symbol": "public_identity_audit_contracts",
+              "line": 22,
+              "end_line": 198
+            }
+          ],
+          "execution": {
+            "source_capture": "not_run",
+            "focused": "not_run",
+            "full_go": "not_run",
+            "race": "not_run",
+            "full_python": "not_run"
+          },
+          "bounded_scope": "Six direct root-public Finding/render recipes preserve all four string fields, caller order, exact complete text, severity-order summary, repeated counts, empty findings, Unicode/newline/control text; five invalid severities refuse without partial text.",
+          "native_assertions": [
+            {
+              "path": "go/audit/public_contract_test.go",
+              "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2",
+              "symbol": "TestPublicFindingAndRendererMatchActualPython",
+              "line": 10
+            }
+          ],
+          "limitations": [
+            "Source frozen dataclass construction validates severity; Go typed Finding values are validated at Render, an explicit native API-boundary adaptation.",
+            "No Python dataclass slots/identity/mutation or arbitrary-object equivalence claim."
+          ]
+        }
+      ],
+      "binary_probe_obligation": {
+        "source": {
+          "path": "go/identity/testdata/artifact-probe/main.go",
+          "sha256": "077ed20e91f1959a18bd2acf8a68e2808d747bb93aa66ba67c572136368f5172"
+        },
+        "build_a": [
+          "go",
+          "build",
+          "-o",
+          "../var/go-public-contract-closure-2026-10-14/identity-probe-a",
+          "-ldflags=-X main.variant=first",
+          "./identity/testdata/artifact-probe"
+        ],
+        "build_b": [
+          "go",
+          "build",
+          "-o",
+          "../var/go-public-contract-closure-2026-10-14/identity-probe-b",
+          "-ldflags=-X main.variant=second",
+          "./identity/testdata/artifact-probe"
+        ],
+        "assertions": [
+          "Each observed identity.build equals streaming SHA256 of its own artifact bytes truncated to12 hex.",
+          "Artifact a and b have equal vcs_revision/vcs_modified but different variant and different content fingerprint.",
+          "Two invocations of artifact a have equal fingerprint and different actual PID; their package start is positive and uptime nonnegative.",
+          "A byte-identical relocated copy retains artifact a fingerprint.",
+          "Owned copied artifact a with -remove-executable reports fixed fingerprint_error and empty identity.build; it never falls back to development."
+        ],
+        "status": "not_run"
+      },
+      "production_and_source_current_snapshot": [
+        {
+          "path": "python/tools/public_identity_audit_contracts.py",
+          "sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36"
+        },
+        {
+          "path": "python/tests/test_public_identity_audit_contracts.py",
+          "sha256": "53f25fe65376ddf4aceeb332f5323ec4adeddcc57c4c0e6b03f19a35746618cc"
+        },
+        {
+          "path": "go/audit/public_contract_test.go",
+          "sha256": "eeeca36d7a48a2cd274822eb08cc5594872fe9fa7d10aa6a2ce817ba7b2d00d2"
+        },
+        {
+          "path": "go/identity/identity.go",
+          "sha256": "c202f1cd87255c67683b1c10eabafa73a0714be588e6a5dbd1c8849f75094be8"
+        },
+        {
+          "path": "go/identity/identity_test.go",
+          "sha256": "ad9c9bf2443199e2fa969be458ef992127525f1d06321132ab807bf2d71084a6"
+        },
+        {
+          "path": "go/identity/testdata/artifact-probe/main.go",
+          "sha256": "077ed20e91f1959a18bd2acf8a68e2808d747bb93aa66ba67c572136368f5172"
+        },
+        {
+          "path": "go/launcher/app.go",
+          "sha256": "c7f2415eedc778990544a9435b9718b90ea64872a687aa2ca9aab47f70cdd400"
+        },
+        {
+          "path": "go/launcher/public_identity_contract_test.go",
+          "sha256": "bff760a5abdf20481dbe99e1ffc84de226057a087ed5960a438a012e4a5852b4"
+        },
+        {
+          "path": "go/httpapi/server.go",
+          "sha256": "9e15bf273a91cf4054320241e2bf5337160332d978794ddee9adfda6ca4f88dc"
+        },
+        {
+          "path": "go/httpapi/routes.go",
+          "sha256": "e4de6e2fd72e9fb1a73ec0dca77a49f21a99304081e9e53aa820c19ee1c2ed57"
+        }
+      ],
+      "review_corrections": {
+        "source_build_cache": "Only successful returns are cached; Source lru_cache retries exceptions.",
+        "source_clock": "Shared package-start float plus actual wall-clock delta, including backwards time, matches Source.",
+        "rounding": "strconv.FormatFloat(delta,f,3,64) + ParseFloat mirrors original-float decimal rounding and signed zero; no multiplication-round approximation.",
+        "source_sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+        "new_source_cases": {
+          "read_failure_recovery": 1,
+          "wall_clock": 8
+        },
+        "tests_builds_captures_run_by_agent": false
+      },
+      "current_fixture_freshness": "pending actual Source recapture after source failure-recovery and wall-clock control additions; root owns its capture handle and final gate receipt"
+    },
+    "public_harness": {
+      "review": {
+        "path": "var/go-public-contract-closure-2026-10-14/harness-review.json",
+        "sha256": "7ea8a97c805926ed44b74c8498208758eb74fb3f400d49ce006e1e45bc30e857"
+      },
+      "field_count": 16,
+      "field_mapping": [
+        {
+          "field": "tools",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "tools:",
+            "line": 42
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Tools / ManagerServices.Tools",
+          "type_adapter": "ToolCatalog immutable snapshot of real bash definition; its native handler explicitly captures the selected precomposed executor.",
+          "nil_or_default_disposition": "nil chooses the native runtime catalogue; a nonnil empty catalogue remains explicit",
+          "actual_child_disposition": "Source built-in registry handlers resolve ctx.agent.toolset. Native NewBashToolCatalog captures its operator-selected executor at construction; selected catalogue/handler retains that executor, so sandbox/spill must be composed into it before catalogue creation. This is not an instruction for RuntimeConfig.Spill to mutate an already frozen custom handler.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "tools"
+          },
+          "execution_status": "pending_root_serial_gates",
+          "default_catalogue_separate_assertion": "TestPublicHarnessDefaultCatalogueBindsSpillIntoFreshChild"
+        },
+        {
+          "field": "transport",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "transport:",
+            "line": 43
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Provider + StreamProgress / ManagerServices.Provider + StreamProgress",
+          "type_adapter": "Provider owns the model request; stream progress has a separate typed policy",
+          "nil_or_default_disposition": "Provider is required at direct runtime/manager construction; no implicit previous-template inheritance",
+          "actual_child_disposition": "Actual direct request dispatch reaches the same Provider in parent/child. Launcher.Options.ProviderTransport is HTTP RoundTripper policy, not an alias of Source Agent Transport; streaming behavior has separate existing contracts.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "transport"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "hooks",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "hooks:",
+            "line": 44
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Hooks + UserPromptHooks + StopHooks / ManagerServices equivalents",
+          "type_adapter": "GateHooks separates before/guard/after/observer; prompt and stop are named interfaces",
+          "nil_or_default_disposition": "empty GateHooks is an empty chain; default StopHooks are installed unless explicitly replaced",
+          "actual_child_disposition": "The new finite profile checks gate Before identity through manager/runtime/child. Other hook method behavior remains under existing hook/extension contracts, not inferred from one object identity.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "hooks"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "skills",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "skills:",
+            "line": 45
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Skills / ManagerServices.Skills",
+          "type_adapter": "SkillSource",
+          "nil_or_default_disposition": "nil uses an empty catalog at direct runtime and manager boundaries",
+          "actual_child_disposition": "Shared SkillSource identity retained; mutable session/todo/history are fresh.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "skills"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "system_builder",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "system_builder:",
+            "line": 46
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.SystemBuilder / ManagerServices.SystemBuilder; SessionDefaults.System and CreateSessionRequest.System explicit string",
+          "type_adapter": "SystemBuilder typed callback, FixedSystem explicit override",
+          "nil_or_default_disposition": "nil direct runtime selects DefaultSystemBuilder; manager fixed system has higher precedence",
+          "actual_child_disposition": "Source child retains builder attribute identity but uses its explicit fixed system. Native child replaces builder with FixedSystem; actual model-visible system agrees. Arbitrary Python callback attribute identity is not a Go API requirement.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "system_builder"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "compactor",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "compactor:",
+            "line": 47
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Compactor / ManagerServices.Compactor",
+          "type_adapter": "Compactor interface",
+          "nil_or_default_disposition": "nil selects a new DefaultCompactor",
+          "actual_child_disposition": "Selected policy identity is shared through the default child, with session state kept fresh.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "compactor"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "recovery",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "recovery:",
+            "line": 48
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Recovery / ManagerServices.Recovery; optional DefaultRecoveryConfig",
+          "type_adapter": "Recovery interface",
+          "nil_or_default_disposition": "nil selects DefaultRecovery or the explicit typed DefaultRecoveryConfig",
+          "actual_child_disposition": "Explicit policy identity remains shared; default policy config detachment already has an existing test.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "recovery"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "stuck_detector",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "stuck_detector:",
+            "line": 49
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.StuckDetector / ManagerServices.StuckDetector",
+          "type_adapter": "StuckDetector interface",
+          "nil_or_default_disposition": "nil selects DefaultStuckDetector",
+          "actual_child_disposition": "Explicit detector identity retained. Detector integer thresholds/error timing are independently captured contracts.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "stuck_detector"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "cache_policy",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "cache_policy:",
+            "line": 50
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.CachePolicy / ManagerServices.CachePolicy",
+          "type_adapter": "CachePolicy interface",
+          "nil_or_default_disposition": "nil selects DefaultCachePolicy",
+          "actual_child_disposition": "Explicit cache policy identity retained; request annotation details are separately tested.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "cache_policy"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "secrets",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "secrets:",
+            "line": 51
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Secrets / ManagerServices.Secrets",
+          "type_adapter": "ApprovalRedactor/TextMasker and shell.SecretSource when supported",
+          "nil_or_default_disposition": "nil is the native absent masking dependency, equivalent to Source Null for the existing bounded default contract",
+          "actual_child_disposition": "Runtime/gate/child retain the masker. Native shell binding may clone the executor rather than expose a separate public secrets object.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "secrets"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "sandbox",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "sandbox:",
+            "line": 52
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "ManagerServices.Sandbox -> default BashFactory -> RuntimeConfig.Bash; launcher.Options.Sandbox",
+          "type_adapter": "shell.Sandbox bound inside the executor",
+          "nil_or_default_disposition": "Source cleared None creates NullSandbox; native nil sandbox means host execution inside the required executor",
+          "actual_child_disposition": "An observed adapter delegates to the real native NullSandbox and records actual argv invocation through runtime/child. This verifies composition, not OS confinement. Competing custom factory + Sandbox remains rejected.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "sandbox"
+          },
+          "execution_status": "pending_root_serial_gates",
+          "default_catalogue_separate_assertion": "TestPublicHarnessDefaultCatalogueBindsSpillIntoFreshChild"
+        },
+        {
+          "field": "spill",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "spill:",
+            "line": 53
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Spill / ManagerServices.Spill -> shell.Executor.WithSpill",
+          "type_adapter": "spill.Store inside the pinned executor",
+          "nil_or_default_disposition": "nil disables the direct runtime spill binding; manager spill remains an explicit service",
+          "actual_child_disposition": "config.Bash seed has no store; RuntimeConfig.Spill binds the parent runtime clone. Separately the explicit native catalogue captures a WithSpill clone containing that same Store. Actual 60 KB parent/child backend probes preserve output under the same selected Store root. A child retains the explicit catalogue executor, not necessarily the parent runtime executor pointer; Source also creates a fresh Toolset while retaining only its spill Store identity.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "spill"
+          },
+          "execution_status": "pending_root_serial_gates",
+          "default_catalogue_separate_assertion": "TestPublicHarnessDefaultCatalogueBindsSpillIntoFreshChild"
+        },
+        {
+          "field": "subagents",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "subagents:",
+            "line": 54
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Subagents / ManagerServices.Subagents",
+          "type_adapter": "SubagentProvider interface",
+          "nil_or_default_disposition": "nil selects InProcessSubagents",
+          "actual_child_disposition": "Actual parent delegates through the selected InProcessSubagents; its fresh child retains the provider handle for further delegation.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "subagents"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "token_efficiency",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "token_efficiency:",
+            "line": 55
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.TokenEfficiency / ManagerServices.TokenEfficiency / ManagerConfig.Efficiency",
+          "type_adapter": "efficiency.Runtime",
+          "nil_or_default_disposition": "nil direct runtime is absent/no optimization; manager assembles its typed default runtime. Source Agent assembles an off runtime from a cleared Harness",
+          "actual_child_disposition": "Explicit off runtime with no raw store retains identity in this finite profile. Existing guarded store rebinding remains authoritative; no cross-workspace raw-store identity promise.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "token_efficiency"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "role_tool_policy",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "role_tool_policy:",
+            "line": 56
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.RoleToolPolicy / ManagerServices.RoleToolPolicy",
+          "type_adapter": "RoleToolPolicy interface",
+          "nil_or_default_disposition": "nil selects DefaultRoleToolPolicy",
+          "actual_child_disposition": "Actual default child runs selection against a nonempty bash catalogue; profile identity is retained and selected catalogue order is compared.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "role_tool_policy"
+          },
+          "execution_status": "pending_root_serial_gates"
+        },
+        {
+          "field": "injectors",
+          "source_declaration": {
+            "path": "python/mini_loop/harness.py",
+            "sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+            "symbol_or_anchor": "injectors:",
+            "line": 57
+          },
+          "source_value_cases": [
+            "resolve with None retains template",
+            "explicit replacement wins",
+            "explicit False is preserved by Harness.resolve only",
+            "derive replacement shares all other fields",
+            "derive None clears the template field",
+            "original immutable template remains unchanged"
+          ],
+          "source_actual_agent_profiles": [
+            "harness-only",
+            "explicit-none-inherits",
+            "explicit-values-win",
+            "derived-values-win"
+          ],
+          "native_named_bindings": "RuntimeConfig.Injectors / ManagerServices.Injectors",
+          "type_adapter": "[]MessageInjector, copied container with shared component entries",
+          "nil_or_default_disposition": "Source explicit None inherits nonempty Harness.injectors, explicit [] replaces it. After resolution, Go nil selects lifecycle defaults while nonnil empty suppresses them",
+          "actual_child_disposition": "Actual parent/child invocation and depth are observed, caller/child list containers are detached, and explicit nonnil empty survives a fresh child. Runtime-facts/core control injection remains appended by production code.",
+          "native_finite_binding_assertion": {
+            "path": "go/agent/public_harness_contract_test.go",
+            "symbol": "publicHarnessBoundFields",
+            "field_key": "injectors"
+          },
+          "execution_status": "pending_root_serial_gates"
+        }
+      ],
+      "source_recipes": [
+        {
+          "path": "python/tools/public_harness_contracts.py",
+          "sha256": "9ff80c600b481e8de46e4fb917a5b9c2db624c90d9a45b36daa75c8c44640294",
+          "symbol_or_anchor": "def public_harness_contracts",
+          "line": 11
+        },
+        {
+          "path": "python/tests/test_public_harness_contracts.py",
+          "sha256": "7f72359e0f537f0813be08a23ce91a55f5203262847d37f9379f13d3cf8b1937",
+          "symbol_or_anchor": "def test_actual_public_harness_contracts",
+          "line": 8
+        }
+      ],
+      "native_assertions": [
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessTypedCompositionMatchesActualSource",
+          "line": 279
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessManagerBridgeRetainsEveryTypedSeam",
+          "line": 331
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessNilAndExplicitEmptyTypedDispositions",
+          "line": 406
+        },
+        {
+          "path": "go/agent/public_harness_contract_test.go",
+          "sha256": "3818f9bcacda4409628b7682e0c50a86e3db1b5356a1c2a9bd3e2746183c06a3",
+          "symbol_or_anchor": "func TestPublicHarnessDefaultCatalogueBindsSpillIntoFreshChild",
+          "line": 366
+        }
+      ],
+      "precise_boundaries": [
+        "No native public Harness.derive/resolve was added; Source None fallback is observed in Source and the resolved selection enters typed native composition explicitly. Native zero values are not mislabeled as Source explicit-None fallback.",
+        "No dynamic string-keyed fields, any, reflection on production attributes, unsafe accessor, new dependency, or production behavior change introduced.",
+        "The Go fixture consumer uses reflection only to assert that an explicit empty test-owned injector slice is nonnil, not to emulate Harness fields or production dispatch.",
+        "A real single-tool bash catalogue makes child capability selection nonvacuous; the model profile returns text and does not execute a tool. Separate bounded operator backend probes validate native sandbox/spill binding.",
+        "Manager bridge test invokes the actual production baseManagedRuntimeConfig and NewRuntimeSession with all finite bindings; it does not claim a new full Launcher or workflow-worker acceptance gate.",
+        "Existing Source Hook callbacks are mapped across GateHooks/UserPromptHooks/StopHooks; new finite binding evidence selects a before hook. Full hook semantics remain under prior dedicated contracts.",
+        "Source False resolution is a value-object observation, not a claim that every Agent seam accepts a boolean as a valid implementation.",
+        "Unknown Source derive names fail with sorted TypeError; frozen assignment fails. Native configuration fields are compile-time selected; no run-time typo string API is invented.",
+        "Source child.spill identity and separate Toolset construction do not impose native executor pointer identity. Explicit native catalogue handlers retain their operator-selected backend; the test composes that backend before catalogue freezing rather than mutating production handlers."
+      ]
+    },
+    "startup_raw_store_posture": {
+      "status": "pending_root_gates",
+      "source_recipe": {
+        "path": "python/tools/efficiency_startup_contracts.py",
+        "symbol": "efficiency_startup_contracts",
+        "sha256": "a7a6bb786982174d3ac4223942233b70daef842726caa47e65b59a4ba44aad61"
+      },
+      "fixture": {
+        "path": "go/testdata/python-efficiency-startup.json",
+        "sha256": "0ad03dcd6a0ed031cec9110ce6999d80665cbcecf24dcb7d818a3e574490f3e5"
+      },
+      "case_count": 9,
+      "profiles": [
+        {
+          "name": "off-normal",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "off-concise",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "shadow-normal",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "shadow-concise",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "enforce-normal",
+          "store_present": true,
+          "limits": [
+            7.0,
+            20000,
+            40000
+          ],
+          "store_closed": true
+        },
+        {
+          "name": "enforce-concise",
+          "store_present": true,
+          "limits": [
+            7.0,
+            20000,
+            40000
+          ],
+          "store_closed": true
+        },
+        {
+          "name": "readonly",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "no-persistence",
+          "store_present": false,
+          "limits": null,
+          "store_closed": true
+        },
+        {
+          "name": "below-threshold",
+          "store_present": true,
+          "limits": [
+            7.0,
+            20000,
+            40000
+          ],
+          "store_closed": true
+        }
+      ],
+      "production": {
+        "path": "go/agent/managed_efficiency_status.go",
+        "sha256": "0c99838bfe7016ab0069101b126d2a936e15e031ceb4630d4e4db8e765a131dc"
+      },
+      "native_consumer": {
+        "path": "go/launcher/efficiency_test.go",
+        "symbol": "TestEfficiencyLauncherMatchesSourceHTTP",
+        "sha256": "fd736476442ff52ede26d526d479a7e7c9094c5bb39646350648d11c782dd14a"
+      },
+      "native_assertions": [
+        {
+          "path": "go/launcher/efficiency_test.go",
+          "sha256": "fd736476442ff52ede26d526d479a7e7c9094c5bb39646350648d11c782dd14a",
+          "line": 175,
+          "code": "if present != row.StorePresent || (row.Limits != nil) != present {"
+        },
+        {
+          "path": "go/launcher/efficiency_test.go",
+          "sha256": "fd736476442ff52ede26d526d479a7e7c9094c5bb39646350648d11c782dd14a",
+          "line": 185,
+          "code": "if storeStatus.Closed || storeStatus.Limits.TTLSeconds != ttl || storeStatus.Limits.MaxArtifactBytes.Cmp(maximum) != 0 || storeStatus.Limits.MaxTotalBytes.Cmp(total) != 0 {"
+        },
+        {
+          "path": "go/launcher/efficiency_test.go",
+          "sha256": "fd736476442ff52ede26d526d479a7e7c9094c5bb39646350648d11c782dd14a",
+          "line": 192,
+          "code": "if afterPresent != present || (!afterPresent || closedStatus.Closed) != row.StoreClosed {"
+        }
+      ],
+      "native_extra_test": {
+        "path": "go/agent/managed_efficiency_status_test.go",
+        "symbol": "TestRawArtifactStoreStatusOwnsLimitsAndReportsShutdown",
+        "sha256": "34149e69d1f46c9a4229737ad3a2c94a963f248e793e6ef8d6f432b306f96f6e"
+      },
+      "read_only_review": {
+        "determinate_findings": [],
+        "real_object": "Reads the published session.core.tokenEfficiency.RawStore() selected by actual Manager/Launcher composition, never merely ManagerEfficiencyConfig.",
+        "immutable_binding": "Runtime and store binding are set before ManagedSession publication; RestrictTools only replaces the tool catalogue. Retained handles keep observing the same store after manager shutdown.",
+        "concurrency": "Limits are immutable after copied construction and returned with fresh big.Ints. Closed() locks the same store mutex as Close(); there is no mutable field read outside its owning synchronization.",
+        "absence": "The return boolean distinguishes absence from an existing open or closed store. Source store_closed = store is None or store.closed is compared as !present || status.Closed.",
+        "authority": "Projection contains only copied limit values and closed boolean. It exposes no raw content, reference, store handle or workspace path; no sweep/read/write or callbacks occur."
+      },
+      "remaining_scope": [
+        "Comparing configured effective TTL and size limits does not itself execute elapsed TTL eviction or force per-item/total capacity exhaustion; existing dedicated store tests remain separate.",
+        "Nine captured startup profiles close the original omitted store fields only; no all-values token-efficiency API, custom provider, arbitrary AST backend or full migration acceptance claim."
+      ],
+      "required_root_gates": [
+        "Current Source exporter --check confirms the existing actual startup fixture stays current.",
+        "TestEfficiencyLauncherMatchesSourceHTTP compares all three Source fields in all nine actual startup profiles.",
+        "TestRawArtifactStoreStatusOwnsLimitsAndReportsShutdown verifies detached big.Int values, open/closed retention and default absence.",
+        "Frozen full Go, vet, race and Python gates pass with no changed runtime inputs."
+      ]
+    }
+  },
+  "evidence_group_note": "Review snapshots preserve authoring-time statuses. The authoritative applied rows and twenty current terminal gates above supply final finite acceptance.",
+  "required_gate_count": 20,
+  "current_gate_receipts": [
+    {
+      "name": "source-harness-fixed",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-harness-fixed/resources.json",
+        "sha256": "92f97d67454c17a6d3c215f2da536b1d8862c13a0f8be69c0f4445402384c970"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-harness-fixed/freeze.before.json",
+        "sha256": "975e136cfa19479aa7208d82807f2050e972bc0ea10c0181a695ff900d7fc549"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-harness-fixed/freeze.after.json",
+        "sha256": "975e136cfa19479aa7208d82807f2050e972bc0ea10c0181a695ff900d7fc549"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-harness-fixed/stability.json",
+        "sha256": "5a51dddb5daad8318540e01ed856d64e5ff94faa2ab513b8e43826e87bc014fa"
+      },
+      "freeze_scope": [
+        "python/mini_loop",
+        "python/tools/public_harness_contracts.py",
+        "python/tests/test_public_harness_contracts.py",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 89,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "var/go-public-contract-closure-2026-10-14/capture-harness.py"
+      ],
+      "completed_utc": "2026-10-14T10:33:23.334317+00:00"
+    },
+    {
+      "name": "source-identity-retry-clock",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-identity-retry-clock/resources.json",
+        "sha256": "feb0022ae4a386b190a3d59a0802b2308577fc1dd2c67db9b5683ea3ecd87cbd"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-identity-retry-clock/freeze.before.json",
+        "sha256": "c863598e1ddadd486cb54b46b6ce9264e8f007b78971fec7622c66d886967c6c"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-identity-retry-clock/freeze.after.json",
+        "sha256": "c863598e1ddadd486cb54b46b6ce9264e8f007b78971fec7622c66d886967c6c"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-identity-retry-clock/stability.json",
+        "sha256": "47cc46b9aab7f4fe97f67a8b815bccf755854ee140d9ddd5c301ec10c11af331"
+      },
+      "freeze_scope": [
+        "python/mini_loop",
+        "python/tools/public_identity_audit_contracts.py",
+        "python/tests/test_public_identity_audit_contracts.py",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 89,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "var/go-public-contract-closure-2026-10-14/capture-identity.py"
+      ],
+      "completed_utc": "2026-10-14T10:45:41.538585+00:00"
+    },
+    {
+      "name": "native-focused-verified",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/native-focused-verified/resources.json",
+        "sha256": "4b1ec31110a396ad6f93e3fecd8363561200261f09056aa80ced39b484a58da2"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/native-focused-verified/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/native-focused-verified/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/native-focused-verified/stability.json",
+        "sha256": "a951a6502d2eeb3beda8571e3577a0064e59db0a7c68ef3d9646e86d376cca1a"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-json",
+        "-count=1",
+        "-timeout=300s",
+        "./identity",
+        "./agent",
+        "./audit",
+        "./launcher",
+        "./skills",
+        "./userresources",
+        "-run",
+        "Test(BuildFingerprint|RuntimeIdentityMatches|ProcessSnapshot|Public|RawArtifactStoreStatus|EfficiencyLauncherMatches|ResourcesMatchActualPython|LayeredMatchesActualPython|SkillsMatchActualPython|ManagerAuditMatchesActualSource)"
+      ],
+      "completed_utc": "2026-10-14T10:54:20.347093+00:00"
+    },
+    {
+      "name": "python-focused-final",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-focused-final/resources.json",
+        "sha256": "0cf8b6a3b3cfc765a8096887c386033c2724c80c92487e12697e8c37e634d309"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-focused-final/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-focused-final/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-focused-final/stability.json",
+        "sha256": "d3071f526f2aca756db351086cf01432906505c1abfbcd30eb2d0534adc90697"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_public_identity_audit_contracts.py",
+        "python/tests/test_public_harness_contracts.py"
+      ],
+      "completed_utc": "2026-10-14T11:13:46.232559+00:00"
+    },
+    {
+      "name": "artifact-build-a",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-a/resources.json",
+        "sha256": "3e6236f311c8098b9a355c7d4070f22912301881f08241e7db647a50ad6e406c"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-a/freeze.before.json",
+        "sha256": "4578aed7675f8b838139d2531124629f2a88ac1ac0c87db1b674ef95342d22f6"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-a/freeze.after.json",
+        "sha256": "4578aed7675f8b838139d2531124629f2a88ac1ac0c87db1b674ef95342d22f6"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-a/stability.json",
+        "sha256": "3abef30f1eaf2686af3c559c7bf2c88357d775036ab0e1e199cbcd4861f57511"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [
+        "Go *_test.go"
+      ],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 763,
+      "current_matches": true,
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "../var/go-public-contract-closure-2026-10-14/identity-probe-a",
+        "-ldflags=-X main.variant=first",
+        "./identity/testdata/artifact-probe"
+      ],
+      "completed_utc": "2026-10-14T10:50:02.227141+00:00"
+    },
+    {
+      "name": "artifact-build-b",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-b/resources.json",
+        "sha256": "a27a466f00e5f110fc7c5c87378e084d5486473475f22980e3d2c917f96a3688"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-b/freeze.before.json",
+        "sha256": "4578aed7675f8b838139d2531124629f2a88ac1ac0c87db1b674ef95342d22f6"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-b/freeze.after.json",
+        "sha256": "4578aed7675f8b838139d2531124629f2a88ac1ac0c87db1b674ef95342d22f6"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-build-b/stability.json",
+        "sha256": "ae5419f4c5a3e95b419e7bd4b17885d4c81585198730bead22679b9b7391cdb5"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [
+        "Go *_test.go"
+      ],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 763,
+      "current_matches": true,
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "../var/go-public-contract-closure-2026-10-14/identity-probe-b",
+        "-ldflags=-X main.variant=second",
+        "./identity/testdata/artifact-probe"
+      ],
+      "completed_utc": "2026-10-14T10:53:04.990527+00:00"
+    },
+    {
+      "name": "artifact-runtime",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-runtime/resources.json",
+        "sha256": "8df95a4d126f6fe003948f0e1264f53a5c79972db945de883fcfff0698c205b5"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-runtime/freeze.before.json",
+        "sha256": "4419318dcae2b4cb5d988ae6438a328a356969c508f16ef5367bf9542673b99a"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-runtime/freeze.after.json",
+        "sha256": "4419318dcae2b4cb5d988ae6438a328a356969c508f16ef5367bf9542673b99a"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/artifact-runtime/stability.json",
+        "sha256": "9bf14299116dfaeb011bb88e4c3de551f67b8e926a65a8563f255ba471d9a192"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [
+        "Go *_test.go"
+      ],
+      "additional_explicit_inputs": [
+        "verify-artifacts.py",
+        "identity-probe-a",
+        "identity-probe-b"
+      ],
+      "frozen_inputs": 766,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "var/go-public-contract-closure-2026-10-14/verify-artifacts.py"
+      ],
+      "completed_utc": "2026-10-14T10:56:59.837509+00:00"
+    },
+    {
+      "name": "go-full",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-full/resources.json",
+        "sha256": "fde496448ba665c3d3af3f2f3a90122bf0a9edd8dbc6c11b702b47866ea437a3"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-full/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-full/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-full/stability.json",
+        "sha256": "31bcf8def96ecf78c5a1a051aa49c5b26ff1f79a65680b81dd45390d6d2b3a57"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-json",
+        "-count=1",
+        "-timeout=600s",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-contract-closure-2026-10-14/coverage.out",
+        "./..."
+      ],
+      "completed_utc": "2026-10-14T11:00:08.412607+00:00"
+    },
+    {
+      "name": "go-vet",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-vet/resources.json",
+        "sha256": "44dbcd76e7713dc393806317371cf48dfca1910a9748ac2a890ab4ee6b8850ba"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-vet/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-vet/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-vet/stability.json",
+        "sha256": "9b1629f2b654a3c5da0a0519313db00367f778c3eded769d3695533dc68da6d3"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "completed_utc": "2026-10-14T11:01:15.161036+00:00"
+    },
+    {
+      "name": "source-check-fixed",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-check-fixed/resources.json",
+        "sha256": "9c0c13adccd0cb6d0cca1acb43e4347a9e2b814b5a2d941a5e0ce536185b9ca2"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-check-fixed/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-check-fixed/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/source-check-fixed/stability.json",
+        "sha256": "3443d41353ebed43037d65beb0167f84687e53af476cf3a81571ff83807b7f15"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check"
+      ],
+      "completed_utc": "2026-10-14T11:07:09.024038+00:00"
+    },
+    {
+      "name": "python-full",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-full/resources.json",
+        "sha256": "d60a50d70b38db034af483193bbad49dc7fd58842e714b7c31e9e7b80643d584"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-full/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-full/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/python-full/stability.json",
+        "sha256": "01f50fc899a31dd7c21b6e3f14df792c997376750a0c42740fe368a7a73291e1"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "--ignore=var"
+      ],
+      "completed_utc": "2026-10-14T11:08:47.703929+00:00"
+    },
+    {
+      "name": "invariants",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/invariants/resources.json",
+        "sha256": "ac128af1d19380757c687b186a522fc9bd48cbd650222f7b411c34e57b20459c"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/invariants/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/invariants/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/invariants/stability.json",
+        "sha256": "5b38327053c90aa23adf5baeb6ea744aa7dc56cf19a272dc1be8654256fcf26d"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "completed_utc": "2026-10-14T11:08:53.251077+00:00"
+    },
+    {
+      "name": "scans",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/scans/resources.json",
+        "sha256": "371a5dc597e8b04194569f701a4e20dd70f6d101a7434f1535ad6464ee892b18"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/scans/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/scans/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/scans/stability.json",
+        "sha256": "aafba97e91e086e8fdeb5e517557312f365b2800d47c20beec2b267d55b631ee"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "completed_utc": "2026-10-14T11:09:06.020582+00:00"
+    },
+    {
+      "name": "guard-failing-store",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/guard-failing-store/resources.json",
+        "sha256": "f6758809f7492313ef5d6cdea1954af24ebab38cbcb4a1c60e9e928ab3cf9f81"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/guard-failing-store/freeze.before.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/guard-failing-store/freeze.after.json",
+        "sha256": "7e0fb1a822fce24a02ac0215617168f1f881a02e14aee4b38b6fbb6b44f18652"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/guard-failing-store/stability.json",
+        "sha256": "7946ded1b6ee1386a620b8c478b2eb6c85af4bacfd43612ce76858f8741a0c54"
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 518,
+      "current_matches": true,
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "failing-store-is-silent"
+      ],
+      "completed_utc": "2026-10-14T11:09:11.545444+00:00"
+    },
+    {
+      "name": "type-syntax",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-syntax/resources.json",
+        "sha256": "116dc7233afd78265d14efe31bbb46085f90419c2ea8d6f18e7863c9b32348bc"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-syntax/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-syntax/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-syntax/stability.json",
+        "sha256": "6fe26b13a03eabeed3290e31dbbc1ee2bab56ab38dd346c6719704f5b9508ad8"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "completed_utc": "2026-10-14T11:09:17.343871+00:00"
+    },
+    {
+      "name": "type-public",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-public/resources.json",
+        "sha256": "e9380745921a2476dae4fcff3edc55ab1feb9008cd768e87e7a5e4d5e7f118dc"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-public/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-public/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-public/stability.json",
+        "sha256": "94939afd15c28fb779bce434b30cb9be3054e7188681f3d4b1a6038b051aa8c0"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "completed_utc": "2026-10-14T11:09:23.001617+00:00"
+    },
+    {
+      "name": "type-private",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-private/resources.json",
+        "sha256": "acb9533418adc60506cc609900690bb90dac636a8fabcd6cbe9f097c91d62b15"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-private/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-private/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-private/stability.json",
+        "sha256": "2cf384c9bade5b06536c1590c06c3a75886dd8bddc70a9ec537f1c70a20eb9c6"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "completed_utc": "2026-10-14T11:09:28.652574+00:00"
+    },
+    {
+      "name": "type-variables",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-variables/resources.json",
+        "sha256": "97703be140909bcd2f04ed60e9c45bc056245bc9e9e3ddf3b702746d4d76b878"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-variables/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-variables/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/type-variables/stability.json",
+        "sha256": "0df90888055117a3541cc9d3b452520f14f18d3e3f74a4652ba6b8a8295959a7"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "completed_utc": "2026-10-14T11:09:34.304665+00:00"
+    },
+    {
+      "name": "go-race",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-race/resources.json",
+        "sha256": "076980d5f815f603b0b49f2a351a442cd40fb6c11ab836a37141fd58e271faeb"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-race/freeze.before.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-race/freeze.after.json",
+        "sha256": "f27b2c4d31dbd20f79ce4cd20be8072e34882be8b27517d739a4d7f1e1738a9e"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/go-race/stability.json",
+        "sha256": "ce4ea8f3d25c2b5af5a9df31c16478b44b250324920aeb569382b6c3e6136528"
+      },
+      "freeze_scope": [
+        "go",
+        "AGENTS.md"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 1308,
+      "current_matches": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=600s",
+        "./..."
+      ],
+      "completed_utc": "2026-10-14T11:13:13.045218+00:00"
+    },
+    {
+      "name": "architecture",
+      "status": "passed",
+      "resources": {
+        "path": "var/go-public-contract-closure-2026-10-14/architecture/resources.json",
+        "sha256": "24db184ef5a7054f561cde8ccf2364e9f9562590ca68c936e78c5c63943cfddb"
+      },
+      "before": {
+        "path": "var/go-public-contract-closure-2026-10-14/architecture/freeze.before.json",
+        "sha256": "4376dd0c98e9574dae17a91a98d660f9d8b480bb1ac90e14917544fcead25539"
+      },
+      "after": {
+        "path": "var/go-public-contract-closure-2026-10-14/architecture/freeze.after.json",
+        "sha256": "4376dd0c98e9574dae17a91a98d660f9d8b480bb1ac90e14917544fcead25539"
+      },
+      "stability": {
+        "path": "var/go-public-contract-closure-2026-10-14/architecture/stability.json",
+        "sha256": "fa21d8ded18049c28fe3b973d74110d02db6a0b6e0cd8fd9217794ec468da6f5"
+      },
+      "freeze_scope": [
+        "README.md",
+        "AGENTS.md",
+        "EXTENDING.md",
+        "docs/HARDENING_NOTES.md",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-layered-architecture.png",
+        "docs/mini-loop-layered-architecture.prompt.txt"
+      ],
+      "freeze_exclusions": [],
+      "additional_explicit_inputs": [],
+      "frozen_inputs": 7,
+      "current_matches": true,
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "completed_utc": "2026-10-14T11:13:18.542654+00:00"
+    }
+  ],
+  "historical_reference_policy": "The original344 audit and two prior applied delta JSON files are pinned by their complete file hashes. Their embedded historical validation receipts describe those historical versions; canonical artifact paths such as docs/mini-loop-layered-architecture.png and its prompt may legitimately be updated in the current architecture iteration. Do not recursively require a current canonical image path to retain an old receipt hash. Only current validation freeze inputs use current hashes.",
+  "explicit_unchanged": [
+    {
+      "id": "setting:base_url",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "setting:base_url",
+        "requirements": [
+          "P0",
+          "G7",
+          "G4"
+        ],
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.base_url",
+          "line": 88
+        },
+        "native_declaration": {
+          "path": "go/config/settings.go",
+          "symbol": "Settings.BaseURL",
+          "line": 65
+        },
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts",
+          "line": 3736
+        },
+        "native_assertion": {
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings",
+          "line": 16
+        },
+        "evidence": [
+          "CONFIG"
+        ],
+        "environment_names": [
+          "ANTHROPIC_BASE_URL"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "core-overrides"
+        ],
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ],
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Settings mapping itself captured; runtime Unicode-host IDNA required consumer awaits fixed dependencies."
+        ],
+        "dependency_receipt": "docs/audits/go-provider-idna-source-2026-10-13.json"
+      }
+    },
+    {
+      "id": "setting:enable_features",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "setting:enable_features",
+        "requirements": [
+          "P0",
+          "G7",
+          "G6"
+        ],
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.enable_features",
+          "line": 282
+        },
+        "native_declaration": {
+          "path": "go/config/settings.go",
+          "symbol": "Settings.EnableFeatures",
+          "line": 103
+        },
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts",
+          "line": 3736
+        },
+        "native_assertion": {
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings",
+          "line": 16
+        },
+        "evidence": [
+          "CONFIG"
+        ],
+        "environment_names": [
+          "MINILOOP_FEATURES"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "optional-settings",
+          "legacy-flags"
+        ],
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ],
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Default full-feature CPython parser decision pending; explicit DiagnosticsProvider fullcatalog proof does not supply a default backend."
+        ],
+        "additional_native": {
+          "path": "go/launcher/features_test.go",
+          "symbol": "TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects",
+          "line": 58
+        }
+      }
+    },
+    {
+      "id": "http:GET /sessions/{session_id}/team",
+      "status": "evidence_incomplete",
+      "original_row": {
+        "id": "http:GET /sessions/{session_id}/team",
+        "method": "GET",
+        "path": "/sessions/{session_id}/team",
+        "requirements": [
+          "P0",
+          "G3",
+          "G6",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_team_http_contracts",
+          "line": 9168
+        },
+        "native_assertion": {
+          "path": "go/httpapi/teams_test.go",
+          "symbol": "TestActualPythonTeamHTTP",
+          "line": 21
+        },
+        "evidence": [
+          "TEAM"
+        ],
+        "verified_scope": [
+          "default managedHTTP,newest50,peek,mailboxunchanged,encodingerror"
+        ],
+        "remaining_scope": [
+          "Only the stated bounded scope; not a whole operation/feature/error/lifecycle completion certificate.",
+          "teamless branch teams_test.go89–97 only marshals response, no actualHTTP handler."
+        ],
+        "gap_native": {
+          "path": "go/httpapi/teams_test.go",
+          "symbol": "TestActualPythonTeamHTTP",
+          "line": 89
+        }
+      }
+    },
+    {
+      "id": "export:build_client",
+      "status": "dependency_blocked",
+      "original_row": {
+        "export_name": "build_client",
+        "seam": "client",
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "build_client",
+          "line": 454,
+          "line_kind": "current_definition",
+          "sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4"
+        },
+        "native_named_bindings": [
+          {
+            "package": "provider",
+            "name": "New",
+            "kind": "function",
+            "file": "provider/client.go",
+            "line": 144
+          },
+          {
+            "package": "launcher",
+            "name": "New",
+            "kind": "function",
+            "file": "launcher/app.go",
+            "line": 207
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Await approved pinned IDNA choice, implement actual84 Source-case native consumer; preserve separate SDK surrogate probe.",
+        "id": "export:build_client",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.client"
+      }
+    },
+    {
+      "id": "export:full_registry",
+      "status": "dependency_blocked",
+      "original_row": {
+        "export_name": "full_registry",
+        "seam": "full",
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/builtins.py",
+          "symbol": "full_registry",
+          "line": 275,
+          "line_kind": "current_definition",
+          "sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "ManagerConfig",
+            "kind": "type",
+            "file": "agent/manager_config.go",
+            "line": 120
+          },
+          {
+            "package": "agent",
+            "name": "ManagerServices",
+            "kind": "type",
+            "file": "agent/manager_config.go",
+            "line": 54
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Await default CPython parser approval and finish9 non-full definitions/partial-selector evidence.",
+        "id": "export:full_registry",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.full"
+      }
+    },
+    {
+      "id": "capability:04",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "capability:04",
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "status": "dependency_blocked",
+        "capability": "Comprehensive s09–s20 feature bundle",
+        "source_default": "**Off**",
+        "selector": "`MINILOOP_FEATURES=all` or `enable_features=True`",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_features.py"
+          ]
+        },
+        "native_assertion": {
+          "paths": [
+            "go/agent/manager_features_test.go",
+            "go/launcher/features_test.go"
+          ]
+        },
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ],
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "Default full CLI refuses without explicit native CPython diagnostics backend; explicit injected backend path is covered."
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json"
+      }
+    },
+    {
+      "id": "sdk-producer:direct",
+      "status": "evidence_incomplete",
+      "original_row": {
+        "id": "sdk-producer:direct",
+        "requirements": [
+          "G4",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/mini_loop/transport.py",
+          "symbol": "DirectTransport.send",
+          "line": 64
+        },
+        "native_assertion": {
+          "path": "go/provider/contracts_test.go",
+          "symbol": "TestDirectHTTPMatchesActualPythonSDK",
+          "line": 133
+        },
+        "verified_scope": [
+          "Actual fixed SDK HTTP request bodies, path/headers, retries/delays and success/error reply projections in the direct provider consumer."
+        ],
+        "remaining_scope": [
+          "Actual fixed SDK escaped lone-surrogate ingress and subsequent request probe is not yet executed.",
+          "IDNA native adoption remains pending explicit dependency approval."
+        ]
+      }
+    },
+    {
+      "id": "sdk-producer:stream",
+      "status": "evidence_incomplete",
+      "original_row": {
+        "id": "sdk-producer:stream",
+        "requirements": [
+          "G4",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/mini_loop/transport.py",
+          "symbol": "StreamingTransport.send",
+          "line": 88
+        },
+        "native_assertion": {
+          "path": "go/agent/progress_contract_test.go",
+          "symbol": "TestConfiguredProgressMatchesActualPythonTransport",
+          "line": 78
+        },
+        "verified_scope": [
+          "Actual StreamingTransport timed coalescing/progress fixture and native generation/cancellation lifecycle; this single assertion is not full SDK stream-wire proof."
+        ],
+        "remaining_scope": [
+          "Actual fixed SDK escaped lone-surrogate ingress and subsequent request probe is not yet executed.",
+          "IDNA native adoption remains pending explicit dependency approval."
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Two SDK rows remain evidence_incomplete; the recorded transport/SDK Unicode edge scopes are not closed by these changes.",
+    "The HTTP teamless row remains evidence_incomplete; existing Go Manager always binds a team and this change does not add a production seam for the Source state.pop(team_id) path.",
+    "The five original dependency_blocked rows remain blocked; this proposal adds no dependencies or default backend approval."
+  ]
+}
