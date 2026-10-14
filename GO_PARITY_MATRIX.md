@@ -1,5 +1,42 @@
 # Python to Go parity matrix
 
+## 2026-10-14 original required-row closure and configuration whitespace
+
+Branch `codex/go-required-row-closure`, baseline local main `9950878`.
+The [344-row audit](docs/audits/go-required-row-audit-2026-10-14.json) reconciles
+12 capabilities, 49 settings, 44 HTTP operations, 3 SDK producers, 157 exports,
+57 feature definitions, 14 registries and 8 manager profiles against the original
+P0/P1/G0–G7 packages. All IDs are unique; the counts are inventory rows and aliases,
+not unique defects, statement coverage or a migration completion percentage.
+
+The audit exposed one shared configuration whitespace family. Go now follows
+Source `str.strip` for U+001C–U+001F, while nonempty numeric parsing retains its
+narrower rejection and nonempty paths retain raw spelling. The actual Source
+corpus grew 64→128 recipes with the original 64 unchanged. Previous native code
+fails 52 new subcases; the complete config package passes after the fix.
+See the [iteration article](docs/audits/go-required-row-closure-2026-10-14.md)
+and [execution receipt](docs/audits/go-required-row-closure-2026-10-14.json).
+
+Current finite row statuses: 292 bounded verified, 4 concrete mismatches,
+5 dependency-blocked and 43 evidence-incomplete. The four mismatch rows all name
+the same post-stuck follow-up handling family via capability/public aliases.
+The 39 resolved settings/public rows describe one parsing family. Source internal
+state keys and callback names do not impose identical Go representation.
+
+The remaining finite families are explicit: post-stuck managed follow-up,
+IDNA approval/adoption, default parser policy, fixed SDK lone-surrogate ingress/
+next-request probe, three HTTP details, named public composition/adaptation
+proofs, partial feature selectors/non-full declaration metadata, startup
+store threshold consumption, and Linux platform gates. The existing fixed
+Linux environment is available again. On committed runtime `109f394`, eight minimal
+Linux groups completed: two passed, six failed, with no OOM and a 702 MiB cgroup
+peak. Shell/path/Git/glob fixture disagreements require actual same-platform
+Source capture before attribution; full Linux/race acceptance remains open.
+See the [Linux receipt](docs/audits/go-required-row-linux-minima-2026-10-14.json).
+Native SQLite restart/crash proofs and matched fake performance evidence remain
+separate delivered slices. **Full original migration acceptance remains open.**
+
+
 ## 2026-10-14 public stuck-threshold integer boundaries — finite validation complete
 
 Iteration baseline `6ea2fd2`, branch `codex/go-stuck-thresholds`; runtime

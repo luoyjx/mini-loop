@@ -77,5 +77,7 @@ browser visual pass is claimed. The generated PNG was inspected directly.
 
 ## Delivery
 
-Commit and local-main integration identities are recorded after validation.
+Runtime commit: `109f394b0f490d4a086f20c03265b7e60e276d3e`. The finite required-row
+[audit and Linux follow-up](go-required-row-audit-2026-10-14.md) are delivered in a
+separate documentation commit.
 No remote fetch, push or CI refresh is included.

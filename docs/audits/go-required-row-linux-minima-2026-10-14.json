@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "status": "failed_minima",
+  "full_linux_acceptance": false,
+  "source_recapture_executed": false,
+  "runtime_commit": "109f394b0f490d4a086f20c03265b7e60e276d3e",
+  "raw_evidence_root": "var/go-required-row-closure-2026-10-14/linux-minima-109f394",
+  "input": {
+    "revision": "109f394b0f490d4a086f20c03265b7e60e276d3e",
+    "archive_sha256": "f523a7ce51405c60692a98c675c0221f0a170955e3415f1df222db04a256035b",
+    "archive_bytes": 43581440,
+    "archive_members": 1857
+  },
+  "image": "sha256:874a8b40ad6058f3f160636c61946394559b067562d7478cc3f9cc500794e9aa",
+  "seconds": 52.305357874996844,
+  "container_limits": {
+    "Memory": 1610612736,
+    "MemorySwap": 1610612736,
+    "NanoCpus": 2000000000,
+    "PidsLimit": 256,
+    "ReadonlyRootfs": true,
+    "NetworkMode": "none"
+  },
+  "container_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 1,
+    "Error": "",
+    "StartedAt": "2026-10-14T00:12:47.219369036Z",
+    "FinishedAt": "2026-10-14T00:13:33.422447022Z"
+  },
+  "cleanup_errors": [],
+  "groups": {
+    "total": 8,
+    "passed": 2,
+    "failed": 6
+  },
+  "cases": [
+    {
+      "id": "astcontext",
+      "package": "./astcontext",
+      "selector": "^TestDigestRecheckedBySameAdapterBeforeEveryProbe$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe"
+      ],
+      "observed_runs": [
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe"
+      ],
+      "terminal_tests": {
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe": "pass"
+      },
+      "expected_tests_passed": true,
+      "failure_diagnostics": []
+    },
+    {
+      "id": "benchmark",
+      "package": "./benchmark",
+      "selector": "^TestRunArmMatchesActualPythonDefaultFakeArms$/^visible$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible"
+      ],
+      "observed_runs": [
+        "TestRunArmMatchesActualPythonDefaultFakeArms",
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible"
+      ],
+      "terminal_tests": {
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible": "fail",
+        "TestRunArmMatchesActualPythonDefaultFakeArms": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "runner_test.go:118: final drift: \"Done. Tool said: /bin/sh: 1: Syntax error: EOF in backquote substitution\\n(exit 2)\" want \"Done. Tool said: /bin/sh: -c: line 0: unexpected EOF while looking for matching ``'\\n/bin/sh: -c: line 1: syntax error: unexpected end of file\\n(exit 2)\"",
+        "runner_test.go:140: row 2: {Arm:test Task:edit-config Passed:false Error:<nil> Measurements:{DurationMilliseconds:<nil> ContextTokensEstimate:0x40000bbe20 Rounds:0x40000bbe40 ToolCalls:0x40000bbec0 ToolErrors:0x40000bbee0 RepeatedReads:0x40000bbf00}} want {Arm:test Task:edit-config Passed:false Error:<nil> Measurements:{DurationMilliseconds:<nil> ContextTokensEstimate:0x400005b880 Rounds:0x400005b940 ToolCalls:0x400005b9a0 ToolErrors:0x400005ba00 RepeatedReads:0x400005b8e0}}",
+        "runner_test.go:143: {\"arm\":\"test\",\"task\":\"edit-config\",\"passed\":false,\"error\":null,\"context_tokens_estimate\":208,\"rounds\":2,\"tool_calls\":1,\"tool_errors\":1,\"repeated_reads\":0} {\"arm\":\"test\",\"task\":\"edit-config\",\"passed\":false,\"error\":null,\"context_tokens_estimate\":243,\"rounds\":2,\"tool_calls\":1,\"tool_errors\":1,\"repeated_reads\":0}"
+      ]
+    },
+    {
+      "id": "httpapi",
+      "package": "./httpapi",
+      "selector": "^TestBenchmarkActualPythonHTTP$/^default$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestBenchmarkActualPythonHTTP/default"
+      ],
+      "observed_runs": [
+        "TestBenchmarkActualPythonHTTP",
+        "TestBenchmarkActualPythonHTTP/default"
+      ],
+      "terminal_tests": {
+        "TestBenchmarkActualPythonHTTP/default": "fail",
+        "TestBenchmarkActualPythonHTTP": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "benchmark_test.go:100: actual source comparison mismatch"
+      ]
+    },
+    {
+      "id": "httpapi-efficiency",
+      "package": "./httpapi",
+      "selector": "^TestBenchmarkEfficiencyActualPythonHTTP$/^efficiency-shadow$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow"
+      ],
+      "observed_runs": [
+        "TestBenchmarkEfficiencyActualPythonHTTP",
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow"
+      ],
+      "terminal_tests": {
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow": "fail",
+        "TestBenchmarkEfficiencyActualPythonHTTP": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "benchmark_test.go:100: actual source comparison mismatch"
+      ]
+    },
+    {
+      "id": "reload",
+      "package": "./reload",
+      "selector": "^TestNativeEventsActualSourceRecipes$/^directory-symlink-(source|reverse)$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse"
+      ],
+      "observed_runs": [
+        "TestNativeEventsActualSourceRecipes",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse"
+      ],
+      "terminal_tests": {
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source": "pass",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse": "pass",
+        "TestNativeEventsActualSourceRecipes": "pass"
+      },
+      "expected_tests_passed": true,
+      "failure_diagnostics": []
+    },
+    {
+      "id": "userresources",
+      "package": "./userresources",
+      "selector": "^TestResourcesMatchActualPython$/^problems$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestResourcesMatchActualPython/problems"
+      ],
+      "observed_runs": [
+        "TestResourcesMatchActualPython",
+        "TestResourcesMatchActualPython/problems"
+      ],
+      "terminal_tests": {
+        "TestResourcesMatchActualPython/problems": "fail",
+        "TestResourcesMatchActualPython": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "resolver_test.go:157: [u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name] [u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name] [agent: $AGENT/bad/SKILL.md: refused, 'bad/name' is not a valid skill name user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name] [agent: $AGENT/bad/SKILL.md: refused, 'bad/name' is not a valid skill name user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name]"
+      ]
+    },
+    {
+      "id": "workspace",
+      "package": "./workspace",
+      "selector": "^TestGlobMatchesPythonContracts$/^glob_truncated$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestGlobMatchesPythonContracts/glob_truncated"
+      ],
+      "observed_runs": [
+        "TestGlobMatchesPythonContracts",
+        "TestGlobMatchesPythonContracts/glob_truncated"
+      ],
+      "terminal_tests": {
+        "TestGlobMatchesPythonContracts/glob_truncated": "fail",
+        "TestGlobMatchesPythonContracts": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "glob_test.go:138: output differs: got \"中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中 ... 中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0554.txt\\n... (matches truncated)\" want \"中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中 ... 中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0799.txt\\n... (matches truncated)\""
+      ]
+    },
+    {
+      "id": "worktrees",
+      "package": "./worktrees",
+      "selector": "^TestActualPythonLifecycleFactoryAndTaskBinding$/^(not-repository|unverified-status)$",
+      "exit_code": 1,
+      "expected_tests": [
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status"
+      ],
+      "observed_runs": [
+        "TestActualPythonLifecycleFactoryAndTaskBinding",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status"
+      ],
+      "terminal_tests": {
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository": "fail",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status": "fail",
+        "TestActualPythonLifecycleFactoryAndTaskBinding": "fail"
+      },
+      "expected_tests_passed": false,
+      "failure_diagnostics": [
+        "worktrees_test.go:183: step 0 create: \"Error: \\u003cREPO\\u003e is not a git repository\" / \"Error: /private<REPO> is not a git repository\"",
+        "worktrees_test.go:183: step 3 remove: \"Error: fatal: not a git repository (or any parent up to mount point /)\\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).\" / \"Error: fatal: not a git repository (or any of the parent directories): .git\""
+      ]
+    }
+  ],
+  "resources": {
+    "cgroup_peak_bytes": 736407552,
+    "cgroup_peak_mib": 702.29296875,
+    "cgroup_memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\n",
+    "observed_host_pressure_levels": [
+      1
+    ],
+    "max_docker_working_set_bytes": 441660211,
+    "max_docker_cpu_percent": 161.46,
+    "limitations": "Cgroup memory peak is total accounted container memory, including cache; Docker working set is not process RSS. Host VM memory is not the docker-client process tree."
+  },
+  "environment": "go version go1.23.3 linux/arm64\nlinux\narm64\n1\ngcc\n/root/.cache/go-build\n/gomod\n/cache/gopath\nLinux a950d2c305e2 7.0.11-orbstack-00354-gde2ab3f9e944 #1 SMP PREEMPT Thu Jun  4 11:12:11 UTC 2026 aarch64 GNU/Linux\ndash\ngit version 2.39.5\nbtrfs\n",
+  "classification": {
+    "astcontext": "Selected digest-replacement recipe now passes on this committed native Linux input.",
+    "reload": "Both selected directory-symlink recipes pass; this is not full callback/temporal acceptance.",
+    "benchmark_and_http": "Linux dash error spelling differs from captured Darwin sh; edit-config derived context tokens208 versus243. Same-platform actual Source not recaptured.",
+    "userresources": "Captured diagnostic contains /private$USERS; Linux result contains $USERS.",
+    "workspace": "Truncated glob ends at _0554.txt versus captured _0799.txt; actual same-platform Source comparison needed.",
+    "worktrees": "Darwin /private<REPO> and Git discovery error spelling differ from this Linux environment.",
+    "scope": "These are witnessed assertion failures, not resource stops and not independently established production-code regressions. No failing check is treated as passed."
+  },
+  "next_work": "Prepare existing project dependencies for actual same-platform Source recipes using a pinned existing image/environment, then reconcile platform fixtures or fix demonstrated native differences; full Linux ordinary/vet/race follows. No new runtime dependency is approved by this receipt.",
+  "artifacts": {
+    "runner": {
+      "path": "var/go-required-row-closure-2026-10-14/linux-runner.py",
+      "bytes": 23552,
+      "sha256": "81f6fe271051e1e2f2f3a75233c52e252d6661107b09bf928c264389fdda00b9"
+    },
+    "result": {
+      "path": "var/go-required-row-closure-2026-10-14/linux-minima-109f394/result.json",
+      "bytes": 20836,
+      "sha256": "29af9a32313bad26b0cb90d8cb2ca44c5b77e404ab85c65e7eac4be082340121"
+    },
+    "commands": {
+      "path": "var/go-required-row-closure-2026-10-14/linux-minima-109f394/commands.json",
+      "bytes": 3333,
+      "sha256": "32f7c41ee9390d46242e37c0610e7e1166cc715ffae9d11a34bb8e739d24c56e"
+    },
+    "container_command": {
+      "path": "var/go-required-row-closure-2026-10-14/linux-minima-109f394/container-command.json",
+      "bytes": 1855,
+      "sha256": "71fa90583517073adfe536a37cd3ab84598bbf3533d748d92922d5e023121d02"
+    }
+  },
+  "log_hashes": {
+    "logs/astcontext.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/astcontext.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/astcontext.finished": "c20e9956f76178465797857a85440ebfa4d1b4e6160a068b802c2fd139cd6910",
+    "logs/astcontext.memory.current": "909bcad6d99ec43275a2195c611260dd72d5446ba5e2c7c82a3f1d6dfa3552dd",
+    "logs/astcontext.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/astcontext.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/astcontext.memory.peak": "1856b2d9e3d2f562d2a07ad034d9e56fa1af4dd24c42bf08aa280bdf304be415",
+    "logs/astcontext.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/astcontext.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/astcontext.started": "68fc4ca0371b7d881acec2d9bf341dab4ef5a108910bbff1aac7351c01a77b07",
+    "logs/astcontext.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/astcontext.test.jsonl": "f36b3b2dcff02b019ad675de0c5d7fca7fa72ca1db74a0327a40eacd42e022bc",
+    "logs/benchmark.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/benchmark.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/benchmark.finished": "efc7e08f067fe80db3bef2c357449573f2deee706a963897e04b90d5069e8d03",
+    "logs/benchmark.memory.current": "594a4f5c2e43f4283d37a03dd4fef62b5224c8d495c94d6a8e74169d70f87927",
+    "logs/benchmark.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/benchmark.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/benchmark.memory.peak": "e475fa502988c6dbf7be6bea9e3357d89397d0e4eb1bb68bd016599f82c55116",
+    "logs/benchmark.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/benchmark.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/benchmark.started": "c20e9956f76178465797857a85440ebfa4d1b4e6160a068b802c2fd139cd6910",
+    "logs/benchmark.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/benchmark.test.jsonl": "c3ab80395e7e8276b742167502354cadde0ecbcd27a03c1e6d56203c456ccf43",
+    "logs/current-stage": "37a40f08d8548dba289b9b0bb35bcf63b359f6d37ee86044ebc6b6da080b9ec1",
+    "logs/environment.log": "024c0c0ff1a346b041d499ba1cee8fd6399c29c07e959b93167be6409803e54f",
+    "logs/final.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/final.memory.current": "b24a0c65d4f3d8e9b44a624c1cce76ffc29cdf2319173d374eef8622a8187607",
+    "logs/final.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/final.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/final.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/final.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/final.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/httpapi-efficiency.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/httpapi-efficiency.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/httpapi-efficiency.finished": "9728118feccdde2b4b8f1ef95ed36e357ba5ab84aba980807426529342f96e1f",
+    "logs/httpapi-efficiency.memory.current": "509d95e599adf6983f89d6d5398998d86264a02cc6d42949171e924a4ebe322f",
+    "logs/httpapi-efficiency.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/httpapi-efficiency.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/httpapi-efficiency.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/httpapi-efficiency.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/httpapi-efficiency.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/httpapi-efficiency.started": "3274ce1aa75b4b5fbcf92fbf35b644f956020bb3e71c0c2590143fadbbcc4710",
+    "logs/httpapi-efficiency.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/httpapi-efficiency.test.jsonl": "e8e186f2d8222dcc7c73b72bfe9b198ddc42ed885ecc177af7e30d5ee5e89759",
+    "logs/httpapi.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/httpapi.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/httpapi.finished": "3274ce1aa75b4b5fbcf92fbf35b644f956020bb3e71c0c2590143fadbbcc4710",
+    "logs/httpapi.memory.current": "bb3666d7567f898cd53efcd2797818490b8e9b543ce9374075463a237e4d4b6f",
+    "logs/httpapi.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/httpapi.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/httpapi.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/httpapi.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/httpapi.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/httpapi.started": "efc7e08f067fe80db3bef2c357449573f2deee706a963897e04b90d5069e8d03",
+    "logs/httpapi.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/httpapi.test.jsonl": "960bbdd7dcde46e2f4b376d9d769a6fc70722c96a41a35fd51488ca34b31196e",
+    "logs/reload.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/reload.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/reload.finished": "8ae1c19c964bb4f0336f21547aa5bfa96de2f362a1d213dad7c8c2e77e145145",
+    "logs/reload.memory.current": "d51801f850466e2a49e69e42022281f951661dd6c09af93e639e36c801cd0a34",
+    "logs/reload.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/reload.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/reload.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/reload.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/reload.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/reload.started": "9728118feccdde2b4b8f1ef95ed36e357ba5ab84aba980807426529342f96e1f",
+    "logs/reload.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/reload.test.jsonl": "7dc05e056292fce1b18835820615f24db838cce8159bc2b36b520078b53e4ec3",
+    "logs/start.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/start.memory.current": "56d6dc892433620e3a02bdc3e08469a7f13f906da3ea6c16eb303b6e15bae277",
+    "logs/start.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/start.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/start.memory.peak": "00287e0d67d58a7cd528458c9ca9c4578551bc54d62f46f2d81a999d47021895",
+    "logs/start.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/start.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/userresources.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/userresources.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/userresources.finished": "8ae1c19c964bb4f0336f21547aa5bfa96de2f362a1d213dad7c8c2e77e145145",
+    "logs/userresources.memory.current": "68432cb88eccb408aa0a2539a26917ec3ddeb8beb4fa85683b752a2d474715cc",
+    "logs/userresources.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/userresources.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/userresources.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/userresources.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/userresources.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/userresources.started": "8ae1c19c964bb4f0336f21547aa5bfa96de2f362a1d213dad7c8c2e77e145145",
+    "logs/userresources.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/userresources.test.jsonl": "d502078601f7943afb63772cc5d76d5f26f1c564b9ae4ff22f0f36e9c0ffed64",
+    "logs/workspace.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/workspace.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/workspace.finished": "14b685404dbc6dbfcbfb244caac452f1f953cb6cf013a0a1758f930f7a2d1939",
+    "logs/workspace.memory.current": "3b3c4a4136a8b830e95fa0130fb24bc6b2761f82929dc9e295aeac3aae3f6001",
+    "logs/workspace.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/workspace.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/workspace.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/workspace.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/workspace.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/workspace.started": "8ae1c19c964bb4f0336f21547aa5bfa96de2f362a1d213dad7c8c2e77e145145",
+    "logs/workspace.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/workspace.test.jsonl": "d4917b8cda7714251e68185686e0f965a9a3ddd4fb60eb81f8f1808a613dda69",
+    "logs/worktrees.cpu.max": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+    "logs/worktrees.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "logs/worktrees.finished": "14b685404dbc6dbfcbfb244caac452f1f953cb6cf013a0a1758f930f7a2d1939",
+    "logs/worktrees.memory.current": "3b68be2d9c14225974ac398056cd08e74411f70c247a2caac32e9e955cdd18d4",
+    "logs/worktrees.memory.events": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380",
+    "logs/worktrees.memory.max": "ba9a7d945cff599303a3d2dd81a34cd786406cd3bcde3ff266d3b4743a01a549",
+    "logs/worktrees.memory.peak": "03aad36d775549bff7644568f5a3aaf5da6c38af759f98f2b608f65f32cac587",
+    "logs/worktrees.memory.swap.max": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "logs/worktrees.pids.max": "f16c302d5d30e1d3fbe955cf4f637f58a871adeba597922e3baad0aeeb13f656",
+    "logs/worktrees.started": "14b685404dbc6dbfcbfb244caac452f1f953cb6cf013a0a1758f930f7a2d1939",
+    "logs/worktrees.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/worktrees.test.jsonl": "8c0fb541b55112ef8256e10709000eaf6ac7d6bca7a36b1c9ab3902a4fe176e4",
+    "commands.json": "32f7c41ee9390d46242e37c0610e7e1166cc715ffae9d11a34bb8e739d24c56e",
+    "container-before-cleanup.json": "aa016336f8f1fbafd649ff0c5ca5c352e40aba3ea4d12b60f772b3eecbe97eca",
+    "container-command.json": "71fa90583517073adfe536a37cd3ab84598bbf3533d748d92922d5e023121d02",
+    "container-completed.json": "986d640f58165b9d22946f5a123e47bd23d8dcd04abb2b58e8babd2a3158545c",
+    "container-created.json": "a8a2b0ea33191f4526dcabb0ef5fb464a422d241726d43642a57118732811047",
+    "container-terminal.json": "6e8a2b76384b7e5a2e48eb58d81a6932c59fa36b232be5dbb00cf66c77a4bbac",
+    "gates.sh": "ad584667d2bf397661ff9025f9c2ba1f52e49720c9b561472a181ba35fa31c9c",
+    "image.json": "3cefd9daebad527b14e1fef52b6de67edd44f13546d3652acd06aca932a9a3c0",
+    "memory.jsonl": "7f665ff278ec0ed3924c13759f9d426e0460af3272d48ec5cd77af426eb6cbaf",
+    "operations.jsonl": "4cf6adea7e38f5c3dcce0e3940cbd25c12cbd6b54b7d4fb7032ddb0336ec37e2"
+  },
+  "cleanup_confirmation": {
+    "label_filter": "io.mini-loop.required-row-closure.owner",
+    "containers_remaining": 0,
+    "volumes_remaining": 0,
+    "method": "Read-only docker ps -a and docker volume ls after runner cleanup; successful empty output."
+  }
+}

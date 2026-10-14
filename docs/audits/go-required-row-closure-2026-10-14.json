@@ -780,5 +780,6 @@
       "bytes": 1309,
       "sha256": "29fde7fc27cf3fa76283bd0d0623488b7d94f4ea0b8844ea81ac94ccb21ef8b4"
     }
-  }
+  },
+  "runtime_commit": "109f394b0f490d4a086f20c03265b7e60e276d3e"
 }
