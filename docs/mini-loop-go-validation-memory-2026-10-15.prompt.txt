@@ -1,0 +1,12 @@
+Use case: precise-object-edit / infographic-diagram
+Asset type: mini-loop repository validation-resource iteration PNG, landscape 1536x1024.
+Input image: the attached complete layered architecture base is the edit target.
+Primary request: create a new 2026-10-15 iteration describing the human-approved memory budget increase. Preserve the complete five-layer architecture, all components, title, arrows and the six right-column authority boundaries. Preserve L3 Go native IDNA/NFC14/IDNA17/Punycode and L4 external CPython 3.11.3 ast.parse. The runtime topology, authority and defaults do not change.
+Change only: highlight the L5 rightmost 操作员契约审计 card with a slim orange border and a small orange marker 1. Add a compact dark orange-accented annotation panel in the decorative lower-right mountain area, below boundary6, leaving the footer source attribution visible.
+Text (verbatim):
+"本轮 · 2026-10-15"
+"验证内存 ×4（相对待批方案）"
+"容器 3 GiB · Go 软目标 1 GiB"
+"2 核 · 串行构建 · 压力监控"
+"验收以实际测试结果为准"
+Keep all original labels and all five layers readable. Crisp accurately spelled Chinese. No new runtime component, no pass badge, no claim that Linux full/vet/race or the whole migration is complete. Preserve existing colors and technical infographic style. No watermark.

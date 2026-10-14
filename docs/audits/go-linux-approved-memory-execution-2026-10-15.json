@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "status": "approved_profile_prelaunch_resource_blocked",
+  "runtime_commit": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+  "policy": {
+    "path": "docs/audits/go-linux-approved-memory-2026-10-15.json",
+    "sha256": "958467f38d1aa57fcf7edbcc0deb19b936a413485cb81cd641714491c7438c94",
+    "bytes": 3212
+  },
+  "runner": {
+    "path": "var/go-idna-implementation-2026-10-14/linux-approved-3g-runner.py",
+    "sha256": "f96f9c48f87b825c7278045beff32f7d8a670de13d0d5f644e7cc9ac431397fa",
+    "bytes": 46123
+  },
+  "source_preflight": {
+    "resource": {
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source-3g/result.json",
+      "sha256": "4fbbca29459c0a5eeddc4c18258a55f7bdbe004f9a0de0cbc504ce362f147f98",
+      "bytes": 2126
+    },
+    "payload": {
+      "status": "resource_blocked",
+      "mode": "source",
+      "revision": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+      "image": "sha256:027571c4ab6d7570737a40290703adb9d91ecf9780aea2d2983dbf132156548b",
+      "runner_sha256": "f96f9c48f87b825c7278045beff32f7d8a670de13d0d5f644e7cc9ac431397fa",
+      "started_utc": "2026-10-14T23:15:08.638682+00:00",
+      "runner_exit_code": 75,
+      "container_name": "mini-loop-linux-full-source-aebb28009bac4e568888b48a07c50da3",
+      "volume_name": "mini-loop-linux-full-source-aebb28009bac4e568888b48a07c50da3-tmp",
+      "owner_token": "aebb28009bac4e568888b48a07c50da3",
+      "launched": false,
+      "allowed_host_pressure": [
+        1
+      ],
+      "wall_limit_seconds": 3600,
+      "acceptance_scope": "Six same-platform Source fixture captures",
+      "profile": {
+        "cpu_cgroup_cores": 2,
+        "memory_cgroup_bytes": 3221225472,
+        "memory_and_swap_bytes": 3221225472,
+        "gomaxprocs": 2,
+        "gogc": 75,
+        "gomemlimit": "1GiB soft target",
+        "go_package_parallel": 1,
+        "test_parallel": 2,
+        "nice": 10,
+        "pids": 256,
+        "preflight_samples": 5,
+        "automatic_retries": false
+      },
+      "full_port_acceptance": false,
+      "image_record": {
+        "path": "var/go-idna-implementation-2026-10-14/linux-image.json",
+        "sha256": "51f2cc69519ed5d58b051c9fa252f035c87bd34fc860e11ca5a816b27a308e07",
+        "bytes": 1028,
+        "image_id": "sha256:027571c4ab6d7570737a40290703adb9d91ecf9780aea2d2983dbf132156548b"
+      },
+      "reason": "host_memory_pressure_before_launch",
+      "cleanup_errors": [],
+      "owned_resources_absent": true,
+      "stage_exit_code": null,
+      "cgroup_memory_events": {},
+      "cgroup_peak_bytes": {},
+      "peak_measurement": "Kernel memory.peak includes charged cgroup memory; Docker stats samples are working set, not process RSS. Final kernel peak is absent if the container cannot publish it.",
+      "source_python_verified": false,
+      "log_hashes": {
+        "image-record.json": "51f2cc69519ed5d58b051c9fa252f035c87bd34fc860e11ca5a816b27a308e07",
+        "memory.jsonl": "260540334407c5ec385f9c0821132094c928766f6ef6f36cf180e10fc0091c77"
+      },
+      "finished_utc": "2026-10-14T23:15:08.644204+00:00",
+      "seconds": 0.005625624995445833
+    },
+    "pressure_log": {
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source-3g/memory.jsonl",
+      "sha256": "260540334407c5ec385f9c0821132094c928766f6ef6f36cf180e10fc0091c77",
+      "bytes": 86
+    }
+  },
+  "readiness_observation": {
+    "raw": {
+      "path": "var/go-idna-implementation-2026-10-14/linux-approved-3g-readiness.jsonl",
+      "sha256": "9ce82ce9c72c2adfab574ed9738141d48cdbf8b1c0b5b35ea111136c45c06f17",
+      "bytes": 2558
+    },
+    "samples": [
+      {
+        "utc": "2026-10-14T23:15:47.664394+00:00",
+        "host_pressure": 2,
+        "sample": 0,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:15:52.672404+00:00",
+        "host_pressure": 2,
+        "sample": 1,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:15:57.687453+00:00",
+        "host_pressure": 2,
+        "sample": 2,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:02.702391+00:00",
+        "host_pressure": 2,
+        "sample": 3,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:07.709332+00:00",
+        "host_pressure": 2,
+        "sample": 4,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:12.722940+00:00",
+        "host_pressure": 2,
+        "sample": 5,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:17.736978+00:00",
+        "host_pressure": 2,
+        "sample": 6,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:22.752221+00:00",
+        "host_pressure": 2,
+        "sample": 7,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:27.767823+00:00",
+        "host_pressure": 2,
+        "sample": 8,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:32.782828+00:00",
+        "host_pressure": 2,
+        "sample": 9,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:37.799419+00:00",
+        "host_pressure": 2,
+        "sample": 10,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:42.814095+00:00",
+        "host_pressure": 2,
+        "sample": 11,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:47.830967+00:00",
+        "host_pressure": 2,
+        "sample": 12,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:52.845573+00:00",
+        "host_pressure": 2,
+        "sample": 13,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:16:57.858628+00:00",
+        "host_pressure": 2,
+        "sample": 14,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:02.872258+00:00",
+        "host_pressure": 2,
+        "sample": 15,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:07.883237+00:00",
+        "host_pressure": 2,
+        "sample": 16,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:12.896740+00:00",
+        "host_pressure": 2,
+        "sample": 17,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:17.911404+00:00",
+        "host_pressure": 2,
+        "sample": 18,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:22.920513+00:00",
+        "host_pressure": 2,
+        "sample": 19,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:27.925512+00:00",
+        "host_pressure": 2,
+        "sample": 20,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:32.938911+00:00",
+        "host_pressure": 2,
+        "sample": 21,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:37.944051+00:00",
+        "host_pressure": 2,
+        "sample": 22,
+        "validation_started": false
+      },
+      {
+        "utc": "2026-10-14T23:17:42.959092+00:00",
+        "host_pressure": 2,
+        "sample": 23,
+        "validation_started": false
+      }
+    ],
+    "sample_count": 24,
+    "all_warning": true
+  },
+  "new_tests_started": false,
+  "new_gates_passed": 0,
+  "approval_pending": false,
+  "required_row_counts": {
+    "verified": 339,
+    "evidence_incomplete": 0,
+    "dependency_blocked": 5
+  },
+  "required_row_delta_applied": false,
+  "full_port_acceptance": false,
+  "prior_source_receipt": {
+    "path": "docs/audits/go-native-idna-linux-source-2026-10-15.json",
+    "sha256": "f13691b9bec0e9fc62c90ee3af5c3cae15a1d35d8a88649dd1515edc9d718678",
+    "bytes": 79539
+  },
+  "prior_host_receipt": {
+    "path": "docs/audits/go-native-idna-progress-2026-10-15.json",
+    "sha256": "f19801fac73814395621a7b1995bfe4e38ed04cd32357b3b04ec035742562c13",
+    "bytes": 355204
+  },
+  "artifact_validation": {
+    "scope": "Lightweight documentation artifact only; not a Linux native validation gate.",
+    "raw": {
+      "path": "var/go-idna-implementation-2026-10-14/approved-memory-architecture/stdout.log",
+      "sha256": "a2c30a4fa84d3a2dad11e4d5213ebe2e10ca670bca1fdf49c55f4717b88c6e76",
+      "bytes": 692
+    },
+    "resource": {
+      "path": "var/go-idna-implementation-2026-10-14/approved-memory-architecture/resources.json",
+      "sha256": "a743b73d9febcdd4d1105cef8cc346ca68b35f9f98eae9c37e9f93ad51198b09",
+      "bytes": 2788
+    },
+    "receipt": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "a156d45ad77be2a6e455a0aabab2e6bd96f7e86b7a4651c8567a68daf1ef68ab",
+        "bytes": 166894
+      },
+      "artifact": {
+        "sha256": "521363ac7f917ed206192106259eafdf814be79083b88fd8dd17ee09360a3845",
+        "bytes": 823717
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host_pressure_levels": [
+      2
+    ],
+    "runtime_1864_inputs_unchanged": true,
+    "html_browser_visual": "not_run_prior_permission_denial",
+    "png_visual": "passed",
+    "image_provenance": {
+      "path": "var/go-idna-implementation-2026-10-14/linux-approved-3g-image.json",
+      "sha256": "11c780ee1ef610b46945caa449783542e97d6efce65c52cabe1c69ef9ff953f5",
+      "bytes": 1004
+    }
+  }
+}

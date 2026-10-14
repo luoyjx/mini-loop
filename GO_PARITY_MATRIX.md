@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-15 approved fourfold validation memory profile
+
+Memory-policy approval is resolved: four times the proposed 768 MiB / 256 MiB
+profile means a 3 GiB container limit and a 1 GiB Go soft target. The new runner
+preserves complete scope, serial package builds, two cores and pressure stops.
+The initial current-runtime Source preflight stopped before creating a container
+because host pressure was already warning; 24 later readiness samples remained
+warning. No new Source/native pass or required-row transition is claimed.
+Prior current-runtime Source6/66 and 16 host gates remain their original evidence.
+The remaining 5 rows need actual Linux full/vet/race and final publication;
+the blocker is now host readiness rather than approval. See
+[the approved profile and actual preflight](docs/audits/go-linux-approved-memory-2026-10-15.md).
+
 ## 2026-10-15 current-runtime Linux Source capture
 
 Runtime `606630f` now has current Linux arm64 Source-only evidence: all six

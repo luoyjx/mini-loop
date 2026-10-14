@@ -1,0 +1,84 @@
+{
+  "approved_profile": {
+    "additional_swap_bytes": 0,
+    "allowed_pressure": [
+      1
+    ],
+    "automatic_retries": false,
+    "container_bytes": 3221225472,
+    "container_memory_and_swap_bytes": 3221225472,
+    "container_mib": 3072,
+    "cpu_cgroup_cores": 2,
+    "go_package_parallel": 1,
+    "gogc": 75,
+    "gomaxprocs": 2,
+    "gomemlimit": "1GiB",
+    "gomemlimit_is_soft": true,
+    "network": "none",
+    "nice_minimum": 10,
+    "pids_limit": 256,
+    "poll_seconds": 2,
+    "preflight_samples": 5,
+    "read_only_root": true,
+    "test_parallel": 2,
+    "wall_seconds_argument_bounds": [
+      1800,
+      3600
+    ]
+  },
+  "approved_runner": {
+    "path": "var/go-idna-implementation-2026-10-14/linux-approved-3g-runner.py",
+    "sha256": "f96f9c48f87b825c7278045beff32f7d8a670de13d0d5f644e7cc9ac431397fa"
+  },
+  "authorization": {
+    "multiplier": 4,
+    "parent_declared_interpretation": "Four times the previously proposed 768MiB container and 256MiB Go soft target; not four times the deployed 1536MiB/512MiB profile.",
+    "source": "Human authorization relayed in the parent task; this record does not invent a user message ID.",
+    "user_instruction_as_reported_by_parent": "内存限制扩大4倍"
+  },
+  "limitations": [
+    "Container hard memory excludes host VM overhead. Go memory target does not cap CGO, race or child processes.",
+    "Stop on the first observed pressure value outside1; observation and cleanup have polling/command latency.",
+    "This approval and preparation are not evidence of an executed or passed gate."
+  ],
+  "multiplication_baseline": {
+    "container_mib": 768,
+    "gomemlimit_mib": 256,
+    "proposal": {
+      "path": "var/go-idna-implementation-2026-10-14/linux-memory-policy-proposal.json",
+      "sha256": "a76e665ee4a016d6ff2b7bf4f9f4503c978c453e337e5fb3c356bb6469252b46"
+    }
+  },
+  "original_runner": {
+    "path": "var/go-idna-implementation-2026-10-14/linux-full-runner.py",
+    "sha256": "ca200b10a049c5144d207115bbaab9300d9ba536226bf1e3e81309900c607bde"
+  },
+  "previous_deployed_profile": {
+    "allowed_pressure": [
+      1,
+      2
+    ],
+    "container_mib": 1536,
+    "gomemlimit_mib": 512
+  },
+  "runner_changes": {
+    "'GOMEMLIMIT': '512MiB'": "'GOMEMLIMIT': '1GiB'",
+    "'gomemlimit': '512MiB soft target'": "'gomemlimit': '1GiB soft target'",
+    "ALLOWED_PRESSURE = (1, 2)": "ALLOWED_PRESSURE = (1,)",
+    "MEMORY_LIMIT = 1536 * 1024 * 1024": "MEMORY_LIMIT = 3072 * 1024 * 1024"
+  },
+  "schema_version": 1,
+  "source_capture_binding": "The unchanged validation requires capture runner SHA to equal this new runner. Prior-runner Source capture cannot be reused without a separately reviewed explicit compatibility change.",
+  "status": "approved_profile_prepared_not_executed",
+  "unchanged_requirements": [
+    "exact committed revision",
+    "shared OUT/.runner.lock",
+    "fixed image and offline dependencies",
+    "six Source groups and fixture overlay identities",
+    "full package scope and unchanged assertions",
+    "Source 3.11.2 and native CPython 3.11.3 probe separation",
+    "PID/container ownership and cleanup",
+    "reject existing stage directories",
+    "no automatic retry or budget escalation"
+  ]
+}

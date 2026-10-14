@@ -1,5 +1,24 @@
 # Go port plan
 
+## 2026-10-15 approved fourfold validation memory profile
+
+The user approved increasing memory fourfold relative to the proposed 768 MiB
+container / 256 MiB Go target. The new runner is prepared with a 3 GiB hard
+container limit and a 1 GiB soft Go target. It preserves two cores, `-p=1`,
+`-parallel=2`, `nice -n 10`, zero additional swap, offline inputs and all tests;
+it stops at the first observed host pressure outside normal. The old sealed
+runner and all historical records are retained unchanged.
+
+The first Source preflight on runtime `606630f` stopped before container creation:
+the host was already at pressure level 2. A separate 24-sample readiness
+observation remained at level 2. The memory policy is now approved; remaining
+execution depends on host readiness. Next: after normal pressure is observed,
+recapture six Source groups with the new runner, then run full/vet/race serially
+against that same capture. The new runner's existing same-runner hash binding
+requires this recapture; no Source provenance check was relaxed. Original row
+status stays 339/0/5 until actual completed gates and an explicit delta.
+See [the approved policy and preflight evidence](docs/audits/go-linux-approved-memory-2026-10-15.md).
+
 ## 2026-10-15 current-runtime Linux Source capture
 
 Runtime `606630f`; documentation baseline `322f925`. The independent Linux arm64

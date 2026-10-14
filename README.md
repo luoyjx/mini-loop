@@ -574,7 +574,19 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current validation review baseline: runtime `606630f`, documentation at `322f925`.
+Current validation resource review baseline: runtime `606630f`, documentation
+at `32a2286`. The user approved four times the proposed 768 MiB / 256 MiB
+profile: the new runner uses a 3 GiB container limit and a 1 GiB Go soft target.
+Two cores, package concurrency one, test parallelism two, offline inputs and
+owned-resource cleanup remain; the first observed memory-pressure warning stops
+the stage. The original sealed runner stays unchanged. The first new Source
+preflight stopped before container creation because the host was already at
+warning; all 24 subsequent readiness samples were also warning. This is a
+capacity block, not a pending resource approval or a test failure. Earlier
+current-runtime Source evidence remains valid; no new native gate or row delta
+is claimed. See [the approved profile and actual preflight](docs/audits/go-linux-approved-memory-2026-10-15.md).
+
+Previous validation review baseline: runtime `606630f`, documentation at `322f925`.
 The Linux arm64 Source-only stage recaptured all six platform-sensitive groups
 (66 recipes) using CPython 3.11.2 on the unchanged sealed resource profile.
 It took 12.32 seconds with a cgroup peak of 161,345,536 bytes (153.87 MiB),
