@@ -81,7 +81,10 @@ func TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks(t *testing.T) {
 					return nil
 				})},
 			}
-			manager, err := NewSessionManager(ManagerConfig{WorkspaceRoot: t.TempDir(), Defaults: SessionDefaults{Model: "model", PermissionMode: ModeAuto, MaxRounds: 3}, Services: ManagerServices{Provider: model, BackgroundTools: true, ActionJournal: journal, Hooks: hooks}})
+			// The Source producer installs background tools with enable_features=false,
+			// so it has no background/team lifecycle injectors. Keep that assembly
+			// explicit rather than allowing task completion timing to add a message.
+			manager, err := NewSessionManager(ManagerConfig{WorkspaceRoot: t.TempDir(), Defaults: SessionDefaults{Model: "model", PermissionMode: ModeAuto, MaxRounds: 3}, Services: ManagerServices{Provider: model, BackgroundTools: true, ActionJournal: journal, Hooks: hooks, Injectors: []MessageInjector{}}})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -95,6 +98,9 @@ func TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks(t *testing.T) {
 			session, err := manager.Create(context.Background(), CreateSessionRequest{Owner: "alice"})
 			if err != nil {
 				t.Fatal(err)
+			}
+			if session.core.injectors == nil || len(session.core.injectors) != 0 {
+				t.Fatal("Source feature-disabled injector assembly changed")
 			}
 			final, err := session.Run(context.Background(), "hello")
 			if err != nil {
@@ -111,6 +117,9 @@ func TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks(t *testing.T) {
 			}
 			uses, results := 0, 0
 			for _, event := range session.Events() {
+				if _, ok := event.Event.BackgroundResult(); ok {
+					t.Fatal("Source feature-disabled session injected a background notification")
+				}
 				if use, ok := event.Event.ToolUse(); ok {
 					uses++
 					_, exists, err := journal.Get(context.Background(), use.ActionID)
