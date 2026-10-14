@@ -1,0 +1,21 @@
+Use case: precise-object-edit
+Asset type: mini-loop iteration infographic based on the complete layered architecture base.
+Preserve all five layers, original component labels, arrows, icons, boundaries, the L1 Go content/process identity caption and L2 RAM store observation caption. Preserve the dark blue landscape style, title and footer. Do not crop, remove or cover any component.
+Mark only current changes with thin orange outlines at the outside edges of L1, L3, L4 and L5, plus small numbered circles. Put every explanatory callout in the right sidebar, never over a component or arrow. Keep L2 unchanged.
+Replace the right sidebar with the following readable Chinese notes, with generous spacing:
+本轮：2026-10-14
+SDK Unicode · Shell 字节 · Team HTTP
+① L1 团队 HTTP 边界
+默认会话仍绑定团队
+无团队为受控测试装配；腐坏邮箱 500
+② L3 接收、观察与请求编码
+SDK 文本保真；下一请求严格编码
+具名字段与只读快照；字节限额不膨胀
+③ L4 子进程参数
+沙箱选参之后再编码
+DC80–DCFF 还原字节；其他代理项拒绝启动
+④ L5 实际契约与平台验证
+SDK 34 案例；HTTP 12 步；Shell 12 案例
+固定 Linux 镜像，全量门禁单独记录
+仍待：IDNA、默认诊断后端、完整迁移验收
+Use clear Chinese typography. Match sidebar numbers ① to L1, ② to L3, ③ to L4, ④ to L5. Preserve every label in the five-layer diagram; this iteration adds no new component, route, permission or persistence boundary. No completion percentage, success gate count or full Linux pass claim. Opaque background.

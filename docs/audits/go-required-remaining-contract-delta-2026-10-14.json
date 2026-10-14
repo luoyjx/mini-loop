@@ -1,0 +1,849 @@
+{
+  "schema_version": 1,
+  "status": "applied_after_finite_validation",
+  "applied": true,
+  "full_port_acceptance": false,
+  "created_utc": "2026-10-14T12:48:50.878769+00:00",
+  "runtime_commit": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+  "original_audit": {
+    "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+    "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359",
+    "bytes": 871815
+  },
+  "preceding_applied_deltas": [
+    {
+      "path": "docs/audits/go-required-row-delta-2026-10-14.json",
+      "sha256": "22b0d48c3e805db54262d21e88ef6945f58d837e33f078055da6df9b0ee025fa",
+      "bytes": 36092
+    },
+    {
+      "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+      "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f",
+      "bytes": 204830
+    },
+    {
+      "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+      "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37",
+      "bytes": 148466
+    }
+  ],
+  "validation_receipt": {
+    "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+    "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5",
+    "bytes": 1039902
+  },
+  "original_cardinality": 344,
+  "delta_row_count": 3,
+  "other_rows_unchanged": 341,
+  "previous_status_counts": {
+    "verified": 336,
+    "evidence_incomplete": 3,
+    "dependency_blocked": 5
+  },
+  "current_status_counts": {
+    "verified": 339,
+    "evidence_incomplete": 0,
+    "dependency_blocked": 5
+  },
+  "count_derivation": "Compose immutable original344 plus7+26+11 applied row deltas; replace only the three evidence_incomplete rows at their stated finite scopes.",
+  "rows": [
+    {
+      "id": "sdk-producer:direct",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "previous_row": {
+        "id": "sdk-producer:direct",
+        "requirements": [
+          "G4",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/mini_loop/transport.py",
+          "symbol": "DirectTransport.send",
+          "line": 64
+        },
+        "native_assertion": {
+          "path": "go/provider/contracts_test.go",
+          "symbol": "TestDirectHTTPMatchesActualPythonSDK",
+          "line": 133
+        },
+        "verified_scope": [
+          "Actual fixed SDK HTTP request bodies, path/headers, retries/delays and success/error reply projections in the direct provider consumer."
+        ],
+        "remaining_scope": [
+          "Actual fixed SDK escaped lone-surrogate ingress and subsequent request probe is not yet executed.",
+          "IDNA native adoption remains pending explicit dependency approval."
+        ]
+      },
+      "requirements": [
+        "G4",
+        "G7"
+      ],
+      "evidence_groups": [
+        "sdk",
+        "shell_effect_boundary"
+      ],
+      "bounded_scope": [
+        "Actual Anthropic0.107.1/Pydantic2.13.4 transports cover17 finite profiles in direct and stream modes: exact closed escaped content, typed fields, clone/retained state, progress bytes, method/path/body and request/credential counts.22 subsequent calls refuse UTF-8 serialization before a second dispatch; six scalar controls actually dispatch twice.",
+        "Six captured ingress/snapshot negatives retain precise Source phase and SDK-reply-obtained observations. Native Complete proves its coarser closed FailureProtocol adapter, counts and progress; it does not expose the Source intermediate SDK model or assert identical exception class/message/internal timing.",
+        "Two additional actual SDK observations establish lone caller discriminator acceptance followed by next-request UnicodeEncodeError. Existing protocol/stream admission tests preserve that value and require strict wire refusal; no extra native HTTP roundtrip is claimed for this supplemental pair.",
+        "Newly retained Bash text is also checked at the selected-argv filesystem boundary:12 actual Source UTF-8/surrogateescape recipes and native real-provider to nil-journal Gate tests compare refused-child absence, raw byte effects, sandbox repair and complete argv encoding. This is a necessary execution property, separate from provider request encoding."
+      ],
+      "remaining_scope": [
+        "Finite SDK observation and request boundary only; no arbitrary SDK metadata or universal Unicode certificate. Native closed API failure stages are an explicit adaptation.",
+        "No full Agent.run Unicode lifecycle, archive roundtrip or public progress callback fidelity claim. Existing UTF-8 archive/standard wire encoders still refuse lone surrogate observations.",
+        "IDNA native adoption remains pending explicit dependency approval; the original dependency rows remain blocked. No default parser/backend decision or dependency approval is inferred."
+      ]
+    },
+    {
+      "id": "sdk-producer:stream",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "previous_row": {
+        "id": "sdk-producer:stream",
+        "requirements": [
+          "G4",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/mini_loop/transport.py",
+          "symbol": "StreamingTransport.send",
+          "line": 88
+        },
+        "native_assertion": {
+          "path": "go/agent/progress_contract_test.go",
+          "symbol": "TestConfiguredProgressMatchesActualPythonTransport",
+          "line": 78
+        },
+        "verified_scope": [
+          "Actual StreamingTransport timed coalescing/progress fixture and native generation/cancellation lifecycle; this single assertion is not full SDK stream-wire proof."
+        ],
+        "remaining_scope": [
+          "Actual fixed SDK escaped lone-surrogate ingress and subsequent request probe is not yet executed.",
+          "IDNA native adoption remains pending explicit dependency approval."
+        ]
+      },
+      "requirements": [
+        "G4",
+        "G7"
+      ],
+      "evidence_groups": [
+        "sdk",
+        "shell_effect_boundary"
+      ],
+      "bounded_scope": [
+        "Actual Anthropic0.107.1/Pydantic2.13.4 transports cover17 finite profiles in direct and stream modes: exact closed escaped content, typed fields, clone/retained state, progress bytes, method/path/body and request/credential counts.22 subsequent calls refuse UTF-8 serialization before a second dispatch; six scalar controls actually dispatch twice.",
+        "Six captured ingress/snapshot negatives retain precise Source phase and SDK-reply-obtained observations. Native Complete proves its coarser closed FailureProtocol adapter, counts and progress; it does not expose the Source intermediate SDK model or assert identical exception class/message/internal timing.",
+        "Two additional actual SDK observations establish lone caller discriminator acceptance followed by next-request UnicodeEncodeError. Existing protocol/stream admission tests preserve that value and require strict wire refusal; no extra native HTTP roundtrip is claimed for this supplemental pair.",
+        "Newly retained Bash text is also checked at the selected-argv filesystem boundary:12 actual Source UTF-8/surrogateescape recipes and native real-provider to nil-journal Gate tests compare refused-child absence, raw byte effects, sandbox repair and complete argv encoding. This is a necessary execution property, separate from provider request encoding."
+      ],
+      "remaining_scope": [
+        "Finite SDK observation and request boundary only; no arbitrary SDK metadata or universal Unicode certificate. Native closed API failure stages are an explicit adaptation.",
+        "No full Agent.run Unicode lifecycle, archive roundtrip or public progress callback fidelity claim. Existing UTF-8 archive/standard wire encoders still refuse lone surrogate observations.",
+        "IDNA native adoption remains pending explicit dependency approval; the original dependency rows remain blocked. No default parser/backend decision or dependency approval is inferred."
+      ]
+    },
+    {
+      "id": "http:GET /sessions/{session_id}/team",
+      "status": "verified",
+      "applied": true,
+      "previous_status": "evidence_incomplete",
+      "previous_row": {
+        "id": "http:GET /sessions/{session_id}/team",
+        "method": "GET",
+        "path": "/sessions/{session_id}/team",
+        "requirements": [
+          "P0",
+          "G3",
+          "G6",
+          "G7"
+        ],
+        "status": "evidence_incomplete",
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_team_http_contracts",
+          "line": 9168
+        },
+        "native_assertion": {
+          "path": "go/httpapi/teams_test.go",
+          "symbol": "TestActualPythonTeamHTTP",
+          "line": 21
+        },
+        "evidence": [
+          "TEAM"
+        ],
+        "verified_scope": [
+          "default managedHTTP,newest50,peek,mailboxunchanged,encodingerror"
+        ],
+        "remaining_scope": [
+          "Only the stated bounded scope; not a whole operation/feature/error/lifecycle completion certificate.",
+          "teamless branch teams_test.go89\u201397 only marshals response, no actualHTTP handler."
+        ],
+        "gap_native": {
+          "path": "go/httpapi/teams_test.go",
+          "symbol": "TestActualPythonTeamHTTP",
+          "line": 89
+        }
+      },
+      "requirements": [
+        "P0",
+        "G3",
+        "G6",
+        "G7"
+      ],
+      "evidence_groups": [
+        "teamless"
+      ],
+      "bounded_scope": [
+        "Twelve actual Source HTTP requests now compare the real native owner/auth/team route, complete response/status and four security-header projections, unread mailbox preservation and model-call counts.",
+        "Source missing/null team identity and detached-agent view states use an explicit test-only native typed-absence assembly adapter. Normal native and Source creation still binds the default lead team; no production team-disable/mutator seam is added.",
+        "Controlled corrupt mailbox is bypassed by teamless view and then reaches real PeekTeam after binding restoration. The confirmed restored-corrupt-mailbox500 difference is fixed only for this route, including Source absence of all four middleware security headers."
+      ],
+      "remaining_scope": [
+        "Finite HTTP recipes under controlled test-only assembly; not a new public native state-detach API, default-off team feature, arbitrary lifecycle or all malformed mailbox certificate.",
+        "Existing default team, owner, history and mailbox evidence remains required; the test-only adapter does not widen production authority."
+      ]
+    }
+  ],
+  "evidence_groups": {
+    "sdk": {
+      "current_references": [
+        {
+          "path": "python/tools/provider_surrogate_contracts.py",
+          "sha256": "2f457e683bde3a734b2b9ad1c7654048170a5b5dbdb8634e05bb7733c78b4d2c",
+          "bytes": 11772,
+          "anchor": "def provider_surrogate_contracts(",
+          "line": 178
+        },
+        {
+          "path": "python/tests/test_provider_surrogate_contracts.py",
+          "sha256": "073347e54991ecca10bc5b114daa7d8fd7f4c4aa730b12bb1ad5193c73ecadd7",
+          "bytes": 3858,
+          "anchor": "def test_actual_fixed_sdk_surrogate_ingress_and_next_request(",
+          "line": 15
+        },
+        {
+          "path": "go/testdata/python-provider-surrogates.json",
+          "sha256": "b7935a0babc2890fd5fdafa44dcef1cb40640c094c09681e7b48b85bb8ca837d",
+          "bytes": 93175
+        },
+        {
+          "path": "go/provider/surrogate_contract_test.go",
+          "sha256": "12e3f0cffe33e6132e6b65b07f4d79a10da6c3f434389007d1ce92deba1b4b92",
+          "bytes": 12847,
+          "anchor": "func TestEscapedSurrogateIngressAndNextRequestMatchActualSDK(",
+          "line": 171
+        },
+        {
+          "path": "go/provider/surrogate_bounds_test.go",
+          "sha256": "d431f42ec9df1544b66a88840115c674b9f21e050678cb820532cc093d2c988d",
+          "bytes": 2216,
+          "anchor": "func TestSDKUnicodeBridgeRetainsActualDecoderUTF8Budget(",
+          "line": 27
+        },
+        {
+          "path": "go/protocol/sdk_unicode_test.go",
+          "sha256": "3231767f8f50bcf2b2552e483710f064ac6ceecf4155c991b9a6ada591b96283",
+          "bytes": 2548,
+          "anchor": "func TestSDKUnicodeObservationPreservesNamedFieldsAndStrictWire(",
+          "line": 12
+        },
+        {
+          "path": "go/protocol/caller_observation_test.go",
+          "sha256": "89cc5db1d098390a1fa491e2ddecd2e51501ab081eef5a32dbd8f14c9a360e4b",
+          "bytes": 5946,
+          "anchor": "func TestSDKCallerAccessorDetachesRootAndRetainsUnicodeUntilEncoding(",
+          "line": 114
+        },
+        {
+          "path": "go/provider/text_editor_test.go",
+          "sha256": "5f37dddbfd2abc62d1eb57ca431cf4649aee846ad283cdbbf8bc372ae56159d7",
+          "bytes": 4747,
+          "anchor": "func TestStreamClientCallerObservationAdmission(",
+          "line": 95
+        },
+        {
+          "path": "go/protocol/sdk_unicode.go",
+          "sha256": "9f0ff34dde62e47904598372a9acb657259f8c9e966167c2c94481b29344b74e",
+          "bytes": 2954,
+          "anchor": "func (block Block) MarshalObservationASCIIJSON(",
+          "line": 12
+        }
+      ],
+      "profiles": 17,
+      "cases": 34,
+      "sdk_replies_obtained": 29,
+      "normalized_content": 28,
+      "next_request_refusals": 22,
+      "dispatched_twice_controls": 6,
+      "negative_ingress_or_snapshot": 6,
+      "supplemental_actual_source": {
+        "inputs": [
+          {
+            "path": "var/go-remaining-contract-evidence-2026-10-14/probe-caller-surrogate-discriminator.py",
+            "bytes": 1794,
+            "sha256": "2e1749a9531a1483913bbafd1be9538fbc7f0e59e5d7d2693efb4da799935133"
+          },
+          {
+            "path": "var/go-remaining-contract-evidence-2026-10-14/python-sdk-surrogate-discriminator.json",
+            "bytes": 6373,
+            "sha256": "0c313566ec2230bbc95f233c877ed4c87a2445fc852cdb7acd7ba238111618f7"
+          }
+        ],
+        "source_helper": {
+          "path": "python/tools/provider_surrogate_contracts.py",
+          "bytes": 11772,
+          "sha256": "2f457e683bde3a734b2b9ad1c7654048170a5b5dbdb8634e05bb7733c78b4d2c"
+        },
+        "source_helper_symbol": "_capture",
+        "source_helper_function_sha256": "367cc08e442a40f99728ca35a6a1c1ab8c965de0eade8f099d69293d6852ca2b",
+        "former_test_snapshots": [
+          {
+            "path": "var/go-remaining-contract-evidence-2026-10-14/caller_observation_test.before.go",
+            "bytes": 4972,
+            "sha256": "28e7acf7c4e09c8d0e26ac2582d035f725f603ee90aee83fd184d895aadeb393"
+          },
+          {
+            "path": "var/go-remaining-contract-evidence-2026-10-14/text_editor_test.before.go",
+            "bytes": 3856,
+            "sha256": "3ead43668cd8c48a1d982a1df7eddb4c2f06fcd10c997bb217776908002c6ab0"
+          }
+        ],
+        "observations": 2
+      }
+    },
+    "teamless": {
+      "current_references": [
+        {
+          "path": "python/tools/teamless_http_contracts.py",
+          "sha256": "78232bfc8d7dfa8b1b0a2df2f948b05353f547e20605b3df4ad576bab6c52938",
+          "bytes": 6731,
+          "anchor": "def teamless_http_contracts(",
+          "line": 11
+        },
+        {
+          "path": "python/tests/test_teamless_http_contracts.py",
+          "sha256": "9c9b9944dad43df81ad27084b5cfa17aaee282d49ed25877bdde0b8ce083097a",
+          "bytes": 2298,
+          "anchor": "def test_actual_teamless_http_contracts(",
+          "line": 8
+        },
+        {
+          "path": "go/testdata/python-teamless-http.json",
+          "sha256": "81d89d42def6d6583837ebb9ab0a91178b8684c9fa829bdf131c5eb393842881",
+          "bytes": 15212
+        },
+        {
+          "path": "go/agent/teamless_http_external_test.go",
+          "sha256": "3d461869be9657d8d165bcf2f37383ce2059c942251676bc8165b036e71314d0",
+          "bytes": 8223,
+          "anchor": "func TestActualSourceTeamlessHTTPThroughOwnedHandler(",
+          "line": 78
+        },
+        {
+          "path": "go/agent/export_test.go",
+          "sha256": "59404b9b0175faca762409f9f77ea155f78f0994ba834a63d9b30590946ff8c1",
+          "bytes": 1797,
+          "anchor": "func WithTeamlessBindingForTest(",
+          "line": 10
+        },
+        {
+          "path": "go/httpapi/teams.go",
+          "sha256": "ea5143d3e08df337510b230af52f1dd6e128ec58e1a2c0053b0a4bb1283c9b1f",
+          "bytes": 1815,
+          "anchor": "func (s *Server) sessionTeam(",
+          "line": 20
+        }
+      ],
+      "cases": 12
+    },
+    "shell_effect_boundary": {
+      "current_references": [
+        {
+          "path": "python/tools/bash_surrogate_contracts.py",
+          "sha256": "b6a7f7e801863286939fd25dd3ba5ec84a450a2bc85804258e495f788153c0d3",
+          "bytes": 6045,
+          "anchor": "def bash_surrogate_contracts(",
+          "line": 11
+        },
+        {
+          "path": "python/tests/test_bash_surrogate_contracts.py",
+          "sha256": "1a9b93863241bfb74a61515506275be9fd7568aaf79392400af0c931c24cffd7",
+          "bytes": 1976,
+          "anchor": "def test_actual_bash_surrogate_contracts(",
+          "line": 8
+        },
+        {
+          "path": "go/testdata/python-bash-surrogates.json",
+          "sha256": "8331f7a0b39bba224452a2dcced503744a08d64e402ff6870bfe1548c7a7ea0b",
+          "bytes": 11562
+        },
+        {
+          "path": "go/shell/bash_surrogate_test.go",
+          "sha256": "67b1034e853564bd90e60de2cf9576968b9f94d5867a3c4c7691026dc8e28005",
+          "bytes": 7225,
+          "anchor": "func TestActualPythonSelectedArgvFilesystemEncoding(",
+          "line": 136
+        },
+        {
+          "path": "go/agent/bash_surrogate_effect_test.go",
+          "sha256": "ba66812fcb2dcf30e30dddd11ff65a7278b95fcfdc5719cf2cbd12bcfa9bbfb3",
+          "bytes": 7140,
+          "anchor": "func TestSDKSurrogateBashReachesSafeFilesystemBoundaryWithoutJournal(",
+          "line": 111
+        },
+        {
+          "path": "go/shell/argv_encoding.go",
+          "sha256": "b3b94e237cbd76958c1a38b58f8346f0cbe5e9dc05ba7ca1ca87c69db7388fb3",
+          "bytes": 3172,
+          "anchor": "func encodeFilesystemArgv(",
+          "line": 83
+        },
+        {
+          "path": "go/shell/executor.go",
+          "sha256": "835c514f88a6fce477bc775c0157331e8354d375c29ae755cf49b7999023ee9b",
+          "bytes": 15219,
+          "anchor": "argv, encodingErr := encodeFilesystemArgv(argv)",
+          "line": 214
+        },
+        {
+          "path": "go/agent/catalog.go",
+          "sha256": "0e2072d9f2da1b6907c6e2207d7ac6cb225c8cccadbe02ddfc07b9629388f074",
+          "bytes": 9951,
+          "anchor": "var encoding *shell.ArgumentEncodingError",
+          "line": 267
+        }
+      ],
+      "cases": 12
+    }
+  },
+  "required_gate_count": 24,
+  "required_gates": [
+    "sdk-source-final",
+    "sdk-python-focused",
+    "team-source-headers",
+    "team-python-focused",
+    "bash-source",
+    "sdk-discriminator-source",
+    "source-check",
+    "python-full",
+    "go-full",
+    "go-vet",
+    "invariants",
+    "scans",
+    "type-syntax",
+    "type-public",
+    "type-private",
+    "type-variables",
+    "go-race",
+    "performance-build",
+    "performance",
+    "architecture",
+    "linux-source",
+    "linux-full",
+    "linux-vet",
+    "linux-race"
+  ],
+  "host_stage_directories": {
+    "sdk-source-final": "sdk-source-final",
+    "sdk-python-focused": "sdk-python-focused",
+    "team-source-headers": "team-source-headers",
+    "team-python-focused": "team-python-focused",
+    "bash-source": "bash-source",
+    "sdk-discriminator-source": "sdk-discriminator-source",
+    "source-check": "source-check",
+    "python-full": "python-full",
+    "go-full": "go-full-corrected",
+    "go-vet": "go-vet-corrected",
+    "invariants": "invariants",
+    "scans": "scans",
+    "type-syntax": "type-syntax-corrected",
+    "type-public": "type-public-corrected",
+    "type-private": "type-private-corrected",
+    "type-variables": "type-variables-corrected",
+    "go-race": "go-race-corrected",
+    "performance-build": "performance-build-corrected",
+    "performance": "performance-corrected",
+    "architecture": "architecture"
+  },
+  "superseded_host_attempts": [
+    {
+      "alias": "go-full",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full/resources.json",
+        "bytes": 15512,
+        "sha256": "d5ff0862294f01eebfafc95d1a77668ee278f42db5e05ef69050cfbb8b4a1932"
+      }
+    },
+    {
+      "alias": "go-vet",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-vet/resources.json",
+        "bytes": 2753,
+        "sha256": "24ab86079db6299215f641bbdb8526fdd733ab269df64a56b942fd3ff6ab8b42"
+      }
+    },
+    {
+      "alias": "type-syntax",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/type-syntax/resources.json",
+        "bytes": 2346,
+        "sha256": "8278800f549f1b2edadab6f4f1d60bb3ea4efbc514c1e7e608e69d1d5a75b196"
+      }
+    },
+    {
+      "alias": "type-public",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/type-public/resources.json",
+        "bytes": 2375,
+        "sha256": "808e543bced450bcbe0e8bb925327b3b7df33051c49138918d229024da9c7101"
+      }
+    },
+    {
+      "alias": "type-private",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/type-private/resources.json",
+        "bytes": 2378,
+        "sha256": "80b9b526c3e44ab9e9f478e62369a8c543633b402c586b06d494ebf51db769f1"
+      }
+    },
+    {
+      "alias": "type-variables",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/type-variables/resources.json",
+        "bytes": 2385,
+        "sha256": "372e1bb2866c8f50acc1cfc3ff455169dc04c1f5640638c0838d25ac899ee5f6"
+      }
+    },
+    {
+      "alias": "go-race",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race/resources.json",
+        "bytes": 19731,
+        "sha256": "cea3b299b8db1d003f053c8df9c7e55bac69acc022a279a944631aa18451b381"
+      }
+    },
+    {
+      "alias": "performance-build",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/performance-build/resources.json",
+        "bytes": 2772,
+        "sha256": "7c1337527ed5d84eeef49dad288a0512efc66f67b0e116562744fc663c30b813"
+      }
+    },
+    {
+      "alias": "performance",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/performance/resources.json",
+        "bytes": 3178,
+        "sha256": "537307ef37a8c9f7bbf5b1ed25c53dfe64f7e286fb609c6d4d7b4a6024ea5edd"
+      }
+    }
+  ],
+  "retained_linux_attempts": [
+    {
+      "stage": "linux-race",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race/result.json",
+        "bytes": 83051,
+        "sha256": "5e707c3ac6aa409406c3e657ecb695516393245cd2729e53d4dc6e5be0cc8d8e"
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race/logs/stdout.log",
+        "bytes": 13904117,
+        "sha256": "6bd8112f3a6fe38e5c28403e27e16482abf36a3e183079939df8e30a5920d343"
+      },
+      "historical_manifest": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race/archive-manifest.json",
+        "bytes": 197408,
+        "sha256": "29136d636ce8d5322fd870036d4c2777a205683f0c50cbf41184f0512e491ff5"
+      },
+      "historical_revision": "ed6daf988f677165383c91732c4dc9dc8354907b",
+      "verified_committed_inputs": true,
+      "verified_current_inputs": false,
+      "current_runtime_drift": [
+        {
+          "path": "go/agent/background_sdk_managed_test.go",
+          "historical_sha256": "c79242a4ab6bbacc571cb1befac13ab9ab8a432b069d2417f6d2e39e12723f0c",
+          "current_sha256": "b1ec1707474cca28031167907cc4b9111c762b3b8dd42068aadf37617ea4e993"
+        }
+      ],
+      "interpretation": "The initial complete Linux race cohort failed one background message-phase assertion (5 versus Source4). Its native consumer used nil injectors, selecting default background/team injection although the Source recipe disabled those injectors. The fourth commit corrects only that test to explicit empty injectors with absence assertions; expected4 messages and task outcomes are preserved. This is a consumer assembly correction, not a production fix or universal timing reliability proof."
+    },
+    {
+      "stage": "linux-race-confirmation",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-confirmation/result.json",
+        "bytes": 79840,
+        "sha256": "2c38ac8009e4ad3a6789dbd3a8b419e56581bdd68df7b5906b04321c77c3dd57"
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-confirmation/logs/stdout.log",
+        "bytes": 8032559,
+        "sha256": "7027205272ec08ca32f906a36e545973ff19958d0dd6befe8db5f3aaf13d863b"
+      },
+      "historical_manifest": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-confirmation/archive-manifest.json",
+        "bytes": 197408,
+        "sha256": "29136d636ce8d5322fd870036d4c2777a205683f0c50cbf41184f0512e491ff5"
+      },
+      "historical_revision": "ed6daf988f677165383c91732c4dc9dc8354907b",
+      "verified_committed_inputs": true,
+      "verified_current_inputs": false,
+      "current_runtime_drift": [
+        {
+          "path": "go/agent/background_sdk_managed_test.go",
+          "historical_sha256": "c79242a4ab6bbacc571cb1befac13ab9ab8a432b069d2417f6d2e39e12723f0c",
+          "current_sha256": "b1ec1707474cca28031167907cc4b9111c762b3b8dd42068aadf37617ea4e993"
+        }
+      ],
+      "interpretation": "Manual SIGTERM after the identified consumer assembly mismatch; not a passed cohort, OOM or observed host-pressure failure. No final cgroup sample was published."
+    }
+  ],
+  "runtime_inputs": {
+    "count": 1843,
+    "all_current_hashes_match": true,
+    "scope": [
+      "go",
+      "python",
+      "AGENTS.md"
+    ],
+    "artifact_extras_excluded": true,
+    "manifest_sha256": "50090ade85a6986ef59fa25b2b2508e6f24b8b66b86fdbf3f8776a5dca32da6d"
+  },
+  "historical_reference_policy": "Only complete fixed hashes and status composition of the four immutable historical JSON files are checked. Their embedded historical receipts, old code coordinates and canonical image hashes are not recursively imposed on current files.",
+  "explicit_unchanged": [
+    {
+      "id": "capability:04",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "capability:04",
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "status": "dependency_blocked",
+        "capability": "Comprehensive s09\u2013s20 feature bundle",
+        "source_default": "**Off**",
+        "selector": "`MINILOOP_FEATURES=all` or `enable_features=True`",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_features.py"
+          ]
+        },
+        "native_assertion": {
+          "paths": [
+            "go/agent/manager_features_test.go",
+            "go/launcher/features_test.go"
+          ]
+        },
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ],
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "Default full CLI refuses without explicit native CPython diagnostics backend; explicit injected backend path is covered."
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json"
+      }
+    },
+    {
+      "id": "export:build_client",
+      "status": "dependency_blocked",
+      "original_row": {
+        "export_name": "build_client",
+        "seam": "client",
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "build_client",
+          "line": 454,
+          "line_kind": "current_definition",
+          "sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4"
+        },
+        "native_named_bindings": [
+          {
+            "package": "provider",
+            "name": "New",
+            "kind": "function",
+            "file": "provider/client.go",
+            "line": 144
+          },
+          {
+            "package": "launcher",
+            "name": "New",
+            "kind": "function",
+            "file": "launcher/app.go",
+            "line": 207
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Await approved pinned IDNA choice, implement actual84 Source-case native consumer; preserve separate SDK surrogate probe.",
+        "id": "export:build_client",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.client"
+      }
+    },
+    {
+      "id": "export:full_registry",
+      "status": "dependency_blocked",
+      "original_row": {
+        "export_name": "full_registry",
+        "seam": "full",
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/builtins.py",
+          "symbol": "full_registry",
+          "line": 275,
+          "line_kind": "current_definition",
+          "sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "ManagerConfig",
+            "kind": "type",
+            "file": "agent/manager_config.go",
+            "line": 120
+          },
+          {
+            "package": "agent",
+            "name": "ManagerServices",
+            "kind": "type",
+            "file": "agent/manager_config.go",
+            "line": 54
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Await default CPython parser approval and finish9 non-full definitions/partial-selector evidence.",
+        "id": "export:full_registry",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.full"
+      }
+    },
+    {
+      "id": "setting:base_url",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "setting:base_url",
+        "requirements": [
+          "P0",
+          "G7",
+          "G4"
+        ],
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.base_url",
+          "line": 88
+        },
+        "native_declaration": {
+          "path": "go/config/settings.go",
+          "symbol": "Settings.BaseURL",
+          "line": 65
+        },
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts",
+          "line": 3736
+        },
+        "native_assertion": {
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings",
+          "line": 16
+        },
+        "evidence": [
+          "CONFIG"
+        ],
+        "environment_names": [
+          "ANTHROPIC_BASE_URL"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "core-overrides"
+        ],
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ],
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Settings mapping itself captured; runtime Unicode-host IDNA required consumer awaits fixed dependencies."
+        ],
+        "dependency_receipt": "docs/audits/go-provider-idna-source-2026-10-13.json"
+      }
+    },
+    {
+      "id": "setting:enable_features",
+      "status": "dependency_blocked",
+      "original_row": {
+        "id": "setting:enable_features",
+        "requirements": [
+          "P0",
+          "G7",
+          "G6"
+        ],
+        "status": "dependency_blocked",
+        "source_declaration": {
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.enable_features",
+          "line": 282
+        },
+        "native_declaration": {
+          "path": "go/config/settings.go",
+          "symbol": "Settings.EnableFeatures",
+          "line": 103
+        },
+        "source_recipe": {
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts",
+          "line": 3736
+        },
+        "native_assertion": {
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings",
+          "line": 16
+        },
+        "evidence": [
+          "CONFIG"
+        ],
+        "environment_names": [
+          "MINILOOP_FEATURES"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "optional-settings",
+          "legacy-flags"
+        ],
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ],
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Default full-feature CPython parser decision pending; explicit DiagnosticsProvider fullcatalog proof does not supply a default backend."
+        ],
+        "additional_native": {
+          "path": "go/launcher/features_test.go",
+          "symbol": "TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects",
+          "line": 58
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "339 verified denotes bounded original audit rows, not full port acceptance.",
+    "Five original IDNA/default-parser dependency rows remain blocked and require their separate approvals and evidence.",
+    "No universal SDK/Agent Unicode, archive, progress or platform filesystem certificate is asserted."
+  ]
+}

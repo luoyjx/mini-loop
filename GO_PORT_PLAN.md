@@ -1,5 +1,41 @@
 # Go port plan
 
+## 2026-10-14 SDK Unicode, filesystem argv and team HTTP
+
+Baseline local main `a378a2b`; branch `codex/go-remaining-contract-evidence`.
+The [iteration record](docs/audits/go-remaining-contract-evidence-2026-10-14.md)
+tracks the final gates, fixed-platform execution and finite three-row delta.
+Original P0/P1/G0–G7 acceptance criteria remain unchanged.
+
+Actual fixed SDK evidence covers 34 direct/stream profiles: 29 SDK replies,
+28 content snapshots, 22 subsequent encoding refusals, six successful controls
+and six initial reply/snapshot failures. The two existing discriminator assertions
+also have a separate two-observation actual SDK probe. Native named fields and
+closed input/caller values preserve the code points. The native typed protocol
+failure adapter combines intermediate SDK stages; no raw SDK model or complete
+Agent Unicode lifecycle equality is claimed. Standard outgoing encoding remains
+strict before credentials and HTTP, and the internal bridge retains the original
+UTF-8 byte budget.
+
+The shell encodes the complete selected sandbox argv before creating a child.
+Actual Source Toolset/Popen recipes compare twelve cases: six unencodable values
+raise before private marker effects, while DC80–DCFF, ordinary Unicode and
+sandbox-repaired arguments retain six successful effects/byte controls. The Go
+codec preserves unrelated raw native bytes. Actual provider-decoded Bash through
+a nil-journal ToolGate verifies the reachable execution boundary; this named
+pre-child fault alone has no structured process result.
+
+Twelve actual HTTP steps compare default team identity, test-assembled absent
+identity, auth/owner denials, mailbox preservation and corruption/restoration.
+Only the team route's internal-error projection changes. Production sessions
+still bind teams; there is no new public mutable state or teamless constructor.
+
+Current host and committed Linux Source/full/vet/race gates pass; the refreshed
+matched fake HTTP instrument and applied three-row delta record 339/0/5. The
+background SDK consumer explicitly matches Source's feature-disabled injector
+assembly; the initial race failure is retained. IDNA adoption, default diagnostics
+backend approval and complete migration remain separate.
+
 ## 2026-10-14 public identity, typed composition and runtime-store observations
 
 Branch `codex/go-public-contract-closure`, baseline local main `48fd26d`.
@@ -9296,7 +9332,37 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Current pointer, **2026-10-14**: runtime `3a1e44c` is committed and integrated
+Current validated runtime: `a6bf1d5`, based on local main `a378a2b`.
+The [24-gate receipt](docs/audits/go-remaining-contract-evidence-2026-10-14.json)
+and [applied three-row delta](docs/audits/go-required-remaining-contract-delta-2026-10-14.json)
+record **339 bounded verified / zero evidence-incomplete / five dependency-blocked**.
+Twenty current host gates and corrected committed Linux Source/full/vet/race
+pass with 1,843 exact current inputs. The first Linux race
+failure exposed a background consumer injector assembly mismatch; a separate
+test-only commit corrects it, preserving the exact message/task assertions and
+all original failed/stopped attempts. Full migration acceptance remains open.
+
+| Original package | Current evidence / remaining acceptance |
+| --- | --- |
+| P0 | Inventory accepted: all original capability/default/settings/HTTP/SDK/schema and 157 public-name bindings; behavior remains assigned to G1–G7. |
+| P1 | Relocation accepted; current full Python 2,278 passed / 28 skipped / 24 subtests, verifiers and original fake-server evidence. |
+| G0 | Current full Go/vet/race on host and fixed Linux; four zero-finding type audits (477 files / 1,502 types, 1,225 public roots, 288 private roots, 175 variables). Existing body dispositions remain bounded historical evidence. |
+| G1 | Existing session/transcript/isolation recipes execute in current full gates; final cross-feature requirement reconciliation remains explicit. |
+| G2 | Existing gate/order/denial/cancellation/action recipes execute; selected argv now encodes before child creation, with actual nil-journal effect controls. Final authority scope audit remains. |
+| G3 | Actual default/auth/owner/error corpus, including twelve team-route states; typed absent-team test assembly adds no production mutator. Default diagnostics policy remains blocked. |
+| G4 | Actual 34 SDK reply/next-call profiles plus two discriminator observations; six initial failures use a coarse typed native adapter. IDNA approval/native 84-case consumer remains blocked; full Agent Unicode/archive/progress lifecycle is not certified. |
+| G5 | Native SQLite/leases/manager/Launcher restoration and restart/crash-window recipes are delivered and run in current gates. The bounded seven-group ledger links actual current passes; native process strengthening, Source primitive composition and team subset limits remain explicit. No power-loss or external-effect fencing claim. |
+| G6 | Finite public/default/feature catalogue reconciled; default CPython backend policy and its native 62-case consumer remain blocked. Existing feature-specific execution limits remain. |
+| G7 | Current 24 gates, matched three-pair performance, architecture evidence and 339/0/5 ledger; five blocked rows prevent the original no-unverified-required-rows criterion. |
+
+Coverage (same per-package instrumentation): application 85.40019%,
+all Go 85.21067%, Provider 83.01199%.
+Current bounded measurements and local delivery details are in the
+[iteration record](docs/audits/go-remaining-contract-evidence-2026-10-14.md).
+No remote fetch, push or CI refresh is claimed. Original work-package criteria
+remain unchanged.
+
+Historical completed checkpoint, **2026-10-14**: runtime `3a1e44c` is committed and integrated
 into local main; implementation branch `codex/go-stuck-thresholds`. The
 [public stuck-threshold integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete)
 has 61 direct Source cases, 12 actual Agent loops and two AgentSession fault/
@@ -9479,7 +9545,13 @@ repo-owned domain/service boundaries without adding arbitrary foreign or
 error-object-graph closure to the original criterion. Python stays available;
 other finite unaccepted rows and recorded platform/reliability limits remain.
 
-| Package | Current implementation and evidence | Remaining acceptance |
+### Historical package checkpoint — 2026-10-13
+
+The following role-policy/resource-budget checkpoint predates runtime `ed6daf9`.
+Its counts and remaining items describe that checkpoint; the current status and
+receipt above supersede them.
+
+| Package | Implementation and evidence at that checkpoint | Acceptance remaining at that checkpoint |
 | --- | --- | --- |
 | P0 | Inventory acceptance satisfied: 157 bindings (52 name + 105 explicit + zero missing), 12 README capability/test rows, 49 settings, 44 HTTP operations, three SDK producers and captured SQLite schema | No remaining item under the original inventory criterion; required behavior, defaults and inter-feature semantics remain tracked in G1–G7 |
 | P1 | Python under `python/`, Go under `go/`; original server smoke plus current full Python 2253 passed / 28 skipped / 24 subtests and invariants/scans pass | Preserve documented commands and perform any remaining final release checks for the eventual integration |
@@ -9492,7 +9564,10 @@ other finite unaccepted rows and recorded platform/reliability limits remain.
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | Accepted role profile: Source 252 / 252 passing consumers of 253, ordinary/vet/race and selected type/scanner/guard gates; new full Python and three-pair fake-HTTP resource-budget evidence | Default parser approval/62-case consumer, two Unicode-host direct/SSE cases, fixed-environment Linux full gates and other finite unaccepted rows remain. Go/vet/race/coverage were not rerun this iteration; two earlier host-pressure stops and historical reliability limits remain recorded |
 
-### Confirmed open implementation items
+### Historical open-item register — through 2026-10-13
+
+The current iteration and applied required-row ledger supersede this register.
+Retained failures and unresolved causes remain historical evidence.
 
 A prior full ordinary Go again reported background `timeout-fraction`: expected
 5ms timeout, observed completed. The latest ordinary/race/Python cohort passes without a background

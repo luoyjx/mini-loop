@@ -1,5 +1,32 @@
 # Python to Go parity matrix
 
+## 2026-10-14 SDK, argv and team HTTP finite reconciliation
+
+Baseline local main `a378a2b`; branch `codex/go-remaining-contract-evidence`.
+The [current iteration](docs/audits/go-remaining-contract-evidence-2026-10-14.md)
+records the original three remaining evidence rows, full platform gates and
+explicit typed adaptations. Final status counts are applied from its hash-bound
+receipt; no whole-port completion follows from a finite corpus.
+
+The [applied three-row delta](docs/audits/go-required-remaining-contract-delta-2026-10-14.json)
+records **339 bounded verified / zero evidence-incomplete / five dependency-blocked**.
+Runtime `a6bf1d5` has twenty current host gates plus fresh committed Linux
+Source/full/vet/race. A test-only correction matches Source's explicit absence of
+background/team lifecycle injectors while retaining exact message/task assertions;
+the failed initial Linux race and manually stopped old-commit confirmation remain
+recorded. Current same-instrumentation coverage is application
+85.40019%, all Go 85.21067%, Provider 83.01199%.
+
+| Surface | Actual evidence and boundary |
+| --- | --- |
+| SDK direct/stream | 34 fixed SDK HTTP ingress/next-call profiles; actual progress and credential/transport counts; two supplementary discriminator observations. Five named text fields and closed caller/input values retain Unicode; six negative profiles use a coarser native typed reply adapter. |
+| Reply byte bounds | Only surrogate code points are escaped in the internal bridge; actual input/caller decoder tests preserve near-limit literal UTF-8 and strict next-request refusal. |
+| Shell | Twelve actual Toolset/Popen recipes plus real nil-journal ToolGate effects compare sandbox selection, surrogateescape bytes and no-child failures. Other raw native byte strings retain their existing embedding semantics. |
+| Team HTTP | Twelve actual Source/native handler steps compare responses and four security headers, owner/auth, non-consuming mailbox and corruption/restoration. Native absent-team state is a controlled test-only assembly. |
+
+The complete original P0/P1/G0–G7 criteria, default parser/IDNA decisions and
+current fixed-platform/performance evidence remain explicit in the receipt.
+
 ## 2026-10-14 public identity and composition closure
 
 Baseline local main `48fd26d`, branch `codex/go-public-contract-closure`.
@@ -1914,9 +1941,12 @@ complete. Native static admission remains stricter; this checkpoint adds Source
 contracts, not a Go parity implementation or refreshed coverage. See the current
 plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`.
 
-## Current acceptance index — 2026-10-13
+## Historical acceptance index — through 2026-10-14
 
-Current pointer, **2026-10-14**: runtime `3a1e44c` is committed and integrated
+Current status is recorded in the latest iteration section and its hash-bound delta above; this dated index retains its historical gates and unresolved observations.
+
+
+Historical checkpoint, **2026-10-14**: runtime `3a1e44c` is committed and integrated
 into local main; implementation branch `codex/go-stuck-thresholds`. The
 [public stuck-threshold integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete)
 captures 61 direct cases, 12 actual Agent loops and two AgentSession fault/
@@ -6938,7 +6968,9 @@ recording faults, owned HTTP reads/exports and binary-float duration rounding.
 Unicode casing tables are generated separately by
 `python/tools/export_go_unicode.py --check`.
 
-| Slice | Python source of truth | Required Go contract | Go evidence |
+Historical capability inventory: the later iteration records and hash-bound deltas above supersede the dated implementation/status cells below. They preserve native SQLite restart, manager/Launcher restore and decision replay evidence without rewriting historical snapshots. Statements below that describe native SQLite, restart or Launcher restoration as missing are superseded by those delivered proofs.
+
+| Slice | Python source of truth | Required Go contract | Historical Go evidence |
 |---|---|---|---|
 | Session lifecycle, ownership, workspace binding and concurrent isolation | `mini_loop/manager.py`, `session.py`, `auth.py`; `tests/test_concurrent_turns.py`, `test_auth.py`, `test_workspace_binding.py` | Typed owner/session IDs, serialized turns per session, concurrent separate sessions, identical refusal status | Library sessions serialize turns and bind resolved workspaces. Caller-stamped typed RunContext and peer derivation are implemented, with five Python snapshots and detached data. Shared subagent providers retain session isolation under race testing. NewManagedSession adds process-local admission/status/run counts, active-turn cancellation, closure rechecks and nonblocking Info activity. Tests cover queue cancellation, approval waits, handler panic repair and reentry after faults. NewSessionManager owns ordered handles, shared eight-slot model/tool pools, default in-memory approvals/actions, explicit owner lookup and bounded remembered owners. The twentieth Python snapshot matches creation/defaults, ten binding status categories, deletion and stop. Go tests cover simultaneous creation/stop, closed queued admission, retiring shared directories, factory faults and symlink-only cleanup. Bound directories are retained; scratch reclaim waits for active holders. Go library requires explicit owners and returns a typed missing/foreign error; Python raw manager defaults omitted owners to anonymous and delete returns false. HTTP authentication and owner-scoped routes are now implemented. Bounded library steering, live modes and owner-scoped HTTP wakeup are now implemented. Typed environment settings, standalone HTTP ownership and per-run trajectory recording are implemented; session restore remains pending. |
 | Model/tool loop and transcript protocol | `agent.py`, `blocks.py`, `fake_llm.py`; `tests/test_transcript_contract.py`, `test_tool_batch_invariants.py`, `test_provider_fidelity.py`, `test_stop_reasons.py` | Text, thinking, tool use and result variants; ordered batches and strict transcript validation | `go/protocol` decodes Python fake replies into typed content, caller, usage and stop reasons; transcript pairing is strict. `go/agent` tests pause, refusal, unknown-stop behavior and cancelled-batch repair in memory. Todo, stop, stuck, error, approval and subagent events share a typed, sequenced 200-event backlog with label/depth/run provenance. Round exhaustion and stuck halts report a stop marker before partial output. Sixteen Python detector cases, six input/output hash cases and five actual loops match Go, including nudge reset, denied calls, monologue continuation, zero nudge budget and null opt-out. Tests cover the 20-step bound, per-user reset, final rewritten inputs, paired detector errors, child inheritance and masked/detached stuck events. Nine actual Python managed turns match core/status/done/cancelled event fields/order and history, including provider failure and model/tool cancellation. The bus matches 200-event replay and 2,000-event drop-oldest subscriptions; ephemeral deltas do not replay. Event framing tracks transcript rewrites by epoch. Error labels/random IDs/timing/numeric spelling are normalized; an empty refusal [] becomes a valid Go empty string. Failure/denial is recorded in telemetry while paired model results omit is_error, as in source. Absent caller and explicit null remain distinct. Typed prompt hooks, named per-round injectors, Todo nagging, shared model/tool limiters and consecutive parallel batches are implemented. The nineteenth Python snapshot matches six classifier cases, nil/empty prompt rewrites, adverse completion/barrier order, result/step order and four cross-turn nag counters. Go tests cover cancelled admission, shared caps, exclusive pool bypass, completed-sibling repair, worker joins/panics, invalid injector batches and fresh-child seam/pool inheritance. Bounded steering injects after custom injectors before compaction at the next model round; named posture updates distinguish operator facts from user text. Modes refresh at permission evaluation, with child control isolation. Explicit typed SSE, provisional progress and shown-text cancellation repair are now implemented; DefaultRecovery is implemented; durable steering and mid-batch injection remain pending. |
