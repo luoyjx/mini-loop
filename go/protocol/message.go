@@ -9,6 +9,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"unicode/utf8"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
 type Role string
@@ -131,6 +134,9 @@ func (text TextBlock) citationWire() *Citations {
 	return &value
 }
 func (text TextBlock) MarshalJSON() ([]byte, error) {
+	if !utf8.ValidString(text.Text) {
+		return nil, jsonvalue.ErrSurrogate
+	}
 	return json.Marshal(struct {
 		Text         string                `json:"text"`
 		Citations    *Citations            `json:"citations,omitempty"`
@@ -369,6 +375,9 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 	}
 	if err := b.Validate(); err != nil {
 		return nil, err
+	}
+	if !b.textWireUTF8() {
+		return nil, jsonvalue.ErrSurrogate
 	}
 	switch b.kind {
 	case BlockTextEditorToolResult:

@@ -3,6 +3,7 @@ package protocol
 import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+	"unicode/utf8"
 )
 
 // CanonicalJSON binds a validated input to Python's sorted, compact UTF-8 JSON.
@@ -15,7 +16,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
-	if input.backgroundModel != nil || input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
+	if input.backgroundModel != nil || input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil || input.name == ToolBash && !utf8.ValidString(input.bash.Command) {
 		observation, err := input.Observation()
 		if err != nil {
 			return "", err

@@ -4,7 +4,17 @@ mini-loop is built so you add **your** business on top without editing core
 files. The agent loop never changes; every capability around it is a swappable
 seam you inject at construction time.
 
-Go filesystem argument review: baseline `a378a2b`.
+Go SDK observation and filesystem argument review: baseline `a378a2b`.
+The [current finite contract receipt](docs/audits/go-remaining-contract-evidence-2026-10-14.md)
+records actual SDK, HTTP and subprocess recipes and their typed adaptations.
+
+`protocol.Block.MarshalObservationASCIIJSON()` is an escaped inspection snapshot
+of the existing named SDK text fields and closed input/caller observations. It
+can retain lone Unicode surrogate code points; it confers no execution authority.
+The ordinary HTTP/model-request and existing UTF-8 archive/observation encoders
+retain their refusal boundaries. Go typed reply admission combines parsing and
+snapshot admission, so its rejected reply is not a public intermediate SDK model.
+The actual Source intermediate phases are retained separately in the evidence.
 
 A trusted `shell.Sandbox.Argv` implementation receives the original command.
 After it selects argv, the executor applies the captured UTF-8/surrogateescape
@@ -15,7 +25,6 @@ surrogate code points return `*shell.ArgumentEncodingError` without a child or
 point range without retaining the argument text. Other raw native byte strings
 keep the existing embedding behavior. Callers retain sandbox and lifecycle
 ownership.
-
 
 Previous Go public composition and observation review: baseline `48fd26d`. The
 [2026-10-14 receipt](docs/audits/go-public-contract-closure-2026-10-14.md)

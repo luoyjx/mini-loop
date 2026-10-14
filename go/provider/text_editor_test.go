@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"os"
@@ -109,14 +110,27 @@ func TestStreamClientCallerObservationAdmission(t *testing.T) {
 		{`{"type":"direct","tool_id":"unexpected"}`, true},
 		{`{"type":"code_execution_20260120"}`, true},
 		{`{"type":null,"tool_id":"parent"}`, true},
-		{`"\ud800"`, false},
-		{`{"type":"\ud800"}`, false},
+		{`"\udfff"`, true},
+		{`{"type":"code_execution_20260120","tool_id":"parent\ud800"}`, true},
+		{`{"type":"direct","\udfff":"\ud800"}`, false},
+		{`{"type":"\ud800"}`, true},
 	} {
 		state := streamAssembly{started: true}
 		raw := `{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"client","name":"bash","input":{"command":"true"},"caller":` + row.caller + `}}`
 		err := client.consumeStream(&state, "content_block_start", []byte(raw), nil)
 		if (err == nil) != row.valid {
 			t.Fatal("client caller admission changed", row.caller, err)
+		}
+		if row.caller == `{"type":"\ud800"}` {
+			// The actual fixed SDK supplemental probe accepts this discriminator
+			// in both modes, then refuses its next request during UTF-8 encoding.
+			if err := client.consumeStream(&state, "content_block_stop", []byte(`{"type":"content_block_stop","index":0}`), nil); err != nil {
+				t.Fatal("captured caller discriminator was rejected at block stop", err)
+			}
+			assertSurrogateContent(t, []protocol.Block{state.blocks[0].block}, `[{"id":"client","caller":{"type":"\ud800"},"input":{"command":"true"},"name":"bash","type":"tool_use"}]`)
+			if _, err := json.Marshal(state.blocks[0].block); !errors.Is(err, jsonvalue.ErrSurrogate) {
+				t.Fatal("caller discriminator was replaced during wire encoding", err)
+			}
 		}
 	}
 }

@@ -36,7 +36,10 @@ func decodeObservedToolCaller(data []byte, bounded, defaults bool) (ToolCaller, 
 		value = sdkCallerDefaults(value, false)
 	}
 	observation := SDKCallerObservation{value: value}
-	if _, err := observation.LegacyJSON(); err != nil {
+	if _, err := jsonvalue.AppendLegacy(nil, observation.value); err != nil {
+		return ToolCaller{}, err
+	}
+	if err := validateSDKCallerKeys(observation.value); err != nil {
 		return ToolCaller{}, err
 	}
 	return ToolCaller{sdkObservation: &observation}, nil

@@ -1,6 +1,15 @@
 # Hardening notes
 
-## 2026-10-14 filesystem argv and team view boundaries
+## 2026-10-14 SDK text, filesystem argv and team view boundaries
+
+SDK transport observations preserve escaped lone Unicode surrogates in five
+existing named fields and closed input/caller values. Inspection has a dedicated
+ASCII snapshot encoder; standard request encoding remains strict and occurs
+before credential discovery and HTTP. The internal SDK bridge escapes only
+surrogate code points, preserving literal UTF-8 and the existing normalized byte
+budget. The source corpus records SDK reply acquisition separately from content
+snapshot conversion; native typed admission has one coarser reply boundary.
+Existing UTF-8 archival and Session progress boundaries remain explicit.
 
 The shell applies filesystem argument encoding after the selected sandbox and
 secret callbacks, before `exec.Command`, pipes and `Start`. It encodes the entire
@@ -12,7 +21,6 @@ retaining command/path text. Only this fault omits `CommandResult` metadata;
 other errors retain their existing semantics. Actual nil-journal ToolGate tests
 exercise the provider-decoded Bash path and private marker/byte-file effects.
 
-
 Team lookup remains owner-before-I/O, and peek remains non-consuming. Default
 managed sessions always bind a team. The absent-team HTTP comparison uses a
 controlled augmented test assembly, with restore before shutdown. It adds no
@@ -21,6 +29,7 @@ even a corrupt mailbox. After restoration, the actual corrupt-mailbox error is
 an opaque outer-framework 500 without the four security headers; ordinary
 successes and denials retain them. The projection change is local to team view.
 
+See the [finite contracts and platform receipt](audits/go-remaining-contract-evidence-2026-10-14.md).
 
 ## Go content identity and detached runtime observations — 2026-10-14
 

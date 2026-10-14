@@ -1,0 +1,1093 @@
+{
+  "cases": [
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 127: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\ud800after\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\ud800after\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 127: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-high",
+      "progress_hex": [
+        "6265666f7265eda0806166746572"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\ud800after\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\ud800after\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\ud800after\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 127: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\udfffafter\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\udfffafter\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 127: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-low",
+      "progress_hex": [
+        "6265666f7265edbfbf6166746572"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\udfffafter\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\udfffafter\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\udfffafter\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 121: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-separated",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\ud800-\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\ud800-\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 121: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-separated",
+      "progress_hex": [
+        "eda0802dedbfbf"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\ud800-\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\ud800-\\udfff\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\ud800-\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\"}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-pair-control",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\ud83d\\ude00\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\ud83d\\ude00\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-pair-control",
+      "progress_hex": [
+        "f09f9880",
+        "646f6e65"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\ud83d\\ude00\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\ud83d\\ude00\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\ud83d\\ude00\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\"}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-replacement-control",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\ufffdafter\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\ufffdafter\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-replacement-control",
+      "progress_hex": [
+        "6265666f7265efbfbd6166746572",
+        "646f6e65"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"before\\ufffdafter\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"before\\ufffdafter\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"before\\ufffdafter\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\"}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "text-unicode-control",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\"}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\"}]",
+      "sdk_block_classes": [
+        "TextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\",\"parsed_output\":null}]",
+      "failure_phase": null,
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": true,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "text-unicode-control",
+      "progress_hex": [
+        "e4b8ade69687f09f8cb10a0900",
+        "646f6e65"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        },
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\",\"parsed_output\":null}]},{\"role\":\"user\",\"content\":\"continue\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\",\"type\":\"text\",\"parsed_output\":null}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"\\u4e2d\\u6587\\ud83c\\udf31\\n\\t\\u0000\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 2,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 136: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "thinking-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"thinking\",\"thinking\":\"thought\\ud800\",\"signature\":\"signed\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]",
+      "sdk_block_classes": [
+        "ThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\",\"signature\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"thought\\ud800\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"signature_delta\",\"signature\":\"signed\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 136: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "thinking-high",
+      "progress_hex": [
+        "74686f75676874eda080"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"thinking\",\"thinking\":\"thought\\ud800\",\"signature\":\"signed\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"signature\":\"signed\",\"thinking\":\"thought\\ud800\",\"type\":\"thinking\"}]",
+      "sdk_block_classes": [
+        "ThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\",\"signature\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"thought\\ud800\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"signature_delta\",\"signature\":\"signed\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 115: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "signature-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"thinking\",\"thinking\":\"thought\",\"signature\":\"signed\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]",
+      "sdk_block_classes": [
+        "ThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\",\"signature\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"thought\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"signature_delta\",\"signature\":\"signed\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 115: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "signature-low",
+      "progress_hex": [
+        "74686f75676874"
+      ],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"thinking\",\"thinking\":\"thought\",\"signature\":\"signed\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"signature\":\"signed\\udfff\",\"thinking\":\"thought\",\"type\":\"thinking\"}]",
+      "sdk_block_classes": [
+        "ThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\",\"signature\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"thought\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"signature_delta\",\"signature\":\"signed\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 110: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "redacted-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"redacted_thinking\",\"data\":\"opaque\\ud800\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]",
+      "sdk_block_classes": [
+        "RedactedThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"redacted_thinking\",\"data\":\"opaque\\ud800\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 110: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "redacted-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"redacted_thinking\",\"data\":\"opaque\\ud800\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"data\":\"opaque\\ud800\",\"type\":\"redacted_thinking\"}]",
+      "sdk_block_classes": [
+        "RedactedThinkingBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"redacted_thinking\",\"data\":\"opaque\\ud800\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"file_id\":\"file\\udfff\",\"type\":\"container_upload\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 111: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"file_id\":\"file\\udfff\",\"type\":\"container_upload\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "upload-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"container_upload\",\"file_id\":\"file\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"file_id\":\"file\\udfff\",\"type\":\"container_upload\"}]",
+      "sdk_block_classes": [
+        "ContainerUploadBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"container_upload\",\"file_id\":\"file\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"citations\":null,\"text\":null,\"type\":\"container_upload\",\"parsed_output\":null,\"file_id\":\"file\\udfff\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 187: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"citations\":null,\"text\":null,\"type\":\"container_upload\",\"parsed_output\":null,\"file_id\":\"file\\udfff\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "upload-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"container_upload\",\"file_id\":\"file\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"citations\":null,\"text\":null,\"type\":\"container_upload\",\"parsed_output\":null,\"file_id\":\"file\\udfff\"}]",
+      "sdk_block_classes": [
+        "ParsedTextBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"container_upload\",\"file_id\":\"file\\udfff\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"echo \\ud800\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 149: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"echo \\ud800\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "bash-command-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"echo \\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"echo \\ud800\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"echo \\\\ud800\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_ingress",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "ValueError",
+      "ingress_error_message": "unexpected end of hex escape at line 1 column 24",
+      "ingress_succeeded": false,
+      "mode": "stream",
+      "name": "bash-command-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"echo \\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": false,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"echo \\\\ud800\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"future\":\"\\udfff\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 160: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"future\":\"\\udfff\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "bash-extra-value-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"future\":\"\\udfff\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"future\":\"\\udfff\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"true\\\",\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"future\\\":\\\"\\\\udfff\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_ingress",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "ValueError",
+      "ingress_error_message": "lone leading surrogate in hex escape at line 1 column 34",
+      "ingress_succeeded": false,
+      "mode": "stream",
+      "name": "bash-extra-value-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"future\":\"\\udfff\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": false,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"true\\\",\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"future\\\":\\\"\\\\udfff\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"\\ud800\":\"metadata\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 151: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"\\ud800\":\"metadata\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "bash-extra-key-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"\\ud800\":\"metadata\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":null,\"input\":{\"command\":\"true\",\"\\ud800\":\"metadata\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"true\\\",\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\\ud800\\\":\\\"metadata\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_ingress",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "ValueError",
+      "ingress_error_message": "unexpected end of hex escape at line 1 column 26",
+      "ingress_succeeded": false,
+      "mode": "stream",
+      "name": "bash-extra-key-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"\\ud800\":\"metadata\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": false,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"true\\\",\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\\ud800\\\":\\\"metadata\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"server\",\"caller\":null,\"input\":{\"query\":\"\\udfff\"},\"name\":\"web_search\",\"type\":\"server_tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 142: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"server\",\"caller\":null,\"input\":{\"query\":\"\\udfff\"},\"name\":\"web_search\",\"type\":\"server_tool_use\"}]},{\"role\":\"user\",\"content\":\"continue\"}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "server-input-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"server_tool_use\",\"id\":\"server\",\"name\":\"web_search\",\"input\":{\"query\":\"\\udfff\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"server\",\"caller\":null,\"input\":{\"query\":\"\\udfff\"},\"name\":\"web_search\",\"type\":\"server_tool_use\"}]",
+      "sdk_block_classes": [
+        "ServerToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"server_tool_use\",\"id\":\"server\",\"name\":\"web_search\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"query\\\":\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"\\\\udfff\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_ingress",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "ValueError",
+      "ingress_error_message": "lone leading surrogate in hex escape at line 1 column 16",
+      "ingress_succeeded": false,
+      "mode": "stream",
+      "name": "server-input-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"server_tool_use\",\"id\":\"server\",\"name\":\"web_search\",\"input\":{\"query\":\"\\udfff\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": false,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"server_tool_use\",\"id\":\"server\",\"name\":\"web_search\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"query\\\":\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"\\\\udfff\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 137: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "caller-id-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":{\"type\":\"code_execution_20260120\",\"tool_id\":\"parent\\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":{\"type\":\"code_execution_20260120\",\"tool_id\":\"parent\\ud800\"}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\ud800' in position 137: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "caller-id-high",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":{\"type\":\"code_execution_20260120\",\"tool_id\":\"parent\\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":{\"tool_id\":\"parent\\ud800\",\"type\":\"code_execution_20260120\"},\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":{\"type\":\"code_execution_20260120\",\"tool_id\":\"parent\\ud800\"}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_snapshot",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "UnicodeEncodeError",
+      "ingress_error_message": "'utf-8' codec can't encode character '\\udfff' in position 0: surrogates not allowed",
+      "ingress_succeeded": false,
+      "mode": "direct",
+      "name": "caller-extension-key-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":{\"type\":\"direct\",\"\\udfff\":\"\\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":{\"type\":\"direct\",\"\\udfff\":\"\\ud800\"}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": null,
+      "failure_phase": "reply_ingress",
+      "forward_error_class": null,
+      "forward_error_message": null,
+      "forward_messages_json": null,
+      "forward_succeeded": null,
+      "ingress_error_class": "UnicodeEncodeError",
+      "ingress_error_message": "'utf-8' codec can't encode character '\\udfff' in position 0: surrogates not allowed",
+      "ingress_succeeded": false,
+      "mode": "stream",
+      "name": "caller-extension-key-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":{\"type\":\"direct\",\"\\udfff\":\"\\ud800\"}}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": null,
+      "sdk_reply_obtained": false,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":{\"type\":\"direct\",\"\\udfff\":\"\\ud800\"}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 0
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 120: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "direct",
+      "name": "caller-root-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\"}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":\"\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":\"\\udfff\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 2
+    },
+    {
+      "content_json": "[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "failure_phase": "request_encode",
+      "forward_error_class": "UnicodeEncodeError",
+      "forward_error_message": "'utf-8' codec can't encode character '\\udfff' in position 120: surrogates not allowed",
+      "forward_messages_json": "[{\"role\":\"user\",\"content\":\"capture\"},{\"role\":\"assistant\",\"content\":[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]},{\"role\":\"user\",\"content\":[{\"type\":\"tool_result\",\"tool_use_id\":\"client\",\"content\":\"safe fixture result\"}]}]",
+      "forward_succeeded": false,
+      "ingress_error_class": null,
+      "ingress_error_message": null,
+      "ingress_succeeded": true,
+      "mode": "stream",
+      "name": "caller-root-low",
+      "progress_hex": [],
+      "requests": [
+        {
+          "body_json": "{\"max_tokens\":8,\"messages\":[{\"role\":\"user\",\"content\":\"capture\"}],\"model\":\"fixture-model\",\"stream\":true}",
+          "method": "POST",
+          "path": "/v1/messages"
+        }
+      ],
+      "response_json": "{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":\"\\udfff\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2}}",
+      "retained_content_json": "[{\"id\":\"client\",\"caller\":\"\\udfff\",\"input\":{\"command\":\"true\"},\"name\":\"bash\",\"type\":\"tool_use\"}]",
+      "sdk_block_classes": [
+        "ToolUseBlock"
+      ],
+      "sdk_reply_obtained": true,
+      "sse": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"surrogate-reply\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":0}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"client\",\"name\":\"bash\",\"input\":{},\"caller\":\"\\udfff\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":2}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n",
+      "transport_requests": 1,
+      "warning_count": 3
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "profile_names": [
+    "text-high",
+    "text-low",
+    "text-separated",
+    "text-pair-control",
+    "text-replacement-control",
+    "text-unicode-control",
+    "thinking-high",
+    "signature-low",
+    "redacted-high",
+    "upload-low",
+    "bash-command-high",
+    "bash-extra-value-low",
+    "bash-extra-key-high",
+    "server-input-low",
+    "caller-id-high",
+    "caller-extension-key-low",
+    "caller-root-low"
+  ],
+  "pydantic_version": "2.13.4",
+  "scope": [
+    "Actual AsyncAnthropic HTTP ingress via production DirectTransport/StreamingTransport and a real constructed Agent; no custom SDK parser or validation override.",
+    "ASCII JSON response bytes contain escaped high/low surrogates; valid pairs, literal U+FFFD and Unicode controls stay separate.",
+    "The actual subsequent SDK call receives captured content and paired synthetic tool results where required; no shell/tool handler executes.",
+    "Raw response/SSE/content/history use JSON strings within the finite fixture; progress uses surrogatepass hex to preserve emitted code points.",
+    "IDNA/native hostname adoption and arbitrary SDK block/metadata shapes are outside these finite recipes."
+  ],
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "DirectTransport.send": "1f94499fbe476bede941bc167c65a776e35bd1643abda8ba67b807b644891921",
+    "HTTPX.Response.json": "9f433217d24c2dd0f93f173d9e1c520790e1b44ca7fe80e2709bb764b074c376",
+    "HTTPX.encode_json": "30372895d631a8b5200f61f3cad175aa09b48db43be3b717291d7ef9f93f658e",
+    "SDK.accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+    "SDK.construct_type": "44ce6c3ca70b630356142d5daee33d57d37903f2a1bfec38a3f33ea9c7630b37",
+    "StreamingTransport.send": "fb60bf4396ba55a696cae0f719b39005e31761f3fbae6950093673779244acb5",
+    "_content_payload": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505"
+  }
+}

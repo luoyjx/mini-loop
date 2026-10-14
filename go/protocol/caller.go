@@ -95,7 +95,7 @@ func (caller ToolCaller) TypeMetadata() SDKMetadataText {
 
 func (caller ToolCaller) Validate() error {
 	if caller.sdkObservation != nil {
-		_, err := caller.sdkObservation.LegacyJSON()
+		_, err := jsonvalue.AppendLegacy(nil, caller.sdkObservation.value)
 		return err
 	}
 	switch caller.kind {

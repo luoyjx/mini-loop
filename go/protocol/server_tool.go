@@ -42,7 +42,7 @@ func decodeServerToolInput(data []byte, bounded bool) (ServerToolInput, error) {
 	return ServerToolInput{value: value}, nil
 }
 func (input ServerToolInput) Validate() error {
-	_, err := input.value.MarshalLegacyUTF8()
+	_, err := jsonvalue.AppendLegacy(nil, input.value)
 	return err
 }
 func (input ServerToolInput) MarshalJSON() ([]byte, error) {

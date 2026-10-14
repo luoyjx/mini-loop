@@ -570,16 +570,18 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `a378a2b`. Real HTTP comparisons
-cover controlled absent-team state, auth/owner, mailbox preservation and corrupt
-mailbox recovery. Default managed sessions still bind a team. Native absent-team
-state uses only augmented test assembly. The team route's internal errors match
-Source's opaque outer-error 500 projection, including four security headers.
-The shell now encodes its complete sandbox-selected argv before process
-creation. Actual UTF-8/surrogateescape controls preserve DC80–DCFF bytes and
-sandbox repair; other surrogate code points fail without a child or process
-result. Existing native raw-byte embedding remains supported.
-See [the iteration evidence](docs/audits/go-remaining-contract-evidence-2026-10-14.md).
+Current runtime review baseline: local main `a378a2b`. This iteration preserves
+escaped lone-surrogate SDK text in five existing named fields and closed input/
+caller observations. Escaped snapshots support inspection; actual subsequent
+model requests retain strict encoding before credentials and HTTP. Source SDK
+and native typed reply admission expose different intermediate boundaries for
+six rejected profiles, recorded explicitly with the finite corpus.
+The shell encodes its complete sandbox-selected argv before creating a process:
+DC80–DCFF use filesystem surrogateescape bytes, other surrogate code points fail,
+and native raw-byte embedding behavior is preserved. The default managed team
+remains unchanged. A test-only native assembly verifies the real teamless HTTP
+branch; corrupt mailbox errors use Source's outer-error response projection.
+See [the contract and platform evidence](docs/audits/go-remaining-contract-evidence-2026-10-14.md).
 
 Previous runtime review baseline: local main `48fd26d`. That iteration added a
 shared native identity helper: a streamed executable-content fingerprint and
@@ -1086,7 +1088,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>Python whitespace / ordered duplicate-owner diagnostics<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · SDK Unicode observations / strict next-request encoding · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain<br/>detached raw-artifact limits / closed posture"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]

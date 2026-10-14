@@ -3,6 +3,7 @@ package protocol
 import (
 	"errors"
 	"fmt"
+	"unicode/utf8"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
@@ -112,7 +113,7 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 	}
 	_, backgroundPresent := object.Lookup("run_in_background")
 	_, prefixPresent := object.Lookup("approval_prefix")
-	if len(extra) == 0 && commandPresent && observed == nil && !backgroundPresent && !prefixPresent {
+	if len(extra) == 0 && commandPresent && observed == nil && !backgroundPresent && !prefixPresent && utf8.ValidString(text) {
 		return DecodeToolInput(name, data)
 	}
 	input := BashToolInput(BashInput{})

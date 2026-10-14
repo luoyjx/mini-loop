@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+	"unicode/utf8"
 )
 
 const (
@@ -518,7 +519,7 @@ func (input ToolInput) Validate() error {
 		if input.bashRejected != nil {
 			return errors.New("rejected Bash arguments require non-mapping failure")
 		}
-		_, err := input.bashExtra.MarshalLegacyUTF8()
+		_, err := jsonvalue.AppendLegacy(nil, input.bashExtra)
 		return err
 	}
 	if IsASTTool(input.name) {
@@ -593,6 +594,9 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if input.name == ToolBash && !utf8.ValidString(input.bash.Command) {
+		return nil, jsonvalue.ErrSurrogate
+	}
 	if input.unknownModelTool != nil {
 		if err := input.Validate(); err != nil {
 			return nil, err

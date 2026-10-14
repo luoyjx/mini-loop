@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+	"unicode/utf8"
 )
 
 // InputObservation is a detached SDK input snapshot, never executable arguments.
@@ -60,7 +61,7 @@ func (input ToolInput) Observation() (InputObservation, error) {
 	if IsMCPToolName(input.name) {
 		return InputObservation{value: input.mcpArguments, mcpMapping: input.mcpMapping}, nil
 	}
-	if input.name == ToolBash && (input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil) {
+	if input.name == ToolBash && (input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil || !utf8.ValidString(input.bash.Command)) {
 		return InputObservation{value: input.bashObservation()}, nil
 	}
 	if input.backgroundModel != nil {
@@ -115,7 +116,7 @@ func decodeSDKServerToolInput(data []byte, bounded bool) (ServerToolInput, error
 	if err != nil {
 		return ServerToolInput{}, err
 	}
-	if _, err = value.MarshalLegacyUTF8(); err != nil {
+	if _, err = jsonvalue.AppendLegacy(nil, value); err != nil {
 		return ServerToolInput{}, err
 	}
 	return ServerToolInput{value: value}, nil
@@ -136,6 +137,9 @@ func (block Block) MarshalObservationJSON() ([]byte, error) {
 func (block Block) observationValue() (jsonvalue.Value, error) {
 	if err := block.Validate(); err != nil {
 		return jsonvalue.Value{}, err
+	}
+	if value, handled, err := block.typedTextObservation(); handled {
+		return value, err
 	}
 	// Strip caller before finite encoding, then restore its exact observation.
 	// This preserves SDK legacy metadata without widening ordinary wire JSON.

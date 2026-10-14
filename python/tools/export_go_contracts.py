@@ -6794,6 +6794,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.null_boundary_contracts import null_boundary_contracts
     from tools.public_identity_audit_contracts import public_identity_audit_contracts
     from tools.public_harness_contracts import public_harness_contracts
+    from tools.provider_surrogate_contracts import provider_surrogate_contracts
     from tools.teamless_http_contracts import teamless_http_contracts
     from tools.bash_surrogate_contracts import bash_surrogate_contracts
     from tools.extension_subagent_contracts import extension_subagent_contracts
@@ -7210,6 +7211,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-null-boundaries.json": _json_bytes(null_boundary_contracts()),
         "python-public-identity-audit.json": _json_bytes(public_identity_audit_contracts(Path(scratch))),
         "python-public-harness.json": _json_bytes(public_harness_contracts(Path(scratch))),
+        "python-provider-surrogates.json": _json_bytes(provider_surrogate_contracts(Path(scratch))),
         "python-teamless-http.json": _json_bytes(teamless_http_contracts(Path(scratch))),
         "python-bash-surrogates.json": _json_bytes(bash_surrogate_contracts(Path(scratch))),
         "python-extension-subagents.json": _json_bytes(extension_subagent_contracts()),

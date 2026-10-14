@@ -178,7 +178,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			return badStream("malformed event JSON")
 		}
 		if rawBlock, present := value.Lookup("content_block"); present {
-			raw, err := rawBlock.MarshalLegacyUTF8()
+			raw, err := sdkObservationBytes(rawBlock)
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}
@@ -223,6 +223,29 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	}
 	if err := json.Unmarshal(data, &wire); err != nil {
 		return badStream("malformed event JSON")
+	}
+	if event == "content_block_delta" {
+		var target **string
+		var name string
+		switch wire.Delta.Type {
+		case "text_delta":
+			target, name = &wire.Delta.Text, "text"
+		case "thinking_delta":
+			target, name = &wire.Delta.Thinking, "thinking"
+		case "signature_delta":
+			target, name = &wire.Delta.Signature, "signature"
+		}
+		if target != nil {
+			value, err := jsonvalue.Decode(string(data))
+			if err != nil {
+				return badStream("malformed event JSON")
+			}
+			delta, _ := value.Lookup("delta")
+			field, _ := delta.Lookup(name)
+			if text, isText := field.Text(); isText {
+				*target = &text
+			}
+		}
 	}
 	if wire.Type != "" && wire.Type != event {
 		return badStream("event discriminator mismatch")
@@ -356,6 +379,21 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		if json.Unmarshal(wire.Block, &block) != nil {
 			return badStream("malformed starting block")
 		}
+		if observations.text != nil {
+			block.Text = observations.text
+		}
+		if observations.thinking != nil {
+			block.Thinking = observations.thinking
+		}
+		if observations.signature != nil {
+			block.Signature = observations.signature
+		}
+		if observations.data != nil {
+			block.Data = observations.data
+		}
+		if observations.fileID != nil {
+			block.FileID = observations.fileID
+		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
 		case protocol.BlockTextEditorToolResult:
@@ -461,7 +499,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		case protocol.BlockToolUse:
 			var caller *protocol.ToolCaller
 			if observations.callerPresent && observations.caller.Kind() != jsonvalue.Null {
-				data, err := observations.caller.MarshalLegacyUTF8()
+				data, err := sdkObservationBytes(observations.caller)
 				if err != nil {
 					return badStream(c.clean(err.Error(), 500))
 				}
@@ -482,14 +520,14 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			return badStream("unsupported content block")
 		}
 		if observations.inputPresent {
-			input, err := observations.input.MarshalLegacyUTF8()
+			input, err := sdkObservationBytes(observations.input)
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}
 			b.input = input
 		}
 		if observations.callerPresent && block.Type != protocol.BlockToolUse {
-			caller, err := observations.caller.MarshalLegacyUTF8()
+			caller, err := sdkObservationBytes(observations.caller)
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}

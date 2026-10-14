@@ -111,7 +111,7 @@ func TestSDKCallerArchivePreservesSparseListAndHistoricalBounds(t *testing.T) {
 	}
 }
 
-func TestSDKCallerAccessorDetachesRootAndRejectsInvalidUTF8(t *testing.T) {
+func TestSDKCallerAccessorDetachesRootAndRetainsUnicodeUntilEncoding(t *testing.T) {
 	caller, err := DecodeSDKToolCaller([]byte(`[{},"secret"]`))
 	if err != nil {
 		t.Fatal(err)
@@ -127,9 +127,27 @@ func TestSDKCallerAccessorDetachesRootAndRejectsInvalidUTF8(t *testing.T) {
 	if err != nil || string(data) != `[{"type":null},"secret"]` {
 		t.Fatal("accessor mutated caller", string(data), err)
 	}
-	for _, invalid := range []string{`"\ud800"`, `{"type":"direct","x":"\ud800"}`} {
-		if _, err := DecodeSDKToolCaller([]byte(invalid)); err == nil {
-			t.Fatal("invalid UTF-8 observation admitted")
+	// The fixed SDK captures include root/id observations and a supplemental
+	// lone discriminator. Their in-memory metadata survives until encoding.
+	for _, raw := range []string{`"\udfff"`, `{"type":"code_execution_20260120","tool_id":"parent\ud800"}`, `{"type":"\ud800"}`} {
+		caller, err := DecodeSDKToolCaller([]byte(raw))
+		if err != nil {
+			t.Fatal("actual SDK Unicode observation rejected", err)
 		}
+		observation, _ := caller.SDKObservation()
+		expected, err := jsonvalue.Decode(raw)
+		if err != nil || !observation.Value().PythonEqual(expected) {
+			t.Fatal("actual SDK Unicode observation was replaced", raw, err)
+		}
+		if _, err := observation.LegacyJSON(); !errors.Is(err, jsonvalue.ErrSurrogate) {
+			t.Fatal("UTF-8 observation replaced invalid Unicode", err)
+		}
+		if _, err := json.Marshal(caller); !errors.Is(err, jsonvalue.ErrSurrogate) {
+			t.Fatal("caller HTTP encoding replaced invalid Unicode", err)
+		}
+	}
+	// The actual fixed SDK's Pydantic snapshot cannot encode this extra key.
+	if _, err := DecodeSDKToolCaller([]byte(`{"type":"direct","\udfff":"\ud800"}`)); err == nil {
+		t.Fatal("caller admitted a captured model-snapshot key failure")
 	}
 }
