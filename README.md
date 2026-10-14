@@ -570,7 +570,21 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `a378a2b`. This iteration preserves
+Current runtime review baseline: local main `e9b6390`. The original P0/P1/G0–G7
+criteria have been reconciled against current implementation and the 24-gate
+host/Linux receipt. Native persistence/restart evidence now has a seven-group
+recipe ledger, with matching 25 top-level and 49 subtest pass names in all four
+ordinary/race platform cohorts. The original finite inventory remains 339
+bounded verified, zero evidence-incomplete and five dependency-blocked rows.
+IDNA and default CPython parser approvals still require implementation, actual
+native consumers and validation before closure. The Go parser backend is not
+implemented; the proposal reuses a fixed external CPython runtime for ast.parse.
+Existing architecture components, authority, control/data flow and defaults are
+unchanged. Root pytest discovery now targets `python/tests` so retained evidence
+copies under `var/` cannot enter the documented test command. See
+[the original-criteria review](docs/audits/go-final-acceptance-audit-2026-10-14.md).
+
+Previous runtime review baseline: local main `a378a2b`. This iteration preserves
 escaped lone-surrogate SDK text in five existing named fields and closed input/
 caller observations. Escaped snapshots support inspection; actual subsequent
 model requests retain strict encoding before credentials and HTTP. Source SDK
@@ -3468,7 +3482,9 @@ test coordination, not production transport or interruption behavior.
 
 The default test suite is offline and deterministic. Runnable documentation
 examples select the fake provider inside their test fixture, including examples
-that reload settings and construct their own client:
+that reload settings and construct their own client. Root `pytest.ini` targets
+`python/tests`, which contains all tracked Python test files; saved test copies
+under `var/` are outside default discovery. Explicit test paths remain available:
 
 ```sh
 .venv/bin/python -m pytest -q

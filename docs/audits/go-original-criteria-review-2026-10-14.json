@@ -1,0 +1,2302 @@
+{
+  "schema_version": 1,
+  "status": "original_criteria_review_complete_with_dependency_blockers",
+  "applied": false,
+  "full_port_acceptance": false,
+  "created_utc": "2026-10-14T13:11:11.251617+00:00",
+  "audit_baseline": {
+    "commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970",
+    "branch_at_write": "codex/go-final-acceptance-audit",
+    "validated_runtime_commit": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+    "go_python_agents_committed_diff": [],
+    "runtime_manifest_files": 1843,
+    "all_runtime_manifest_hashes_match_current": true,
+    "manifest_sha256": "50090ade85a6986ef59fa25b2b2508e6f24b8b66b86fdbf3f8776a5dca32da6d",
+    "documentation_note": "Parent docs-only audit changes are separate from unchanged runtime proof. Old24gate architecture refs are e9 historical delivery provenance, not hashes of modified current README/architecture."
+  },
+  "method": [
+    "Read original10clauses and semantic assertions, not test names or339count alone.",
+    "Recompose original344+applied7/26/11/3 by IDs and prior statuses.",
+    "Read existing current host/Linux full/race JSON and bind31selected assertions to actual passes; no tests/build/capture/Docker executed.",
+    "Hash1843current runtime inputs and preserve finite Source/native adaptations."
+  ],
+  "original_criteria": {
+    "reference": {
+      "path": "GO_PORT_PLAN.md",
+      "sha256": "a8eeef57ca513fc2917d59f88a42277298c36f1de4483a40fffa43863e75c469",
+      "bytes": 1498568
+    },
+    "heading": "Work packages",
+    "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+  },
+  "previous_review": {
+    "path": "var/go-remaining-contract-evidence-2026-10-14/original-acceptance-review.json",
+    "sha256": "b9f5dcb4e37f6014074f4f4e3a6e668db1a618efcc12cbefbe575e863a95ac9b",
+    "bytes": 24195
+  },
+  "current_validation_receipt": {
+    "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+    "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5",
+    "bytes": 1039902
+  },
+  "required_gate_count": 24,
+  "required_gate_names": [
+    "sdk-source-final",
+    "sdk-python-focused",
+    "team-source-headers",
+    "team-python-focused",
+    "bash-source",
+    "sdk-discriminator-source",
+    "source-check",
+    "python-full",
+    "go-full",
+    "go-vet",
+    "invariants",
+    "scans",
+    "type-syntax",
+    "type-public",
+    "type-private",
+    "type-variables",
+    "go-race",
+    "performance-build",
+    "performance",
+    "architecture",
+    "linux-source",
+    "linux-full",
+    "linux-vet",
+    "linux-race"
+  ],
+  "effective_required_rows": {
+    "original": {
+      "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+      "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359",
+      "bytes": 871815
+    },
+    "original_cardinality": 344,
+    "applied_steps": [
+      {
+        "reference": {
+          "path": "docs/audits/go-required-row-delta-2026-10-14.json",
+          "sha256": "22b0d48c3e805db54262d21e88ef6945f58d837e33f078055da6df9b0ee025fa",
+          "bytes": 36092
+        },
+        "applied_rows": 7,
+        "ids": [
+          "capability:01",
+          "capability:02",
+          "export:Agent",
+          "export:AgentSession",
+          "export:memory_system_builder",
+          "export:runtime_facts",
+          "export:sections_builder"
+        ],
+        "resulting_counts": {
+          "verified": 299,
+          "dependency_blocked": 5,
+          "evidence_incomplete": 40
+        }
+      },
+      {
+        "reference": {
+          "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+          "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f",
+          "bytes": 204830
+        },
+        "applied_rows": 26,
+        "ids": [
+          "capability:06",
+          "export:TokenAuth",
+          "export:load_auth",
+          "feature-definition:Workflow",
+          "feature-definition:WorkflowCancel",
+          "feature-definition:WorkflowStatus",
+          "feature-definition:bash",
+          "feature-definition:decision",
+          "feature-definition:file_outline",
+          "feature-definition:repo_map",
+          "feature-definition:show_symbol",
+          "feature-definition:symbol_references",
+          "feature-registry:without-background",
+          "feature-registry:without-cron",
+          "feature-registry:without-diagnostics",
+          "feature-registry:without-goals",
+          "feature-registry:without-mcp",
+          "feature-registry:without-memory",
+          "feature-registry:without-plan",
+          "feature-registry:without-self_audit",
+          "feature-registry:without-session_query",
+          "feature-registry:without-tasks",
+          "feature-registry:without-teams",
+          "feature-registry:without-worktrees",
+          "http:GET /sessions/{session_id}/workflows/{run_id}",
+          "http:POST /sessions/{session_id}/cron"
+        ],
+        "resulting_counts": {
+          "verified": 325,
+          "dependency_blocked": 5,
+          "evidence_incomplete": 14
+        }
+      },
+      {
+        "reference": {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37",
+          "bytes": 148466
+        },
+        "applied_rows": 11,
+        "ids": [
+          "capability:08",
+          "export:Finding",
+          "export:Harness",
+          "export:LayeredSkillLoader",
+          "export:SkillLoader",
+          "export:UserResourceResolver",
+          "export:UserResources",
+          "export:audit",
+          "export:build_id",
+          "export:render_audit",
+          "export:runtime_identity"
+        ],
+        "resulting_counts": {
+          "verified": 336,
+          "dependency_blocked": 5,
+          "evidence_incomplete": 3
+        }
+      },
+      {
+        "reference": {
+          "path": "docs/audits/go-required-remaining-contract-delta-2026-10-14.json",
+          "sha256": "dda0cc63071e75d5e12c7673c656db5ccdfb322318e07210cb5d7d8d8dc07a2e",
+          "bytes": 34603
+        },
+        "applied_rows": 3,
+        "ids": [
+          "http:GET /sessions/{session_id}/team",
+          "sdk-producer:direct",
+          "sdk-producer:stream"
+        ],
+        "resulting_counts": {
+          "verified": 339,
+          "dependency_blocked": 5
+        }
+      }
+    ],
+    "status_counts": {
+      "verified": 339,
+      "dependency_blocked": 5
+    },
+    "evidence_incomplete": 0,
+    "remaining_ids": [
+      "capability:04",
+      "export:build_client",
+      "export:full_registry",
+      "setting:base_url",
+      "setting:enable_features"
+    ],
+    "count_is_not_standalone_behavioral_proof": true
+  },
+  "requirements": [
+    {
+      "id": "P0",
+      "original_work": "Inventory Python entry points, contracts, defaults, storage schema, and enabled versus optional features",
+      "original_acceptance_evidence": "Parity matrix names every README capability and its Python tests",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9305,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "satisfied_inventory",
+      "status": "satisfied_inventory",
+      "current_semantic_evidence": [
+        "Original inventory explicitly enumerates12capabilities/49settings/44HTTP operations/3SDK producers/157public exports and storage/default surfaces. The immutable344rows plus applied7/26/11/3 are reconciled by exact ID. Inventory alone is not behavior proof."
+      ],
+      "assertion_symbols": [],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-public-default-inventory-2026-10-13.json",
+          "sha256": "c38f90f5a74d6af997d5ae577166813a043c103ec7aba87316e1b9c40b07d626"
+        },
+        {
+          "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+          "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359"
+        },
+        {
+          "path": "GO_PORT_PLAN.md",
+          "line": 9484,
+          "fact": "Historical acceptance explicitly marks original P0 inventory satisfied: 12 capabilities,49 settings,44 HTTP operations,3 SDK producers,157 public exports and SQLite schema."
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Finite declared surface, not arbitrary Python objects or graphs."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "P1",
+      "original_work": "Move Python-owned files to `python/`; update imports, paths, scripts, and docs",
+      "original_acceptance_evidence": "Full Python suite and repository verifiers pass from documented commands; fake server starts",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9306,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "satisfied_relocation_with_current_regression_gates",
+      "status": "satisfied_relocation",
+      "current_semantic_evidence": [
+        "Historical relocation/documented-command fake-server smoke is delivered; current full Python/invariants/scans pass from the relocated tree. The current paired HTTP instrument starts actual Python/native fake servers and checks matching effects."
+      ],
+      "assertion_symbols": [],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "GO_PORT_PLAN.md",
+          "line": 9485,
+          "fact": "Relocation and original server smoke are recorded complete; latest receipt has 2275 passed/28 skipped/24 subtests, invariants77/scans19."
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Default diagnostics is G6 dependency work, not unfinished file relocation."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G0",
+      "original_work": "Create `go/` module and typed protocol/domain contracts",
+      "original_acceptance_evidence": "`go test ./...`, `go vet ./...`, JSON boundary tests, no broad dynamic domain payloads",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9307,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "current_darwin_evidence_supported_final_scope_reconciliation",
+      "status": "satisfied_for_original_bounded_scope",
+      "current_semantic_evidence": [
+        "Typed boundary tests reject wrong role/content/unknown fields/oversized values and missing or invalid named tool inputs; Source tool schemas are compared field-by-field.",
+        "SDK observations use closed jsonvalue.Value and five named string fields; ordinary wire/archive encoding explicitly rejects lone surrogates.",
+        "Four current zero-finding type audits inspect retained any/interface/RawMessage boundaries, complementing130historical body dispositions and current host/Linux full/vet/race."
+      ],
+      "assertion_symbols": [
+        "TestContentBoundary",
+        "TestToolInputsRejectUnknownMissingAndInvalidValues",
+        "TestToolInputCannotBeDecodedWithoutItsName",
+        "TestTypedInputsTrackPythonSchema",
+        "TestSDKUnicodeObservationPreservesNamedFieldsAndStrictWire"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "docs/audits/go-body-boundary-dispositions-2026-10-13.json",
+          "sha256": "8ce1650f738e4c717d08b86d139185014d0418315860dc0602a2b7f8db32a56c"
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "No arbitrary foreign error/panic graph or inactive-platform whole-program theorem is claimed or newly required."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G1",
+      "original_work": "Implement bounded session state, ordered transcript, fake provider, and serial per-session turn loop",
+      "original_acceptance_evidence": "Go tests replay Python fake-model fixtures, concurrent sessions isolate state",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9308,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "current_finite_contract_evidence_supported",
+      "status": "satisfied_for_original_bounded_scope",
+      "current_semantic_evidence": [
+        "Two actual concurrent sessions preserve their own prompt/owner/four-message valid transcript; queued cancellation leaves the active turn and later work usable, and a cancelled queued user message is not appended.",
+        "Actual Source loop nudge/halt outcomes match. Applied follow-up delta closes the exact post-stuck next-turn mismatch; later public harness/default-recovery composition remains delivered."
+      ],
+      "assertion_symbols": [
+        "TestFakeTurnAndSessionIsolation",
+        "TestManagedCancelTargetsActiveTurnAndQueueRemainsUsable",
+        "TestCoreQueuedTurnReportsAndCancelsBeforeMutation",
+        "TestActualLoopNudgesAndHaltsMatchPython"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "docs/audits/go-stuck-followup-linux-2026-10-14.json",
+          "sha256": "27020b01253ea886f82523462d699623dd8f4b9d83b09d236b850f2cc5955cbc"
+        },
+        {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Typed tuple/nullable/constructor adaptations and captured fault projections remain finite."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G2",
+      "original_work": "Implement immutable tool catalogue and guarded execution, permissions, approvals, cancellation",
+      "original_acceptance_evidence": "Ordering and denial tests match the Python contract; no bypass around the gate",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9309,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "current_finite_contract_evidence_supported",
+      "status": "satisfied_for_original_bounded_scope",
+      "current_semantic_evidence": [
+        "Caller capability mutation cannot alter catalogue entries; duplicate tools and inconsistent readonly execution traits are rejected. Actual readonly/interactive/auto/immutable-deny cases assert handler counts.",
+        "Rewrite→guard→permission→approval→execute→post-hook→observer order is exact; denied guards cannot be laundered and prevent downstream effects. Cancelling the first published permission preserves it and prevents second approval/handler calls.",
+        "Actual provider→Bash catalogue→nil-journal Gate covers12Source selected-argv cases:6before-child failures and6surrogateescape/ordinary/trusted-repair successes, with exact effect bytes."
+      ],
+      "assertion_symbols": [
+        "TestCatalogCopiesCapabilitiesAndRejectsDuplicates",
+        "TestPermissionModesAndImmutableDenyList",
+        "TestGateOrdersRewriteGuardPermissionExecuteAfterObserver",
+        "TestGuardDenialCannotBeLaunderedByPostHook",
+        "TestPermissionPublicationCancellationStopsLaterApprovalAndHandler",
+        "TestSDKSurrogateBashReachesSafeFilesystemBoundaryWithoutJournal"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+          "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f"
+        },
+        {
+          "path": "docs/audits/go-permission-events-2026-10-13.json",
+          "sha256": "19beab2ab6e36e3431eb3decaa4c0cbdb2b31d0219c509da18bc9008bdf2813f"
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Catalogue metadata is distinct from execution proof. Stored observations do not restore approvals or become execution identity."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G3",
+      "original_work": "Implement REST/SSE and browser assets against typed service APIs",
+      "original_acceptance_evidence": "Python/Go HTTP and SSE contract corpus matches for default routes and errors",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9310,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "one_recorded_http_gap_plus_default_backend_and_platform_scope",
+      "status": "satisfied_for_original_bounded_scope",
+      "current_semantic_evidence": [
+        "Original HTTP/SSE and applied scalar/raw-query/auth/owner/error corpora remain current. Final teamless12cases use actual owned HTTP handler and compare status/body/5headers, mailbox bytes and zero model calls."
+      ],
+      "assertion_symbols": [
+        "TestActualSourceTeamlessHTTPThroughOwnedHandler"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+        },
+        {
+          "path": "docs/audits/go-http-feature-closure-2026-10-14.json",
+          "sha256": "069eda70a1719512c79dfe959be25a7672d7d56da6b9e0bb049b68f962a9265b"
+        },
+        {
+          "path": "docs/audits/go-http-query-wire-2026-10-14.json",
+          "sha256": "2cac7f1a1b59c7da84e4e58bf7fe17d1315f00e5f7871897a02d3bd4ccd798a1"
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Missing/null/detached state is test-only typed assembly; no production disable flag or public dynamic dictionary is added.",
+        "Raw ASGI/selected TCP evidence does not certify arbitrary proxy/Uvicorn wire normalization."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G4",
+      "original_work": "Implement real provider transport, streaming, recovery, usage and cache behavior",
+      "original_acceptance_evidence": "Recorded protocol fixtures and interrupted-stream cases pass",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9311,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "three_related_surface_families_open",
+      "status": "dependency_blocked",
+      "current_semantic_evidence": [
+        "Real Complete/Stream fixtures compare method/full URL/headers/body/stream flag/progress/reply/usage/errors/retry waits/closure. Dropped-body/callback faults do not retry; actual cancel/timeout closes responses.",
+        "Actual dropped SSE through ManagedSession creates two generations without partial splicing, releases model permits during waits and completes one model-end. Source recovery compares requests/history/model override/events;86actual usage profiles compare full closed model-end usage/prompt/status.",
+        "Cache policy affects actual normal/summary requests without mutating stored history; null policy remains valid. SDK34plus2actual observations close original incomplete rows with exact retained values/request effects and explicit coarse native failure adaptation."
+      ],
+      "assertion_symbols": [
+        "TestDirectHTTPMatchesActualPythonSDK",
+        "TestStreamingMatchesActualSDKAndPythonTransport",
+        "TestStreamingDoesNotRetryDroppedBodyOrCallback",
+        "TestRealStreamingToolRoundPreservesSignedHistoryUsageAndPhases",
+        "TestActualStreamingCancellationAndTimeoutCloseResponse",
+        "TestRecoveryMatchesActualPython",
+        "TestDroppedStreamRegeneratesWithoutSplicingAndReleasesModelPermit",
+        "TestWholeUsageActualHTTPManagedModelEnd",
+        "TestCacheWireMatchesPythonProjections",
+        "TestActualProviderRequestsCarryCacheButHistoryDoesNot",
+        "TestCachePolicyAppliesToSummaryRequest",
+        "TestEscapedSurrogateIngressAndNextRequestMatchActualSDK"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+        },
+        {
+          "path": "docs/audits/go-provider-idna-source-2026-10-13.json",
+          "sha256": "9d31ba9a0d92ad426cd08bcc06266dffba36f816e85a923a2a92a355712bd497"
+        },
+        {
+          "path": "docs/audits/go-sdk-caller-observations-2026-10-14.json",
+          "sha256": "bf173b964af6cd972c9b5982029021ae7a603dfc4c3db8e136bf91a8d4cc65bc"
+        }
+      ],
+      "remaining_required_ids": [
+        "setting:base_url",
+        "export:build_client"
+      ],
+      "boundaries": [
+        "IDNA84Source cases lack approved native normalization and actual consumer.",
+        "Universal lone-surrogate Agent/archive/progress lifecycle is not an original G4 requirement and is not claimed.",
+        "No live-vendor/arbitrary-SDK-value certificate."
+      ],
+      "next_action": "Resolve policy, implement approved behavior, add actual Source consumers and pass final gates."
+    },
+    {
+      "id": "G5",
+      "original_work": "Implement optional SQLite persistence, leases, owner isolation, trajectories and journals",
+      "original_acceptance_evidence": "Restart/crash-window and owner-isolation fixtures pass against both runtimes",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9312,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "native_backend_delivered_required_recipe_audit_not_missing_backend",
+      "status": "satisfied_for_original_bounded_recipe_scope",
+      "current_semantic_evidence": [
+        "Final7group ledger binds Source recipes/native assertions and25top+49subpasses in each current host/Linux full/race log.",
+        "Default actual Manager Run/Stop retains owned model_input trajectories under configured private paths. Foreign trajectory read/export is refused before body/size/stream access; owned JSON bounds and JSONL/disabled-store behavior are asserted.",
+        "Native SQLite reopen/rollback/leases/owned repair and journal decisions provide actual finite restart/crash-window evidence."
+      ],
+      "assertion_symbols": [
+        "TestDefaultTrajectoriesAreOwnedConfiguredAndRetained",
+        "TestTrajectoryOwnershipPrecedesBodyAndJSONBound"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-team-sqlite-restart-2026-10-11.json",
+          "sha256": "f93cbddb51fdaafba2a393d49a383a93175e640c6d2b46296b5bec34dc85ec2a"
+        },
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "GO_PORT_PLAN.md",
+          "line": 9620,
+          "heading": "Next persistence slices",
+          "fact": "Explicitly closes the old backend implementation queue."
+        },
+        {
+          "path": "GO_PARITY_MATRIX.md",
+          "line": 2274,
+          "heading": "native SQLite Manager reconstruction proof",
+          "fact": "Actual native close/reopen consumes all7 Source manager restoration recipes."
+        },
+        {
+          "path": "GO_PARITY_MATRIX.md",
+          "line": 2143,
+          "heading": "native SQLite killed-generation process recovery",
+          "fact": "Owned child kill,natural8s lease expiry,repair,second reopen; not a power-loss claim."
+        },
+        {
+          "path": "GO_PARITY_MATRIX.md",
+          "line": 9265,
+          "heading": "Native SQLite compaction restart proof",
+          "fact": "3 success/failure/cancel compositions."
+        },
+        {
+          "path": "GO_PARITY_MATRIX.md",
+          "line": 9297,
+          "heading": "Native SQLite large-decision restart proof",
+          "fact": "Both Source replay sizes10203/524288 bytes;current authority rechecked."
+        }
+      ],
+      "remaining_required_ids": [],
+      "boundaries": [
+        "Killed-generation is native strengthening plus captured Source repair/lease primitives, not identical cross-language SIGKILL.",
+        "Compaction3 profiles compose actual Source primitives and native SQL loops; team restart compares a declared typed subset.",
+        "No new power-loss, external-effect exactly-once/fencing or universal persistence criterion."
+      ],
+      "next_action": "No further original-scope implementation gap established; retain bounded regression evidence."
+    },
+    {
+      "id": "G6",
+      "original_work": "Port opt-in skills, memory, MCP, background/cron/tasks/teams/worktrees, workflows, verified loop, and decisions in bounded slices",
+      "original_acceptance_evidence": "Each feature has an explicit flag/default, parity fixtures, and documented limitations",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9313,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "finite_feature_selection_closed_default_parser_blocked",
+      "status": "dependency_blocked",
+      "current_semantic_evidence": [
+        "Real catalogues compare all57schemas/traits/capabilities/modes/order across14registries and8managers, with12independent switches and actual service binding/activation. Old9non-full definition/partial-selector pending wording is superseded.",
+        "Feature effect receipts remain separate from registration proof; owner-skill/memory/public-harness/prompt helper deliveries are current."
+      ],
+      "assertion_symbols": [
+        "TestExplicitFeatureCatalogueMatchesSourceDefinitions"
+      ],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+          "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f"
+        },
+        {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+        },
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        }
+      ],
+      "remaining_required_ids": [
+        "setting:enable_features",
+        "export:full_registry",
+        "capability:04"
+      ],
+      "boundaries": [
+        "Default Python diagnostics remains refused without an explicit backend. Existing interface/scanner/Source replay is not a delivered default CPython implementation.",
+        "Catalogue proof does not certify all tool effects."
+      ],
+      "next_action": "Resolve policy, implement approved behavior, add actual Source consumers and pass final gates."
+    },
+    {
+      "id": "G7",
+      "original_work": "Run cross-language differential suite, performance checks, documentation/audit pass",
+      "original_acceptance_evidence": "Parity matrix has no unverified required rows; README default and durability labels are truthful",
+      "requirement_ref": {
+        "path": "GO_PORT_PLAN.md",
+        "heading": "Work packages",
+        "line": 9314,
+        "snapshot_commit": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970"
+      },
+      "previous_status": "not_complete",
+      "status": "not_complete_dependency_blocked",
+      "current_semantic_evidence": [
+        "Current differential/host20 and same-runtime pinned Linux source/full/vet/race4 gates pass; failure history remains separate.",
+        "Current matched3pair HTTP performance checks identical effects; Go creation is slower in this sample, so no universal speedup is claimed.",
+        "Historical/current docs pointers are reconciled through e9; the current docs-only audit iteration needs its own architecture render provenance."
+      ],
+      "assertion_symbols": [],
+      "historical_authoritative_evidence": [
+        {
+          "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+          "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+        },
+        {
+          "path": "docs/audits/go-public-contract-closure-2026-10-14.json",
+          "sha256": "848564791b917cd3fea0807bef62737775a0f00c6af8cbc592fbfe628af5abfd"
+        },
+        {
+          "path": "docs/audits/go-performance-resource-budget-2026-10-13.json",
+          "sha256": "7e4c5ae11030312905baf8c3e4207ee36fd1f51ae51414a94dace939a09161a8"
+        },
+        {
+          "path": "docs/audits/go-linux-platform-source-2026-10-14.json",
+          "sha256": "a6452dd17b8ab4294d07a35a08a965643a4182533aa0e9edba6c7ec04d84e42a"
+        }
+      ],
+      "remaining_required_ids": [
+        "capability:04",
+        "export:build_client",
+        "export:full_registry",
+        "setting:base_url",
+        "setting:enable_features"
+      ],
+      "boundaries": [
+        "No-unverified-required-rows remains false with5dependency rows despite0evidence_incomplete.",
+        "Original work package asks for performance checks, not a new universal SLO. Old timing/scaling failures remain without a claimed root-cause repair."
+      ],
+      "next_action": "Resolve policy, implement approved behavior, add actual Source consumers and pass final gates."
+    }
+  ],
+  "selected_assertions": [
+    {
+      "group": "G0",
+      "reference": {
+        "path": "go/protocol/message_test.go",
+        "sha256": "5ceb8b794dcbcdd33ac2f8ff297ca0c3f75ea3212f6cabcfca1808f269b8bfc1",
+        "bytes": 5253,
+        "symbol": "TestContentBoundary",
+        "line": 98
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 39124,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 43737,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0.04
+        },
+        "linux_full": {
+          "line": 35584,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 44785,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0.04
+        }
+      }
+    },
+    {
+      "group": "G0",
+      "reference": {
+        "path": "go/protocol/tool_input_test.go",
+        "sha256": "566bbe4eaec249f3b7fd0dd2249461fa344950bd7b22e076b80bc3cd84808407",
+        "bytes": 5039,
+        "symbol": "TestToolInputsRejectUnknownMissingAndInvalidValues",
+        "line": 81
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 41712,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 48411,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 37695,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 48386,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G0",
+      "reference": {
+        "path": "go/protocol/tool_input_test.go",
+        "sha256": "566bbe4eaec249f3b7fd0dd2249461fa344950bd7b22e076b80bc3cd84808407",
+        "bytes": 5039,
+        "symbol": "TestToolInputCannotBeDecodedWithoutItsName",
+        "line": 109
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 41716,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 48415,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 37699,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 48390,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G0",
+      "reference": {
+        "path": "go/protocol/python_contract_test.go",
+        "sha256": "d73f1232f69fdb454f6726524a468c91d9edc755e1e5a32195325c0792197e9e",
+        "bytes": 3687,
+        "symbol": "TestTypedInputsTrackPythonSchema",
+        "line": 28
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 39372,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 43965,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 35792,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 44999,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G0",
+      "reference": {
+        "path": "go/protocol/sdk_unicode_test.go",
+        "sha256": "3231767f8f50bcf2b2552e483710f064ac6ceecf4155c991b9a6ada591b96283",
+        "bytes": 2548,
+        "symbol": "TestSDKUnicodeObservationPreservesNamedFieldsAndStrictWire",
+        "line": 12
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 40672,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 47731,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 37015,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 47988,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G1",
+      "reference": {
+        "path": "go/agent/session_test.go",
+        "sha256": "b84f91c229b864b671fbaf9160f49abec9cc18af5918c49368b29b158310da2b",
+        "bytes": 4269,
+        "symbol": "TestFakeTurnAndSessionIsolation",
+        "line": 19
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 18540,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 21513,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 16298,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 17405,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G1",
+      "reference": {
+        "path": "go/agent/managed_session_test.go",
+        "sha256": "5d34bbbeb29b6a7528de18cf50f07a09e28d90a928837cedf7f1bb6e6d18f5f9",
+        "bytes": 16379,
+        "symbol": "TestManagedCancelTargetsActiveTurnAndQueueRemainsUsable",
+        "line": 192
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 10405,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 10512,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 9405,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 9405,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G1",
+      "reference": {
+        "path": "go/agent/managed_session_test.go",
+        "sha256": "5d34bbbeb29b6a7528de18cf50f07a09e28d90a928837cedf7f1bb6e6d18f5f9",
+        "bytes": 16379,
+        "symbol": "TestCoreQueuedTurnReportsAndCancelsBeforeMutation",
+        "line": 439
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 10433,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 10540,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 9433,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 9433,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G1",
+      "reference": {
+        "path": "go/agent/loop_contract_test.go",
+        "sha256": "426fbcd99372f1cc3c0edf8fb52e69fc85b3aec8d8b1a1ca653ae342f51465a5",
+        "bytes": 9261,
+        "symbol": "TestActualLoopNudgesAndHaltsMatchPython",
+        "line": 235
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9889,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.02
+        },
+        "host_race": {
+          "line": 10420,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.14
+        },
+        "linux_full": {
+          "line": 9313,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.02
+        },
+        "linux_race": {
+          "line": 9313,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.16
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/catalog_permission_test.go",
+        "sha256": "280cfddae9de7faaf30340c4978b1d82d680014b691ef9b43a12eeb82a352951",
+        "bytes": 7433,
+        "symbol": "TestCatalogCopiesCapabilitiesAndRejectsDuplicates",
+        "line": 47
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 3944,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 3941,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 3517,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 3517,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/catalog_permission_test.go",
+        "sha256": "280cfddae9de7faaf30340c4978b1d82d680014b691ef9b43a12eeb82a352951",
+        "bytes": 7433,
+        "symbol": "TestPermissionModesAndImmutableDenyList",
+        "line": 70
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 3948,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 3945,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 3521,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 3521,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/gate_test.go",
+        "sha256": "1cbfab4516bd5703c6eeb4d2047dc8cfa8226357eab0fe0e811c90c901069e18",
+        "bytes": 7925,
+        "symbol": "TestGateOrdersRewriteGuardPermissionExecuteAfterObserver",
+        "line": 81
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9142,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 9732,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 8625,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 8625,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/gate_test.go",
+        "sha256": "1cbfab4516bd5703c6eeb4d2047dc8cfa8226357eab0fe0e811c90c901069e18",
+        "bytes": 7925,
+        "symbol": "TestGuardDenialCannotBeLaunderedByPostHook",
+        "line": 148
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9146,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 9736,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 8629,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 8629,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/permission_publication_cancel_test.go",
+        "sha256": "d178e2f71e1233d116ff5eaafae7427bce20035320b61a8decd447742a6330b7",
+        "bytes": 3325,
+        "symbol": "TestPermissionPublicationCancellationStopsLaterApprovalAndHandler",
+        "line": 30
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 15396,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 19002,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 14009,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 15112,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G2",
+      "reference": {
+        "path": "go/agent/bash_surrogate_effect_test.go",
+        "sha256": "ba66812fcb2dcf30e30dddd11ff65a7278b95fcfdc5719cf2cbd12bcfa9bbfb3",
+        "bytes": 7140,
+        "symbol": "TestSDKSurrogateBashReachesSafeFilesystemBoundaryWithoutJournal",
+        "line": 111
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 22176,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.03
+        },
+        "host_race": {
+          "line": 27771,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.05
+        },
+        "linux_full": {
+          "line": 19646,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 21692,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.02
+        }
+      }
+    },
+    {
+      "group": "G3",
+      "reference": {
+        "path": "go/agent/teamless_http_external_test.go",
+        "sha256": "3d461869be9657d8d165bcf2f37383ce2059c942251676bc8165b036e71314d0",
+        "bytes": 8223,
+        "symbol": "TestActualSourceTeamlessHTTPThroughOwnedHandler",
+        "line": 78
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 23589,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 29207,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.03
+        },
+        "linux_full": {
+          "line": 20718,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 22947,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.04
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/contracts_test.go",
+        "sha256": "b2378dffc9b6d3f2c2f95759615844a5d1156ab102504313a09c21287c56ebc9",
+        "bytes": 7375,
+        "symbol": "TestDirectHTTPMatchesActualPythonSDK",
+        "line": 133
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 41738,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 40198,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.1
+        },
+        "linux_full": {
+          "line": 41918,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 39834,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.11
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/stream_test.go",
+        "sha256": "d9ff4eefa77c3b2f96627834b7c065866e5cd0ca50361d4e061e9bd308a595d3",
+        "bytes": 8643,
+        "symbol": "TestStreamingMatchesActualSDKAndPythonTransport",
+        "line": 73
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 46065,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 45141,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.04
+        },
+        "linux_full": {
+          "line": 45883,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 43935,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.04
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/stream_test.go",
+        "sha256": "d9ff4eefa77c3b2f96627834b7c065866e5cd0ca50361d4e061e9bd308a595d3",
+        "bytes": 8643,
+        "symbol": "TestStreamingDoesNotRetryDroppedBodyOrCallback",
+        "line": 230
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 46113,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 45189,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 45931,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 43983,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/runtime_stream_test.go",
+        "sha256": "fdb0e30eb39654ac55c4fcf299c38a8bc45e6d122827f54f836ff0a0e7ce058c",
+        "bytes": 8372,
+        "symbol": "TestRealStreamingToolRoundPreservesSignedHistoryUsageAndPhases",
+        "line": 21
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 48632,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.02
+        },
+        "host_race": {
+          "line": 47829,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.04
+        },
+        "linux_full": {
+          "line": 48457,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 47511,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.05
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/runtime_stream_test.go",
+        "sha256": "fdb0e30eb39654ac55c4fcf299c38a8bc45e6d122827f54f836ff0a0e7ce058c",
+        "bytes": 8372,
+        "symbol": "TestActualStreamingCancellationAndTimeoutCloseResponse",
+        "line": 150
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 48644,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.15
+        },
+        "host_race": {
+          "line": 47841,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.15
+        },
+        "linux_full": {
+          "line": 48473,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.15
+        },
+        "linux_race": {
+          "line": 47527,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.16
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/agent/recovery_test.go",
+        "sha256": "336c0a37ad1c739b0eaf918e5d2d9bb6f9ad97d523d6999c6af24a03b6f2fce8",
+        "bytes": 7814,
+        "symbol": "TestRecoveryMatchesActualPython",
+        "line": 64
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 17759,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 20957,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.02
+        },
+        "linux_full": {
+          "line": 15813,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 16916,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.06
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/agent/recovery_runtime_test.go",
+        "sha256": "bd3602d11d64e736731bbe1e98f58073ec779354f3b736dfc01b6e259b897383",
+        "bytes": 7539,
+        "symbol": "TestDroppedStreamRegeneratesWithoutSplicingAndReleasesModelPermit",
+        "line": 17
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 17513,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 20837,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 15693,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 16796,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/whole_usage_runtime_test.go",
+        "sha256": "baa0c0cae6944c88b9b4c3208d2487fc8e22b7fcba8565e10e105151f69c074b",
+        "bytes": 3401,
+        "symbol": "TestWholeUsageActualHTTPManagedModelEnd",
+        "line": 17
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 49002,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.19
+        },
+        "host_race": {
+          "line": 48813,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.95
+        },
+        "linux_full": {
+          "line": 48837,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.17
+        },
+        "linux_race": {
+          "line": 47887,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.96
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/agent/loop_contract_test.go",
+        "sha256": "426fbcd99372f1cc3c0edf8fb52e69fc85b3aec8d8b1a1ca653ae342f51465a5",
+        "bytes": 9261,
+        "symbol": "TestCacheWireMatchesPythonProjections",
+        "line": 104
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9745,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 10328,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.09
+        },
+        "linux_full": {
+          "line": 9221,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 9221,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.1
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/agent/loop_runtime_test.go",
+        "sha256": "4ea957b1f1b80dde7806f7e102e6021cb386b6a68d69242f077100fd0eedcb52",
+        "bytes": 9367,
+        "symbol": "TestActualProviderRequestsCarryCacheButHistoryDoesNot",
+        "line": 121
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9979,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 10440,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.08
+        },
+        "linux_full": {
+          "line": 9333,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.02
+        },
+        "linux_race": {
+          "line": 9333,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.09
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/agent/loop_runtime_test.go",
+        "sha256": "4ea957b1f1b80dde7806f7e102e6021cb386b6a68d69242f077100fd0eedcb52",
+        "bytes": 9367,
+        "symbol": "TestCachePolicyAppliesToSummaryRequest",
+        "line": 228
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9995,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 10456,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        },
+        "linux_full": {
+          "line": 9349,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 9349,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.01
+        }
+      }
+    },
+    {
+      "group": "G4",
+      "reference": {
+        "path": "go/provider/surrogate_contract_test.go",
+        "sha256": "12e3f0cffe33e6132e6b65b07f4d79a10da6c3f434389007d1ce92deba1b4b92",
+        "bytes": 12847,
+        "symbol": "TestEscapedSurrogateIngressAndNextRequestMatchActualSDK",
+        "line": 171
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 46281,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "host_race": {
+          "line": 45369,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.03
+        },
+        "linux_full": {
+          "line": 46103,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 45149,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "elapsed": 0.03
+        }
+      }
+    },
+    {
+      "group": "G5",
+      "reference": {
+        "path": "go/launcher/trajectory_test.go",
+        "sha256": "58ec71c7b0e0b7865886da55a38b10612410b06421fb5cdb9809948ce2669cb5",
+        "bytes": 2603,
+        "symbol": "TestDefaultTrajectoriesAreOwnedConfiguredAndRetained",
+        "line": 14
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 29210,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "elapsed": 0.04
+        },
+        "host_race": {
+          "line": 36279,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "elapsed": 0.04
+        },
+        "linux_full": {
+          "line": 28990,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "elapsed": 0.01
+        },
+        "linux_race": {
+          "line": 36077,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "elapsed": 0.04
+        }
+      }
+    },
+    {
+      "group": "G5",
+      "reference": {
+        "path": "go/httpapi/trajectories_test.go",
+        "sha256": "50dff123e78cdade1504783a998566fb362bbb5f86394627d1f8ab2b0b7bf4dd",
+        "bytes": 10449,
+        "symbol": "TestTrajectoryOwnershipPrecedesBodyAndJSONBound",
+        "line": 150
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 35246,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/httpapi",
+          "elapsed": 0
+        },
+        "host_race": {
+          "line": 33394,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/httpapi",
+          "elapsed": 0
+        },
+        "linux_full": {
+          "line": 37299,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/httpapi",
+          "elapsed": 0
+        },
+        "linux_race": {
+          "line": 34300,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/httpapi",
+          "elapsed": 0
+        }
+      }
+    },
+    {
+      "group": "G6",
+      "reference": {
+        "path": "go/agent/feature_bundle_contract_test.go",
+        "sha256": "727387e6f3ce274dd84815264bd0457f3d7ed000dab28ae6923397549c06a4fd",
+        "bytes": 10989,
+        "symbol": "TestExplicitFeatureCatalogueMatchesSourceDefinitions",
+        "line": 150
+      },
+      "current_execution": {
+        "host_full": {
+          "line": 9078,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.04
+        },
+        "host_race": {
+          "line": 9668,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.22
+        },
+        "linux_full": {
+          "line": 8561,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.04
+        },
+        "linux_race": {
+          "line": 8561,
+          "action": "pass",
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "elapsed": 0.22
+        }
+      }
+    }
+  ],
+  "selected_existing_execution_logs": {
+    "host_full": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full-corrected/stdout.log",
+        "sha256": "bd6d9611533bd24d778578b9ddca89d15400741ecfda4ccc3eeac2e7775d2500",
+        "bytes": 14070734
+      },
+      "selected_top_level_pass": 31,
+      "selected_fail_or_skip": 0,
+      "non_json_lines_retained_in_raw_log": 0
+    },
+    "host_race": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race-corrected/stdout.log",
+        "sha256": "f3c94b862e7c5c7da29e5943a8d40a3f6b7c4d9ec68659d85fa351212d37d782",
+        "bytes": 14067858
+      },
+      "selected_top_level_pass": 31,
+      "selected_fail_or_skip": 0,
+      "non_json_lines_retained_in_raw_log": 12
+    },
+    "linux_full": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-full-corrected/logs/stdout.log",
+        "sha256": "45591a8964357fafe4f12534721fba2cfc8c2486f8eaa64b1c1d5273bef04b2e",
+        "bytes": 13897631
+      },
+      "selected_top_level_pass": 31,
+      "selected_fail_or_skip": 0,
+      "non_json_lines_retained_in_raw_log": 0
+    },
+    "linux_race": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-corrected/logs/stdout.log",
+        "sha256": "619f3fed4e761d1f685dec4a1866385f90ff57df78af33e16a5e7b48aa27a600",
+        "bytes": 13903479
+      },
+      "selected_top_level_pass": 31,
+      "selected_fail_or_skip": 0,
+      "non_json_lines_retained_in_raw_log": 0
+    }
+  },
+  "type_and_boundary_evidence": {
+    "historical_body_dispositions": {
+      "path": "docs/audits/go-body-boundary-dispositions-2026-10-13.json",
+      "sha256": "8ce1650f738e4c717d08b86d139185014d0418315860dc0602a2b7f8db32a56c",
+      "bytes": 183892
+    },
+    "body_boundaries_disposed": 130,
+    "current_type_audits": {
+      "type-syntax": {
+        "resource": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-syntax-corrected/resources.json",
+          "bytes": 2356,
+          "sha256": "6a6ac220a67f6b7dd7c29935e011fc66fd03522e0378f0b5855eeb9840d59029"
+        },
+        "stdout": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-syntax-corrected/stdout.log",
+          "bytes": 74,
+          "sha256": "11f49cc8609b201a29ac4219a3f59cb1c35f88abc62f7064ddcff196f85edca6"
+        },
+        "observed_output": [
+          "Go type audit: 477 production files, 1502 package-level types, 0 findings"
+        ]
+      },
+      "type-public": {
+        "resource": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-public-corrected/resources.json",
+          "bytes": 2383,
+          "sha256": "19cf026a48b0a8a8a04908139f3ccfe27be73bd13bc034f074de759c0ac0d09a"
+        },
+        "stdout": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-public-corrected/stdout.log",
+          "bytes": 67,
+          "sha256": "0d1ed547712d51cd95f5b92e79545b9cd8f8102f5e22484bca92e28494adb2c8"
+        },
+        "observed_output": [
+          "Go public type audit: 52 packages, 1225 exported types, 0 findings"
+        ]
+      },
+      "type-private": {
+        "resource": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-private-corrected/resources.json",
+          "bytes": 2389,
+          "sha256": "73558842f69ef9f6e11ef7af3233a322624dfdefc93a792b3ffb1936307d0ef2"
+        },
+        "stdout": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-private-corrected/stdout.log",
+          "bytes": 71,
+          "sha256": "b9d83d3aac90d337a92c3bda8ffeb0c6423603f82f0f0692f3c3bccf2cd6c6c4"
+        },
+        "observed_output": [
+          "Go private type audit: 52 packages, 288 private root types, 0 findings"
+        ]
+      },
+      "type-variables": {
+        "resource": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-variables-corrected/resources.json",
+          "bytes": 2394,
+          "sha256": "b41487bc5187ff2cd6054aae63923646690ba3f10cd46670a1f018a413266b20"
+        },
+        "stdout": {
+          "path": "var/go-remaining-contract-evidence-2026-10-14/type-variables-corrected/stdout.log",
+          "bytes": 66,
+          "sha256": "1a30a09ae746044ba394748cfa799391f893ae28d0b44317242bc331f04ae31d"
+        },
+        "observed_output": [
+          "Go variable audit: 52 packages, 175 package variables, 0 findings"
+        ]
+      }
+    }
+  },
+  "persistence_recipe_evidence": {
+    "published_ledger": {
+      "path": "docs/audits/go-persistence-required-recipe-ledger-2026-10-14.json",
+      "sha256": "df1fd9ca53f60e9a6fffa92a69d2b360ad5987b020458d7a93f9c9eb0a120312",
+      "bytes": 187089
+    },
+    "sealed_private_ledger": {
+      "path": "var/go-remaining-contract-evidence-2026-10-14/g5-required-recipe-ledger.final.json",
+      "sha256": "df1fd9ca53f60e9a6fffa92a69d2b360ad5987b020458d7a93f9c9eb0a120312",
+      "bytes": 187089
+    },
+    "byte_identical": true,
+    "groups": [
+      "manager7",
+      "cron_scheduled",
+      "lease_rollback",
+      "killed_generation",
+      "compaction3",
+      "decision2",
+      "team_restart"
+    ],
+    "summary": {
+      "recipe_groups": 7,
+      "unique_native_top_level_tests": 25,
+      "all_selected_host_full_and_race_top_levels_pass": true,
+      "all_selected_host_subtests_pass": true,
+      "demonstrated_missing_original_recipe_in_named_groups": false,
+      "implementation_changes_required_by_this_review": false,
+      "selected_test_events_per_host_stage": {
+        "top_level_pass": 25,
+        "subtest_pass": 49,
+        "failed_or_skipped_selected_events": 0
+      },
+      "all_selected_linux_full_and_race_top_levels_pass": true,
+      "all_selected_linux_subtests_pass": true,
+      "selected_test_events_per_linux_stage": {
+        "linux-full-corrected": {
+          "top_level_pass": 25,
+          "subtest_pass": 49,
+          "failed_or_skipped_selected_events": 0,
+          "same_names_as_host": true
+        },
+        "linux-race-corrected": {
+          "top_level_pass": 25,
+          "subtest_pass": 49,
+          "failed_or_skipped_selected_events": 0,
+          "same_names_as_host": true
+        }
+      }
+    },
+    "interpretation": "Together with separately read trajectory/owner assertions, supports original finite G5 acceptance without rewriting the ledger as a universal certificate.",
+    "preserved_limits": [
+      "Source compaction primitive composition with native SQL loops.",
+      "Native killed-generation strengthening.",
+      "Typed team subset and metadata/sequence adaptations.",
+      "No power-loss or external-effect exactly-once claim."
+    ]
+  },
+  "linux_current": {
+    "source": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-source-corrected/result.json",
+        "sha256": "36a77c2ede8f23deefda04300742026006852649715408e927a2550763da5a63",
+        "bytes": 24266
+      },
+      "status": "source_captured",
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_resources_absent": true,
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "sampled.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "inputs_unchanged": true,
+      "source_platform_context_matches": null
+    },
+    "full": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-full-corrected/result.json",
+        "sha256": "483ed8cb8d2851fe008c4e5ea2202ea09021ba8eab86aa84e405a8b2cb023af3",
+        "bytes": 83059
+      },
+      "status": "passed",
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_resources_absent": true,
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "sampled.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "inputs_unchanged": true,
+      "source_platform_context_matches": true,
+      "expected_package_count": 52,
+      "go_results_summary": {
+        "listing_exit_code": 0,
+        "complete_scope": true
+      }
+    },
+    "vet": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-vet-corrected/result.json",
+        "sha256": "abac4c49a531dfe3df1fa26b2114b9118b3a9c3d5003034577f469ceb0ebacf1",
+        "bytes": 79994
+      },
+      "status": "passed",
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_resources_absent": true,
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "sampled.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "inputs_unchanged": true,
+      "source_platform_context_matches": true,
+      "expected_package_count": 52,
+      "go_results_summary": {
+        "listing_exit_code": 0,
+        "complete_scope": true
+      }
+    },
+    "race": {
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-corrected/result.json",
+        "sha256": "291d976ff5e0fe69640e3805793c1fa4c5de56fe3270e72d5c09f9cc4d7c9c72",
+        "bytes": 83060
+      },
+      "status": "passed",
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_resources_absent": true,
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "sampled.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "inputs_unchanged": true,
+      "source_platform_context_matches": true,
+      "expected_package_count": 52,
+      "go_results_summary": {
+        "listing_exit_code": 0,
+        "complete_scope": true
+      }
+    }
+  },
+  "linux_source_scope": {
+    "groups": [
+      "benchmark",
+      "httpapi",
+      "httpapi-efficiency",
+      "userresources",
+      "workspace",
+      "worktrees"
+    ],
+    "description": "Six actual same-platform Source fixture overlays only; not full Linux Python export. Native full/vet/race uses exact runtime commit."
+  },
+  "performance": {
+    "reference": {
+      "path": "var/go-remaining-contract-evidence-2026-10-14/paired-http-corrected.json",
+      "bytes": 104303,
+      "sha256": "aceba235f59d1fe92569a6f017f23c91c4d9ad96e5902b1c56cc04c289970f17"
+    },
+    "parameters": {
+      "pairs": 3,
+      "health_samples": 100,
+      "turns": 20,
+      "warmup_turns": 2
+    },
+    "scope": "serial persistent HTTP; default fake; zero provider delay; real Bash with verified file effect; fresh sessions; prebuilt Go; nearest-rank p95; RSS after workload, not peak/descendants; startup includes readiness polling; no SSE/SQLite/concurrency/provider benchmark",
+    "median_ms": {
+      "python": {
+        "startup": 300.3419160086196,
+        "health": 0.6995419826125726,
+        "create": 2.9217295086709782,
+        "turn": 10.999749996699393,
+        "delete": 0.7953335007186979
+      },
+      "go": {
+        "startup": 24.9371669779066,
+        "health": 0.09024949395097792,
+        "create": 5.235396005446091,
+        "turn": 8.546458499040455,
+        "delete": 0.3029790095752105
+      }
+    },
+    "interpretation": "Matching effects measured; native creation is slower. No universal speedup/SLO claim or claimed cause for historic timing/scaling failures."
+  },
+  "remaining_dependency_families": [
+    {
+      "id": "idna_normalization",
+      "row_ids": [
+        "setting:base_url",
+        "export:build_client"
+      ],
+      "status": "approval_then_implementation_and_validation_required",
+      "source_fixture": {
+        "path": "go/testdata/python-provider-idna.json",
+        "sha256": "339cee6b3f6fbda1f207551d1d9e03319b90f5c6af4509dab7a6e02d0b388eab",
+        "bytes": 53047
+      },
+      "cases": 84,
+      "source_versions": {
+        "anthropic": "0.107.1",
+        "httpx": "0.28.1",
+        "idna": "3.18",
+        "idna_unicode": "17.0.0"
+      },
+      "decision": "Approve fixed IDNA normalization dependency/design; SQLite approval does not cover it.",
+      "missing": "Native normalization and actual84case direct/SSE consumer. Private candidate or baseline probe is not delivered parity.",
+      "after_approval": [
+        "Implement approved normalization including fixed-version differences.",
+        "Consume all84actual Source cases with default/transport controls.",
+        "Pass affected focused/full/vet/race, Source/Python, documentation and architecture gates, then update2rows."
+      ],
+      "native_fixture_reference_search": {
+        "scope": "go/**/*.go",
+        "literal": "python-provider-idna.json",
+        "matches": []
+      }
+    },
+    {
+      "id": "default_python_syntax_backend",
+      "row_ids": [
+        "setting:enable_features",
+        "export:full_registry",
+        "capability:04"
+      ],
+      "status": "runtime_dependency_policy_then_implementation_and_validation_required",
+      "source_fixture": {
+        "path": "go/testdata/python-syntax-parser.json",
+        "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+        "bytes": 16779
+      },
+      "cases": 62,
+      "decision": "Decide whether default Go diagnostics may depend on external CPython or must be fully native; this is deployment/runtime policy, not installation of an already implemented Go package.",
+      "missing": "No delivered CPythonParser/default CLI backend. Interface/scanner/Source replay does not execute a default grammar backend.",
+      "native_refusal": {
+        "path": "go/config/server.go",
+        "sha256": "a3e06b9249e0e7b611b0b47f39b5052dfa860a13e834d5285b414ce1308f0561",
+        "bytes": 2838,
+        "symbol": "Settings.Unsupported",
+        "line": 74,
+        "message": "MINILOOP_FEATURES: default Python syntax diagnostics backend is not implemented"
+      },
+      "after_approval": [
+        "Implement and bind selected default backend with pinned grammar/runtime and availability errors.",
+        "Add real62case parser consumer and default full-feature launcher proof.",
+        "Pass affected final gates and update3rows."
+      ],
+      "native_fixture_reference_search": {
+        "scope": "go/**/*.go",
+        "literal": "python-syntax-parser.json",
+        "matches": []
+      }
+    }
+  ],
+  "stale_text_reconciliation": [
+    {
+      "scope": "G0",
+      "resolved": "Current types/JSON assertions and same-runtime Linux replace old Darwin-only pending status."
+    },
+    {
+      "scope": "G3",
+      "resolved": "Actual12case teamless owned-handler evidence closes missing row."
+    },
+    {
+      "scope": "G4",
+      "resolved": "SDK34plus2actual observations close pending probe; universal Agent/archive/progress surrogate lifecycle is not an added original gate."
+    },
+    {
+      "scope": "G5",
+      "resolved": "Final7group ledger binds current host/Linux results with precise recipe boundaries."
+    },
+    {
+      "scope": "export:full_registry",
+      "resolved": "Old9non-full/partial-selector pending wording superseded by57/14/8proof; parser remains blocked."
+    },
+    {
+      "scope": "export:build_client",
+      "resolved": "Old surrogate pending wording superseded; IDNA remains blocked."
+    },
+    {
+      "scope": "G1/G2 final-audit placeholders",
+      "resolved": "This original-scope semantic review found no new session/authority/gate implementation gap; placeholder wording alone does not add requirements."
+    }
+  ],
+  "retained_history": {
+    "reference": {
+      "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+      "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5",
+      "bytes": 1039902
+    },
+    "fields": [
+      "retained_linux_attempts",
+      "superseded_linux_stages",
+      "superseded_host_stages",
+      "retained_failures",
+      "superseded_successes"
+    ],
+    "facts": [
+      "Initial Linux phase-count failure/manual confirmation stop remain preserved.",
+      "Corrected test explicitly supplies empty injectors/no background result; not production timing fix.",
+      "Old wrappers/expectations/resource stops/performance failures are not rewritten as passes."
+    ]
+  },
+  "conclusion": {
+    "remaining_required_families": 2,
+    "additional_original_required_gap_demonstrated_outside_those_families": false,
+    "remaining_required_rows": [
+      "capability:04",
+      "export:build_client",
+      "export:full_registry",
+      "setting:base_url",
+      "setting:enable_features"
+    ],
+    "approval_alone_completes_goal": false,
+    "after_approval": "Implement approved IDNA/default parser behavior, add actual bounded consumers and pass required final gates before updating status.",
+    "full_goal": "Not complete: G7 requires no unverified required rows."
+  },
+  "output_only": "var/go-final-acceptance-audit-2026-10-14/original-criteria-review.json"
+}

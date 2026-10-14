@@ -1,0 +1,17 @@
+Use case: infographic-diagram / precise-object-edit.
+Asset type: repository iteration architecture infographic, 2026-10-14, original acceptance reconciliation at baseline e9b6390.
+Input image: EDIT TARGET, the complete mini-loop layered architecture base. Preserve the entire original image uncropped, including its five layer bands, all components, all text, edge directions, mountains and six authority/deployment boundary notes. Extend the canvas to the right with a matching navy-blue audit column; do not shrink the original labels into illegibility.
+Primary request: create an iteration variant of this same base diagram to show evidence/acceptance work, not new runtime components. Give existing L5 SQLite/session and operator-contract-audit boxes a restrained emerald outline with small tag “本轮：证据对齐”. Give the existing L3 Model Provider and existing L4 Diagnostics boxes restrained amber outlines and small tags “待实现”. Do not add, remove or reconnect any component.
+Preserve in particular Session Agent ↔ Model Provider, Session Agent → ToolGate routed above Provider, ToolGate → L4 execution, and L4 → Session Agent tool-results return. Retain optional orchestration selection, default-off posture and every existing authority boundary.
+In the new right audit column, add a readable heading and compact cards using this exact Chinese text, wrapping cleanly:
+“本轮：原始验收逐项核对”
+“基线 e9b6390 · 迁移仍未完成”
+“339 已验证 · 0 证据缺口”
+“5 项依赖 / 策略阻塞”
+“SQLite：7 组配方证据”
+“4 轮各 25 顶层 + 49 子测试通过”
+“IDNA：84 场景，6 通过 / 78 差异”
+“诊断：62 场景，真实解析器待实现”
+“批准后仍须实现与完整验证”
+Add a small legend: “绿色：本轮证据对齐” and “橙色：剩余实现”.
+Maintain the original elegant blueprint style, cyan/teal/violet layer colors, crisp Chinese typography and high contrast. All statuses are a baseline snapshot. Do not imply approval has been granted, do not show a Go CPython parser as implemented, do not claim full migration completion, and do not label the 84-case baseline as passing. Opaque background, no watermark.

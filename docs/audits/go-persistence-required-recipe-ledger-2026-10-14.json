@@ -1,0 +1,4614 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-14T12:50:18.444694+00:00",
+  "status": "bounded_recipe_reconciliation_host_and_linux_verified",
+  "applied": false,
+  "full_g5_acceptance": false,
+  "full_port_acceptance": false,
+  "runtime_commit": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+  "source_of_required_scope": {
+    "path": "var/go-remaining-contract-evidence-2026-10-14/original-acceptance-review.json",
+    "sha256": "b9f5dcb4e37f6014074f4f4e3a6e668db1a618efcc12cbefbe575e863a95ac9b",
+    "bytes": 24195,
+    "json_pointer": "/requirements/7"
+  },
+  "original_requirement": {
+    "id": "G5",
+    "path": "GO_PORT_PLAN.md",
+    "heading": "Work packages",
+    "line_at_review": 9310,
+    "text": "Implement optional SQLite persistence, leases, owner isolation, trajectories and journals; restart/crash-window and owner-isolation fixtures pass against both runtimes."
+  },
+  "audit_method": "Read existing Source/native code and actual host/Linux full test JSON events; verify selected file hashes against the final current-runtime manifest and raw logs against terminal receipts. No tests, builds, captures or containers launched. Original ledger preserved unchanged; only this final private JSON appended.",
+  "scope": "The seven recipe groups explicitly requested by the original-acceptance review: manager7, cron/scheduled, lease/rollback, killed-generation, compaction3, decision2 and team restart. This does not apply status changes to the344-row audit.",
+  "host_gates": {
+    "go-full-corrected": {
+      "status": "passed",
+      "resources": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full-corrected/resources.json",
+        "sha256": "7a7b92e7280b2ae9be8641a0958a7b826ab2d5c94312ed84b99dee6b3a2b690f",
+        "bytes": 15621
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full-corrected/stdout.log",
+        "sha256": "bd6d9611533bd24d778578b9ddca89d15400741ecfda4ccc3eeac2e7775d2500",
+        "bytes": 14070734
+      },
+      "freeze_before": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full-corrected/freeze.before.json",
+        "sha256": "7e59bf90d845e4f0d859cc06f8858c021146a0f5d04b0ee80f8236e1c010c7f3",
+        "bytes": 138829
+      },
+      "freeze_after": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-full-corrected/freeze.after.json",
+        "sha256": "7e59bf90d845e4f0d859cc06f8858c021146a0f5d04b0ee80f8236e1c010c7f3",
+        "bytes": 138829
+      },
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-json",
+        "-count=1",
+        "-timeout=600s",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-remaining-contract-evidence-2026-10-14/coverage-corrected.out",
+        "./..."
+      ],
+      "frozen_inputs": 1320,
+      "before_after_equal": true,
+      "owned_cleanup_confirmed": true
+    },
+    "go-race-corrected": {
+      "status": "passed",
+      "resources": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race-corrected/resources.json",
+        "sha256": "b9b1d62416fda89aecff761a060176cea211bff5529417269d1c70fc71cb938b",
+        "bytes": 18161
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race-corrected/stdout.log",
+        "sha256": "f3c94b862e7c5c7da29e5943a8d40a3f6b7c4d9ec68659d85fa351212d37d782",
+        "bytes": 14067858
+      },
+      "freeze_before": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race-corrected/freeze.before.json",
+        "sha256": "7e59bf90d845e4f0d859cc06f8858c021146a0f5d04b0ee80f8236e1c010c7f3",
+        "bytes": 138829
+      },
+      "freeze_after": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/go-race-corrected/freeze.after.json",
+        "sha256": "7e59bf90d845e4f0d859cc06f8858c021146a0f5d04b0ee80f8236e1c010c7f3",
+        "bytes": 138829
+      },
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=600s",
+        "./..."
+      ],
+      "frozen_inputs": 1320,
+      "before_after_equal": true,
+      "owned_cleanup_confirmed": true
+    }
+  },
+  "source_gates": {
+    "source-check": {
+      "resources": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/source-check/resources.json",
+        "sha256": "4ddd73ad1ef287209623a8c70851da204ada53da856927b7c5c94cf42f05353c",
+        "bytes": 4514
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/source-check/stdout.log",
+        "sha256": "c7da162c4afa70c991b95a8a333df033f6377785b272f065e1b617c2ec35c7b8",
+        "bytes": 86954
+      },
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check"
+      ],
+      "before_after_equal": true,
+      "selected_source_inputs_match_current_hashes": true,
+      "individual_pytest_test_events_available": false
+    },
+    "python-full": {
+      "resources": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/resources.json",
+        "sha256": "55fa208aec0e10418cca086cfc8c87acfec57179a4216e1742a14b8747cbda0c",
+        "bytes": 6245
+      },
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/stdout.log",
+        "sha256": "959bd5ae80ccdc7869e60f4576f0a0acd8b5d2ad869e89cc838da089a2527229",
+        "bytes": 60257
+      },
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "--ignore=var"
+      ],
+      "before_after_equal": true,
+      "selected_source_inputs_match_current_hashes": true,
+      "individual_pytest_test_events_available": false
+    }
+  },
+  "linux": {
+    "source": {
+      "status": "source_captured",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-source-corrected/result.json",
+        "sha256": "36a77c2ede8f23deefda04300742026006852649715408e927a2550763da5a63",
+        "bytes": 24266
+      },
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_cleanup_confirmed": true,
+      "no_oom": true,
+      "finished_utc": "2026-10-14T12:40:56.042072+00:00",
+      "complete_package_scope": false,
+      "source_scope": "six actual same-platform producers; not full Source export",
+      "validated_against_final_receipt": true,
+      "test_events_reconciled_by_this_ledger": false,
+      "capture_groups": [
+        "benchmark",
+        "httpapi",
+        "httpapi-efficiency",
+        "userresources",
+        "workspace",
+        "worktrees"
+      ]
+    },
+    "full": {
+      "status": "passed",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-full-corrected/result.json",
+        "sha256": "483ed8cb8d2851fe008c4e5ea2202ea09021ba8eab86aa84e405a8b2cb023af3",
+        "bytes": 83059
+      },
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_cleanup_confirmed": true,
+      "no_oom": true,
+      "finished_utc": "2026-10-14T12:42:55.733272+00:00",
+      "complete_package_scope": true,
+      "source_scope": "six actual same-platform producers; not full Source export",
+      "validated_against_final_receipt": true,
+      "test_events_reconciled_by_this_ledger": true,
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-full-corrected/logs/stdout.log",
+        "sha256": "45591a8964357fafe4f12534721fba2cfc8c2486f8eaa64b1c1d5273bef04b2e",
+        "bytes": 13897631
+      },
+      "selected_test_events": {
+        "top_level_pass": 25,
+        "subtest_pass": 49,
+        "failed_or_skipped_selected_events": 0,
+        "same_names_as_host": true
+      },
+      "selected_fixture_overlay_intersection": [],
+      "selected_fixture_note": "The named G5 fixture files remain committed Source captures; the six same-platform Linux overlays are separately bounded by the final receipt."
+    },
+    "vet": {
+      "status": "passed",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-vet-corrected/result.json",
+        "sha256": "abac4c49a531dfe3df1fa26b2114b9118b3a9c3d5003034577f469ceb0ebacf1",
+        "bytes": 79994
+      },
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_cleanup_confirmed": true,
+      "no_oom": true,
+      "finished_utc": "2026-10-14T12:43:47.852156+00:00",
+      "complete_package_scope": true,
+      "source_scope": "six actual same-platform producers; not full Source export",
+      "validated_against_final_receipt": true,
+      "test_events_reconciled_by_this_ledger": false
+    },
+    "race": {
+      "status": "passed",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-corrected/result.json",
+        "sha256": "291d976ff5e0fe69640e3805793c1fa4c5de56fe3270e72d5c09f9cc4d7c9c72",
+        "bytes": 83060
+      },
+      "revision": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+      "runner_exit_code": 0,
+      "owned_cleanup_confirmed": true,
+      "no_oom": true,
+      "finished_utc": "2026-10-14T12:47:50.167447+00:00",
+      "complete_package_scope": true,
+      "source_scope": "six actual same-platform producers; not full Source export",
+      "validated_against_final_receipt": true,
+      "test_events_reconciled_by_this_ledger": true,
+      "stdout": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-corrected/logs/stdout.log",
+        "sha256": "619f3fed4e761d1f685dec4a1866385f90ff57df78af33e16a5e7b48aa27a600",
+        "bytes": 13903479
+      },
+      "selected_test_events": {
+        "top_level_pass": 25,
+        "subtest_pass": 49,
+        "failed_or_skipped_selected_events": 0,
+        "same_names_as_host": true
+      },
+      "selected_fixture_overlay_intersection": [],
+      "selected_fixture_note": "The named G5 fixture files remain committed Source captures; the six same-platform Linux overlays are separately bounded by the final receipt."
+    }
+  },
+  "groups": [
+    {
+      "id": "manager7",
+      "title": "Manager reconstruction, owner isolation and interrupted transcript repair",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_state_restore_contracts",
+          "line": 4149
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-state-restore.json",
+          "sha256": "8d3c71de76ac12b72f944bf3e510cc3751330fbcd0dccc7539899b3b9ded7f2f",
+          "bytes": 13045,
+          "json_pointer": "/cases"
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/manager_restart_test.go",
+            "sha256": "629e835d9a060b0a15b5c0c1cc6be4d256d198fc1c44ad8690ac9bbbd39484dc",
+            "bytes": 10966,
+            "symbol": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+            "line": 78
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51665,
+                "event": {
+                  "Time": "2026-10-14T20:35:23.121982+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+                  "Elapsed": 0.06
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51639,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.068989+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/clean",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51643,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.077761+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-user",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51647,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.087355+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-blocks",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51651,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.096689+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/tools",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51655,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.10574+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/paired",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51659,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.114372+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/empty",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51663,
+                  "event": {
+                    "Time": "2026-10-14T20:35:23.121971+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/foreign",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51908,
+                "event": {
+                  "Time": "2026-10-14T20:39:42.542346+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+                  "Elapsed": 0.28
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51798,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.307573+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/clean",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51802,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.345927+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-user",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51806,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.385095+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-blocks",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51812,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.427116+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/tools",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51842,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.468315+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/paired",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51902,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.50707+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/empty",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 51906,
+                  "event": {
+                    "Time": "2026-10-14T20:39:42.542335+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/foreign",
+                    "Elapsed": 0.04
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51441,
+                "event": {
+                  "Time": "2026-10-14T12:42:38.294232923Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+                  "Elapsed": 0.12
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51415,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.195649914Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/clean",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51419,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.211618506Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-user",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51423,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.2283094Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-blocks",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51427,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.24520688Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/tools",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51431,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.264050137Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/paired",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51435,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.280976701Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/empty",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 51439,
+                  "event": {
+                    "Time": "2026-10-14T12:42:38.294211589Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/foreign",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52761,
+                "event": {
+                  "Time": "2026-10-14T12:47:31.276668432Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes",
+                  "Elapsed": 0.43
+                }
+              },
+              "subtests": [
+                {
+                  "line": 52663,
+                  "event": {
+                    "Time": "2026-10-14T12:47:30.914391403Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/clean",
+                    "Elapsed": 0.06
+                  }
+                },
+                {
+                  "line": 52667,
+                  "event": {
+                    "Time": "2026-10-14T12:47:30.970925258Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-user",
+                    "Elapsed": 0.06
+                  }
+                },
+                {
+                  "line": 52675,
+                  "event": {
+                    "Time": "2026-10-14T12:47:31.029141678Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/bare-blocks",
+                    "Elapsed": 0.06
+                  }
+                },
+                {
+                  "line": 52705,
+                  "event": {
+                    "Time": "2026-10-14T12:47:31.09635347Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/tools",
+                    "Elapsed": 0.07
+                  }
+                },
+                {
+                  "line": 52739,
+                  "event": {
+                    "Time": "2026-10-14T12:47:31.163587805Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/paired",
+                    "Elapsed": 0.07
+                  }
+                },
+                {
+                  "line": 52743,
+                  "event": {
+                    "Time": "2026-10-14T12:47:31.224114548Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/empty",
+                    "Elapsed": 0.06
+                  }
+                },
+                {
+                  "line": 52759,
+                  "event": {
+                    "Time": "2026-10-14T12:47:31.276652765Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestManagerNativeSQLiteRestartMatchesSourceRecipes/foreign",
+                    "Elapsed": 0.05
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/manager_restart_test.go",
+            "sha256": "629e835d9a060b0a15b5c0c1cc6be4d256d198fc1c44ad8690ac9bbbd39484dc",
+            "bytes": 10966,
+            "symbol": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+            "line": 209
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51669,
+                "event": {
+                  "Time": "2026-10-14T20:35:23.131866+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51912,
+                "event": {
+                  "Time": "2026-10-14T20:39:42.596106+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+                  "Elapsed": 0.05
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51445,
+                "event": {
+                  "Time": "2026-10-14T12:42:38.30949388Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52915,
+                "event": {
+                  "Time": "2026-10-14T12:47:31.348037156Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagerCreatedSessionSurvivesNativeDatabaseReopen",
+                  "Elapsed": 0.07
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "source_cases": [
+          "clean",
+          "bare-user",
+          "bare-blocks",
+          "tools",
+          "paired",
+          "empty",
+          "foreign"
+        ],
+        "count": 7,
+        "native_additional": "publicly created session close/reopen and resumed turn"
+      },
+      "assertions": [
+        "Native Store closes before successor Manager construction; compares durable owner, identity, creation time, run count, workspace and transcript/epoch repair.",
+        "Foreign owner cannot read restored session; live foreign lease prevents repair and Run/provider execution until released; duplicate restore is empty.",
+        "Tools recipe expires pending approvals with resolution metadata; second reopen retains repair; Stop releases owned lease.",
+        "Resumed actual provider sees persisted transcript prefix plus queued steering; CatchUpEvents keeps increasing scoped sequence above saved payload sequence9."
+      ],
+      "boundaries": [
+        "Source uses two real Managers over an actual SQLite store, but does not close/reopen that store between those two Managers; native adds database reopening.",
+        "Native preservation of saved todos/steering and monotonic public event sequence are documented adaptations to Source metadata-loss/payload-sequence reset behavior; not every Source field is compared as literal equality.",
+        "Process reconstruction and seeded interrupted histories; no claim that all crash or external-effect windows are captured."
+      ],
+      "source_native_relationship": "Direct consumer of all seven actual Source recipes, plus native database-close/reopen strengthening.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "cron_scheduled",
+      "title": "Scheduled restoration and durable operator arming",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_scheduled_restore_contracts",
+          "line": 4232
+        },
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_cron_contracts",
+          "line": 2513
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-scheduled-restore.json",
+          "sha256": "582054795c937e56de1d566239a083b26ead4138b25a93bb9891620a7ea07a2e",
+          "bytes": 9150,
+          "json_pointer": "/cases"
+        },
+        {
+          "path": "go/testdata/python-cron.json",
+          "sha256": "b6465af66f63e3831d2298ccd94ddc6ecfc82585c714f9133547ad541f4c50a7",
+          "bytes": 18546
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/scheduled_restore_test.go",
+            "sha256": "d2931002c47ccca56cca60d7a73d70381e54276c84ee637768a99b60e7b49881",
+            "bytes": 7359,
+            "symbol": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+            "line": 50
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51861,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.524152+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51834,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.492209+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-clean",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51838,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.499256+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-clean",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51842,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.506647+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-crash",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51847,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.51397+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-crash",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 51851,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.517377+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-sql",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 51855,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.520876+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-null",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 51859,
+                  "event": {
+                    "Time": "2026-10-14T20:35:31.524139+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/foreign-bound",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 52949,
+                "event": {
+                  "Time": "2026-10-14T20:39:52.83732+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+                  "Elapsed": 0.13
+                }
+              },
+              "subtests": [
+                {
+                  "line": 52923,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.738203+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-clean",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 52927,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.762874+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-clean",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 52931,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.789572+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-crash",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 52935,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.815003+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-crash",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 52939,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.82169+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-sql",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 52943,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.830618+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-null",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 52947,
+                  "event": {
+                    "Time": "2026-10-14T20:39:52.837307+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/foreign-bound",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52035,
+                "event": {
+                  "Time": "2026-10-14T12:42:46.945627972Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+                  "Elapsed": 0.1
+                }
+              },
+              "subtests": [
+                {
+                  "line": 52009,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.864980707Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-clean",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 52013,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.882024731Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-clean",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 52017,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.902270298Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-crash",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 52021,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.921918441Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-crash",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 52025,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.930665685Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-sql",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 52029,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.93690652Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-null",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 52033,
+                  "event": {
+                    "Time": "2026-10-14T12:42:46.945607638Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/foreign-bound",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57636,
+                "event": {
+                  "Time": "2026-10-14T12:47:42.042729416Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes",
+                  "Elapsed": 0.22
+                }
+              },
+              "subtests": [
+                {
+                  "line": 57610,
+                  "event": {
+                    "Time": "2026-10-14T12:47:41.868328494Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-clean",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 57614,
+                  "event": {
+                    "Time": "2026-10-14T12:47:41.908608377Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-clean",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 57618,
+                  "event": {
+                    "Time": "2026-10-14T12:47:41.949109597Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/bound-crash",
+                    "Elapsed": 0.04
+                  }
+                },
+                {
+                  "line": 57622,
+                  "event": {
+                    "Time": "2026-10-14T12:47:41.996767372Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/scratch-crash",
+                    "Elapsed": 0.05
+                  }
+                },
+                {
+                  "line": 57626,
+                  "event": {
+                    "Time": "2026-10-14T12:47:42.011539616Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-sql",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 57630,
+                  "event": {
+                    "Time": "2026-10-14T12:47:42.028807893Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/missing-null",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 57634,
+                  "event": {
+                    "Time": "2026-10-14T12:47:42.042520539Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestScheduledNativeSQLiteRestoreMatchesSourceRecipes/foreign-bound",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/cron_restart_test.go",
+            "sha256": "8a2916c18ecd52c9a9ef95c70bdd7dccab6481a21f82197d08a0c5216b19c2d5",
+            "bytes": 5519,
+            "symbol": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+            "line": 21
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51521,
+                "event": {
+                  "Time": "2026-10-14T20:35:21.794461+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+                  "Elapsed": 0.03
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51600,
+                "event": {
+                  "Time": "2026-10-14T20:39:34.459024+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+                  "Elapsed": 0.07
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51297,
+                "event": {
+                  "Time": "2026-10-14T12:42:36.688423891Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 51778,
+                "event": {
+                  "Time": "2026-10-14T12:47:21.691030355Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestManagedCronNativeSQLiteReopenRequiresArmAndRestoresLazily",
+                  "Elapsed": 0.08
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestExpressionSourceContracts",
+            "line": 172
+          },
+          "package_suffix": "/cron",
+          "name": "TestExpressionSourceContracts",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18393,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.054435+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestExpressionSourceContracts",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [
+                {
+                  "line": 18287,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037288+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18291,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037318+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/15_9-17_*_*_1-5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18295,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037336+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_13_*_5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18299,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037354+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*/1_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18303,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037367+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18307,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037387+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_1,13_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18311,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.037399+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/+0_0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18315,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.04294+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/١_٠_٢_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18319,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.042974+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0\\x1c0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18323,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.042998+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/99999999999999999999999_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18327,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043022+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1-10/3_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18331,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043043+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18335,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043058+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18339,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043076+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18343,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043428+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1,,2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18347,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043441+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/60_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18351,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043452+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_24_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18355,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043462+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_0_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18359,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043473+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_13_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18363,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043484+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_7",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18367,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043496+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/10-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18371,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043507+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18375,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043518+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/foo_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18379,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.043531+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1.0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18383,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.054375+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/1/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18387,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.054397+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1__0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18391,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.054409+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14437,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.109335+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestExpressionSourceContracts",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [
+                {
+                  "line": 14331,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.104918+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14335,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105017+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/15_9-17_*_*_1-5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14339,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105088+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_13_*_5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14343,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105141+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*/1_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14347,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105206+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14351,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105274+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_1,13_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14355,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.10533+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/+0_0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14359,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105393+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/١_٠_٢_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14363,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105449+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0\\x1c0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14367,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105496+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/99999999999999999999999_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14371,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105573+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1-10/3_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14375,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.105962+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14379,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106013+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14383,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106036+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14387,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106053+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1,,2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14391,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106075+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/60_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14395,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.1061+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_24_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14399,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106124+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_0_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14403,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106141+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_13_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14407,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106162+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_7",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14411,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106178+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/10-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14415,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106198+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14419,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106253+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/foo_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14423,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.106323+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1.0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14427,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.10639+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/1/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14431,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.109308+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1__0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 14435,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.109327+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22876,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.144070053Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestExpressionSourceContracts",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [
+                {
+                  "line": 22770,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143071248Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22774,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143114457Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/15_9-17_*_*_1-5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22778,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143156999Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_13_*_5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22782,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143198041Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*/1_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22786,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143240959Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22790,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143285834Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_1,13_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22794,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143329835Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/+0_0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22798,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143377252Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/١_٠_٢_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22802,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143420211Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0\\x1c0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22806,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143465962Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/99999999999999999999999_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22810,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143506504Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1-10/3_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22814,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143540213Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22818,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143573671Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22822,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143618922Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22826,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143660339Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1,,2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22830,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143696048Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/60_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22834,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143729215Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_24_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22838,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143812008Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_0_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22842,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143834383Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_13_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22846,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.14385405Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_7",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22850,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143870342Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/10-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22854,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143885676Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22858,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.143991844Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/foo_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22862,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.144012094Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1.0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22866,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.144031553Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/1/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22870,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.144046844Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1__0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22874,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.144062095Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22090,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.71600173Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestExpressionSourceContracts",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [
+                {
+                  "line": 21984,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714461584Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 21988,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714488543Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/15_9-17_*_*_1-5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 21992,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714512627Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_13_*_5",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 21996,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.71455396Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*/1_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22000,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714640545Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_*_*_0",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22004,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714671129Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0_0_1,13_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22008,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714690504Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/+0_0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22012,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714711379Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/١_٠_٢_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22016,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714935882Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0\\x1c0_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22020,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714961008Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/99999999999999999999999_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22024,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.71497905Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1-10/3_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22028,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.714997758Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22032,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715016092Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22036,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715043759Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/0/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22040,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715455181Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1,,2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22044,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.71548539Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/60_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22048,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715505723Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_24_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22052,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.71552839Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_0_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22056,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715548807Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_13_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22060,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715585433Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_7",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22064,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715607141Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/10-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22068,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715856228Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/-1_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22072,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.71588252Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/foo_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22076,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715905729Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1.0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22080,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715937354Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*/1/2_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22084,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715959188Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/1__0_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22088,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.715989355Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestExpressionSourceContracts/*_*_*_*_*_*",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestOperatorLifecycleMatchesActualPython",
+            "line": 196
+          },
+          "package_suffix": "/cron",
+          "name": "TestOperatorLifecycleMatchesActualPython",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18401,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.108962+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOperatorLifecycleMatchesActualPython",
+                  "Elapsed": 0.07
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14445,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.177935+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOperatorLifecycleMatchesActualPython",
+                  "Elapsed": 0.07
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22880,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.155084786Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOperatorLifecycleMatchesActualPython",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22102,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.738541412Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOperatorLifecycleMatchesActualPython",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestOneShotPersistsRemovalBeforeResolving",
+            "line": 263
+          },
+          "package_suffix": "/cron",
+          "name": "TestOneShotPersistsRemovalBeforeResolving",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18413,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.125946+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOneShotPersistsRemovalBeforeResolving",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14449,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.218352+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOneShotPersistsRemovalBeforeResolving",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22884,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.159214217Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOneShotPersistsRemovalBeforeResolving",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22106,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.743685149Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestOneShotPersistsRemovalBeforeResolving",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestFailedClaimOrSaveNeverDispatches",
+            "line": 295
+          },
+          "package_suffix": "/cron",
+          "name": "TestFailedClaimOrSaveNeverDispatches",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18451,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.139275+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestFailedClaimOrSaveNeverDispatches",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [
+                {
+                  "line": 18419,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.126811+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/claim",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 18431,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.13306+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/save",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 18449,
+                  "event": {
+                    "Time": "2026-10-14T20:34:33.139266+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/one-shot-save",
+                    "Elapsed": 0.01
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14465,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.258785+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestFailedClaimOrSaveNeverDispatches",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [
+                {
+                  "line": 14455,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.222675+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/claim",
+                    "Elapsed": 0.01
+                  }
+                },
+                {
+                  "line": 14459,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.238808+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/save",
+                    "Elapsed": 0.02
+                  }
+                },
+                {
+                  "line": 14463,
+                  "event": {
+                    "Time": "2026-10-14T20:37:31.258753+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/one-shot-save",
+                    "Elapsed": 0.02
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22900,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.162011963Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestFailedClaimOrSaveNeverDispatches",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [
+                {
+                  "line": 22890,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.159579763Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/claim",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22894,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.160799322Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/save",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22898,
+                  "event": {
+                    "Time": "2026-10-14T12:41:56.161943587Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/one-shot-save",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22126,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.749950609Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestFailedClaimOrSaveNeverDispatches",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [
+                {
+                  "line": 22116,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.746216308Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/claim",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22120,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.748508131Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/save",
+                    "Elapsed": 0
+                  }
+                },
+                {
+                  "line": 22124,
+                  "event": {
+                    "Time": "2026-10-14T12:45:46.749934067Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/cron",
+                    "Test": "TestFailedClaimOrSaveNeverDispatches/one-shot-save",
+                    "Elapsed": 0
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestMaskedDiskCopyAndBoundsMatchSource",
+            "line": 334
+          },
+          "package_suffix": "/cron",
+          "name": "TestMaskedDiskCopyAndBoundsMatchSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18459,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.149291+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestMaskedDiskCopyAndBoundsMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14469,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.282661+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestMaskedDiskCopyAndBoundsMatchSource",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22904,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.164845335Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestMaskedDiskCopyAndBoundsMatchSource",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22134,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.759064817Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestMaskedDiskCopyAndBoundsMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/cron/scheduler_test.go",
+            "sha256": "877880d0b46ef0677bcba7f0d45b048096259072deb21b96de9fcbaeeeaff08a",
+            "bytes": 10648,
+            "symbol": "TestDispatchAuthorityAndMissingSession",
+            "line": 368
+          },
+          "package_suffix": "/cron",
+          "name": "TestDispatchAuthorityAndMissingSession",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 18463,
+                "event": {
+                  "Time": "2026-10-14T20:34:33.149503+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestDispatchAuthorityAndMissingSession",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 14473,
+                "event": {
+                  "Time": "2026-10-14T20:37:31.286308+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestDispatchAuthorityAndMissingSession",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 22908,
+                "event": {
+                  "Time": "2026-10-14T12:41:56.164865002Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestDispatchAuthorityAndMissingSession",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 22138,
+                "event": {
+                  "Time": "2026-10-14T12:45:46.761793979Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/cron",
+                  "Test": "TestDispatchAuthorityAndMissingSession",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "scheduled_source_cases": [
+          "bound-clean",
+          "scratch-clean",
+          "bound-crash",
+          "scratch-crash",
+          "missing-sql",
+          "missing-null",
+          "foreign-bound"
+        ],
+        "scheduled_count": 7,
+        "cron_fixture_fields": [
+          "operations",
+          "one_shot",
+          "losses",
+          "authority",
+          "masking",
+          "bounds",
+          "parser",
+          "pair",
+          "dates"
+        ],
+        "native_composition": "persist schedule, Stop/close/reopen, explicit arm+tick, resumed turn, third reopen"
+      },
+      "assertions": [
+        "Scheduled recipes compare bound versus current factory workspace, current SystemBuilder, owner/mode/run/status/history, repeated restoration identity, persisted repair and metadata.",
+        "Missing SQL session is not recreated; foreign/missing SQL paths invoke no provider; no-store missing session has its explicit ephemeral behavior.",
+        "Native Cron Start restores definitions disarmed and does not eagerly restore session; pre-arm tick has no model call; explicit arm+tick lazily restores and checks SQL flush before actual provider request.",
+        "One-shot is removed before resolution; failed claim/save never dispatches; persisted disk copy is masked; dispatch uses fresh untrusted authority with no ActorID/capabilities.",
+        "After Stop/reopen the run count is2 and one-shot remains absent; owner isolation and lease release are asserted."
+      ],
+      "boundaries": [
+        "Source cron lifecycle uses Recording._fire rather than an actual model; native Manager/SQLite composition supplies a separate real execution bridge.",
+        "Cron definition JSON and local claim files are distinct from SQLite session/history/lease persistence.",
+        "Controlled local civil-minute ticks and explicit operator arming; no new clock-drift, power-loss or external-effect atomicity assertion."
+      ],
+      "source_native_relationship": "Direct scheduled7 and scheduler lifecycle fixture comparisons plus native combined Manager/SQLite/cron restart test.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "lease_rollback",
+      "title": "Lease ownership, atomic transcript/delete rollback and reservation release",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_state_store_contracts",
+          "line": 3835
+        },
+        {
+          "path": "python/tools/sqlite_session_contracts.py",
+          "sha256": "64f77b12c7ff3ad846b248caa16524c0e601dada5f3bcace1c05af1ad1136b7c",
+          "bytes": 3990,
+          "symbol": "sqlite_session_contracts",
+          "line": 4
+        },
+        {
+          "path": "python/tests/test_leases.py",
+          "sha256": "66d45b53eab441e06226f72a52f2ed4c8df04fbaf553a85c6005b3d022390706",
+          "bytes": 8836,
+          "symbol": "test_an_expired_lease_can_be_taken_over",
+          "line": 63
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-state-store.json",
+          "sha256": "1d40bc5650e0c983aa257acb94a52e9cdfbdc4bf9d89fb055633db75eaf3f30c",
+          "bytes": 12731,
+          "json_pointer": "/leases"
+        },
+        {
+          "path": "go/testdata/python-state-store.json",
+          "sha256": "1d40bc5650e0c983aa257acb94a52e9cdfbdc4bf9d89fb055633db75eaf3f30c",
+          "bytes": 12731,
+          "json_pointer": "/messages/rollback"
+        },
+        {
+          "path": "go/testdata/python-sqlite-sessions.json",
+          "sha256": "7ca63396ee8fe003d4933cd5bfaaac3f2a2d94d3f1e2ff70df877727bf115f82",
+          "bytes": 3747
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/lease_test.go",
+            "sha256": "edb3cdec0598d6daad433dba0f73fdbb6d8ea7df6aed4c7fa9d6c935514a2ff9",
+            "bytes": 5545,
+            "symbol": "TestLeaseStepsAndUpsertRetentionMatchSource",
+            "line": 16
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestLeaseStepsAndUpsertRetentionMatchSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51621,
+                "event": {
+                  "Time": "2026-10-14T20:35:23.027593+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseStepsAndUpsertRetentionMatchSource",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51784,
+                "event": {
+                  "Time": "2026-10-14T20:39:42.234846+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseStepsAndUpsertRetentionMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51401,
+                "event": {
+                  "Time": "2026-10-14T12:42:38.154498062Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseStepsAndUpsertRetentionMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52649,
+                "event": {
+                  "Time": "2026-10-14T12:47:30.824049169Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseStepsAndUpsertRetentionMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/lease_test.go",
+            "sha256": "edb3cdec0598d6daad433dba0f73fdbb6d8ea7df6aed4c7fa9d6c935514a2ff9",
+            "bytes": 5545,
+            "symbol": "TestConcurrentConnectionsCannotBothClaim",
+            "line": 117
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestConcurrentConnectionsCannotBothClaim",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51625,
+                "event": {
+                  "Time": "2026-10-14T20:35:23.056762+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestConcurrentConnectionsCannotBothClaim",
+                  "Elapsed": 0.03
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51788,
+                "event": {
+                  "Time": "2026-10-14T20:39:42.261461+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestConcurrentConnectionsCannotBothClaim",
+                  "Elapsed": 0.03
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51405,
+                "event": {
+                  "Time": "2026-10-14T12:42:38.169415348Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestConcurrentConnectionsCannotBothClaim",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52653,
+                "event": {
+                  "Time": "2026-10-14T12:47:30.838810996Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestConcurrentConnectionsCannotBothClaim",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/lease_test.go",
+            "sha256": "edb3cdec0598d6daad433dba0f73fdbb6d8ea7df6aed4c7fa9d6c935514a2ff9",
+            "bytes": 5545,
+            "symbol": "TestLeaseClosedAndCancelled",
+            "line": 173
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestLeaseClosedAndCancelled",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51633,
+                "event": {
+                  "Time": "2026-10-14T20:35:23.058901+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseClosedAndCancelled",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51792,
+                "event": {
+                  "Time": "2026-10-14T20:39:42.263308+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseClosedAndCancelled",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51409,
+                "event": {
+                  "Time": "2026-10-14T12:42:38.17368924Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseClosedAndCancelled",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52657,
+                "event": {
+                  "Time": "2026-10-14T12:47:30.847635075Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestLeaseClosedAndCancelled",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/transcript_test.go",
+            "sha256": "4ab54fef6b68c65e21d0cb6cdfebbc522ca0e0cb2182ea3d77c640a5fd87025b",
+            "bytes": 5648,
+            "symbol": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+            "line": 18
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 52021,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.685863+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 53113,
+                "event": {
+                  "Time": "2026-10-14T20:39:53.207113+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52195,
+                "event": {
+                  "Time": "2026-10-14T12:42:47.556268495Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57804,
+                "event": {
+                  "Time": "2026-10-14T12:47:43.012279112Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTranscriptEpochsRollbackAndReopenMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/session_test.go",
+            "sha256": "95064d2ead77f6007b0dc83886184fed295ca5da824700e7171471fd37f7d718",
+            "bytes": 12380,
+            "symbol": "TestDeleteRollbackAndAuditRetentionMatchSource",
+            "line": 212
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestDeleteRollbackAndAuditRetentionMatchSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51881,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.547486+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDeleteRollbackAndAuditRetentionMatchSource",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 52969,
+                "event": {
+                  "Time": "2026-10-14T20:39:52.914217+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDeleteRollbackAndAuditRetentionMatchSource",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52055,
+                "event": {
+                  "Time": "2026-10-14T12:42:46.989730781Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDeleteRollbackAndAuditRetentionMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57660,
+                "event": {
+                  "Time": "2026-10-14T12:47:42.159116089Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDeleteRollbackAndAuditRetentionMatchSource",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/session_test.go",
+            "sha256": "95064d2ead77f6007b0dc83886184fed295ca5da824700e7171471fd37f7d718",
+            "bytes": 12380,
+            "symbol": "TestCancelledCommitRollsBackAndReleasesWriter",
+            "line": 264
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestCancelledCommitRollsBackAndReleasesWriter",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51885,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.549437+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCancelledCommitRollsBackAndReleasesWriter",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 52973,
+                "event": {
+                  "Time": "2026-10-14T20:39:52.917028+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCancelledCommitRollsBackAndReleasesWriter",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52059,
+                "event": {
+                  "Time": "2026-10-14T12:42:46.996547665Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCancelledCommitRollsBackAndReleasesWriter",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57664,
+                "event": {
+                  "Time": "2026-10-14T12:47:42.167339826Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCancelledCommitRollsBackAndReleasesWriter",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/sqlitestate/audit_test.go",
+            "sha256": "ad87e25bf8537cd958f1c10442cc3438e98ce73ae5be4b4aa2026584459d00df",
+            "bytes": 6935,
+            "symbol": "TestRecoveryRollbackMissingAndClosedRows",
+            "line": 154
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestRecoveryRollbackMissingAndClosedRows",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 50365,
+                "event": {
+                  "Time": "2026-10-14T20:35:20.648383+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestRecoveryRollbackMissingAndClosedRows",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 50424,
+                "event": {
+                  "Time": "2026-10-14T20:39:27.35414+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestRecoveryRollbackMissingAndClosedRows",
+                  "Elapsed": 0
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 50141,
+                "event": {
+                  "Time": "2026-10-14T12:42:35.149187891Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestRecoveryRollbackMissingAndClosedRows",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 50312,
+                "event": {
+                  "Time": "2026-10-14T12:47:13.589798961Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestRecoveryRollbackMissingAndClosedRows",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "lease_source_steps": [
+          "free",
+          "foreign-active",
+          "foreign-release",
+          "renew",
+          "foreign-at-equality",
+          "own-renew-at-equality",
+          "expired-cannot-renew",
+          "foreign-after-expiry",
+          "stale-renew",
+          "stale-release",
+          "holder-release",
+          "same-owner-reacquire",
+          "same-owner-expired-reacquire"
+        ],
+        "lease_count": 13,
+        "native_concurrent_claim_trials": 20,
+        "rollback_windows": [
+          "second transcript insert abort",
+          "session delete abort after earlier deletes",
+          "cancel before immediate transaction commit",
+          "second action recovery update abort"
+        ]
+      },
+      "assertions": [
+        "Two SQLite connections replay13 explicit-clock Source acquire/renew/release/expiry steps; missing session cannot claim, metadata upsert cannot transfer/release lease, and reopen retains holder.",
+        "Twenty real concurrent two-connection claim trials require exactly one winner and matching holder; cancelled/closed calls fail.",
+        "Actual SQLite trigger aborts second transcript insert; no partial batch survives and exact current/old epochs remain after close/reopen.",
+        "Actual BEFORE DELETE trigger aborts session deletion: earlier message/event deletion rolls back; successful deletion retains action/approval audit rows, including after reopen.",
+        "Cancellation before commit rolls back inserted row and releases writer reservation for another connection.",
+        "Actual second action-update abort leaves both inflight actions unchanged; missing/closed handling is explicit."
+      ],
+      "boundaries": [
+        "Clock-controlled lease fixture is not a naturally elapsed crash process; the killed-generation group provides that distinct observation.",
+        "Cancellation and second action-update rollback are native strengthenings, not claimed as rows in the same exported Source fixture.",
+        "Lease exclusion does not fence an external effect; finite transaction profiles are not a universal concurrent or disk-failure certificate."
+      ],
+      "source_native_relationship": "Direct Source lease/transcript/delete fixtures with separately identified native concurrency/cancellation/recovery rollback controls.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "killed_generation",
+      "title": "Owned process death during admitted generation and natural lease expiry",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_state_restore_contracts",
+          "line": 4149
+        },
+        {
+          "path": "python/tests/test_leases.py",
+          "sha256": "66d45b53eab441e06226f72a52f2ed4c8df04fbaf553a85c6005b3d022390706",
+          "bytes": 8836,
+          "symbol": "test_an_expired_lease_can_be_taken_over",
+          "line": 63
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-state-restore.json",
+          "sha256": "8d3c71de76ac12b72f944bf3e510cc3751330fbcd0dccc7539899b3b9ded7f2f",
+          "bytes": 13045,
+          "json_pointer": "/cases"
+        },
+        {
+          "path": "go/testdata/python-state-store.json",
+          "sha256": "1d40bc5650e0c983aa257acb94a52e9cdfbdc4bf9d89fb055633db75eaf3f30c",
+          "bytes": 12731,
+          "json_pointer": "/leases"
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/process_crash_test.go",
+            "sha256": "d3013b250bfb5c06cd435f2239ac0d77f1fd26a6abeb0f094b08d0dc53e0b2b4",
+            "bytes": 6845,
+            "symbol": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+            "line": 81
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51828,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.484653+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+                  "Elapsed": 8.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 52917,
+                "event": {
+                  "Time": "2026-10-14T20:39:52.709522+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+                  "Elapsed": 8.11
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52003,
+                "event": {
+                  "Time": "2026-10-14T12:42:46.84706088Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+                  "Elapsed": 8.05
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57604,
+                "event": {
+                  "Time": "2026-10-14T12:47:41.824014722Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestNativeSQLiteRecoversKilledWriterWithoutStealingLease",
+                  "Elapsed": 8.13
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "native_process_recipe_count": 1,
+        "source_related_recipes": [
+          "bare-user",
+          "bare-blocks",
+          "foreign",
+          "lease-expiry"
+        ],
+        "helper": {
+          "path": "go/sqlitestate/process_crash_test.go",
+          "sha256": "d3013b250bfb5c06cd435f2239ac0d77f1fd26a6abeb0f094b08d0dc53e0b2b4",
+          "bytes": 6845,
+          "symbol": "TestNativeSQLiteCrashProcessHelper",
+          "line": 26
+        },
+        "lease_ttl_seconds": 8
+      },
+      "assertions": [
+        "Dedicated owned child validates actual provider request only after SQL transcript flush and lease publication; atomic checkpoint PID must match exact child and differ from parent.",
+        "Parent kills and joins only owned writer without Manager.Stop or Store.Close; persisted unexpired lease remains.",
+        "Restoration exposes owner-bound pending handle with unanswered history; premature Run returns lease lost and provider call count0.",
+        "After natural8s expiry, Run repairs interrupted turn, installs different lease owner, sends exact interrupted-generation marker to actual provider, and persists resumed turn.",
+        "Second database reopen retains repair/history and run_count2; helper is skipped in the main test process and is not counted as an independent passing top-level test."
+      ],
+      "boundaries": [
+        "No paired actual Python SIGKILL producer or identical cross-language process-kill fixture is asserted by this ledger; Source seeded-repair and expiry evidence are linked separately.",
+        "The additional native kill recipe covers the admitted-generation window on executed OS; no power-loss, arbitrary in-flight transaction kill or external-effect reconciliation claim."
+      ],
+      "source_native_relationship": "Native process-kill strengthening of Source seeded interrupted-history/lease contracts; not a direct common subprocess fixture.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "compaction3",
+      "title": "Complete tool-batch archive and compaction/SQLite restart composition",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_context_contracts",
+          "line": 387
+        },
+        {
+          "path": "python/mini_loop/compaction.py",
+          "sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+          "bytes": 19756,
+          "symbol": "DefaultCompactor.compact",
+          "line": 380
+        },
+        {
+          "path": "python/tests/test_compaction_composition.py",
+          "sha256": "41a6cb55f9ec95672f5e6623fed8d535323eed7c60a79a7c3c70e199aaafc831",
+          "bytes": 12435,
+          "symbol": "test_a_restart_gets_the_compacted_transcript",
+          "line": 178
+        },
+        {
+          "path": "python/tests/test_compaction_provenance.py",
+          "sha256": "6508b4b66697f402fed28b42657a901995bb41ee4bc13b1e5dec7812ddb12b6d",
+          "bytes": 4871,
+          "symbol": "test_recovery_needs_only_the_durable_log_not_live_memory",
+          "line": 93
+        },
+        {
+          "path": "python/tests/test_compaction_failure.py",
+          "sha256": "1a3878b5b4f9a3709bc43f314a8d475a379c01b92e721da43c6c7bb6f215dbfd",
+          "bytes": 3704,
+          "symbol": "test_cancellation_still_wins",
+          "line": 82
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-context.json",
+          "sha256": "c3d431894d16cea8dface6e2838a2f9654c5b6a3249cdafe1da757d84eaeed89",
+          "bytes": 1314148,
+          "json_pointer": "/summary"
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/compaction_restart_test.go",
+            "sha256": "501318f75cad98618fef69baa859f82d8762f5ec4d491ec44eebe7bbc4f01d8d",
+            "bytes": 7544,
+            "symbol": "TestCompactionNativeSQLiteRecovery",
+            "line": 19
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestCompactionNativeSQLiteRecovery",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51517,
+                "event": {
+                  "Time": "2026-10-14T20:35:21.762101+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCompactionNativeSQLiteRecovery",
+                  "Elapsed": 0.09
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51507,
+                  "event": {
+                    "Time": "2026-10-14T20:35:21.704401+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 51511,
+                  "event": {
+                    "Time": "2026-10-14T20:35:21.737603+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary_provider_unavailable",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 51515,
+                  "event": {
+                    "Time": "2026-10-14T20:35:21.76209+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/context_canceled",
+                    "Elapsed": 0.02
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51596,
+                "event": {
+                  "Time": "2026-10-14T20:39:34.386891+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCompactionNativeSQLiteRecovery",
+                  "Elapsed": 0.31
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51585,
+                  "event": {
+                    "Time": "2026-10-14T20:39:34.195806+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary",
+                    "Elapsed": 0.12
+                  }
+                },
+                {
+                  "line": 51589,
+                  "event": {
+                    "Time": "2026-10-14T20:39:34.29618+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary_provider_unavailable",
+                    "Elapsed": 0.1
+                  }
+                },
+                {
+                  "line": 51594,
+                  "event": {
+                    "Time": "2026-10-14T20:39:34.38686+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/context_canceled",
+                    "Elapsed": 0.09
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51293,
+                "event": {
+                  "Time": "2026-10-14T12:42:36.663172797Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCompactionNativeSQLiteRecovery",
+                  "Elapsed": 0.09
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51283,
+                  "event": {
+                    "Time": "2026-10-14T12:42:36.604248078Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 51287,
+                  "event": {
+                    "Time": "2026-10-14T12:42:36.633969316Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary_provider_unavailable",
+                    "Elapsed": 0.03
+                  }
+                },
+                {
+                  "line": 51291,
+                  "event": {
+                    "Time": "2026-10-14T12:42:36.663152005Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/context_canceled",
+                    "Elapsed": 0.03
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 51774,
+                "event": {
+                  "Time": "2026-10-14T12:47:21.613494297Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestCompactionNativeSQLiteRecovery",
+                  "Elapsed": 0.36
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51764,
+                  "event": {
+                    "Time": "2026-10-14T12:47:21.405634Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary",
+                    "Elapsed": 0.15
+                  }
+                },
+                {
+                  "line": 51768,
+                  "event": {
+                    "Time": "2026-10-14T12:47:21.508856743Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/summary_provider_unavailable",
+                    "Elapsed": 0.1
+                  }
+                },
+                {
+                  "line": 51772,
+                  "event": {
+                    "Time": "2026-10-14T12:47:21.613424171Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestCompactionNativeSQLiteRecovery/context_canceled",
+                    "Elapsed": 0.1
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/agent/context_contract_test.go",
+            "sha256": "87aae6abd7da60843ee856363b6414db601cdfca4701bddc41f6557842a59a60",
+            "bytes": 10551,
+            "symbol": "TestSpillAndSummaryMatchPython",
+            "line": 247
+          },
+          "package_suffix": "/agent",
+          "name": "TestSpillAndSummaryMatchPython",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 4128,
+                "event": {
+                  "Time": "2026-10-14T20:33:49.587006+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestSpillAndSummaryMatchPython",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 4228,
+                "event": {
+                  "Time": "2026-10-14T20:36:44.841927+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestSpillAndSummaryMatchPython",
+                  "Elapsed": 0.39
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 3657,
+                "event": {
+                  "Time": "2026-10-14T12:41:27.831038928Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestSpillAndSummaryMatchPython",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 3657,
+                "event": {
+                  "Time": "2026-10-14T12:44:31.580360034Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestSpillAndSummaryMatchPython",
+                  "Elapsed": 0.4
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/agent/context_session_test.go",
+            "sha256": "aeee3eca6de609552f5241804fb3ca9034ff546a4a30c8b745a0e4a81458c803",
+            "bytes": 11774,
+            "symbol": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+            "line": 51
+          },
+          "package_suffix": "/agent",
+          "name": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 4132,
+                "event": {
+                  "Time": "2026-10-14T20:33:49.597405+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 4240,
+                "event": {
+                  "Time": "2026-10-14T20:36:44.862601+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 3661,
+                "event": {
+                  "Time": "2026-10-14T12:41:27.836285415Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 3661,
+                "event": {
+                  "Time": "2026-10-14T12:44:31.595325321Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/agent/context_session_test.go",
+            "sha256": "aeee3eca6de609552f5241804fb3ca9034ff546a4a30c8b745a0e4a81458c803",
+            "bytes": 11774,
+            "symbol": "TestForcedCompressionFailurePreservesPairedHistory",
+            "line": 146
+          },
+          "package_suffix": "/agent",
+          "name": "TestForcedCompressionFailurePreservesPairedHistory",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 4140,
+                "event": {
+                  "Time": "2026-10-14T20:33:49.618485+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestForcedCompressionFailurePreservesPairedHistory",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 4260,
+                "event": {
+                  "Time": "2026-10-14T20:36:44.912254+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestForcedCompressionFailurePreservesPairedHistory",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 3669,
+                "event": {
+                  "Time": "2026-10-14T12:41:27.848232827Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestForcedCompressionFailurePreservesPairedHistory",
+                  "Elapsed": 0.01
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 3669,
+                "event": {
+                  "Time": "2026-10-14T12:44:31.628491481Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestForcedCompressionFailurePreservesPairedHistory",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        },
+        {
+          "reference": {
+            "path": "go/agent/context_session_test.go",
+            "sha256": "aeee3eca6de609552f5241804fb3ca9034ff546a4a30c8b745a0e4a81458c803",
+            "bytes": 11774,
+            "symbol": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+            "line": 164
+          },
+          "package_suffix": "/agent",
+          "name": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 4144,
+                "event": {
+                  "Time": "2026-10-14T20:33:49.66441+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+                  "Elapsed": 0.05
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 4524,
+                "event": {
+                  "Time": "2026-10-14T20:36:45.331603+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+                  "Elapsed": 0.42
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 3673,
+                "event": {
+                  "Time": "2026-10-14T12:41:27.883939353Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+                  "Elapsed": 0.04
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 3673,
+                "event": {
+                  "Time": "2026-10-14T12:44:32.058470755Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/agent",
+                  "Test": "TestAutomaticCompressionFailureAndCancellationKeepCheapChanges",
+                  "Elapsed": 0.43
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "native_restart_cases": [
+          "summary",
+          "summary provider unavailable",
+          "context canceled"
+        ],
+        "native_restart_count": 3,
+        "source_direct_summary_fixture_count": 1
+      },
+      "assertions": [
+        "Source summary fixture records actual DefaultCompactor.compact archive bytes, output history, summary request and provenance; Go compares these exactly after workspace normalization.",
+        "Native restart composition executes compress+read_file together and requires archive to contain whole paired three-message batch including later read result.",
+        "Success stores summary in epoch2 and retains paired epoch1; provenance is tied to pre-rewrite epoch1/archive with replaced-message count3 and metered summary input.",
+        "Failure/cancellation writes archive but preserves canonical paired epoch1 and emits no successful-summary receipt.",
+        "Database close/reopen preserves exact identity/history/current+historical epoch/event prefix; next provider receives retained prefix; lease health and archive bytes remain intact."
+      ],
+      "boundaries": [
+        "Three native restart compositions are not three exported end-to-end Source recipes; only summary primitive is directly fixture-matched, with Source unit/integration evidence for mirroring, restart and cancellation.",
+        "Source test named recovery_needs_only_the_durable_log constructs a second Manager in the same Python process and manually releases lease; it is not proof of a second OS process.",
+        "Manual forced summary failure differs from automatic maybe_compact failure handling; the native tests name and assert those paths separately.",
+        "Small paired history proof; no arbitrary-size compaction or every archival profile claim."
+      ],
+      "source_native_relationship": "Actual Source summary fixture comparison plus bounded independent native three-outcome real-SQL composition.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "decision2",
+      "title": "Large settled decision replay after SQLite reopen with current permission",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_decision_replay_contracts",
+          "line": 5052
+        },
+        {
+          "path": "python/tests/test_decision_replay.py",
+          "sha256": "6e235fe694a11fb0f4e4a68525612dd875b981befe5e066fadff934c04756e55",
+          "bytes": 8922
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-decision-replay.json",
+          "sha256": "cc254eaa2b358aeab34ad5d058489144c9bd298e8976ae26fc1b426aa0465769",
+          "bytes": 39213,
+          "json_pointer": "/cases"
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/decision_restart_test.go",
+            "sha256": "976e42d6e418da299ce1468ad104ff935064689f8e5e840f489b40b1f3cdaf1f",
+            "bytes": 7056,
+            "symbol": "TestDecisionNativeSQLiteReopenMatchesSource",
+            "line": 26
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestDecisionNativeSQLiteReopenMatchesSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 51545,
+                "event": {
+                  "Time": "2026-10-14T20:35:22.855307+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDecisionNativeSQLiteReopenMatchesSource",
+                  "Elapsed": 1.06
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51531,
+                  "event": {
+                    "Time": "2026-10-14T20:35:22.094129+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/baseline",
+                    "Elapsed": 0.3
+                  }
+                },
+                {
+                  "line": 51543,
+                  "event": {
+                    "Time": "2026-10-14T20:35:22.855294+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/maximum",
+                    "Elapsed": 0.76
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 51705,
+                "event": {
+                  "Time": "2026-10-14T20:39:41.534239+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDecisionNativeSQLiteReopenMatchesSource",
+                  "Elapsed": 7.08
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51611,
+                  "event": {
+                    "Time": "2026-10-14T20:39:35.791827+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/baseline",
+                    "Elapsed": 1.33
+                  }
+                },
+                {
+                  "line": 51703,
+                  "event": {
+                    "Time": "2026-10-14T20:39:41.534218+08:00",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/maximum",
+                    "Elapsed": 5.74
+                  }
+                }
+              ],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 51321,
+                "event": {
+                  "Time": "2026-10-14T12:42:37.853752467Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDecisionNativeSQLiteReopenMatchesSource",
+                  "Elapsed": 1.17
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51307,
+                  "event": {
+                    "Time": "2026-10-14T12:42:37.047510322Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/baseline",
+                    "Elapsed": 0.36
+                  }
+                },
+                {
+                  "line": 51319,
+                  "event": {
+                    "Time": "2026-10-14T12:42:37.853729633Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/maximum",
+                    "Elapsed": 0.81
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 52523,
+                "event": {
+                  "Time": "2026-10-14T12:47:29.874299536Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestDecisionNativeSQLiteReopenMatchesSource",
+                  "Elapsed": 8.19
+                }
+              },
+              "subtests": [
+                {
+                  "line": 51811,
+                  "event": {
+                    "Time": "2026-10-14T12:47:23.400089855Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/baseline",
+                    "Elapsed": 1.71
+                  }
+                },
+                {
+                  "line": 52521,
+                  "event": {
+                    "Time": "2026-10-14T12:47:29.87420291Z",
+                    "Action": "pass",
+                    "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                    "Test": "TestDecisionNativeSQLiteReopenMatchesSource/maximum",
+                    "Elapsed": 6.47
+                  }
+                }
+              ],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "source_backing": "sqlite-reopen",
+        "cases": [
+          {
+            "name": "baseline",
+            "bytes": 10203
+          },
+          {
+            "name": "maximum",
+            "bytes": 524288
+          }
+        ],
+        "count": 2
+      },
+      "assertions": [
+        "Actual Source decision gate closes/reopens SQLite and replays same action; native managed tool path compares retained byte length, canonical SHA256, exact replay and backend calls1.",
+        "New Manager restores exact archived transcript but permission is interactive rather than restored auto authority.",
+        "Current operator must explicitly choose auto before same RunContext/tool-use replay; later readonly retry cannot expose cached result and cannot call backend.",
+        "Replay/denial leave settled action unchanged; final transcript pairing and lease health are asserted."
+      ],
+      "boundaries": [
+        "Source replay fixture exercises actual tool gate/journal, native adds Manager restoration and current-authority checks.",
+        "Explicit inert high-threshold compactor preserves the large payload; default compaction is covered separately.",
+        "Aggregate shedding is Source in-memory journal scope, not a newly claimed durable aggregate policy."
+      ],
+      "source_native_relationship": "Direct consumer of both actual sqlite-reopen Source result recipes plus native managed-restart/current-authority strengthening.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    },
+    {
+      "id": "team_restart",
+      "title": "Teammate history reconstruction, independent team identity and resumed turn",
+      "source_recipes": [
+        {
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144",
+          "bytes": 718686,
+          "symbol": "_team_restart_contract",
+          "line": 9714
+        }
+      ],
+      "fixtures": [
+        {
+          "path": "go/testdata/python-team-lifecycle.json",
+          "sha256": "83bf61bffbc0d9253c23abef2f923bba101b1b62c83e780a0f659954e6128059",
+          "bytes": 49217,
+          "json_pointer": "/restart"
+        }
+      ],
+      "native_tests": [
+        {
+          "reference": {
+            "path": "go/sqlitestate/team_restart_test.go",
+            "sha256": "f900f50af4b8739cb1112d3dbc87f3ae8a2a78829791c6b9afe4d0d84a8dc3ac",
+            "bytes": 7195,
+            "symbol": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+            "line": 43
+          },
+          "package_suffix": "/sqlitestate",
+          "name": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+          "host_execution": {
+            "go-full-corrected": {
+              "top_level": {
+                "line": 52013,
+                "event": {
+                  "Time": "2026-10-14T20:35:31.671355+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+                  "Elapsed": 0.02
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            },
+            "go-race-corrected": {
+              "top_level": {
+                "line": 53105,
+                "event": {
+                  "Time": "2026-10-14T20:39:53.143242+08:00",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+                  "Elapsed": 0.09
+                }
+              },
+              "subtests": [],
+              "source_input_hash_matches_frozen": true
+            }
+          },
+          "linux_execution": {
+            "linux-full-corrected": {
+              "top_level": {
+                "line": 52187,
+                "event": {
+                  "Time": "2026-10-14T12:42:47.533292432Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+                  "Elapsed": 0.03
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            },
+            "linux-race-corrected": {
+              "top_level": {
+                "line": 57796,
+                "event": {
+                  "Time": "2026-10-14T12:47:42.936196948Z",
+                  "Action": "pass",
+                  "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+                  "Test": "TestTeamNativeSQLiteRestartAndResumedTurnMatchSource",
+                  "Elapsed": 0.11
+                }
+              },
+              "subtests": [],
+              "same_test_names_as_host": true,
+              "current_source_hash_bound_by_receipt_manifest": true
+            }
+          }
+        }
+      ],
+      "recipe_inventory": {
+        "actual_source_recipe_count": 1,
+        "reopen_count": 2,
+        "source_projection_stages": [
+          "restart",
+          "restart.next_turn",
+          "restart.second_restart"
+        ]
+      },
+      "assertions": [
+        "Source uses real SQLite Store and SessionManager, spawns actual teammate initial turn, queues old-team mail, stops/closes and constructs fresh managers twice.",
+        "Native matches selected typed first/second reopen observations: two restored sessions, owner/workspace, independent team identity/name, interactive mode, idle status/run count/history and old/new inbox counts.",
+        "First restoration invokes no extra model; resumed explicit turn invokes exactly one model and matches request prefix, recursive-spawn visibility, result/history and run_count2.",
+        "Second restoration again invokes no model and retains the resumed history and pending old-team mailbox."
+      ],
+      "boundaries": [
+        "Consumer projection does not directly compare Source label, role_present, tasks_present, runner_present or old_roster_present fields; do not call the entire exported restart object exact equality.",
+        "Native Manager defaults and Source explicit injectors=[] differ in assembly; this recipe keeps old mail under the old team key and new inbox empty, so no notification injection is asserted."
+      ],
+      "source_native_relationship": "Direct actual Source two-reopen recipe, compared through explicit typed observation subsets and actual resumed provider request.",
+      "status": "host_and_linux_full_and_race_pass_observed",
+      "linux_status": "verified_at_current_runtime_commit"
+    }
+  ],
+  "summary": {
+    "recipe_groups": 7,
+    "unique_native_top_level_tests": 25,
+    "all_selected_host_full_and_race_top_levels_pass": true,
+    "all_selected_host_subtests_pass": true,
+    "demonstrated_missing_original_recipe_in_named_groups": false,
+    "implementation_changes_required_by_this_review": false,
+    "selected_test_events_per_host_stage": {
+      "top_level_pass": 25,
+      "subtest_pass": 49,
+      "failed_or_skipped_selected_events": 0
+    },
+    "all_selected_linux_full_and_race_top_levels_pass": true,
+    "all_selected_linux_subtests_pass": true,
+    "selected_test_events_per_linux_stage": {
+      "linux-full-corrected": {
+        "top_level_pass": 25,
+        "subtest_pass": 49,
+        "failed_or_skipped_selected_events": 0,
+        "same_names_as_host": true
+      },
+      "linux-race-corrected": {
+        "top_level_pass": 25,
+        "subtest_pass": 49,
+        "failed_or_skipped_selected_events": 0,
+        "same_names_as_host": true
+      }
+    }
+  },
+  "explicit_remaining_work": [
+    {
+      "id": "linux-final-binding",
+      "status": "verified",
+      "action": "Completed binding at current runtime: corrected Linux full and race each contain the same25 top-level and49 subtest pass names as the host stages; final Source/full/vet/race result hashes match the final24-gate receipt. Historical first failure/manual stop remain separate and do not count as passes."
+    },
+    {
+      "id": "source-native-proof-shape",
+      "status": "scope_boundary",
+      "fact": "Killed-generation is an additional native OS-process test; compaction3 is native composition plus actual Source primitive/unit evidence. No shared end-to-end Source fixture is claimed for those full combinations, and no extra power-loss requirement is invented."
+    },
+    {
+      "id": "whole-G5-decision",
+      "status": "not_asserted",
+      "fact": "The named persistence recipe queue has current host execution links; this ledger is not a standalone certificate for every trajectory/journal/owner operation or full original G5/G7 acceptance. Root must reconcile it with existing broader original acceptance evidence, not infer missing runtime features from historical pending prose."
+    }
+  ],
+  "historical_evidence": [
+    {
+      "path": "docs/audits/go-team-sqlite-restart-2026-10-11.json",
+      "sha256": "f93cbddb51fdaafba2a393d49a383a93175e640c6d2b46296b5bec34dc85ec2a",
+      "bytes": 335598
+    },
+    {
+      "path": "docs/audits/go-sqlite-decision-budget-2026-10-11.json",
+      "sha256": "eb8608fa1398987ab5bce47dd641fce7dfe9aa81e6a974cecd9e7dad087552da",
+      "bytes": 74236
+    }
+  ],
+  "historical_linux_attempts": [
+    {
+      "stage": "linux-race",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race/result.json",
+        "bytes": 83051,
+        "sha256": "5e707c3ac6aa409406c3e657ecb695516393245cd2729e53d4dc6e5be0cc8d8e"
+      },
+      "status": "failed",
+      "interpretation": "The initial complete Linux race cohort failed one background message-phase assertion (5 versus Source4). Its native consumer used nil injectors, selecting default background/team injection although the Source recipe disabled those injectors. The fourth commit corrects only that test to explicit empty injectors with absence assertions; expected4 messages and task outcomes are preserved. This is a consumer assembly correction, not a production fix or universal timing reliability proof.",
+      "counts_as_current_pass": false
+    },
+    {
+      "stage": "linux-race-confirmation",
+      "reference": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/linux-race-confirmation/result.json",
+        "bytes": 79840,
+        "sha256": "2c38ac8009e4ad3a6789dbd3a8b419e56581bdd68df7b5906b04321c77c3dd57"
+      },
+      "status": "resource_blocked",
+      "interpretation": "Manual SIGTERM after the identified consumer assembly mismatch; not a passed cohort, OOM or observed host-pressure failure. No final cgroup sample was published.",
+      "counts_as_current_pass": false
+    }
+  ],
+  "limitations": [
+    "NORMAL SQLite synchronization is not power-loss durability.",
+    "Lease exclusion is not external-effect fencing.",
+    "No new arbitrary SQL transaction-kill or exhaustive malformed archive/concurrency standard is added.",
+    "Source full pytest output is aggregate; source recipe assertions are statically linked and included by the full-suite command, not falsely presented as per-test machine events."
+  ],
+  "previous_sealed_ledger": {
+    "path": "var/go-remaining-contract-evidence-2026-10-14/g5-required-recipe-ledger.json",
+    "sha256": "11541239effbfdc435d261e6b6be408e134f3c824ed8a1a37d3383956b5d9aaf",
+    "bytes": 111377
+  },
+  "final_validation_receipt": {
+    "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+    "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5",
+    "bytes": 1039902
+  }
+}

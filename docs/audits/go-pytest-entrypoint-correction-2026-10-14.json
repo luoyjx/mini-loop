@@ -1,0 +1,809 @@
+{
+  "schema_version": 1,
+  "status": "exact_documented_command_corrected_and_passed",
+  "full_port_acceptance": false,
+  "created_utc": "2026-10-14T13:37:04.228500+00:00",
+  "original_requirement": "P1 documented commands after Python relocation",
+  "supersedes": {
+    "review": {
+      "path": "docs/audits/go-original-criteria-review-2026-10-14.json",
+      "bytes": 82272,
+      "sha256": "8fc4ff85e94473fb5218660af7f22021839072b75332545f032af865862a866d"
+    },
+    "scope": "P1 exact-command proof only; the sealed review and all other bounded findings remain historical evidence."
+  },
+  "cause": "Root discovery also visited retained workspace copies under var; the prior successful full gate appended --ignore=var.",
+  "fix": {
+    "path": "pytest.ini",
+    "bytes": 34,
+    "sha256": "acdc42f2475cbc4a6dcd67501ca29a491ec590737fe5dfbfdd8ba72fc04b3575"
+  },
+  "configuration": {
+    "testpaths": [
+      "python/tests"
+    ],
+    "explicit_selectors_supported": true
+  },
+  "tracked_test_inventory": {
+    "count": 278,
+    "files": [
+      "python/tests/test_ab_trial.py",
+      "python/tests/test_actions_durable.py",
+      "python/tests/test_activity.py",
+      "python/tests/test_agent.py",
+      "python/tests/test_agent_knows_its_confinement.py",
+      "python/tests/test_answer_masking.py",
+      "python/tests/test_api_documentation_contracts.py",
+      "python/tests/test_approval_grants.py",
+      "python/tests/test_approval_persistence_faults.py",
+      "python/tests/test_approvals.py",
+      "python/tests/test_ask_user.py",
+      "python/tests/test_ast_context.py",
+      "python/tests/test_audit.py",
+      "python/tests/test_audit_live_contracts.py",
+      "python/tests/test_audit_local_cli_contracts.py",
+      "python/tests/test_audit_posture_contracts.py",
+      "python/tests/test_audit_remote_cli_contracts.py",
+      "python/tests/test_audit_settings_contracts.py",
+      "python/tests/test_auth.py",
+      "python/tests/test_auto_review.py",
+      "python/tests/test_background_census.py",
+      "python/tests/test_background_orphans.py",
+      "python/tests/test_background_parity.py",
+      "python/tests/test_bash_surrogate_contracts.py",
+      "python/tests/test_bench.py",
+      "python/tests/test_benchmark.py",
+      "python/tests/test_block_access.py",
+      "python/tests/test_block_normalization.py",
+      "python/tests/test_build_era_census.py",
+      "python/tests/test_caching.py",
+      "python/tests/test_cancel.py",
+      "python/tests/test_cancel_targets_running_turn.py",
+      "python/tests/test_canonical_history.py",
+      "python/tests/test_capability_plan.py",
+      "python/tests/test_catalog_wiring.py",
+      "python/tests/test_command_result.py",
+      "python/tests/test_compaction_census.py",
+      "python/tests/test_compaction_composition.py",
+      "python/tests/test_compaction_failure.py",
+      "python/tests/test_compaction_pairing.py",
+      "python/tests/test_compaction_provenance.py",
+      "python/tests/test_composition.py",
+      "python/tests/test_concurrent_turns.py",
+      "python/tests/test_config_validation.py",
+      "python/tests/test_console_safety.py",
+      "python/tests/test_content_stores.py",
+      "python/tests/test_context_matches_tools.py",
+      "python/tests/test_context_pressure.py",
+      "python/tests/test_continuation.py",
+      "python/tests/test_corrupt_stores.py",
+      "python/tests/test_counter_scope.py",
+      "python/tests/test_crash_windows.py",
+      "python/tests/test_cron_activation.py",
+      "python/tests/test_cron_authority.py",
+      "python/tests/test_cron_claims.py",
+      "python/tests/test_cron_crash_consistency.py",
+      "python/tests/test_cron_hygiene.py",
+      "python/tests/test_cron_ownership.py",
+      "python/tests/test_curriculum.py",
+      "python/tests/test_cwd_census.py",
+      "python/tests/test_decision_llm.py",
+      "python/tests/test_decision_replay.py",
+      "python/tests/test_decision_tools.py",
+      "python/tests/test_decisions.py",
+      "python/tests/test_dedup_set_bounds.py",
+      "python/tests/test_defensive_patterns.py",
+      "python/tests/test_degraded_but_silent.py",
+      "python/tests/test_diagnostics_and_query.py",
+      "python/tests/test_discarded_results.py",
+      "python/tests/test_documented_examples.py",
+      "python/tests/test_dotenv_boot_contracts.py",
+      "python/tests/test_dotenv_contracts.py",
+      "python/tests/test_dotenv_file_contracts.py",
+      "python/tests/test_double_cost.py",
+      "python/tests/test_dump_config.py",
+      "python/tests/test_durable_approvals.py",
+      "python/tests/test_durable_writes.py",
+      "python/tests/test_effective_posture.py",
+      "python/tests/test_entry_points.py",
+      "python/tests/test_error_vocabulary_census.py",
+      "python/tests/test_event_correlation.py",
+      "python/tests/test_event_stream.py",
+      "python/tests/test_execution_mode.py",
+      "python/tests/test_extension_contracts.py",
+      "python/tests/test_extensions.py",
+      "python/tests/test_external_cancellation.py",
+      "python/tests/test_feature_bundle_contracts.py",
+      "python/tests/test_features.py",
+      "python/tests/test_foreground_interrupt.py",
+      "python/tests/test_fullstack.py",
+      "python/tests/test_go_batch_step_boundary.py",
+      "python/tests/test_go_export_diagnostics.py",
+      "python/tests/test_go_mcp_mapping_contracts.py",
+      "python/tests/test_go_port_performance.py",
+      "python/tests/test_go_public_budget_text.py",
+      "python/tests/test_go_public_helpers.py",
+      "python/tests/test_go_public_run_context.py",
+      "python/tests/test_go_role_policy.py",
+      "python/tests/test_goals.py",
+      "python/tests/test_guard_runner.py",
+      "python/tests/test_guardian.py",
+      "python/tests/test_guardian_wiring.py",
+      "python/tests/test_hardening_notes.py",
+      "python/tests/test_harness.py",
+      "python/tests/test_http_closure_contracts.py",
+      "python/tests/test_http_query_selection_contracts.py",
+      "python/tests/test_http_query_wire_contracts.py",
+      "python/tests/test_http_routing_contracts.py",
+      "python/tests/test_idempotency.py",
+      "python/tests/test_identity.py",
+      "python/tests/test_improvement_lineage.py",
+      "python/tests/test_interrupted_turns.py",
+      "python/tests/test_invariant_posture.py",
+      "python/tests/test_leases.py",
+      "python/tests/test_legacy_recovery_contracts.py",
+      "python/tests/test_load_bearing_claims.py",
+      "python/tests/test_long_session_growth.py",
+      "python/tests/test_mcp_boundary.py",
+      "python/tests/test_mcp_message_size.py",
+      "python/tests/test_mcp_restart.py",
+      "python/tests/test_memory_capture_endpoints.py",
+      "python/tests/test_memory_census.py",
+      "python/tests/test_memory_hygiene.py",
+      "python/tests/test_memory_isolation.py",
+      "python/tests/test_memory_scaling.py",
+      "python/tests/test_memory_tenant_isolation.py",
+      "python/tests/test_message_routing.py",
+      "python/tests/test_metering.py",
+      "python/tests/test_no_secret_on_disk.py",
+      "python/tests/test_null_boundary_contracts.py",
+      "python/tests/test_orphan_processes.py",
+      "python/tests/test_output_truncation.py",
+      "python/tests/test_owner_map_bound.py",
+      "python/tests/test_paired_benchmark_cli.py",
+      "python/tests/test_permission_event_contracts.py",
+      "python/tests/test_permission_modes.py",
+      "python/tests/test_personal_skill_api.py",
+      "python/tests/test_plan_mode.py",
+      "python/tests/test_posture_contracts.py",
+      "python/tests/test_posture_updates.py",
+      "python/tests/test_problem_log.py",
+      "python/tests/test_problem_log_eviction.py",
+      "python/tests/test_problem_reporting.py",
+      "python/tests/test_prompt_composition_contracts.py",
+      "python/tests/test_provider_auth_contracts.py",
+      "python/tests/test_provider_authority_wire_contracts.py",
+      "python/tests/test_provider_background_options_contracts.py",
+      "python/tests/test_provider_background_sdk_contracts.py",
+      "python/tests/test_provider_bash_command_contracts.py",
+      "python/tests/test_provider_bash_execution_contracts.py",
+      "python/tests/test_provider_bash_options_contracts.py",
+      "python/tests/test_provider_caller_contracts.py",
+      "python/tests/test_provider_caller_observation_contracts.py",
+      "python/tests/test_provider_citation_contracts.py",
+      "python/tests/test_provider_code_execution_contracts.py",
+      "python/tests/test_provider_conformance.py",
+      "python/tests/test_provider_container_contracts.py",
+      "python/tests/test_provider_endpoint_contracts.py",
+      "python/tests/test_provider_fidelity.py",
+      "python/tests/test_provider_idna_contracts.py",
+      "python/tests/test_provider_nonfinite_background_contracts.py",
+      "python/tests/test_provider_nonfinite_bash_contracts.py",
+      "python/tests/test_provider_nonfinite_consumer_contracts.py",
+      "python/tests/test_provider_nonfinite_stream_contracts.py",
+      "python/tests/test_provider_nonfinite_trajectory_contracts.py",
+      "python/tests/test_provider_nonmapping_input_contracts.py",
+      "python/tests/test_provider_partial_input_contracts.py",
+      "python/tests/test_provider_partial_json_contracts.py",
+      "python/tests/test_provider_reply_metadata_contracts.py",
+      "python/tests/test_provider_server_tool_contracts.py",
+      "python/tests/test_provider_surface.py",
+      "python/tests/test_provider_surrogate_contracts.py",
+      "python/tests/test_provider_text_editor_contracts.py",
+      "python/tests/test_provider_tool_input_consumer_contracts.py",
+      "python/tests/test_provider_tool_search_contracts.py",
+      "python/tests/test_provider_transport_wire_contracts.py",
+      "python/tests/test_provider_url_contracts.py",
+      "python/tests/test_provider_usage_consumer_contracts.py",
+      "python/tests/test_provider_usage_contracts.py",
+      "python/tests/test_provider_web_fetch_contracts.py",
+      "python/tests/test_provider_web_search_contracts.py",
+      "python/tests/test_provider_whole_usage_contracts.py",
+      "python/tests/test_public_auth_contracts.py",
+      "python/tests/test_public_harness_contracts.py",
+      "python/tests/test_public_identity_audit_contracts.py",
+      "python/tests/test_python_syntax_contracts.py",
+      "python/tests/test_rate_limit.py",
+      "python/tests/test_read_window_census.py",
+      "python/tests/test_reconcile.py",
+      "python/tests/test_reconstructable_requests.py",
+      "python/tests/test_recovery_backoff.py",
+      "python/tests/test_recovery_census.py",
+      "python/tests/test_refusal_census.py",
+      "python/tests/test_request_size.py",
+      "python/tests/test_resource_limits.py",
+      "python/tests/test_restart_continuity.py",
+      "python/tests/test_retry_requires_progress.py",
+      "python/tests/test_role_tool_policy.py",
+      "python/tests/test_round_exhaustion.py",
+      "python/tests/test_run_context.py",
+      "python/tests/test_sandbox.py",
+      "python/tests/test_sandbox_contracts.py",
+      "python/tests/test_scan_anchoring.py",
+      "python/tests/test_schema_cost_census.py",
+      "python/tests/test_secrets.py",
+      "python/tests/test_self_audit.py",
+      "python/tests/test_self_improve.py",
+      "python/tests/test_server.py",
+      "python/tests/test_session_activity.py",
+      "python/tests/test_session_fork.py",
+      "python/tests/test_session_reclamation.py",
+      "python/tests/test_session_skill_capture.py",
+      "python/tests/test_sessions_pagination.py",
+      "python/tests/test_shell_blocklist_limits.py",
+      "python/tests/test_skill_catalogue.py",
+      "python/tests/test_skill_integrity.py",
+      "python/tests/test_skill_loading.py",
+      "python/tests/test_spawn_sites.py",
+      "python/tests/test_spill.py",
+      "python/tests/test_steering.py",
+      "python/tests/test_stop_reasons.py",
+      "python/tests/test_storage.py",
+      "python/tests/test_storage_census.py",
+      "python/tests/test_streaming.py",
+      "python/tests/test_streaming_failures.py",
+      "python/tests/test_strictest_provider.py",
+      "python/tests/test_stuck.py",
+      "python/tests/test_stuck_threshold_contracts.py",
+      "python/tests/test_subagent_depth.py",
+      "python/tests/test_subagent_provider.py",
+      "python/tests/test_task_claims.py",
+      "python/tests/test_team_tools.py",
+      "python/tests/test_teamless_http_contracts.py",
+      "python/tests/test_teams_census.py",
+      "python/tests/test_timing_safety.py",
+      "python/tests/test_token_efficiency.py",
+      "python/tests/test_token_efficiency_manager.py",
+      "python/tests/test_token_efficiency_wiring.py",
+      "python/tests/test_token_escalation.py",
+      "python/tests/test_token_tools.py",
+      "python/tests/test_tool_batch_invariants.py",
+      "python/tests/test_tool_catalog_snapshot.py",
+      "python/tests/test_tool_edge_census.py",
+      "python/tests/test_tool_payload.py",
+      "python/tests/test_tool_pipeline.py",
+      "python/tests/test_tool_risk.py",
+      "python/tests/test_tool_scoping.py",
+      "python/tests/test_trace_view.py",
+      "python/tests/test_trajectory.py",
+      "python/tests/test_trajectory_corruption.py",
+      "python/tests/test_trajectory_listing_scope.py",
+      "python/tests/test_trajectory_masking.py",
+      "python/tests/test_trajectory_mining.py",
+      "python/tests/test_trajectory_owner_durability.py",
+      "python/tests/test_trajectory_ownership.py",
+      "python/tests/test_trajectory_reclamation.py",
+      "python/tests/test_transcript_contract.py",
+      "python/tests/test_transcript_invariant.py",
+      "python/tests/test_two_tenant_isolation.py",
+      "python/tests/test_unpinned_claims.py",
+      "python/tests/test_user_memory_scope.py",
+      "python/tests/test_user_resource_lifecycle.py",
+      "python/tests/test_user_skill_publication.py",
+      "python/tests/test_user_skill_scope.py",
+      "python/tests/test_verified_loop_contracts.py",
+      "python/tests/test_verified_loop_service.py",
+      "python/tests/test_verified_roles.py",
+      "python/tests/test_verified_shadow.py",
+      "python/tests/test_webui.py",
+      "python/tests/test_webui_routes.py",
+      "python/tests/test_workflow_failure_path.py",
+      "python/tests/test_workflow_integration.py",
+      "python/tests/test_workflow_role_tools.py",
+      "python/tests/test_workflow_routes.py",
+      "python/tests/test_workflows.py",
+      "python/tests/test_workspace_binding.py",
+      "python/tests/test_worktree_safety.py",
+      "python/tests/test_write_sites.py"
+    ],
+    "all_under_testpaths": true
+  },
+  "runtime_inputs": {
+    "prior_receipt": {
+      "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+      "bytes": 1039902,
+      "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5"
+    },
+    "count": 1843,
+    "all_current_hashes_match": true,
+    "new_configuration_input": {
+      "path": "pytest.ini",
+      "bytes": 34,
+      "sha256": "acdc42f2475cbc4a6dcd67501ca29a491ec590737fe5dfbfdd8ba72fc04b3575"
+    },
+    "exact_gate_input_count": 1844
+  },
+  "historical_bare_failure": {
+    "status": "failed",
+    "exit_code": 2,
+    "collection_errors": 809,
+    "resources": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/python-full/resources.json",
+      "bytes": 2326,
+      "sha256": "6a959d24f3976fd74ae80524b5fbabbc99c5da377094de0a09dd49a1d4fdadcc"
+    },
+    "stdout": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/python-full/stdout.log",
+      "bytes": 581667,
+      "sha256": "4c889abe3f728a8f021aae7e4f0c1e130558377975d1d86c6835b3d7b84a94b0"
+    }
+  },
+  "prior_modified_command_success": {
+    "receipt": {
+      "path": "docs/audits/go-remaining-contract-evidence-2026-10-14.json",
+      "bytes": 1039902,
+      "sha256": "efdb8c1459b40b04de4674f96e4c94cdb9f7ef135f5e51d104c8039db5010bf5"
+    },
+    "stage": {
+      "stage": "python-full",
+      "status": "passed",
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "requested_command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "--ignore=var"
+      ],
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "--ignore=var"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "started_utc": "2026-10-14T11:55:14.846783+00:00",
+      "completed_utc": "2026-10-14T11:56:47.962104+00:00",
+      "seconds": 93.047,
+      "peak_rss_kib": 354976,
+      "peak_cpu_percent": 298.5,
+      "samples": 90,
+      "max_sample_gap_seconds": 1.068,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 450,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=2",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "freeze_scope": [
+        "python",
+        "AGENTS.md"
+      ],
+      "frozen_inputs": 524,
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "signal_events": [],
+      "raw_resource_receipt": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/resources.json",
+        "bytes": 6245,
+        "sha256": "55fa208aec0e10418cca086cfc8c87acfec57179a4216e1742a14b8747cbda0c"
+      },
+      "stdout.log": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/stdout.log",
+        "bytes": 60257,
+        "sha256": "959bd5ae80ccdc7869e60f4576f0a0acd8b5d2ad869e89cc838da089a2527229"
+      },
+      "freeze.before.json": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/freeze.before.json",
+        "bytes": 58748,
+        "sha256": "021c8639310885cb1497c13f8767e059468b6f111392fa9c362b13eebbcdb0b0"
+      },
+      "freeze.after.json": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/freeze.after.json",
+        "bytes": 58748,
+        "sha256": "021c8639310885cb1497c13f8767e059468b6f111392fa9c362b13eebbcdb0b0"
+      },
+      "samples.jsonl": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/samples.jsonl",
+        "bytes": 44975,
+        "sha256": "07183e5eef27acd6e186db1f22b6e15d8bb80b94386562f84b93db08990051e7"
+      },
+      "signals.jsonl": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/signals.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stability.json": {
+        "path": "var/go-remaining-contract-evidence-2026-10-14/python-full/stability.json",
+        "bytes": 537,
+        "sha256": "4ef1ca9d1ce69c7c13c68566a4f4541a909b0ff7231cd19162a22fa7770ffdf2"
+      },
+      "output_tail": [
+        "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='web_fetch_requests', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+        "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='web_search_requests', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+        "    return self.__pydantic_serializer__.to_python(",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "2278 passed, 28 skipped, 104 warnings, 24 subtests passed in 91.16s (0:01:31)"
+      ]
+    },
+    "scope_limit": "The --ignore=var run did not establish the unchanged documented bare command."
+  },
+  "fresh_exact_full": {
+    "name": "python-full-exact",
+    "status": "passed",
+    "launched": true,
+    "exit_code": 0,
+    "runner_exit_code": 0,
+    "requested_command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    "cwd": "/Users/yanjixiong/github/mini-loop",
+    "started_utc": "2026-10-14T13:30:42.584687+00:00",
+    "completed_utc": "2026-10-14T13:32:20.877008+00:00",
+    "seconds": 98.006,
+    "peak_rss_kib": 425664,
+    "peak_cpu_percent": 295.3,
+    "samples": 95,
+    "max_sample_gap_seconds": 1.066,
+    "limits": {
+      "rss_kib": 1572864,
+      "cpu_percent_sustained": 450,
+      "cpu_grace_seconds": 45,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB",
+      "gogc": 75,
+      "goflags": "-p=2",
+      "test_parallel": 2,
+      "nice_minimum": 10,
+      "sample_seconds": 1,
+      "allowed_pressure_levels": [
+        1,
+        2
+      ],
+      "initial_nice_wrapper_grace_seconds": 0.25,
+      "wall_seconds": 1800
+    },
+    "frozen_inputs": 1844,
+    "freeze_scope": [
+      "go",
+      "python",
+      "AGENTS.md"
+    ],
+    "freeze_extra_inputs": [
+      "pytest.ini"
+    ],
+    "inputs_unchanged": true,
+    "empty_confirmations": true,
+    "remaining_pids": [],
+    "signal_events": [],
+    "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+    "raw": {
+      "freeze.after.json": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/freeze.after.json",
+        "bytes": 197575,
+        "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+      },
+      "freeze.before.json": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/freeze.before.json",
+        "bytes": 197575,
+        "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+      },
+      "pid-state.json": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/pid-state.json",
+        "bytes": 56,
+        "sha256": "c163a22d7a6961416a2614c47962e0bc38fcd76a4251f3e4aa709cb238199f1d"
+      },
+      "resources.json": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/resources.json",
+        "bytes": 6745,
+        "sha256": "52137387ab9ba65f26f1ec6c86b542f7df1131213ad8f29c1516bb300396439c"
+      },
+      "samples.jsonl": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/samples.jsonl",
+        "bytes": 48078,
+        "sha256": "979e0e84dd89cd11041daacaef1bf0f7d84b45dc8922241e04cfcc56d3bc19ae"
+      },
+      "signals.jsonl": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/signals.jsonl",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stability.json": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/stability.json",
+        "bytes": 537,
+        "sha256": "9ebeb291e3e5c438467da012c241d29bef2c540d3f9e1ce7bf31f866ba0ae84f"
+      },
+      "stdout.log": {
+        "path": "var/go-final-acceptance-audit-2026-10-14/python-full-exact/stdout.log",
+        "bytes": 60181,
+        "sha256": "59ac97a1e5c659cdf12ba415a12a52636f1130786c3a00bfc2ce6cfecd6e2682"
+      }
+    }
+  },
+  "summary": {
+    "passed": 2256,
+    "skipped": 28,
+    "warnings": 104,
+    "pytest_seconds": 96.68
+  },
+  "collection_comparison": {
+    "default": {
+      "name": "python-collect-default",
+      "status": "passed",
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "requested_command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q"
+      ],
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "started_utc": "2026-10-14T13:33:56.853904+00:00",
+      "completed_utc": "2026-10-14T13:33:59.305462+00:00",
+      "seconds": 2.376,
+      "peak_rss_kib": 103712,
+      "peak_cpu_percent": 73.0,
+      "samples": 3,
+      "max_sample_gap_seconds": 1.038,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 450,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=2",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "frozen_inputs": 1844,
+      "freeze_scope": [
+        "go",
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_extra_inputs": [
+        "pytest.ini"
+      ],
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "signal_events": [],
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "raw": {
+        "freeze.after.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/freeze.after.json",
+          "bytes": 197575,
+          "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+        },
+        "freeze.before.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/freeze.before.json",
+          "bytes": 197575,
+          "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+        },
+        "pid-state.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/pid-state.json",
+          "bytes": 56,
+          "sha256": "778c8be6864d0512654631534abd8bef6ee84f61b73e00d8fc5040dba712e644"
+        },
+        "resources.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/resources.json",
+          "bytes": 2446,
+          "sha256": "146a8d2dc10bd121632ac95b2e296deaadcc6c1c9da216f607ef0c388ea8199e"
+        },
+        "samples.jsonl": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/samples.jsonl",
+          "bytes": 1118,
+          "sha256": "eb7a0817edd269bdca32498f0381a66840a30dedb51e7050a8ceabec672bc2fe"
+        },
+        "signals.jsonl": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/stability.json",
+          "bytes": 537,
+          "sha256": "11fcf90f735e1b847ca167a33482c6e30bb226ec22bfac2e2faeb84b90f7172f"
+        },
+        "stdout.log": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-default/stdout.log",
+          "bytes": 391281,
+          "sha256": "50cce3de1569f27620ab1859c4acb323aa88a3877a24d958f740b10c24a5aefd"
+        }
+      }
+    },
+    "explicit_root": {
+      "name": "python-collect-root",
+      "status": "passed",
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "requested_command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q",
+        ".",
+        "--ignore=var"
+      ],
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q",
+        ".",
+        "--ignore=var"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "started_utc": "2026-10-14T13:33:24.998902+00:00",
+      "completed_utc": "2026-10-14T13:33:27.468123+00:00",
+      "seconds": 2.389,
+      "peak_rss_kib": 94736,
+      "peak_cpu_percent": 70.6,
+      "samples": 3,
+      "max_sample_gap_seconds": 1.04,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 450,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=2",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "frozen_inputs": 1844,
+      "freeze_scope": [
+        "go",
+        "python",
+        "AGENTS.md"
+      ],
+      "freeze_extra_inputs": [
+        "pytest.ini"
+      ],
+      "inputs_unchanged": true,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "signal_events": [],
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "raw": {
+        "freeze.after.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/freeze.after.json",
+          "bytes": 197575,
+          "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+        },
+        "freeze.before.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/freeze.before.json",
+          "bytes": 197575,
+          "sha256": "4275195f7b1371eaf265df13b02a0d7ce24078a62487d068a7b622251195bf62"
+        },
+        "pid-state.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/pid-state.json",
+          "bytes": 56,
+          "sha256": "72033242f8fd8897902f72565ec7249121d8d93ce14fad8dacd5a3c41245e17b"
+        },
+        "resources.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/resources.json",
+          "bytes": 2499,
+          "sha256": "a8c3c7ab66395dd5f4cb857ba7c2edd693ef63cc644c3016fa7dbfde11436c04"
+        },
+        "samples.jsonl": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/samples.jsonl",
+          "bytes": 1115,
+          "sha256": "25b8f4f83f3476ddf5e86f682672fa2e7aa405b8fae9ecf5f3c70ec616cab15c"
+        },
+        "signals.jsonl": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/stability.json",
+          "bytes": 537,
+          "sha256": "c921c37f0d04ab49aa1e68ee21c089857915edba88da8dd540ed26046974723b"
+        },
+        "stdout.log": {
+          "path": "var/go-final-acceptance-audit-2026-10-14/python-collect-root/stdout.log",
+          "bytes": 393585,
+          "sha256": "3943d1801dda088cbbe052351668578621dbe2b81b32fceba3b439f5aee987c9"
+        }
+      }
+    },
+    "default_cases": 2284,
+    "explicit_root_cases": 2306,
+    "default_only": [],
+    "reference_only": [
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s01_agent_loop.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s02_tool_use.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s03_todo_write.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s04_subagent.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s05_skill_loading.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s06_context_compact.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s07_task_system.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s08_background_tasks.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s09_agent_teams.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s10_team_protocols.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s11_autonomous_agents.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s12_worktree_task_isolation.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_compile[s_full.py]",
+      "learn-claude-code/tests/test_agents_smoke.py::test_agent_scripts_exist",
+      "learn-claude-code/tests/test_compaction_tool_pairs.py::CompactionToolPairTests::test_reactive_compact_keeps_tail_tool_pair",
+      "learn-claude-code/tests/test_compaction_tool_pairs.py::CompactionToolPairTests::test_s20_has_tool_use_still_accepts_content_blocks",
+      "learn-claude-code/tests/test_compaction_tool_pairs.py::CompactionToolPairTests::test_snip_compact_keeps_head_tool_pair",
+      "learn-claude-code/tests/test_compaction_tool_pairs.py::CompactionToolPairTests::test_snip_compact_keeps_tail_tool_pair",
+      "learn-claude-code/tests/test_s_full_background.py::BackgroundManagerTests::test_check_returns_running_placeholder_when_result_is_none",
+      "learn-claude-code/tests/test_todo_write_string_input.py::TodoWriteStringInputTests::test_issue_340_accepts_json_array_string",
+      "learn-claude-code/tests/test_todo_write_string_input.py::TodoWriteStringInputTests::test_issue_340_accepts_python_list_repr_string",
+      "learn-claude-code/tests/test_todo_write_string_input.py::TodoWriteStringInputTests::test_issue_340_does_not_eval_string_inputs"
+    ],
+    "reference_checkout_git_ignore": ".gitignore:1:learn-claude-code\tlearn-claude-code/tests/test_agents_smoke.py",
+    "interpretation": "All maintained project cases remain. The previous extra 22 passes and 24 unittest subtest passes belonged to the ignored learn-claude-code reference checkout, not tracked mini-loop tests."
+  },
+  "separate_verifiers": {
+    "changed_package_modules": false,
+    "changed_scanners_or_targets": false,
+    "changed_guarded_runtime": false,
+    "prior_invariants_and_scans_reused": true,
+    "reason": "Only root discovery configuration changes; verifier implementations and targets are unchanged."
+  },
+  "row_delta_applied": false,
+  "effective_required_rows": {
+    "bounded_verified": 339,
+    "evidence_incomplete": 0,
+    "dependency_blocked": 5
+  }
+}

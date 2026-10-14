@@ -1,5 +1,27 @@
 # Python to Go parity matrix
 
+## 2026-10-14 original-criteria reconciliation and measured IDNA gap
+
+The [current audit](docs/audits/go-final-acceptance-audit-2026-10-14.md)
+reconciles the unchanged original P0/P1/G0–G7 criteria at local main `e9b6390`.
+All 1,843 current runtime inputs match the accepted 24-gate receipt. Thirty-one
+semantic assertions bind to four actual host/Linux event streams. The durable
+G5 ledger preserves exact evidence shapes rather than treating native process
+strengthening or Source primitive composition as identical Source end-to-end
+fixtures.
+
+The actual 84-case IDNA native baseline has **6 passing / 78 failing subtests**;
+its candidate is retained outside default discovery pending dependency approval
+and implementation. Default parser Source62 still lacks a real Go backend and
+consumer. The remaining five blocked rows are the same two dependency/default
+policy families; approval alone is insufficient. No row delta is applied here:
+**339 bounded verified / 0 evidence-incomplete / 5 dependency-blocked**. Overall
+migration remains incomplete. A P1 command-discovery gap found during this review
+is corrected by root `pytest.ini`: all 278 tracked Python test files are under
+`python/tests`; retained `var/` copies are excluded from default discovery. Fresh
+validation uses the exact documented command without `--ignore=var`.
+
+
 ## 2026-10-14 SDK, argv and team HTTP finite reconciliation
 
 Baseline local main `a378a2b`; branch `codex/go-remaining-contract-evidence`.

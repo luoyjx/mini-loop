@@ -1,5 +1,30 @@
 # Go port plan
 
+## 2026-10-14 original acceptance criteria and remaining implementation decisions
+
+Baseline local main `e9b6390`, runtime `a6bf1d5`; current implementation hashes
+are unchanged. The [original-criteria audit](docs/audits/go-final-acceptance-audit-2026-10-14.md)
+reconciles all ten original P0/P1/G0–G7 requirements against real assertions and
+current host/Linux events. A durable seven-group persistence ledger binds the
+same 25 top-level and 49 subtest passes in each of four cohorts. It preserves
+native killed-process strengthening, compaction Source primitives and team subset
+limits without adding new power-loss requirements.
+
+The original documented bare pytest command exposed a P1 discovery gap: retained
+test copies in `var/` caused collection errors. Root `pytest.ini` now targets
+`python/tests`, including all 278 tracked Python test files; the exact documented
+command is validated separately in this iteration. Remaining implementation work
+is IDNA and the default syntax backend. Approval is still followed by actual
+implementation, consumers and validation. The complete 84-case IDNA candidate
+now has an actual 6-pass/78-fail
+baseline under a private Go overlay; it adds no dependency or production change.
+The default CPython parser implementation does not yet exist; the 62-case Source
+profile is not a native parser. Both decisions remain awaiting explicit approval.
+Original row status remains **339 verified / 0 evidence-incomplete / 5 blocked**;
+G7 and the overall migration remain incomplete. See the linked audit for exact
+proof scope, retained overlay preparation failure and resource measurements.
+
+
 ## 2026-10-14 SDK Unicode, filesystem argv and team HTTP
 
 Baseline local main `a378a2b`; branch `codex/go-remaining-contract-evidence`.
