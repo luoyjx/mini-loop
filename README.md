@@ -570,14 +570,17 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `da43c18`. Public authentication
-environment loading now follows Python whitespace and duplicate-owner diagnostic
-order while preserving one admitted principal and existing owner boundaries.
-Twelve actual constructor and 24 environment recipes compare public outcomes.
-This iteration also compares 14 real registries, eight manager profiles and all
-57 definitions with native catalogues and bindings, plus six default Null
-construction/run/stop profiles. Tool execution, default parser policy, teamless
-HTTP and full migration/platform acceptance retain separate gates.
+Current runtime review baseline: local main `da43c18`. This iteration aligns
+public authentication environment parsing with Python whitespace and duplicate
+owner diagnostics, and Cron admission with ordered field-level 422 details
+before owner lookup; authentication remains first. Actual Source contracts also
+compare two complete workflow detail responses, 14 real registry selections,
+eight manager profiles and all 57 tool definitions with native production
+catalogues and bound services. Six default/explicit-None construction profiles
+exercise Null masking and persistence through run/stop. These are finite
+catalogue, binding and boundary checks; tool execution, default parser selection,
+teamless HTTP and full platform/migration acceptance retain their separate gates.
+See [the iteration evidence](docs/audits/go-http-feature-closure-2026-10-14.md).
 
 Previous runtime review baseline: local main `78d95bc`. That iteration follows
 actual Source post-stuck follow-up requests through both the native fake and the
@@ -1053,12 +1056,12 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>Cron ordered field-level 422 before owner lookup<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
-        GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
+        GoTrust["Authenticator<br/>Python whitespace / ordered duplicate-owner diagnostics<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]

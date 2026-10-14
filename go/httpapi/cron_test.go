@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/cron"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,9 +24,9 @@ func TestCronHTTPMatchesActualPythonOwnershipAndValidation(t *testing.T) {
 	var fixture struct {
 		HTTP []struct {
 			Name, Method, Path, Token string
-			Input                     json.RawMessage
+			Input                     jsonvalue.Value
 			Status                    int
-			Body                      json.RawMessage
+			Body                      jsonvalue.Value
 		}
 	}
 	if e = json.Unmarshal(data, &fixture); e != nil || len(fixture.HTTP) != 29 {
@@ -37,14 +38,6 @@ func TestCronHTTPMatchesActualPythonOwnershipAndValidation(t *testing.T) {
 	b := create(t, s, "token-b")
 	sessions := map[string]string{"session-fixture": string(a.ID), "other-session": string(b.ID)}
 	aliases := map[cron.ID]string{}
-	type body struct {
-		Session string
-		Jobs    []agent.CronJobView
-		Result  string
-		Job     string
-		Armed   bool
-		Detail  string
-	}
 	for _, row := range fixture.HTTP {
 		t.Run(row.Name, func(t *testing.T) {
 			path := row.Path
@@ -54,7 +47,11 @@ func TestCronHTTPMatchesActualPythonOwnershipAndValidation(t *testing.T) {
 			for id, alias := range aliases {
 				path = strings.ReplaceAll(path, alias, string(id))
 			}
-			value := string(row.Input)
+			encoded, err := row.Input.MarshalJSON()
+			if err != nil {
+				t.Fatal(err)
+			}
+			value := string(encoded)
 			if value == "null" {
 				value = ""
 			}
@@ -67,9 +64,6 @@ func TestCronHTTPMatchesActualPythonOwnershipAndValidation(t *testing.T) {
 					aliases[job.ID] = fmt.Sprintf("<job%d>", len(aliases)+1)
 				}
 			}
-			if w.Code == 422 {
-				return
-			} // Structured Pydantic detail parity is an existing open HTTP boundary.
 			out := w.Body.String()
 			for alias, id := range sessions {
 				out = strings.ReplaceAll(out, id, alias)
@@ -77,15 +71,12 @@ func TestCronHTTPMatchesActualPythonOwnershipAndValidation(t *testing.T) {
 			for id, alias := range aliases {
 				out = strings.ReplaceAll(out, string(id), alias)
 			}
-			var got, want body
-			if e = json.Unmarshal([]byte(out), &got); e != nil {
-				t.Fatal(e)
+			got, err := jsonvalue.Decode(out)
+			if err != nil {
+				t.Fatal(err)
 			}
-			if e = json.Unmarshal(row.Body, &want); e != nil {
-				t.Fatal(e)
-			}
-			if !reflect.DeepEqual(got, want) {
-				t.Fatal(out, string(row.Body))
+			if !reflect.DeepEqual(got.Sorted(), row.Body.Sorted()) {
+				t.Fatal(out, row.Body.PythonString())
 			}
 		})
 	}

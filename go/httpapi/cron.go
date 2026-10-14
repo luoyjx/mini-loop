@@ -107,8 +107,13 @@ func (s *Server) listCron(w http.ResponseWriter, r *http.Request) {
 	writeJSON(s, w, 200, CronListResponse{session.ID(), jobs})
 }
 func (s *Server) scheduleCron(w http.ResponseWriter, r *http.Request) {
-	v, ok := decodeBody[CronScheduleRequest](s, w, r)
+	input, ok := decodeRequestBody(s, w, r)
 	if !ok {
+		return
+	}
+	v, details := cronScheduleValidation(input)
+	if len(details) != 0 {
+		writeRequestValidation(s, w, RequestValidationResponse{Detail: details})
 		return
 	}
 	session, ok := s.require(w, r)

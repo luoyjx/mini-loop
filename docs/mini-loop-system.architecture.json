@@ -493,7 +493,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / SDK / Audit / HTTP / SSE",
-      "sublabel": "owned routes / raw query / named admission / API docs",
+      "sublabel": "owned routes / auth / raw query / ordered 422",
       "pos": [
         330,
         800
@@ -1668,6 +1668,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Review baseline da43c18: public auth environment parsing uses Python whitespace and ordered duplicate-owner diagnostics. Cron authenticates before ordered field-level 422 validation, then owner lookup. Actual Source contracts compare two complete workflow details, 14 real registries, eight manager profiles and all 57 native definitions including schemas, traits, modes and service identity bindings. Six omitted/explicit-None construction profiles exercise default Null masking and persistence through run/stop. Catalogue and binding evidence does not establish tool execution or default backend acceptance. Teamless HTTP, default parser and full platform/migration gates remain open. Existing components, dependencies, authority and defaults are unchanged.",
         "Review baseline 78d95bc: post-stuck follow-up uses an exact process-local unpublished-batch observation. Public transcript validation remains strict; no authority, restore or child inheritance is added. Typed SectionsBuilder, RuntimeFacts and MemorySystemBuilder reuse existing Context and scoped memory; caller ownership and default wiring remain explicit. Eight Linux minima pass against actual same-platform Source fixtures; full Linux/race and original migration acceptance remain open.",
         "Configuration review baseline 9950878: Python str.strip includes U+001C–U+001F for bool/mode/AST settings, blank numeric defaults, blank roots/spill selection and decision model/key validation. Nonempty numeric constructors retain narrower whitespace rejection, and nonempty paths preserve raw spelling. The actual Source128 corpus retains the original64 unchanged; the previous native implementation fails52 new subcases and the focused fix passes128. No component, dependency, authority or selector is added. Full gates and original required-row closure remain explicitly recorded in the iteration receipt.",
         "Go StuckDetector retains all six configured integer thresholds and explicit all-zero policy; native zero-value remains default. Monologue precedes the tool rules. Zero/negative repeat slices preserve named Source IndexError before built-in result-history publication; custom detector errors keep completed results paired. Source post-fault model calls and native earlier transcript refusal are separate observations requiring caller reconciliation; no complete semantic-parity claim.",

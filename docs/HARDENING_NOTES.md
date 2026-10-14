@@ -1,5 +1,32 @@
 # Hardening notes
 
+## Go HTTP validation and actual default selection — 2026-10-14
+
+This slice starts from `da43c18`. Authentication environment loading follows
+Source `strip` behavior through `pytext.Strip`, including duplicate-token
+diagnostic ordering. Cron request validation preserves complete ordered 422
+details. Authentication remains first; body validation precedes owner lookup,
+and valid requests retain the existing ownership and scheduling checks. Full
+workflow detail comparison covers two real HTTP running/cancelled recipes.
+
+Catalogue tests must reach actual registration paths. The 14 registry selections,
+eight manager profiles and 57 definitions now have comparisons built from real
+manager selectors, including schema, traits, order, mode and handler/service
+binding. A name-only ordering test cannot prove partial feature activation.
+These checks certify only their catalogue/binding scope after validation;
+they neither execute every tool nor select or validate a default syntax parser.
+
+Six real Source omitted/explicit-`None` constructor recipes run through Agent,
+AgentSession and SessionManager. Native nil dependencies are checked through
+real construction, runs, managed stop, masking and persistence observations.
+Source's rejecting SQLite-connect tripwire is separate from native absent
+backend/status and post-stop file evidence. Existing sandbox and explicit
+SQLite coverage remains separate; no new injection seam is added.
+
+Final serial gate results are in the [iteration record](audits/go-http-feature-closure-2026-10-14.md), which
+retains actual outcomes; no complete migration or full Linux acceptance is
+implied by these bounded cases.
+
 ## Go observed unpublished-batch follow-up — 2026-10-14
 
 A built-in stuck slice fault may occur after tool effects and result events but

@@ -1,0 +1,794 @@
+{
+  "cases": [
+    {
+      "body": "",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "missing-body",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "null",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "null-body",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "[]",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "array-body",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": [],
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "missing-both",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "missing-prompt",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "cron": "0 0 31 2 *"
+            },
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"\", \"prompt\": \"future only\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "empty-cron",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界\", \"prompt\": \"future only\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "long-cron",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 100
+            },
+            "input": "界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界",
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "String should have at most 100 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "empty-prompt",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": null, \"prompt\": \"future only\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "null-cron",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": 7}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "numeric-prompt",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": 7,
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"recurring\": null}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "null-recurring",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"durable\": \"maybe\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "bad-text-durable",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": "maybe",
+            "loc": [
+              "body",
+              "durable"
+            ],
+            "msg": "Input should be a valid boolean, unable to interpret input",
+            "type": "bool_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"recurring\": 2}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "bad-integer-recurring",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": 2,
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean, unable to interpret input",
+            "type": "bool_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"durable\": 0.5}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "bad-fraction-durable",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": 0.5,
+            "loc": [
+              "body",
+              "durable"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"recurring\": []}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "array-recurring",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": [],
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"durable\": {}}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "object-durable",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "durable"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"\", \"prompt\": 7, \"recurring\": null, \"durable\": \"maybe\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "multiple-errors",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          },
+          {
+            "input": 7,
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          },
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          },
+          {
+            "input": "maybe",
+            "loc": [
+              "body",
+              "durable"
+            ],
+            "msg": "Input should be a valid boolean, unable to interpret input",
+            "type": "bool_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "foreign-invalid",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-b"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "missing-session-invalid",
+      "path": "/sessions/missing/cron",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"\"}",
+      "cron_jobs": 0,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "bad-auth-invalid",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": "wrong"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"recurring\": \"no\", \"durable\": \"yes\"}",
+      "cron_jobs": 1,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "valid-string-bools",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "result": "Scheduled cron job-1: '0 0 31 2 *' -> future only",
+        "session": "session-fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": "{\"cron\": \"0 0 31 2 *\", \"prompt\": \"future only\", \"recurring\": 0.0, \"durable\": 1}",
+      "cron_jobs": 2,
+      "group": "cron",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "model_calls": 0,
+      "name": "valid-numeric-bools",
+      "path": "/sessions/session-fixture/cron",
+      "response": {
+        "result": "Scheduled cron job-2: '0 0 31 2 *' -> future only",
+        "session": "session-fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": "",
+      "cron_jobs": 2,
+      "group": "workflow",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "model_calls": 0,
+      "name": "workflow-running-detail",
+      "path": "/sessions/session-fixture/workflows/run-fixture",
+      "response": {
+        "active_node_ids": [
+          "a"
+        ],
+        "attempts_used": 1,
+        "cancel_reason": null,
+        "definition_revision": "wfdef_adf83349003bfd76",
+        "error": null,
+        "nodes": [
+          {
+            "attempt_ids": [
+              "attempt-1"
+            ],
+            "error": null,
+            "node_id": "a",
+            "status": "RUNNING"
+          }
+        ],
+        "result": null,
+        "run_id": "run-fixture",
+        "status": "RUNNING",
+        "version": 2,
+        "workflow_name": "wf"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": "",
+      "cron_jobs": 2,
+      "group": "workflow",
+      "headers": {
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "model_calls": 0,
+      "name": "workflow-cancelled-detail",
+      "path": "/sessions/session-fixture/workflows/run-fixture",
+      "response": {
+        "active_node_ids": [],
+        "attempts_used": 1,
+        "cancel_reason": "operator stop",
+        "definition_revision": "wfdef_adf83349003bfd76",
+        "error": null,
+        "nodes": [
+          {
+            "attempt_ids": [
+              "attempt-1"
+            ],
+            "error": "cancelled",
+            "node_id": "a",
+            "status": "CANCELLED"
+          }
+        ],
+        "result": null,
+        "run_id": "run-fixture",
+        "status": "CANCELLED",
+        "version": 5,
+        "workflow_name": "wf"
+      },
+      "status": 200,
+      "token": "token-a"
+    }
+  ],
+  "scope": [
+    "Actual FastAPI requests; complete finite Pydantic diagnostic payloads and owned detail responses.",
+    "Only random session/job/run/attempt identifiers are normalized; no detail field is dropped.",
+    "Future cron expressions never execute; workflow worker is a controlled blocking public runner seam.",
+    "Teamless HTTP remains outside this fixture: the current native manager lacks a public no-team binding seam."
+  ],
+  "source_sha256": {
+    "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "mini_loop/server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "mini_loop/workflows/service.py": "e5539b1cfcf9fdde01631feffe1af858ca42b58d78a05effbe97ec01aaa9c95c",
+    "mini_loop/workflows/store.py": "b9f05a07464eb98c39b1fd2f17d6c744ecfc04b5826223be2fba6c8c7c2653e3",
+    "tools/http_closure_contracts.py": "c0753e9b390eddade470db16564934938099c8fd22a6280cd85277fc53b5e911"
+  },
+  "workflow_action_id": "closure-action",
+  "workflow_cancel_reason": "operator stop",
+  "workflow_definition": {
+    "name": "wf",
+    "nodes": [
+      {
+        "id": "a",
+        "kind": "agent"
+      }
+    ],
+    "return_from": "a"
+  }
+}
