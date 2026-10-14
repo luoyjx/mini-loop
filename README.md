@@ -575,6 +575,10 @@ cover controlled absent-team state, auth/owner, mailbox preservation and corrupt
 mailbox recovery. Default managed sessions still bind a team. Native absent-team
 state uses only augmented test assembly. The team route's internal errors match
 Source's opaque outer-error 500 projection, including four security headers.
+The shell now encodes its complete sandbox-selected argv before process
+creation. Actual UTF-8/surrogateescape controls preserve DC80–DCFF bytes and
+sandbox repair; other surrogate code points fail without a child or process
+result. Existing native raw-byte embedding remains supported.
 See [the iteration evidence](docs/audits/go-remaining-contract-evidence-2026-10-14.md).
 
 Previous runtime review baseline: local main `48fd26d`. That iteration added a
@@ -1104,7 +1108,7 @@ flowchart LR
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
         GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>literal capability subset · duplicates collapse · blank names refused<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>Session-stamped informational label / depth<br/>callback panic diagnostics: type only"]
-        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
+        GoBash["Workspace shell.Executor<br/>selected sandbox argv → filesystem codec → process launch<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]

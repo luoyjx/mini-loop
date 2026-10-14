@@ -1,6 +1,17 @@
 # Hardening notes
 
-## 2026-10-14 team view boundaries
+## 2026-10-14 filesystem argv and team view boundaries
+
+The shell applies filesystem argument encoding after the selected sandbox and
+secret callbacks, before `exec.Command`, pipes and `Start`. It encodes the entire
+argv successfully before a child can exist. The captured UTF-8/surrogateescape
+profile restores DC80–DCFF bytes, rejects other surrogate code points and permits
+sandbox repair before admission. Native raw-byte embedding behavior is preserved.
+The named pre-child encoding fault exposes positions and a code point without
+retaining command/path text. Only this fault omits `CommandResult` metadata;
+other errors retain their existing semantics. Actual nil-journal ToolGate tests
+exercise the provider-decoded Bash path and private marker/byte-file effects.
+
 
 Team lookup remains owner-before-I/O, and peek remains non-consuming. Default
 managed sessions always bind a team. The absent-team HTTP comparison uses a

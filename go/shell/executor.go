@@ -208,6 +208,13 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 		keys = append(keys, string(key))
 	}
 	sort.Strings(keys)
+	// Source Popen applies the filesystem codec after the sandbox selects
+	// argv. Reject nonencodable surrogate text before pipes or a child exist;
+	// retain the surrogateescape byte range and sandbox repair behavior.
+	argv, encodingErr := encodeFilesystemArgv(argv)
+	if encodingErr != nil {
+		return result, encodingErr
+	}
 	cmd := exec.Command(argv[0], argv[1:]...)
 	cmd.Dir = executor.root
 	// Explicit non-nil Env prevents an empty scrubbed environment inheriting host credentials.

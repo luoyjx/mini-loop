@@ -1,0 +1,278 @@
+{
+  "cases": [
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\ud800' > argument.bytes; printf done\"",
+      "exception": {
+        "argument_index": 2,
+        "encoding": "utf-8",
+        "end": 45,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 44: surrogates not allowed",
+        "object_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\ud800' > argument.bytes; printf done\"",
+        "reason": "surrogates not allowed",
+        "start": 44
+      },
+      "marker_hex": null,
+      "name": "high-d800",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\ud800' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udfff' > argument.bytes; printf done\"",
+      "exception": {
+        "argument_index": 2,
+        "encoding": "utf-8",
+        "end": 45,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\udfff' in position 44: surrogates not allowed",
+        "object_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udfff' > argument.bytes; printf done\"",
+        "reason": "surrogates not allowed",
+        "start": 44
+      },
+      "marker_hex": null,
+      "name": "low-dfff",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udfff' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc7f' > argument.bytes; printf done\"",
+      "exception": {
+        "argument_index": 2,
+        "encoding": "utf-8",
+        "end": 45,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\udc7f' in position 44: surrogates not allowed",
+        "object_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc7f' > argument.bytes; printf done\"",
+        "reason": "surrogates not allowed",
+        "start": 44
+      },
+      "marker_hex": null,
+      "name": "low-dc7f-before-escape",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udc7f' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": "80",
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc80' > argument.bytes; printf done\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "escape-dc80",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udc80' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": "ff",
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udcff' > argument.bytes; printf done\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "escape-dcff",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udcff' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": "80c3a9ff",
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc80\\u00e9\\udcff' > argument.bytes; printf done\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "mixed-escape-unicode",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udc80\\u00e9\\udcff' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": "e794a8e688b72dc3a92dcea9",
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\u7528\\u6237-\\u00e9-\\u03a9' > argument.bytes; printf done\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "ordinary-unicode",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\u7528\\u6237-\\u00e9-\\u03a9' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc80-\\ud800' > argument.bytes; printf done\"",
+      "exception": {
+        "argument_index": 2,
+        "encoding": "utf-8",
+        "end": 47,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 46: surrogates not allowed",
+        "object_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\udc80-\\ud800' > argument.bytes; printf done\"",
+        "reason": "surrogates not allowed",
+        "start": 46
+      },
+      "marker_hex": null,
+      "name": "escape-before-high",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "null",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' '\\udc80-\\ud800' > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": "7265706169726564",
+      "command_json_ascii": "\"printf effect > effect.marker; printf '%s' '\\ud800' > argument.bytes; printf done\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "sandbox-repairs-high",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "repair",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' repaired > argument.bytes; printf done\"]"
+    },
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"original command must not run\"",
+      "exception": {
+        "argument_index": 4,
+        "encoding": "utf-8",
+        "end": 1,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed",
+        "object_json_ascii": "\"\\ud800\"",
+        "reason": "surrogates not allowed",
+        "start": 0
+      },
+      "marker_hex": null,
+      "name": "sandbox-extra-high",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "extra",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' \\\"$1\\\" > argument.bytes; printf done\", \"fixture-shell\", \"\\ud800\"]"
+    },
+    {
+      "argument_hex": "80",
+      "command_json_ascii": "\"original command must not run\"",
+      "exception": null,
+      "marker_hex": "656666656374",
+      "name": "sandbox-extra-escape",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "done",
+        "rendered": "done",
+        "stderr": "",
+        "stdout": "done",
+        "timed_out": false
+      },
+      "sandbox_calls": 1,
+      "sandbox_mode": "extra",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/sh\", \"-c\", \"printf effect > effect.marker; printf '%s' \\\"$1\\\" > argument.bytes; printf done\", \"fixture-shell\", \"\\udc80\"]"
+    },
+    {
+      "argument_hex": null,
+      "command_json_ascii": "\"original command must not run\"",
+      "exception": {
+        "argument_index": 0,
+        "encoding": "utf-8",
+        "end": 6,
+        "exception_class": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 5: surrogates not allowed",
+        "object_json_ascii": "\"/bin/\\ud800sh\"",
+        "reason": "surrogates not allowed",
+        "start": 5
+      },
+      "marker_hex": null,
+      "name": "sandbox-program-high",
+      "result": null,
+      "sandbox_calls": 1,
+      "sandbox_mode": "program",
+      "sandbox_received_original": true,
+      "selected_argv_json_ascii": "[\"/bin/\\ud800sh\", \"-c\", \"printf effect > effect.marker; printf '%s' not-run > argument.bytes; printf done\"]"
+    }
+  ],
+  "filesystem_encoding": "utf-8",
+  "filesystem_errors": "surrogateescape",
+  "producer_sha256": "b6a7f7e801863286939fd25dd3ba5ec84a450a2bc85804258e495f788153c0d3",
+  "scope": [
+    "Actual Toolset.run_bash_result with private cwd/relative marker and byte-output files; actual selected sandbox argv and Popen filesystem encoding.",
+    "UTF-8/surrogateescape filesystem profile only. D800/DFFF/DC7F and a bad program/extra argv entry fail before the ASCII marker command can run; DC80/DCFF preserve raw80/ff bytes.",
+    "Selected sandbox argv may repair a nonencodable input command; encoding happens after that selection and applies to each resulting argv entry.",
+    "Exception metadata and messages are retained, not converted to a successful structured result. Durations/PIDs are not comparison inputs.",
+    "Command and argv are embedded as ASCII JSON strings; effects are explicit hex. No test marker is outside its owned case workspace.",
+    "This is the shell effect boundary, not proof of full Agent ledger/next-request handling or arbitrary native byte strings, environment codecs and other filesystem encodings."
+  ],
+  "source_sha256": {
+    "mini_loop/sandbox.py": "d1b71fff2d04bfdeed5be600d8913fcc205a6f83de37fc98fce4eee299c0ecbe",
+    "mini_loop/secrets.py": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+    "mini_loop/tools.py": "8d357c320fddeb93238622be0d6f5fdeb6e7804867ac507c82b2622dcdb22af7"
+  }
+}

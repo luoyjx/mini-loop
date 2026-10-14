@@ -264,6 +264,12 @@ func (handler bashHandler) executeDetailedTool(ctx context.Context, authority To
 	}
 	if executor, ok := handler.executor.(BashResultExecutor); ok {
 		result, err := executor.ExecuteBashResult(ctx, bash)
+		var encoding *shell.ArgumentEncodingError
+		if errors.As(err, &encoding) {
+			// Source raises before Popen returns a CommandResult. A zero
+			// native result must not become observed process metadata.
+			return "", nil, err
+		}
 		return result.Render(), &result, err
 	}
 	output, err := handler.executor.ExecuteBash(ctx, bash)
