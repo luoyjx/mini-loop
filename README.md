@@ -574,7 +574,13 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current operator-input review baseline: `f9dc43b` + fixed public CI bootstrap.
+Current operator-runner review baseline: `a1fb80b` + isolated Linux runner.
+The new development runner records real Linux MemAvailable/PSI and owned RSS,
+keeps 3 GiB / 1 GiB, two cores and offline complete stages, and binds its pressure
+helper with Source provenance. Eight small guard tests pass. Application
+components, authority, defaults and validated runtime inputs are unchanged.
+
+Previous operator-input review baseline: `f9dc43b` + fixed public CI bootstrap.
 The official arm64 Go manifest resolves to the same `874a8b40` configuration as
 the prior local base. Public bootstrap assets preserve the original Source plan,
 capture script and 22-wheel hashes; actual remote stages remain to be run.
