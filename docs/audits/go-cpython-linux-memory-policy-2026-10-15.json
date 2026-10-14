@@ -1,0 +1,51 @@
+{
+  "status": "proposed_requires_explicit_approval_not_executed",
+  "reason": "Host warning observed during fixed-revision Linux full stage; owned container/volume removed, no OOM; retain sealed original monitor and evidence.",
+  "old_profile": {
+    "container_mib": 1536,
+    "gomemlimit": "512MiB",
+    "allowed_pressure": [
+      1,
+      2
+    ]
+  },
+  "proposed_profile": {
+    "container_mib": 768,
+    "swap_mib": 768,
+    "gomemlimit": "256MiB",
+    "allowed_pressure": [
+      1
+    ],
+    "cpus": 2,
+    "gomaxprocs": 2,
+    "go_package_parallel": 1,
+    "test_parallel": 2,
+    "gogc": 75,
+    "nice_minimum": 10,
+    "same_source_revision": "b8dd27af2ddecf6e2dfc881e476f97f639140a43",
+    "network": "none"
+  },
+  "scope_unchanged": [
+    "all packages",
+    "ordinary full tests",
+    "vet",
+    "race",
+    "same six Source overlays",
+    "fixed CPython3.11.3 and actual62 cases",
+    "all assertions and pass criteria"
+  ],
+  "risks": [
+    "The lower hard limit can produce OOM/resource_blocked; no test-scope reduction or automatic budget escalation is authorized."
+  ],
+  "observed": {
+    "stage": "linux-full",
+    "result_sha256": "a02ec405235e979b4eacdf6070971c6f7b8c2340c42840896c1706a8b60d80a1",
+    "cgroup_peak_bytes": {
+      "start.memory.peak": 4562944,
+      "sampled.memory.peak": 994021376
+    },
+    "native_parser_verified": true,
+    "owned_resources_absent": true
+  },
+  "sealed_runner_sha256": "ca200b10a049c5144d207115bbaab9300d9ba536226bf1e3e81309900c607bde"
+}

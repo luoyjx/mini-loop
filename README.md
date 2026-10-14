@@ -574,7 +574,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `30ccaff` plus this CPython slice. The Go full-feature profile
+Current runtime review baseline: `b8dd27a` (fixed CPython slice). The Go full-feature profile
 now selects a fixed external CPython 3.11.3 `ast.parse` diagnostics backend when
 no explicit provider replaces it. The parser receives decoded source over stdin,
 uses isolated interpreter startup, never executes that source, and has two shared
@@ -582,7 +582,10 @@ process slots, bounded input/output and cancellation. Missing or mismatched Pyth
 fails before launcher/audit resources are created. The real 62-case parser suite
 and default Manager/HTTP/CLI integration checks pass. Current host full Go, vet,
 race, exact Python suite, Source contracts and four type audits also pass; current
-Linux validation and the final required-row delta are pending.
+Linux Source six-group validation passes. The native CPython 3.11.3 probe also
+passes; Linux full was stopped after host memory pressure rose, and vet/race were
+not started. A lower-memory validation profile awaits explicit approval; no
+required-row delta is applied.
 The IDNA algorithm, fixed Source property tables and unchanged 84-case consumer
 are preserved as a prepared patch pending explicit module approval; they are not
 adopted runtime behavior. See [this iteration](docs/audits/go-idna-parser-implementation-2026-10-15.md).

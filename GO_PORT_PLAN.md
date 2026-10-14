@@ -2,13 +2,16 @@
 
 ## 2026-10-15 approved fixed CPython diagnostics and prepared IDNA implementation
 
-Baseline `30ccaff`; branch `codex/go-provider-idna`. The user explicitly approved
+Implementation baseline `30ccaff`; delivered runtime `b8dd27a`. The user explicitly approved
 CPython 3.11.3 `ast.parse`. Its real isolated backend and default full-profile
 Manager/Launcher/audit/CLI integration are implemented; the first diagnostics
 package gate passes all 62 actual parser cases plus retained scanner/injection
 recipes. Host full Go/vet/race, the exact Python suite, Source contracts, repository
-verifiers and four type audits pass. Current-commit Linux validation and the final
-required-row delta are pending.
+verifiers and four type audits pass. Current-commit Linux Source six-group capture
+and the fixed native CPython probe pass. Linux full is resource-blocked after a
+host-pressure warning; vet/race were not started. The [proposed lower-memory
+profile](docs/audits/go-cpython-linux-memory-policy-2026-10-15.json) awaits explicit
+approval. Original limits and all failed/stopped attempts remain unchanged.
 
 The two fixed IDNA modules were not explicitly approved: automatic approval
 rejected the download after the generic continuation. No module was downloaded

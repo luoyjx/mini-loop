@@ -1,6 +1,6 @@
 # Go IDNA 与固定 CPython 语法后端：实现与验证进展 — 2026-10-15
 
-> **状态：CPython 主机必需门禁已通过，当前提交的 Linux 门禁待验证。** IDNA 仅保留为未应用准备补丁；
+> **状态：CPython 主机必需门禁已通过；Linux full 因主机内存压力停止，vet/race 未开始。** IDNA 仅保留为未应用准备补丁；
 > 当前生产 provider 和模块文件已还原。本文不能代替最终提交、批准状态、资源记录和 receipt。
 
 ## 当前交付边界
@@ -11,7 +11,7 @@
 
 | 项目 | 写稿时状态 | 仍需完成 |
 | --- | --- | --- |
-| 外部 CPython 3.11.3 `ast.parse` | 用户已明确批准；实际 62-case consumer 和既有 diagnostics focused 已通过 | 当前提交的 Linux Source/full/vet/race 与最终收据 |
+| 外部 CPython 3.11.3 `ast.parse` | 用户已明确批准；实际 62-case consumer 和既有 diagnostics focused 已通过 | Linux Source 已通过；完整 full/vet/race 待获批的新资源方案和最终完整收据 |
 | `golang.org/x/net v0.43.0`、`golang.org/x/text v0.28.0` | 明确依赖批准仍待回复；下载请求被自动审批拒绝，未绕过；`go.mod` 已还原 | 明确批准后安装固定版本，再编译和验证 IDNA 实现 |
 | IDNA 算法、固定 Source 属性表、84-case native consumer | 已保存为六文件准备补丁，未应用；尚无通过证据 | 明确依赖批准后恢复实现并运行实际消费者和完整门禁 |
 | required-row 账本 | **339 bounded verified / 0 evidence-incomplete / 5 dependency-blocked**，本轮未应用 delta | 仅在实现和必需验证完成后更新相应行 |
@@ -223,9 +223,9 @@ Launcher 和 catalogue/gate 接入，橙色注明 IDNA 依赖待批准。
 | 默认 Manager/full HTTP 与显式 provider/catalogue 替换 | focused 与主机 full/race passed |
 | `go test ./...`、`go vet ./...`、`go test -race ./...` 和所需类型边界审计 | 主机三项 passed；480 production files / 1506 package types，52 packages / 1227 public roots / 290 private roots / 176 variables，均零 findings |
 | 精确文档命令 `.venv/bin/python -m pytest -q`、相关 Source contract 校验及适用 verifier | 2256 passed / 28 skipped / 104 warnings；268 contracts、77 invariants、19 scans passed。Python guards/anchors 未改，本轮未重跑 mutation guards |
-| 当前提交的 Linux 解释器、Source/native/full/vet/race 与资源回收证据 | pending |
-| README、计划矩阵、canonical/交互架构及基础图/迭代图 | 基础与迭代 PNG 已用 built-in imagegen 更新并视觉检查；交互图 precommit showcase 9/9、零 errors/warnings；最终状态待平台门禁后同步 |
-| 当前覆盖率、最终运行时 SHA、receipt、required-row delta | pending；**339/0/5 暂不改动** |
+| 当前提交的 Linux 解释器、Source/native/full/vet/race 与资源回收证据 | Source 六组 passed；actual native 3.11.3 probe passed；full resource-blocked；vet/race not started；容器/volume 清理确认完成、无 OOM |
+| README、计划矩阵、canonical/交互架构及基础图/迭代图 | 基础与迭代 PNG 已用 built-in imagegen 更新并视觉检查；交互图 showcase 9/9、零 errors/warnings；当前资源受阻状态同步 |
+| 当前覆盖率、最终运行时 SHA、receipt、required-row delta | 覆盖率已采集，运行时 `b8dd27a`；交付 progress receipt；完整 17 门 receipt 和 3 行 delta 未发布，**339/0/5 不变** |
 
 只有相应实现、实际消费者和必需门禁完成后，最终 receipt 才能说明哪些 required rows
 获得新的有限证明。任何失败、手动停止、未批准依赖或未验证平台都继续保留在交付记录中。
@@ -235,3 +235,38 @@ Launcher 和 catalogue/gate 接入，橙色注明 IDNA 依赖待批准。
 原有 showcase 规则全部通过；失败记录原样保留。基础/本轮 PNG 已视觉检查；
 交互 HTML 的浏览器视觉检查因先前浏览器访问未获批准而 **skipped**，
 没有将结构检查冒充视觉通过。
+
+## 提交、平台停止和下一步
+
+- `c40d597`：保存未应用 IDNA 补丁、固定属性来源和准确生成器归档。
+- `b8dd27af2ddecf6e2dfc881e476f97f639140a43`：固定 CPython 后端、默认 full
+  组合、真实消费者、相关文档和架构。主机验证绑定 1,849 个当前输入；
+  Go/Python/AGENTS/pytest.ini 字节在运行期间保持不变。
+- [本轮 progress receipt](go-cpython-diagnostics-progress-2026-10-15.json)只记录已完成
+  和受阻的实际检查：**14/17 门通过**（13 项主机/架构检查与 Linux Source），
+  Linux full resource-blocked、vet/race 未开始。完整收据构建器仍要求全部 17 门，
+  不接受缺失 Linux 门禁；progress 组装校验本身也在原资源监控下通过。
+
+Linux 镜像为
+`sha256:027571c4ab6d7570737a40290703adb9d91ecf9780aea2d2983dbf132156548b`。
+现有固定 Go 1.23.3 image ID 加上固定官方 CPython 3.11.3 image digest 构建该镜像；
+构建断网。Source 的六组平台夹具仍由 `/usr/bin/python3` 3.11.2 实际产生；
+native 使用 `/usr/local/bin/python3.11` 3.11.3，版本、隔离参数与必需 imports
+在当前容器中再次探测。两种解释器的证据不混用。
+
+Linux full 在约 33.15 秒首次观察到主机压力 warning；原始监控允许值仍为 1/2，
+root 按最新 AGENTS 要求人工向核对过身份的本任务 runner 发出 SIGTERM。
+原始终态为 `resource_blocked / signal 15`；所属容器与 volume 均已移除，清理无错误，
+无 OOM。记录到的 cgroup charged peak 为 994,021,376 bytes（约 948 MiB）。
+此指标与主机进程树 RSS、Docker working set 不同，不能当作单一进程的物理 RAM。
+
+[较低内存的明确方案](go-cpython-linux-memory-policy-2026-10-15.json)：容器上限
+1.5 GiB → 768 MiB，Go 软目标 512 → 256 MiB，首次 warning 自动停止；保留全部包、
+测试、assertions、两核、包并发一及 test parallel 二。该方案尚未获批、未执行；
+原封板脚本、阈值和停止记录均未改动。低上限可能产生资源受阻，不能预先承诺通过。
+该方案保持 swap 禁用；proposal 的 `swap_mib` 表示 Docker `--memory-swap`
+总上限，等于容器 RAM cap，未增加额外 swap。
+
+原始 344 行账本保持 339/0/5。三个 parser 条目已获得实现和主机证据，待当前
+Linux full/vet/race 完成后才能应用三行 delta；两个 IDNA 条目仍需明确依赖批准
+和真实 84-case 消费者验证。未刷新 CI，也未宣布整体迁移完成。
