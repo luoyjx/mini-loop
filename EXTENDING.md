@@ -438,6 +438,45 @@ SessionManager(settings, client, system_builder=build)
 Or skip building entirely with a fixed string: `Agent(..., system="...")`
 (also what the API's `POST /sessions {"system": "..."}` does per session).
 
+### Go typed prompt composition
+
+The corresponding public helpers in `go/agent/prompt_composition.go` use the
+existing `SystemBuilder` seam and an owner-bound `memory.ScopedStore`:
+
+| Source helper | Go API | Explicit behavior |
+| --- | --- | --- |
+| `sections_builder` | `agent.SectionsBuilder` | Evaluate static strings and typed callbacks in order, omit empty results, preserve whitespace, join with blank lines; stop on the first callback error. |
+| `runtime_facts` | `agent.RuntimeFacts` | Render caller-supplied todo/token observations and scoped memory facts; list memory before checking recall availability, and read its index only when nonempty and available. |
+| `memory_system_builder` | `agent.MemorySystemBuilder` | Build the base first, then read the current scoped index, including its empty-store placeholder. |
+
+For an existing `agent.RuntimeConfig`, select a builder explicitly:
+
+```go
+build := agent.SectionsBuilder(
+    agent.StaticSystemSection("You are AcmeBot. Always cite sources."),
+    agent.SystemBuilderFunc(func(value agent.SystemContext) (string, error) {
+        return "Workspace: " + value.Workspace, nil
+    }),
+)
+runtimeConfig.SystemBuilder = build
+```
+
+`RuntimeFacts(ctx, agent.RuntimeFactsContext{...})` accepts the caller's
+`UsedTokens` observation and `TokenThreshold`, todos, scoped memory and recall
+availability; it does not derive a session's meter policy or publish the result.
+`MemorySystemBuilder(ctx, build, scopedStore)` is an explicit opt-in to the
+legacy memory-in-system shape. Its context and store must remain usable for the
+builder's lifetime; each build reads the live index. The caller owns callback
+state and synchronization; `SectionsBuilder` copies only the section slice.
+
+The finite Source contracts cover strings and string/`None`/error callbacks
+(`None` maps to an empty Go string), valid frozen `Settings` thresholds and
+owner-scoped memory. Arbitrary Python object stringification and unscoped store
+overrides are outside this typed API. Missing native dependencies return
+`PromptCompositionError`; callback/store errors propagate. These helpers are
+not installed automatically, and preserve the default ownership of volatile
+facts in the message stream and the stable system prompt.
+
 ---
 
 ## 4. Context compaction — `Compactor`

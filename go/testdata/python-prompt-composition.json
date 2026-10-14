@@ -1,0 +1,993 @@
+{
+  "memory_system": [
+    {
+      "first_index_exists": false,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "empty-base-empty-store",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [],
+        "seeds": []
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "\n\nKnown user memories (use `recall` to load full text):\n(no memories yet)"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "first_index_exists": false,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "base-empty-store",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "base"
+          }
+        ],
+        "seeds": []
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "base\n\nKnown user memories (use `recall` to load full text):\n(no memories yet)"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "first_index_exists": true,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "owner-scope",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "base"
+          }
+        ],
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "base\n\nKnown user memories (use `recall` to load full text):\n  - alpha [project]: Owner facts"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "first_index_exists": true,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "empty-base-owned",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [],
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "\n\nKnown user memories (use `recall` to load full text):\n  - alpha [project]: Owner facts"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "first_index_exists": true,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "composed-base",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "one"
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "base",
+            "text": "two"
+          }
+        ],
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "one\n\ntwo\n\nKnown user memories (use `recall` to load full text):\n  - alpha [project]: Owner facts"
+        }
+      ],
+      "trace": [
+        "base"
+      ]
+    },
+    {
+      "first_index_exists": false,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "base-fault-before-index",
+        "owner": "alice",
+        "second_write": null,
+        "sections": [
+          {
+            "error": true,
+            "kind": "callback",
+            "label": "failed",
+            "text": ""
+          }
+        ],
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": {
+            "kind": "ValueError",
+            "message": "section fault"
+          },
+          "output": ""
+        }
+      ],
+      "trace": [
+        "failed"
+      ]
+    },
+    {
+      "first_index_exists": true,
+      "first_records_unchanged": true,
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "live-index",
+        "owner": "alice",
+        "second_write": {
+          "body": "second body",
+          "description": "Added later",
+          "name": "beta",
+          "owner": "alice",
+          "type": "reference"
+        },
+        "sections": [
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "base",
+            "text": "base"
+          }
+        ],
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "base\n\nKnown user memories (use `recall` to load full text):\n  - alpha [project]: Owner facts"
+        },
+        {
+          "error": null,
+          "output": "base\n\nKnown user memories (use `recall` to load full text):\n  - beta [reference]: Added later\n  - alpha [project]: Owner facts"
+        }
+      ],
+      "trace": [
+        "base",
+        "base"
+      ]
+    }
+  ],
+  "producer_sha256": "171f371618c5fe63537bfd1f20c3cc8757110fb0df06daac8cb5f113541eb3a7",
+  "python_version": "3.11.3",
+  "runtime_facts": [
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "",
+      "recipe": {
+        "memory": false,
+        "name": "empty",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Current TodoWrite state:\n[x] Plan 中文\n[>] Implement <- Implementing\n\n(1/2 completed)",
+      "recipe": {
+        "memory": false,
+        "name": "todos",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [
+          {
+            "activeForm": "Planning",
+            "content": "Plan 中文",
+            "status": "completed"
+          },
+          {
+            "activeForm": "Implementing",
+            "content": "Implement",
+            "status": "in_progress"
+          }
+        ],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [
+        {
+          "activeForm": "Planning",
+          "content": "Plan 中文",
+          "status": "completed"
+        },
+        {
+          "activeForm": "Implementing",
+          "content": "Implement",
+          "status": "in_progress"
+        }
+      ],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "",
+      "recipe": {
+        "memory": false,
+        "name": "pressure-below",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 74
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 74
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Context is over 75% full; older tool output may be cleared automatically to make room. The `compress` tool frees space deliberately.",
+      "recipe": {
+        "memory": false,
+        "name": "pressure-75",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 75
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 75
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Context is over 75% full; older tool output may be cleared automatically to make room. The `compress` tool frees space deliberately.",
+      "recipe": {
+        "memory": false,
+        "name": "pressure-89",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 89
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 89
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Context is over 90% full; older tool output may be cleared automatically to make room. The `compress` tool frees space deliberately.",
+      "recipe": {
+        "memory": false,
+        "name": "pressure-90",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 90
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 90
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Context is over 90% full; older tool output may be cleared automatically to make room. The `compress` tool frees space deliberately.",
+      "recipe": {
+        "memory": false,
+        "name": "pressure-over",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 125
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 125
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "",
+      "recipe": {
+        "memory": true,
+        "name": "memory-empty",
+        "owner": "alice",
+        "recall": true,
+        "seeds": [],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": true,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Known user memories (use `recall` for full text):\n  - alpha [project]: Owner facts",
+      "recipe": {
+        "memory": true,
+        "name": "memory-owned",
+        "owner": "alice",
+        "recall": true,
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "",
+      "recipe": {
+        "memory": true,
+        "name": "memory-no-recall",
+        "owner": "alice",
+        "recall": false,
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": false,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "",
+      "recipe": {
+        "memory": true,
+        "name": "memory-foreign-only",
+        "owner": "alice",
+        "recall": true,
+        "seeds": [
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": true,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Known user memories (use `recall` for full text):\n  - anonymous [reference]: Anonymous facts",
+      "recipe": {
+        "memory": true,
+        "name": "memory-anonymous",
+        "owner": "anonymous",
+        "recall": true,
+        "seeds": [
+          {
+            "body": "anonymous body",
+            "description": "Anonymous facts",
+            "name": "anonymous",
+            "owner": "anonymous",
+            "type": "reference"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ],
+        "threshold": 100,
+        "todos": [],
+        "used": 0
+      },
+      "records_unchanged": true,
+      "todos": [],
+      "used_tokens": 0
+    },
+    {
+      "default_system_unchanged": true,
+      "index_exists": true,
+      "messages_unchanged": true,
+      "meter_unchanged": true,
+      "output": "Current TodoWrite state:\n[x] Plan 中文\n[>] Implement <- Implementing\n\n(1/2 completed)\n\nContext is over 90% full; older tool output may be cleared automatically to make room. The `compress` tool frees space deliberately.\n\nKnown user memories (use `recall` for full text):\n  - alpha [project]: Owner facts",
+      "recipe": {
+        "memory": true,
+        "name": "combined",
+        "owner": "alice",
+        "recall": true,
+        "seeds": [
+          {
+            "body": "private body",
+            "description": "Owner facts",
+            "name": "alpha",
+            "owner": "alice",
+            "type": "project"
+          },
+          {
+            "body": "foreign body",
+            "description": "Foreign facts",
+            "name": "foreign",
+            "owner": "bob",
+            "type": "feedback"
+          }
+        ],
+        "threshold": 100,
+        "todos": [
+          {
+            "activeForm": "Planning",
+            "content": "Plan 中文",
+            "status": "completed"
+          },
+          {
+            "activeForm": "Implementing",
+            "content": "Implement",
+            "status": "in_progress"
+          }
+        ],
+        "used": 90
+      },
+      "records_unchanged": true,
+      "todos": [
+        {
+          "activeForm": "Planning",
+          "content": "Plan 中文",
+          "status": "completed"
+        },
+        {
+          "activeForm": "Implementing",
+          "content": "Implement",
+          "status": "in_progress"
+        }
+      ],
+      "used_tokens": 90
+    }
+  ],
+  "scope": "Actual root public helpers with real Agent/TodoManager/owner-scoped MemoryStore; static strings and string/None/error callbacks only. No arbitrary Python str(object) contract. Runtime used_tokens is actual context_used observation; token_threshold stays within the public frozen Settings constructor domain (at least 1). No provider, shell, default system mutation or new runtime wiring.",
+  "sections": [
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "empty",
+        "sections": []
+      },
+      "results": [
+        {
+          "error": null,
+          "output": ""
+        }
+      ],
+      "trace": []
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "empty-static",
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": ""
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": ""
+        }
+      ],
+      "trace": []
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "whitespace",
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": " "
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "\n"
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "end\n"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": " \n\n\n\n\nend\n"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "static-order",
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "first"
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "中\nsecond"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "first\n\n中\nsecond"
+        }
+      ],
+      "trace": []
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "mixed-empty",
+        "sections": [
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "base"
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "a",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "b",
+            "text": "dynamic"
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": ""
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "base\n\ndynamic"
+        }
+      ],
+      "trace": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "callback-none",
+        "sections": [
+          {
+            "error": false,
+            "kind": "none",
+            "label": "none",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "static",
+            "label": "",
+            "text": "kept"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "kept"
+        }
+      ],
+      "trace": [
+        "none"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "all-callback-empty",
+        "sections": [
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "a",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "none",
+            "label": "b",
+            "text": ""
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": ""
+        }
+      ],
+      "trace": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "context",
+        "sections": [
+          {
+            "error": false,
+            "kind": "workspace",
+            "label": "where",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "tools",
+            "label": "tools",
+            "text": ""
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "Workspace: <workspace>\n\nTools: "
+        }
+      ],
+      "trace": [
+        "where",
+        "tools"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "failure-first",
+        "sections": [
+          {
+            "error": true,
+            "kind": "callback",
+            "label": "failed",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "never",
+            "text": "late"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": {
+            "kind": "ValueError",
+            "message": "section fault"
+          },
+          "output": ""
+        }
+      ],
+      "trace": [
+        "failed"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "name": "failure-middle",
+        "sections": [
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "first",
+            "text": "early"
+          },
+          {
+            "error": true,
+            "kind": "callback",
+            "label": "failed",
+            "text": ""
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "never",
+            "text": "late"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": {
+            "kind": "ValueError",
+            "message": "section fault"
+          },
+          "output": ""
+        }
+      ],
+      "trace": [
+        "first",
+        "failed"
+      ]
+    },
+    {
+      "messages_unchanged": true,
+      "recipe": {
+        "builds": 2,
+        "name": "repeated-build",
+        "sections": [
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "one",
+            "text": "same"
+          },
+          {
+            "error": false,
+            "kind": "callback",
+            "label": "two",
+            "text": "same"
+          }
+        ]
+      },
+      "results": [
+        {
+          "error": null,
+          "output": "same\n\nsame"
+        },
+        {
+          "error": null,
+          "output": "same\n\nsame"
+        }
+      ],
+      "trace": [
+        "one",
+        "two",
+        "one",
+        "two"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "compaction.py": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+    "config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+    "memory.py": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+    "metering.py": "00d1d2cd458e0c336b361841e2906acf1e0ccb8124195162a463cdecad178de8",
+    "prompts.py": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e"
+  }
+}

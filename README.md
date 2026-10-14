@@ -570,7 +570,16 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `9950878`. Configuration parsing now follows
+Current runtime review baseline: local main `78d95bc`. The existing Context
+layer now exposes typed `SectionsBuilder`, `RuntimeFacts` and
+`MemorySystemBuilder` through the existing SystemBuilder and owner-scoped memory
+seams. Thirty-one actual Source cases cover ordering, empty filtering, pressure
+bands, scope, current index reads and failures. Inputs and dependency lifetimes
+remain caller-owned; default prompt wiring is unchanged. See
+[the typed composition seam](EXTENDING.md#go-typed-prompt-composition).
+Full original migration acceptance remains open.
+
+Previous runtime review baseline: `9950878`. Configuration parsing now follows
 Python `str.strip` for U+001C–U+001F in booleans, modes, AST settings, blank
 numeric defaults, blank path selection and decision credential validation.
 Nonempty numeric input still uses the numeric parser's narrower whitespace
@@ -1045,7 +1054,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>integer stuck thresholds / named Source slice faults<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
+        GoContext["Context pipeline · typed public helper SDK<br/>explicit sections / runtime facts / scoped memory builders<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
