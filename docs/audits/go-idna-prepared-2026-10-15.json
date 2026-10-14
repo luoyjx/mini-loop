@@ -1,0 +1,194 @@
+{
+  "status": "prepared_not_applied_pending_explicit_module_approval",
+  "implementation_verified": false,
+  "dependencies": [
+    "golang.org/x/net v0.43.0",
+    "golang.org/x/text v0.28.0"
+  ],
+  "patch": "docs/audits/go-idna-prepared-2026-10-15.patch",
+  "patch_sha256": "2a893caf86734bab5945bfd5598ce552133302ace3961727fde57a2fc89e2e6c",
+  "files": {
+    "go/provider/client.go": {
+      "bytes": 15092,
+      "sha256": "1e8a7eaaf4a575ec8c3fbc12543d21a4c4e97ca709bfbe68fb4e5db272e93238"
+    },
+    "go/provider/endpoint.go": {
+      "bytes": 3717,
+      "sha256": "d494c8089d69e24c4b8bb1f384cb399345da51b4a5bf5f441fe20fda480bcffb"
+    },
+    "go/provider/idna.go": {
+      "bytes": 6139,
+      "sha256": "79f8130fc9991c029ae8b04ef04685064b4392be37f197cf09c8347448f3f49b"
+    },
+    "go/provider/idna_tables.go": {
+      "bytes": 61391,
+      "sha256": "29155b01bd1ca01f3c5d895cc19e6a0aec34e067279b71531c7ec15ad58f639c"
+    },
+    "go/provider/IDNA_DATA_LICENSE.txt": {
+      "bytes": 15928,
+      "sha256": "0103fdeb3b81cceffaf4f008fb4925e98f055346029d7f91c145fe91e852ef73"
+    },
+    "go/provider/provider_idna_required_test.go": {
+      "bytes": 12219,
+      "sha256": "963fa0349b169843a3407639f26a24c8e0cac6eebdca6280e1c6a8406c527085"
+    }
+  },
+  "note": "Original sealed consumer and 6/78 failing baseline retained separately. No Go dependency has been added/downloaded. Restoring this patch also requires the approved fixed go.mod entries; patch itself intentionally does not change go.mod. Zero-context format avoids whitespace diagnostics from nested diff context; apply using --unidiff-zero.",
+  "source_property_tables": {
+    "status": "generated_fixed_source_properties_only_not_runtime_validation",
+    "profile": {
+      "python_implementation": "CPython",
+      "python_version": "3.11.3",
+      "unicode_version": "14.0.0",
+      "idna_version": "3.18",
+      "idna_table_unicode_version": "17.0.0"
+    },
+    "inputs": [
+      {
+        "path": ".venv/lib/python3.11/site-packages/idna/core.py",
+        "bytes": 24685,
+        "sha256": "49f3abd713b73e8134443631edb31c8809e38b28c93db3f0ffddc007921460ec"
+      },
+      {
+        "path": ".venv/lib/python3.11/site-packages/idna/idnadata.py",
+        "bytes": 44862,
+        "sha256": "01ffa6a3c5819a48402ba4f25ca3901fcf0e5f49903432ad74bed45ad429a699"
+      },
+      {
+        "path": ".venv/lib/python3.11/site-packages/idna/intranges.py",
+        "bytes": 1851,
+        "sha256": "838f6c70b4a4a89b4084b98e3836bb8551eb8928e66fad2d893b04a287097412"
+      },
+      {
+        "path": "/opt/homebrew/Cellar/python@3.11/3.11.3/Frameworks/Python.framework/Versions/3.11/lib/python3.11/lib-dynload/unicodedata.cpython-311-darwin.so",
+        "bytes": 1163118,
+        "sha256": "3de6cd764bd464d6871159bb833cc568a258e4f1e6cfe4dd8ae3a5825fe50ee4"
+      }
+    ],
+    "interpreter": {
+      "path": "/opt/homebrew/Cellar/python@3.11/3.11.3/Frameworks/Python.framework/Versions/3.11/bin/python3.11",
+      "bytes": 52640,
+      "sha256": "d0da4fe6257b3273db927fc6f332a298b09102f19d79186064f9d999cace7fa6"
+    },
+    "fixture": {
+      "path": "go/testdata/python-provider-idna.json",
+      "bytes": 53047,
+      "sha256": "339cee6b3f6fbda1f207551d1d9e03319b90f5c6af4509dab7a6e02d0b388eab"
+    },
+    "generator": {
+      "path": "var/go-idna-implementation-2026-10-14/generate-idna-tables.py",
+      "bytes": 9459,
+      "sha256": "700ce670ec2b3d815cb9860e3b525d117b7a4bff4b6705db597cc732b41407f5"
+    },
+    "license_inputs": [
+      {
+        "path": ".venv/lib/python3.11/site-packages/idna-3.18.dist-info/licenses/LICENSE.md",
+        "bytes": 1541,
+        "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+      },
+      {
+        "path": "/opt/homebrew/Cellar/python@3.11/3.11.3/Frameworks/Python.framework/Versions/3.11/lib/python3.11/LICENSE.txt",
+        "bytes": 13936,
+        "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "go/provider/idna_tables.go",
+        "bytes": 61391,
+        "sha256": "29155b01bd1ca01f3c5d895cc19e6a0aec34e067279b71531c7ec15ad58f639c"
+      },
+      {
+        "path": "go/provider/IDNA_DATA_LICENSE.txt",
+        "bytes": 15928,
+        "sha256": "0103fdeb3b81cceffaf4f008fb4925e98f055346029d7f91c145fe91e852ef73"
+      }
+    ],
+    "properties": {
+      "PValid": {
+        "ranges": 1237,
+        "codepoints": 143208
+      },
+      "ContextJ": {
+        "ranges": 1,
+        "codepoints": 2
+      },
+      "ContextO": {
+        "ranges": 6,
+        "codepoints": 25
+      },
+      "Greek": {
+        "ranges": 36,
+        "codepoints": 518
+      },
+      "Hebrew": {
+        "ranges": 9,
+        "codepoints": 134
+      },
+      "Han": {
+        "ranges": 21,
+        "codepoints": 103351
+      },
+      "Hiragana": {
+        "ranges": 6,
+        "codepoints": 381
+      },
+      "Katakana": {
+        "ranges": 14,
+        "codepoints": 321
+      },
+      "KnownDirection": {
+        "ranges": 698,
+        "codepoints": 284278
+      },
+      "Virama": {
+        "ranges": 55,
+        "codepoints": 63
+      },
+      "Mark": {
+        "ranges": 299,
+        "codepoints": 2408
+      }
+    },
+    "joining": {
+      "ranges": 524,
+      "classes": [
+        "L",
+        "R",
+        "D",
+        "T"
+      ],
+      "other_classes_return_zero": true
+    },
+    "apis": [
+      "sourceIDNAPValid(rune) bool",
+      "sourceIDNAContextJ(rune) bool",
+      "sourceIDNAContextO(rune) bool",
+      "sourceIDNAGreek(rune) bool",
+      "sourceIDNAHebrew(rune) bool",
+      "sourceIDNAHan(rune) bool",
+      "sourceIDNAHiragana(rune) bool",
+      "sourceIDNAKatakana(rune) bool",
+      "sourceIDNAKnownDirection(rune) bool",
+      "sourceIDNAVirama(rune) bool",
+      "sourceIDNAMark(rune) bool",
+      "sourceIDNAJoiningType(rune) byte"
+    ],
+    "rebuild_command": ".venv/bin/python var/go-idna-implementation-2026-10-14/generate-idna-tables.py",
+    "scope": "Only generated Unicode property tables; no Go test/build, Source capture, dependency installation or runtime parity claim."
+  },
+  "last_executed_native_baseline": "docs/audits/go-provider-idna-required-baseline-2026-10-14.json",
+  "last_baseline_subtests": {
+    "passed": 6,
+    "failed": 78
+  },
+  "explicit_dependency_approval_received": false,
+  "automatic_review_rejected_download": true,
+  "archived_generator": {
+    "path": "docs/audits/go-idna-properties-generator-2026-10-15.py",
+    "bytes": 9459,
+    "sha256": "700ce670ec2b3d815cb9860e3b525d117b7a4bff4b6705db597cc732b41407f5",
+    "note": "Exact original generator bytes, including original output header and private provenance location. Run only after restoring the prepared runtime files; --check compares without replacing generated files."
+  },
+  "patch_format": "zero-context unified diff; git apply --unidiff-zero"
+}
