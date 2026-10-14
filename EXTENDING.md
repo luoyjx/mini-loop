@@ -1808,6 +1808,17 @@ they own physical encoding and routing. URL.EscapedPath is the canonical Go view
 not HTTPX raw_path. This does not establish arbitrary custom transport, HTTP/2 or
 broader IDNA parity.
 
+Provider hostname admission uses the complete fixed Source IDNA profile:
+whole-domain ASCII bypass precedes Python Unicode14 lowercasing; Unicode labels
+must already be NFC. Project-owned RFC3492 codec and Unicode14 NFC/Bidi routines
+consume generated fixed properties; IDNA performs no Python process call and
+adds no Go module. idna3.18 Unicode17 validity/context/script/joining data and
+upstream notices remain embedded. Original Config.BaseURL identity is distinct
+from the ASCII request target. Invalid Unicode labels fail construction; the
+captured malformed ASCII A-label remains a request-preparation refusal. Existing
+transport routing/pool ownership is unchanged. The actual84 direct/SSE request
+object profile does not establish arbitrary custom transport or TLS behavior.
+
 `Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
 override static headers with last-value precedence. Header names/values are
 validated and copied during construction. Both direct and streaming errors scrub

@@ -3,24 +3,28 @@ package provider
 import (
 	"bytes"
 	"context"
+	"errors"
 	"net"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
 
 // Base has already passed New's endpoint admission. Preserve HTTPX's raw path:
 // HTTPX removes literal dot segments, leaving percent-encoded dots opaque, and
 // the SDK adds a slash only when absent before appending the relative endpoint.
 type endpointTarget struct {
-	url     string
-	rawPath string
-	literal bool
+	url         string
+	rawPath     string
+	literal     bool
+	invalidIDNA bool
 }
 
-func providerRequestTarget(base *url.URL, configured string) endpointTarget {
+func providerRequestTarget(base *url.URL, configured string) (endpointTarget, error) {
+	host, err := providerRequestAuthority(base)
+	if err != nil {
+		return endpointTarget{}, err
+	}
 	// New has already validated the URL. Read original path bytes so escapes
 	// introduced by net/url cannot erase HTTPX's literal backslash/caret/pipe.
 	authority := strings.Index(configured, "://") + 3
@@ -55,13 +59,14 @@ func providerRequestTarget(base *url.URL, configured string) endpointTarget {
 	// Original percent escapes passed parsing; newly quoted bytes are valid too.
 	decoded, _ := url.PathUnescape(path)
 	target := *base
-	target.Host = providerRequestAuthority(base)
+	target.Host = host
 	target.Path, target.RawPath = decoded, path
 	literal := strings.ContainsAny(path, "\\^|")
 	if literal {
 		target.Opaque = "//" + target.Host + path
 	}
-	return endpointTarget{url: target.String(), rawPath: path, literal: literal}
+	return endpointTarget{url: target.String(), rawPath: path, literal: literal,
+		invalidIDNA: !providerIDNARequestValid(target.Hostname())}, nil
 }
 
 // HTTPX's PATH_SAFE excludes space, quotes, #<>?`{} and non-ASCII bytes.
@@ -83,6 +88,9 @@ func quoteProviderPath(path string) string {
 }
 
 func (target endpointTarget) request(ctx context.Context, body []byte) (*http.Request, error) {
+	if target.invalidIDNA {
+		return nil, errors.New("invalid provider IDNA hostname")
+	}
 	request, err := http.NewRequestWithContext(ctx, http.MethodPost, target.url, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
@@ -96,13 +104,15 @@ func (target endpointTarget) request(ctx context.Context, body []byte) (*http.Re
 
 // Normalize the accepted authority at the request boundary. IPv6 literals and
 // zone identifiers retain their spelling; configured audit identity is separate.
-func providerRequestAuthority(base *url.URL) string {
+func providerRequestAuthority(base *url.URL) (string, error) {
 	host := base.Hostname()
 	ipv6 := strings.Contains(host, ":")
-	// HTTPX lowercases the whole hostname before IDNA, including expansion
-	// and contextual final sigma. Use the captured Python Unicode tables.
 	if !ipv6 {
-		host = pytext.Lower(host)
+		var err error
+		host, err = providerEncodedHostname(host)
+		if err != nil {
+			return "", err
+		}
 	}
 	port := strings.TrimLeft(base.Port(), "0")
 	if base.Port() != "" && port == "" {
@@ -112,10 +122,10 @@ func providerRequestAuthority(base *url.URL) string {
 		port = ""
 	}
 	if port != "" {
-		return net.JoinHostPort(host, port)
+		return net.JoinHostPort(host, port), nil
 	}
 	if ipv6 {
-		return "[" + host + "]"
+		return "[" + host + "]", nil
 	}
-	return host
+	return host, nil
 }

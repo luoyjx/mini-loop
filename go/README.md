@@ -18,11 +18,13 @@ Manager/full HTTP and CLI integration are covered by focused tests. The
 iteration evidence linked below records the final full/vet/race and Linux gates;
 focused results alone do not establish whole-port acceptance.
 
-IDNA is retained only as an **unapplied prepared patch**, pending explicit
-approval of `x/net v0.43.0` and `x/text v0.28.0`. The provider implementation and
-module files have been restored; neither dependency has been adopted or
-downloaded. The remaining required-row ledger is recorded with the final evidence. See the
-[current implementation and evidence boundary](../docs/audits/go-idna-parser-implementation-2026-10-15.md).
+Provider IDNA now uses project-owned native RFC3492 Punycode and complete
+fixed Source Unicode14 NFC/Bidi plus idna3.18 Unicode17 property data. It launches
+no Python process and adds no Go module. The original84 Source direct/SSE
+observations remain unchanged. See the
+[native IDNA implementation and validation boundary](../docs/audits/go-native-idna-2026-10-15.md).
+Earlier CPython results remain bound to their recorded revision; Linux resource
+policy approval and the complete migration receipt remain separate gates.
 
 This directory is the independent Go port of the Python runtime in `../python/`.
 It is under construction. The httpapi package provides an embeddable HTTP/SSE

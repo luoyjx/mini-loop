@@ -574,7 +574,25 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `b8dd27a` (fixed CPython slice). The Go full-feature profile
+Current runtime review baseline: `77a57cb` + native IDNA slice. Go provider
+hostname admission now uses project-owned RFC 3492 Punycode and complete fixed
+Source data: CPython Unicode 14 NFC/direction/mark/virama properties, plus
+idna 3.18 Unicode 17 validity, context, script and joining properties. The whole-host
+ASCII bypass is chosen before Unicode lowercasing. Unicode labels must already
+be NFC; this does not repair spelling through UTS 46. Constructor and request
+refusals preserve the captured Source phase, while the configured audit identity
+stays separate from the encoded request target. IDNA adds no Go module and
+launches no Python process. Generated Source data and upstream notices are
+retained with reproducible exporters. Current host full Go, vet, race, exact
+Python suite,268 Source contracts, four type audits and generated-byte checks
+pass on the same1864 inputs. The unchanged84 IDNA cases pass in ordinary and
+race tests; native NFC/Punycode also compare actual fixed Source observations.
+Application statement coverage is85.53% (per-package, tools excluded). The
+original required-row ledger remains339/0/5 until the complete platform receipt
+and explicit delta. Linux resource settings remain sealed pending lower-memory
+profile approval. See [the native IDNA iteration](docs/audits/go-native-idna-2026-10-15.md).
+
+Previous runtime review baseline: `b8dd27a` (fixed CPython slice). The Go full-feature profile
 now selects a fixed external CPython 3.11.3 `ast.parse` diagnostics backend when
 no explicit provider replaces it. The parser receives decoded source over stdin,
 uses isolated interpreter startup, never executes that source, and has two shared
@@ -1122,7 +1140,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>Python whitespace / ordered duplicate-owner diagnostics<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · SDK Unicode observations / strict next-request encoding · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / strict Source IDNA14+17 / project-owned NFC and RFC3492 / default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · SDK Unicode observations / strict next-request encoding · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain<br/>detached raw-artifact limits / closed posture"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]

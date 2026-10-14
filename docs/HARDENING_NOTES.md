@@ -1,5 +1,31 @@
 # Hardening notes
 
+## 2026-10-15 native IDNA admission and fixed Unicode data
+
+Provider IDNA is now a native port using project-owned RFC3492 Punycode,
+complete CPython3.11.3 Unicode14 NFC/Bidi and idna3.18 Unicode17 properties.
+No unapproved Go module was downloaded or copied; retained generated Source data
+has explicit licensing and deterministic exporters. IDNA does not call Python.
+The earlier prepared-module proposal remains historical and unapplied.
+
+The whole-host ASCII bypass precedes Unicode lowercasing. Unicode labels must
+already satisfy NFC; no normalization repair, UTS46 mapping or fixture allowlist
+is used. NFC decomposes recursively, reorders stably, composes under exclusions
+and blocking, and handles Hangul algorithmically. Stable counting sort avoids
+quadratic combining-mark reordering. Punycode uses checked uint64 arithmetic,
+valid UTF-8/scalar admission and bounded internal work; provider label/domain
+limits are tighter than codec work limits. Complete Source14 Bidi categories
+preserve unknown directionality instead of inheriting Go's Unicode version.
+
+The configured audit identity remains original. Encoded targets retain existing
+literal-path, proxy and pool ownership. Constructor versus request refusal is
+compared against the unchanged84 Source consumer. Current host full/vet/race,
+exact Python, Source contracts, four type audits and fixed generated-byte checks
+pass. The first Source attempt completed under warning and remains unqualified;
+the unchanged-policy retry passed entirely under normal pressure. Original339/0/5
+row status and the Linux policy block are unchanged.
+See the [native IDNA iteration](audits/go-native-idna-2026-10-15.md).
+
 ## 2026-10-15 fixed CPython diagnostics admission and process guards
 
 The user approved external CPython 3.11.3 `ast.parse`. The default full profile

@@ -152,6 +152,10 @@ func New(cfg Config) (*Client, error) {
 	if err != nil || u.Host == "" || (u.Scheme != "http" && u.Scheme != "https") || u.User != nil || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || u.Opaque != "" {
 		return nil, errors.New("provider endpoint must be an HTTP(S) base URL without credentials, query or fragment")
 	}
+	target, err := providerRequestTarget(u, cfg.BaseURL)
+	if err != nil {
+		return nil, err
+	}
 	if len(cfg.APIKey) > 4096 || (cfg.APIKey != "" && strings.TrimSpace(cfg.APIKey) == "") || strings.IndexFunc(cfg.APIKey, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
 		return nil, errors.New("provider API key must be a single header value when supplied")
 	}
@@ -194,7 +198,6 @@ func New(cfg Config) (*Client, error) {
 		base = cfg.HTTPClient
 	}
 	client := *base
-	target := providerRequestTarget(u, cfg.BaseURL)
 	if target.literal {
 		client.Transport = providerTargetTransport(client.Transport)
 	}

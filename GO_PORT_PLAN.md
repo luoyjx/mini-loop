@@ -1,5 +1,24 @@
 # Go port plan
 
+## 2026-10-15 native IDNA without new Go modules
+
+Baseline `77a57cb`. This iteration implements provider IDNA with project-owned
+RFC3492 Punycode and complete fixed CPython Unicode14 NFC/Bidi data, together
+with idna3.18 Unicode17 validity/context/script/joining tables. No x/net/x/text
+module is downloaded, copied or adopted; this supersedes the earlier proposed
+module route. Data exporters preserve exact Source profile and upstream notices.
+IDNA runs entirely in Go and does not launch the approved diagnostics interpreter.
+The original84 actual Source consumer and expected observations stay unchanged.
+
+Current host full Go/vet/race, exact Python2256 passed/28 skipped,268 Source
+contracts, four type audits and deterministic generator checks pass on the same
+1864 inputs. All84 IDNA cases pass in ordinary/race suites. App coverage is
+33286/38919=85.52635%. The first Source check finished under warning and is
+not counted; an identical-policy retry passed with all pressure samples normal.
+Prior b8dd27a full/coverage evidence remains historical. Linux low-memory policy approval is still pending; sealed runners and
+all thresholds stay unchanged. No current row delta:339 verified/0 incomplete/5
+blocked. See [the implementation and delivery evidence](docs/audits/go-native-idna-2026-10-15.md).
+
 ## 2026-10-15 approved fixed CPython diagnostics and prepared IDNA implementation
 
 Implementation baseline `30ccaff`; delivered runtime `b8dd27a`. The user explicitly approved
