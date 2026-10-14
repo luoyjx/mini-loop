@@ -1,5 +1,40 @@
 # Python to Go parity matrix
 
+## 2026-10-14 HTTP validation, authentication and actual feature catalogues
+
+Branch `codex/go-http-feature-closure`, baseline local main `da43c18`.
+This entry records the implemented changes and finite comparison scope.
+Final serial gate results and retained
+failures belong in the [iteration record](docs/audits/go-http-feature-closure-2026-10-14.md).
+
+Public authentication loading uses `pytext.Strip` where Source uses Python
+whitespace stripping, and preserves duplicate-token diagnostic and validation
+order. Cron POST compares complete Pydantic 422 details: authentication still
+precedes body validation, and body validation precedes session ownership lookup.
+Valid requests continue through the existing ownership and scheduling guards.
+Two real workflow HTTP recipes compare the full running and cancelled detail
+responses, including node state and cancellation reason.
+
+The feature corpus covers 14 registry selections, eight manager profiles and
+57 distinct tool definitions. Native comparisons construct real manager
+catalogues from the captured selectors and compare order, full schemas, traits,
+capabilities, execution-mode selection and handler/service bindings. This is
+catalogue and binding evidence; it does not execute every advertised tool or
+establish default parser behavior. The actual teamless HTTP branch remains
+outside this slice because the current public native manager always binds a team.
+
+Six actual Source Null-boundary recipes cover omitted and explicit `None`
+dependencies for Agent, AgentSession and SessionManager. Each runs once; managed
+rows also stop. The native consumer checks absent typed secret/state dependencies,
+unmasked output and recorded text, managed lifecycle, persistence status and
+post-stop SQLite-file absence. The Source SQLite connection tripwire is solely
+Source evidence; native absence does not imply a measured driver-call count.
+Existing sandbox and explicitly configured SQLite evidence retains its scope.
+
+No new injection seam is introduced. Original P0/P1/G0–G7 criteria, pending
+dependency approvals, remaining public/HTTP boundaries and full Linux acceptance
+remain open; these finite cases do not certify the complete migration.
+
 ## 2026-10-14 post-stuck follow-up, typed prompt helpers and Linux Source
 
 Branch `codex/go-stuck-followup-linux`, baseline local main `78d95bc`.

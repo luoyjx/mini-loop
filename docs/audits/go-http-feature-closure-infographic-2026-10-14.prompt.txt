@@ -1,0 +1,14 @@
+Edit target: the existing mini-loop layered architecture base image supplied as reference. Use infographic-diagram style. Preserve its complete original five-layer architecture and existing component boxes/arrows, dark navy/cyan/gold/purple style, Chinese title, independent Python/Go implementation subtitle and all authority/ownership boundaries. No architecture components are added or removed.
+
+Create an iteration-specific annotated version dated 2026-10-14 with title "本轮：认证与校验 · 真实功能目录 · 默认 Null 边界". Keep the full architecture visible. Add three compact orange numbered callouts without covering essential labels:
+1 by L1 authentication / HTTP entry: "认证与 Cron 校验" with subline "Python 空白与重复凭据诊断；字段级 422 响应".
+2 by L4 capabilities / optional orchestration: "真实功能组合对照" with subline "14 种目录选择 · 57 项定义；Workflow 完整详情".
+3 by L2 session lifecycle / L5 state boundary: "默认 Null 边界证据" with subline "真实构造、运行、停止；默认不脱敏、不持久化".
+Replace the right sidebar with a concise iteration note panel titled "本轮修改位置", containing:
+"① HTTP 入口与认证配置"
+"② 真实目录与字段级契约"
+"③ 默认边界的执行证据"
+"没有新增架构组件"
+"Teamless、完整平台与迁移验收仍有未完成项"
+"测试结果与范围见旁文"
+Do not add a pass badge or coverage percentage. Label catalog comparison as validation evidence, not new feature activation or a changed default. Keep subtitle truthful: "Python 基准实现 · 独立 Go 实现 · 迁移验收仍在进行". Crisp professional landscape PNG, 1536x1024.

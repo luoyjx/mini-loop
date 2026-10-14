@@ -1,0 +1,18 @@
+Use case: precise-object-edit
+Asset type: repository architecture iteration infographic, 2026-10-14.
+Image 1 is the edit target (current iteration); image 2 is the authoritative original base for restoring obscured architecture labels.
+Change only the annotation layout. Preserve the full five-layer architecture, every original component label, all arrows, icons, colors and truthful optional/default-off boundaries from image 2. Restore in particular L1 CLI / HTTP / SSE / 浏览器, L2 会话资源 / 工具目录 and L4 能力后端（按部署显式选择） without covering them.
+Remove the three large orange annotation boxes sitting over the diagram. Instead place their readable explanatory text in the right sidebar; mark affected existing groups using thin transparent orange outlines and small orange numbered circles at their outer edges, with no text covering nodes or arrows.
+Right sidebar exact text:
+本轮：2026-10-14
+认证与校验 · 真实功能目录 · 默认 Null 边界
+① L1 认证与 Cron 校验
+Python 空白与重复凭据诊断；字段级 422 响应
+② L4 真实功能组合对照
+14 种目录选择 · 57 项定义；Workflow 完整详情
+③ L2 默认 Null 边界证据
+真实构造、运行、停止；默认不脱敏、不持久化
+没有新增架构组件
+Teamless、完整平台与迁移验收仍有未完成项
+测试结果与范围见旁文
+Keep original overall title, subtitle and decorative landscape. Clear typography, generous line spacing. Do not add success percentages, approvals, components, new capabilities, changed defaults or claims of full migration completion. Opaque background.
