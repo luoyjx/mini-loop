@@ -1,0 +1,2088 @@
+{
+  "assembly_execution": {
+    "completion_counted_as_a_pass": false,
+    "completion_resource_path": "var/go-idna-implementation-2026-10-14/native-idna-linux-source-receipt-2/resources.json",
+    "mode": "sealed_runner_child",
+    "owned_pid_identity": {
+      "bytes": 56,
+      "path": "var/go-idna-implementation-2026-10-14/native-idna-linux-source-receipt-2/pid-state.json",
+      "sha256": "42ebf6b9309f9f1af8f6be1572bbdbedf37758574c1220c655754ba0582e4668"
+    },
+    "preflight": {
+      "bytes": 537,
+      "path": "var/go-idna-implementation-2026-10-14/native-idna-linux-source-receipt-2/stability.json",
+      "sha256": "8156a2ee0e8710cae8aa825cabcffdce8a3e53c19193dd1021bba114ad285280"
+    },
+    "stage": "native-idna-linux-source-receipt-2",
+    "status_at_publication": "running"
+  },
+  "builder": {
+    "bytes": 18664,
+    "path": "var/go-idna-implementation-2026-10-14/build-native-idna-linux-source.py",
+    "sha256": "990344ced863883336bd78f6e229ea3caba96b02e668effcc38e0b511f531a56"
+  },
+  "created_utc": "2026-10-14T18:42:48.287043+00:00",
+  "current_linux": {
+    "full": "not_started",
+    "native_gates": "pending_explicit_resource_policy_approval",
+    "race": "not_started",
+    "source": "source_captured",
+    "vet": "not_started"
+  },
+  "delivery": {
+    "ci_evidence_included": false,
+    "remote_push_checked": false
+  },
+  "documentation_scope": "Current mutable README, architecture specification, generated HTML and images are not hashed by this runtime/Source addendum.",
+  "full_port_acceptance": false,
+  "head_at_assembly": "322f925467dff245b27c552927824418497892bd",
+  "historical_linux_full_stop": {
+    "reference": {
+      "bytes": 80564,
+      "path": "var/go-idna-implementation-2026-10-14/linux-full/result.json",
+      "sha256": "a02ec405235e979b4eacdf6070971c6f7b8c2340c42840896c1706a8b60d80a1"
+    },
+    "scope": "Prior b8dd27a revision, resource_blocked; never counted as current runtime validation."
+  },
+  "host_gate_count": 16,
+  "host_stages": {
+    "architecture": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "node",
+          "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+          "deliver",
+          "architecture",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "--quality",
+          "showcase",
+          "--json"
+        ],
+        "completed_utc": "2026-10-14T18:22:37.602559+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.059,
+        "remaining_pids": [],
+        "requested_command": [
+          "node",
+          "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+          "deliver",
+          "architecture",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "--quality",
+          "showcase",
+          "--json"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.404,
+        "started_utc": "2026-10-14T18:22:36.112719+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/pid-state.json",
+          "sha256": "9a23315895b0b0a272922e9452eb72c66054068634a011afa1afcbc446f5ff80"
+        },
+        "resources.json": {
+          "bytes": 2784,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/resources.json",
+          "sha256": "eb25f095725d39a9833e0cd6e5f2b05eee8744c463bb2b1fe47b8a81a9ceb015"
+        },
+        "samples.jsonl": {
+          "bytes": 732,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/samples.jsonl",
+          "sha256": "b33d0ae991fd55643fdce756d2ee915bfc94a6593e53466e8ab6568f7cac666b"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/stability.json",
+          "sha256": "055ef825b4fa3ed2e6dff9df20c71e132b241153b89b31656795ff53585a76fa"
+        },
+        "stdout.log": {
+          "bytes": 692,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/stdout.log",
+          "sha256": "2914d0e3a06d7a75603f6a2601a49db5501aad0215e57b484cfc9c8e62cada6a"
+        }
+      },
+      "resource": {
+        "bytes": 2784,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-architecture/resources.json",
+        "sha256": "eb25f095725d39a9833e0cd6e5f2b05eee8744c463bb2b1fe47b8a81a9ceb015"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/architecture",
+      "stage": "native-idna-architecture",
+      "status": "passed"
+    },
+    "diff-check": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "completed_utc": "2026-10-14T18:22:45.036001+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.062,
+        "remaining_pids": [],
+        "requested_command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.399,
+        "started_utc": "2026-10-14T18:22:43.547352+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/pid-state.json",
+          "sha256": "9a873fcf0b63e0baca42234390ab4442300696d839dcdb98b3d5ce116d676376"
+        },
+        "resources.json": {
+          "bytes": 2354,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/resources.json",
+          "sha256": "a1152ff53ce4e6e6c3b444ba6977d1be0eaaae0d21439651c7b344afe8b7da72"
+        },
+        "samples.jsonl": {
+          "bytes": 731,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/samples.jsonl",
+          "sha256": "bf8f2cee0b663284b403970ee19b7e99af5962e21f666b4c65a5de929a59aa57"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/stability.json",
+          "sha256": "659616a61cf657343ed14fa6152b77ed57d426977e996a9f1db783f5d1bf2671"
+        },
+        "stdout.log": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "resource": {
+        "bytes": 2354,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-diff-check/resources.json",
+        "sha256": "a1152ff53ce4e6e6c3b444ba6977d1be0eaaae0d21439651c7b344afe8b7da72"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/diff-check",
+      "stage": "native-idna-diff-check",
+      "status": "passed"
+    },
+    "go-full": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "-timeout=15m",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-idna-implementation-2026-10-14/native-idna-coverage.out",
+          "./..."
+        ],
+        "completed_utc": "2026-10-14T18:00:35.651527+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.139,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "test",
+          "-count=1",
+          "-json",
+          "-timeout=15m",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-idna-implementation-2026-10-14/native-idna-coverage.out",
+          "./..."
+        ],
+        "runner_exit_code": 0,
+        "seconds": 314.617,
+        "started_utc": "2026-10-14T17:55:20.735267+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 56,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/pid-state.json",
+          "sha256": "b3327a31d1a240496afc420128185aaeeac549cd69f67ac5b4fe26d9313b96aa"
+        },
+        "resources.json": {
+          "bytes": 19542,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/resources.json",
+          "sha256": "168155e3c46159f80c42a2ed3d63b8e1545609f6cdd82ee508436aa86ac0dda8"
+        },
+        "samples.jsonl": {
+          "bytes": 199988,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/samples.jsonl",
+          "sha256": "a4a1da8b83c53a4def1a4aecd7a39877b1d64a6ff204fe6a590d23c268d11893"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/stability.json",
+          "sha256": "26752a27ba28726090aad90fac1714e8ab2469d951594e585513696f13b6f6f3"
+        },
+        "stdout.log": {
+          "bytes": 20754241,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/stdout.log",
+          "sha256": "926e43365dd16230a4954eadb23fc769f3536fbb6e99b6d1b4576aec3d6f574d"
+        }
+      },
+      "resource": {
+        "bytes": 19542,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-go-full/resources.json",
+        "sha256": "168155e3c46159f80c42a2ed3d63b8e1545609f6cdd82ee508436aa86ac0dda8"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/go-full",
+      "stage": "native-idna-go-full",
+      "status": "passed"
+    },
+    "go-race": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-race",
+          "-count=1",
+          "-json",
+          "-timeout=15m",
+          "./..."
+        ],
+        "completed_utc": "2026-10-14T18:09:43.853987+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.102,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-json",
+          "-timeout=15m",
+          "./..."
+        ],
+        "runner_exit_code": 0,
+        "seconds": 497.199,
+        "started_utc": "2026-10-14T18:01:26.257114+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 56,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/pid-state.json",
+          "sha256": "0db86a7b30ba2763daa7c4ad581aa959bf9f414c8ef8728b4f1a61fed36cfbd1"
+        },
+        "resources.json": {
+          "bytes": 20845,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/resources.json",
+          "sha256": "39267e7fe48108fbb7c21574136b287989e5d6a944f9b9793dcfca16c322e18a"
+        },
+        "samples.jsonl": {
+          "bytes": 295058,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/samples.jsonl",
+          "sha256": "0caba2c730665919fce3df1570b79272b5580d69234549d03ad4a79e4404228d"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/stability.json",
+          "sha256": "66f6bc8306abf2edbdd185db35e93213acb7138abc3f9f14911c4b1c6560dc14"
+        },
+        "stdout.log": {
+          "bytes": 20750672,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/stdout.log",
+          "sha256": "289c07d9b773daeb6e463ff721b588abd61a9e71b0de6cfb1f8e9edb0c9d902a"
+        }
+      },
+      "resource": {
+        "bytes": 20845,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-go-race/resources.json",
+        "sha256": "39267e7fe48108fbb7c21574136b287989e5d6a944f9b9793dcfca16c322e18a"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/go-race",
+      "stage": "native-idna-go-race",
+      "status": "passed"
+    },
+    "go-vet": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "completed_utc": "2026-10-14T18:01:04.018316+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.049,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "runner_exit_code": 0,
+        "seconds": 14.866,
+        "started_utc": "2026-10-14T18:00:48.998469+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 56,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/pid-state.json",
+          "sha256": "b36bbd636c39294d9ab08536e4ef22e54a0dc178cf4271a19fd801cf1e6bd2fa"
+        },
+        "resources.json": {
+          "bytes": 3146,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/resources.json",
+          "sha256": "faf5dcc13b33431d1fab059b8184df921f046f6ab628b564b2ba3af748432e5b"
+        },
+        "samples.jsonl": {
+          "bytes": 8010,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/samples.jsonl",
+          "sha256": "590e6cecced469258a3a49cd566d0790919eb319f77c3d91e13b6001ff59fb65"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 536,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/stability.json",
+          "sha256": "7df72b7f59bb8afd74022e33ad9be87872f52f48d0dd744909efc853b2914bdd"
+        },
+        "stdout.log": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "resource": {
+        "bytes": 3146,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-go-vet/resources.json",
+        "sha256": "faf5dcc13b33431d1fab059b8184df921f046f6ab628b564b2ba3af748432e5b"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/go-vet",
+      "stage": "native-idna-go-vet",
+      "status": "passed"
+    },
+    "invariants": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "completed_utc": "2026-10-14T18:16:12.313445+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.046,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.356,
+        "started_utc": "2026-10-14T18:16:10.893372+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/pid-state.json",
+          "sha256": "bfe138b8c61fa48a51a67aec6050c97fa0c6165f5c1dd9368b50d0c573d14650"
+        },
+        "resources.json": {
+          "bytes": 2408,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/resources.json",
+          "sha256": "8e4c0f611c2d73d86d541ce9a64ad879b7430cdfc07d656d6df2cc7ccb0dcd98"
+        },
+        "samples.jsonl": {
+          "bytes": 734,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/samples.jsonl",
+          "sha256": "433cf751125a451c5c077ad7dcfdc75e0f5d2842eb0f8994a526fd774293594a"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/stability.json",
+          "sha256": "2f6e2f5217eb3ba9b82d81974c5b6ab0971c6bb570a04d0cff533a3d26d412f2"
+        },
+        "stdout.log": {
+          "bytes": 62,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/stdout.log",
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+        }
+      },
+      "resource": {
+        "bytes": 2408,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-invariants/resources.json",
+        "sha256": "8e4c0f611c2d73d86d541ce9a64ad879b7430cdfc07d656d6df2cc7ccb0dcd98"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/invariants",
+      "stage": "native-idna-invariants",
+      "status": "passed"
+    },
+    "normalization-check": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_normalization.py",
+          "--check"
+        ],
+        "completed_utc": "2026-10-14T18:21:15.816625+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.045,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/export_go_normalization.py",
+          "--check"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.347,
+        "started_utc": "2026-10-14T18:21:14.397645+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/pid-state.json",
+          "sha256": "980782dc6c63b4ae91706ce6db148ff41a321b845d9a94de61e80367cfecc71c"
+        },
+        "resources.json": {
+          "bytes": 2461,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/resources.json",
+          "sha256": "4ca2fb92c1f69f74dc7f50330c8a406664f951c7b1ed06c46d238b56f17214da"
+        },
+        "samples.jsonl": {
+          "bytes": 734,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/samples.jsonl",
+          "sha256": "fa81951c53bf9c0e193ba65f5f835a82160893ad092ccd04981072fc0d9e5587"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/stability.json",
+          "sha256": "760419f3aaa250fd7c4b9caa40f6eb5cb2741f032d5e5eb669d4e1e46dd2ce4a"
+        },
+        "stdout.log": {
+          "bytes": 56,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/stdout.log",
+          "sha256": "de555ba27e0565a3043b1d29a14920e8590e95ccb870dc9f28e620123c706510"
+        }
+      },
+      "resource": {
+        "bytes": 2461,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-normalization-check-2/resources.json",
+        "sha256": "4ca2fb92c1f69f74dc7f50330c8a406664f951c7b1ed06c46d238b56f17214da"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/normalization-check",
+      "stage": "native-idna-normalization-check-2",
+      "status": "passed"
+    },
+    "punycode-check": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_punycode.py",
+          "--check"
+        ],
+        "completed_utc": "2026-10-14T18:21:23.210324+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.065,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/export_go_punycode.py",
+          "--check"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.418,
+        "started_utc": "2026-10-14T18:21:21.712190+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/pid-state.json",
+          "sha256": "d9538f716867c9f8f6423b5a2beb8650980bf827d0286813c0f2857769629da5"
+        },
+        "resources.json": {
+          "bytes": 2446,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/resources.json",
+          "sha256": "680099e1a2b483581020a269c903531fa3171432926e8690362dd24e8f68d32c"
+        },
+        "samples.jsonl": {
+          "bytes": 733,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/samples.jsonl",
+          "sha256": "beeb9214ce021fc54978ba3366f5c11cd3ce3fd2b2c3babb3f0e711e3e7208ee"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 536,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/stability.json",
+          "sha256": "00761016325cbb87c14c5e68406c28fff8c84fab40fc5007c397688c267b60e9"
+        },
+        "stdout.log": {
+          "bytes": 47,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/stdout.log",
+          "sha256": "e3a9d62011f6f7ae0a9697dae2d42c5ed86b004707cf89d6903223ed6105a26f"
+        }
+      },
+      "resource": {
+        "bytes": 2446,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-punycode-check-2/resources.json",
+        "sha256": "680099e1a2b483581020a269c903531fa3171432926e8690362dd24e8f68d32c"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/punycode-check",
+      "stage": "native-idna-punycode-check-2",
+      "status": "passed"
+    },
+    "python-full": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "completed_utc": "2026-10-14T18:12:10.451047+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.087,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 131.607,
+        "started_utc": "2026-10-14T18:09:58.606264+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 56,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/pid-state.json",
+          "sha256": "bf9799769dc62b3dea9dd8e4ccd45e85186b944d1289acf0eac37ba186ba289b"
+        },
+        "resources.json": {
+          "bytes": 7069,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/resources.json",
+          "sha256": "f8eec588c2832ad76d750714a2b19c5421a6ab82e1734ab12b456efd727dfaa9"
+        },
+        "samples.jsonl": {
+          "bytes": 60759,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/samples.jsonl",
+          "sha256": "d3234eb18fd19ce53853cb0b6a212425279f1682e81eab71d9abe04043d81bef"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/stability.json",
+          "sha256": "2b705c15464a3472947d2e2752346f7466a4128d6a2add99cfbed0ad23c7365a"
+        },
+        "stdout.log": {
+          "bytes": 60182,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/stdout.log",
+          "sha256": "7281743c4d7084113f096d4a2b5e1e74480171d33d0d144205c27def0fefc727"
+        }
+      },
+      "resource": {
+        "bytes": 7069,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-python-full/resources.json",
+        "sha256": "f8eec588c2832ad76d750714a2b19c5421a6ab82e1734ab12b456efd727dfaa9"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/python-full",
+      "stage": "native-idna-python-full",
+      "status": "passed"
+    },
+    "scans": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "completed_utc": "2026-10-14T18:16:28.894623+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.042,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 10.695,
+        "started_utc": "2026-10-14T18:16:18.131018+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/pid-state.json",
+          "sha256": "2c3cd1d77f8e632ed0a823a4813a8e569f18fd3f40699fa69adaa4af54b08905"
+        },
+        "resources.json": {
+          "bytes": 2868,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/resources.json",
+          "sha256": "f6d93fc39733ff28cb157c3ba6a463baf76c01ff82ccd66003b19a4da2cb8a71"
+        },
+        "samples.jsonl": {
+          "bytes": 5782,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/samples.jsonl",
+          "sha256": "e983870450e8c01104d8d3788b8fce3538f67f768e2dd99e4c104c8441846379"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/stability.json",
+          "sha256": "a871a8562c7da348ce4529a2321686647241de2046f613ddb42ce5d018860fbc"
+        },
+        "stdout.log": {
+          "bytes": 1663,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/stdout.log",
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+        }
+      },
+      "resource": {
+        "bytes": 2868,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-scans/resources.json",
+        "sha256": "f6d93fc39733ff28cb157c3ba6a463baf76c01ff82ccd66003b19a4da2cb8a71"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/scans",
+      "stage": "native-idna-scans",
+      "status": "passed"
+    },
+    "source-check": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check"
+        ],
+        "completed_utc": "2026-10-14T18:20:30.720049+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.068,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 145.35,
+        "started_utc": "2026-10-14T18:18:05.035263+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/pid-state.json",
+          "sha256": "4ce2ae70c9c8b6788a4f07dfe14a119eb00aadc4d5d88d9076a553d35d83bf43"
+        },
+        "resources.json": {
+          "bytes": 5107,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/resources.json",
+          "sha256": "ccdb05a090b6c050e64c1ec37dd807c0c8a26575071fa2de8148a41cb8971a99"
+        },
+        "samples.jsonl": {
+          "bytes": 59167,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/samples.jsonl",
+          "sha256": "61914583bf452d901bc3a9e08e57e41278d3878d042848fe2b12ea69c59d73a6"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 536,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/stability.json",
+          "sha256": "a843a92c73535dd191b6a81ad18b402ef24aa94dc8d1d09f57ae8430ab0340d4"
+        },
+        "stdout.log": {
+          "bytes": 86954,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/stdout.log",
+          "sha256": "c7da162c4afa70c991b95a8a333df033f6377785b272f065e1b617c2ec35c7b8"
+        }
+      },
+      "resource": {
+        "bytes": 5107,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-source-check-2/resources.json",
+        "sha256": "ccdb05a090b6c050e64c1ec37dd807c0c8a26575071fa2de8148a41cb8971a99"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/source-check",
+      "stage": "native-idna-source-check-2",
+      "status": "passed"
+    },
+    "tables-check": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_idna.py",
+          "--check"
+        ],
+        "completed_utc": "2026-10-14T18:21:07.487267+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.053,
+        "remaining_pids": [],
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/export_go_idna.py",
+          "--check"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.402,
+        "started_utc": "2026-10-14T18:21:05.990015+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/pid-state.json",
+          "sha256": "593e8637f73cce1788000c2ce2893bad535f2817901dfb99f89c7e6e1341a0bb"
+        },
+        "resources.json": {
+          "bytes": 2436,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/resources.json",
+          "sha256": "9bac00e36018f0857cfdb3b65dceee430c85a7df0f27ea8c63e234b78c0d2777"
+        },
+        "samples.jsonl": {
+          "bytes": 734,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/samples.jsonl",
+          "sha256": "8a8a7ebc40a781ca7e513dbe274ebba238b21a29d9c30905b4f892c752caf42c"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/stability.json",
+          "sha256": "49f0aba6080daf3e9e270dddeb90bd95fcdb9028d026f3436ce761bd1ec34c67"
+        },
+        "stdout.log": {
+          "bytes": 324,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/stdout.log",
+          "sha256": "434e3d665e68c375e8b3dba206d04c2f44f6566aa1f9052b3e5199e55cff4ae5"
+        }
+      },
+      "resource": {
+        "bytes": 2436,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-tables-check-2/resources.json",
+        "sha256": "9bac00e36018f0857cfdb3b65dceee430c85a7df0f27ea8c63e234b78c0d2777"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/tables-check",
+      "stage": "native-idna-tables-check-2",
+      "status": "passed"
+    },
+    "type-private": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "completed_utc": "2026-10-14T18:17:39.638126+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.058,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 2.449,
+        "started_utc": "2026-10-14T18:17:37.103055+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/pid-state.json",
+          "sha256": "9a2e275e3c53fae5f033ed5d00876d7c1d67b4e5683e38ac8d1a3ff58e777dde"
+        },
+        "resources.json": {
+          "bytes": 2533,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/resources.json",
+          "sha256": "f1dd890ddaa3cab776019bddeac7c688457bedbacc4d4dccf6cf1dc8bdc4fc53"
+        },
+        "samples.jsonl": {
+          "bytes": 1270,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/samples.jsonl",
+          "sha256": "9b74ba6b945bac9fea1fca725da3566ba236c5e5451d1d03ea3343792e05ae35"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 536,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/stability.json",
+          "sha256": "7c99490401a0711c073ed7ef744ea3d4e0c54f8cdc1484fd9a50b4d5b4d4d55e"
+        },
+        "stdout.log": {
+          "bytes": 71,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/stdout.log",
+          "sha256": "dc049c9ce15f85c86f3534b59ff7e72135231eda72b371a9b1a0087ba8cc85f9"
+        }
+      },
+      "resource": {
+        "bytes": 2533,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-type-private/resources.json",
+        "sha256": "f1dd890ddaa3cab776019bddeac7c688457bedbacc4d4dccf6cf1dc8bdc4fc53"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/type-private",
+      "stage": "native-idna-type-private",
+      "status": "passed"
+    },
+    "type-public": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "completed_utc": "2026-10-14T18:17:31.099679+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.043,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 3.481,
+        "started_utc": "2026-10-14T18:17:27.537503+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/pid-state.json",
+          "sha256": "f1198c00688ca21e7fc74f2975d7f3012dfcfe198333052323d0cf35c339594e"
+        },
+        "resources.json": {
+          "bytes": 2623,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/resources.json",
+          "sha256": "e1f8b36194e5d57d34d21c23cea0f9c21873fda4eb08446d97cfccff20d4ba07"
+        },
+        "samples.jsonl": {
+          "bytes": 2139,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/samples.jsonl",
+          "sha256": "8e70e29542478c0b0d8697ea79229a8f32fe67985fa6ff3672e0e4032c7448f9"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/stability.json",
+          "sha256": "20f01b0bc2462a7583980492ab473da6804179abff9798832aa2da3158ee6c8c"
+        },
+        "stdout.log": {
+          "bytes": 67,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/stdout.log",
+          "sha256": "4aaee69e8af01aa565e88dab03a78d8e84893896dfe4fb6ce6343aa4083a0fe1"
+        }
+      },
+      "resource": {
+        "bytes": 2623,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-type-public/resources.json",
+        "sha256": "e1f8b36194e5d57d34d21c23cea0f9c21873fda4eb08446d97cfccff20d4ba07"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/type-public",
+      "stage": "native-idna-type-public",
+      "status": "passed"
+    },
+    "type-syntax": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "completed_utc": "2026-10-14T18:16:46.393391+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.041,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "runner_exit_code": 0,
+        "seconds": 2.39,
+        "started_utc": "2026-10-14T18:16:43.919289+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/pid-state.json",
+          "sha256": "f9fdb6d3d6084239e5bb050468cf7ed6da93ee5019cdff9d9b8969b220437b1e"
+        },
+        "resources.json": {
+          "bytes": 2499,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/resources.json",
+          "sha256": "558fbd73dbd4161db4ba16a930fb50e69ca1d7156e1041a997fc6fddd45b1bf6"
+        },
+        "samples.jsonl": {
+          "bytes": 1269,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/samples.jsonl",
+          "sha256": "181a6c42e8f69be23b8f76493b2bb222cf87016c299e6b982388591ef6d5c319"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/stability.json",
+          "sha256": "61913612423a2c3fe856a915172a10b97a347cfa761f661132f5dd91003ffa61"
+        },
+        "stdout.log": {
+          "bytes": 74,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/stdout.log",
+          "sha256": "4f9c3a1710af3f8ab1ecf1ad0f6bcbb6c19f9c3285bbe4a6e40807383789904f"
+        }
+      },
+      "resource": {
+        "bytes": 2499,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-type-syntax/resources.json",
+        "sha256": "558fbd73dbd4161db4ba16a930fb50e69ca1d7156e1041a997fc6fddd45b1bf6"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/type-syntax",
+      "stage": "native-idna-type-syntax",
+      "status": "passed"
+    },
+    "type-variables": {
+      "all_recorded_pressure_samples_normal": true,
+      "original_summary": {
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "completed_utc": "2026-10-14T18:17:47.373929+00:00",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "empty_confirmations": true,
+        "exit_code": 0,
+        "frozen_inputs": 1864,
+        "inputs_unchanged": true,
+        "launched": true,
+        "limits": {
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "cpu_grace_seconds": 45,
+          "cpu_percent_sustained": 450,
+          "goflags": "-p=1",
+          "gogc": 75,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "sample_seconds": 1,
+          "test_parallel": 2,
+          "wall_seconds": 1800
+        },
+        "max_sample_gap_seconds": 1.051,
+        "remaining_pids": [],
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "runner_exit_code": 0,
+        "seconds": 1.412,
+        "started_utc": "2026-10-14T18:17:45.873040+00:00",
+        "status": "passed"
+      },
+      "raw": {
+        "freeze.after.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/freeze.after.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "freeze.before.json": {
+          "bytes": 199724,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/freeze.before.json",
+          "sha256": "3bcc2710705c88303d863111420a9178fae47ade336c689727cb5e18925d9656"
+        },
+        "pid-state.json": {
+          "bytes": 55,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/pid-state.json",
+          "sha256": "d4c39266a9480f0838d0333c05f0b60eaf8247fb9bd5e0ed2daf8d611b666a12"
+        },
+        "resources.json": {
+          "bytes": 2458,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/resources.json",
+          "sha256": "667fb317fccd52226b716d6df17f5cbd070a7a702998e42ef5c5c9249d7e33b4"
+        },
+        "samples.jsonl": {
+          "bytes": 731,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/samples.jsonl",
+          "sha256": "4734db0db94c12f6106785722a3ec1c7bffcfea041872f759abfc735219011b6"
+        },
+        "signals.jsonl": {
+          "bytes": 0,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stability.json": {
+          "bytes": 537,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/stability.json",
+          "sha256": "c44b9d74cafe1c88cd0f7fe883cb0ec9202951500e6833c87f14857b7b148e2c"
+        },
+        "stdout.log": {
+          "bytes": 66,
+          "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/stdout.log",
+          "sha256": "5859bf45af6e8f2ad672e8cfcf91cc3f6321561ca39e5d6a531819b4f014fb99"
+        }
+      },
+      "resource": {
+        "bytes": 2458,
+        "path": "var/go-idna-implementation-2026-10-14/native-idna-type-variables/resources.json",
+        "sha256": "667fb317fccd52226b716d6df17f5cbd070a7a702998e42ef5c5c9249d7e33b4"
+      },
+      "same_current_runtime_manifest": true,
+      "semantic_summary_source": "docs/audits/go-native-idna-progress-2026-10-15.json#/stages/type-variables",
+      "stage": "native-idna-type-variables",
+      "status": "passed"
+    }
+  },
+  "linux_source": {
+    "archive_manifest": {
+      "bytes": 199557,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/archive-manifest.json",
+      "sha256": "383f0c6864d69997f83b53299af88d134c0a0931ecdccb3564ba63e7beb86636"
+    },
+    "case_count": 66,
+    "cgroup_memory_events": {
+      "final.memory.events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0,
+        "sock_throttled": 0
+      },
+      "sampled.memory.events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0,
+        "sock_throttled": 0
+      },
+      "start.memory.events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0,
+        "sock_throttled": 0
+      }
+    },
+    "cgroup_peak_bytes": {
+      "final.memory.peak": 161345536,
+      "sampled.memory.peak": 161345536,
+      "start.memory.peak": 4841472
+    },
+    "cleanup_errors": [],
+    "commands": {
+      "bytes": 974,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/commands.json",
+      "sha256": "38c57c99c0d2411592e8754d6b0ecef705596777d096b30747f915bb1b8fb88b"
+    },
+    "executed_full_python_export": false,
+    "finished_utc": "2026-10-14T18:34:52.875676+00:00",
+    "go_tests_or_vet_executed": false,
+    "group_count": 6,
+    "groups": [
+      {
+        "case_count": 8,
+        "cases": [
+          "visible",
+          "heldout",
+          "empty",
+          "judge-fault",
+          "setup-fault",
+          "provider-fault-recovered",
+          "run-fault",
+          "cancelled-provider"
+        ],
+        "context": {
+          "bytes": 1036,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/benchmark.context.json",
+          "sha256": "4506a849ac6215fd225db6fafd8e92bbf4d99b582e4ca8853f721b7de7540f8f"
+        },
+        "fixture": {
+          "bytes": 23339,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-benchmark-arms.json",
+          "sha256": "f14345bf1447b87baccee5725c720ee6055cb9dc002d2cf047ab5f7d51caa02f"
+        },
+        "go_minimum_cases": [
+          "visible"
+        ],
+        "id": "benchmark",
+        "producer": {
+          "bytes": 4813,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/benchmark.producer.json",
+          "sha256": "999a3971e6b580b00aac0e8b6e3bd135b43dbb44c6b09411c0461dc5bf32d2e7"
+        }
+      },
+      {
+        "case_count": 5,
+        "cases": [
+          "default",
+          "ignored-body",
+          "malformed-body",
+          "real-main",
+          "one-round"
+        ],
+        "context": {
+          "bytes": 968,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/httpapi.context.json",
+          "sha256": "6f696dfc6dd70507ecf6f52aaa82c8d362cc47fb4855ae16a6053ad51ea01e5e"
+        },
+        "fixture": {
+          "bytes": 25723,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-benchmark-http.json",
+          "sha256": "24d7dc814141c53f6b570bcee4ed492f5181bec4d0ce706d7fb66e8581e52f72"
+        },
+        "go_minimum_cases": [
+          "default"
+        ],
+        "id": "httpapi",
+        "producer": {
+          "bytes": 4725,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/httpapi.producer.json",
+          "sha256": "60dcc85b6adecca9e0409e1d82423aa354aed2494d7ec85305d93c57ab2fb37d"
+        }
+      },
+      {
+        "case_count": 2,
+        "cases": [
+          "efficiency-shadow",
+          "efficiency-enforce-concise"
+        ],
+        "context": {
+          "bytes": 957,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/httpapi-efficiency.context.json",
+          "sha256": "65aa5d9949e8ad95826e86fbd65009324dd6f3f195871a0a2cddffa55ed00b4b"
+        },
+        "fixture": {
+          "bytes": 10467,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-benchmark-efficiency-http.json",
+          "sha256": "b74a820eb8a3a76225f0de2571f434e7f392adf97b173743f392930a4b76706c"
+        },
+        "go_minimum_cases": [
+          "efficiency-shadow"
+        ],
+        "id": "httpapi-efficiency",
+        "producer": {
+          "bytes": 4725,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/httpapi-efficiency.producer.json",
+          "sha256": "60dcc85b6adecca9e0409e1d82423aa354aed2494d7ec85305d93c57ab2fb37d"
+        }
+      },
+      {
+        "case_count": 4,
+        "cases": [
+          "owners",
+          "snapshot",
+          "problems",
+          "masked"
+        ],
+        "context": {
+          "bytes": 966,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/userresources.context.json",
+          "sha256": "d4c03c2c740acca77b6a0102500d2b4508f4c51f5f28dcf99f92e7a134bf7116"
+        },
+        "fixture": {
+          "bytes": 10673,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-owner-resources.json",
+          "sha256": "e1dc017360a497171a634e530e1360a6190e7f3530d4c229b44f0b15340cb764"
+        },
+        "go_minimum_cases": [
+          "problems"
+        ],
+        "id": "userresources",
+        "producer": {
+          "bytes": 5134,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/userresources.producer.json",
+          "sha256": "014d5f13637b86fcb81341f78b6f3d7c25560c136555b5bbb6667795235ed1a5"
+        }
+      },
+      {
+        "case_count": 38,
+        "cases": [
+          "glob_00",
+          "glob_01",
+          "glob_02",
+          "glob_03",
+          "glob_04",
+          "glob_05",
+          "glob_06",
+          "glob_07",
+          "glob_08",
+          "glob_09",
+          "glob_10",
+          "glob_11",
+          "glob_12",
+          "glob_13",
+          "glob_14",
+          "glob_15",
+          "glob_16",
+          "glob_17",
+          "glob_18",
+          "glob_19",
+          "glob_20",
+          "glob_21",
+          "glob_22",
+          "glob_23",
+          "glob_24",
+          "glob_25",
+          "glob_26",
+          "glob_27",
+          "glob_28",
+          "glob_29",
+          "glob_30",
+          "glob_31",
+          "glob_32",
+          "glob_33",
+          "glob_34",
+          "glob_loop",
+          "glob_truncated",
+          "glob_duplicate_budget"
+        ],
+        "context": {
+          "bytes": 207234,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/workspace.context.json",
+          "sha256": "6664eafee7bf2ffd4614e14a01ca3558e0c2ef6b0a0f7d134757a54c81a1b01b"
+        },
+        "fixture": {
+          "bytes": 251483,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-glob-tools.json",
+          "sha256": "55fc06b235363272bcb07bae3f1f7e0995e574d6c9098cb0ae34f577774dd45f"
+        },
+        "go_minimum_cases": [
+          "glob_truncated"
+        ],
+        "id": "workspace",
+        "producer": {
+          "bytes": 5541,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/workspace.producer.json",
+          "sha256": "424ddb6c95831bfca2402ce1e999c1ee0ba3488a9226fcd5b21e9f5366a390d1"
+        }
+      },
+      {
+        "case_count": 9,
+        "cases": [
+          "names",
+          "not-repository",
+          "lifecycle-binding",
+          "dirty-and-ahead",
+          "unverified-status",
+          "factory",
+          "custom-location",
+          "unborn",
+          "empty-prefix-base"
+        ],
+        "context": {
+          "bytes": 1148,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/worktrees.context.json",
+          "sha256": "6490a8df16fbfeede6c90031116848540092140c92ae5a5c7918f6d36585883b"
+        },
+        "fixture": {
+          "bytes": 25501,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/python-worktrees.json",
+          "sha256": "1e395692df3c612796923c0243eef6a98c3531d2c712697098c7aab42dfc223d"
+        },
+        "go_minimum_cases": [
+          "not-repository",
+          "unverified-status"
+        ],
+        "id": "worktrees",
+        "producer": {
+          "bytes": 8252,
+          "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/worktrees.producer.json",
+          "sha256": "27d90fc5a962ce7d1639945edcb7b82e55d69d294f8b77c42506eca981909701"
+        }
+      }
+    ],
+    "image": "sha256:027571c4ab6d7570737a40290703adb9d91ecf9780aea2d2983dbf132156548b",
+    "input_archive": {
+      "bytes": 46069760,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/input.tar",
+      "sha256": "3dad483a277fa286152cf01092de6bf4b478615554e1cfa3563d09bf6c5b0a08"
+    },
+    "inputs_unchanged": true,
+    "measurement_scope": "Kernel charged cgroup memory; excludes host VM overhead and is not process RSS.",
+    "native_62_case_validation_claimed": false,
+    "native_cpython_3_11_3_probe_performed": false,
+    "no_oom": true,
+    "owned_resources_absent": true,
+    "platform_context": {
+      "bytes": 328,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/platform-context.json",
+      "sha256": "491d985facb78d6f9024766daae77750d755f0803242bee79beaed202f0f30fd"
+    },
+    "preparation": {
+      "bytes": 1140,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/input-proof.json",
+      "sha256": "b71f9f4d938df982cd8536cb54fda5962c9de64ceb119218823e3786a3a41e68"
+    },
+    "pressure": {
+      "observed_levels": [
+        1
+      ],
+      "raw": {
+        "bytes": 2443,
+        "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/memory.jsonl",
+        "sha256": "0d2fbf39251dff14d144d182c2dc986ec6ed82873b83ac7ae26d4256fa458ff8"
+      },
+      "samples": {
+        "immediately_before_start": 1,
+        "preflight": 5,
+        "running": 3
+      }
+    },
+    "profile": {
+      "automatic_retries": false,
+      "cpu_cgroup_cores": 2,
+      "go_package_parallel": 1,
+      "gogc": 75,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB soft target",
+      "memory_and_swap_bytes": 1610612736,
+      "memory_cgroup_bytes": 1610612736,
+      "nice": 10,
+      "pids": 256,
+      "preflight_samples": 5,
+      "test_parallel": 2
+    },
+    "reference": {
+      "bytes": 24886,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/result.json",
+      "sha256": "7f65ca937821a6d786ddcd8ecbfd53b8ebc3f3c59c6d9da5ef18ca0f8b8734db"
+    },
+    "revision": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+    "seconds": 12.31842733299709,
+    "source_python": "3.11.2",
+    "source_receipt": {
+      "bytes": 10889,
+      "path": "var/go-idna-implementation-2026-10-14/linux-native-idna-source/logs/source-capture/receipt.json",
+      "sha256": "a2cda4dd13087cf5aa73f973495b11cbd17c60c407f68938605abb856e3c53f5"
+    },
+    "stage": "linux-native-idna-source",
+    "started_utc": "2026-10-14T18:34:40.557511+00:00",
+    "status": "source_captured"
+  },
+  "overall_goal_complete": false,
+  "prior_host_receipt": {
+    "bytes": 355204,
+    "path": "docs/audits/go-native-idna-progress-2026-10-15.json",
+    "sha256": "f19801fac73814395621a7b1995bfe4e38ed04cd32357b3b04ec035742562c13"
+  },
+  "read_only_helper": {
+    "bytes": 44523,
+    "path": "var/go-idna-implementation-2026-10-14/build-cpython-receipt.py",
+    "sha256": "380ca8d246c676563ec288198fcfbaca1c4e74327e374dc439a32113551c8ef4"
+  },
+  "receipt_kind": "native_idna_linux_source_progress_addendum",
+  "required_row_delta_applied": false,
+  "required_row_status": {
+    "current_status_counts": {
+      "dependency_blocked": 5,
+      "evidence_incomplete": 0,
+      "verified": 339
+    },
+    "historical_references": [
+      {
+        "bytes": 871815,
+        "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+        "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359"
+      },
+      {
+        "bytes": 36092,
+        "path": "docs/audits/go-required-row-delta-2026-10-14.json",
+        "sha256": "22b0d48c3e805db54262d21e88ef6945f58d837e33f078055da6df9b0ee025fa"
+      },
+      {
+        "bytes": 204830,
+        "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+        "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f"
+      },
+      {
+        "bytes": 148466,
+        "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+        "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+      },
+      {
+        "bytes": 34603,
+        "path": "docs/audits/go-required-remaining-contract-delta-2026-10-14.json",
+        "sha256": "dda0cc63071e75d5e12c7673c656db5ccdfb322318e07210cb5d7d8d8dc07a2e"
+      }
+    ],
+    "native_idna_implemented_host_evidence_only": [
+      "setting:base_url",
+      "export:build_client"
+    ],
+    "new_delta_applied": false,
+    "original_cardinality": 344,
+    "parser_prior_host_evidence_pending_linux": [
+      "setting:enable_features",
+      "export:full_registry",
+      "capability:04"
+    ]
+  },
+  "resource_policy": {
+    "note": "Only the independent Source capture completed under the unchanged profile. No blocked full retry or reduced profile is authorized by this addendum.",
+    "pending_proposal": {
+      "bytes": 1501,
+      "path": "var/go-idna-implementation-2026-10-14/linux-memory-policy-proposal.json",
+      "sha256": "a76e665ee4a016d6ff2b7bf4f9f4503c978c453e337e5fb3c356bb6469252b46"
+    },
+    "sealed_files": [
+      {
+        "bytes": 6697,
+        "path": "var/go-idna-implementation-2026-10-14/run.py",
+        "sha256": "2624dd12a82d1e547114f8593ce8a07dbb4bf75e9aa9680d576ba7de21aa75a8"
+      },
+      {
+        "bytes": 17037,
+        "path": "var/go-idna-implementation-2026-10-14/resource_watch.py",
+        "sha256": "8f9c69bd23a6851f7525f1573e443d1eb9910be21ae4aaeadf5bc659aee94e40"
+      },
+      {
+        "bytes": 46129,
+        "path": "var/go-idna-implementation-2026-10-14/linux-full-runner.py",
+        "sha256": "ca200b10a049c5144d207115bbaab9300d9ba536226bf1e3e81309900c607bde"
+      }
+    ]
+  },
+  "resource_policy_changed": false,
+  "runtime_commit": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+  "runtime_inputs": {
+    "committed_archive_bytes_match": true,
+    "count": 1864,
+    "current_files_match": true,
+    "extra_inputs": [
+      "pytest.ini"
+    ],
+    "head_runtime_diff_empty": true,
+    "manifest_reference": "docs/audits/go-native-idna-progress-2026-10-15.json#/runtime_inputs/manifest",
+    "manifest_sha256": "b33ffab9e8e51237faa271cc077e3058bfb8887eb01d601783e5a8a537c88d52",
+    "same_as_prior_host": true,
+    "scope": [
+      "go",
+      "python",
+      "AGENTS.md"
+    ]
+  },
+  "schema_version": 1,
+  "status": "host_and_linux_source_validated_linux_native_pending"
+}

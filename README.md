@@ -574,7 +574,18 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `77a57cb` + native IDNA slice. Go provider
+Current validation review baseline: runtime `606630f`, documentation at `322f925`.
+The Linux arm64 Source-only stage recaptured all six platform-sensitive groups
+(66 recipes) using CPython 3.11.2 on the unchanged sealed resource profile.
+It took 12.32 seconds with a cgroup peak of 161,345,536 bytes (153.87 MiB),
+normal recorded host pressure, no OOM and confirmed owned-resource cleanup.
+All 1864 current runtime inputs still match the prior 16 host gates. This stage
+does not execute the native CPython 3.11.3 probe, parser/IDNA Go consumers or
+Linux Go full/vet/race. Those three Linux native gates await resource-policy
+approval; the original ledger remains 339 verified / 0 incomplete / 5 blocked.
+See [the Source evidence and iteration image](docs/audits/go-native-idna-linux-source-2026-10-15.md).
+
+Previous runtime review baseline: `77a57cb` + native IDNA slice. Go provider
 hostname admission now uses project-owned RFC 3492 Punycode and complete fixed
 Source data: CPython Unicode 14 NFC/direction/mark/virama properties, plus
 idna 3.18 Unicode 17 validity, context, script and joining properties. The whole-host

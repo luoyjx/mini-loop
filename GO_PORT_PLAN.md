@@ -1,5 +1,22 @@
 # Go port plan
 
+## 2026-10-15 current-runtime Linux Source capture
+
+Runtime `606630f`; documentation baseline `322f925`. The independent Linux arm64
+Source-only stage now passes: six original platform-sensitive producer groups,
+66 recipes, actual CPython 3.11.2, 12.32 seconds and 153.87 MiB cgroup peak.
+The sealed profile is unchanged; all recorded host-pressure samples are normal,
+OOM counters are zero and owned resources are absent after cleanup. All 1864
+runtime inputs still match the 16 previously passed current host gates.
+
+This is not a full Linux Python export or a native Go/parser/IDNA consumer run.
+Linux full/vet/race remain unstarted for this revision, pending explicit approval
+of the proposed lower-memory profile. Preserve the historical stopped full run
+and all original limits. Next: run those three gates under the approved profile,
+then assemble the complete platform receipt and apply an explicit required-row
+delta. Until then, the ledger remains 339/0/5 and full port acceptance is open.
+See [the Source addendum and marked architecture](docs/audits/go-native-idna-linux-source-2026-10-15.md).
+
 ## 2026-10-15 native IDNA without new Go modules
 
 Baseline `77a57cb`. This iteration implements provider IDNA with project-owned

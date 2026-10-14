@@ -1,5 +1,19 @@
 # Python to Go parity matrix
 
+## 2026-10-15 current-runtime Linux Source capture
+
+Runtime `606630f` now has current Linux arm64 Source-only evidence: all six
+original platform-sensitive groups / 66 recipes captured by CPython 3.11.2.
+The unchanged sealed profile completed in 12.32 seconds, at 153.87 MiB cgroup
+peak, with normal recorded host pressure, no OOM and complete owned cleanup.
+All 1864 runtime inputs also match the prior 16 current host gates.
+
+Count only Linux Source capture as completed. No native CPython 3.11.3 probe,
+62-case parser, 84-case IDNA or Go full/vet/race was executed by this stage.
+Current Linux full/vet/race remain unstarted pending resource-policy approval;
+the original 344-row ledger stays 339 verified / 0 incomplete / 5 blocked,
+without an acceptance delta. See [the independent Source addendum](docs/audits/go-native-idna-linux-source-2026-10-15.md).
+
 ## 2026-10-15 native IDNA without new Go modules
 
 Baseline `77a57cb`. This iteration implements provider IDNA with project-owned

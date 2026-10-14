@@ -1,0 +1,11 @@
+Use case: precise-object-edit / infographic-diagram
+Asset type: mini-loop repository iteration architecture PNG, landscape 1536x1024.
+Input image: the attached complete layered architecture base is the edit target.
+Primary request: create the 2026-10-15 Linux Source validation iteration by editing this base. Preserve the entire five-layer architecture, title, original dark blue/cyan/gold/purple palette, existing topology, all arrows, every component label and the six right-column boundary statements. Preserve the existing L3 native Go IDNA/NFC14/IDNA17/Punycode label and L4 external CPython 3.11.3 ast.parse box. Do not add a runtime component.
+Change only: outline the L5 rightmost 操作员契约审计 card with a clear thin orange highlight and a small orange marker 1. In the decorative mountain area at the lower right, below boundary statement 6, add a compact, legible dark panel with an orange header and the exact following text:
+"本轮验证 · 2026-10-15"
+"1 Linux Source 六组采集"
+"66 场景 · 约154 MiB峰值"
+"资源限额保持原样"
+"Full / Vet / Race 待资源方案批准"
+Maintain visible margin and do not cover existing labels, layer cards or footer source attribution. All text must be crisp and correctly spelled. The panel and marker describe validation evidence only; do not imply Linux native parser, IDNA consumer, Go full/vet/race or overall migration acceptance has passed. No watermark.
