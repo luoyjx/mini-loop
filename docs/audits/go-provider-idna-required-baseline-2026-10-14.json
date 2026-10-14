@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "status": "required_consumer_baseline_failed_dependency_pending",
+  "applied": false,
+  "full_port_acceptance": false,
+  "baseline": "e9b6390a3e530fa6949f773e4ee6bbfcc4479970",
+  "runtime_commit": "a6bf1d5fd348158fdd21949eedce07b296844db0",
+  "production_or_dependency_changes": false,
+  "candidate": {
+    "path": "docs/audits/go-provider-idna-required-consumer-2026-10-14.go.txt",
+    "sha256": "963fa0349b169843a3407639f26a24c8e0cac6eebdca6280e1c6a8406c527085",
+    "bytes": 12219
+  },
+  "fixture": {
+    "path": "go/testdata/python-provider-idna.json",
+    "sha256": "339cee6b3f6fbda1f207551d1d9e03319b90f5c6af4509dab7a6e02d0b388eab",
+    "bytes": 53047
+  },
+  "candidate_review": {
+    "path": "var/go-final-acceptance-audit-2026-10-14/provider-idna-required-review.json",
+    "sha256": "988c993df98e055a64076a27a9d4329128a85e92bbe98df83ee7cc0c9add2879",
+    "bytes": 11980
+  },
+  "scope": "84 actual Source direct/SSE custom-transport request-object recipes; not DNS/Host/SNI/wire-host acceptance.",
+  "test_run": {
+    "resources": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-baseline/resources.json",
+      "sha256": "5288c16ffaa0e43e925c5d0437e11bc0cec00647f38b4899fdc1d198fcb91c26",
+      "bytes": 3074
+    },
+    "stdout": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-baseline/stdout.log",
+      "sha256": "8e3c5d620251df2b43192a8ceafd05e6670122b8e9e7cac917c8f8f95b1f65ec",
+      "bytes": 211353
+    },
+    "freeze_before": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-baseline/freeze.before.json",
+      "sha256": "45411963ad9d4ac6e50f6e347276e6c7266d8cb367a7f12db4bfbe0bc2ee3f5d",
+      "bytes": 197768
+    },
+    "freeze_after": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-baseline/freeze.after.json",
+      "sha256": "45411963ad9d4ac6e50f6e347276e6c7266d8cb367a7f12db4bfbe0bc2ee3f5d",
+      "bytes": 197768
+    },
+    "command": [
+      "go",
+      "test",
+      "-parallel=2",
+      "-vet=off",
+      "-overlay=/Users/yanjixiong/github/mini-loop/var/go-final-acceptance-audit-2026-10-14/idna-overlay.json",
+      "-run",
+      "^TestRequiredIDNAActualSourceDirectAndStream$",
+      "-json",
+      "-count=1",
+      "-timeout=120s",
+      "./provider"
+    ],
+    "counts": {
+      "subtest_fail": 78,
+      "subtest_pass": 6,
+      "top_fail": 1,
+      "package_fail": 1
+    },
+    "native_stage_counts": {
+      "complete": 84
+    },
+    "passed_names": [
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/punycode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/punycode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/ascii-underscore",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/ascii-underscore",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/ascii-long-label",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/ascii-long-label"
+    ],
+    "failed_names": [
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/unicode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/unicode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/ascii-malformed-alabel",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/ascii-malformed-alabel",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/uppercase-unicode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/uppercase-unicode-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/uppercase-sharp-s-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/uppercase-sharp-s-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/dotted-i-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/dotted-i-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/greek-across-dot-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/greek-across-dot-host",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/lower-becomes-ascii-with-invalid-label",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/lower-becomes-ascii-with-invalid-label",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/nfc-composed",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/nfc-composed",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/nfc-decomposed",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/nfc-decomposed",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/leading-combining",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/leading-combining",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/ideographic-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/ideographic-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/fullwidth-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/fullwidth-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/halfwidth-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/halfwidth-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/trailing-unicode-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/trailing-unicode-dot",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/empty-unicode-label",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/empty-unicode-label",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/label-63-with-unicode",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/label-63-with-unicode",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/label-64-with-unicode",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/label-64-with-unicode",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/zwnj-joining-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/zwnj-joining-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/zwnj-nonjoining-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/zwnj-nonjoining-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/zwj-virama-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/zwj-virama-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/zwj-without-virama",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/zwj-without-virama",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/middle-dot-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/middle-dot-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/middle-dot-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/middle-dot-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/greek-numeral-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/greek-numeral-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/greek-numeral-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/greek-numeral-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/hebrew-punctuation-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/hebrew-punctuation-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/hebrew-punctuation-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/hebrew-punctuation-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/katakana-middle-dot-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/katakana-middle-dot-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/katakana-middle-dot-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/katakana-middle-dot-outside-context",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/arabic-indic-digits",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/arabic-indic-digits",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/extended-arabic-indic-digits",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/extended-arabic-indic-digits",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/mixed-arabic-digit-sets",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/mixed-arabic-digit-sets",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/numeric-label-before-rtl",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/numeric-label-before-rtl",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/rtl-with-european-digit",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/rtl-with-european-digit",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/rtl-mixed-numeral-directions",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/rtl-mixed-numeral-directions",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/rtl-mixed-latin",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/rtl-mixed-latin",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/disallowed-snowman",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/disallowed-snowman",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/unicode-with-ascii-underscore",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/unicode-with-ascii-underscore",
+      "TestRequiredIDNAActualSourceDirectAndStream/direct/newer-unicode-table-codepoint",
+      "TestRequiredIDNAActualSourceDirectAndStream/stream/newer-unicode-table-codepoint"
+    ],
+    "inputs_unchanged": true,
+    "owned_cleanup": true,
+    "seconds": 2.367,
+    "sampled_peak_rss_kib": 191856,
+    "vet_scope": "vet=off only for this private virtual-file overlay after the first attempt could not open its virtual path. The current repository full vet gate is unchanged; eventual adopted real test must run normal vet."
+  },
+  "preparation_attempt": {
+    "resources": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-before/resources.json",
+      "sha256": "a45f7d82e58e8bbcfb4061f1a9d758cc53212461e01acc59790bb5ce55e7d548",
+      "bytes": 2956
+    },
+    "stdout": {
+      "path": "var/go-final-acceptance-audit-2026-10-14/idna-native-before/stdout.log",
+      "sha256": "2b0dcb7a2b406549abbc7873547d5dcb185ca9157522495140479ecd4b9a4ec1",
+      "bytes": 597
+    },
+    "test_cases_executed": 0,
+    "reason": "Go vet cannot open the new virtual overlay file; this is not a Source/native semantic counterexample."
+  },
+  "typed_api_limits": [
+    "Native admitted-client Describe matches Source provider identity; native public Client does not exist after constructor refusal, so its pre-construction identity is not fabricated.",
+    "Source error class/text retained in fixture; native opaque error compares stage, presence and no dispatch, without inventing a Python exception API.",
+    "API-key/header markers and dispatch count are asserted; this fixture has no dynamic credential-cache provider."
+  ],
+  "remaining": "Explicitly approve pinned x/net v0.43.0 and x/text v0.28.0 before dependency addition. Then implement exact host admission and consume all84 recipes with normal Go gates; approval alone does not close these rows."
+}
