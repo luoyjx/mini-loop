@@ -3971,6 +3971,30 @@ never grants tool authority.
 
 ### Go runtime posture observation
 
+`identity.BuildID() (identity.Fingerprint, error)` and
+`identity.Runtime() (identity.Snapshot, error)` observe native content and the
+current process. The fingerprint is SHA256[:12] over executable bytes, read
+through a 32 KiB buffer and cached after success; failures remain retryable and
+explicit. It is a native artifact identifier, while Source hashes Python source.
+`launcher.CurrentBuild()` keeps VCS metadata alongside `Fingerprint` and an
+optional `FingerprintError`; a revision/dirty label is not a fallback content ID.
+
+```go
+snapshot, err := identity.Runtime()
+if err != nil {
+    return err
+}
+fmt.Println(snapshot.Build, snapshot.PID, snapshot.StartedAt, snapshot.Uptime)
+```
+
+These calls own no manager, listener or backend and confer no authority. The
+shared start is captured at identity package initialization, not OS process
+birth; uptime follows Source wall-clock subtraction and can be negative after a
+clock reversal. Launcher validates its default fingerprint before constructing
+external resources. `httpapi.Config.Build` retains explicit embedding override
+semantics; health reads process timing without file I/O and does not use the
+request/rate `Config.Now` seam for identity.
+
 `SessionManager.ObserveRuntimePosture(authenticated, environment)` returns a
 concrete detached observation or an error. Nil environment uses the current
 process. It reads first-live/default bindings, retains native implementation labels,

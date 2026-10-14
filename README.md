@@ -570,16 +570,17 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `48fd26d`. Managed sessions now
-expose detached raw-artifact limits and closed state for operator inspection.
-The real startup consumer compares store presence, effective TTL/capacity limits
-and post-stop closure against all nine existing Source startup fixtures.
-This observation returns no raw content, recovery reference or backend authority;
-expiry timing and capacity-full behavior remain separate store acceptance.
-Actual Source evidence also covers all sixteen public Harness fields, including
-immutable derivation and real default/custom-catalogue parent/child composition.
-Native consumers use named runtime and manager fields; custom catalogues retain
-the executor dependencies explicitly bound by their caller.
+Current runtime review baseline: local main `48fd26d`. This iteration adds a
+shared native identity helper: a streamed executable-content fingerprint and
+one package-initialization process timestamp, PID and wall-clock uptime. Failed
+fingerprint reads remain explicit and retryable; successful results stay cached.
+Python hashes its source tree, so cross-language digest equality is not required.
+Launcher and health use the same identity; explicit embedding build labels remain
+available. Managed sessions expose detached raw-artifact limits and closed state
+for operator inspection, and the real startup consumer compares all three
+previously omitted store observations. Actual Source evidence covers all sixteen
+Harness fields and precise public audit, resource and plain/layered skill seams.
+The original platform, SDK, teamless HTTP and dependency gates remain separate.
 See [the iteration evidence](docs/audits/go-public-contract-closure-2026-10-14.md).
 
 Previous runtime review baseline: local main `da43c18`. That iteration aligns
@@ -1065,7 +1066,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>streamed artifact content ID · shared process identity<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
         GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>Cron ordered field-level 422 before owner lookup<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
@@ -3373,6 +3374,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
+| `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |
 | `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, scoped masked RAM/recovery; Manager, child and Launcher adoption; default off/normal |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |

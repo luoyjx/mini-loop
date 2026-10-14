@@ -1,5 +1,42 @@
 # Hardening notes
 
+## Go content identity and detached runtime observations — 2026-10-14
+
+Baseline `48fd26d`. A VCS revision plus a dirty flag cannot distinguish two
+different dirty executables. Native identity now fingerprints executable bytes
+with a streamed 32 KiB buffer; Source fingerprints package source bytes. This
+language adaptation preserves content identity without pretending the two
+hashes should match. VCS fields remain supplementary. Read failures return an
+explicit safe error and remain retryable; only successful results are cached,
+matching Source `lru_cache`. Default launcher construction checks identity
+before creating external resources. Explicit HTTP `Config.Build` remains a
+caller-supplied label; its health path performs no hidden fingerprint read.
+
+Shared PID/start/uptime describe one identity-package initialization, not an OS
+birth-time probe or a fresh server instance. Uptime uses Source wall-clock
+subtraction and retains negative values. Eight actual controls cover time
+advances/reversals, decimal ties and signed zero. Request/rate `Config.Now`
+does not choose this process identity.
+
+The sixteen-field Harness reconciliation follows real typed bindings and
+parent/child consumers. Default catalogue construction and an already composed
+custom handler have separate ownership: assigning a runtime spill dependency
+does not rewrite a custom catalogue's captured executor. Existing audit and
+skill/resource implementations are connected to their exact actual Source
+recipes and complete assertions; an alias name or a passing unrelated test is
+insufficient proof.
+
+`ManagedSession.RawArtifactStoreStatus()` returns copied limits and a closed
+flag plus a presence boolean. A closed retained store remains present after
+stop. Returned integer limits detach from the live store; the observation gives
+no store pointer, raw content, recovery reference or authority. Nine startup
+profiles compare actual selected TTL/caps and post-stop closure, without
+claiming a seven-second expiry experiment or a capacity-full stress test.
+
+Final gates and the eleven-row delta are recorded in the
+[iteration receipt](audits/go-public-contract-closure-2026-10-14.md).
+These boundaries do not imply complete migration or full Linux acceptance.
+
 ## Go HTTP validation and actual default selection — 2026-10-14
 
 This slice starts from `da43c18`. Authentication environment loading follows

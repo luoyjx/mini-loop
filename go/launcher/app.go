@@ -18,6 +18,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/httpapi"
+	"github.com/luoyjx/mini-loop/go/identity"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/provider"
 	"github.com/luoyjx/mini-loop/go/runtimeconfig"
@@ -31,13 +32,21 @@ import (
 )
 
 type BuildIdentity struct {
-	GoVersion string `json:"go_version"`
-	Revision  string `json:"revision"`
-	Modified  bool   `json:"modified"`
+	GoVersion        string               `json:"go_version"`
+	Revision         string               `json:"revision"`
+	Modified         bool                 `json:"modified"`
+	Fingerprint      identity.Fingerprint `json:"fingerprint"`
+	FingerprintError *string              `json:"fingerprint_error,omitempty"`
 }
 
 func CurrentBuild() BuildIdentity {
 	result := BuildIdentity{Revision: "development"}
+	var fingerprintErr error
+	result.Fingerprint, fingerprintErr = identity.BuildID()
+	if fingerprintErr != nil {
+		message := fingerprintErr.Error()
+		result.FingerprintError = &message
+	}
 	if info, ok := debug.ReadBuildInfo(); ok {
 		result.GoVersion = info.GoVersion
 		for _, entry := range info.Settings {
@@ -234,6 +243,10 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 // buildApp composes resources but never opens a listener. Serving callers must
 // complete NewWithOptions admission; the local operator audit owns its lifecycle.
 func buildApp(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) (*App, error) {
+	contentID, err := identity.BuildID()
+	if err != nil {
+		return nil, err
+	}
 	if server.ShutdownTimeout <= 0 {
 		server.ShutdownTimeout = 10 * time.Second
 	}
@@ -337,11 +350,7 @@ func buildApp(ctx context.Context, settings config.Settings, server config.Serve
 		}
 		trajectories = local
 	}
-	build := CurrentBuild()
-	label := build.Revision
-	if build.Modified {
-		label += "-modified"
-	}
+	label := string(contentID)
 	auditView := agent.SelfAuditOperatorView
 	if auth != nil && auth.Configured() {
 		auditView = agent.SelfAuditOwnerView

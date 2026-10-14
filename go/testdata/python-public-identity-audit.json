@@ -1,0 +1,445 @@
+{
+  "build": {
+    "cache_maxsize": 1,
+    "corpus_cached_after_edit": true,
+    "corpus_changed_after_cache_clear": true,
+    "corpus_ignores_non_source": true,
+    "length": 12,
+    "lowercase_hex": true,
+    "matches_package_content": true,
+    "stable_within_process": true
+  },
+  "build_failure": {
+    "exception_class": "IsADirectoryError",
+    "failure_cache_size": 0,
+    "recovered_after_repair": true,
+    "recovery_cache_hits": 1,
+    "recovery_cache_misses": 2,
+    "recovery_cache_size": 1,
+    "success_cached_after_edit": true
+  },
+  "invalid_findings": [
+    {
+      "exception_class": "ValueError",
+      "message": "unknown severity: ",
+      "severity": ""
+    },
+    {
+      "exception_class": "ValueError",
+      "message": "unknown severity: Critical",
+      "severity": "Critical"
+    },
+    {
+      "exception_class": "ValueError",
+      "message": "unknown severity: warning",
+      "severity": "warning"
+    },
+    {
+      "exception_class": "ValueError",
+      "message": "unknown severity:  HIGH ",
+      "severity": " HIGH "
+    },
+    {
+      "exception_class": "ValueError",
+      "message": "unknown severity: 中",
+      "severity": "中"
+    }
+  ],
+  "manager_side_effects": {
+    "model_calls": 0,
+    "sessions": 0
+  },
+  "producer_sha256": "3f3b5d9fe12389ab2c6b8f2fca6587ce6d599554b4d546387b455282ff702b36",
+  "public_aliases": {
+    "Finding": true,
+    "audit": true,
+    "build_id": true,
+    "render_audit": true,
+    "runtime_identity": true
+  },
+  "renderer": [
+    {
+      "findings": [],
+      "recipe": {
+        "findings": [],
+        "name": "empty"
+      },
+      "rendered": "audit: no findings.",
+      "unchanged_after_render": true
+    },
+    {
+      "findings": [
+        {
+          "check": "z-info",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "info"
+        },
+        {
+          "check": "z-critical",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "critical"
+        },
+        {
+          "check": "a-medium",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "medium"
+        },
+        {
+          "check": "a-high",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "high"
+        }
+      ],
+      "recipe": {
+        "findings": [
+          {
+            "check": "z-info",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "info"
+          },
+          {
+            "check": "z-critical",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "critical"
+          },
+          {
+            "check": "a-medium",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "medium"
+          },
+          {
+            "check": "a-high",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "high"
+          }
+        ],
+        "name": "caller-order-summary-severity-order"
+      },
+      "rendered": "[INFO    ] z-info\n           fixture detail\n           -> fixture remedy\n[CRITICAL] z-critical\n           fixture detail\n           -> fixture remedy\n[MEDIUM  ] a-medium\n           fixture detail\n           -> fixture remedy\n[HIGH    ] a-high\n           fixture detail\n           -> fixture remedy\n\n4 finding(s): 1 critical, 1 high, 1 medium, 1 info",
+      "unchanged_after_render": true
+    },
+    {
+      "findings": [
+        {
+          "check": "second",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "medium"
+        },
+        {
+          "check": "first",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "high"
+        },
+        {
+          "check": "second",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "medium"
+        },
+        {
+          "check": "last",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "info"
+        },
+        {
+          "check": "first",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "high"
+        }
+      ],
+      "recipe": {
+        "findings": [
+          {
+            "check": "second",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "medium"
+          },
+          {
+            "check": "first",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "high"
+          },
+          {
+            "check": "second",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "medium"
+          },
+          {
+            "check": "last",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "info"
+          },
+          {
+            "check": "first",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "high"
+          }
+        ],
+        "name": "repeated-severity-counts"
+      },
+      "rendered": "[MEDIUM  ] second\n           fixture detail\n           -> fixture remedy\n[HIGH    ] first\n           fixture detail\n           -> fixture remedy\n[MEDIUM  ] second\n           fixture detail\n           -> fixture remedy\n[INFO    ] last\n           fixture detail\n           -> fixture remedy\n[HIGH    ] first\n           fixture detail\n           -> fixture remedy\n\n5 finding(s): 2 high, 2 medium, 1 info",
+      "unchanged_after_render": true
+    },
+    {
+      "findings": [
+        {
+          "check": "检查\nfollow-up",
+          "detail": "é é 用户\n\tsecond\u0000",
+          "remedy": "保留 \n remedy",
+          "severity": "high"
+        }
+      ],
+      "recipe": {
+        "findings": [
+          {
+            "check": "检查\nfollow-up",
+            "detail": "é é 用户\n\tsecond\u0000",
+            "remedy": "保留 \n remedy",
+            "severity": "high"
+          }
+        ],
+        "name": "unicode-newlines-control"
+      },
+      "rendered": "[HIGH    ] 检查\nfollow-up\n           é é 用户\n\tsecond\u0000\n           -> 保留 \n remedy\n\n1 finding(s): 1 high",
+      "unchanged_after_render": true
+    },
+    {
+      "findings": [
+        {
+          "check": "",
+          "detail": "",
+          "remedy": "",
+          "severity": "critical"
+        }
+      ],
+      "recipe": {
+        "findings": [
+          {
+            "check": "",
+            "detail": "",
+            "remedy": "",
+            "severity": "critical"
+          }
+        ],
+        "name": "empty-fields"
+      },
+      "rendered": "[CRITICAL] \n           \n           -> \n\n1 finding(s): 1 critical",
+      "unchanged_after_render": true
+    },
+    {
+      "findings": [
+        {
+          "check": "one",
+          "detail": "fixture detail",
+          "remedy": "fixture remedy",
+          "severity": "info"
+        }
+      ],
+      "recipe": {
+        "findings": [
+          {
+            "check": "one",
+            "detail": "fixture detail",
+            "remedy": "fixture remedy",
+            "severity": "info"
+          }
+        ],
+        "name": "single-info"
+      },
+      "rendered": "[INFO    ] one\n           fixture detail\n           -> fixture remedy\n\n1 finding(s): 1 info",
+      "unchanged_after_render": true
+    }
+  ],
+  "runtime": [
+    {
+      "build_matches_public": true,
+      "keys": [
+        "build",
+        "pid",
+        "started_at",
+        "uptime_s"
+      ],
+      "name": "without-manager",
+      "pid_matches_process": true,
+      "posture": null,
+      "started_at_stable": true,
+      "uptime_nondecreasing": true,
+      "uptime_nonnegative": true
+    },
+    {
+      "build_matches_public": true,
+      "keys": [
+        "build",
+        "pid",
+        "posture",
+        "started_at",
+        "uptime_s"
+      ],
+      "name": "default-manager",
+      "pid_matches_process": true,
+      "posture": {
+        "action_journal": "InMemoryActionJournal",
+        "authenticated": false,
+        "cache_policy": "DefaultCachePolicy",
+        "sandbox": "NullSandbox",
+        "sandbox_reason": null,
+        "secrets": "NullSecretRegistry",
+        "secrets_unregistered": 0,
+        "state_store": "NullStateStore",
+        "state_store_error": null,
+        "stuck_detector": "DefaultStuckDetector",
+        "trajectories": false,
+        "user_resources": false,
+        "workflows": false
+      },
+      "started_at_stable": true,
+      "uptime_nondecreasing": true,
+      "uptime_nonnegative": true
+    },
+    {
+      "build_matches_public": true,
+      "keys": [
+        "build",
+        "pid",
+        "posture",
+        "started_at",
+        "uptime_s"
+      ],
+      "name": "authenticated-manager",
+      "pid_matches_process": true,
+      "posture": {
+        "action_journal": "InMemoryActionJournal",
+        "authenticated": true,
+        "cache_policy": "DefaultCachePolicy",
+        "sandbox": "NullSandbox",
+        "sandbox_reason": null,
+        "secrets": "NullSecretRegistry",
+        "secrets_unregistered": 0,
+        "state_store": "NullStateStore",
+        "state_store_error": null,
+        "stuck_detector": "DefaultStuckDetector",
+        "trajectories": false,
+        "user_resources": false,
+        "workflows": false
+      },
+      "started_at_stable": true,
+      "uptime_nondecreasing": true,
+      "uptime_nonnegative": true
+    }
+  ],
+  "scope": [
+    "Actual root-public exports; only finite string Finding fields and severity values are captured.",
+    "Process/build/time values are represented by observed relationships, never equal cross-language fingerprints.",
+    "Source build caching, real package-content hash, private source edit and non-source exclusion are executed.",
+    "Actual Source read failure leaves an empty cache; repaired input succeeds on retry, then successful content remains cached.",
+    "Three actual runtime_identity calls profiles include a real empty manager; model/session side effects are counted.",
+    "Eight actual runtime_identity wall-clock profiles retain backward/forward time, negative elapsed values and three-place rounding including signed zero.",
+    "Audit alias binds the existing actual manager audit corpus; six direct renderer recipes preserve full text and input order.",
+    "Native Finding is a typed value; unknown severity refusal at Render is an explicit boundary adaptation from Source construction.",
+    "Python dataclass mutability/slots/equality identity, arbitrary objects, all timestamps and whole-port acceptance are not certified."
+  ],
+  "source_sha256": {
+    "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+    "mini_loop/audit.py": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f",
+    "mini_loop/identity.py": "a18a4e703595095e317035aa6261b640890764e918cdd7ac8cf7ca30bc097913"
+  },
+  "wall_clock": [
+    {
+      "build_matches_public": true,
+      "name": "backward",
+      "now": 999.75,
+      "observed_started_at": 1000.0,
+      "pid_matches_process": true,
+      "started_at": 1000.0,
+      "uptime_negative_zero": false,
+      "uptime_s": -0.25
+    },
+    {
+      "build_matches_public": true,
+      "name": "forward",
+      "now": 1000.1254,
+      "observed_started_at": 1000.0,
+      "pid_matches_process": true,
+      "started_at": 1000.0,
+      "uptime_negative_zero": false,
+      "uptime_s": 0.125
+    },
+    {
+      "build_matches_public": true,
+      "name": "forward-after-rounding-boundary",
+      "now": 1000.1265,
+      "observed_started_at": 1000.0,
+      "pid_matches_process": true,
+      "started_at": 1000.0,
+      "uptime_negative_zero": false,
+      "uptime_s": 0.126
+    },
+    {
+      "build_matches_public": true,
+      "name": "backward-near-start",
+      "now": 999.9996,
+      "observed_started_at": 1000.0,
+      "pid_matches_process": true,
+      "started_at": 1000.0,
+      "uptime_negative_zero": true,
+      "uptime_s": -0.0
+    },
+    {
+      "build_matches_public": true,
+      "name": "forward-again",
+      "now": 1001.2345,
+      "observed_started_at": 1000.0,
+      "pid_matches_process": true,
+      "started_at": 1000.0,
+      "uptime_negative_zero": false,
+      "uptime_s": 1.235
+    },
+    {
+      "build_matches_public": true,
+      "name": "positive-tie-even",
+      "now": 0.0625,
+      "observed_started_at": 0.0,
+      "pid_matches_process": true,
+      "started_at": 0.0,
+      "uptime_negative_zero": false,
+      "uptime_s": 0.062
+    },
+    {
+      "build_matches_public": true,
+      "name": "negative-tie-even",
+      "now": -0.0625,
+      "observed_started_at": 0.0,
+      "pid_matches_process": true,
+      "started_at": 0.0,
+      "uptime_negative_zero": false,
+      "uptime_s": -0.062
+    },
+    {
+      "build_matches_public": true,
+      "name": "negative-zero",
+      "now": -0.0004,
+      "observed_started_at": 0.0,
+      "pid_matches_process": true,
+      "started_at": 0.0,
+      "uptime_negative_zero": true,
+      "uptime_s": -0.0
+    }
+  ]
+}

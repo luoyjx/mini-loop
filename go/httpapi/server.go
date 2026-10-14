@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
 	settingsconfig "github.com/luoyjx/mini-loop/go/config"
+	"github.com/luoyjx/mini-loop/go/identity"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"io"
 	"net/http"
@@ -54,7 +55,6 @@ type Server struct {
 	fake               bool
 	build              string
 	now                func() time.Time
-	started            time.Time
 	registered         []registeredRoute
 	mu                 sync.Mutex
 	cache              map[cacheKey]MessageResponse
@@ -79,9 +79,13 @@ func New(config Config) (*Server, error) {
 		config.Now = time.Now
 	}
 	if config.Build == "" {
-		config.Build = "development"
+		build, err := identity.BuildID()
+		if err != nil {
+			return nil, err
+		}
+		config.Build = string(build)
 	}
-	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, features: config.Features, build: config.Build, now: config.Now, started: config.Now(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
+	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, features: config.Features, build: config.Build, now: config.Now, cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
 	s.routes()
 	s.benchmarkSkillsDir = config.BenchmarkSkillsDir
 	if s.benchmarkSkillsDir == "" {
