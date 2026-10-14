@@ -1,0 +1,14 @@
+Edit target: the attached existing mini-loop layered architecture base image. Use infographic-diagram style. Preserve the complete original five-layer architecture, all component boxes, ownership/authority boundaries, all arrows, dark navy/cyan/gold/purple style, Chinese title and readable original labels. Do not add or remove architecture components.
+
+Produce an iteration-specific annotated version, dated 2026-10-14, titled "本轮修改：异常后续请求 · 提示组合 · Linux 对照". Mark changes with three compact orange numbered callouts, without obscuring original content:
+1 near L2 ManagedSession and L3 Session Agent / Model Provider: "停滞异常后续请求" and subline "有限未发布批次观察；公开 transcript 校验仍严格".
+2 near L3 Context: "公开提示组合" and subline "SectionsBuilder / RuntimeFacts / MemorySystemBuilder；默认配置不变".
+3 near L5 契约审计: "Linux 同平台 Source 对照" and subline "固定镜像；2 CPU / 1.5 GiB；完整迁移验收仍未完成".
+Replace the right sidebar "边界说明" with a concise iteration note panel while preserving its position, six spacious numbered rows are optional:
+"本轮修改位置"
+"① 会话异常与模型请求边界"
+"② 现有 Context / Memory 组合接口"
+"③ Source 证据与平台对照"
+"没有新增架构组件"
+"测试结果见旁文；不代表完整迁移通过"
+Keep title subtitle truthful: Python 基准实现 · 独立 Go 实现 · 迁移验收仍在进行. No coverage percentage, no pass badge, no claims of live network requests, no new default features. Output a crisp professional 1536x1024 landscape PNG.

@@ -1,0 +1,1119 @@
+{
+  "schema_version": 1,
+  "draft": false,
+  "status": "passed_same_platform_minima",
+  "runtime_commit": "78d95bc250c5d72183d649acb5d114bb8c157bf2",
+  "image": "sha256:874a8b40ad6058f3f160636c61946394559b067562d7478cc3f9cc500794e9aa",
+  "input": {
+    "revision": "78d95bc250c5d72183d649acb5d114bb8c157bf2",
+    "archive_sha256": "98f8d50187b8b8f1efcc029c0fb273b23c3fbc0c8874c2e8d349eb8774f2ab7a",
+    "archive_bytes": 43581440,
+    "archive_members": 1857
+  },
+  "comparison_to_prior_receipt": "docs/audits/go-required-row-linux-minima-2026-10-14.json",
+  "conclusion": "All six failure groups from the previous eight-selector Linux minima are explained by actual Source behavior in the same Linux environment. The unchanged frozen Go code passes all eight selector groups against six read-only actual Linux fixtures. No production-code fix is indicated for these six witnessed mismatches.",
+  "acceptance_scope": {
+    "go_groups": 8,
+    "go_packages": 7,
+    "explicit_target_tests": 10,
+    "groups_passed": 8,
+    "groups_failed": 0,
+    "source_producer_invocations": 6,
+    "source_cases_captured": 66,
+    "go_uses_all_source_cases": false,
+    "production_source_edits": false,
+    "tracked_fixture_edits": false,
+    "assertion_or_timeout_changes": false,
+    "full_linux_ordinary": "not_run_in_this_receipt",
+    "full_linux_vet": "not_run_in_this_receipt",
+    "full_linux_race": "not_run_in_this_receipt",
+    "whole_source_export": "not_run_in_this_receipt"
+  },
+  "gates": {
+    "source": {
+      "status": "source_captured",
+      "runner_exit_code": 0,
+      "container_exit_code": 0,
+      "started_at": "2026-10-14T00:37:02.398324505Z",
+      "finished_at": "2026-10-14T00:37:06.742326971Z",
+      "outer_seconds": 10.942047999997158,
+      "result": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/result.json",
+        "sha256": "f0ed9be278f01e408074b3f1b350766b3c67f10c964f425f85abd0a044ef4eeb",
+        "bytes": 23468
+      }
+    },
+    "go": {
+      "status": "passed_minima",
+      "runner_exit_code": 0,
+      "container_exit_code": 0,
+      "started_at": "2026-10-14T00:37:30.567909407Z",
+      "finished_at": "2026-10-14T00:38:31.436425621Z",
+      "outer_seconds": 71.53961016700487,
+      "result": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-go-source-78d95bc/result.json",
+        "sha256": "3e53d823dae67c7e940073cc56e83daf3ba24e5bcfb6eae5fd2ba80993486c79",
+        "bytes": 87470
+      }
+    }
+  },
+  "source_platform_context_matches": true,
+  "environment": {
+    "platform": "Linux-7.0.11-orbstack-00354-gde2ab3f9e944-aarch64-with-glibc2.36",
+    "uname": [
+      "Linux",
+      "390ab0296b39",
+      "7.0.11-orbstack-00354-gde2ab3f9e944",
+      "#1 SMP PREEMPT Thu Jun  4 11:12:11 UTC 2026",
+      "aarch64",
+      ""
+    ],
+    "python": "3.11.2 (main, Sep 14 2024, 03:00:30) [GCC 12.2.0]",
+    "shell": {
+      "path": "/usr/bin/dash",
+      "sha256": "15fc4c72f49c86639a383121eec6fbdbcd32ec9d03db915cb3096928295e1a17"
+    },
+    "git": {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "git version 2.39.5\n"
+    },
+    "tmp": {
+      "device": 39,
+      "mount": {
+        "filesystem": "btrfs",
+        "mountpoint": "/tmp",
+        "options": "rw,noatime",
+        "raw": "494 479 0:38 /docker/volumes/mini-loop-linux-platform-source-83578a1cc3ea49c99151956050931ce3-tmp/_data /tmp rw,noatime master:69 - btrfs /dev/vdb1 rw,nodatasum,nodatacow,ssd,discard,space_cache=v2,subvolid=5,subvol=/",
+        "source": "/dev/vdb1"
+      },
+      "resolved": "/tmp",
+      "stat": {
+        "argv": [
+          "stat",
+          "-f",
+          "-c",
+          "%T",
+          "/tmp"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "btrfs\n"
+      }
+    },
+    "dependencies": {
+      "annotated-doc": "0.0.4",
+      "annotated-types": "0.7.0",
+      "anthropic": "0.107.1",
+      "anyio": "4.13.0",
+      "certifi": "2026.5.20",
+      "distro": "1.9.0",
+      "docstring-parser": "0.18.0",
+      "fastapi": "0.136.3",
+      "h11": "0.16.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "idna": "3.18",
+      "jiter": "0.15.0",
+      "pathspec": "1.1.1",
+      "pydantic": "2.13.4",
+      "pydantic-core": "2.46.4",
+      "python-dotenv": "1.2.2",
+      "sniffio": "1.3.1",
+      "sse-starlette": "3.4.4",
+      "starlette": "1.2.1",
+      "typing-extensions": "4.15.0",
+      "typing-inspection": "0.4.2"
+    }
+  },
+  "resources": {
+    "source": {
+      "limits": {
+        "Memory": 1610612736,
+        "MemorySwap": 1610612736,
+        "NanoCpus": 2000000000,
+        "PidsLimit": 256,
+        "ReadonlyRootfs": true,
+        "NetworkMode": "none"
+      },
+      "observed_host_pressure_levels": [
+        1
+      ],
+      "pressure_samples": 6,
+      "stats_peak_working_set_bytes": 110939340,
+      "cgroup_peak_bytes": 146280448,
+      "oom_killed": false,
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "cleanup_errors": [],
+      "successful_owned_cleanup_commands": [
+        {
+          "argv": [
+            "docker",
+            "rm",
+            "--force",
+            "390ab0296b39d1cf598b59a5299a2c8c80063a3323636630b3214916e86232f3"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "docker",
+            "volume",
+            "rm",
+            "mini-loop-linux-platform-source-83578a1cc3ea49c99151956050931ce3-tmp"
+          ],
+          "exit_code": 0
+        }
+      ]
+    },
+    "go": {
+      "limits": {
+        "Memory": 1610612736,
+        "MemorySwap": 1610612736,
+        "NanoCpus": 2000000000,
+        "PidsLimit": 256,
+        "ReadonlyRootfs": true,
+        "NetworkMode": "none"
+      },
+      "observed_host_pressure_levels": [
+        1
+      ],
+      "pressure_samples": 24,
+      "stats_peak_working_set_bytes": 498388172,
+      "cgroup_peak_bytes": 735055872,
+      "oom_killed": false,
+      "cgroup_memory_events": {
+        "astcontext.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "benchmark.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "final.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "httpapi-efficiency.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "httpapi.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "reload.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "start.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "userresources.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "workspace.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "worktrees.memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "cleanup_errors": [],
+      "successful_owned_cleanup_commands": [
+        {
+          "argv": [
+            "docker",
+            "rm",
+            "--force",
+            "856e69170737a675923bc62f87514c47ea6be9e994c8949401e54c94d0ad3658"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "docker",
+            "volume",
+            "rm",
+            "mini-loop-linux-platform-go-0f02954c197e4d9fa15ef46e349ba628-tmp"
+          ],
+          "exit_code": 0
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "astcontext",
+      "package": "./astcontext",
+      "selector": "^TestDigestRecheckedBySameAdapterBeforeEveryProbe$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe"
+      ],
+      "observed_runs": [
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe"
+      ],
+      "terminal_tests": {
+        "TestDigestRecheckedBySameAdapterBeforeEveryProbe": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "benchmark",
+      "package": "./benchmark",
+      "selector": "^TestRunArmMatchesActualPythonDefaultFakeArms$/^visible$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible"
+      ],
+      "observed_runs": [
+        "TestRunArmMatchesActualPythonDefaultFakeArms",
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible"
+      ],
+      "terminal_tests": {
+        "TestRunArmMatchesActualPythonDefaultFakeArms/visible": "pass",
+        "TestRunArmMatchesActualPythonDefaultFakeArms": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "httpapi",
+      "package": "./httpapi",
+      "selector": "^TestBenchmarkActualPythonHTTP$/^default$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestBenchmarkActualPythonHTTP/default"
+      ],
+      "observed_runs": [
+        "TestBenchmarkActualPythonHTTP",
+        "TestBenchmarkActualPythonHTTP/default"
+      ],
+      "terminal_tests": {
+        "TestBenchmarkActualPythonHTTP/default": "pass",
+        "TestBenchmarkActualPythonHTTP": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "httpapi-efficiency",
+      "package": "./httpapi",
+      "selector": "^TestBenchmarkEfficiencyActualPythonHTTP$/^efficiency-shadow$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow"
+      ],
+      "observed_runs": [
+        "TestBenchmarkEfficiencyActualPythonHTTP",
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow"
+      ],
+      "terminal_tests": {
+        "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow": "pass",
+        "TestBenchmarkEfficiencyActualPythonHTTP": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "reload",
+      "package": "./reload",
+      "selector": "^TestNativeEventsActualSourceRecipes$/^directory-symlink-(source|reverse)$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse"
+      ],
+      "observed_runs": [
+        "TestNativeEventsActualSourceRecipes",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse"
+      ],
+      "terminal_tests": {
+        "TestNativeEventsActualSourceRecipes/directory-symlink-source": "pass",
+        "TestNativeEventsActualSourceRecipes/directory-symlink-reverse": "pass",
+        "TestNativeEventsActualSourceRecipes": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "userresources",
+      "package": "./userresources",
+      "selector": "^TestResourcesMatchActualPython$/^problems$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestResourcesMatchActualPython/problems"
+      ],
+      "observed_runs": [
+        "TestResourcesMatchActualPython",
+        "TestResourcesMatchActualPython/problems"
+      ],
+      "terminal_tests": {
+        "TestResourcesMatchActualPython/problems": "pass",
+        "TestResourcesMatchActualPython": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "workspace",
+      "package": "./workspace",
+      "selector": "^TestGlobMatchesPythonContracts$/^glob_truncated$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestGlobMatchesPythonContracts/glob_truncated"
+      ],
+      "observed_runs": [
+        "TestGlobMatchesPythonContracts",
+        "TestGlobMatchesPythonContracts/glob_truncated"
+      ],
+      "terminal_tests": {
+        "TestGlobMatchesPythonContracts/glob_truncated": "pass",
+        "TestGlobMatchesPythonContracts": "pass"
+      },
+      "expected_tests_passed": true
+    },
+    {
+      "id": "worktrees",
+      "package": "./worktrees",
+      "selector": "^TestActualPythonLifecycleFactoryAndTaskBinding$/^(not-repository|unverified-status)$",
+      "exit_code": 0,
+      "expected_tests": [
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status"
+      ],
+      "observed_runs": [
+        "TestActualPythonLifecycleFactoryAndTaskBinding",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status"
+      ],
+      "terminal_tests": {
+        "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository": "pass",
+        "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status": "pass",
+        "TestActualPythonLifecycleFactoryAndTaskBinding": "pass"
+      },
+      "expected_tests_passed": true
+    }
+  ],
+  "source_capture_groups": [
+    {
+      "id": "benchmark",
+      "exit_code": 0
+    },
+    {
+      "id": "httpapi",
+      "exit_code": 0
+    },
+    {
+      "id": "httpapi-efficiency",
+      "exit_code": 0
+    },
+    {
+      "id": "userresources",
+      "exit_code": 0
+    },
+    {
+      "id": "workspace",
+      "exit_code": 0
+    },
+    {
+      "id": "worktrees",
+      "exit_code": 0
+    }
+  ],
+  "fixture_comparison_totals": {
+    "fixtures": 6,
+    "cases": 66,
+    "changed_cases": 19,
+    "leaf_differences": 69
+  },
+  "fixture_comparisons": [
+    {
+      "id": "benchmark",
+      "fixture": "python-benchmark-arms.json",
+      "source": {
+        "line": 8115,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_benchmark_arm_contracts"
+      },
+      "case_count": 8,
+      "changed_cases": [
+        "visible"
+      ],
+      "leaf_difference_count": 3,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-benchmark-arms.json",
+        "sha256": "bfae50d9ecddd923ce1bdaf4057cf57a55f4b5b96e251dbf2691ed31ef9b0d75",
+        "bytes": 23479
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-arms.json",
+        "sha256": "f14345bf1447b87baccee5725c720ee6055cb9dc002d2cf047ab5f7d51caa02f",
+        "bytes": 23339
+      },
+      "explanation": "Only visible/edit-config differs: Linux dash emits a shorter EOF diagnostic, retained in the actual tool reply/final transcript. run_arm computes context_tokens_estimate from that transcript: 243 Darwin versus 208 Linux. All other captured fields remain equal.",
+      "differences": [
+        {
+          "pointer": "$/cases/0/rows/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/0/sessions/2/messages/2/content/0/content",
+          "darwin": "/bin/sh: -c: line 0: unexpected EOF while looking for matching ``'\n/bin/sh: -c: line 1: syntax error: unexpected end of file\n(exit 2)",
+          "linux": "/bin/sh: 1: Syntax error: EOF in backquote substitution\n(exit 2)"
+        },
+        {
+          "pointer": "$/cases/0/sessions/2/messages/3/content/1/text",
+          "darwin": "Done. Tool said: /bin/sh: -c: line 0: unexpected EOF while looking for matching ``'\n/bin/sh: -c: line 1: syntax error: unexpected end of file\n(exit 2)",
+          "linux": "Done. Tool said: /bin/sh: 1: Syntax error: EOF in backquote substitution\n(exit 2)"
+        }
+      ]
+    },
+    {
+      "id": "httpapi",
+      "fixture": "python-benchmark-http.json",
+      "source": {
+        "line": 8184,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_benchmark_http_contracts"
+      },
+      "case_count": 5,
+      "changed_cases": [
+        "default",
+        "ignored-body",
+        "malformed-body",
+        "real-main",
+        "one-round"
+      ],
+      "leaf_difference_count": 20,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-benchmark-http.json",
+        "sha256": "2715ac03fa2e9fd237ff1e8c58696e62020181ccbd626645475562b79e4effce",
+        "bytes": 25723
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-http.json",
+        "sha256": "24d7dc814141c53f6b570bcee4ed492f5181bec4d0ce706d7fb66e8581e52f72",
+        "bytes": 25723
+      },
+      "explanation": "The actual HTTP producer inherits the edit-config transcript difference in baseline and candidate. Default/ignored-body/malformed-body/real-main task estimates are 243 versus208; summed estimates1073 versus1038. The one-round case is164 versus147 and summed764 versus747. No other output fields differ.",
+      "differences": [
+        {
+          "pointer": "$/cases/0/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/0/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/0/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/0/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/1/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/1/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/1/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/1/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/2/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/2/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/2/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/2/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/3/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/3/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/3/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/3/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/4/response/baseline/2/context_tokens_estimate",
+          "darwin": 164,
+          "linux": 147
+        },
+        {
+          "pointer": "$/cases/4/response/candidate/2/context_tokens_estimate",
+          "darwin": 164,
+          "linux": 147
+        },
+        {
+          "pointer": "$/cases/4/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 764,
+          "linux": 747
+        },
+        {
+          "pointer": "$/cases/4/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 764,
+          "linux": 747
+        }
+      ]
+    },
+    {
+      "id": "httpapi-efficiency",
+      "fixture": "python-benchmark-efficiency-http.json",
+      "source": {
+        "line": 8184,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_benchmark_http_contracts"
+      },
+      "case_count": 2,
+      "changed_cases": [
+        "efficiency-shadow",
+        "efficiency-enforce-concise"
+      ],
+      "leaf_difference_count": 8,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-benchmark-efficiency-http.json",
+        "sha256": "b107a7de981f02569c76026d8ed1fa760439eb4f4e16d82a44235e0def207835",
+        "bytes": 10467
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-efficiency-http.json",
+        "sha256": "b74a820eb8a3a76225f0de2571f434e7f392adf97b173743f392930a4b76706c",
+        "bytes": 10467
+      },
+      "explanation": "Both efficiency-shadow and efficiency-enforce-concise inherit the same243-to208 edit-config estimate and1073-to1038 summed baseline/candidate context estimate. No other output fields differ.",
+      "differences": [
+        {
+          "pointer": "$/cases/0/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/0/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/0/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/0/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/1/response/baseline/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/1/response/candidate/2/context_tokens_estimate",
+          "darwin": 243,
+          "linux": 208
+        },
+        {
+          "pointer": "$/cases/1/response/comparison/dimensions/context_tokens_estimate/baseline",
+          "darwin": 1073,
+          "linux": 1038
+        },
+        {
+          "pointer": "$/cases/1/response/comparison/dimensions/context_tokens_estimate/candidate",
+          "darwin": 1073,
+          "linux": 1038
+        }
+      ]
+    },
+    {
+      "id": "userresources",
+      "fixture": "python-owner-resources.json",
+      "source": {
+        "line": 5373,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_owner_resource_contracts"
+      },
+      "case_count": 4,
+      "changed_cases": [
+        "problems"
+      ],
+      "leaf_difference_count": 8,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-owner-resources.json",
+        "sha256": "94f41cc3f45459acaef1eca96d5468fefe690185c3cc46aede955d4063a9ab82",
+        "bytes": 10737
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-owner-resources.json",
+        "sha256": "e1dc017360a497171a634e530e1360a6190e7f3530d4c229b44f0b15340cb764",
+        "bytes": 10673
+      },
+      "explanation": "All eight changed diagnostic strings become byte-identical after removing only the Darwin /private prefix before $USERS. Source producer normalization is unchanged. Owner identities, admission and problem counts remain equal.",
+      "differences": [
+        {
+          "pointer": "$/cases/2/steps/1/local_problems/1",
+          "darwin": "user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/1/problems/0",
+          "darwin": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/3/local_problems/1",
+          "darwin": "user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/3/problems/0",
+          "darwin": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/3/problems/1",
+          "darwin": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: $USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/4/local_problems/1",
+          "darwin": "user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "user: $USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/4/problems/0",
+          "darwin": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: $USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        },
+        {
+          "pointer": "$/cases/2/steps/4/problems/1",
+          "darwin": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name",
+          "linux": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: $USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+        }
+      ],
+      "private_prefix_only_count": 8
+    },
+    {
+      "id": "workspace",
+      "fixture": "python-glob-tools.json",
+      "source": {
+        "line": 154,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_glob_contracts"
+      },
+      "case_count": 38,
+      "changed_cases": [
+        "glob_truncated"
+      ],
+      "leaf_difference_count": 1,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-glob-tools.json",
+        "sha256": "e7aa2fed2ca779990f3cd144e11d18f287546f8f2b8e9cf4db63424205bf525d",
+        "bytes": 251483
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-glob-tools.json",
+        "sha256": "55fc06b235363272bcb07bae3f1f7e0995e574d6c9098cb0ae34f577774dd45f",
+        "bytes": 251483
+      },
+      "explanation": "Only glob_truncated changes. Both Source captures admit555 names, render49973 characters/138773 UTF-8 bytes, retain the same truncation marker. Linux ends_0554.txt versus Darwin_0799.txt. Source run_glob applies its budget during filesystem enumeration before sorting; actual native btrfs enumeration explains the selected-set difference. Go matches this actual Linux result.",
+      "differences": [
+        {
+          "pointer": "$/cases/36/expected_output",
+          "darwin": {
+            "type": "string",
+            "characters": 49973,
+            "utf8_bytes": 138773,
+            "sha256": "3960fe6293fc49ed8d16239af7a10eceb4c4d59b4323a611a4bb7f8d142c53bd",
+            "prefix": "中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0000.txt\n中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中",
+            "suffix": "中中中中中中中中中中中中中中中中中中中中中中中中中中中_0798.txt\n中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0799.txt\n... (matches truncated)",
+            "full_value_location": "Read the same JSON pointer from the hashed input fixture."
+          },
+          "linux": {
+            "type": "string",
+            "characters": 49973,
+            "utf8_bytes": 138773,
+            "sha256": "8cc33ff30bb152b3a5761b0b371f4ae8084b0847a3bbc72e2d24a293c1e0da54",
+            "prefix": "中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0000.txt\n中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中",
+            "suffix": "中中中中中中中中中中中中中中中中中中中中中中中中中中中_0553.txt\n中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中_0554.txt\n... (matches truncated)",
+            "full_value_location": "Read the same JSON pointer from the hashed input fixture."
+          }
+        }
+      ],
+      "glob_observation": {
+        "darwin": {
+          "admitted_names": 555,
+          "characters": 49973,
+          "utf8_bytes": 138773,
+          "last_suffix": "_0799.txt",
+          "truncation_marker": "... (matches truncated)"
+        },
+        "linux": {
+          "admitted_names": 555,
+          "characters": 49973,
+          "utf8_bytes": 138773,
+          "last_suffix": "_0554.txt",
+          "truncation_marker": "... (matches truncated)"
+        }
+      }
+    },
+    {
+      "id": "worktrees",
+      "fixture": "python-worktrees.json",
+      "source": {
+        "line": 3217,
+        "path": "python/tools/export_go_contracts.py",
+        "symbol": "_worktree_contracts"
+      },
+      "case_count": 9,
+      "changed_cases": [
+        "names",
+        "not-repository",
+        "lifecycle-binding",
+        "dirty-and-ahead",
+        "unverified-status",
+        "factory",
+        "custom-location",
+        "unborn",
+        "empty-prefix-base"
+      ],
+      "leaf_difference_count": 29,
+      "baseline_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/workspace/go/testdata/python-worktrees.json",
+        "sha256": "0efe11f6f9f532f688e00553443a057dc0e3848d728366c0ea5afd81ec59d924",
+        "bytes": 25654
+      },
+      "linux_fixture": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-worktrees.json",
+        "sha256": "1e395692df3c612796923c0243eef6a98c3531d2c712697098c7aab42dfc223d",
+        "bytes": 25501
+      },
+      "explanation": "Twenty-eight changed values differ only by Darwin /private before <REPO>. The remaining unverified-status discard-remove error is Git2.39.5 filesystem-boundary stderr on the native /tmp volume. All actions, events, bindings, existence flags and other fields remain equal.",
+      "differences": [
+        {
+          "pointer": "$/cases/0/steps/7/value",
+          "darwin": "Worktree 'A._-9' created at /private<REPO>/.worktrees/A._-9",
+          "linux": "Worktree 'A._-9' created at <REPO>/.worktrees/A._-9"
+        },
+        {
+          "pointer": "$/cases/1/steps/0/value",
+          "darwin": "Error: /private<REPO> is not a git repository",
+          "linux": "Error: <REPO> is not a git repository"
+        },
+        {
+          "pointer": "$/cases/1/steps/4/value",
+          "darwin": "/private<REPO>/.worktrees/___s1",
+          "linux": "<REPO>/.worktrees/___s1"
+        },
+        {
+          "pointer": "$/cases/1/steps/5/value",
+          "darwin": "/private<REPO>/.worktrees/session",
+          "linux": "<REPO>/.worktrees/session"
+        },
+        {
+          "pointer": "$/cases/1/steps/6/value",
+          "darwin": "/private<REPO>/.worktrees/session",
+          "linux": "<REPO>/.worktrees/session"
+        },
+        {
+          "pointer": "$/cases/2/steps/1/value",
+          "darwin": "Worktree 'alpha' created at /private<REPO>/.worktrees/alpha",
+          "linux": "Worktree 'alpha' created at <REPO>/.worktrees/alpha"
+        },
+        {
+          "pointer": "$/cases/2/steps/5/value/0",
+          "darwin": "/private<REPO> <HEAD> [main]",
+          "linux": "<REPO> <HEAD> [main]"
+        },
+        {
+          "pointer": "$/cases/2/steps/5/value/1",
+          "darwin": "/private<REPO>/.worktrees/alpha <HEAD> [wt/alpha]",
+          "linux": "<REPO>/.worktrees/alpha <HEAD> [wt/alpha]"
+        },
+        {
+          "pointer": "$/cases/3/steps/0/value",
+          "darwin": "Worktree 'dirty' created at /private<REPO>/.worktrees/dirty",
+          "linux": "Worktree 'dirty' created at <REPO>/.worktrees/dirty"
+        },
+        {
+          "pointer": "$/cases/4/steps/3/value",
+          "darwin": "Error: fatal: not a git repository (or any of the parent directories): .git",
+          "linux": "Error: fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)."
+        },
+        {
+          "pointer": "$/cases/5/steps/0/value",
+          "darwin": "/private<REPO>/.worktrees/s1",
+          "linux": "<REPO>/.worktrees/s1"
+        },
+        {
+          "pointer": "$/cases/5/steps/1/value",
+          "darwin": "/private<REPO>/.worktrees/s1",
+          "linux": "<REPO>/.worktrees/s1"
+        },
+        {
+          "pointer": "$/cases/5/steps/2/value",
+          "darwin": "/private<REPO>/.worktrees/session",
+          "linux": "<REPO>/.worktrees/session"
+        },
+        {
+          "pointer": "$/cases/5/steps/3/value",
+          "darwin": "/private<REPO>/.worktrees/___s2",
+          "linux": "<REPO>/.worktrees/___s2"
+        },
+        {
+          "pointer": "$/cases/5/steps/4/value",
+          "darwin": "/private<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "linux": "<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        {
+          "pointer": "$/cases/5/steps/5/value/0",
+          "darwin": "/private<REPO> <HEAD> [main]",
+          "linux": "<REPO> <HEAD> [main]"
+        },
+        {
+          "pointer": "$/cases/5/steps/5/value/1",
+          "darwin": "/private<REPO>/.worktrees/___s2 <HEAD> [wt/___s2]",
+          "linux": "<REPO>/.worktrees/___s2 <HEAD> [wt/___s2]"
+        },
+        {
+          "pointer": "$/cases/5/steps/5/value/2",
+          "darwin": "/private<REPO>/.worktrees/s1 <HEAD> [wt/s1]",
+          "linux": "<REPO>/.worktrees/s1 <HEAD> [wt/s1]"
+        },
+        {
+          "pointer": "$/cases/5/steps/5/value/3",
+          "darwin": "/private<REPO>/.worktrees/session <HEAD> [wt/session]",
+          "linux": "<REPO>/.worktrees/session <HEAD> [wt/session]"
+        },
+        {
+          "pointer": "$/cases/5/steps/5/value/4",
+          "darwin": "/private<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <HEAD> [wt/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+          "linux": "<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <HEAD> [wt/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]"
+        },
+        {
+          "pointer": "$/cases/5/steps/7/value",
+          "darwin": "/private<REPO>/.worktrees/collision",
+          "linux": "<REPO>/.worktrees/collision"
+        },
+        {
+          "pointer": "$/cases/5/steps/8/value",
+          "darwin": "Error: fatal: '/private<REPO>/.worktrees/collision' is not a working tree",
+          "linux": "Error: fatal: '<REPO>/.worktrees/collision' is not a working tree"
+        },
+        {
+          "pointer": "$/cases/6/steps/0/value",
+          "darwin": "Worktree 'custom' created at /private<REPO>/trees/custom",
+          "linux": "Worktree 'custom' created at <REPO>/trees/custom"
+        },
+        {
+          "pointer": "$/cases/6/steps/2/value/0",
+          "darwin": "/private<REPO> <HEAD> [main]",
+          "linux": "<REPO> <HEAD> [main]"
+        },
+        {
+          "pointer": "$/cases/6/steps/2/value/1",
+          "darwin": "/private<REPO>/trees/custom <HEAD> [review/custom]",
+          "linux": "<REPO>/trees/custom <HEAD> [review/custom]"
+        },
+        {
+          "pointer": "$/cases/7/steps/0/value",
+          "darwin": "/private<REPO>/.worktrees/empty",
+          "linux": "<REPO>/.worktrees/empty"
+        },
+        {
+          "pointer": "$/cases/8/steps/0/value",
+          "darwin": "Worktree 'direct' created at /private<REPO>/direct",
+          "linux": "Worktree 'direct' created at <REPO>/direct"
+        },
+        {
+          "pointer": "$/cases/8/steps/2/value/0",
+          "darwin": "/private<REPO> <HEAD> [main]",
+          "linux": "<REPO> <HEAD> [main]"
+        },
+        {
+          "pointer": "$/cases/8/steps/2/value/1",
+          "darwin": "/private<REPO>/direct <HEAD> [direct]",
+          "linux": "<REPO>/direct <HEAD> [direct]"
+        }
+      ],
+      "private_prefix_only_count": 28
+    }
+  ],
+  "source_algorithm_evidence": [
+    {
+      "path": "python/mini_loop/benchmark.py",
+      "symbol": "run_arm",
+      "line": 239,
+      "observation": "context_tokens_estimate derives from estimate_tokens(agent.messages)"
+    },
+    {
+      "path": "python/mini_loop/tools.py",
+      "symbol": "Toolset.run_glob",
+      "line": 649,
+      "observation": "bounded admission in iglob enumeration order precedes sorting of the admitted set"
+    }
+  ],
+  "artifacts": {
+    "outer_runner": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-platform-runner.py",
+      "sha256": "88bfbd51808f4a1375d49f452261d73d21c5427349e0f4f61e526d3983161e73",
+      "bytes": 35010
+    },
+    "source_capture_runner": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-capture.py",
+      "sha256": "08c6ece6a7aa909f28d036bcc15c7697ddb9bb6ea807f7d0c5a975dd4110e632",
+      "bytes": 12211
+    },
+    "source_plan": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-plan.json",
+      "sha256": "f17af01da903e988e4bba8e6b999be7d9e87dc8459780a5d54c336e9eeac1a54",
+      "bytes": 86833
+    },
+    "wheel_manifest": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-wheel-manifest.json",
+      "sha256": "9c7205001057c49ffca8bcf4053afe01d6d4f9b970d217fefccc3926979d66e9",
+      "bytes": 3599
+    },
+    "source_inner_receipt": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/receipt.json",
+      "sha256": "bb378c6b0a4e7e249e7c08b2474664901c1998dff57ff1dcf2cb07545144065b",
+      "bytes": 10889
+    },
+    "source_environment": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/environment.json",
+      "sha256": "aeb91be5a680c687ebfc4a515848ba1502d96ed3b5abf7532351eae6b644ae38",
+      "bytes": 60333
+    },
+    "glob_enumeration_context": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/workspace.context.json",
+      "sha256": "2f594f42061c4989811b4513fed2ed0f1d3c0723cdbec73e6b1f8cb3c05c7176",
+      "bytes": 207238
+    },
+    "go_platform_context": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-go-source-78d95bc/logs/platform-context.json",
+      "sha256": "38a6b2461a392c6d2923397e565a22b232fbcc930812811f196089c257cf6100",
+      "bytes": 328
+    }
+  },
+  "preparation_audit": "Summary reads only completed evidence. Source output hashes and both outer receipt log hashes rechecked; no Docker, Source recapture, tests or builds executed by summarizer.",
+  "document": "docs/audits/go-linux-platform-source-2026-10-14.json"
+}

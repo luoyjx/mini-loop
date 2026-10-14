@@ -579,7 +579,7 @@ The existing Context layer also exposes typed `SectionsBuilder`, `RuntimeFacts`
 and `MemorySystemBuilder` helpers with explicit caller-owned inputs; default
 prompt wiring is unchanged. Eight minimal Linux groups pass with actual
 same-platform Source fixtures; full Linux/race and original migration acceptance
-remain open. The iteration evidence is recorded separately.
+remain open. See [the iteration evidence](docs/audits/go-stuck-followup-linux-2026-10-14.md).
 
 Previous runtime review baseline: `9950878`. Configuration parsing now follows
 Python `str.strip` for U+001C–U+001F in booleans, modes, AST settings, blank

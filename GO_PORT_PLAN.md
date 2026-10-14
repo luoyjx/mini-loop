@@ -1,5 +1,62 @@
 # Go port plan
 
+## 2026-10-14 post-stuck follow-up, typed prompt helpers and Linux Source
+
+Branch `codex/go-stuck-followup-linux`, baseline local main `78d95bc`.
+This finite iteration closes the actual post-stuck follow-up family and three
+public prompt composition helpers; full original migration acceptance remains
+open. See [the article](docs/audits/go-stuck-followup-linux-2026-10-14.md) and
+[execution receipt](docs/audits/go-stuck-followup-linux-2026-10-14.json).
+
+Actual Source retains the previous 61 direct cases, 12 real Agent loops and two
+managed loops unchanged, and adds two real fixed-SDK local-transport loops.
+The second SDK request is actually emitted; the explicit local HTTPX mock 400
+is surfaced as bounded session text and an idle terminal state. This does not
+assert live endpoint behavior. The old native baseline fails four fake/direct
+follow-up subcases and both SDK follow-up subcases. Go records one exact
+unpublished batch using a process-local historical-prefix digest. Public
+transcript validation remains strict; dispatch preserves only that observed
+gap. Changed history, extra gaps, ordinary custom faults, non-agent purposes,
+restore and child construction retain their guards. JSON does not reconstruct
+this observation, and provider diagnostics are scrubbed before Python repr and
+bounded to 500 total runes. The observation grants no execution authority.
+
+The new actual Source prompt corpus has 31 cases: sections 11, runtime facts 13,
+and memory-system composition seven. Typed Go helpers use existing SystemBuilder
+and owner-scoped memory seams, with explicit caller-owned observation and
+lifetime. No default prompt wiring or arbitrary Python object adaptation is
+claimed. Invalid frozen Settings threshold recipes were removed during capture
+preparation rather than bypassing the public constructor.
+
+Linux same-platform capture now runs the six original Source producers on a
+frozen `78d95bc` archive using existing Go1.23.3 arm64 image/Python3.11.2 and 22
+existing pinned dependency wheels. With only their six fixture outputs mounted
+read-only, all eight previous native minima pass. Differences in shell/context
+text, temporary path prefixes, Git discovery wording and glob enumeration are
+platform evidence; no runtime/assertion/timeout changes were required. The
+container had hard 2 CPU/1.5GiB limits, no network, no OOM events, and exact-owned
+cleanup completed. These are eight minimal groups, not full Linux/race gates.
+
+Validation is recorded from final execution receipts; no result is inferred
+from source inspection. Original unresolved dependency/default/backend/public/
+HTTP/feature acceptance families remain explicit.
+
+Delivered code commits: `57d563c` (prompt helpers), `5c1e976` (post-stuck
+follow-up). Go ordinary/vet/race, all four type audits, 260 Source exports,
+2270 Python tests plus 24 subtests (28 skips), 77 invariants, 19 scan guards and
+383 mutation guards pass. Application coverage is 85.38% with per-package
+instrumentation; provider is 82.57%. Sampled peak task-tree RSS was 562.7MiB
+ordinary, 552.5MiB race and 383.1MiB final Python, below the 1.5GiB budget.
+One Python startup was resource-blocked before tests while the priority wrapper
+initialized; a pre-niced parent passed with unchanged memory/CPU limits.
+
+The [seven-row delta](docs/audits/go-required-row-delta-2026-10-14.json) preserves
+all other 337 rows: current counts are 299 bounded verified, zero recorded
+concrete mismatches, five dependency-blocked and 40 evidence-incomplete. Four
+updated rows are aliases of the same follow-up defect, not four independent
+fixes. These row counts do not certify full migration acceptance.
+
+
 ## 2026-10-14 original required-row closure and configuration whitespace
 
 Branch `codex/go-required-row-closure`, baseline local main `9950878`.

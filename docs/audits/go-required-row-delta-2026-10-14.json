@@ -1,0 +1,754 @@
+{
+  "schema_version": 1,
+  "status": "applied_after_finite_validation",
+  "applied": true,
+  "full_port_acceptance": false,
+  "baseline_audit": {
+    "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+    "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359"
+  },
+  "original_cardinality": 344,
+  "original_status_counts": {
+    "verified": 292,
+    "dependency_blocked": 5,
+    "evidence_incomplete": 43,
+    "concrete_mismatch": 4
+  },
+  "delta_row_count": 7,
+  "unchanged_row_count": 337,
+  "scope": "Only four recorded post-stuck mismatch rows and three public prompt helper rows are proposed for a bounded status transition. No other required row is updated.",
+  "coordinate_note": "Current symbol lines and hashes are preparation-time snapshots. Root must revalidate against final frozen inputs and attach actual execution receipts before applying.",
+  "application_preconditions": [
+    "Confirm every referenced fixture/producer/assertion against the final source freeze.",
+    "Record actual focused and required serial full Go/vet/race/Source export/Python/guards/type results; preserve failed, blocked and superseded attempts.",
+    "Keep wrapper terminal identity limitations and all original P0/P1/G0-G7 acceptance criteria; consumer association counts are not semantic completion.",
+    "Do not apply speculative native success merely from test names or fixture existence."
+  ],
+  "rows": [
+    {
+      "id": "export:Agent",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "concrete_mismatch",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "Agent",
+        "seam": "agent-loop",
+        "status": "concrete_mismatch",
+        "source_declaration": {
+          "path": "python/mini_loop/agent.py",
+          "symbol": "Agent",
+          "line": 520,
+          "line_kind": "current_definition",
+          "sha256": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "Session",
+            "kind": "type",
+            "file": "agent/session.go",
+            "line": 44
+          },
+          {
+            "package": "agent",
+            "name": "NewRuntimeSession",
+            "kind": "function",
+            "file": "agent/runtime.go",
+            "line": 338
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Close the explicitly observed post-fault next-request failure stage/status while preserving tool effects and unpaired history.",
+        "id": "export:Agent",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.agent-loop"
+      },
+      "prior_evidence_fields": [
+        "baseline_public_audit.seams.agent-loop"
+      ],
+      "new_evidence_group": "stuck_followup",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "bounded_scope": [
+        "The two captured negative-repeat built-in inspection faults preserve the original completed handler effects and unpaired history.",
+        "A later real Agent/fake-provider attempt is rejected at provider_create, with zero accepted model calls and no repeated tool effects; error output and retained history are compared.",
+        "Managed outcomes compare both turns: projected status/error/done order, output, busy/run_count and core event payloads.",
+        "Two actual fixed SDK MockTransport profiles compare the following HTTP request method/path/body and captured 400 response bytes through the native provider adapter."
+      ],
+      "remaining_scope": [
+        "Managed wrapper terminal identity headers are intentionally outside the terminal-outcome projection; core captured identity fields remain compared.",
+        "The exception is one process-local, exact-history-bound unpublished batch. Ordinary transcript validation, restore/fork/child behavior, cancellation and persistence guards remain strict.",
+        "This closes only the recorded post-inspection-fault mismatch; it is not all-values Agent/session/caching or whole G0-G7 acceptance."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "export:AgentSession",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "concrete_mismatch",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "AgentSession",
+        "seam": "agent-loop",
+        "status": "concrete_mismatch",
+        "source_declaration": {
+          "path": "python/mini_loop/session.py",
+          "symbol": "AgentSession",
+          "line": 100,
+          "line_kind": "current_definition",
+          "sha256": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "ManagedSession",
+            "kind": "type",
+            "file": "agent/managed_session.go",
+            "line": 119
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Close the explicitly observed post-fault next-request failure stage/status while preserving tool effects and unpaired history.",
+        "id": "export:AgentSession",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.agent-loop"
+      },
+      "prior_evidence_fields": [
+        "baseline_public_audit.seams.agent-loop"
+      ],
+      "new_evidence_group": "stuck_followup",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "bounded_scope": [
+        "The two captured negative-repeat built-in inspection faults preserve the original completed handler effects and unpaired history.",
+        "A later real Agent/fake-provider attempt is rejected at provider_create, with zero accepted model calls and no repeated tool effects; error output and retained history are compared.",
+        "Managed outcomes compare both turns: projected status/error/done order, output, busy/run_count and core event payloads.",
+        "Two actual fixed SDK MockTransport profiles compare the following HTTP request method/path/body and captured 400 response bytes through the native provider adapter."
+      ],
+      "remaining_scope": [
+        "Managed wrapper terminal identity headers are intentionally outside the terminal-outcome projection; core captured identity fields remain compared.",
+        "The exception is one process-local, exact-history-bound unpublished batch. Ordinary transcript validation, restore/fork/child behavior, cancellation and persistence guards remain strict.",
+        "This closes only the recorded post-inspection-fault mismatch; it is not all-values Agent/session/caching or whole G0-G7 acceptance."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "capability:01",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "concrete_mismatch",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "id": "capability:01",
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "status": "concrete_mismatch",
+        "capability": "Async agent loop, workspace tools, session isolation, REST/SSE console",
+        "source_default": "**On**",
+        "selector": "Core runtime",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_transcript_contract.py",
+            "python/tests/test_two_tenant_isolation.py",
+            "python/tests/test_server.py"
+          ]
+        },
+        "native_assertion": {
+          "paths": [
+            "go/agent/runtime_test.go",
+            "go/httpapi/server_test.go"
+          ]
+        },
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ],
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "After named built-in stuck inspection failure, subsequent managed request handling diverges; go-stuck-thresholds-2026-10-14.json records actual Source/native evidence."
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json"
+      },
+      "prior_evidence_fields": [
+        "rows[id=capability:01].source_recipe",
+        "rows[id=capability:01].native_assertion",
+        "rows[id=capability:01].scope_evidence_receipt"
+      ],
+      "new_evidence_group": "stuck_followup",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "bounded_scope": [
+        "The two captured negative-repeat built-in inspection faults preserve the original completed handler effects and unpaired history.",
+        "A later real Agent/fake-provider attempt is rejected at provider_create, with zero accepted model calls and no repeated tool effects; error output and retained history are compared.",
+        "Managed outcomes compare both turns: projected status/error/done order, output, busy/run_count and core event payloads.",
+        "Two actual fixed SDK MockTransport profiles compare the following HTTP request method/path/body and captured 400 response bytes through the native provider adapter."
+      ],
+      "remaining_scope": [
+        "Managed wrapper terminal identity headers are intentionally outside the terminal-outcome projection; core captured identity fields remain compared.",
+        "The exception is one process-local, exact-history-bound unpublished batch. Ordinary transcript validation, restore/fork/child behavior, cancellation and persistence guards remain strict.",
+        "This closes only the recorded post-inspection-fault mismatch; it is not all-values Agent/session/caching or whole G0-G7 acceptance."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "capability:02",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "concrete_mismatch",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "id": "capability:02",
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "status": "concrete_mismatch",
+        "capability": "Prompt caching and stuck detection",
+        "source_default": "**On**",
+        "selector": "Replace or disable through injected policies",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_caching.py",
+            "python/tests/test_stuck.py"
+          ]
+        },
+        "native_assertion": {
+          "paths": [
+            "go/agent/loop_contract_test.go"
+          ]
+        },
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ],
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "After named built-in stuck inspection failure, subsequent managed request handling diverges; go-stuck-thresholds-2026-10-14.json records actual Source/native evidence."
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json"
+      },
+      "prior_evidence_fields": [
+        "rows[id=capability:02].source_recipe",
+        "rows[id=capability:02].native_assertion",
+        "rows[id=capability:02].scope_evidence_receipt"
+      ],
+      "new_evidence_group": "stuck_followup",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "bounded_scope": [
+        "The two captured negative-repeat built-in inspection faults preserve the original completed handler effects and unpaired history.",
+        "A later real Agent/fake-provider attempt is rejected at provider_create, with zero accepted model calls and no repeated tool effects; error output and retained history are compared.",
+        "Managed outcomes compare both turns: projected status/error/done order, output, busy/run_count and core event payloads.",
+        "Two actual fixed SDK MockTransport profiles compare the following HTTP request method/path/body and captured 400 response bytes through the native provider adapter."
+      ],
+      "remaining_scope": [
+        "Managed wrapper terminal identity headers are intentionally outside the terminal-outcome projection; core captured identity fields remain compared.",
+        "The exception is one process-local, exact-history-bound unpublished batch. Ordinary transcript validation, restore/fork/child behavior, cancellation and persistence guards remain strict.",
+        "This closes only the recorded post-inspection-fault mismatch; it is not all-values Agent/session/caching or whole G0-G7 acceptance."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "export:runtime_facts",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "runtime_facts",
+        "seam": "prompt-helpers",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/prompts.py",
+          "symbol": "runtime_facts",
+          "line": 165,
+          "line_kind": "current_definition",
+          "sha256": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "SystemContext",
+            "kind": "type",
+            "file": "agent/request.go",
+            "line": 107
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Capture finite public helper composition, then implement named Go adapter or record accepted typed API disposition.",
+        "id": "export:runtime_facts",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.prompt-helpers"
+      },
+      "prior_evidence_fields": [
+        "baseline_public_audit.seams.prompt-helpers"
+      ],
+      "new_evidence_group": "prompt_composition",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "native_api": "RuntimeFacts",
+      "fixture_array": "runtime_facts",
+      "fixture_rows": 13,
+      "bounded_scope": [
+        "Real Agent/TodoManager/context_used observations, legal frozen Settings thresholds, 75/90 percent bands, owner-bound memory and recall selection.",
+        "Memory list precedes recall selection, and index rendering is conditional on nonempty memory plus recall; records/history/meter/default system remain unchanged."
+      ],
+      "remaining_scope": [
+        "Go receives a caller-owned typed RuntimeFactsContext and does not infer a session meter policy, publish a message or install itself by default.",
+        "Invalid threshold 0/-1 recipes were removed after actual Settings construction rejected them; no frozen Settings bypass was introduced."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "export:sections_builder",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "sections_builder",
+        "seam": "prompt-helpers",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/prompts.py",
+          "symbol": "sections_builder",
+          "line": 210,
+          "line_kind": "current_definition",
+          "sha256": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "SystemBuilder",
+            "kind": "type",
+            "file": "agent/request.go",
+            "line": 113
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Capture finite public helper composition, then implement named Go adapter or record accepted typed API disposition.",
+        "id": "export:sections_builder",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.prompt-helpers"
+      },
+      "prior_evidence_fields": [
+        "baseline_public_audit.seams.prompt-helpers"
+      ],
+      "new_evidence_group": "prompt_composition",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "native_api": "SectionsBuilder",
+      "fixture_array": "sections",
+      "fixture_rows": 11,
+      "bounded_scope": [
+        "Static strings and typed string/None/error callbacks; left-to-right execution, empty filtering, whitespace preservation, repeated builds and failure short circuit."
+      ],
+      "remaining_scope": [
+        "None is an explicit empty-string adapter. Arbitrary Python object stringification and non-string callback returns are not covered.",
+        "The builder copies its section slice; the caller retains callback state and synchronization ownership."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "export:memory_system_builder",
+      "proposal_status": "accepted_after_gates",
+      "previous_status": "evidence_incomplete",
+      "proposed_status_if_gates_pass": "verified",
+      "previous_row": {
+        "export_name": "memory_system_builder",
+        "seam": "prompt-helpers",
+        "status": "evidence_incomplete",
+        "source_declaration": {
+          "path": "python/mini_loop/memory.py",
+          "symbol": "memory_system_builder",
+          "line": 456,
+          "line_kind": "current_definition",
+          "sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f"
+        },
+        "native_named_bindings": [
+          {
+            "package": "agent",
+            "name": "SystemBuilder",
+            "kind": "type",
+            "file": "agent/request.go",
+            "line": 113
+          }
+        ],
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "next_action": "Capture finite public helper composition, then implement named Go adapter or record accepted typed API disposition.",
+        "id": "export:memory_system_builder",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "evidence_ref": "baseline_public_audit.seams.prompt-helpers"
+      },
+      "prior_evidence_fields": [
+        "baseline_public_audit.seams.prompt-helpers"
+      ],
+      "new_evidence_group": "prompt_composition",
+      "application": "Add current finite evidence and retain the original baseline evidence as historical; do not delete historical failures or rewrite other rows.",
+      "native_api": "MemorySystemBuilder",
+      "fixture_array": "memory_system",
+      "fixture_rows": 7,
+      "bounded_scope": [
+        "Explicit base-first composition with real scoped memory: empty placeholder, owner isolation, callback failure before index, and current index after a later write."
+      ],
+      "remaining_scope": [
+        "Only an owner-bound ScopedStore is accepted; arbitrary or unscoped Python store objects are outside the declared typed seam.",
+        "Caller owns context/store lifetime. The legacy memory-in-system shape remains explicit opt-in and is not wired into the default runtime."
+      ],
+      "status": "verified"
+    }
+  ],
+  "evidence_groups": {
+    "stuck_followup": {
+      "status": "proposed_pending_gates",
+      "source_recipe": {
+        "path": "python/tools/stuck_threshold_contracts.py",
+        "sha256": "d3cdd65923e6650b6f5366d95987bdf202e268c12366b3ba16e79a3cd2c89b54",
+        "symbol": "_capture_stuck_threshold_contracts",
+        "line": 36
+      },
+      "fixture": {
+        "path": "go/testdata/python-stuck-thresholds.json",
+        "sha256": "d95cf246bc7160fffa5c236ab1c9b7fdab9dfb66663861ca8276efc49aac32d9"
+      },
+      "fixture_inventory": {
+        "direct": 61,
+        "bare_agent_loops": 12,
+        "managed_loops": 2,
+        "sdk_managed_loops": 2
+      },
+      "native_assertions": [
+        {
+          "path": "go/agent/stuck_threshold_contract_test.go",
+          "sha256": "01e1d75ab14a217bb11862aed67e7745b9e93546ae372164595de432d1feb12f",
+          "symbol": "assertStuckThresholdTurn",
+          "line": 481
+        },
+        {
+          "path": "go/agent/stuck_threshold_contract_test.go",
+          "sha256": "01e1d75ab14a217bb11862aed67e7745b9e93546ae372164595de432d1feb12f",
+          "symbol": "assertStuckThresholdManagedTurn",
+          "line": 565
+        },
+        {
+          "path": "go/agent/stuck_threshold_contract_test.go",
+          "sha256": "01e1d75ab14a217bb11862aed67e7745b9e93546ae372164595de432d1feb12f",
+          "symbol": "TestStuckThresholdPostFaultMatchesActualPython",
+          "line": 542
+        },
+        {
+          "path": "go/agent/stuck_threshold_contract_test.go",
+          "sha256": "01e1d75ab14a217bb11862aed67e7745b9e93546ae372164595de432d1feb12f",
+          "symbol": "TestStuckThresholdManagedFaultAndFollowupMatchActualPython",
+          "line": 608
+        },
+        {
+          "path": "go/agent/stuck_threshold_contract_test.go",
+          "sha256": "01e1d75ab14a217bb11862aed67e7745b9e93546ae372164595de432d1feb12f",
+          "symbol": "TestStuckThresholdSDKManagedFollowupMatchesActualPython",
+          "line": 664
+        }
+      ],
+      "test_selectors": [
+        {
+          "package": "./agent",
+          "run": "^(TestStuckThresholdPostFaultMatchesActualPython|TestStuckThresholdManagedFaultAndFollowupMatchActualPython|TestStuckThresholdSDKManagedFollowupMatchesActualPython)$"
+        },
+        {
+          "package": "./agent",
+          "run": "^TestStuckFollowup"
+        },
+        {
+          "package": "./protocol",
+          "run": "^TestUnpublished"
+        },
+        {
+          "package": "./provider",
+          "run": "^TestRetainedBatchHTTPDispatchKeepsOrdinaryValidationAndScrubsDiagnostics$"
+        }
+      ],
+      "execution_claim": "Selectors identify concrete assertions only. This proposal does not certify their final execution or full-gate status."
+    },
+    "prompt_composition": {
+      "status": "proposed_pending_gates",
+      "source_recipe": {
+        "path": "python/tools/prompt_composition_contracts.py",
+        "sha256": "171f371618c5fe63537bfd1f20c3cc8757110fb0df06daac8cb5f113541eb3a7",
+        "symbol": "prompt_composition_contracts",
+        "line": 15
+      },
+      "source_assertion": {
+        "path": "python/tests/test_prompt_composition_contracts.py",
+        "sha256": "7976c8c7b83f8997512531a6f99bc1eedef1fed5f321c3081b0d91a30857b88f",
+        "symbol": "test_actual_public_prompt_composition_contracts",
+        "line": 7
+      },
+      "fixture": {
+        "path": "go/testdata/python-prompt-composition.json",
+        "sha256": "7ceae0b75682cdf22b25689b0ca771b525b0d41e58eadf8d8e71412e69c49e7d"
+      },
+      "fixture_inventory": {
+        "sections": 11,
+        "runtime_facts": 13,
+        "memory_system": 7,
+        "total": 31
+      },
+      "native_assertions": [
+        {
+          "path": "go/agent/prompt_composition_test.go",
+          "sha256": "a95711801a5b5e29a53e3268dd73d90fef6e5c1ae3e39082f8c6a3b049641b9a",
+          "symbol": "TestPublicPromptCompositionMatchesActualSource",
+          "line": 216
+        },
+        {
+          "path": "go/agent/prompt_composition_test.go",
+          "sha256": "a95711801a5b5e29a53e3268dd73d90fef6e5c1ae3e39082f8c6a3b049641b9a",
+          "symbol": "TestPromptCompositionOwnsSectionsAndKeepsNativeFailures",
+          "line": 287
+        },
+        {
+          "path": "go/agent/prompt_composition_test.go",
+          "sha256": "a95711801a5b5e29a53e3268dd73d90fef6e5c1ae3e39082f8c6a3b049641b9a",
+          "symbol": "TestRuntimeFactsListsBoundStoreBeforeRecallSelection",
+          "line": 310
+        }
+      ],
+      "test_selectors": [
+        {
+          "package": "./agent",
+          "run": "^(TestPublicPromptCompositionMatchesActualSource|TestPromptCompositionOwnsSectionsAndKeepsNativeFailures|TestRuntimeFactsListsBoundStoreBeforeRecallSelection)$"
+        },
+        {
+          "python_path": "python/tests/test_prompt_composition_contracts.py"
+        }
+      ],
+      "execution_claim": "The fixture exists with 31 actual rows. Final current-input Go/Python/full/race evidence must be attached by the root before applying these transitions."
+    }
+  },
+  "linux_supplement": {
+    "status": "observed_bounded_minima_only",
+    "row_status_changes": [],
+    "revision": "78d95bc250c5d72183d649acb5d114bb8c157bf2",
+    "source_receipt": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/result.json",
+      "sha256": "f0ed9be278f01e408074b3f1b350766b3c67f10c964f425f85abd0a044ef4eeb"
+    },
+    "native_receipt": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-go-source-78d95bc/result.json",
+      "sha256": "3e53d823dae67c7e940073cc56e83daf3ba24e5bcfb6eae5fd2ba80993486c79"
+    },
+    "plan": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-plan.json",
+      "sha256": "f17af01da903e988e4bba8e6b999be7d9e87dc8459780a5d54c336e9eeac1a54"
+    },
+    "source_status": "source_captured",
+    "native_status": "passed_minima",
+    "source_groups": 6,
+    "source_recipe_rows": 66,
+    "native_groups": 8,
+    "native_selected_tests": 10,
+    "full_linux_acceptance": false,
+    "same_platform_source_groups": [
+      "benchmark",
+      "httpapi",
+      "httpapi-efficiency",
+      "userresources",
+      "workspace",
+      "worktrees"
+    ],
+    "groups": [
+      {
+        "group": "astcontext",
+        "related_row_ids": [
+          "export:AstContextConfig",
+          "export:AstContextProbe",
+          "export:AstContextResult",
+          "export:AstOutlineAdapter",
+          "export:install_ast_context_tools",
+          "capability:08"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestDigestRecheckedBySameAdapterBeforeEveryProbe$",
+        "expected_tests": [
+          "TestDigestRecheckedBySameAdapterBeforeEveryProbe"
+        ],
+        "bounded_platform_conclusion": "Repeated digest checking on the same adapter only; this native prerequisite retains the frozen repository fixture rather than a new Source producer.",
+        "remaining_scope": "No whole AST API or capability:08 closure; startup TTL/capacity/closed observations remain unrelated open evidence."
+      },
+      {
+        "group": "benchmark",
+        "related_row_ids": [
+          "http:POST /benchmark"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestRunArmMatchesActualPythonDefaultFakeArms$/^visible$",
+        "expected_tests": [
+          "TestRunArmMatchesActualPythonDefaultFakeArms/visible"
+        ],
+        "bounded_platform_conclusion": "Visible fake benchmark arm against the same-platform original Source output, supporting the benchmark component behind the HTTP operation.",
+        "remaining_scope": "Does not cover all arms or certify timing/performance thresholds.",
+        "same_platform_source_recipe": {
+          "line": 8115,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_benchmark_arm_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-arms.json"
+      },
+      {
+        "group": "httpapi",
+        "related_row_ids": [
+          "http:POST /benchmark"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestBenchmarkActualPythonHTTP$/^default$",
+        "expected_tests": [
+          "TestBenchmarkActualPythonHTTP/default"
+        ],
+        "bounded_platform_conclusion": "Default fake-only HTTP benchmark response against the same-platform Source fixture.",
+        "remaining_scope": "Other HTTP recipes retain their existing evidence; one default case is not full HTTP parity.",
+        "same_platform_source_recipe": {
+          "line": 8184,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_benchmark_http_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-http.json"
+      },
+      {
+        "group": "httpapi-efficiency",
+        "related_row_ids": [
+          "http:POST /benchmark",
+          "capability:08"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestBenchmarkEfficiencyActualPythonHTTP$/^efficiency-shadow$",
+        "expected_tests": [
+          "TestBenchmarkEfficiencyActualPythonHTTP/efficiency-shadow"
+        ],
+        "bounded_platform_conclusion": "Efficiency-shadow HTTP benchmark response against the same-platform Source fixture.",
+        "remaining_scope": "Does not close startup store lifecycle/limits fields or all efficiency modes.",
+        "same_platform_source_recipe": {
+          "line": 8184,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_benchmark_http_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-benchmark-efficiency-http.json"
+      },
+      {
+        "group": "reload",
+        "related_row_ids": [],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestNativeEventsActualSourceRecipes$/^directory-symlink-(source|reverse)$",
+        "expected_tests": [
+          "TestNativeEventsActualSourceRecipes/directory-symlink-source",
+          "TestNativeEventsActualSourceRecipes/directory-symlink-reverse"
+        ],
+        "bounded_platform_conclusion": "Directory-symlink source/reverse native event recipes on Linux, using the existing frozen Source fixture.",
+        "remaining_scope": "No standalone reload row exists in this 344-row finite inventory; retain as a G7 platform supplement, not a new row or full observer proof."
+      },
+      {
+        "group": "userresources",
+        "related_row_ids": [
+          "export:UserResourceResolver",
+          "export:UserResources",
+          "capability:07"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestResourcesMatchActualPython$/^problems$",
+        "expected_tests": [
+          "TestResourcesMatchActualPython/problems"
+        ],
+        "bounded_platform_conclusion": "Problem/diagnostic recipe on native Linux and exact original _owner_resource_contracts binding.",
+        "remaining_scope": "Supplies the formerly missing precise Source recipe reference, but only problems runs natively in this Linux minimum. Preserve broader public rows until their full bounded existing assertions are reconciled.",
+        "same_platform_source_recipe": {
+          "line": 5373,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_owner_resource_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-owner-resources.json"
+      },
+      {
+        "group": "workspace",
+        "related_row_ids": [
+          "feature-definition:glob",
+          "capability:01"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestGlobMatchesPythonContracts$/^glob_truncated$",
+        "expected_tests": [
+          "TestGlobMatchesPythonContracts/glob_truncated"
+        ],
+        "bounded_platform_conclusion": "glob_truncated output/order on a native Linux volume with actual Source directory order recorded.",
+        "remaining_scope": "A platform-specific runtime minimum; does not expand the feature-definition row beyond its declared schema/mode proof or certify all glob patterns.",
+        "same_platform_source_recipe": {
+          "line": 154,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_glob_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-glob-tools.json"
+      },
+      {
+        "group": "worktrees",
+        "related_row_ids": [
+          "export:worktree_workspace_factory",
+          "export:remove_worktree",
+          "export:WorktreeManager",
+          "export:install_worktrees"
+        ],
+        "status_change": "none",
+        "observed_exit_code": 0,
+        "observed_expected_tests_passed": true,
+        "selector": "^TestActualPythonLifecycleFactoryAndTaskBinding$/^(not-repository|unverified-status)$",
+        "expected_tests": [
+          "TestActualPythonLifecycleFactoryAndTaskBinding/not-repository",
+          "TestActualPythonLifecycleFactoryAndTaskBinding/unverified-status"
+        ],
+        "bounded_platform_conclusion": "not-repository and unverified-status diagnostics with the same Git, shell and native Linux volume context.",
+        "remaining_scope": "Supports only these selected worktree minima; no all-lifecycle/factory/remove/install guarantee.",
+        "same_platform_source_recipe": {
+          "line": 3217,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_worktree_contracts"
+        },
+        "same_platform_source_fixture": "var/go-stuck-followup-linux-2026-10-14/linux-source-78d95bc/logs/source-capture/python-worktrees.json"
+      }
+    ],
+    "remaining": [
+      "The Linux archive is the fixed 78d95bc baseline, not the uncommitted prompt/stuck follow-up implementation.",
+      "Only the listed minima ran natively; six producer groups supply a same-platform comparison, with AST/reload using existing frozen evidence.",
+      "Full Linux Go/race/vet/Python and original complete platform acceptance remain open; do not infer them from eight selected groups.",
+      "IDNA approval, default CPython parser approval, SDK surrogate probes, and other incomplete required rows remain unchanged."
+    ]
+  },
+  "runtime_commit": "5c1e9766ae44afa458cda3599253e2a561864a10",
+  "current_status_counts": {
+    "verified": 299,
+    "concrete_mismatch": 0,
+    "dependency_blocked": 5,
+    "evidence_incomplete": 40
+  },
+  "validation_receipt": "docs/audits/go-stuck-followup-linux-2026-10-14.json"
+}

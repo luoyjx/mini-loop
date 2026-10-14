@@ -1,0 +1,5496 @@
+{
+  "schema_version": 1,
+  "status": "finite_validation_complete",
+  "full_port_acceptance": false,
+  "baseline": "78d95bc250c5d72183d649acb5d114bb8c157bf2",
+  "branch": "codex/go-stuck-followup-linux",
+  "raw_evidence_root": "var/go-stuck-followup-linux-2026-10-14",
+  "stages": {
+    "go-focused": {
+      "resources": {
+        "name": "go-focused",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "./protocol",
+          "./agent",
+          "./provider",
+          "-run",
+          "Test(Unpublished|StuckThreshold|StuckFollowup|RetainedBatch|PublicPromptComposition|PromptComposition|RuntimeFactsLists)"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T00:48:23.357672+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "./protocol",
+          "./agent",
+          "./provider",
+          "-run",
+          "Test(Unpublished|StuckThreshold|StuckFollowup|RetainedBatch|PublicPromptComposition|PromptComposition|RuntimeFactsLists)"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 548624,
+        "peak_cpu_percent": 198.1,
+        "samples": 16,
+        "max_sample_gap_seconds": 1.048,
+        "seconds": 15.891,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 65276,
+            "starttime": "Wed Oct 14 08:48:27 2026"
+          },
+          {
+            "pid": 65281,
+            "starttime": "Wed Oct 14 08:48:28 2026"
+          },
+          {
+            "pid": 65286,
+            "starttime": "Wed Oct 14 08:48:29 2026"
+          },
+          {
+            "pid": 65295,
+            "starttime": "Wed Oct 14 08:48:30 2026"
+          },
+          {
+            "pid": 65310,
+            "starttime": "Wed Oct 14 08:48:31 2026"
+          },
+          {
+            "pid": 65334,
+            "starttime": "Wed Oct 14 08:48:32 2026"
+          },
+          {
+            "pid": 65353,
+            "starttime": "Wed Oct 14 08:48:38 2026"
+          },
+          {
+            "pid": 65378,
+            "starttime": "Wed Oct 14 08:48:39 2026"
+          },
+          {
+            "pid": 65381,
+            "starttime": "Wed Oct 14 08:48:39 2026"
+          },
+          {
+            "pid": 65386,
+            "starttime": "Wed Oct 14 08:48:41 2026"
+          },
+          {
+            "pid": 65395,
+            "starttime": "Wed Oct 14 08:48:42 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 95775.323723833,
+        "pid": 65276,
+        "started_utc": "2026-10-14T00:48:27.792074+00:00",
+        "root_starttime": "Wed Oct 14 08:48:27 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:48:43.814596+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-focused/stdout.log",
+        "bytes": 152574,
+        "sha256": "f9cc22d0dcd6855ea385b0e5e860f8ae925b77ab9f02f9137c7bb29a53279e8d"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-focused/resources.json",
+        "bytes": 3828,
+        "sha256": "11eb28a2bc937f1ab56f95f96e6d364d4fcb461164d520690c65dd4c62fd7fc9"
+      }
+    },
+    "source-check": {
+      "resources": {
+        "name": "source-check",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T00:48:43.869582+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 302224,
+        "peak_cpu_percent": 114.4,
+        "samples": 94,
+        "max_sample_gap_seconds": 1.054,
+        "seconds": 96.936,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 65425,
+            "starttime": "Wed Oct 14 08:48:48 2026"
+          },
+          {
+            "pid": 65461,
+            "starttime": "Wed Oct 14 08:48:50 2026"
+          },
+          {
+            "pid": 65551,
+            "starttime": "Wed Oct 14 08:48:51 2026"
+          },
+          {
+            "pid": 65644,
+            "starttime": "Wed Oct 14 08:48:52 2026"
+          },
+          {
+            "pid": 65739,
+            "starttime": "Wed Oct 14 08:48:53 2026"
+          },
+          {
+            "pid": 65829,
+            "starttime": "Wed Oct 14 08:48:54 2026"
+          },
+          {
+            "pid": 65897,
+            "starttime": "Wed Oct 14 08:48:55 2026"
+          },
+          {
+            "pid": 65900,
+            "starttime": "Wed Oct 14 08:48:55 2026"
+          },
+          {
+            "pid": 66113,
+            "starttime": "Wed Oct 14 08:49:11 2026"
+          },
+          {
+            "pid": 66182,
+            "starttime": "Wed Oct 14 08:49:17 2026"
+          },
+          {
+            "pid": 66183,
+            "starttime": "Wed Oct 14 08:49:17 2026"
+          },
+          {
+            "pid": 66213,
+            "starttime": "Wed Oct 14 08:49:19 2026"
+          },
+          {
+            "pid": 66251,
+            "starttime": "Wed Oct 14 08:49:20 2026"
+          },
+          {
+            "pid": 66252,
+            "starttime": "Wed Oct 14 08:49:20 2026"
+          },
+          {
+            "pid": 66468,
+            "starttime": "Wed Oct 14 08:50:07 2026"
+          },
+          {
+            "pid": 66486,
+            "starttime": "Wed Oct 14 08:50:08 2026"
+          },
+          {
+            "pid": 66523,
+            "starttime": "Wed Oct 14 08:50:10 2026"
+          },
+          {
+            "pid": 66562,
+            "starttime": "Wed Oct 14 08:50:11 2026"
+          },
+          {
+            "pid": 66630,
+            "starttime": "Wed Oct 14 08:50:13 2026"
+          },
+          {
+            "pid": 66658,
+            "starttime": "Wed Oct 14 08:50:14 2026"
+          },
+          {
+            "pid": 66667,
+            "starttime": "Wed Oct 14 08:50:15 2026"
+          },
+          {
+            "pid": 66680,
+            "starttime": "Wed Oct 14 08:50:17 2026"
+          },
+          {
+            "pid": 66685,
+            "starttime": "Wed Oct 14 08:50:17 2026"
+          },
+          {
+            "pid": 66699,
+            "starttime": "Wed Oct 14 08:50:19 2026"
+          },
+          {
+            "pid": 66738,
+            "starttime": "Wed Oct 14 08:50:20 2026"
+          },
+          {
+            "pid": 66765,
+            "starttime": "Wed Oct 14 08:50:21 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 95795.621404333,
+        "pid": 65425,
+        "started_utc": "2026-10-14T00:48:48.089621+00:00",
+        "root_starttime": "Wed Oct 14 08:48:48 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:50:25.809995+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/source-check/stdout.log",
+        "bytes": 86954,
+        "sha256": "7ec7f76665949b5be58eaf35b11e35af388665031852c3d7011e5e29ac4e1a58"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/source-check/resources.json",
+        "bytes": 4631,
+        "sha256": "04d8c01169c1d897065b154928f5722915f676602cfbac76dd000f04f26ac868"
+      }
+    },
+    "go-full": {
+      "resources": {
+        "name": "go-full",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "-covermode=atomic",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-stuck-followup-linux-2026-10-14/coverage.out",
+          "./..."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T00:50:25.887411+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "-covermode=atomic",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-stuck-followup-linux-2026-10-14/coverage.out",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 576176,
+        "peak_cpu_percent": 201.4,
+        "samples": 227,
+        "max_sample_gap_seconds": 1.076,
+        "seconds": 234.664,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 66905,
+            "starttime": "Wed Oct 14 08:50:30 2026"
+          },
+          {
+            "pid": 66917,
+            "starttime": "Wed Oct 14 08:50:30 2026"
+          },
+          {
+            "pid": 66925,
+            "starttime": "Wed Oct 14 08:50:32 2026"
+          },
+          {
+            "pid": 66945,
+            "starttime": "Wed Oct 14 08:50:33 2026"
+          },
+          {
+            "pid": 66950,
+            "starttime": "Wed Oct 14 08:50:33 2026"
+          },
+          {
+            "pid": 66958,
+            "starttime": "Wed Oct 14 08:50:35 2026"
+          },
+          {
+            "pid": 66997,
+            "starttime": "Wed Oct 14 08:50:43 2026"
+          },
+          {
+            "pid": 67026,
+            "starttime": "Wed Oct 14 08:50:44 2026"
+          },
+          {
+            "pid": 67094,
+            "starttime": "Wed Oct 14 08:50:45 2026"
+          },
+          {
+            "pid": 67104,
+            "starttime": "Wed Oct 14 08:50:45 2026"
+          },
+          {
+            "pid": 67105,
+            "starttime": "Wed Oct 14 08:50:45 2026"
+          },
+          {
+            "pid": 67168,
+            "starttime": "Wed Oct 14 08:50:47 2026"
+          },
+          {
+            "pid": 67169,
+            "starttime": "Wed Oct 14 08:50:47 2026"
+          },
+          {
+            "pid": 67213,
+            "starttime": "Wed Oct 14 08:50:48 2026"
+          },
+          {
+            "pid": 67619,
+            "starttime": "Wed Oct 14 08:51:22 2026"
+          },
+          {
+            "pid": 67728,
+            "starttime": "Wed Oct 14 08:51:23 2026"
+          },
+          {
+            "pid": 67837,
+            "starttime": "Wed Oct 14 08:51:24 2026"
+          },
+          {
+            "pid": 67947,
+            "starttime": "Wed Oct 14 08:51:25 2026"
+          },
+          {
+            "pid": 68017,
+            "starttime": "Wed Oct 14 08:51:27 2026"
+          },
+          {
+            "pid": 68065,
+            "starttime": "Wed Oct 14 08:51:28 2026"
+          },
+          {
+            "pid": 68096,
+            "starttime": "Wed Oct 14 08:51:29 2026"
+          },
+          {
+            "pid": 68139,
+            "starttime": "Wed Oct 14 08:51:32 2026"
+          },
+          {
+            "pid": 68156,
+            "starttime": "Wed Oct 14 08:51:33 2026"
+          },
+          {
+            "pid": 68170,
+            "starttime": "Wed Oct 14 08:51:34 2026"
+          },
+          {
+            "pid": 68183,
+            "starttime": "Wed Oct 14 08:51:35 2026"
+          },
+          {
+            "pid": 68239,
+            "starttime": "Wed Oct 14 08:51:37 2026"
+          },
+          {
+            "pid": 68272,
+            "starttime": "Wed Oct 14 08:51:38 2026"
+          },
+          {
+            "pid": 68275,
+            "starttime": "Wed Oct 14 08:51:39 2026"
+          },
+          {
+            "pid": 68284,
+            "starttime": "Wed Oct 14 08:51:39 2026"
+          },
+          {
+            "pid": 68287,
+            "starttime": "Wed Oct 14 08:51:39 2026"
+          },
+          {
+            "pid": 68304,
+            "starttime": "Wed Oct 14 08:51:41 2026"
+          },
+          {
+            "pid": 68319,
+            "starttime": "Wed Oct 14 08:51:42 2026"
+          },
+          {
+            "pid": 68332,
+            "starttime": "Wed Oct 14 08:51:44 2026"
+          },
+          {
+            "pid": 68353,
+            "starttime": "Wed Oct 14 08:51:45 2026"
+          },
+          {
+            "pid": 68354,
+            "starttime": "Wed Oct 14 08:51:45 2026"
+          },
+          {
+            "pid": 68369,
+            "starttime": "Wed Oct 14 08:51:46 2026"
+          },
+          {
+            "pid": 68388,
+            "starttime": "Wed Oct 14 08:51:48 2026"
+          },
+          {
+            "pid": 68389,
+            "starttime": "Wed Oct 14 08:51:48 2026"
+          },
+          {
+            "pid": 68393,
+            "starttime": "Wed Oct 14 08:51:48 2026"
+          },
+          {
+            "pid": 68396,
+            "starttime": "Wed Oct 14 08:51:48 2026"
+          },
+          {
+            "pid": 68415,
+            "starttime": "Wed Oct 14 08:51:51 2026"
+          },
+          {
+            "pid": 68426,
+            "starttime": "Wed Oct 14 08:51:51 2026"
+          },
+          {
+            "pid": 68438,
+            "starttime": "Wed Oct 14 08:51:51 2026"
+          },
+          {
+            "pid": 68442,
+            "starttime": "Wed Oct 14 08:51:52 2026"
+          },
+          {
+            "pid": 68457,
+            "starttime": "Wed Oct 14 08:51:53 2026"
+          },
+          {
+            "pid": 68464,
+            "starttime": "Wed Oct 14 08:51:53 2026"
+          },
+          {
+            "pid": 68474,
+            "starttime": "Wed Oct 14 08:51:54 2026"
+          },
+          {
+            "pid": 68484,
+            "starttime": "Wed Oct 14 08:51:55 2026"
+          },
+          {
+            "pid": 68493,
+            "starttime": "Wed Oct 14 08:51:56 2026"
+          },
+          {
+            "pid": 68496,
+            "starttime": "Wed Oct 14 08:51:56 2026"
+          },
+          {
+            "pid": 68514,
+            "starttime": "Wed Oct 14 08:51:58 2026"
+          },
+          {
+            "pid": 68532,
+            "starttime": "Wed Oct 14 08:51:59 2026"
+          },
+          {
+            "pid": 68550,
+            "starttime": "Wed Oct 14 08:52:01 2026"
+          },
+          {
+            "pid": 68551,
+            "starttime": "Wed Oct 14 08:52:01 2026"
+          },
+          {
+            "pid": 68552,
+            "starttime": "Wed Oct 14 08:52:01 2026"
+          },
+          {
+            "pid": 68575,
+            "starttime": "Wed Oct 14 08:52:02 2026"
+          },
+          {
+            "pid": 68582,
+            "starttime": "Wed Oct 14 08:52:02 2026"
+          },
+          {
+            "pid": 68595,
+            "starttime": "Wed Oct 14 08:52:03 2026"
+          },
+          {
+            "pid": 68599,
+            "starttime": "Wed Oct 14 08:52:04 2026"
+          },
+          {
+            "pid": 68602,
+            "starttime": "Wed Oct 14 08:52:04 2026"
+          },
+          {
+            "pid": 68609,
+            "starttime": "Wed Oct 14 08:52:04 2026"
+          },
+          {
+            "pid": 68621,
+            "starttime": "Wed Oct 14 08:52:05 2026"
+          },
+          {
+            "pid": 68633,
+            "starttime": "Wed Oct 14 08:52:07 2026"
+          },
+          {
+            "pid": 68640,
+            "starttime": "Wed Oct 14 08:52:07 2026"
+          },
+          {
+            "pid": 68647,
+            "starttime": "Wed Oct 14 08:52:07 2026"
+          },
+          {
+            "pid": 68648,
+            "starttime": "Wed Oct 14 08:52:07 2026"
+          },
+          {
+            "pid": 68666,
+            "starttime": "Wed Oct 14 08:52:09 2026"
+          },
+          {
+            "pid": 68673,
+            "starttime": "Wed Oct 14 08:52:09 2026"
+          },
+          {
+            "pid": 68710,
+            "starttime": "Wed Oct 14 08:52:11 2026"
+          },
+          {
+            "pid": 68717,
+            "starttime": "Wed Oct 14 08:52:12 2026"
+          },
+          {
+            "pid": 68718,
+            "starttime": "Wed Oct 14 08:52:12 2026"
+          },
+          {
+            "pid": 68735,
+            "starttime": "Wed Oct 14 08:52:13 2026"
+          },
+          {
+            "pid": 68746,
+            "starttime": "Wed Oct 14 08:52:14 2026"
+          },
+          {
+            "pid": 68758,
+            "starttime": "Wed Oct 14 08:52:15 2026"
+          },
+          {
+            "pid": 68770,
+            "starttime": "Wed Oct 14 08:52:16 2026"
+          },
+          {
+            "pid": 68811,
+            "starttime": "Wed Oct 14 08:52:26 2026"
+          },
+          {
+            "pid": 68822,
+            "starttime": "Wed Oct 14 08:52:27 2026"
+          },
+          {
+            "pid": 68826,
+            "starttime": "Wed Oct 14 08:52:27 2026"
+          },
+          {
+            "pid": 68841,
+            "starttime": "Wed Oct 14 08:52:29 2026"
+          },
+          {
+            "pid": 69009,
+            "starttime": "Wed Oct 14 08:52:32 2026"
+          },
+          {
+            "pid": 69065,
+            "starttime": "Wed Oct 14 08:52:42 2026"
+          },
+          {
+            "pid": 69116,
+            "starttime": "Wed Oct 14 08:52:43 2026"
+          },
+          {
+            "pid": 69124,
+            "starttime": "Wed Oct 14 08:52:44 2026"
+          },
+          {
+            "pid": 69133,
+            "starttime": "Wed Oct 14 08:52:45 2026"
+          },
+          {
+            "pid": 69145,
+            "starttime": "Wed Oct 14 08:52:46 2026"
+          },
+          {
+            "pid": 69147,
+            "starttime": "Wed Oct 14 08:52:46 2026"
+          },
+          {
+            "pid": 69152,
+            "starttime": "Wed Oct 14 08:52:47 2026"
+          },
+          {
+            "pid": 69175,
+            "starttime": "Wed Oct 14 08:52:50 2026"
+          },
+          {
+            "pid": 69216,
+            "starttime": "Wed Oct 14 08:52:52 2026"
+          },
+          {
+            "pid": 69218,
+            "starttime": "Wed Oct 14 08:52:52 2026"
+          },
+          {
+            "pid": 69221,
+            "starttime": "Wed Oct 14 08:52:53 2026"
+          },
+          {
+            "pid": 69223,
+            "starttime": "Wed Oct 14 08:52:53 2026"
+          },
+          {
+            "pid": 69239,
+            "starttime": "Wed Oct 14 08:52:54 2026"
+          },
+          {
+            "pid": 69262,
+            "starttime": "Wed Oct 14 08:52:55 2026"
+          },
+          {
+            "pid": 69273,
+            "starttime": "Wed Oct 14 08:52:55 2026"
+          },
+          {
+            "pid": 69283,
+            "starttime": "Wed Oct 14 08:52:57 2026"
+          },
+          {
+            "pid": 69294,
+            "starttime": "Wed Oct 14 08:52:59 2026"
+          },
+          {
+            "pid": 69300,
+            "starttime": "Wed Oct 14 08:52:59 2026"
+          },
+          {
+            "pid": 69310,
+            "starttime": "Wed Oct 14 08:53:01 2026"
+          },
+          {
+            "pid": 69315,
+            "starttime": "Wed Oct 14 08:53:01 2026"
+          },
+          {
+            "pid": 69323,
+            "starttime": "Wed Oct 14 08:53:03 2026"
+          },
+          {
+            "pid": 69324,
+            "starttime": "Wed Oct 14 08:53:03 2026"
+          },
+          {
+            "pid": 69326,
+            "starttime": "Wed Oct 14 08:53:03 2026"
+          },
+          {
+            "pid": 69335,
+            "starttime": "Wed Oct 14 08:53:03 2026"
+          },
+          {
+            "pid": 69342,
+            "starttime": "Wed Oct 14 08:53:04 2026"
+          },
+          {
+            "pid": 69347,
+            "starttime": "Wed Oct 14 08:53:04 2026"
+          },
+          {
+            "pid": 69359,
+            "starttime": "Wed Oct 14 08:53:05 2026"
+          },
+          {
+            "pid": 69464,
+            "starttime": "Wed Oct 14 08:53:26 2026"
+          },
+          {
+            "pid": 69473,
+            "starttime": "Wed Oct 14 08:53:26 2026"
+          },
+          {
+            "pid": 69492,
+            "starttime": "Wed Oct 14 08:53:27 2026"
+          },
+          {
+            "pid": 69499,
+            "starttime": "Wed Oct 14 08:53:28 2026"
+          },
+          {
+            "pid": 69510,
+            "starttime": "Wed Oct 14 08:53:28 2026"
+          },
+          {
+            "pid": 69519,
+            "starttime": "Wed Oct 14 08:53:29 2026"
+          },
+          {
+            "pid": 69526,
+            "starttime": "Wed Oct 14 08:53:29 2026"
+          },
+          {
+            "pid": 69542,
+            "starttime": "Wed Oct 14 08:53:30 2026"
+          },
+          {
+            "pid": 69546,
+            "starttime": "Wed Oct 14 08:53:30 2026"
+          },
+          {
+            "pid": 69566,
+            "starttime": "Wed Oct 14 08:53:31 2026"
+          },
+          {
+            "pid": 69589,
+            "starttime": "Wed Oct 14 08:53:32 2026"
+          },
+          {
+            "pid": 69598,
+            "starttime": "Wed Oct 14 08:53:32 2026"
+          },
+          {
+            "pid": 69605,
+            "starttime": "Wed Oct 14 08:53:33 2026"
+          },
+          {
+            "pid": 69621,
+            "starttime": "Wed Oct 14 08:53:34 2026"
+          },
+          {
+            "pid": 69629,
+            "starttime": "Wed Oct 14 08:53:34 2026"
+          },
+          {
+            "pid": 69640,
+            "starttime": "Wed Oct 14 08:53:34 2026"
+          },
+          {
+            "pid": 69645,
+            "starttime": "Wed Oct 14 08:53:35 2026"
+          },
+          {
+            "pid": 69652,
+            "starttime": "Wed Oct 14 08:53:35 2026"
+          },
+          {
+            "pid": 69656,
+            "starttime": "Wed Oct 14 08:53:35 2026"
+          },
+          {
+            "pid": 69657,
+            "starttime": "Wed Oct 14 08:53:35 2026"
+          },
+          {
+            "pid": 69667,
+            "starttime": "Wed Oct 14 08:53:36 2026"
+          },
+          {
+            "pid": 69694,
+            "starttime": "Wed Oct 14 08:53:37 2026"
+          },
+          {
+            "pid": 69704,
+            "starttime": "Wed Oct 14 08:53:38 2026"
+          },
+          {
+            "pid": 69709,
+            "starttime": "Wed Oct 14 08:53:38 2026"
+          },
+          {
+            "pid": 69722,
+            "starttime": "Wed Oct 14 08:53:39 2026"
+          },
+          {
+            "pid": 69733,
+            "starttime": "Wed Oct 14 08:53:40 2026"
+          },
+          {
+            "pid": 69737,
+            "starttime": "Wed Oct 14 08:53:40 2026"
+          },
+          {
+            "pid": 69785,
+            "starttime": "Wed Oct 14 08:53:41 2026"
+          },
+          {
+            "pid": 69791,
+            "starttime": "Wed Oct 14 08:53:42 2026"
+          },
+          {
+            "pid": 69809,
+            "starttime": "Wed Oct 14 08:53:43 2026"
+          },
+          {
+            "pid": 69823,
+            "starttime": "Wed Oct 14 08:53:44 2026"
+          },
+          {
+            "pid": 69826,
+            "starttime": "Wed Oct 14 08:53:45 2026"
+          },
+          {
+            "pid": 69863,
+            "starttime": "Wed Oct 14 08:53:46 2026"
+          },
+          {
+            "pid": 69970,
+            "starttime": "Wed Oct 14 08:53:48 2026"
+          },
+          {
+            "pid": 70049,
+            "starttime": "Wed Oct 14 08:53:54 2026"
+          },
+          {
+            "pid": 70050,
+            "starttime": "Wed Oct 14 08:53:54 2026"
+          },
+          {
+            "pid": 70075,
+            "starttime": "Wed Oct 14 08:53:55 2026"
+          },
+          {
+            "pid": 70086,
+            "starttime": "Wed Oct 14 08:53:56 2026"
+          },
+          {
+            "pid": 70094,
+            "starttime": "Wed Oct 14 08:53:56 2026"
+          },
+          {
+            "pid": 70106,
+            "starttime": "Wed Oct 14 08:53:57 2026"
+          },
+          {
+            "pid": 70154,
+            "starttime": "Wed Oct 14 08:54:09 2026"
+          },
+          {
+            "pid": 70167,
+            "starttime": "Wed Oct 14 08:54:10 2026"
+          },
+          {
+            "pid": 70187,
+            "starttime": "Wed Oct 14 08:54:11 2026"
+          },
+          {
+            "pid": 70220,
+            "starttime": "Wed Oct 14 08:54:13 2026"
+          },
+          {
+            "pid": 70244,
+            "starttime": "Wed Oct 14 08:54:14 2026"
+          },
+          {
+            "pid": 70261,
+            "starttime": "Wed Oct 14 08:54:15 2026"
+          },
+          {
+            "pid": 70276,
+            "starttime": "Wed Oct 14 08:54:17 2026"
+          },
+          {
+            "pid": 70279,
+            "starttime": "Wed Oct 14 08:54:17 2026"
+          },
+          {
+            "pid": 70289,
+            "starttime": "Wed Oct 14 08:54:18 2026"
+          },
+          {
+            "pid": 70296,
+            "starttime": "Wed Oct 14 08:54:20 2026"
+          },
+          {
+            "pid": 70300,
+            "starttime": "Wed Oct 14 08:54:20 2026"
+          },
+          {
+            "pid": 70370,
+            "starttime": "Wed Oct 14 08:54:21 2026"
+          },
+          {
+            "pid": 70485,
+            "starttime": "Wed Oct 14 08:54:22 2026"
+          },
+          {
+            "pid": 70596,
+            "starttime": "Wed Oct 14 08:54:23 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 2,
+        "started_monotonic": 95897.671793833,
+        "pid": 66905,
+        "started_utc": "2026-10-14T00:50:30.141559+00:00",
+        "root_starttime": "Wed Oct 14 08:50:30 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:54:25.042713+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-full/stdout.log",
+        "bytes": 12629284,
+        "sha256": "c26651d2f1fd3b73768a42a6a7be2ca71ff148388cc1cbe70cf5777af9f51047"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-full/resources.json",
+        "bytes": 15587,
+        "sha256": "77500c45736ef7d29213e23f522bd180b2dbc57e73fc550f2639639c6ac55791"
+      }
+    },
+    "go-vet": {
+      "resources": {
+        "name": "go-vet",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T00:54:25.096873+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 222448,
+        "peak_cpu_percent": 164.9,
+        "samples": 6,
+        "max_sample_gap_seconds": 1.042,
+        "seconds": 5.48,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 70657,
+            "starttime": "Wed Oct 14 08:54:29 2026"
+          },
+          {
+            "pid": 70687,
+            "starttime": "Wed Oct 14 08:54:30 2026"
+          },
+          {
+            "pid": 70734,
+            "starttime": "Wed Oct 14 08:54:31 2026"
+          },
+          {
+            "pid": 70749,
+            "starttime": "Wed Oct 14 08:54:33 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96136.924577833,
+        "pid": 70657,
+        "started_utc": "2026-10-14T00:54:29.338651+00:00",
+        "root_starttime": "Wed Oct 14 08:54:29 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:54:34.907393+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-vet/stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-vet/resources.json",
+        "bytes": 2791,
+        "sha256": "f373af262c76fe5d7a870fe6e3e28a231f47cd57d6cf4be556c2678f4c09d8a3"
+      }
+    },
+    "go-race": {
+      "resources": {
+        "name": "go-race",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "./..."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T00:54:34.961068+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=300s",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 565776,
+        "peak_cpu_percent": 169.8,
+        "samples": 418,
+        "max_sample_gap_seconds": 1.069,
+        "seconds": 432.842,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 70797,
+            "starttime": "Wed Oct 14 08:54:39 2026"
+          },
+          {
+            "pid": 70802,
+            "starttime": "Wed Oct 14 08:54:39 2026"
+          },
+          {
+            "pid": 70806,
+            "starttime": "Wed Oct 14 08:54:41 2026"
+          },
+          {
+            "pid": 70825,
+            "starttime": "Wed Oct 14 08:54:42 2026"
+          },
+          {
+            "pid": 70832,
+            "starttime": "Wed Oct 14 08:54:42 2026"
+          },
+          {
+            "pid": 70837,
+            "starttime": "Wed Oct 14 08:54:44 2026"
+          },
+          {
+            "pid": 70865,
+            "starttime": "Wed Oct 14 08:54:52 2026"
+          },
+          {
+            "pid": 70887,
+            "starttime": "Wed Oct 14 08:54:53 2026"
+          },
+          {
+            "pid": 70976,
+            "starttime": "Wed Oct 14 08:54:55 2026"
+          },
+          {
+            "pid": 70977,
+            "starttime": "Wed Oct 14 08:54:55 2026"
+          },
+          {
+            "pid": 71041,
+            "starttime": "Wed Oct 14 08:54:57 2026"
+          },
+          {
+            "pid": 71042,
+            "starttime": "Wed Oct 14 08:54:57 2026"
+          },
+          {
+            "pid": 71138,
+            "starttime": "Wed Oct 14 08:54:59 2026"
+          },
+          {
+            "pid": 71190,
+            "starttime": "Wed Oct 14 08:55:02 2026"
+          },
+          {
+            "pid": 71193,
+            "starttime": "Wed Oct 14 08:55:02 2026"
+          },
+          {
+            "pid": 71244,
+            "starttime": "Wed Oct 14 08:55:16 2026"
+          },
+          {
+            "pid": 71506,
+            "starttime": "Wed Oct 14 08:56:15 2026"
+          },
+          {
+            "pid": 71605,
+            "starttime": "Wed Oct 14 08:56:16 2026"
+          },
+          {
+            "pid": 71704,
+            "starttime": "Wed Oct 14 08:56:17 2026"
+          },
+          {
+            "pid": 71707,
+            "starttime": "Wed Oct 14 08:56:17 2026"
+          },
+          {
+            "pid": 71865,
+            "starttime": "Wed Oct 14 08:56:19 2026"
+          },
+          {
+            "pid": 71874,
+            "starttime": "Wed Oct 14 08:56:22 2026"
+          },
+          {
+            "pid": 71878,
+            "starttime": "Wed Oct 14 08:56:22 2026"
+          },
+          {
+            "pid": 71927,
+            "starttime": "Wed Oct 14 08:56:23 2026"
+          },
+          {
+            "pid": 71959,
+            "starttime": "Wed Oct 14 08:56:24 2026"
+          },
+          {
+            "pid": 72002,
+            "starttime": "Wed Oct 14 08:56:28 2026"
+          },
+          {
+            "pid": 72027,
+            "starttime": "Wed Oct 14 08:56:30 2026"
+          },
+          {
+            "pid": 72037,
+            "starttime": "Wed Oct 14 08:56:31 2026"
+          },
+          {
+            "pid": 72051,
+            "starttime": "Wed Oct 14 08:56:32 2026"
+          },
+          {
+            "pid": 72109,
+            "starttime": "Wed Oct 14 08:56:35 2026"
+          },
+          {
+            "pid": 72129,
+            "starttime": "Wed Oct 14 08:56:38 2026"
+          },
+          {
+            "pid": 72144,
+            "starttime": "Wed Oct 14 08:56:38 2026"
+          },
+          {
+            "pid": 72147,
+            "starttime": "Wed Oct 14 08:56:39 2026"
+          },
+          {
+            "pid": 72157,
+            "starttime": "Wed Oct 14 08:56:40 2026"
+          },
+          {
+            "pid": 72161,
+            "starttime": "Wed Oct 14 08:56:41 2026"
+          },
+          {
+            "pid": 72181,
+            "starttime": "Wed Oct 14 08:56:42 2026"
+          },
+          {
+            "pid": 72191,
+            "starttime": "Wed Oct 14 08:56:42 2026"
+          },
+          {
+            "pid": 72197,
+            "starttime": "Wed Oct 14 08:56:44 2026"
+          },
+          {
+            "pid": 72207,
+            "starttime": "Wed Oct 14 08:56:45 2026"
+          },
+          {
+            "pid": 72210,
+            "starttime": "Wed Oct 14 08:56:45 2026"
+          },
+          {
+            "pid": 72211,
+            "starttime": "Wed Oct 14 08:56:45 2026"
+          },
+          {
+            "pid": 72237,
+            "starttime": "Wed Oct 14 08:56:46 2026"
+          },
+          {
+            "pid": 72248,
+            "starttime": "Wed Oct 14 08:56:47 2026"
+          },
+          {
+            "pid": 72254,
+            "starttime": "Wed Oct 14 08:56:48 2026"
+          },
+          {
+            "pid": 72256,
+            "starttime": "Wed Oct 14 08:56:48 2026"
+          },
+          {
+            "pid": 72262,
+            "starttime": "Wed Oct 14 08:56:49 2026"
+          },
+          {
+            "pid": 72282,
+            "starttime": "Wed Oct 14 08:56:51 2026"
+          },
+          {
+            "pid": 72291,
+            "starttime": "Wed Oct 14 08:56:51 2026"
+          },
+          {
+            "pid": 72321,
+            "starttime": "Wed Oct 14 08:56:53 2026"
+          },
+          {
+            "pid": 72329,
+            "starttime": "Wed Oct 14 08:56:53 2026"
+          },
+          {
+            "pid": 72340,
+            "starttime": "Wed Oct 14 08:56:54 2026"
+          },
+          {
+            "pid": 72344,
+            "starttime": "Wed Oct 14 08:56:55 2026"
+          },
+          {
+            "pid": 72349,
+            "starttime": "Wed Oct 14 08:56:56 2026"
+          },
+          {
+            "pid": 72360,
+            "starttime": "Wed Oct 14 08:56:56 2026"
+          },
+          {
+            "pid": 72364,
+            "starttime": "Wed Oct 14 08:56:57 2026"
+          },
+          {
+            "pid": 72379,
+            "starttime": "Wed Oct 14 08:56:58 2026"
+          },
+          {
+            "pid": 72395,
+            "starttime": "Wed Oct 14 08:56:59 2026"
+          },
+          {
+            "pid": 72435,
+            "starttime": "Wed Oct 14 08:57:02 2026"
+          },
+          {
+            "pid": 72436,
+            "starttime": "Wed Oct 14 08:57:03 2026"
+          },
+          {
+            "pid": 72447,
+            "starttime": "Wed Oct 14 08:57:03 2026"
+          },
+          {
+            "pid": 72458,
+            "starttime": "Wed Oct 14 08:57:03 2026"
+          },
+          {
+            "pid": 72462,
+            "starttime": "Wed Oct 14 08:57:04 2026"
+          },
+          {
+            "pid": 72465,
+            "starttime": "Wed Oct 14 08:57:05 2026"
+          },
+          {
+            "pid": 72471,
+            "starttime": "Wed Oct 14 08:57:05 2026"
+          },
+          {
+            "pid": 72482,
+            "starttime": "Wed Oct 14 08:57:05 2026"
+          },
+          {
+            "pid": 72486,
+            "starttime": "Wed Oct 14 08:57:07 2026"
+          },
+          {
+            "pid": 72491,
+            "starttime": "Wed Oct 14 08:57:07 2026"
+          },
+          {
+            "pid": 72498,
+            "starttime": "Wed Oct 14 08:57:07 2026"
+          },
+          {
+            "pid": 72509,
+            "starttime": "Wed Oct 14 08:57:08 2026"
+          },
+          {
+            "pid": 72513,
+            "starttime": "Wed Oct 14 08:57:09 2026"
+          },
+          {
+            "pid": 72524,
+            "starttime": "Wed Oct 14 08:57:09 2026"
+          },
+          {
+            "pid": 72531,
+            "starttime": "Wed Oct 14 08:57:09 2026"
+          },
+          {
+            "pid": 72535,
+            "starttime": "Wed Oct 14 08:57:10 2026"
+          },
+          {
+            "pid": 72556,
+            "starttime": "Wed Oct 14 08:57:12 2026"
+          },
+          {
+            "pid": 72558,
+            "starttime": "Wed Oct 14 08:57:12 2026"
+          },
+          {
+            "pid": 72563,
+            "starttime": "Wed Oct 14 08:57:13 2026"
+          },
+          {
+            "pid": 72565,
+            "starttime": "Wed Oct 14 08:57:14 2026"
+          },
+          {
+            "pid": 72575,
+            "starttime": "Wed Oct 14 08:57:16 2026"
+          },
+          {
+            "pid": 72579,
+            "starttime": "Wed Oct 14 08:57:17 2026"
+          },
+          {
+            "pid": 72580,
+            "starttime": "Wed Oct 14 08:57:18 2026"
+          },
+          {
+            "pid": 72586,
+            "starttime": "Wed Oct 14 08:57:18 2026"
+          },
+          {
+            "pid": 72590,
+            "starttime": "Wed Oct 14 08:57:19 2026"
+          },
+          {
+            "pid": 72601,
+            "starttime": "Wed Oct 14 08:57:21 2026"
+          },
+          {
+            "pid": 72612,
+            "starttime": "Wed Oct 14 08:57:23 2026"
+          },
+          {
+            "pid": 72615,
+            "starttime": "Wed Oct 14 08:57:24 2026"
+          },
+          {
+            "pid": 72621,
+            "starttime": "Wed Oct 14 08:57:25 2026"
+          },
+          {
+            "pid": 72622,
+            "starttime": "Wed Oct 14 08:57:25 2026"
+          },
+          {
+            "pid": 72623,
+            "starttime": "Wed Oct 14 08:57:25 2026"
+          },
+          {
+            "pid": 72637,
+            "starttime": "Wed Oct 14 08:57:27 2026"
+          },
+          {
+            "pid": 72668,
+            "starttime": "Wed Oct 14 08:57:38 2026"
+          },
+          {
+            "pid": 72675,
+            "starttime": "Wed Oct 14 08:57:40 2026"
+          },
+          {
+            "pid": 72682,
+            "starttime": "Wed Oct 14 08:57:42 2026"
+          },
+          {
+            "pid": 72689,
+            "starttime": "Wed Oct 14 08:57:43 2026"
+          },
+          {
+            "pid": 72692,
+            "starttime": "Wed Oct 14 08:57:45 2026"
+          },
+          {
+            "pid": 72708,
+            "starttime": "Wed Oct 14 08:57:47 2026"
+          },
+          {
+            "pid": 72737,
+            "starttime": "Wed Oct 14 08:57:49 2026"
+          },
+          {
+            "pid": 72830,
+            "starttime": "Wed Oct 14 08:57:53 2026"
+          },
+          {
+            "pid": 72876,
+            "starttime": "Wed Oct 14 08:57:57 2026"
+          },
+          {
+            "pid": 72989,
+            "starttime": "Wed Oct 14 08:58:25 2026"
+          },
+          {
+            "pid": 73002,
+            "starttime": "Wed Oct 14 08:58:27 2026"
+          },
+          {
+            "pid": 73007,
+            "starttime": "Wed Oct 14 08:58:27 2026"
+          },
+          {
+            "pid": 73008,
+            "starttime": "Wed Oct 14 08:58:27 2026"
+          },
+          {
+            "pid": 73012,
+            "starttime": "Wed Oct 14 08:58:28 2026"
+          },
+          {
+            "pid": 73016,
+            "starttime": "Wed Oct 14 08:58:29 2026"
+          },
+          {
+            "pid": 73020,
+            "starttime": "Wed Oct 14 08:58:30 2026"
+          },
+          {
+            "pid": 73026,
+            "starttime": "Wed Oct 14 08:58:31 2026"
+          },
+          {
+            "pid": 73030,
+            "starttime": "Wed Oct 14 08:58:32 2026"
+          },
+          {
+            "pid": 73036,
+            "starttime": "Wed Oct 14 08:58:33 2026"
+          },
+          {
+            "pid": 73040,
+            "starttime": "Wed Oct 14 08:58:34 2026"
+          },
+          {
+            "pid": 73044,
+            "starttime": "Wed Oct 14 08:58:35 2026"
+          },
+          {
+            "pid": 73048,
+            "starttime": "Wed Oct 14 08:58:36 2026"
+          },
+          {
+            "pid": 73052,
+            "starttime": "Wed Oct 14 08:58:37 2026"
+          },
+          {
+            "pid": 73056,
+            "starttime": "Wed Oct 14 08:58:38 2026"
+          },
+          {
+            "pid": 73060,
+            "starttime": "Wed Oct 14 08:58:39 2026"
+          },
+          {
+            "pid": 73064,
+            "starttime": "Wed Oct 14 08:58:40 2026"
+          },
+          {
+            "pid": 73070,
+            "starttime": "Wed Oct 14 08:58:42 2026"
+          },
+          {
+            "pid": 73074,
+            "starttime": "Wed Oct 14 08:58:43 2026"
+          },
+          {
+            "pid": 73078,
+            "starttime": "Wed Oct 14 08:58:44 2026"
+          },
+          {
+            "pid": 73082,
+            "starttime": "Wed Oct 14 08:58:45 2026"
+          },
+          {
+            "pid": 73090,
+            "starttime": "Wed Oct 14 08:58:47 2026"
+          },
+          {
+            "pid": 73105,
+            "starttime": "Wed Oct 14 08:58:51 2026"
+          },
+          {
+            "pid": 73114,
+            "starttime": "Wed Oct 14 08:58:53 2026"
+          },
+          {
+            "pid": 73117,
+            "starttime": "Wed Oct 14 08:58:54 2026"
+          },
+          {
+            "pid": 73131,
+            "starttime": "Wed Oct 14 08:58:56 2026"
+          },
+          {
+            "pid": 73135,
+            "starttime": "Wed Oct 14 08:58:56 2026"
+          },
+          {
+            "pid": 73144,
+            "starttime": "Wed Oct 14 08:58:58 2026"
+          },
+          {
+            "pid": 73156,
+            "starttime": "Wed Oct 14 08:59:00 2026"
+          },
+          {
+            "pid": 73164,
+            "starttime": "Wed Oct 14 08:59:01 2026"
+          },
+          {
+            "pid": 73170,
+            "starttime": "Wed Oct 14 08:59:01 2026"
+          },
+          {
+            "pid": 73219,
+            "starttime": "Wed Oct 14 08:59:05 2026"
+          },
+          {
+            "pid": 73221,
+            "starttime": "Wed Oct 14 08:59:05 2026"
+          },
+          {
+            "pid": 73224,
+            "starttime": "Wed Oct 14 08:59:06 2026"
+          },
+          {
+            "pid": 73226,
+            "starttime": "Wed Oct 14 08:59:06 2026"
+          },
+          {
+            "pid": 73243,
+            "starttime": "Wed Oct 14 08:59:09 2026"
+          },
+          {
+            "pid": 73258,
+            "starttime": "Wed Oct 14 08:59:09 2026"
+          },
+          {
+            "pid": 73277,
+            "starttime": "Wed Oct 14 08:59:11 2026"
+          },
+          {
+            "pid": 73288,
+            "starttime": "Wed Oct 14 08:59:13 2026"
+          },
+          {
+            "pid": 73291,
+            "starttime": "Wed Oct 14 08:59:14 2026"
+          },
+          {
+            "pid": 73303,
+            "starttime": "Wed Oct 14 08:59:17 2026"
+          },
+          {
+            "pid": 73334,
+            "starttime": "Wed Oct 14 08:59:27 2026"
+          },
+          {
+            "pid": 73355,
+            "starttime": "Wed Oct 14 08:59:30 2026"
+          },
+          {
+            "pid": 73387,
+            "starttime": "Wed Oct 14 08:59:41 2026"
+          },
+          {
+            "pid": 73399,
+            "starttime": "Wed Oct 14 08:59:43 2026"
+          },
+          {
+            "pid": 73402,
+            "starttime": "Wed Oct 14 08:59:43 2026"
+          },
+          {
+            "pid": 73421,
+            "starttime": "Wed Oct 14 08:59:44 2026"
+          },
+          {
+            "pid": 73425,
+            "starttime": "Wed Oct 14 08:59:45 2026"
+          },
+          {
+            "pid": 73431,
+            "starttime": "Wed Oct 14 08:59:45 2026"
+          },
+          {
+            "pid": 73436,
+            "starttime": "Wed Oct 14 08:59:45 2026"
+          },
+          {
+            "pid": 73456,
+            "starttime": "Wed Oct 14 08:59:46 2026"
+          },
+          {
+            "pid": 73551,
+            "starttime": "Wed Oct 14 09:00:08 2026"
+          },
+          {
+            "pid": 73558,
+            "starttime": "Wed Oct 14 09:00:08 2026"
+          },
+          {
+            "pid": 73574,
+            "starttime": "Wed Oct 14 09:00:09 2026"
+          },
+          {
+            "pid": 73578,
+            "starttime": "Wed Oct 14 09:00:10 2026"
+          },
+          {
+            "pid": 73596,
+            "starttime": "Wed Oct 14 09:00:10 2026"
+          },
+          {
+            "pid": 73603,
+            "starttime": "Wed Oct 14 09:00:11 2026"
+          },
+          {
+            "pid": 73610,
+            "starttime": "Wed Oct 14 09:00:11 2026"
+          },
+          {
+            "pid": 73628,
+            "starttime": "Wed Oct 14 09:00:12 2026"
+          },
+          {
+            "pid": 73635,
+            "starttime": "Wed Oct 14 09:00:12 2026"
+          },
+          {
+            "pid": 73651,
+            "starttime": "Wed Oct 14 09:00:13 2026"
+          },
+          {
+            "pid": 73658,
+            "starttime": "Wed Oct 14 09:00:13 2026"
+          },
+          {
+            "pid": 73678,
+            "starttime": "Wed Oct 14 09:00:14 2026"
+          },
+          {
+            "pid": 73685,
+            "starttime": "Wed Oct 14 09:00:14 2026"
+          },
+          {
+            "pid": 73696,
+            "starttime": "Wed Oct 14 09:00:15 2026"
+          },
+          {
+            "pid": 73701,
+            "starttime": "Wed Oct 14 09:00:15 2026"
+          },
+          {
+            "pid": 73708,
+            "starttime": "Wed Oct 14 09:00:15 2026"
+          },
+          {
+            "pid": 73715,
+            "starttime": "Wed Oct 14 09:00:16 2026"
+          },
+          {
+            "pid": 73717,
+            "starttime": "Wed Oct 14 09:00:16 2026"
+          },
+          {
+            "pid": 73724,
+            "starttime": "Wed Oct 14 09:00:17 2026"
+          },
+          {
+            "pid": 73731,
+            "starttime": "Wed Oct 14 09:00:17 2026"
+          },
+          {
+            "pid": 73747,
+            "starttime": "Wed Oct 14 09:00:18 2026"
+          },
+          {
+            "pid": 73748,
+            "starttime": "Wed Oct 14 09:00:18 2026"
+          },
+          {
+            "pid": 73784,
+            "starttime": "Wed Oct 14 09:00:20 2026"
+          },
+          {
+            "pid": 73806,
+            "starttime": "Wed Oct 14 09:00:22 2026"
+          },
+          {
+            "pid": 73809,
+            "starttime": "Wed Oct 14 09:00:23 2026"
+          },
+          {
+            "pid": 73815,
+            "starttime": "Wed Oct 14 09:00:23 2026"
+          },
+          {
+            "pid": 73854,
+            "starttime": "Wed Oct 14 09:00:25 2026"
+          },
+          {
+            "pid": 73860,
+            "starttime": "Wed Oct 14 09:00:25 2026"
+          },
+          {
+            "pid": 73871,
+            "starttime": "Wed Oct 14 09:00:27 2026"
+          },
+          {
+            "pid": 73880,
+            "starttime": "Wed Oct 14 09:00:28 2026"
+          },
+          {
+            "pid": 73913,
+            "starttime": "Wed Oct 14 09:00:30 2026"
+          },
+          {
+            "pid": 73924,
+            "starttime": "Wed Oct 14 09:00:32 2026"
+          },
+          {
+            "pid": 73942,
+            "starttime": "Wed Oct 14 09:00:32 2026"
+          },
+          {
+            "pid": 74122,
+            "starttime": "Wed Oct 14 09:00:42 2026"
+          },
+          {
+            "pid": 74128,
+            "starttime": "Wed Oct 14 09:00:42 2026"
+          },
+          {
+            "pid": 74137,
+            "starttime": "Wed Oct 14 09:00:45 2026"
+          },
+          {
+            "pid": 74146,
+            "starttime": "Wed Oct 14 09:00:47 2026"
+          },
+          {
+            "pid": 74158,
+            "starttime": "Wed Oct 14 09:00:48 2026"
+          },
+          {
+            "pid": 74243,
+            "starttime": "Wed Oct 14 09:01:18 2026"
+          },
+          {
+            "pid": 74246,
+            "starttime": "Wed Oct 14 09:01:18 2026"
+          },
+          {
+            "pid": 74247,
+            "starttime": "Wed Oct 14 09:01:18 2026"
+          },
+          {
+            "pid": 74257,
+            "starttime": "Wed Oct 14 09:01:21 2026"
+          },
+          {
+            "pid": 74266,
+            "starttime": "Wed Oct 14 09:01:23 2026"
+          },
+          {
+            "pid": 74275,
+            "starttime": "Wed Oct 14 09:01:25 2026"
+          },
+          {
+            "pid": 74286,
+            "starttime": "Wed Oct 14 09:01:25 2026"
+          },
+          {
+            "pid": 74289,
+            "starttime": "Wed Oct 14 09:01:25 2026"
+          },
+          {
+            "pid": 74321,
+            "starttime": "Wed Oct 14 09:01:27 2026"
+          },
+          {
+            "pid": 74323,
+            "starttime": "Wed Oct 14 09:01:27 2026"
+          },
+          {
+            "pid": 74329,
+            "starttime": "Wed Oct 14 09:01:29 2026"
+          },
+          {
+            "pid": 74333,
+            "starttime": "Wed Oct 14 09:01:30 2026"
+          },
+          {
+            "pid": 74360,
+            "starttime": "Wed Oct 14 09:01:35 2026"
+          },
+          {
+            "pid": 74368,
+            "starttime": "Wed Oct 14 09:01:38 2026"
+          },
+          {
+            "pid": 74370,
+            "starttime": "Wed Oct 14 09:01:38 2026"
+          },
+          {
+            "pid": 74380,
+            "starttime": "Wed Oct 14 09:01:39 2026"
+          },
+          {
+            "pid": 74393,
+            "starttime": "Wed Oct 14 09:01:43 2026"
+          },
+          {
+            "pid": 74406,
+            "starttime": "Wed Oct 14 09:01:47 2026"
+          },
+          {
+            "pid": 74432,
+            "starttime": "Wed Oct 14 09:01:47 2026"
+          },
+          {
+            "pid": 74535,
+            "starttime": "Wed Oct 14 09:01:48 2026"
+          },
+          {
+            "pid": 74647,
+            "starttime": "Wed Oct 14 09:01:49 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96146.762332041,
+        "pid": 70797,
+        "started_utc": "2026-10-14T00:54:39.176407+00:00",
+        "root_starttime": "Wed Oct 14 08:54:39 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:01:52.311706+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-race/stdout.log",
+        "bytes": 12626832,
+        "sha256": "3a5539a4b95b2eb663552fc14a86a8dcec8f716ef4f9d334c33d89e83b9accb5"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/go-race/resources.json",
+        "bytes": 19060,
+        "sha256": "feff00dcae52865a0cdea8ae1c2a3a08c2f21edd30da5f1e24e2bc6394f4e8ac"
+      }
+    },
+    "type-syntax": {
+      "resources": {
+        "name": "type-syntax",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T01:01:52.380704+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 1152,
+        "peak_cpu_percent": 0,
+        "samples": 2,
+        "max_sample_gap_seconds": 1.041,
+        "seconds": 1.353,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74762,
+            "starttime": "Wed Oct 14 09:01:56 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96584.175199416,
+        "pid": 74762,
+        "started_utc": "2026-10-14T01:01:56.591187+00:00",
+        "root_starttime": "Wed Oct 14 09:01:56 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:01:58.031921+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-syntax/stdout.log",
+        "bytes": 74,
+        "sha256": "2505a072ee37510955518d639665e9fb22a6a7254f6d957a79622329034ea7e2"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-syntax/resources.json",
+        "bytes": 2622,
+        "sha256": "d419db866153ea6f87c5c9c9714a560ac3a5b594eb458240bae236786f54c280"
+      }
+    },
+    "type-public": {
+      "resources": {
+        "name": "type-public",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T01:01:58.080234+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 656,
+        "peak_cpu_percent": 0,
+        "samples": 2,
+        "max_sample_gap_seconds": 1.038,
+        "seconds": 1.341,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74796,
+            "starttime": "Wed Oct 14 09:02:02 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96589.884537333,
+        "pid": 74796,
+        "started_utc": "2026-10-14T01:02:02.299272+00:00",
+        "root_starttime": "Wed Oct 14 09:02:02 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:02:03.723825+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-public/stdout.log",
+        "bytes": 67,
+        "sha256": "4f649a73b1f6351a1715e5f4c32e9ff3e0696116ac1524269557949dbac89f04"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-public/resources.json",
+        "bytes": 2651,
+        "sha256": "05c0754d2d3affe0c29992578930b89b39ee5cbe18980b01f3d47e617297e85b"
+      }
+    },
+    "type-private": {
+      "resources": {
+        "name": "type-private",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T01:02:03.774743+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 1152,
+        "peak_cpu_percent": 0,
+        "samples": 2,
+        "max_sample_gap_seconds": 1.039,
+        "seconds": 1.333,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74837,
+            "starttime": "Wed Oct 14 09:02:07 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96595.58237325,
+        "pid": 74837,
+        "started_utc": "2026-10-14T01:02:07.996866+00:00",
+        "root_starttime": "Wed Oct 14 09:02:07 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:02:09.418044+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-private/stdout.log",
+        "bytes": 71,
+        "sha256": "33da080073a6a7cc4983959e9dee6ee6b137d7894064fab5d73093f8b14ed3c2"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-private/resources.json",
+        "bytes": 2654,
+        "sha256": "a2014009e51182f83e7ac4b06859037e6dbd87fe7781ec4891b586ca066287f3"
+      }
+    },
+    "type-variables": {
+      "resources": {
+        "name": "type-variables",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_utc": "2026-10-14T01:02:09.473630+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 656,
+        "peak_cpu_percent": 0,
+        "samples": 2,
+        "max_sample_gap_seconds": 1.045,
+        "seconds": 1.336,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74878,
+            "starttime": "Wed Oct 14 09:02:13 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96601.284737,
+        "pid": 74878,
+        "started_utc": "2026-10-14T01:02:13.699620+00:00",
+        "root_starttime": "Wed Oct 14 09:02:13 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:02:15.124102+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-variables/stdout.log",
+        "bytes": 66,
+        "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/type-variables/resources.json",
+        "bytes": 2657,
+        "sha256": "40923dc8017559c67510e947e2a2b7bae4d33a515097d4d7ab83733dcb52a343"
+      }
+    },
+    "invariants": {
+      "resources": {
+        "name": "invariants",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T01:02:15.175877+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 176,
+        "peak_cpu_percent": 0,
+        "samples": 2,
+        "max_sample_gap_seconds": 1.046,
+        "seconds": 1.35,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74911,
+            "starttime": "Wed Oct 14 09:02:19 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96606.977962625,
+        "pid": 74911,
+        "started_utc": "2026-10-14T01:02:19.392750+00:00",
+        "root_starttime": "Wed Oct 14 09:02:19 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:02:20.820889+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/invariants/stdout.log",
+        "bytes": 62,
+        "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/invariants/resources.json",
+        "bytes": 2610,
+        "sha256": "8449bd18b1a3de3ea8af1c51d821b5b49e2cb39332ee474c93546788cd6a3d5b"
+      }
+    },
+    "scans": {
+      "resources": {
+        "name": "scans",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T01:02:20.868846+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 86816,
+        "peak_cpu_percent": 78.60000000000001,
+        "samples": 11,
+        "max_sample_gap_seconds": 1.066,
+        "seconds": 10.762,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74934,
+            "starttime": "Wed Oct 14 09:02:25 2026"
+          },
+          {
+            "pid": 74937,
+            "starttime": "Wed Oct 14 09:02:25 2026"
+          },
+          {
+            "pid": 74952,
+            "starttime": "Wed Oct 14 09:02:29 2026"
+          },
+          {
+            "pid": 74959,
+            "starttime": "Wed Oct 14 09:02:31 2026"
+          },
+          {
+            "pid": 74965,
+            "starttime": "Wed Oct 14 09:02:32 2026"
+          },
+          {
+            "pid": 74968,
+            "starttime": "Wed Oct 14 09:02:32 2026"
+          },
+          {
+            "pid": 74975,
+            "starttime": "Wed Oct 14 09:02:32 2026"
+          },
+          {
+            "pid": 74979,
+            "starttime": "Wed Oct 14 09:02:34 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96612.647888,
+        "pid": 74934,
+        "started_utc": "2026-10-14T01:02:25.062405+00:00",
+        "root_starttime": "Wed Oct 14 09:02:25 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:02:35.933867+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/scans/stdout.log",
+        "bytes": 1663,
+        "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/scans/resources.json",
+        "bytes": 3166,
+        "sha256": "0db411fe103df2c3fe35cfb39e808f6babe0634ae1fea3ca4bc4ca9a2cb5e715"
+      }
+    },
+    "guards": {
+      "resources": {
+        "name": "guards",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          ".venv/bin/python",
+          "python/tools/verify_guards.py"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T01:02:36.019486+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "python/tools/verify_guards.py"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 162640,
+        "peak_cpu_percent": 300.0,
+        "samples": 771,
+        "max_sample_gap_seconds": 1.077,
+        "seconds": 805.645,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 74996,
+            "starttime": "Wed Oct 14 09:02:40 2026"
+          },
+          {
+            "pid": 74999,
+            "starttime": "Wed Oct 14 09:02:40 2026"
+          },
+          {
+            "pid": 75007,
+            "starttime": "Wed Oct 14 09:02:42 2026"
+          },
+          {
+            "pid": 75015,
+            "starttime": "Wed Oct 14 09:02:43 2026"
+          },
+          {
+            "pid": 75020,
+            "starttime": "Wed Oct 14 09:02:44 2026"
+          },
+          {
+            "pid": 75038,
+            "starttime": "Wed Oct 14 09:02:45 2026"
+          },
+          {
+            "pid": 75057,
+            "starttime": "Wed Oct 14 09:02:47 2026"
+          },
+          {
+            "pid": 75062,
+            "starttime": "Wed Oct 14 09:02:48 2026"
+          },
+          {
+            "pid": 75067,
+            "starttime": "Wed Oct 14 09:02:49 2026"
+          },
+          {
+            "pid": 75074,
+            "starttime": "Wed Oct 14 09:02:50 2026"
+          },
+          {
+            "pid": 75085,
+            "starttime": "Wed Oct 14 09:02:52 2026"
+          },
+          {
+            "pid": 75089,
+            "starttime": "Wed Oct 14 09:02:53 2026"
+          },
+          {
+            "pid": 75093,
+            "starttime": "Wed Oct 14 09:02:54 2026"
+          },
+          {
+            "pid": 75097,
+            "starttime": "Wed Oct 14 09:02:55 2026"
+          },
+          {
+            "pid": 75115,
+            "starttime": "Wed Oct 14 09:02:57 2026"
+          },
+          {
+            "pid": 75119,
+            "starttime": "Wed Oct 14 09:02:58 2026"
+          },
+          {
+            "pid": 75137,
+            "starttime": "Wed Oct 14 09:03:00 2026"
+          },
+          {
+            "pid": 75144,
+            "starttime": "Wed Oct 14 09:03:01 2026"
+          },
+          {
+            "pid": 75152,
+            "starttime": "Wed Oct 14 09:03:02 2026"
+          },
+          {
+            "pid": 75157,
+            "starttime": "Wed Oct 14 09:03:03 2026"
+          },
+          {
+            "pid": 75160,
+            "starttime": "Wed Oct 14 09:03:04 2026"
+          },
+          {
+            "pid": 75211,
+            "starttime": "Wed Oct 14 09:03:05 2026"
+          },
+          {
+            "pid": 75216,
+            "starttime": "Wed Oct 14 09:03:05 2026"
+          },
+          {
+            "pid": 75226,
+            "starttime": "Wed Oct 14 09:03:06 2026"
+          },
+          {
+            "pid": 75246,
+            "starttime": "Wed Oct 14 09:03:07 2026"
+          },
+          {
+            "pid": 75250,
+            "starttime": "Wed Oct 14 09:03:08 2026"
+          },
+          {
+            "pid": 75257,
+            "starttime": "Wed Oct 14 09:03:10 2026"
+          },
+          {
+            "pid": 75268,
+            "starttime": "Wed Oct 14 09:03:13 2026"
+          },
+          {
+            "pid": 75271,
+            "starttime": "Wed Oct 14 09:03:14 2026"
+          },
+          {
+            "pid": 75280,
+            "starttime": "Wed Oct 14 09:03:16 2026"
+          },
+          {
+            "pid": 75283,
+            "starttime": "Wed Oct 14 09:03:17 2026"
+          },
+          {
+            "pid": 75286,
+            "starttime": "Wed Oct 14 09:03:17 2026"
+          },
+          {
+            "pid": 75304,
+            "starttime": "Wed Oct 14 09:03:19 2026"
+          },
+          {
+            "pid": 75326,
+            "starttime": "Wed Oct 14 09:03:21 2026"
+          },
+          {
+            "pid": 75345,
+            "starttime": "Wed Oct 14 09:03:27 2026"
+          },
+          {
+            "pid": 75353,
+            "starttime": "Wed Oct 14 09:03:30 2026"
+          },
+          {
+            "pid": 75374,
+            "starttime": "Wed Oct 14 09:03:37 2026"
+          },
+          {
+            "pid": 75396,
+            "starttime": "Wed Oct 14 09:03:45 2026"
+          },
+          {
+            "pid": 75417,
+            "starttime": "Wed Oct 14 09:03:52 2026"
+          },
+          {
+            "pid": 75424,
+            "starttime": "Wed Oct 14 09:03:55 2026"
+          },
+          {
+            "pid": 75449,
+            "starttime": "Wed Oct 14 09:04:02 2026"
+          },
+          {
+            "pid": 75468,
+            "starttime": "Wed Oct 14 09:04:10 2026"
+          },
+          {
+            "pid": 75502,
+            "starttime": "Wed Oct 14 09:04:24 2026"
+          },
+          {
+            "pid": 75512,
+            "starttime": "Wed Oct 14 09:04:28 2026"
+          },
+          {
+            "pid": 75515,
+            "starttime": "Wed Oct 14 09:04:28 2026"
+          },
+          {
+            "pid": 75520,
+            "starttime": "Wed Oct 14 09:04:31 2026"
+          },
+          {
+            "pid": 75532,
+            "starttime": "Wed Oct 14 09:04:34 2026"
+          },
+          {
+            "pid": 75543,
+            "starttime": "Wed Oct 14 09:04:37 2026"
+          },
+          {
+            "pid": 75548,
+            "starttime": "Wed Oct 14 09:04:39 2026"
+          },
+          {
+            "pid": 75553,
+            "starttime": "Wed Oct 14 09:04:41 2026"
+          },
+          {
+            "pid": 75558,
+            "starttime": "Wed Oct 14 09:04:42 2026"
+          },
+          {
+            "pid": 75563,
+            "starttime": "Wed Oct 14 09:04:44 2026"
+          },
+          {
+            "pid": 75566,
+            "starttime": "Wed Oct 14 09:04:45 2026"
+          },
+          {
+            "pid": 75569,
+            "starttime": "Wed Oct 14 09:04:46 2026"
+          },
+          {
+            "pid": 75572,
+            "starttime": "Wed Oct 14 09:04:47 2026"
+          },
+          {
+            "pid": 75575,
+            "starttime": "Wed Oct 14 09:04:48 2026"
+          },
+          {
+            "pid": 75584,
+            "starttime": "Wed Oct 14 09:04:51 2026"
+          },
+          {
+            "pid": 75593,
+            "starttime": "Wed Oct 14 09:04:54 2026"
+          },
+          {
+            "pid": 75596,
+            "starttime": "Wed Oct 14 09:04:55 2026"
+          },
+          {
+            "pid": 75600,
+            "starttime": "Wed Oct 14 09:04:56 2026"
+          },
+          {
+            "pid": 75603,
+            "starttime": "Wed Oct 14 09:04:56 2026"
+          },
+          {
+            "pid": 75609,
+            "starttime": "Wed Oct 14 09:04:58 2026"
+          },
+          {
+            "pid": 75612,
+            "starttime": "Wed Oct 14 09:04:59 2026"
+          },
+          {
+            "pid": 75615,
+            "starttime": "Wed Oct 14 09:05:00 2026"
+          },
+          {
+            "pid": 75623,
+            "starttime": "Wed Oct 14 09:05:01 2026"
+          },
+          {
+            "pid": 75674,
+            "starttime": "Wed Oct 14 09:05:13 2026"
+          },
+          {
+            "pid": 75678,
+            "starttime": "Wed Oct 14 09:05:14 2026"
+          },
+          {
+            "pid": 75684,
+            "starttime": "Wed Oct 14 09:05:15 2026"
+          },
+          {
+            "pid": 75695,
+            "starttime": "Wed Oct 14 09:05:17 2026"
+          },
+          {
+            "pid": 75703,
+            "starttime": "Wed Oct 14 09:05:19 2026"
+          },
+          {
+            "pid": 75709,
+            "starttime": "Wed Oct 14 09:05:22 2026"
+          },
+          {
+            "pid": 75714,
+            "starttime": "Wed Oct 14 09:05:22 2026"
+          },
+          {
+            "pid": 75726,
+            "starttime": "Wed Oct 14 09:05:24 2026"
+          },
+          {
+            "pid": 75733,
+            "starttime": "Wed Oct 14 09:05:26 2026"
+          },
+          {
+            "pid": 75740,
+            "starttime": "Wed Oct 14 09:05:27 2026"
+          },
+          {
+            "pid": 75744,
+            "starttime": "Wed Oct 14 09:05:28 2026"
+          },
+          {
+            "pid": 75748,
+            "starttime": "Wed Oct 14 09:05:29 2026"
+          },
+          {
+            "pid": 75859,
+            "starttime": "Wed Oct 14 09:05:30 2026"
+          },
+          {
+            "pid": 75959,
+            "starttime": "Wed Oct 14 09:05:31 2026"
+          },
+          {
+            "pid": 76003,
+            "starttime": "Wed Oct 14 09:05:32 2026"
+          },
+          {
+            "pid": 76032,
+            "starttime": "Wed Oct 14 09:05:32 2026"
+          },
+          {
+            "pid": 76034,
+            "starttime": "Wed Oct 14 09:05:32 2026"
+          },
+          {
+            "pid": 76040,
+            "starttime": "Wed Oct 14 09:05:33 2026"
+          },
+          {
+            "pid": 76089,
+            "starttime": "Wed Oct 14 09:05:33 2026"
+          },
+          {
+            "pid": 76149,
+            "starttime": "Wed Oct 14 09:05:34 2026"
+          },
+          {
+            "pid": 76155,
+            "starttime": "Wed Oct 14 09:05:37 2026"
+          },
+          {
+            "pid": 76161,
+            "starttime": "Wed Oct 14 09:05:39 2026"
+          },
+          {
+            "pid": 76170,
+            "starttime": "Wed Oct 14 09:05:42 2026"
+          },
+          {
+            "pid": 76302,
+            "starttime": "Wed Oct 14 09:05:43 2026"
+          },
+          {
+            "pid": 76309,
+            "starttime": "Wed Oct 14 09:05:44 2026"
+          },
+          {
+            "pid": 76333,
+            "starttime": "Wed Oct 14 09:05:47 2026"
+          },
+          {
+            "pid": 76338,
+            "starttime": "Wed Oct 14 09:05:48 2026"
+          },
+          {
+            "pid": 76342,
+            "starttime": "Wed Oct 14 09:05:49 2026"
+          },
+          {
+            "pid": 76349,
+            "starttime": "Wed Oct 14 09:05:50 2026"
+          },
+          {
+            "pid": 76354,
+            "starttime": "Wed Oct 14 09:05:51 2026"
+          },
+          {
+            "pid": 76372,
+            "starttime": "Wed Oct 14 09:05:57 2026"
+          },
+          {
+            "pid": 76397,
+            "starttime": "Wed Oct 14 09:05:59 2026"
+          },
+          {
+            "pid": 76402,
+            "starttime": "Wed Oct 14 09:06:00 2026"
+          },
+          {
+            "pid": 76405,
+            "starttime": "Wed Oct 14 09:06:01 2026"
+          },
+          {
+            "pid": 76419,
+            "starttime": "Wed Oct 14 09:06:04 2026"
+          },
+          {
+            "pid": 76425,
+            "starttime": "Wed Oct 14 09:06:06 2026"
+          },
+          {
+            "pid": 76437,
+            "starttime": "Wed Oct 14 09:06:09 2026"
+          },
+          {
+            "pid": 76495,
+            "starttime": "Wed Oct 14 09:06:10 2026"
+          },
+          {
+            "pid": 76526,
+            "starttime": "Wed Oct 14 09:06:11 2026"
+          },
+          {
+            "pid": 76530,
+            "starttime": "Wed Oct 14 09:06:12 2026"
+          },
+          {
+            "pid": 76536,
+            "starttime": "Wed Oct 14 09:06:12 2026"
+          },
+          {
+            "pid": 76540,
+            "starttime": "Wed Oct 14 09:06:14 2026"
+          },
+          {
+            "pid": 76544,
+            "starttime": "Wed Oct 14 09:06:15 2026"
+          },
+          {
+            "pid": 76547,
+            "starttime": "Wed Oct 14 09:06:16 2026"
+          },
+          {
+            "pid": 76550,
+            "starttime": "Wed Oct 14 09:06:16 2026"
+          },
+          {
+            "pid": 76553,
+            "starttime": "Wed Oct 14 09:06:18 2026"
+          },
+          {
+            "pid": 76575,
+            "starttime": "Wed Oct 14 09:06:20 2026"
+          },
+          {
+            "pid": 76584,
+            "starttime": "Wed Oct 14 09:06:21 2026"
+          },
+          {
+            "pid": 76590,
+            "starttime": "Wed Oct 14 09:06:22 2026"
+          },
+          {
+            "pid": 76594,
+            "starttime": "Wed Oct 14 09:06:23 2026"
+          },
+          {
+            "pid": 76620,
+            "starttime": "Wed Oct 14 09:06:27 2026"
+          },
+          {
+            "pid": 76629,
+            "starttime": "Wed Oct 14 09:06:30 2026"
+          },
+          {
+            "pid": 76641,
+            "starttime": "Wed Oct 14 09:06:34 2026"
+          },
+          {
+            "pid": 76652,
+            "starttime": "Wed Oct 14 09:06:37 2026"
+          },
+          {
+            "pid": 76742,
+            "starttime": "Wed Oct 14 09:06:41 2026"
+          },
+          {
+            "pid": 76759,
+            "starttime": "Wed Oct 14 09:06:41 2026"
+          },
+          {
+            "pid": 76828,
+            "starttime": "Wed Oct 14 09:06:42 2026"
+          },
+          {
+            "pid": 76842,
+            "starttime": "Wed Oct 14 09:06:44 2026"
+          },
+          {
+            "pid": 76872,
+            "starttime": "Wed Oct 14 09:06:46 2026"
+          },
+          {
+            "pid": 76877,
+            "starttime": "Wed Oct 14 09:06:47 2026"
+          },
+          {
+            "pid": 76881,
+            "starttime": "Wed Oct 14 09:06:48 2026"
+          },
+          {
+            "pid": 76897,
+            "starttime": "Wed Oct 14 09:06:50 2026"
+          },
+          {
+            "pid": 76901,
+            "starttime": "Wed Oct 14 09:06:51 2026"
+          },
+          {
+            "pid": 76905,
+            "starttime": "Wed Oct 14 09:06:52 2026"
+          },
+          {
+            "pid": 76911,
+            "starttime": "Wed Oct 14 09:06:53 2026"
+          },
+          {
+            "pid": 76914,
+            "starttime": "Wed Oct 14 09:06:54 2026"
+          },
+          {
+            "pid": 76919,
+            "starttime": "Wed Oct 14 09:06:55 2026"
+          },
+          {
+            "pid": 76923,
+            "starttime": "Wed Oct 14 09:06:56 2026"
+          },
+          {
+            "pid": 76940,
+            "starttime": "Wed Oct 14 09:06:59 2026"
+          },
+          {
+            "pid": 76945,
+            "starttime": "Wed Oct 14 09:07:00 2026"
+          },
+          {
+            "pid": 76951,
+            "starttime": "Wed Oct 14 09:07:01 2026"
+          },
+          {
+            "pid": 76958,
+            "starttime": "Wed Oct 14 09:07:02 2026"
+          },
+          {
+            "pid": 76961,
+            "starttime": "Wed Oct 14 09:07:03 2026"
+          },
+          {
+            "pid": 76966,
+            "starttime": "Wed Oct 14 09:07:05 2026"
+          },
+          {
+            "pid": 76969,
+            "starttime": "Wed Oct 14 09:07:07 2026"
+          },
+          {
+            "pid": 76976,
+            "starttime": "Wed Oct 14 09:07:08 2026"
+          },
+          {
+            "pid": 76991,
+            "starttime": "Wed Oct 14 09:07:08 2026"
+          },
+          {
+            "pid": 76993,
+            "starttime": "Wed Oct 14 09:07:09 2026"
+          },
+          {
+            "pid": 76994,
+            "starttime": "Wed Oct 14 09:07:09 2026"
+          },
+          {
+            "pid": 76995,
+            "starttime": "Wed Oct 14 09:07:09 2026"
+          },
+          {
+            "pid": 76996,
+            "starttime": "Wed Oct 14 09:07:09 2026"
+          },
+          {
+            "pid": 76997,
+            "starttime": "Wed Oct 14 09:07:09 2026"
+          },
+          {
+            "pid": 77018,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77019,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77026,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77027,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77028,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77029,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77030,
+            "starttime": "Wed Oct 14 09:07:12 2026"
+          },
+          {
+            "pid": 77055,
+            "starttime": "Wed Oct 14 09:07:17 2026"
+          },
+          {
+            "pid": 77059,
+            "starttime": "Wed Oct 14 09:07:18 2026"
+          },
+          {
+            "pid": 77060,
+            "starttime": "Wed Oct 14 09:07:18 2026"
+          },
+          {
+            "pid": 77061,
+            "starttime": "Wed Oct 14 09:07:18 2026"
+          },
+          {
+            "pid": 77062,
+            "starttime": "Wed Oct 14 09:07:18 2026"
+          },
+          {
+            "pid": 77063,
+            "starttime": "Wed Oct 14 09:07:18 2026"
+          },
+          {
+            "pid": 77089,
+            "starttime": "Wed Oct 14 09:07:21 2026"
+          },
+          {
+            "pid": 77090,
+            "starttime": "Wed Oct 14 09:07:21 2026"
+          },
+          {
+            "pid": 77091,
+            "starttime": "Wed Oct 14 09:07:21 2026"
+          },
+          {
+            "pid": 77092,
+            "starttime": "Wed Oct 14 09:07:21 2026"
+          },
+          {
+            "pid": 77093,
+            "starttime": "Wed Oct 14 09:07:21 2026"
+          },
+          {
+            "pid": 77113,
+            "starttime": "Wed Oct 14 09:07:27 2026"
+          },
+          {
+            "pid": 77118,
+            "starttime": "Wed Oct 14 09:07:28 2026"
+          },
+          {
+            "pid": 77127,
+            "starttime": "Wed Oct 14 09:07:31 2026"
+          },
+          {
+            "pid": 77152,
+            "starttime": "Wed Oct 14 09:07:32 2026"
+          },
+          {
+            "pid": 77163,
+            "starttime": "Wed Oct 14 09:07:33 2026"
+          },
+          {
+            "pid": 77176,
+            "starttime": "Wed Oct 14 09:07:34 2026"
+          },
+          {
+            "pid": 77184,
+            "starttime": "Wed Oct 14 09:07:34 2026"
+          },
+          {
+            "pid": 77209,
+            "starttime": "Wed Oct 14 09:07:37 2026"
+          },
+          {
+            "pid": 77215,
+            "starttime": "Wed Oct 14 09:07:38 2026"
+          },
+          {
+            "pid": 77228,
+            "starttime": "Wed Oct 14 09:07:38 2026"
+          },
+          {
+            "pid": 77241,
+            "starttime": "Wed Oct 14 09:07:41 2026"
+          },
+          {
+            "pid": 77245,
+            "starttime": "Wed Oct 14 09:07:42 2026"
+          },
+          {
+            "pid": 77254,
+            "starttime": "Wed Oct 14 09:07:43 2026"
+          },
+          {
+            "pid": 77258,
+            "starttime": "Wed Oct 14 09:07:44 2026"
+          },
+          {
+            "pid": 77263,
+            "starttime": "Wed Oct 14 09:07:45 2026"
+          },
+          {
+            "pid": 77267,
+            "starttime": "Wed Oct 14 09:07:46 2026"
+          },
+          {
+            "pid": 77272,
+            "starttime": "Wed Oct 14 09:07:47 2026"
+          },
+          {
+            "pid": 77276,
+            "starttime": "Wed Oct 14 09:07:48 2026"
+          },
+          {
+            "pid": 77280,
+            "starttime": "Wed Oct 14 09:07:49 2026"
+          },
+          {
+            "pid": 77284,
+            "starttime": "Wed Oct 14 09:07:50 2026"
+          },
+          {
+            "pid": 77285,
+            "starttime": "Wed Oct 14 09:07:50 2026"
+          },
+          {
+            "pid": 77291,
+            "starttime": "Wed Oct 14 09:07:51 2026"
+          },
+          {
+            "pid": 77299,
+            "starttime": "Wed Oct 14 09:07:52 2026"
+          },
+          {
+            "pid": 77303,
+            "starttime": "Wed Oct 14 09:07:53 2026"
+          },
+          {
+            "pid": 77306,
+            "starttime": "Wed Oct 14 09:07:54 2026"
+          },
+          {
+            "pid": 77311,
+            "starttime": "Wed Oct 14 09:07:54 2026"
+          },
+          {
+            "pid": 77317,
+            "starttime": "Wed Oct 14 09:07:55 2026"
+          },
+          {
+            "pid": 77320,
+            "starttime": "Wed Oct 14 09:07:56 2026"
+          },
+          {
+            "pid": 77321,
+            "starttime": "Wed Oct 14 09:07:56 2026"
+          },
+          {
+            "pid": 77327,
+            "starttime": "Wed Oct 14 09:07:58 2026"
+          },
+          {
+            "pid": 77333,
+            "starttime": "Wed Oct 14 09:07:58 2026"
+          },
+          {
+            "pid": 77337,
+            "starttime": "Wed Oct 14 09:07:59 2026"
+          },
+          {
+            "pid": 77340,
+            "starttime": "Wed Oct 14 09:08:00 2026"
+          },
+          {
+            "pid": 77345,
+            "starttime": "Wed Oct 14 09:08:00 2026"
+          },
+          {
+            "pid": 77354,
+            "starttime": "Wed Oct 14 09:08:02 2026"
+          },
+          {
+            "pid": 77362,
+            "starttime": "Wed Oct 14 09:08:03 2026"
+          },
+          {
+            "pid": 77367,
+            "starttime": "Wed Oct 14 09:08:04 2026"
+          },
+          {
+            "pid": 77371,
+            "starttime": "Wed Oct 14 09:08:05 2026"
+          },
+          {
+            "pid": 77376,
+            "starttime": "Wed Oct 14 09:08:06 2026"
+          },
+          {
+            "pid": 77380,
+            "starttime": "Wed Oct 14 09:08:07 2026"
+          },
+          {
+            "pid": 77384,
+            "starttime": "Wed Oct 14 09:08:08 2026"
+          },
+          {
+            "pid": 77389,
+            "starttime": "Wed Oct 14 09:08:09 2026"
+          },
+          {
+            "pid": 77394,
+            "starttime": "Wed Oct 14 09:08:10 2026"
+          },
+          {
+            "pid": 77398,
+            "starttime": "Wed Oct 14 09:08:11 2026"
+          },
+          {
+            "pid": 77410,
+            "starttime": "Wed Oct 14 09:08:12 2026"
+          },
+          {
+            "pid": 77421,
+            "starttime": "Wed Oct 14 09:08:13 2026"
+          },
+          {
+            "pid": 77428,
+            "starttime": "Wed Oct 14 09:08:14 2026"
+          },
+          {
+            "pid": 77432,
+            "starttime": "Wed Oct 14 09:08:15 2026"
+          },
+          {
+            "pid": 77438,
+            "starttime": "Wed Oct 14 09:08:16 2026"
+          },
+          {
+            "pid": 77442,
+            "starttime": "Wed Oct 14 09:08:17 2026"
+          },
+          {
+            "pid": 77453,
+            "starttime": "Wed Oct 14 09:08:19 2026"
+          },
+          {
+            "pid": 77458,
+            "starttime": "Wed Oct 14 09:08:20 2026"
+          },
+          {
+            "pid": 77462,
+            "starttime": "Wed Oct 14 09:08:21 2026"
+          },
+          {
+            "pid": 77469,
+            "starttime": "Wed Oct 14 09:08:22 2026"
+          },
+          {
+            "pid": 77477,
+            "starttime": "Wed Oct 14 09:08:23 2026"
+          },
+          {
+            "pid": 77480,
+            "starttime": "Wed Oct 14 09:08:24 2026"
+          },
+          {
+            "pid": 77495,
+            "starttime": "Wed Oct 14 09:08:25 2026"
+          },
+          {
+            "pid": 77544,
+            "starttime": "Wed Oct 14 09:08:28 2026"
+          },
+          {
+            "pid": 77574,
+            "starttime": "Wed Oct 14 09:08:31 2026"
+          },
+          {
+            "pid": 77578,
+            "starttime": "Wed Oct 14 09:08:32 2026"
+          },
+          {
+            "pid": 77589,
+            "starttime": "Wed Oct 14 09:08:33 2026"
+          },
+          {
+            "pid": 77600,
+            "starttime": "Wed Oct 14 09:08:34 2026"
+          },
+          {
+            "pid": 77608,
+            "starttime": "Wed Oct 14 09:08:35 2026"
+          },
+          {
+            "pid": 77613,
+            "starttime": "Wed Oct 14 09:08:36 2026"
+          },
+          {
+            "pid": 77617,
+            "starttime": "Wed Oct 14 09:08:37 2026"
+          },
+          {
+            "pid": 77622,
+            "starttime": "Wed Oct 14 09:08:38 2026"
+          },
+          {
+            "pid": 77626,
+            "starttime": "Wed Oct 14 09:08:39 2026"
+          },
+          {
+            "pid": 77642,
+            "starttime": "Wed Oct 14 09:08:45 2026"
+          },
+          {
+            "pid": 77654,
+            "starttime": "Wed Oct 14 09:08:50 2026"
+          },
+          {
+            "pid": 77659,
+            "starttime": "Wed Oct 14 09:08:51 2026"
+          },
+          {
+            "pid": 77662,
+            "starttime": "Wed Oct 14 09:08:51 2026"
+          },
+          {
+            "pid": 77664,
+            "starttime": "Wed Oct 14 09:08:51 2026"
+          },
+          {
+            "pid": 77693,
+            "starttime": "Wed Oct 14 09:08:53 2026"
+          },
+          {
+            "pid": 77727,
+            "starttime": "Wed Oct 14 09:08:55 2026"
+          },
+          {
+            "pid": 78047,
+            "starttime": "Wed Oct 14 09:10:51 2026"
+          },
+          {
+            "pid": 78056,
+            "starttime": "Wed Oct 14 09:10:52 2026"
+          },
+          {
+            "pid": 78058,
+            "starttime": "Wed Oct 14 09:10:52 2026"
+          },
+          {
+            "pid": 78120,
+            "starttime": "Wed Oct 14 09:10:56 2026"
+          },
+          {
+            "pid": 78476,
+            "starttime": "Wed Oct 14 09:13:03 2026"
+          },
+          {
+            "pid": 78482,
+            "starttime": "Wed Oct 14 09:13:04 2026"
+          },
+          {
+            "pid": 78507,
+            "starttime": "Wed Oct 14 09:13:15 2026"
+          },
+          {
+            "pid": 78516,
+            "starttime": "Wed Oct 14 09:13:17 2026"
+          },
+          {
+            "pid": 78520,
+            "starttime": "Wed Oct 14 09:13:18 2026"
+          },
+          {
+            "pid": 78525,
+            "starttime": "Wed Oct 14 09:13:19 2026"
+          },
+          {
+            "pid": 78535,
+            "starttime": "Wed Oct 14 09:13:21 2026"
+          },
+          {
+            "pid": 78540,
+            "starttime": "Wed Oct 14 09:13:22 2026"
+          },
+          {
+            "pid": 78546,
+            "starttime": "Wed Oct 14 09:13:23 2026"
+          },
+          {
+            "pid": 78551,
+            "starttime": "Wed Oct 14 09:13:24 2026"
+          },
+          {
+            "pid": 78555,
+            "starttime": "Wed Oct 14 09:13:25 2026"
+          },
+          {
+            "pid": 78562,
+            "starttime": "Wed Oct 14 09:13:26 2026"
+          },
+          {
+            "pid": 78566,
+            "starttime": "Wed Oct 14 09:13:27 2026"
+          },
+          {
+            "pid": 78571,
+            "starttime": "Wed Oct 14 09:13:28 2026"
+          },
+          {
+            "pid": 78575,
+            "starttime": "Wed Oct 14 09:13:29 2026"
+          },
+          {
+            "pid": 78580,
+            "starttime": "Wed Oct 14 09:13:30 2026"
+          },
+          {
+            "pid": 78585,
+            "starttime": "Wed Oct 14 09:13:31 2026"
+          },
+          {
+            "pid": 78591,
+            "starttime": "Wed Oct 14 09:13:32 2026"
+          },
+          {
+            "pid": 78599,
+            "starttime": "Wed Oct 14 09:13:33 2026"
+          },
+          {
+            "pid": 78602,
+            "starttime": "Wed Oct 14 09:13:34 2026"
+          },
+          {
+            "pid": 78618,
+            "starttime": "Wed Oct 14 09:13:41 2026"
+          },
+          {
+            "pid": 78622,
+            "starttime": "Wed Oct 14 09:13:43 2026"
+          },
+          {
+            "pid": 78630,
+            "starttime": "Wed Oct 14 09:13:44 2026"
+          },
+          {
+            "pid": 78635,
+            "starttime": "Wed Oct 14 09:13:45 2026"
+          },
+          {
+            "pid": 78639,
+            "starttime": "Wed Oct 14 09:13:46 2026"
+          },
+          {
+            "pid": 78643,
+            "starttime": "Wed Oct 14 09:13:47 2026"
+          },
+          {
+            "pid": 78648,
+            "starttime": "Wed Oct 14 09:13:48 2026"
+          },
+          {
+            "pid": 78652,
+            "starttime": "Wed Oct 14 09:13:49 2026"
+          },
+          {
+            "pid": 78661,
+            "starttime": "Wed Oct 14 09:13:50 2026"
+          },
+          {
+            "pid": 78666,
+            "starttime": "Wed Oct 14 09:13:51 2026"
+          },
+          {
+            "pid": 78671,
+            "starttime": "Wed Oct 14 09:13:52 2026"
+          },
+          {
+            "pid": 78682,
+            "starttime": "Wed Oct 14 09:13:54 2026"
+          },
+          {
+            "pid": 78688,
+            "starttime": "Wed Oct 14 09:13:55 2026"
+          },
+          {
+            "pid": 78695,
+            "starttime": "Wed Oct 14 09:13:56 2026"
+          },
+          {
+            "pid": 78702,
+            "starttime": "Wed Oct 14 09:13:57 2026"
+          },
+          {
+            "pid": 78706,
+            "starttime": "Wed Oct 14 09:13:58 2026"
+          },
+          {
+            "pid": 78711,
+            "starttime": "Wed Oct 14 09:13:59 2026"
+          },
+          {
+            "pid": 78715,
+            "starttime": "Wed Oct 14 09:14:00 2026"
+          },
+          {
+            "pid": 78720,
+            "starttime": "Wed Oct 14 09:14:01 2026"
+          },
+          {
+            "pid": 78728,
+            "starttime": "Wed Oct 14 09:14:02 2026"
+          },
+          {
+            "pid": 78737,
+            "starttime": "Wed Oct 14 09:14:03 2026"
+          },
+          {
+            "pid": 78741,
+            "starttime": "Wed Oct 14 09:14:04 2026"
+          },
+          {
+            "pid": 78747,
+            "starttime": "Wed Oct 14 09:14:05 2026"
+          },
+          {
+            "pid": 78753,
+            "starttime": "Wed Oct 14 09:14:07 2026"
+          },
+          {
+            "pid": 78757,
+            "starttime": "Wed Oct 14 09:14:07 2026"
+          },
+          {
+            "pid": 78762,
+            "starttime": "Wed Oct 14 09:14:08 2026"
+          },
+          {
+            "pid": 78771,
+            "starttime": "Wed Oct 14 09:14:11 2026"
+          },
+          {
+            "pid": 78777,
+            "starttime": "Wed Oct 14 09:14:12 2026"
+          },
+          {
+            "pid": 78782,
+            "starttime": "Wed Oct 14 09:14:12 2026"
+          },
+          {
+            "pid": 78789,
+            "starttime": "Wed Oct 14 09:14:14 2026"
+          },
+          {
+            "pid": 78794,
+            "starttime": "Wed Oct 14 09:14:15 2026"
+          },
+          {
+            "pid": 78800,
+            "starttime": "Wed Oct 14 09:14:15 2026"
+          },
+          {
+            "pid": 78801,
+            "starttime": "Wed Oct 14 09:14:16 2026"
+          },
+          {
+            "pid": 78802,
+            "starttime": "Wed Oct 14 09:14:16 2026"
+          },
+          {
+            "pid": 78805,
+            "starttime": "Wed Oct 14 09:14:17 2026"
+          },
+          {
+            "pid": 78808,
+            "starttime": "Wed Oct 14 09:14:17 2026"
+          },
+          {
+            "pid": 78809,
+            "starttime": "Wed Oct 14 09:14:17 2026"
+          },
+          {
+            "pid": 78820,
+            "starttime": "Wed Oct 14 09:14:20 2026"
+          },
+          {
+            "pid": 78826,
+            "starttime": "Wed Oct 14 09:14:21 2026"
+          },
+          {
+            "pid": 78831,
+            "starttime": "Wed Oct 14 09:14:22 2026"
+          },
+          {
+            "pid": 78842,
+            "starttime": "Wed Oct 14 09:14:24 2026"
+          },
+          {
+            "pid": 78848,
+            "starttime": "Wed Oct 14 09:14:25 2026"
+          },
+          {
+            "pid": 78852,
+            "starttime": "Wed Oct 14 09:14:26 2026"
+          },
+          {
+            "pid": 78857,
+            "starttime": "Wed Oct 14 09:14:27 2026"
+          },
+          {
+            "pid": 78867,
+            "starttime": "Wed Oct 14 09:14:29 2026"
+          },
+          {
+            "pid": 78874,
+            "starttime": "Wed Oct 14 09:14:30 2026"
+          },
+          {
+            "pid": 78888,
+            "starttime": "Wed Oct 14 09:14:31 2026"
+          },
+          {
+            "pid": 78909,
+            "starttime": "Wed Oct 14 09:14:33 2026"
+          },
+          {
+            "pid": 78915,
+            "starttime": "Wed Oct 14 09:14:34 2026"
+          },
+          {
+            "pid": 78922,
+            "starttime": "Wed Oct 14 09:14:35 2026"
+          },
+          {
+            "pid": 78927,
+            "starttime": "Wed Oct 14 09:14:36 2026"
+          },
+          {
+            "pid": 78931,
+            "starttime": "Wed Oct 14 09:14:37 2026"
+          },
+          {
+            "pid": 78935,
+            "starttime": "Wed Oct 14 09:14:38 2026"
+          },
+          {
+            "pid": 78939,
+            "starttime": "Wed Oct 14 09:14:40 2026"
+          },
+          {
+            "pid": 78943,
+            "starttime": "Wed Oct 14 09:14:40 2026"
+          },
+          {
+            "pid": 78947,
+            "starttime": "Wed Oct 14 09:14:42 2026"
+          },
+          {
+            "pid": 78952,
+            "starttime": "Wed Oct 14 09:14:43 2026"
+          },
+          {
+            "pid": 78969,
+            "starttime": "Wed Oct 14 09:14:45 2026"
+          },
+          {
+            "pid": 78977,
+            "starttime": "Wed Oct 14 09:14:46 2026"
+          },
+          {
+            "pid": 78984,
+            "starttime": "Wed Oct 14 09:14:47 2026"
+          },
+          {
+            "pid": 78987,
+            "starttime": "Wed Oct 14 09:14:47 2026"
+          },
+          {
+            "pid": 78994,
+            "starttime": "Wed Oct 14 09:14:49 2026"
+          },
+          {
+            "pid": 79000,
+            "starttime": "Wed Oct 14 09:14:50 2026"
+          },
+          {
+            "pid": 79007,
+            "starttime": "Wed Oct 14 09:14:51 2026"
+          },
+          {
+            "pid": 79012,
+            "starttime": "Wed Oct 14 09:14:52 2026"
+          },
+          {
+            "pid": 79019,
+            "starttime": "Wed Oct 14 09:14:53 2026"
+          },
+          {
+            "pid": 79025,
+            "starttime": "Wed Oct 14 09:14:54 2026"
+          },
+          {
+            "pid": 79030,
+            "starttime": "Wed Oct 14 09:14:55 2026"
+          },
+          {
+            "pid": 79041,
+            "starttime": "Wed Oct 14 09:14:57 2026"
+          },
+          {
+            "pid": 79049,
+            "starttime": "Wed Oct 14 09:14:58 2026"
+          },
+          {
+            "pid": 79057,
+            "starttime": "Wed Oct 14 09:14:59 2026"
+          },
+          {
+            "pid": 79067,
+            "starttime": "Wed Oct 14 09:15:00 2026"
+          },
+          {
+            "pid": 79073,
+            "starttime": "Wed Oct 14 09:15:01 2026"
+          },
+          {
+            "pid": 79082,
+            "starttime": "Wed Oct 14 09:15:02 2026"
+          },
+          {
+            "pid": 79088,
+            "starttime": "Wed Oct 14 09:15:03 2026"
+          },
+          {
+            "pid": 79092,
+            "starttime": "Wed Oct 14 09:15:04 2026"
+          },
+          {
+            "pid": 79103,
+            "starttime": "Wed Oct 14 09:15:06 2026"
+          },
+          {
+            "pid": 79112,
+            "starttime": "Wed Oct 14 09:15:06 2026"
+          },
+          {
+            "pid": 79117,
+            "starttime": "Wed Oct 14 09:15:08 2026"
+          },
+          {
+            "pid": 79121,
+            "starttime": "Wed Oct 14 09:15:09 2026"
+          },
+          {
+            "pid": 79125,
+            "starttime": "Wed Oct 14 09:15:09 2026"
+          },
+          {
+            "pid": 79132,
+            "starttime": "Wed Oct 14 09:15:11 2026"
+          },
+          {
+            "pid": 79137,
+            "starttime": "Wed Oct 14 09:15:12 2026"
+          },
+          {
+            "pid": 79142,
+            "starttime": "Wed Oct 14 09:15:12 2026"
+          },
+          {
+            "pid": 79149,
+            "starttime": "Wed Oct 14 09:15:14 2026"
+          },
+          {
+            "pid": 79154,
+            "starttime": "Wed Oct 14 09:15:15 2026"
+          },
+          {
+            "pid": 79160,
+            "starttime": "Wed Oct 14 09:15:16 2026"
+          },
+          {
+            "pid": 79166,
+            "starttime": "Wed Oct 14 09:15:17 2026"
+          },
+          {
+            "pid": 79170,
+            "starttime": "Wed Oct 14 09:15:17 2026"
+          },
+          {
+            "pid": 79176,
+            "starttime": "Wed Oct 14 09:15:19 2026"
+          },
+          {
+            "pid": 79190,
+            "starttime": "Wed Oct 14 09:15:20 2026"
+          },
+          {
+            "pid": 79199,
+            "starttime": "Wed Oct 14 09:15:22 2026"
+          },
+          {
+            "pid": 79208,
+            "starttime": "Wed Oct 14 09:15:23 2026"
+          },
+          {
+            "pid": 79217,
+            "starttime": "Wed Oct 14 09:15:24 2026"
+          },
+          {
+            "pid": 79230,
+            "starttime": "Wed Oct 14 09:15:26 2026"
+          },
+          {
+            "pid": 79234,
+            "starttime": "Wed Oct 14 09:15:27 2026"
+          },
+          {
+            "pid": 79238,
+            "starttime": "Wed Oct 14 09:15:28 2026"
+          },
+          {
+            "pid": 79243,
+            "starttime": "Wed Oct 14 09:15:29 2026"
+          },
+          {
+            "pid": 79248,
+            "starttime": "Wed Oct 14 09:15:30 2026"
+          },
+          {
+            "pid": 79254,
+            "starttime": "Wed Oct 14 09:15:31 2026"
+          },
+          {
+            "pid": 79263,
+            "starttime": "Wed Oct 14 09:15:32 2026"
+          },
+          {
+            "pid": 79269,
+            "starttime": "Wed Oct 14 09:15:33 2026"
+          },
+          {
+            "pid": 79273,
+            "starttime": "Wed Oct 14 09:15:34 2026"
+          },
+          {
+            "pid": 79298,
+            "starttime": "Wed Oct 14 09:15:45 2026"
+          },
+          {
+            "pid": 79307,
+            "starttime": "Wed Oct 14 09:15:47 2026"
+          },
+          {
+            "pid": 79314,
+            "starttime": "Wed Oct 14 09:15:48 2026"
+          },
+          {
+            "pid": 79320,
+            "starttime": "Wed Oct 14 09:15:49 2026"
+          },
+          {
+            "pid": 79325,
+            "starttime": "Wed Oct 14 09:15:50 2026"
+          },
+          {
+            "pid": 79380,
+            "starttime": "Wed Oct 14 09:15:52 2026"
+          },
+          {
+            "pid": 79403,
+            "starttime": "Wed Oct 14 09:15:53 2026"
+          },
+          {
+            "pid": 79407,
+            "starttime": "Wed Oct 14 09:15:54 2026"
+          },
+          {
+            "pid": 79414,
+            "starttime": "Wed Oct 14 09:15:56 2026"
+          },
+          {
+            "pid": 79418,
+            "starttime": "Wed Oct 14 09:15:56 2026"
+          },
+          {
+            "pid": 79455,
+            "starttime": "Wed Oct 14 09:16:04 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 96627.853894833,
+        "pid": 74996,
+        "started_utc": "2026-10-14T01:02:40.270551+00:00",
+        "root_starttime": "Wed Oct 14 09:02:40 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T01:16:06.175772+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/guards/stdout.log",
+        "bytes": 65044,
+        "sha256": "37e39c1e02265f63b569123abf9aabc7186c725bcee614bc7c0728d8fca65002"
+      },
+      "receipt": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/guards/resources.json",
+        "bytes": 32314,
+        "sha256": "79358d3cd93206e7d330b88d07896ba843e6de971e2a05e938d2242ddaf6e462"
+      }
+    },
+    "python-full-root-nice": {
+      "resources": {
+        "name": "python-full-root-nice",
+        "status": "passed",
+        "launched": true,
+        "exit_code": 0,
+        "runner_exit_code": 0,
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "--ignore=var"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T08:56:27.961819+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "--ignore=var"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 392304,
+        "peak_cpu_percent": 299.6,
+        "samples": 90,
+        "max_sample_gap_seconds": 1.07,
+        "seconds": 93.103,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 95808,
+            "starttime": "Wed Oct 14 16:56:32 2026"
+          },
+          {
+            "pid": 95849,
+            "starttime": "Wed Oct 14 16:56:35 2026"
+          },
+          {
+            "pid": 95857,
+            "starttime": "Wed Oct 14 16:56:36 2026"
+          },
+          {
+            "pid": 95866,
+            "starttime": "Wed Oct 14 16:56:37 2026"
+          },
+          {
+            "pid": 95874,
+            "starttime": "Wed Oct 14 16:56:38 2026"
+          },
+          {
+            "pid": 95882,
+            "starttime": "Wed Oct 14 16:56:39 2026"
+          },
+          {
+            "pid": 95890,
+            "starttime": "Wed Oct 14 16:56:40 2026"
+          },
+          {
+            "pid": 95899,
+            "starttime": "Wed Oct 14 16:56:41 2026"
+          },
+          {
+            "pid": 95921,
+            "starttime": "Wed Oct 14 16:56:44 2026"
+          },
+          {
+            "pid": 96075,
+            "starttime": "Wed Oct 14 16:56:47 2026"
+          },
+          {
+            "pid": 96076,
+            "starttime": "Wed Oct 14 16:56:47 2026"
+          },
+          {
+            "pid": 96397,
+            "starttime": "Wed Oct 14 16:57:00 2026"
+          },
+          {
+            "pid": 96415,
+            "starttime": "Wed Oct 14 16:57:01 2026"
+          },
+          {
+            "pid": 96450,
+            "starttime": "Wed Oct 14 16:57:02 2026"
+          },
+          {
+            "pid": 96458,
+            "starttime": "Wed Oct 14 16:57:03 2026"
+          },
+          {
+            "pid": 96471,
+            "starttime": "Wed Oct 14 16:57:05 2026"
+          },
+          {
+            "pid": 96541,
+            "starttime": "Wed Oct 14 16:57:08 2026"
+          },
+          {
+            "pid": 96656,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96672,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96673,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96674,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96675,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96676,
+            "starttime": "Wed Oct 14 16:57:13 2026"
+          },
+          {
+            "pid": 96699,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96700,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96705,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96706,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96707,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96708,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96709,
+            "starttime": "Wed Oct 14 16:57:17 2026"
+          },
+          {
+            "pid": 96734,
+            "starttime": "Wed Oct 14 16:57:22 2026"
+          },
+          {
+            "pid": 96742,
+            "starttime": "Wed Oct 14 16:57:24 2026"
+          },
+          {
+            "pid": 96817,
+            "starttime": "Wed Oct 14 16:57:29 2026"
+          },
+          {
+            "pid": 96818,
+            "starttime": "Wed Oct 14 16:57:29 2026"
+          },
+          {
+            "pid": 96835,
+            "starttime": "Wed Oct 14 16:57:30 2026"
+          },
+          {
+            "pid": 96836,
+            "starttime": "Wed Oct 14 16:57:30 2026"
+          },
+          {
+            "pid": 96887,
+            "starttime": "Wed Oct 14 16:57:31 2026"
+          },
+          {
+            "pid": 96889,
+            "starttime": "Wed Oct 14 16:57:31 2026"
+          },
+          {
+            "pid": 96909,
+            "starttime": "Wed Oct 14 16:57:32 2026"
+          },
+          {
+            "pid": 96910,
+            "starttime": "Wed Oct 14 16:57:32 2026"
+          },
+          {
+            "pid": 96941,
+            "starttime": "Wed Oct 14 16:57:33 2026"
+          },
+          {
+            "pid": 96942,
+            "starttime": "Wed Oct 14 16:57:33 2026"
+          },
+          {
+            "pid": 96977,
+            "starttime": "Wed Oct 14 16:57:34 2026"
+          },
+          {
+            "pid": 96978,
+            "starttime": "Wed Oct 14 16:57:34 2026"
+          },
+          {
+            "pid": 97104,
+            "starttime": "Wed Oct 14 16:57:40 2026"
+          },
+          {
+            "pid": 97134,
+            "starttime": "Wed Oct 14 16:57:40 2026"
+          },
+          {
+            "pid": 97136,
+            "starttime": "Wed Oct 14 16:57:41 2026"
+          },
+          {
+            "pid": 97141,
+            "starttime": "Wed Oct 14 16:57:42 2026"
+          },
+          {
+            "pid": 97150,
+            "starttime": "Wed Oct 14 16:57:43 2026"
+          },
+          {
+            "pid": 97154,
+            "starttime": "Wed Oct 14 16:57:44 2026"
+          },
+          {
+            "pid": 97161,
+            "starttime": "Wed Oct 14 16:57:44 2026"
+          },
+          {
+            "pid": 97217,
+            "starttime": "Wed Oct 14 16:57:46 2026"
+          },
+          {
+            "pid": 97274,
+            "starttime": "Wed Oct 14 16:57:48 2026"
+          },
+          {
+            "pid": 97280,
+            "starttime": "Wed Oct 14 16:57:48 2026"
+          },
+          {
+            "pid": 97467,
+            "starttime": "Wed Oct 14 16:58:01 2026"
+          },
+          {
+            "pid": 97656,
+            "starttime": "Wed Oct 14 16:58:03 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 125059.999062375,
+        "pid": 95808,
+        "started_utc": "2026-10-14T08:56:32.451333+00:00",
+        "root_starttime": "Wed Oct 14 16:56:32 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T08:58:05.831452+00:00"
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/python-full-root-nice/stdout.log",
+        "sha256": "137b589fe2f6916283d2a3730662f9eb7843e2b960ef9369230cb68ea5625deb"
+      }
+    }
+  },
+  "complete_gate_input_equality": {
+    "count": 1805,
+    "same_all_stages": true,
+    "python_full_root_matches": true
+  },
+  "validation_summary": {
+    "go_ordinary": {
+      "top:pass": 1470,
+      "sub:pass": 11789,
+      "package:pass": 51,
+      "top:skip": 6,
+      "sub:skip": 1
+    },
+    "go_race": {
+      "top:pass": 1470,
+      "sub:pass": 11789,
+      "package:pass": 49,
+      "top:skip": 6,
+      "package:skip": 2,
+      "sub:skip": 1
+    },
+    "go_focused": {
+      "top:pass": 17,
+      "sub:pass": 133,
+      "package:pass": 3
+    },
+    "source_exports": 260,
+    "python": "2270 passed,28 skipped,104 warnings,24 subtests passed;91.47 pytest seconds",
+    "invariants": 77,
+    "scans": 19,
+    "guards": 383,
+    "type_audits": {
+      "syntax": {
+        "files": 471,
+        "types": 1497,
+        "findings": 0
+      },
+      "public": {
+        "packages": 51,
+        "types": 1220,
+        "findings": 0
+      },
+      "private": {
+        "packages": 51,
+        "types": 288,
+        "findings": 0
+      },
+      "variables": {
+        "packages": 51,
+        "variables": 172,
+        "findings": 0
+      }
+    }
+  },
+  "coverage": {
+    "profile": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/coverage.out",
+      "bytes": 2060358,
+      "sha256": "a799f0f4c03076f1b56819ac953647de47b46b62640a397bec98dbdf5bbf7650"
+    },
+    "rows": 29004,
+    "unique_spans": 27012,
+    "method": "Stream atomic rows, OR coverage across duplicate file/location/statement spans; application excludes /tools/.",
+    "all_go": {
+      "covered": 32917,
+      "statements": 38638,
+      "percent": 85.19333298824992
+    },
+    "application": {
+      "covered": 32551,
+      "statements": 38123,
+      "percent": 85.38415129974032
+    },
+    "provider": {
+      "covered": 1521,
+      "statements": 1842,
+      "percent": 82.57328990228014
+    },
+    "instrumentation": "per-package; no -coverpkg flag",
+    "previous_same_instrumentation": {
+      "application": {
+        "covered": 32393,
+        "statements": 37953,
+        "percent": 85.35030168893105
+      },
+      "provider": {
+        "covered": 1505,
+        "statements": 1827,
+        "percent": 82.37547892720306
+      },
+      "application_delta_percentage_points": 0.03384961080926985
+    }
+  },
+  "source": {
+    "stuck": {
+      "path": "go/testdata/python-stuck-thresholds.json",
+      "bytes": 322075,
+      "sha256": "d95cf246bc7160fffa5c236ab1c9b7fdab9dfb66663861ca8276efc49aac32d9"
+    },
+    "prompt_composition": {
+      "path": "go/testdata/python-prompt-composition.json",
+      "bytes": 24282,
+      "sha256": "7ceae0b75682cdf22b25689b0ca771b525b0d41e58eadf8d8e71412e69c49e7d"
+    },
+    "stuck_original_case_groups_unchanged": {
+      "cases": true,
+      "loops": true,
+      "managed_loops": true
+    },
+    "stuck_versions": {
+      "anthropic": "0.107.1",
+      "httpx": "0.28.1",
+      "python": "3.11.3"
+    },
+    "stuck_inventory": {
+      "direct": 61,
+      "agent_loops": 12,
+      "managed_loops": 2,
+      "sdk_managed_loops": 2
+    },
+    "prompt_inventory": {
+      "sections": 11,
+      "runtime_facts": 13,
+      "memory_system": 7
+    }
+  },
+  "baseline_counterexamples": {
+    "stuck-baseline-frozen": {
+      "resources": {
+        "name": "stuck-baseline-frozen",
+        "status": "failed",
+        "launched": true,
+        "exit_code": 1,
+        "runner_exit_code": 1,
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-json",
+          "-count=1",
+          "./agent",
+          "-run",
+          "^TestStuckThreshold(PostFaultMatchesActualPython|ManagedFaultAndFollowupMatchActualPython)$"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-stuck-followup-linux-2026-10-14/baseline-78d95bc/go",
+        "recorded_utc": "2026-10-14T00:41:04.515941+00:00",
+        "freeze_scope": [
+          "var/go-stuck-followup-linux-2026-10-14/baseline-78d95bc/go",
+          "AGENTS.md"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-parallel=2",
+          "./agent",
+          "-run",
+          "^TestStuckThreshold(PostFaultMatchesActualPython|ManagedFaultAndFollowupMatchActualPython)$"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 170368,
+        "peak_cpu_percent": 23.5,
+        "samples": 4,
+        "max_sample_gap_seconds": 1.05,
+        "seconds": 3.427,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 62185,
+            "starttime": "Wed Oct 14 08:41:08 2026"
+          },
+          {
+            "pid": 62191,
+            "starttime": "Wed Oct 14 08:41:09 2026"
+          },
+          {
+            "pid": 62199,
+            "starttime": "Wed Oct 14 08:41:10 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 95336.355805,
+        "pid": 62185,
+        "started_utc": "2026-10-14T00:41:08.821823+00:00",
+        "root_starttime": "Wed Oct 14 08:41:08 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1283,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:41:12.319898+00:00"
+      },
+      "terminal_counts": {
+        "sub:fail": 4,
+        "top:fail": 2,
+        "package:fail": 1
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/stuck-baseline-frozen/stdout.log",
+        "bytes": 7869,
+        "sha256": "4e61c1008462468487139bbc4d807c54ce39c654bf7be25cb16ae86b8852bbc5"
+      }
+    },
+    "sdk-stuck-baseline": {
+      "resources": {
+        "name": "sdk-stuck-baseline",
+        "status": "failed",
+        "launched": true,
+        "exit_code": 1,
+        "runner_exit_code": 1,
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-json",
+          "-count=1",
+          "./agent",
+          "-run",
+          "^TestStuckThresholdSDKManagedFollowupMatchesActualPython$"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-stuck-followup-linux-2026-10-14/baseline-78d95bc/go",
+        "recorded_utc": "2026-10-14T00:47:38.643395+00:00",
+        "freeze_scope": [
+          "var/go-stuck-followup-linux-2026-10-14/baseline-78d95bc/go",
+          "AGENTS.md"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-parallel=2",
+          "./agent",
+          "-run",
+          "^TestStuckThresholdSDKManagedFollowupMatchesActualPython$"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 534720,
+        "peak_cpu_percent": 199.2,
+        "samples": 8,
+        "max_sample_gap_seconds": 1.045,
+        "seconds": 7.567,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 65160,
+            "starttime": "Wed Oct 14 08:47:42 2026"
+          },
+          {
+            "pid": 65171,
+            "starttime": "Wed Oct 14 08:47:43 2026"
+          },
+          {
+            "pid": 65197,
+            "starttime": "Wed Oct 14 08:47:48 2026"
+          }
+        ],
+        "signal_events": [],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 95730.495676583,
+        "pid": 65160,
+        "started_utc": "2026-10-14T00:47:42.964365+00:00",
+        "root_starttime": "Wed Oct 14 08:47:42 2026",
+        "empty_confirmations": true,
+        "frozen_inputs": 1283,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T00:47:50.601393+00:00"
+      },
+      "terminal_counts": {
+        "sub:fail": 2,
+        "top:fail": 1,
+        "package:fail": 1
+      },
+      "log": {
+        "path": "var/go-stuck-followup-linux-2026-10-14/sdk-stuck-baseline/stdout.log",
+        "bytes": 4259,
+        "sha256": "99e7f1998a38d5abc6c710e68f582a7b23eb26f65b0066fe9f09aeb77f6c7d7e"
+      }
+    }
+  },
+  "linux": {
+    "receipt": {
+      "path": "docs/audits/go-linux-platform-source-2026-10-14.json",
+      "bytes": 43485,
+      "sha256": "a6452dd17b8ab4294d07a35a08a965643a4182533aa0e9edba6c7ec04d84e42a"
+    },
+    "source_status": "source_captured",
+    "go_status": "passed_minima",
+    "scope": "8 selector groups/7 packages/10 explicit targets; six Source fixtures with66 captured cases. Fixed78d95bc runtime, not this new runtime or full Linux/vet/race."
+  },
+  "failed_preparation_attempts": [
+    {
+      "stage": "source-stuck-sdk",
+      "reason": "Missing PYTHONPATH; ModuleNotFoundError; replaced by source-stuck-sdk-bytes."
+    },
+    {
+      "stage": "source-prompt",
+      "reason": "Two recipes violate frozen Settings public constructor; removed; corrected source-prompt-valid."
+    },
+    {
+      "stage": "python-full",
+      "reason": "Root discovery collected ignored Linux workspace copies in var,809 collection errors; corrected explicit scope."
+    },
+    {
+      "stage": "stuck-baseline",
+      "reason": "Counterexample valid but ignored archive was not fully hashed; authoritative rerun stuck-baseline-frozen hashes1283 inputs."
+    },
+    {
+      "stage": "python-full-root",
+      "status": "resource_blocked",
+      "reason": "Initial nice-wrapper priority not yet lowered; no tests began. Relaunched from a pre-niced parent as python-full-root-nice with unchanged limits; passed.",
+      "resources": {
+        "name": "python-full-root",
+        "status": "resource_blocked",
+        "launched": true,
+        "exit_code": -15,
+        "runner_exit_code": 75,
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "--ignore=var"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_utc": "2026-10-14T08:54:54.963685+00:00",
+        "freeze_scope": [
+          "go",
+          "python",
+          "README.md",
+          "AGENTS.md",
+          "EXTENDING.md",
+          "docs/HARDENING_NOTES.md",
+          "docs/mini-loop-system.architecture.json",
+          "docs/mini-loop-system.architecture.html",
+          "docs/mini-loop-layered-architecture.png",
+          "docs/mini-loop-layered-architecture.prompt.txt"
+        ],
+        "planned_resource_policy": {
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB soft target",
+          "gogc": 75,
+          "goflags_append": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "allowed_preflight_samples": 5
+        },
+        "requested_command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "--ignore=var"
+        ],
+        "limits": {
+          "rss_kib": 1572864,
+          "cpu_percent_sustained": 300,
+          "cpu_grace_seconds": 45,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "gogc": 75,
+          "goflags": "-p=1",
+          "test_parallel": 2,
+          "nice_minimum": 10,
+          "sample_seconds": 1,
+          "allowed_pressure_levels": [
+            1,
+            2
+          ],
+          "initial_nice_wrapper_grace_seconds": 0.25,
+          "wall_seconds": 1800
+        },
+        "peak_rss_kib": 1152,
+        "peak_cpu_percent": 0,
+        "samples": 1,
+        "max_sample_gap_seconds": 0,
+        "seconds": 2.958,
+        "remaining_pids": [],
+        "known_processes": [
+          {
+            "pid": 95692,
+            "starttime": "Wed Oct 14 16:54:59 2026"
+          }
+        ],
+        "signal_events": [
+          {
+            "event_id": 1,
+            "pid": 95692,
+            "starttime": "Wed Oct 14 16:54:59 2026",
+            "signal": "SIGTERM",
+            "signal_number": 15,
+            "api": "os.kill",
+            "attempt_utc": "2026-10-14T08:54:59.559096+00:00",
+            "attempt_monotonic": 124967.108501166,
+            "outcome": "api_returned",
+            "dispatch_utc": "2026-10-14T08:54:59.559273+00:00",
+            "dispatch_monotonic": 124967.108669583,
+            "completed_utc": "2026-10-14T08:54:59.559287+00:00",
+            "completed_monotonic": 124967.108680541
+          },
+          {
+            "event_id": 2,
+            "pid": 95692,
+            "starttime": "Wed Oct 14 16:54:59 2026",
+            "signal": "SIGTERM",
+            "signal_number": 15,
+            "api": "os.kill",
+            "attempt_utc": "2026-10-14T08:54:59.851046+00:00",
+            "attempt_monotonic": 124967.40046525,
+            "outcome": "api_returned",
+            "dispatch_utc": "2026-10-14T08:54:59.851258+00:00",
+            "dispatch_monotonic": 124967.400652583,
+            "completed_utc": "2026-10-14T08:54:59.851264+00:00",
+            "completed_monotonic": 124967.400656708
+          }
+        ],
+        "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+        "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+        "prelaunch_pressure": 1,
+        "started_monotonic": 124967.017177791,
+        "pid": 95692,
+        "started_utc": "2026-10-14T08:54:59.470539+00:00",
+        "root_starttime": "Wed Oct 14 16:54:59 2026",
+        "stop_observed_utc": "2026-10-14T08:54:59.500198+00:00",
+        "stop_observed_monotonic": 124967.049594375,
+        "cleanup": {
+          "errors": [],
+          "empty_confirmations": true,
+          "remaining_pids": []
+        },
+        "empty_confirmations": true,
+        "reason": "owned_process_priority_not_lowered",
+        "frozen_inputs": 1805,
+        "inputs_unchanged": true,
+        "completed_utc": "2026-10-14T08:55:02.525008+00:00"
+      }
+    }
+  ],
+  "limitations": [
+    "Sampled process-tree RSS/CPU are not true peaks. GOMEMLIMIT is soft. Task monitors exclude their own overhead and may miss fast descendants.",
+    "Named StuckInspectionError selects Source fault timing; it does not authenticate detector origin.",
+    "SDK HTTP proof uses an explicit local mock400 and does not assert live endpoint behavior.",
+    "Prompt helper equivalence is finite, typed, explicitly selected and caller-owned; no arbitrary Python object adaptation or new default wiring.",
+    "Full original migration/platform acceptance remains open; dependency/default decisions and other required rows remain.",
+    "No fetch/push/CI refresh. HTML browser visual acceptance unavailable; generated PNG visually inspected."
+  ],
+  "image_generation": {
+    "tool": "built-in image_gen",
+    "mode": "edit",
+    "base": {
+      "path": "docs/mini-loop-layered-architecture.png",
+      "bytes": 1793371,
+      "sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba"
+    },
+    "image": {
+      "path": "docs/audits/go-stuck-followup-linux-infographic-2026-10-14.png",
+      "bytes": 1877138,
+      "sha256": "6dcb7e60c92b6c3b5f95f1ca0dd20dcbfa15fefef3eb6b9781c15a07c00658d8"
+    },
+    "prompt": {
+      "path": "docs/audits/go-stuck-followup-linux-infographic-2026-10-14.prompt.txt",
+      "bytes": 1647,
+      "sha256": "7beb9a4f95e7b4d1be03c48bce699e47f5a5c3fe6f216818680a3d5eb94ae1e1"
+    },
+    "topology_changed": false,
+    "visual_review": "Generated PNG inspected."
+  },
+  "evidence_tools": {
+    "run.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/run.py",
+      "bytes": 6806,
+      "sha256": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e"
+    },
+    "run-source.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/run-source.py",
+      "bytes": 6517,
+      "sha256": "a26075338ee97c1347f5efa10be83a5e8a259dfbe5681de421c184e50d3c2b9f"
+    },
+    "run-baseline.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/run-baseline.py",
+      "bytes": 6412,
+      "sha256": "9226db5534910da549ca3f8a51872265fec04226aaeb998d00d5685a47e45a0c"
+    },
+    "run-stuck.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/run-stuck.py",
+      "bytes": 6622,
+      "sha256": "eb2af859fcd1c8da9e23ec47307fe083509e7a8b2d488c62f3162cc29f7303b3"
+    },
+    "run-prompt.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/run-prompt.py",
+      "bytes": 6628,
+      "sha256": "b543491875a64e72abfed8ced4443ddb9058100f51bf8dcc35f12268d670b22e"
+    },
+    "resource_watch.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/resource_watch.py",
+      "bytes": 17037,
+      "sha256": "d2112faf728651ad3de4994ef456d4b65d5058447b3df24c43b6dfb1e58165ed"
+    },
+    "full-gates.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/full-gates.py",
+      "bytes": 1947,
+      "sha256": "c01679ff070f0dfa9b03d7c071fe202c98da9819337da6f9cac589f000800458"
+    },
+    "summarize-coverage.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/summarize-coverage.py",
+      "bytes": 1309,
+      "sha256": "29fde7fc27cf3fa76283bd0d0623488b7d94f4ea0b8844ea81ac94ccb21ef8b4"
+    },
+    "linux-platform-runner.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-platform-runner.py",
+      "bytes": 35010,
+      "sha256": "88bfbd51808f4a1375d49f452261d73d21c5427349e0f4f61e526d3983161e73"
+    },
+    "linux-source-capture.py": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-capture.py",
+      "bytes": 12211,
+      "sha256": "08c6ece6a7aa909f28d036bcc15c7697ddb9bb6ea807f7d0c5a975dd4110e632"
+    },
+    "linux-source-plan.json": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-source-plan.json",
+      "bytes": 86833,
+      "sha256": "f17af01da903e988e4bba8e6b999be7d9e87dc8459780a5d54c336e9eeac1a54"
+    },
+    "linux-wheel-manifest.json": {
+      "path": "var/go-stuck-followup-linux-2026-10-14/linux-wheel-manifest.json",
+      "bytes": 3599,
+      "sha256": "9c7205001057c49ffca8bcf4053afe01d6d4f9b970d217fefccc3926979d66e9"
+    }
+  },
+  "final_runtime_inputs_match_full_gates": {
+    "files": 1797,
+    "match": true
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "d01808e89395c6ab849cf4c93235b4b32dae6504dd94008bf9eef579c8320aa2",
+      "bytes": 159026
+    },
+    "artifact": {
+      "sha256": "13a424215fcd5f6043e3f4a07b649566f1fba214ee077d2b99ec01e3a2a6cfd6",
+      "bytes": 813834
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "resource_receipt": {
+      "name": "architecture-final",
+      "status": "passed",
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "recorded_utc": "2026-10-14T09:00:06.000429+00:00",
+      "freeze_scope": [
+        "README.md",
+        "AGENTS.md",
+        "EXTENDING.md",
+        "docs/HARDENING_NOTES.md",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-layered-architecture.png",
+        "docs/mini-loop-layered-architecture.prompt.txt"
+      ],
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "requested_command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "samples": 2,
+      "max_sample_gap_seconds": 1.068,
+      "seconds": 1.403,
+      "remaining_pids": [],
+      "known_processes": [
+        {
+          "pid": 97823,
+          "starttime": "Wed Oct 14 17:00:10 2026"
+        }
+      ],
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "prelaunch_pressure": 1,
+      "started_monotonic": 125277.696799,
+      "pid": 97823,
+      "started_utc": "2026-10-14T09:00:10.150103+00:00",
+      "root_starttime": "Wed Oct 14 17:00:10 2026",
+      "empty_confirmations": true,
+      "frozen_inputs": 7,
+      "inputs_unchanged": true,
+      "completed_utc": "2026-10-14T09:00:11.572038+00:00"
+    },
+    "note": "Generated HTML refreshed after runtime gates; no runtime inputs changed. README final link update is documentation-only. No HTML browser visual acceptance."
+  },
+  "runtime_commits": {
+    "prompt_helpers": "57d563cd4fd6cd0c54fedb5c7398251adf1b033b",
+    "stuck_followup": "5c1e9766ae44afa458cda3599253e2a561864a10"
+  },
+  "required_rows": {
+    "delta_receipt": "docs/audits/go-required-row-delta-2026-10-14.json",
+    "changed": 7,
+    "unchanged": 337,
+    "verified": 299,
+    "concrete_mismatch": 0,
+    "dependency_blocked": 5,
+    "evidence_incomplete": 40,
+    "note": "Bounded inventory rows/aliases; no completion percentage or full acceptance."
+  },
+  "delivery": {
+    "integration_target": "local main",
+    "method": "fast-forward after validated focused commits",
+    "remote_state": "No fetch,push or CI refresh"
+  }
+}
