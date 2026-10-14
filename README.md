@@ -570,12 +570,14 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `da43c18`. This iteration compares
-14 real registry selections, eight manager profiles and all 57 tool definitions
-with native production catalogues and bound services. Six omitted/explicit-None
-construction profiles exercise default Null masking and persistence through
-run/stop. Catalogue and binding evidence remains separate from tool execution,
-default parser policy, teamless HTTP and full migration/platform acceptance.
+Current runtime review baseline: local main `da43c18`. Public authentication
+environment loading now follows Python whitespace and duplicate-owner diagnostic
+order while preserving one admitted principal and existing owner boundaries.
+Twelve actual constructor and 24 environment recipes compare public outcomes.
+This iteration also compares 14 real registries, eight manager profiles and all
+57 definitions with native catalogues and bindings, plus six default Null
+construction/run/stop profiles. Tool execution, default parser policy, teamless
+HTTP and full migration/platform acceptance retain separate gates.
 
 Previous runtime review baseline: local main `78d95bc`. That iteration follows
 actual Source post-stuck follow-up requests through both the native fake and the

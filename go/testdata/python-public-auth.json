@@ -1,0 +1,1686 @@
+{
+  "constructors": [
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "TokenAuth needs at least one token"
+      },
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [],
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "tokens and principal ids must be non-empty"
+      },
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "owner",
+            "token": ""
+          }
+        ],
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty-token"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "tokens and principal ids must be non-empty"
+      },
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "",
+            "token": "x"
+          }
+        ],
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty-principal"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer z",
+            "principal": {
+              "anonymous": false,
+              "id": "bob"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice",
+          "bob"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "bob",
+            "token": "z"
+          },
+          {
+            "principal": "alice",
+            "token": "x"
+          },
+          {
+            "principal": "alice",
+            "token": "y"
+          }
+        ],
+        "headers": [
+          null,
+          "Bearer x",
+          "Bearer y",
+          "Bearer z",
+          "Bearer missing"
+        ],
+        "name": "ascii-principal-set"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "用户"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": {
+              "anonymous": false,
+              "id": " é "
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer z",
+            "principal": {
+              "anonymous": false,
+              "id": "é"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer w",
+            "principal": {
+              "anonymous": false,
+              "id": "\u001c"
+            }
+          }
+        ],
+        "principals": [
+          "\u001c",
+          " é ",
+          "é",
+          "用户"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "用户",
+            "token": "x"
+          },
+          {
+            "principal": " é ",
+            "token": "y"
+          },
+          {
+            "principal": "é",
+            "token": "z"
+          },
+          {
+            "principal": "\u001c",
+            "token": "w"
+          }
+        ],
+        "headers": [
+          "Bearer x",
+          "Bearer y",
+          "Bearer z",
+          "Bearer w"
+        ],
+        "name": "literal-principals"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer ",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer  ",
+            "principal": {
+              "anonymous": false,
+              "id": " space owner "
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer   ",
+            "principal": null
+          }
+        ],
+        "principals": [
+          " space owner "
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": " space owner ",
+            "token": " "
+          }
+        ],
+        "headers": [
+          null,
+          "Bearer",
+          "Bearer ",
+          "Bearer  ",
+          "Bearer   "
+        ],
+        "name": "space-token"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer a\u0000\tb",
+            "principal": {
+              "anonymous": false,
+              "id": "literal"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer a\tb",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer a",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "literal"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "literal",
+            "token": "a\u0000\tb"
+          }
+        ],
+        "headers": [
+          "Bearer a\u0000\tb",
+          "Bearer a\tb",
+          "Bearer a"
+        ],
+        "name": "control-token"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Basic x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer 中",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "ascii",
+          "unicode"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "unicode",
+            "token": "中"
+          },
+          {
+            "principal": "ascii",
+            "token": "x"
+          }
+        ],
+        "headers": [
+          null,
+          "Basic x",
+          "Bearer x",
+          "Bearer 中"
+        ],
+        "name": "unicode-token-first"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer ",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer other",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "ascii",
+          "unicode"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "ascii",
+            "token": "x"
+          },
+          {
+            "principal": "unicode",
+            "token": "中"
+          }
+        ],
+        "headers": [
+          null,
+          "Bearer ",
+          "Bearer x",
+          "Bearer other"
+        ],
+        "name": "unicode-token-last"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer ",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer é",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer x",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "owner"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "owner",
+            "token": "é"
+          }
+        ],
+        "headers": [
+          null,
+          "",
+          "Bearer",
+          "Bearer ",
+          "Bearer é",
+          "Bearer x"
+        ],
+        "name": "unicode-only"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "owner"
+            }
+          },
+          {
+            "error": null,
+            "header": "BEARER x",
+            "principal": {
+              "anonymous": false,
+              "id": "owner"
+            }
+          },
+          {
+            "error": null,
+            "header": "bEaReR x",
+            "principal": {
+              "anonymous": false,
+              "id": "owner"
+            }
+          },
+          {
+            "error": null,
+            "header": " Bearer x",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer\tx",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer  x",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x ",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Basic x",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Ｂearer x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer 中",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "owner"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": null,
+        "bindings": [
+          {
+            "principal": "owner",
+            "token": "x"
+          }
+        ],
+        "headers": [
+          null,
+          "",
+          "bearer x",
+          "BEARER x",
+          "bEaReR x",
+          " Bearer x",
+          "Bearer\tx",
+          "Bearer  x",
+          "Bearer x ",
+          "Basic x",
+          "Ｂearer x",
+          "Bearer 中"
+        ],
+        "name": "bearer-shape"
+      }
+    },
+    {
+      "after": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "before"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "before"
+        ]
+      },
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "before"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "before"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_bindings": [
+          {
+            "principal": "after",
+            "token": "x"
+          },
+          {
+            "principal": "new",
+            "token": "y"
+          }
+        ],
+        "bindings": [
+          {
+            "principal": "before",
+            "token": "x"
+          }
+        ],
+        "headers": [
+          "Bearer x",
+          "Bearer y"
+        ],
+        "name": "detached-input"
+      }
+    }
+  ],
+  "environments": [
+    {
+      "after": null,
+      "before": {
+        "auth_class": "NullAuth",
+        "configured": false,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          }
+        ],
+        "principals": null
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {
+          "MINILOOP_API_TOKEN": "ambient"
+        },
+        "environ": {},
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "explicit-empty-isolates-ambient"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer ambient",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {
+          "MINILOOP_API_TOKEN": "ambient"
+        },
+        "environ": null,
+        "headers": [
+          "Bearer ambient",
+          "Bearer x"
+        ],
+        "name": "nil-reads-ambient-single"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice",
+          "bob"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {
+          "MINILOOP_API_TOKENS": "alice:x,bob:y"
+        },
+        "environ": null,
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "nil-reads-ambient-multi"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": " \tx\r\n"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "single-ascii-strip"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "\u001c\u001d\u001ex\u001f"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "single-python-strip"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "NullAuth",
+        "configured": false,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": {
+              "anonymous": true,
+              "id": "anonymous"
+            }
+          }
+        ],
+        "principals": null
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "\u001c\u001d\u001e\u001f"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "single-python-whitespace-only"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer single",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "single",
+          "MINILOOP_API_TOKENS": "alice:x"
+        },
+        "headers": [
+          "Bearer x",
+          "Bearer single"
+        ],
+        "name": "multi-priority"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "x",
+          "MINILOOP_API_TOKENS": "\u001c\u001d\u001e\u001f"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "multi-python-empty-falls-back"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": {
+              "anonymous": false,
+              "id": "bob"
+            }
+          }
+        ],
+        "principals": [
+          "alice",
+          "bob"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "\u001calice:x\u001d,\u001ebob:y\u001f"
+        },
+        "headers": [
+          "Bearer x",
+          "Bearer y"
+        ],
+        "name": "multi-python-entry-strip"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer  x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice "
+            }
+          }
+        ],
+        "principals": [
+          "alice "
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": " alice : x "
+        },
+        "headers": [
+          "Bearer x",
+          "Bearer  x"
+        ],
+        "name": "multi-no-inner-strip"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x:y",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:x:y"
+        },
+        "headers": [
+          "Bearer x:y",
+          "Bearer x"
+        ],
+        "name": "token-colon-preserved"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "",
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer missing",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": ", ,alice:x,,"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty-entries"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "TokenAuth needs at least one token"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "fallback",
+          "MINILOOP_API_TOKENS": ", ,"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "commas-only"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS entries must be 'principal:token'"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "missing-colon"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS entries must be 'principal:token'"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty-token"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "tokens and principal ids must be non-empty"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": ":x"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "empty-owner"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": {
+              "anonymous": false,
+              "id": "alice"
+            }
+          }
+        ],
+        "principals": [
+          "alice"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:x,alice:x,alice:y"
+        },
+        "headers": [
+          "Bearer x",
+          "Bearer y"
+        ],
+        "name": "duplicate-same-owner"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS assigns one token to both 'alice' and 'bob'; a shared credential lets one caller act as the other"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:x,bob:x"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "duplicate-different-owner"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS assigns one token to both \"O'Brien\" and '用户\\t\"Q\"'; a shared credential lets one caller act as the other"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "O'Brien:x,用户\t\"Q\":x"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "duplicate-principal-repr"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS assigns one token to both 'alice' and ''; a shared credential lets one caller act as the other"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:x,:x"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "duplicate-before-empty-owner-validation"
+      }
+    },
+    {
+      "after": null,
+      "before": null,
+      "construction_error": {
+        "exception_class": "ValueError",
+        "message": "MINILOOP_API_TOKENS assigns one token to both 'alice' and 'bob'; a shared credential lets one caller act as the other"
+      },
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": ":empty,alice:x,bob:x"
+        },
+        "headers": [
+          null,
+          "",
+          "Bearer x",
+          "Bearer missing"
+        ],
+        "name": "later-duplicate-before-earlier-empty-owner"
+      }
+    },
+    {
+      "after": null,
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": null,
+            "principal": null
+          },
+          {
+            "error": null,
+            "header": "Basic x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer x",
+            "principal": null
+          },
+          {
+            "error": {
+              "exception_class": "TypeError",
+              "message": "comparing strings with non-ASCII characters is not supported"
+            },
+            "header": "Bearer 中",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "alice",
+          "用户"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": null,
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKENS": "alice:x,用户:中"
+        },
+        "headers": [
+          null,
+          "Basic x",
+          "Bearer x",
+          "Bearer 中"
+        ],
+        "name": "unicode-token-comparison"
+      }
+    },
+    {
+      "after": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": null,
+        "after_environ": {
+          "MINILOOP_API_TOKEN": "y"
+        },
+        "ambient": {},
+        "environ": {
+          "MINILOOP_API_TOKEN": "x"
+        },
+        "headers": [
+          "Bearer x",
+          "Bearer y"
+        ],
+        "name": "explicit-input-snapshot"
+      }
+    },
+    {
+      "after": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "before": {
+        "auth_class": "TokenAuth",
+        "configured": true,
+        "observations": [
+          {
+            "error": null,
+            "header": "Bearer x",
+            "principal": {
+              "anonymous": false,
+              "id": "default"
+            }
+          },
+          {
+            "error": null,
+            "header": "Bearer y",
+            "principal": null
+          }
+        ],
+        "principals": [
+          "default"
+        ]
+      },
+      "construction_error": null,
+      "recipe": {
+        "after_ambient": {
+          "MINILOOP_API_TOKEN": "y"
+        },
+        "after_environ": null,
+        "ambient": {
+          "MINILOOP_API_TOKEN": "x"
+        },
+        "environ": null,
+        "headers": [
+          "Bearer x",
+          "Bearer y"
+        ],
+        "name": "ambient-input-snapshot"
+      }
+    }
+  ],
+  "producer_sha256": "5f9d28630cfe0f5ce44769bb85ee12167c1b46f02a645a580c5a6cd30a8e4abd",
+  "python_version": "3.11.3",
+  "scope": [
+    "Actual root-public TokenAuth and load_auth; finite scalar Unicode strings, unique Mapping keys and nullable string authorization only.",
+    "Each authentication observation calls the Source method; TypeError is retained as a failed operation, never converted to rejection or a principal.",
+    "Explicit environment maps isolate ambient values; None reads the scoped real process environment. Construction snapshots are observed after caller input mutation.",
+    "Source string compare_digest rejects non-ASCII at comparison, even after an earlier matching binding. Principal IDs remain literal and receive no normalization.",
+    "No HTTP/server/model/tool call, arbitrary Python object coercion, lone-surrogate string or all-environment acceptance claim.",
+    "The Go compatibility bool API projects acceptance; its named AuthenticationResult is required to preserve the Source fault distinction. Native duplicate sequence conflict refusal remains a declared typed adapter rule."
+  ],
+  "source_sha256": {
+    "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+    "mini_loop/auth.py": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+    "stdlib/hmac.py": "a4790b3cfd1b58875879621dbe8f4c0a30fb50a8582045b0d5c1a712afc8c36b"
+  }
+}

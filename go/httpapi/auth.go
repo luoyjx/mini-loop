@@ -4,10 +4,12 @@ import (
 	"crypto/subtle"
 	"errors"
 	"fmt"
-	"github.com/luoyjx/mini-loop/go/agent"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
 
 type Principal struct {
@@ -152,11 +154,12 @@ func AuthFromEnvironment(env map[string]string) (Authenticator, error) {
 		}
 		return env[key]
 	}
-	raw := strings.TrimSpace(get("MINILOOP_API_TOKENS"))
+	raw := pytext.Strip(get("MINILOOP_API_TOKENS"))
 	if raw != "" {
 		var bindings []TokenBinding
+		seen := make(map[string]string)
 		for _, entry := range strings.Split(raw, ",") {
-			entry = strings.TrimSpace(entry)
+			entry = pytext.Strip(entry)
 			if entry == "" {
 				continue
 			}
@@ -164,11 +167,20 @@ func AuthFromEnvironment(env map[string]string) (Authenticator, error) {
 			if !ok || token == "" {
 				return nil, errors.New("MINILOOP_API_TOKENS entries must be 'principal:token'")
 			}
+			// Source load_auth rejects shared credentials during parsing, before
+			// TokenAuth validates the completed mapping's non-empty owners.
+			if previous, exists := seen[token]; exists {
+				if previous != owner {
+					return nil, fmt.Errorf("MINILOOP_API_TOKENS assigns one token to both %s and %s; a shared credential lets one caller act as the other", pytext.Repr(previous), pytext.Repr(owner))
+				}
+				continue
+			}
+			seen[token] = owner
 			bindings = append(bindings, TokenBinding{token, agent.OwnerID(owner)})
 		}
 		return NewTokenAuth(bindings)
 	}
-	if single := strings.TrimSpace(get("MINILOOP_API_TOKEN")); single != "" {
+	if single := pytext.Strip(get("MINILOOP_API_TOKEN")); single != "" {
 		return NewTokenAuth([]TokenBinding{{single, "default"}})
 	}
 	return NullAuth{}, nil
