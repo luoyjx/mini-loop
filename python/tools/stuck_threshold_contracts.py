@@ -12,6 +12,7 @@ import json
 import os
 import platform
 import tempfile
+from contextlib import AsyncExitStack
 from dataclasses import asdict, replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -33,6 +34,8 @@ def stuck_threshold_contracts() -> dict:
 
 
 def _capture_stuck_threshold_contracts() -> dict:
+    import anthropic
+    import httpx
     from mini_loop import Agent, DefaultStuckDetector, RunContext, Settings, StuckThresholds
     from mini_loop.agent import _messages_payload
     from mini_loop.caching import NullCachePolicy
@@ -40,6 +43,9 @@ def _capture_stuck_threshold_contracts() -> dict:
     from mini_loop.registry import Hooks, Tool, ToolRegistry
     from mini_loop.session import AgentSession
     from mini_loop.stuck import ToolStep, step_hash
+
+    if anthropic.__version__ != "0.107.1":
+        raise RuntimeError("stuck follow-up contracts require anthropic 0.107.1")
 
     defaults = asdict(StuckThresholds())
     quiet = dict(repeat_action_result=99, repeat_action_error=99, alternating=0,
@@ -171,14 +177,21 @@ def _capture_stuck_threshold_contracts() -> dict:
     def messages_snapshot(messages):
         return copy.deepcopy(_messages_payload(messages))
 
-    async def run_loop(spec, workspace, *, managed=False):
+    async def run_loop(spec, workspace, *, managed=False, sdk=False):
+        async with AsyncExitStack() as resources:
+            return await run_loop_with_resources(spec, workspace, resources,
+                                                 managed=managed, sdk=sdk)
+
+    async def run_loop_with_resources(spec, workspace, resources, *, managed, sdk):
         workspace.mkdir(parents=True)
         settings = Settings(fake_llm=True, model="fixture-model", max_tokens=64,
                             max_turns=spec["max_rounds"], workspace_root=workspace,
                             skills_dir=workspace / "empty-skills", spill_dir=None,
                             trajectory_enabled=False)
         global_call, turn_call = 0, 0
+        completed_creates, transport_calls = 0, 0
         requests, events, event_types, commands, terminal_events = [], [], [], [], []
+        transport_requests = []
 
         def respond(request):
             nonlocal global_call, turn_call
@@ -207,14 +220,48 @@ def _capture_stuck_threshold_contracts() -> dict:
         registry.register(Tool("bash", "Stuck fixture tool.",
                                {"type": "object", "properties": {"command": {"type": "string"}},
                                 "required": ["command"]}, same, readonly=True, risk="read"))
-        client = FakeAsyncAnthropic(responder=respond, thinking=False, delay=0)
+        if sdk:
+            def transport(request):
+                nonlocal transport_calls
+                transport_calls += 1
+                if transport_calls == 1:
+                    status = 200
+                    response = dict(id="stuck-sdk-first", type="message", role="assistant",
+                        model="fixture-model", stop_reason="tool_use", stop_sequence=None,
+                        usage=dict(input_tokens=1, output_tokens=2), content=[
+                            dict(type="text", text="loop commentary"),
+                            dict(type="tool_use", id="u1", name="bash", input=dict(command="same")),
+                        ])
+                elif transport_calls == 2:
+                    status = 400
+                    response = dict(type="error", error=dict(type="invalid_request_error",
+                        message="fixture retained tool_use without immediately following tool_result"))
+                else:
+                    raise AssertionError("unexpected extra SDK transport request")
+                reply = httpx.Response(status, json=response, request=request,
+                                       headers={"request-id": f"stuck-sdk-{transport_calls}"})
+                transport_requests.append(dict(method=request.method, path=request.url.path,
+                    body=json.loads(request.content), response_status=status,
+                    response=copy.deepcopy(response), response_text=reply.content.decode("utf-8")))
+                return reply
+
+            http = await resources.enter_async_context(httpx.AsyncClient(
+                transport=httpx.MockTransport(transport), trust_env=False))
+            client = await resources.enter_async_context(anthropic.AsyncAnthropic(
+                api_key="fixture-key", base_url="https://fixture.invalid",
+                http_client=http, max_retries=0))
+        else:
+            client = FakeAsyncAnthropic(responder=respond, thinking=False, delay=0)
         actual_create = client.messages.create
 
         async def record_create(**kwargs):
+            nonlocal completed_creates
             observation = dict(messages=messages_snapshot(kwargs["messages"]), error=None)
             requests.append(observation)
             try:
-                return await actual_create(**kwargs)
+                result = await actual_create(**kwargs)
+                completed_creates += 1
+                return result
             except Exception as error:
                 observation["error"] = _failure(error, "provider_create")
                 raise
@@ -237,8 +284,9 @@ def _capture_stuck_threshold_contracts() -> dict:
                 event_types.clear()
                 commands.clear()
                 terminal_events.clear()
+                transport_requests.clear()
                 turn_call = 0
-                before_calls = client.calls
+                before_calls = completed_creates if sdk else client.calls
                 prompt, output, error = f"turn {turn}", None, None
                 context = replace(RunContext.explicit_human(actor_id="fixture-human"),
                                   message_id=f"stuck-turn-{turn}")
@@ -252,7 +300,8 @@ def _capture_stuck_threshold_contracts() -> dict:
                 except Exception as caught:
                     transcript_error = _failure(caught, "transcript_validation")
                 turns.append(dict(prompt=prompt, output=output, error=error,
-                                  requests=copy.deepcopy(requests), model_calls=client.calls - before_calls,
+                                  requests=copy.deepcopy(requests),
+                                  model_calls=(completed_creates if sdk else client.calls) - before_calls,
                                   events=copy.deepcopy(events), event_types=list(event_types),
                                   handler_commands=list(commands), recent_steps=[asdict(value) for value in agent.recent_steps],
                                   messages=messages_snapshot(agent.messages),
@@ -263,16 +312,21 @@ def _capture_stuck_threshold_contracts() -> dict:
                     turns[-1].update(session_status=session.status, busy=session.busy,
                                      run_count=session.run_count,
                                      terminal_events=copy.deepcopy(terminal_events))
+                if sdk:
+                    turns[-1]["transport_requests"] = copy.deepcopy(transport_requests)
         return dict(**spec, turns=turns)
 
     async def all_loops(root):
         loops = [await run_loop(spec, root / spec["name"]) for spec in specs]
         managed = [await run_loop(spec, root / f"managed-{spec['name']}", managed=True)
                    for spec in specs if spec["name"].endswith("-fault")]
-        return loops, managed
+        sdk_managed = [await run_loop(spec, root / f"sdk-managed-{spec['name']}",
+                                     managed=True, sdk=True)
+                       for spec in specs if spec["name"].endswith("-fault")]
+        return loops, managed, sdk_managed
 
     with tempfile.TemporaryDirectory(prefix="mini-loop-stuck-thresholds-") as temporary:
-        loops, managed_loops = asyncio.run(all_loops(Path(temporary).resolve()))
+        loops, managed_loops, sdk_managed_loops = asyncio.run(all_loops(Path(temporary).resolve()))
     package = Path(__file__).resolve().parents[1] / "mini_loop"
     sources = {f"mini_loop/{name}": package / name for name in
                ("__init__.py", "stuck.py", "agent.py", "fake_llm.py", "registry.py", "config.py",
@@ -280,7 +334,8 @@ def _capture_stuck_threshold_contracts() -> dict:
     sources["tools/stuck_threshold_contracts.py"] = Path(__file__)
     return dict(
         source_sha256={name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in sources.items()},
-        versions={"python": platform.python_version()},
+        versions={"python": platform.python_version(), "anthropic": anthropic.__version__,
+                  "httpx": httpx.__version__},
         scope=[
             "Actual public StuckThresholds dataclass and DefaultStuckDetector constructor/inspect; six finite integer fields include negative, zero, positive, and signed int64 boundaries. No Python runtime validation is replaced.",
             "Each direct case separately captures constructor and inspect exceptions with their actual class, message and stage. Signal fields and reminder are actual public observations.",
@@ -290,7 +345,9 @@ def _capture_stuck_threshold_contracts() -> dict:
             "Full actual request and retained message payloads are detached through the existing Agent payload serializer; explicit turn message IDs and scripted tool IDs are stable. No transcript repair or exception synthesis is applied by the capture.",
             "Two additional actual AgentSession wrappers attach the same Agent through the public agent setter and invoke public run twice. Public status/busy/run_count and status/error/done identity/outcome projections are observed; default NullStateStore makes no SQLite or durable recovery claim.",
             "This fixture does not replace the pre-existing sixteen default detector decisions or five actual Agent loop controls in python-loops.json, and does not claim arbitrary Python object/type coercion parity.",
+            "Two additional managed loops use fixed Anthropic SDK 0.107.1 and HTTPX MockTransport: an initial 200 tool-use reply followed by a recipe-defined 400 invalid_request_error. Transport request bodies and actual SDK exceptions are captured; the 400 is a local response recipe, not evidence from a live provider. model_calls counts successful SDK create returns for these rows. No socket or live network is used.",
         ], cases=cases, loops=loops, managed_loops=managed_loops,
+        sdk_managed_loops=sdk_managed_loops,
     )
 
 

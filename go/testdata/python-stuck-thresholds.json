@@ -9958,7 +9958,794 @@
     "Events project actual tool_use/tool_result/stuck/error payloads onto declared identity/outcome fields; dynamic span, action, activity and timing fields are excluded. event_types retains all actual Source event names/order as diagnostic evidence, not cross-runtime equality.",
     "Full actual request and retained message payloads are detached through the existing Agent payload serializer; explicit turn message IDs and scripted tool IDs are stable. No transcript repair or exception synthesis is applied by the capture.",
     "Two additional actual AgentSession wrappers attach the same Agent through the public agent setter and invoke public run twice. Public status/busy/run_count and status/error/done identity/outcome projections are observed; default NullStateStore makes no SQLite or durable recovery claim.",
-    "This fixture does not replace the pre-existing sixteen default detector decisions or five actual Agent loop controls in python-loops.json, and does not claim arbitrary Python object/type coercion parity."
+    "This fixture does not replace the pre-existing sixteen default detector decisions or five actual Agent loop controls in python-loops.json, and does not claim arbitrary Python object/type coercion parity.",
+    "Two additional managed loops use fixed Anthropic SDK 0.107.1 and HTTPX MockTransport: an initial 200 tool-use reply followed by a recipe-defined 400 invalid_request_error. Transport request bodies and actual SDK exceptions are captured; the 400 is a local response recipe, not evidence from a live provider. model_calls counts successful SDK create returns for these rows. No socket or live network is used."
+  ],
+  "sdk_managed_loops": [
+    {
+      "construction": "configured",
+      "finish_after": 0,
+      "max_rounds": 12,
+      "name": "repeat-result-negative-fault",
+      "pattern": "same",
+      "thresholds": {
+        "alternating": 0,
+        "max_nudges": 0,
+        "monologue": 99,
+        "repeat_action_error": 99,
+        "repeat_action_result": -1,
+        "unproductive_tool": 0
+      },
+      "turn_count": 2,
+      "turns": [
+        {
+          "busy": false,
+          "error": {
+            "exception_class": "IndexError",
+            "message": "tuple index out of range",
+            "stage": "session_run"
+          },
+          "event_types": [
+            "status",
+            "tool_catalog",
+            "capability_plan",
+            "system_prompt",
+            "model_start",
+            "model_end",
+            "assistant_text",
+            "activity_update",
+            "tool_use",
+            "tool_result",
+            "error"
+          ],
+          "events": [
+            {
+              "agent": "main",
+              "depth": 0,
+              "id": "u1",
+              "input": {
+                "command": "same"
+              },
+              "message_id": "stuck-turn-1",
+              "name": "bash",
+              "type": "tool_use"
+            },
+            {
+              "agent": "main",
+              "depth": 0,
+              "error": false,
+              "id": "u1",
+              "message_id": "stuck-turn-1",
+              "name": "bash",
+              "output": "same",
+              "type": "tool_result"
+            },
+            {
+              "error": "IndexError: tuple index out of range",
+              "type": "error"
+            }
+          ],
+          "handler_commands": [
+            "same"
+          ],
+          "last_text": "loop commentary",
+          "messages": [
+            {
+              "content": "turn 1",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "citations": null,
+                  "text": "loop commentary",
+                  "type": "text"
+                },
+                {
+                  "caller": null,
+                  "id": "u1",
+                  "input": {
+                    "command": "same"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "model_calls": 1,
+          "nudges_used": 0,
+          "output": null,
+          "prompt": "turn 1",
+          "recent_steps": [
+            {
+              "denied": false,
+              "failed": false,
+              "input_hash": "ef03df14417d6dbc",
+              "name": "bash",
+              "output_hash": "106c4202d3d02a3f"
+            }
+          ],
+          "requests": [
+            {
+              "error": null,
+              "messages": [
+                {
+                  "content": "turn 1",
+                  "role": "user"
+                }
+              ]
+            }
+          ],
+          "rounds_without_tools": 0,
+          "run_count": 1,
+          "session_status": "error",
+          "terminal_events": [
+            {
+              "status": "running",
+              "type": "status"
+            },
+            {
+              "error": "IndexError: tuple index out of range",
+              "type": "error"
+            }
+          ],
+          "transcript_error": {
+            "exception_class": "InvalidTranscript",
+            "message": "messages.1: `tool_use` ids were found without `tool_result` blocks immediately after: ['u1']",
+            "stage": "transcript_validation"
+          },
+          "transport_requests": [
+            {
+              "body": {
+                "max_tokens": 64,
+                "messages": [
+                  {
+                    "content": "turn 1",
+                    "role": "user"
+                  }
+                ],
+                "model": "fixture-model",
+                "system": "Stuck threshold contract.",
+                "tools": [
+                  {
+                    "description": "Stuck fixture tool.",
+                    "input_schema": {
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    },
+                    "name": "bash"
+                  }
+                ]
+              },
+              "method": "POST",
+              "path": "/v1/messages",
+              "response": {
+                "content": [
+                  {
+                    "text": "loop commentary",
+                    "type": "text"
+                  },
+                  {
+                    "id": "u1",
+                    "input": {
+                      "command": "same"
+                    },
+                    "name": "bash",
+                    "type": "tool_use"
+                  }
+                ],
+                "id": "stuck-sdk-first",
+                "model": "fixture-model",
+                "role": "assistant",
+                "stop_reason": "tool_use",
+                "stop_sequence": null,
+                "type": "message",
+                "usage": {
+                  "input_tokens": 1,
+                  "output_tokens": 2
+                }
+              },
+              "response_status": 200,
+              "response_text": "{\"id\":\"stuck-sdk-first\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"stop_reason\":\"tool_use\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2},\"content\":[{\"type\":\"text\",\"text\":\"loop commentary\"},{\"type\":\"tool_use\",\"id\":\"u1\",\"name\":\"bash\",\"input\":{\"command\":\"same\"}}]}"
+            }
+          ]
+        },
+        {
+          "busy": false,
+          "error": null,
+          "event_types": [
+            "status",
+            "model_start",
+            "recovery",
+            "model_end",
+            "error",
+            "done"
+          ],
+          "events": [
+            {
+              "agent": "main",
+              "depth": 0,
+              "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "message_id": "stuck-turn-2",
+              "type": "error"
+            }
+          ],
+          "handler_commands": [],
+          "last_text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+          "messages": [
+            {
+              "content": "turn 1",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "citations": null,
+                  "text": "loop commentary",
+                  "type": "text"
+                },
+                {
+                  "caller": null,
+                  "id": "u1",
+                  "input": {
+                    "command": "same"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "turn 2",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "model_calls": 0,
+          "nudges_used": 0,
+          "output": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+          "prompt": "turn 2",
+          "recent_steps": [],
+          "requests": [
+            {
+              "error": {
+                "exception_class": "BadRequestError",
+                "message": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+                "stage": "provider_create"
+              },
+              "messages": [
+                {
+                  "content": "turn 1",
+                  "role": "user"
+                },
+                {
+                  "content": [
+                    {
+                      "citations": null,
+                      "text": "loop commentary",
+                      "type": "text"
+                    },
+                    {
+                      "caller": null,
+                      "id": "u1",
+                      "input": {
+                        "command": "same"
+                      },
+                      "name": "bash",
+                      "type": "tool_use"
+                    }
+                  ],
+                  "role": "assistant"
+                },
+                {
+                  "content": "turn 2",
+                  "role": "user"
+                }
+              ]
+            }
+          ],
+          "rounds_without_tools": 0,
+          "run_count": 2,
+          "session_status": "idle",
+          "terminal_events": [
+            {
+              "status": "running",
+              "type": "status"
+            },
+            {
+              "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "type": "error"
+            },
+            {
+              "phase": "final_answer",
+              "text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "type": "done"
+            }
+          ],
+          "transcript_error": {
+            "exception_class": "InvalidTranscript",
+            "message": "messages.1: `tool_use` ids were found without `tool_result` blocks immediately after: ['u1']",
+            "stage": "transcript_validation"
+          },
+          "transport_requests": [
+            {
+              "body": {
+                "max_tokens": 64,
+                "messages": [
+                  {
+                    "content": "turn 1",
+                    "role": "user"
+                  },
+                  {
+                    "content": [
+                      {
+                        "citations": null,
+                        "text": "loop commentary",
+                        "type": "text"
+                      },
+                      {
+                        "caller": null,
+                        "id": "u1",
+                        "input": {
+                          "command": "same"
+                        },
+                        "name": "bash",
+                        "type": "tool_use"
+                      }
+                    ],
+                    "role": "assistant"
+                  },
+                  {
+                    "content": "turn 2",
+                    "role": "user"
+                  }
+                ],
+                "model": "fixture-model",
+                "system": "Stuck threshold contract.",
+                "tools": [
+                  {
+                    "description": "Stuck fixture tool.",
+                    "input_schema": {
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    },
+                    "name": "bash"
+                  }
+                ]
+              },
+              "method": "POST",
+              "path": "/v1/messages",
+              "response": {
+                "error": {
+                  "message": "fixture retained tool_use without immediately following tool_result",
+                  "type": "invalid_request_error"
+                },
+                "type": "error"
+              },
+              "response_status": 400,
+              "response_text": "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"fixture retained tool_use without immediately following tool_result\"}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "construction": "configured",
+      "finish_after": 0,
+      "max_rounds": 12,
+      "name": "repeat-error-negative-fault",
+      "pattern": "same",
+      "thresholds": {
+        "alternating": 0,
+        "max_nudges": 0,
+        "monologue": 99,
+        "repeat_action_error": -1,
+        "repeat_action_result": 99,
+        "unproductive_tool": 0
+      },
+      "turn_count": 2,
+      "turns": [
+        {
+          "busy": false,
+          "error": {
+            "exception_class": "IndexError",
+            "message": "tuple index out of range",
+            "stage": "session_run"
+          },
+          "event_types": [
+            "status",
+            "tool_catalog",
+            "capability_plan",
+            "system_prompt",
+            "model_start",
+            "model_end",
+            "assistant_text",
+            "activity_update",
+            "tool_use",
+            "tool_result",
+            "error"
+          ],
+          "events": [
+            {
+              "agent": "main",
+              "depth": 0,
+              "id": "u1",
+              "input": {
+                "command": "same"
+              },
+              "message_id": "stuck-turn-1",
+              "name": "bash",
+              "type": "tool_use"
+            },
+            {
+              "agent": "main",
+              "depth": 0,
+              "error": false,
+              "id": "u1",
+              "message_id": "stuck-turn-1",
+              "name": "bash",
+              "output": "same",
+              "type": "tool_result"
+            },
+            {
+              "error": "IndexError: tuple index out of range",
+              "type": "error"
+            }
+          ],
+          "handler_commands": [
+            "same"
+          ],
+          "last_text": "loop commentary",
+          "messages": [
+            {
+              "content": "turn 1",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "citations": null,
+                  "text": "loop commentary",
+                  "type": "text"
+                },
+                {
+                  "caller": null,
+                  "id": "u1",
+                  "input": {
+                    "command": "same"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "model_calls": 1,
+          "nudges_used": 0,
+          "output": null,
+          "prompt": "turn 1",
+          "recent_steps": [
+            {
+              "denied": false,
+              "failed": false,
+              "input_hash": "ef03df14417d6dbc",
+              "name": "bash",
+              "output_hash": "106c4202d3d02a3f"
+            }
+          ],
+          "requests": [
+            {
+              "error": null,
+              "messages": [
+                {
+                  "content": "turn 1",
+                  "role": "user"
+                }
+              ]
+            }
+          ],
+          "rounds_without_tools": 0,
+          "run_count": 1,
+          "session_status": "error",
+          "terminal_events": [
+            {
+              "status": "running",
+              "type": "status"
+            },
+            {
+              "error": "IndexError: tuple index out of range",
+              "type": "error"
+            }
+          ],
+          "transcript_error": {
+            "exception_class": "InvalidTranscript",
+            "message": "messages.1: `tool_use` ids were found without `tool_result` blocks immediately after: ['u1']",
+            "stage": "transcript_validation"
+          },
+          "transport_requests": [
+            {
+              "body": {
+                "max_tokens": 64,
+                "messages": [
+                  {
+                    "content": "turn 1",
+                    "role": "user"
+                  }
+                ],
+                "model": "fixture-model",
+                "system": "Stuck threshold contract.",
+                "tools": [
+                  {
+                    "description": "Stuck fixture tool.",
+                    "input_schema": {
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    },
+                    "name": "bash"
+                  }
+                ]
+              },
+              "method": "POST",
+              "path": "/v1/messages",
+              "response": {
+                "content": [
+                  {
+                    "text": "loop commentary",
+                    "type": "text"
+                  },
+                  {
+                    "id": "u1",
+                    "input": {
+                      "command": "same"
+                    },
+                    "name": "bash",
+                    "type": "tool_use"
+                  }
+                ],
+                "id": "stuck-sdk-first",
+                "model": "fixture-model",
+                "role": "assistant",
+                "stop_reason": "tool_use",
+                "stop_sequence": null,
+                "type": "message",
+                "usage": {
+                  "input_tokens": 1,
+                  "output_tokens": 2
+                }
+              },
+              "response_status": 200,
+              "response_text": "{\"id\":\"stuck-sdk-first\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"stop_reason\":\"tool_use\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":1,\"output_tokens\":2},\"content\":[{\"type\":\"text\",\"text\":\"loop commentary\"},{\"type\":\"tool_use\",\"id\":\"u1\",\"name\":\"bash\",\"input\":{\"command\":\"same\"}}]}"
+            }
+          ]
+        },
+        {
+          "busy": false,
+          "error": null,
+          "event_types": [
+            "status",
+            "model_start",
+            "recovery",
+            "model_end",
+            "error",
+            "done"
+          ],
+          "events": [
+            {
+              "agent": "main",
+              "depth": 0,
+              "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "message_id": "stuck-turn-2",
+              "type": "error"
+            }
+          ],
+          "handler_commands": [],
+          "last_text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+          "messages": [
+            {
+              "content": "turn 1",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "citations": null,
+                  "text": "loop commentary",
+                  "type": "text"
+                },
+                {
+                  "caller": null,
+                  "id": "u1",
+                  "input": {
+                    "command": "same"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "turn 2",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "model_calls": 0,
+          "nudges_used": 0,
+          "output": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+          "prompt": "turn 2",
+          "recent_steps": [],
+          "requests": [
+            {
+              "error": {
+                "exception_class": "BadRequestError",
+                "message": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+                "stage": "provider_create"
+              },
+              "messages": [
+                {
+                  "content": "turn 1",
+                  "role": "user"
+                },
+                {
+                  "content": [
+                    {
+                      "citations": null,
+                      "text": "loop commentary",
+                      "type": "text"
+                    },
+                    {
+                      "caller": null,
+                      "id": "u1",
+                      "input": {
+                        "command": "same"
+                      },
+                      "name": "bash",
+                      "type": "tool_use"
+                    }
+                  ],
+                  "role": "assistant"
+                },
+                {
+                  "content": "turn 2",
+                  "role": "user"
+                }
+              ]
+            }
+          ],
+          "rounds_without_tools": 0,
+          "run_count": 2,
+          "session_status": "idle",
+          "terminal_events": [
+            {
+              "status": "running",
+              "type": "status"
+            },
+            {
+              "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "type": "error"
+            },
+            {
+              "phase": "final_answer",
+              "text": "[Error] BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'fixture retained tool_use without immediately following tool_result'}}",
+              "type": "done"
+            }
+          ],
+          "transcript_error": {
+            "exception_class": "InvalidTranscript",
+            "message": "messages.1: `tool_use` ids were found without `tool_result` blocks immediately after: ['u1']",
+            "stage": "transcript_validation"
+          },
+          "transport_requests": [
+            {
+              "body": {
+                "max_tokens": 64,
+                "messages": [
+                  {
+                    "content": "turn 1",
+                    "role": "user"
+                  },
+                  {
+                    "content": [
+                      {
+                        "citations": null,
+                        "text": "loop commentary",
+                        "type": "text"
+                      },
+                      {
+                        "caller": null,
+                        "id": "u1",
+                        "input": {
+                          "command": "same"
+                        },
+                        "name": "bash",
+                        "type": "tool_use"
+                      }
+                    ],
+                    "role": "assistant"
+                  },
+                  {
+                    "content": "turn 2",
+                    "role": "user"
+                  }
+                ],
+                "model": "fixture-model",
+                "system": "Stuck threshold contract.",
+                "tools": [
+                  {
+                    "description": "Stuck fixture tool.",
+                    "input_schema": {
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    },
+                    "name": "bash"
+                  }
+                ]
+              },
+              "method": "POST",
+              "path": "/v1/messages",
+              "response": {
+                "error": {
+                  "message": "fixture retained tool_use without immediately following tool_result",
+                  "type": "invalid_request_error"
+                },
+                "type": "error"
+              },
+              "response_status": 400,
+              "response_text": "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"fixture retained tool_use without immediately following tool_result\"}}"
+            }
+          ]
+        }
+      ]
+    }
   ],
   "source_sha256": {
     "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
@@ -9972,9 +10759,11 @@
     "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
     "mini_loop/stuck.py": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
     "mini_loop/transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873",
-    "tools/stuck_threshold_contracts.py": "75e7f6cfdf3816edd8216a0fa2f623e11ee2708348128d3a7b6a2a5acfd60800"
+    "tools/stuck_threshold_contracts.py": "d3cdd65923e6650b6f5366d95987bdf202e268c12366b3ba16e79a3cd2c89b54"
   },
   "versions": {
+    "anthropic": "0.107.1",
+    "httpx": "0.28.1",
     "python": "3.11.3"
   }
 }

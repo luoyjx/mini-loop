@@ -400,14 +400,40 @@ const (
 // not an extra field sent to an Anthropic-compatible endpoint. Nil system or
 // tools means absent, as in Python's summary request.
 type ModelRequest struct {
-	Model     string           `json:"model"`
-	MaxTokens int              `json:"max_tokens"`
-	Messages  []Message        `json:"messages"`
-	System    *string          `json:"system,omitempty"`
-	Tools     []ToolSchema     `json:"tools,omitempty"`
-	Purpose   RequestPurpose   `json:"-"`
-	Cache     CacheAnnotations `json:"-"`
+	Model            string           `json:"model"`
+	MaxTokens        int              `json:"max_tokens"`
+	Messages         []Message        `json:"messages"`
+	System           *string          `json:"system,omitempty"`
+	Tools            []ToolSchema     `json:"tools,omitempty"`
+	Purpose          RequestPurpose   `json:"-"`
+	Cache            CacheAnnotations `json:"-"`
+	unpublishedBatch *UnpublishedToolBatch
 }
+
+// UnmarshalJSON never restores a process-local dispatch observation, including
+// decoding into a request value which previously held one.
+func (request *ModelRequest) UnmarshalJSON(data []byte) error {
+	type plainRequest ModelRequest
+	decoded := plainRequest(request.Clone())
+	decoded.unpublishedBatch = nil
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	*request = ModelRequest(decoded)
+	return nil
+}
+
+func (request ModelRequest) WithUnpublishedToolBatch(batch UnpublishedToolBatch) (ModelRequest, error) {
+	request = request.Clone()
+	request.unpublishedBatch = &batch
+	if err := request.ValidateForDispatch(); err != nil {
+		return ModelRequest{}, err
+	}
+	return request, nil
+}
+
+// HasUnpublishedToolBatch reports local dispatch provenance, never authority.
+func (request ModelRequest) HasUnpublishedToolBatch() bool { return request.unpublishedBatch != nil }
 
 func (request ModelRequest) MarshalJSON() ([]byte, error) {
 	wire, err := request.Wire()
@@ -418,6 +444,10 @@ func (request ModelRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (request ModelRequest) Clone() ModelRequest {
+	if request.unpublishedBatch != nil {
+		batch := *request.unpublishedBatch
+		request.unpublishedBatch = &batch
+	}
 	request.Cache = request.Cache.Clone()
 	request.Messages = append([]Message(nil), request.Messages...)
 	if request.System != nil {
@@ -434,6 +464,16 @@ func (request ModelRequest) Clone() ModelRequest {
 	return request
 }
 func (request ModelRequest) Validate() error {
+	return request.validate(nil)
+}
+
+// ValidateForDispatch preserves ordinary validation except for one explicitly
+// observed retained tool batch. Public Validate remains strict for all requests.
+func (request ModelRequest) ValidateForDispatch() error {
+	return request.validate(request.unpublishedBatch)
+}
+
+func (request ModelRequest) validate(batch *UnpublishedToolBatch) error {
 	if err := request.Cache.Validate(request); err != nil {
 		return err
 	}
@@ -443,7 +483,14 @@ func (request ModelRequest) Validate() error {
 	if request.Purpose != PurposeAgentTurn && request.Purpose != PurposeCompaction && request.Purpose != PurposeDecision && request.Purpose != PurposeMemorySelection && request.Purpose != PurposeMemoryConsolidation && request.Purpose != PurposePersonalSkillPreview {
 		return errors.New("unsupported model request purpose")
 	}
-	if err := ValidateTranscript(request.Messages); err != nil {
+	validate := ValidateTranscript
+	if batch != nil {
+		if request.Purpose != PurposeAgentTurn {
+			return errors.New("unpublished tool batch is only valid for an agent turn")
+		}
+		validate = batch.ValidateTranscript
+	}
+	if err := validate(request.Messages); err != nil {
 		return err
 	}
 	seen := make(map[ToolName]bool)

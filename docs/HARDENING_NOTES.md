@@ -1,5 +1,23 @@
 # Hardening notes
 
+## Go observed unpublished-batch follow-up — 2026-10-14
+
+A built-in stuck slice fault may occur after tool effects and result events but
+before result-history publication. The following turn preserves that exact
+Source history. A process-local `UnpublishedToolBatch` hashes the entire retained
+prefix and permits only its single completely unpublished final batch through
+`ValidateForDispatch`; public `Validate` remains strict. No JSON decode, restore,
+fork or child constructs this observation. It is diagnostic provenance, not
+execution authority. Ordinary custom detector errors retain paired results.
+
+Compactors may continue only when their exact named pairing refusal leaves the
+history unchanged; other errors, edits and additional gaps remain guarded.
+The real SDK comparison uses HTTPX MockTransport and an explicit local 400,
+not a live endpoint. The Go HTTP consumer must actually send both requests;
+error observations remain bounded and scrubbed. Complete validation and finite
+scope are recorded in the iteration receipt.
+
+
 ## Go configured stuck thresholds and fault publication — 2026-10-14
 
 The Source public constructor does not reject integer thresholds. Disable

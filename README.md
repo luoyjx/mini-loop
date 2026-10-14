@@ -570,14 +570,16 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `78d95bc`. The existing Context
-layer now exposes typed `SectionsBuilder`, `RuntimeFacts` and
-`MemorySystemBuilder` through the existing SystemBuilder and owner-scoped memory
-seams. Thirty-one actual Source cases cover ordering, empty filtering, pressure
-bands, scope, current index reads and failures. Inputs and dependency lifetimes
-remain caller-owned; default prompt wiring is unchanged. See
-[the typed composition seam](EXTENDING.md#go-typed-prompt-composition).
-Full original migration acceptance remains open.
+Current runtime review baseline: local main `78d95bc`. This iteration follows
+actual Source post-stuck follow-up requests through both the native fake and the
+fixed SDK's local HTTP transport. A process-local observation of the exact
+unpublished tool batch permits dispatch; public transcript validation remains
+strict. The observation carries no authority and is not restored or inherited.
+The existing Context layer also exposes typed `SectionsBuilder`, `RuntimeFacts`
+and `MemorySystemBuilder` helpers with explicit caller-owned inputs; default
+prompt wiring is unchanged. Eight minimal Linux groups pass with actual
+same-platform Source fixtures; full Linux/race and original migration acceptance
+remain open. The iteration evidence is recorded separately.
 
 Previous runtime review baseline: `9950878`. Configuration parsing now follows
 Python `str.strip` for U+001C–U+001F in booleans, modes, AST settings, blank
@@ -1053,7 +1055,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>integer stuck thresholds / named Source slice faults<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>integer stuck thresholds / named Source slice faults<br/>exact unpublished-batch observation; strict public validation<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>explicit sections / runtime facts / scoped memory builders<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -1112,7 +1114,8 @@ flowchart LR
         GoManager -. explicit typed workspace factory .-> GoWorktrees
         GoManager -->|create / fork / restore · owned teammate idle turns · bind resources / sandbox| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
-        GoSession --> GoContext --> GoProvider
+        GoSession --> GoContext
+        GoContext -->|strict request / observed retained batch dispatch| GoProvider
         GoProvider -->|typed replies / bounded provider error detail| GoSession
         GoContext --> GoArchives
         GoManaged -->|start / ordered capture / finish| GoTraces

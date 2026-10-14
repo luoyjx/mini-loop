@@ -38,7 +38,7 @@ func (c *StreamingClient) CompleteStream(ctx context.Context, request protocol.M
 	if err := ctx.Err(); err != nil {
 		return protocol.ModelReply{}, err
 	}
-	if err := request.Validate(); err != nil {
+	if err := request.ValidateForDispatch(); err != nil {
 		return protocol.ModelReply{}, &Failure{Kind: FailureProtocol, Message: "invalid provider request"}
 	}
 	wire, err := request.Wire()
@@ -59,7 +59,7 @@ func (c *StreamingClient) CompleteStream(ctx context.Context, request protocol.M
 		return protocol.ModelReply{}, err
 	}
 	for attempt := 0; ; attempt++ {
-		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt, emit)
+		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt, emit, request.HasUnpublishedToolBatch())
 		if err != nil {
 			return protocol.ModelReply{}, err
 		}
@@ -74,7 +74,7 @@ func (c *StreamingClient) CompleteStream(ctx context.Context, request protocol.M
 		}
 	}
 }
-func (c *StreamingClient) attempt(ctx context.Context, body []byte, attempt int, emit func(protocol.StreamDelta) error) (protocol.ModelReply, *Failure, bool, time.Duration, error) {
+func (c *StreamingClient) attempt(ctx context.Context, body []byte, attempt int, emit func(protocol.StreamDelta) error, observedBatch bool) (protocol.ModelReply, *Failure, bool, time.Duration, error) {
 	client := c.client
 	callCtx, cancel := context.WithTimeout(ctx, client.timeout)
 	defer cancel()
@@ -114,6 +114,9 @@ func (c *StreamingClient) attempt(ctx context.Context, body []byte, attempt int,
 		}
 		after := parseRetryAfter(response.Header, client.now())
 		failure := &Failure{Kind: FailureStatus, Status: response.StatusCode, Message: client.statusMessage(response.StatusCode, data), RequestID: client.clean(response.Header.Get("request-id"), 200), RetryAfter: after, RetryAfterSeconds: retryAfterSeconds(response.Header.Get("retry-after"))}
+		if observedBatch {
+			failure.dispatchDetail = client.observedDispatchStatusDetail(failure, data)
+		}
 		return protocol.ModelReply{}, failure, shouldRetry(response.StatusCode, response.Header), client.backoff(attempt, after), nil
 	}
 	reply, err := client.readStream(callCtx, response.Body, emit)

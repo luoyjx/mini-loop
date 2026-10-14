@@ -889,6 +889,10 @@ func decodeMessage(data []byte, bounded bool) (Message, error) {
 // ValidateTranscript enforces the immediate tool_use/tool_result pairing
 // observed by the Python fake provider and the compatible live endpoint.
 func ValidateTranscript(messages []Message) error {
+	return validateTranscript(messages, -1)
+}
+
+func validateTranscript(messages []Message, unpublishedIndex int) error {
 	if len(messages) == 0 {
 		return errors.New("messages: at least one message is required")
 	}
@@ -901,10 +905,14 @@ func ValidateTranscript(messages []Message) error {
 		if i+1 < len(messages) {
 			following = idsOfKind(messages[i+1], BlockToolResult)
 		}
+		var missing []string
 		for _, id := range uses {
 			if !contains(following, id) {
-				return fmt.Errorf("messages.%d: tool_use %q has no immediately following tool_result", i, id)
+				missing = append(missing, id)
 			}
+		}
+		if len(missing) > 0 && (i != unpublishedIndex || len(missing) != len(uses) || len(following) != 0) {
+			return &UnansweredToolUsesError{index: i, ids: missing}
 		}
 		var offered []string
 		if i > 0 {

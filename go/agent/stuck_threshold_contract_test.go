@@ -6,12 +6,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/provider"
 )
 
 // These rows are emitted by the public Python constructors and actual Agent
@@ -137,24 +141,34 @@ func (value *stuckThresholdEventError) UnmarshalJSON(data []byte) error {
 }
 
 type stuckThresholdTurn struct {
-	Prompt             string                   `json:"prompt"`
-	Output             *string                  `json:"output"`
-	Error              *stuckThresholdFault     `json:"error"`
-	Requests           []stuckThresholdRequest  `json:"requests"`
-	Events             []stuckThresholdEvent    `json:"events"`
-	EventTypes         []SessionEventKind       `json:"event_types"`
-	HandlerCommands    []string                 `json:"handler_commands"`
-	RecentSteps        []ToolStep               `json:"recent_steps"`
-	Messages           []protocol.Message       `json:"messages"`
-	RoundsWithoutTools int                      `json:"rounds_without_tools"`
-	NudgesUsed         int                      `json:"nudges_used"`
-	LastText           string                   `json:"last_text"`
-	TranscriptError    *stuckThresholdFault     `json:"transcript_error"`
-	ModelCalls         int                      `json:"model_calls"`
-	SessionStatus      *SessionStatus           `json:"session_status,omitempty"`
-	Busy               *bool                    `json:"busy,omitempty"`
-	RunCount           *int                     `json:"run_count,omitempty"`
-	TerminalEvents     []stuckThresholdTerminal `json:"terminal_events,omitempty"`
+	Prompt             string                    `json:"prompt"`
+	Output             *string                   `json:"output"`
+	Error              *stuckThresholdFault      `json:"error"`
+	Requests           []stuckThresholdRequest   `json:"requests"`
+	Events             []stuckThresholdEvent     `json:"events"`
+	EventTypes         []SessionEventKind        `json:"event_types"`
+	HandlerCommands    []string                  `json:"handler_commands"`
+	RecentSteps        []ToolStep                `json:"recent_steps"`
+	Messages           []protocol.Message        `json:"messages"`
+	RoundsWithoutTools int                       `json:"rounds_without_tools"`
+	NudgesUsed         int                       `json:"nudges_used"`
+	LastText           string                    `json:"last_text"`
+	TranscriptError    *stuckThresholdFault      `json:"transcript_error"`
+	ModelCalls         int                       `json:"model_calls"`
+	SessionStatus      *SessionStatus            `json:"session_status,omitempty"`
+	Busy               *bool                     `json:"busy,omitempty"`
+	RunCount           *int                      `json:"run_count,omitempty"`
+	TerminalEvents     []stuckThresholdTerminal  `json:"terminal_events,omitempty"`
+	TransportRequests  []stuckThresholdTransport `json:"transport_requests,omitempty"`
+}
+
+type stuckThresholdTransport struct {
+	Method         string          `json:"method"`
+	Path           string          `json:"path"`
+	Body           jsonvalue.Value `json:"body"`
+	ResponseStatus int             `json:"response_status"`
+	Response       jsonvalue.Value `json:"response"`
+	ResponseText   string          `json:"response_text"`
 }
 
 type stuckThresholdTerminal struct {
@@ -177,16 +191,19 @@ type stuckThresholdLoop struct {
 }
 
 type stuckThresholdFixture struct {
-	SourceSHA256 map[string]string      `json:"source_sha256"`
-	Versions     stuckThresholdVersions `json:"versions"`
-	Scope        []string               `json:"scope"`
-	Cases        []stuckThresholdCase   `json:"cases"`
-	Loops        []stuckThresholdLoop   `json:"loops"`
-	ManagedLoops []stuckThresholdLoop   `json:"managed_loops"`
+	SourceSHA256    map[string]string      `json:"source_sha256"`
+	Versions        stuckThresholdVersions `json:"versions"`
+	Scope           []string               `json:"scope"`
+	Cases           []stuckThresholdCase   `json:"cases"`
+	Loops           []stuckThresholdLoop   `json:"loops"`
+	ManagedLoops    []stuckThresholdLoop   `json:"managed_loops"`
+	SDKManagedLoops []stuckThresholdLoop   `json:"sdk_managed_loops"`
 }
 
 type stuckThresholdVersions struct {
-	Python string `json:"python"`
+	Python    string `json:"python"`
+	Anthropic string `json:"anthropic"`
+	HTTPX     string `json:"httpx"`
 }
 
 func readStuckThresholdFixture(t *testing.T) stuckThresholdFixture {
@@ -202,8 +219,8 @@ func readStuckThresholdFixture(t *testing.T) stuckThresholdFixture {
 	if err := decoder.Decode(&fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 61 || len(fixture.Loops) != 12 || len(fixture.ManagedLoops) != 2 {
-		t.Fatalf("actual Source inventory = %d cases/%d bare loops/%d managed loops; want 61/12/2", len(fixture.Cases), len(fixture.Loops), len(fixture.ManagedLoops))
+	if len(fixture.Cases) != 61 || len(fixture.Loops) != 12 || len(fixture.ManagedLoops) != 2 || len(fixture.SDKManagedLoops) != 2 || fixture.Versions.Anthropic != "0.107.1" {
+		t.Fatalf("actual Source inventory = %d cases/%d bare loops/%d managed loops/%d SDK loops, SDK %s; want 61/12/2/2, 0.107.1", len(fixture.Cases), len(fixture.Loops), len(fixture.ManagedLoops), len(fixture.SDKManagedLoops), fixture.Versions.Anthropic)
 	}
 	return fixture
 }
@@ -304,33 +321,42 @@ type stuckThresholdProvider struct {
 	turnCalls   int
 	calls       int
 	requests    []stuckThresholdRequest
+	delegate    Provider
 }
 
-func (provider *stuckThresholdProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+func (provider *stuckThresholdProvider) Complete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
 	provider.requests = append(provider.requests, stuckThresholdRequest{Messages: request.Clone().Messages})
-	if err := request.Validate(); err != nil {
-		return protocol.ModelReply{}, err
+	reply, err := provider.delegate.Complete(ctx, request)
+	if err != nil {
+		class, message, _ := strings.Cut(providerRunError(err), ": ")
+		provider.requests[len(provider.requests)-1].Error = &stuckThresholdFault{ExceptionClass: class, Message: message, Stage: "provider_create"}
+	} else {
+		provider.turnCalls++
 	}
+	return reply, err
+}
+
+func (provider *stuckThresholdProvider) Respond(_ context.Context, _ protocol.ModelRequest) (FakeGeneration, error) {
 	provider.calls++
-	provider.turnCalls++
-	if provider.finishAfter > 0 && provider.turnCalls > provider.finishAfter {
-		return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
+	turnCall := provider.turnCalls + 1
+	if provider.finishAfter > 0 && turnCall > provider.finishAfter {
+		return FakeGeneration{Content: []protocol.Block{protocol.NewTextBlock("done")}, StopReason: protocol.StopEndTurn}, nil
 	}
 	command := "same"
 	switch provider.pattern {
 	case "same":
 	case "varied-denied":
-		command = fmt.Sprintf("q%d", provider.turnCalls)
+		command = fmt.Sprintf("q%d", turnCall)
 	case "alternating":
 		command = "a"
-		if provider.turnCalls%2 == 0 {
+		if turnCall%2 == 0 {
 			command = "b"
 		}
 	default:
-		return protocol.ModelReply{}, fmt.Errorf("unknown stuck fixture pattern %q", provider.pattern)
+		return FakeGeneration{}, fmt.Errorf("unknown stuck fixture pattern %q", provider.pattern)
 	}
 	use := protocol.NewToolUseWithoutCaller(fmt.Sprintf("u%d", provider.calls), protocol.BashToolInput(protocol.BashInput{Command: command}))
-	return fakeReply([]protocol.Block{protocol.NewTextBlock("loop commentary"), use}, protocol.StopToolUse), nil
+	return FakeGeneration{Content: []protocol.Block{protocol.NewTextBlock("loop commentary"), use}, StopReason: protocol.StopToolUse}, nil
 }
 
 type stuckThresholdSystemBuilder struct{}
@@ -395,6 +421,12 @@ func assertStuckThresholdMessages(t *testing.T, got, want []protocol.Message, la
 func newStuckThresholdLoop(t *testing.T, row stuckThresholdLoop, managed bool) (*Session, *ManagedSession, *stuckThresholdProvider, *stuckThresholdHandler) {
 	t.Helper()
 	provider := &stuckThresholdProvider{pattern: row.Pattern, finishAfter: row.FinishAfter}
+	provider.delegate = NewFakeProvider(FakeProviderConfig{Responder: provider, Thinking: boolPointer(false)})
+	return newStuckThresholdLoopWithProvider(t, row, managed, provider)
+}
+
+func newStuckThresholdLoopWithProvider(t *testing.T, row stuckThresholdLoop, managed bool, provider *stuckThresholdProvider) (*Session, *ManagedSession, *stuckThresholdProvider, *stuckThresholdHandler) {
+	t.Helper()
 	handler := &stuckThresholdHandler{commands: make([]string, 0)}
 	var detector DefaultStuckDetector
 	var err error
@@ -464,8 +496,8 @@ func assertStuckThresholdTurn(t *testing.T, core *Session, provider *stuckThresh
 			break
 		}
 		assertStuckThresholdMessages(t, request.Messages, row.Requests[index].Messages, fmt.Sprintf("request %d", index))
-		if row.Requests[index].Error != nil {
-			t.Errorf("Source request %d failed at %s, matching turn unexpectedly crossed provider admission", index, row.Requests[index].Error.Stage)
+		if !reflect.DeepEqual(request.Error, row.Requests[index].Error) {
+			t.Errorf("request %d failure = %#v; Source = %#v", index, request.Error, row.Requests[index].Error)
 		}
 	}
 	if !reflect.DeepEqual(handler.commands, row.HandlerCommands) {
@@ -492,7 +524,7 @@ func TestStuckThresholdAgentTurnsMatchActualPython(t *testing.T) {
 			for index, turn := range row.Turns {
 				if index > 0 && row.Turns[index-1].Error != nil {
 					// The separately named boundary test retains and checks the
-					// rejected Source provider attempt and native earlier refusal.
+					// rejected Source provider attempt through the actual fake client.
 					break
 				}
 				provider.turnCalls, provider.requests = 0, nil
@@ -505,11 +537,9 @@ func TestStuckThresholdAgentTurnsMatchActualPython(t *testing.T) {
 	}
 }
 
-// This is evidence of an open caller-stage difference, not a parity pass:
-// Source attempts Fake.messages.create and catches InvalidTranscript; native
-// Session's compactor transcript validation refuses before Provider.Complete.
-// Both retain the actual first fault.
-func TestStuckThresholdPostFaultNativeIngressRemainsEarlierThanSource(t *testing.T) {
+// Both turns use the actual native fake provider. The second request reaches
+// its strict validator and is rejected before the responder or tool can run.
+func TestStuckThresholdPostFaultMatchesActualPython(t *testing.T) {
 	observed := 0
 	for _, row := range readStuckThresholdFixture(t).Loops {
 		if len(row.Turns) != 2 || row.Turns[0].Error == nil {
@@ -518,27 +548,13 @@ func TestStuckThresholdPostFaultNativeIngressRemainsEarlierThanSource(t *testing
 		observed++
 		t.Run(row.Name, func(t *testing.T) {
 			core, _, provider, handler := newStuckThresholdLoop(t, row, false)
-			first := row.Turns[0]
-			output, err := core.RunWithContext(context.Background(), first.Prompt, stuckThresholdRunContext(t, 1))
-			assertStuckThresholdTurn(t, core, provider, handler, first, output, err, core.Events())
-			second := row.Turns[1]
-			if len(second.Requests) != 1 || second.Requests[0].Error == nil || second.Requests[0].Error.Stage != "provider_create" || second.ModelCalls != 0 || len(second.HandlerCommands) != 0 {
-				t.Fatalf("Source post-fault provider observation missing: %#v", second)
+			for index, turn := range row.Turns {
+				provider.turnCalls, provider.requests = 0, nil
+				handler.commands = make([]string, 0)
+				beforeEvents := len(core.Events())
+				output, err := core.RunWithContext(context.Background(), turn.Prompt, stuckThresholdRunContext(t, index+1))
+				assertStuckThresholdTurn(t, core, provider, handler, turn, output, err, core.Events()[beforeEvents:])
 			}
-			beforeHistory := core.Messages()
-			provider.turnCalls, provider.requests = 0, nil
-			handler.commands = make([]string, 0)
-			output, err = core.RunWithContext(context.Background(), second.Prompt, stuckThresholdRunContext(t, 2))
-			if err == nil || !strings.HasPrefix(err.Error(), "compactor transcript:") || output != "" || len(provider.requests) != 0 || provider.turnCalls != 0 || len(handler.commands) != 0 {
-				t.Fatalf("native post-fault admission changed: output=%q err=%v requests=%d calls=%d commands=%q", output, err, len(provider.requests), provider.turnCalls, handler.commands)
-			}
-			wantNative := append(beforeHistory, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(second.Prompt)})
-			assertStuckThresholdMessages(t, core.Messages(), wantNative, "native refused")
-			assertStuckThresholdMessages(t, core.Messages(), second.Requests[0].Messages, "Source rejected provider request")
-			if second.Output == nil || !strings.HasPrefix(*second.Output, "[Error] ") || second.Error != nil || len(second.Messages) != len(core.Messages())+1 || second.TranscriptError == nil {
-				t.Fatalf("Source caught fault/retained error reply missing: %#v", second)
-			}
-			t.Logf("open boundary: Source %s at %s is caught into %q; native compactor transcript validation refuses before Provider.Complete with %q", second.Requests[0].Error.ExceptionClass, second.Requests[0].Error.Stage, *second.Output, err.Error())
 		})
 	}
 	if observed != 2 {
@@ -546,66 +562,136 @@ func TestStuckThresholdPostFaultNativeIngressRemainsEarlierThanSource(t *testing
 	}
 }
 
-func TestStuckThresholdManagedInitialFaultMatchesActualPythonTerminal(t *testing.T) {
+func assertStuckThresholdManagedTurn(t *testing.T, core *Session, managed *ManagedSession, provider *stuckThresholdProvider, handler *stuckThresholdHandler, turn stuckThresholdTurn, output string, err error, records []SessionEventRecord) {
+	t.Helper()
+	// Wrapper terminal events use the producer's declared outcome projection.
+	// Their identity headers remain outside this comparison; core events retain
+	// all captured identity fields, including the caught provider error.
+	coreTurn := turn
+	coreTurn.Events = make([]stuckThresholdEvent, 0)
+	for _, event := range turn.Events {
+		if turn.Error == nil || event.Type != EventError {
+			coreTurn.Events = append(coreTurn.Events, event)
+		}
+	}
+	coreRecords := make([]SessionEventRecord, 0)
+	terminals := make([]stuckThresholdTerminal, 0)
+	for _, record := range records {
+		switch record.Event.Kind() {
+		case EventStatus, EventError, EventDone:
+			data, marshalErr := json.Marshal(record)
+			if marshalErr != nil {
+				t.Fatal(marshalErr)
+			}
+			var terminal stuckThresholdTerminal
+			if decodeErr := json.Unmarshal(data, &terminal); decodeErr != nil {
+				t.Fatal(decodeErr)
+			}
+			terminals = append(terminals, terminal)
+			if record.Event.Kind() == EventError && turn.Error == nil {
+				coreRecords = append(coreRecords, record)
+			}
+		default:
+			coreRecords = append(coreRecords, record)
+		}
+	}
+	assertStuckThresholdTurn(t, core, provider, handler, coreTurn, output, err, coreRecords)
+	if !reflect.DeepEqual(terminals, turn.TerminalEvents) {
+		t.Errorf("managed terminal outcomes/order = %#v; want %#v", terminals, turn.TerminalEvents)
+	}
+	info := managed.Info()
+	if turn.SessionStatus == nil || turn.Busy == nil || turn.RunCount == nil || info.Status != *turn.SessionStatus || info.Busy != *turn.Busy || info.RunCount != *turn.RunCount {
+		t.Errorf("managed status/busy/run_count = %s/%v/%d; want %#v/%#v/%#v", info.Status, info.Busy, info.RunCount, turn.SessionStatus, turn.Busy, turn.RunCount)
+	}
+}
+
+func TestStuckThresholdManagedFaultAndFollowupMatchActualPython(t *testing.T) {
 	for _, row := range readStuckThresholdFixture(t).ManagedLoops {
 		t.Run(row.Name, func(t *testing.T) {
 			if len(row.Turns) != 2 || row.Turns[0].Error == nil {
 				t.Fatal("managed fixture must retain its actual first fault and later turn")
 			}
 			core, managed, provider, handler := newStuckThresholdLoop(t, row, true)
-			first := row.Turns[0]
-			output, err := managed.RunWithContext(context.Background(), first.Prompt, stuckThresholdRunContext(t, 1))
-			// The bare Agent effects/history and its scoped events match. Wrapper
-			// status/error events use the producer's explicit terminal projection;
-			// this does not assert wrapper event identity-header equivalence.
-			bareFirst := first
-			bareFirst.Events = make([]stuckThresholdEvent, 0)
-			for _, event := range first.Events {
-				if event.Type != EventError {
-					bareFirst.Events = append(bareFirst.Events, event)
+			for index, turn := range row.Turns {
+				provider.turnCalls, provider.requests = 0, nil
+				handler.commands = make([]string, 0)
+				beforeEvents := len(managed.Events())
+				output, err := managed.RunWithContext(context.Background(), turn.Prompt, stuckThresholdRunContext(t, index+1))
+				assertStuckThresholdManagedTurn(t, core, managed, provider, handler, turn, output, err, managed.Events()[beforeEvents:])
+			}
+		})
+	}
+}
+
+type stuckThresholdSDKTransport struct {
+	t        *testing.T
+	replies  []stuckThresholdTransport
+	requests []stuckThresholdTransport
+}
+
+func (transport *stuckThresholdSDKTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	transport.t.Helper()
+	index := len(transport.requests)
+	if index >= len(transport.replies) {
+		transport.t.Errorf("unexpected SDK transport request %d", index+1)
+		return nil, errors.New("unexpected SDK transport request")
+	}
+	data, err := io.ReadAll(request.Body)
+	if err != nil {
+		return nil, err
+	}
+	if err := request.Body.Close(); err != nil {
+		return nil, err
+	}
+	body, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return nil, err
+	}
+	want := transport.replies[index]
+	transport.requests = append(transport.requests, stuckThresholdTransport{Method: request.Method, Path: request.URL.Path, Body: body})
+	if want.ResponseText == "" {
+		transport.t.Fatal("missing captured SDK response bytes")
+	}
+	actualResponse, err := jsonvalue.Decode(want.ResponseText)
+	if err != nil || !actualResponse.PythonEqual(want.Response) {
+		transport.t.Fatalf("captured response bytes disagree with response observation: %v", err)
+	}
+	return &http.Response{StatusCode: want.ResponseStatus, Header: http.Header{"Content-Type": {"application/json"}}, Body: io.NopCloser(strings.NewReader(want.ResponseText)), Request: request}, nil
+}
+
+// The same session path also reaches a real native HTTP adapter. Captured SDK
+// response bytes drive the offline transport; no endpoint behavior is guessed.
+func TestStuckThresholdSDKManagedFollowupMatchesActualPython(t *testing.T) {
+	for _, row := range readStuckThresholdFixture(t).SDKManagedLoops {
+		t.Run(row.Name, func(t *testing.T) {
+			transport := &stuckThresholdSDKTransport{t: t}
+			for _, turn := range row.Turns {
+				transport.replies = append(transport.replies, turn.TransportRequests...)
+			}
+			zero := 0
+			client, err := provider.New(provider.Config{APIKey: "fixture-key", BaseURL: "https://fixture.invalid", HTTPClient: &http.Client{Transport: transport}, MaxRetries: &zero})
+			if err != nil {
+				t.Fatal(err)
+			}
+			observer := &stuckThresholdProvider{delegate: client}
+			core, managed, observed, handler := newStuckThresholdLoopWithProvider(t, row, true, observer)
+			for index, turn := range row.Turns {
+				observed.turnCalls, observed.requests = 0, nil
+				handler.commands = make([]string, 0)
+				beforeEvents, beforeRequests := len(managed.Events()), len(transport.requests)
+				output, err := managed.RunWithContext(context.Background(), turn.Prompt, stuckThresholdRunContext(t, index+1))
+				assertStuckThresholdManagedTurn(t, core, managed, observed, handler, turn, output, err, managed.Events()[beforeEvents:])
+				requests := transport.requests[beforeRequests:]
+				if len(requests) != len(turn.TransportRequests) {
+					t.Fatalf("actual HTTP calls = %d; Source = %d", len(requests), len(turn.TransportRequests))
+				}
+				for i, actual := range requests {
+					want := turn.TransportRequests[i]
+					if actual.Method != want.Method || actual.Path != want.Path || !actual.Body.PythonEqual(want.Body) {
+						t.Errorf("HTTP request method/path/body differs from actual SDK capture: %s %s\ngot %s\nwant %s", actual.Method, actual.Path, actual.Body.PythonString(), want.Body.PythonString())
+					}
 				}
 			}
-			coreRecords := make([]SessionEventRecord, 0)
-			terminals := make([]stuckThresholdTerminal, 0)
-			for _, record := range managed.Events() {
-				switch record.Event.Kind() {
-				case EventStatus, EventError, EventDone:
-					data, marshalErr := json.Marshal(record)
-					if marshalErr != nil {
-						t.Fatal(marshalErr)
-					}
-					var terminal stuckThresholdTerminal
-					if decodeErr := json.Unmarshal(data, &terminal); decodeErr != nil {
-						t.Fatal(decodeErr)
-					}
-					terminals = append(terminals, terminal)
-				default:
-					coreRecords = append(coreRecords, record)
-				}
-			}
-			assertStuckThresholdTurn(t, core, provider, handler, bareFirst, output, err, coreRecords)
-			if !reflect.DeepEqual(terminals, first.TerminalEvents) {
-				t.Errorf("managed terminal outcomes/order = %#v; want %#v", terminals, first.TerminalEvents)
-			}
-			info := managed.Info()
-			if first.SessionStatus == nil || first.Busy == nil || first.RunCount == nil || info.Status != *first.SessionStatus || info.Busy != *first.Busy || info.RunCount != *first.RunCount {
-				t.Errorf("managed status/busy/run_count = %s/%v/%d; want %#v/%#v/%#v", info.Status, info.Busy, info.RunCount, first.SessionStatus, first.Busy, first.RunCount)
-			}
-			second := row.Turns[1]
-			if len(second.Requests) != 1 || second.Requests[0].Error == nil || second.Requests[0].Error.Stage != "provider_create" {
-				t.Fatal("managed Source post-fault rejected request is missing")
-			}
-			provider.turnCalls, provider.requests = 0, nil
-			handler.commands = make([]string, 0)
-			output, err = managed.RunWithContext(context.Background(), second.Prompt, stuckThresholdRunContext(t, 2))
-			if err == nil || !strings.HasPrefix(err.Error(), "compactor transcript:") || output != "" || len(provider.requests) != 0 || provider.turnCalls != 0 || len(handler.commands) != 0 {
-				t.Fatalf("native managed post-fault boundary changed: output=%q err=%v requests=%d calls=%d commands=%q", output, err, len(provider.requests), provider.turnCalls, handler.commands)
-			}
-			assertStuckThresholdMessages(t, core.Messages(), second.Requests[0].Messages, "managed Source rejected provider request")
-			if second.SessionStatus == nil || second.Output == nil || second.Error != nil || second.TerminalEvents == nil {
-				t.Fatal("actual managed Source caught provider outcome is missing")
-			}
-			t.Logf("open managed boundary: Source status=%s output=%q; native compactor transcript validation returns status=%s err=%q; wrapper identity headers were not compared", *second.SessionStatus, *second.Output, managed.Info().Status, err.Error())
 		})
 	}
 }

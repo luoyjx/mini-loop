@@ -70,6 +70,7 @@ type Session struct {
 	persistence                                       *sessionPersistence
 	background                                        *backgroundState
 	repairedToolUses                                  []string
+	unpublishedBatch                                  *protocol.UnpublishedToolBatch
 	id                                                SessionID
 	owner                                             OwnerID
 	provider                                          Provider
@@ -204,7 +205,18 @@ func (s *Session) compact(ctx context.Context, envelope string, forced bool) err
 		return err
 	}
 	if validationErr := protocol.ValidateTranscript(result.Messages); validationErr != nil {
-		return fmt.Errorf("compactor transcript: %w", validationErr)
+		pairing, pairingFailure := validationErr.(*protocol.UnansweredToolUsesError)
+		if !pairingFailure || !s.unchangedUnpublishedTranscript(result.Messages) {
+			return fmt.Errorf("compactor transcript: %w", validationErr)
+		}
+		if err != nil {
+			if reported, pairingFailure := err.(*protocol.UnansweredToolUsesError); !pairingFailure || !pairing.SameBatch(reported) {
+				return err
+			}
+			err = nil
+		}
+	} else {
+		s.unpublishedBatch = nil
 	}
 	if len(result.Messages) == 0 {
 		return errors.New("compactor returned an empty transcript")
@@ -324,12 +336,18 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 		if err := s.compact(ctx, envelope, false); err != nil {
 			return "", err
 		}
-		if err := protocol.ValidateTranscript(s.messages); err != nil {
+		if err := s.validateDispatchTranscript(s.messages); err != nil {
 			return "", fmt.Errorf("transcript before model call: %w", err)
 		}
 		request, envelope, err := s.buildRequest()
 		if err != nil {
 			return "", err
+		}
+		if s.unpublishedBatch != nil {
+			request, err = request.WithUnpublishedToolBatch(*s.unpublishedBatch)
+			if err != nil {
+				return "", err
+			}
 		}
 		s.envelope = envelope
 		reply, err := s.completeModel(ctx, request, &s.requestCatalog)
@@ -461,6 +479,8 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			// detector failures retain the existing completed-result repair.
 			if _, sourceFault := inspectErr.(*StuckInspectionError); !sourceFault {
 				s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+			} else {
+				s.observeUnpublishedToolBatch()
 			}
 			return "", inspectErr
 		}

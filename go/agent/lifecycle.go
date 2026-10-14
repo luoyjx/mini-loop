@@ -339,7 +339,7 @@ func (s *Session) completeProjectedModel(ctx context.Context, request protocol.M
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}
-	if err := request.Validate(); err != nil {
+	if err := request.ValidateForDispatch(); err != nil {
 		return protocol.ModelReply{}, fmt.Errorf("model request: %w", err)
 	}
 	var systemHash *string
@@ -416,6 +416,7 @@ func (s *Session) completeProjectedModel(ctx context.Context, request protocol.M
 				return err
 			}
 			s.messages = append([]protocol.Message(nil), messages...)
+			s.unpublishedBatch = nil
 			s.publishLive()
 			return nil
 		},
@@ -456,6 +457,11 @@ func (s *Session) completeProjectedModel(ctx context.Context, request protocol.M
 	return reply, nil
 }
 func boundedError(err error) string {
+	if fault, ok := err.(dispatchErrorDetail); ok {
+		if detail, observed := fault.DispatchErrorDetail(); observed {
+			return truncateRunes(detail, 500)
+		}
+	}
 	if fault, ok := err.(*StuckInspectionError); ok {
 		return fmt.Sprintf("%s: %s", fault.ExceptionClass(), fault.Error())
 	}

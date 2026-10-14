@@ -42,6 +42,7 @@ const (
 // Failure contains bounded, credential-scrubbed diagnostic text, never raw wire
 // bytes or a response handle. Status and retry headers retain their own meanings.
 type Failure struct {
+	dispatchDetail    string
 	class             ErrorClass
 	recoveryKind      protocol.ModelFailureKind
 	Kind              FailureKind
@@ -229,7 +230,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 	if err := ctx.Err(); err != nil {
 		return protocol.ModelReply{}, err
 	}
-	if err := input.Validate(); err != nil {
+	if err := input.ValidateForDispatch(); err != nil {
 		return protocol.ModelReply{}, &Failure{Kind: FailureProtocol, Message: "invalid provider request"}
 	}
 	if c.defaultTimeout && input.MaxTokens > DirectTokenCeiling(input.Model) {
@@ -246,7 +247,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 		return protocol.ModelReply{}, err
 	}
 	for attempt := 0; ; attempt++ {
-		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt)
+		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt, input.HasUnpublishedToolBatch())
 		if err != nil {
 			return protocol.ModelReply{}, err
 		}
@@ -261,7 +262,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 		}
 	}
 }
-func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protocol.ModelReply, *Failure, bool, time.Duration, error) {
+func (c *Client) attempt(ctx context.Context, body []byte, attempt int, observedBatch bool) (protocol.ModelReply, *Failure, bool, time.Duration, error) {
 	callCtx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 	req, err := c.target.request(callCtx, body)
@@ -310,6 +311,9 @@ func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protoco
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
 		retryAfter := parseRetryAfter(response.Header, c.now())
 		failure := &Failure{Kind: FailureStatus, Status: response.StatusCode, Message: c.statusMessage(response.StatusCode, data), RequestID: c.clean(response.Header.Get("request-id"), 200), RetryAfter: retryAfter, RetryAfterSeconds: retryAfterSeconds(response.Header.Get("retry-after"))}
+		if observedBatch {
+			failure.dispatchDetail = c.observedDispatchStatusDetail(failure, data)
+		}
 		return protocol.ModelReply{}, failure, shouldRetry(response.StatusCode, response.Header), c.backoff(attempt, retryAfter), nil
 	}
 	reply, err := decodeReply(data)

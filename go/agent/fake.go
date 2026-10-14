@@ -55,6 +55,9 @@ func (p *FakeProvider) generate(ctx context.Context, request protocol.ModelReque
 		return protocol.ModelReply{}, err
 	}
 	if err := request.Validate(); err != nil {
+		if pairing, ok := err.(*protocol.UnansweredToolUsesError); ok && request.HasUnpublishedToolBatch() && request.ValidateForDispatch() == nil {
+			return protocol.ModelReply{}, &fakeTranscriptFailure{pairing: pairing}
+		}
 		return protocol.ModelReply{}, err
 	}
 	if len(request.Cache.Messages)+boolCount(request.Cache.System != nil) > 4 {

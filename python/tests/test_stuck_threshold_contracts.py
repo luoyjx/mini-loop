@@ -10,7 +10,7 @@ from tools.stuck_threshold_contracts import INT64_MAX, INT64_MIN, stuck_threshol
 
 def test_actual_stuck_threshold_boundaries_and_agent_loops(monkeypatch):
     def deny_network(*args, **kwargs):
-        raise AssertionError("stuck contracts must use only the offline fake client")
+        raise AssertionError("stuck contracts must use only offline fake/MockTransport clients")
 
     monkeypatch.setattr(socket.socket, "connect", deny_network)
     monkeypatch.setattr(socket.socket, "connect_ex", deny_network)
@@ -134,3 +134,34 @@ def test_actual_stuck_threshold_boundaries_and_agent_loops(monkeypatch):
         assert second["requests"] == loops[name]["turns"][1]["requests"]
         assert second["messages"] == loops[name]["turns"][1]["messages"]
         assert second["model_calls"] == 0
+
+    assert observed["versions"]["anthropic"] == "0.107.1"
+    sdk_managed = {row["name"]: row for row in observed["sdk_managed_loops"]}
+    assert set(sdk_managed) == set(managed)
+    assert len(observed["sdk_managed_loops"]) == 2
+    for row in sdk_managed.values():
+        first, second = row["turns"]
+        assert first["error"] == {
+            "exception_class": "IndexError", "message": "tuple index out of range", "stage": "session_run"}
+        assert first["handler_commands"] == ["same"]
+        assert first["model_calls"] == 1
+        assert first["session_status"] == "error"
+        assert len(first["transport_requests"]) == len(second["transport_requests"]) == 1
+        assert first["transport_requests"][0]["response_status"] == 200
+        wire = second["transport_requests"][0]
+        assert wire["method"] == "POST" and wire["path"] == "/v1/messages"
+        assert wire["response_status"] == 400
+        assert wire["body"]["messages"] == second["requests"][0]["messages"]
+        assert second["requests"][0]["messages"][:2] == first["messages"]
+        assert second["handler_commands"] == second["recent_steps"] == []
+        assert second["model_calls"] == 0
+        failure = second["requests"][0]["error"]
+        assert failure["exception_class"] == "BadRequestError"
+        assert failure["stage"] == "provider_create"
+        assert second["error"] is None
+        assert second["output"] == "[Error] " + failure["exception_class"] + ": " + failure["message"]
+        assert second["last_text"] == second["output"]
+        assert second["session_status"] == "idle"
+        assert second["busy"] is False and second["run_count"] == 2
+        assert second["terminal_events"][-1] == {
+            "type": "done", "text": second["output"], "phase": "final_answer"}
