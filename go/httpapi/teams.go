@@ -27,7 +27,7 @@ func (s *Server) sessionTeam(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, agent.ErrSessionNotFound) {
 			writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No session '%s'", session.ID())})
 		} else {
-			writeSelfAuditFailure(w)
+			writeTeamInternalFailure(w)
 		}
 		return
 	}
@@ -41,10 +41,20 @@ func (s *Server) sessionTeam(w http.ResponseWriter, r *http.Request) {
 	// Validate the complete projection before writing headers; peek never drains.
 	data, err := json.Marshal(response)
 	if err != nil {
-		writeSelfAuditFailure(w)
+		writeTeamInternalFailure(w)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(data)
+}
+
+// Source's uncaught mailbox/encoding failures reach the outer framework error
+// response after security-header middleware unwinds. Keep this projection local
+// to the team route; ordinary denials and successful views retain those headers.
+func writeTeamInternalFailure(w http.ResponseWriter) {
+	for _, name := range []string{"Content-Security-Policy", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy"} {
+		w.Header().Del(name)
+	}
+	writeSelfAuditFailure(w)
 }

@@ -1,5 +1,16 @@
 # Hardening notes
 
+## 2026-10-14 team view boundaries
+
+Team lookup remains owner-before-I/O, and peek remains non-consuming. Default
+managed sessions always bind a team. The absent-team HTTP comparison uses a
+controlled augmented test assembly, with restore before shutdown. It adds no
+production constructor or mutator. An absent identity returns without touching
+even a corrupt mailbox. After restoration, the actual corrupt-mailbox error is
+an opaque outer-framework 500 without the four security headers; ordinary
+successes and denials retain them. The projection change is local to team view.
+
+
 ## Go content identity and detached runtime observations — 2026-10-14
 
 Baseline `48fd26d`. A VCS revision plus a dirty flag cannot distinguish two

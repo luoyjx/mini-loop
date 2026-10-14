@@ -1,0 +1,331 @@
+{
+  "cases": [
+    {
+      "actual_peek_calls": 1,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "default-lead",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "inbox": [
+          {
+            "content": "unread one",
+            "metadata": {}
+          },
+          {
+            "content": "unread two",
+            "metadata": {}
+          }
+        ],
+        "name": "lead",
+        "session": "session-alice",
+        "team": "session-alice"
+      },
+      "state": "default-managed",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "missing-team-key",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "session": "session-alice",
+        "team": null
+      },
+      "state": "missing-key",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "null-team-key",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "session": "session-alice",
+        "team": null
+      },
+      "state": "explicit-none",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "detached-agent",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "session": "session-alice",
+        "team": null
+      },
+      "state": "detached-agent",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "foreign-teamless",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "detail": "No session 'session-alice'"
+      },
+      "state": "explicit-none",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "no-auth-teamless",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "state": "explicit-none",
+      "status": 401,
+      "token": ""
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "bad-auth-teamless",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "state": "explicit-none",
+      "status": 401,
+      "token": "wrong"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "unknown-teamless",
+      "path": "/sessions/missing/team",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "state": "explicit-none",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "POST",
+      "model_calls": 0,
+      "name": "wrong-method-teamless",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "detail": "Method Not Allowed"
+      },
+      "state": "explicit-none",
+      "status": 405,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 0,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+      "mailbox_before_hex": "ff",
+      "mailbox_before_sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "teamless-corrupt-mailbox",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "session": "session-alice",
+        "team": null
+      },
+      "state": "explicit-none",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 1,
+      "headers": {
+        "content-type": "text/plain; charset=utf-8"
+      },
+      "mailbox_after_sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+      "mailbox_before_hex": "ff",
+      "mailbox_before_sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "restored-corrupt-mailbox",
+      "path": "/sessions/session-alice/team",
+      "response": "Internal Server Error",
+      "state": "restored-managed",
+      "status": 500,
+      "token": "token-a"
+    },
+    {
+      "actual_peek_calls": 1,
+      "headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "mailbox_after_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_before_hex": "7b22636f6e74656e74223a22756e72656164206f6e65222c226d65746164617461223a7b7d7d0a7b22636f6e74656e74223a22756e726561642074776f222c226d65746164617461223a7b7d7d0a",
+      "mailbox_before_sha256": "152e06e4bd8f869814743e57a6d227d10b67ea5157bfe8e0295d7fb0596f3a99",
+      "mailbox_unchanged": true,
+      "method": "GET",
+      "model_calls": 0,
+      "name": "restored-lead",
+      "path": "/sessions/session-alice/team",
+      "response": {
+        "inbox": [
+          {
+            "content": "unread one",
+            "metadata": {}
+          },
+          {
+            "content": "unread two",
+            "metadata": {}
+          }
+        ],
+        "name": "lead",
+        "session": "session-alice",
+        "team": "session-alice"
+      },
+      "state": "restored-managed",
+      "status": 200,
+      "token": "token-a"
+    }
+  ],
+  "model_calls": 0,
+  "producer_sha256": "78232bfc8d7dfa8b1b0a2df2f948b05353f547e20605b3df4ad576bab6c52938",
+  "scope": [
+    "Actual Source FastAPI handler requests, real SessionManager and MessageBus.peek; no projected stand-in for a route response.",
+    "Default management always binds team=session id/name=lead. No-team cases explicitly customize the public Agent.state dictionary or AgentSession.agent property after creation.",
+    "Only random session identifiers are normalized; complete response, selected security headers, mailbox bytes and real peek/model call counts are retained.",
+    "Missing/None team identity and a detached Agent return no-team without reading even a corrupt mailbox. Auth and ownership denial remain before the view.",
+    "This Source corpus does not prove that a native public manager can construct the same state. Native default managed sessions currently always bind a private team identity.",
+    "No arbitrary false-valued Python object, native custom constructor, OS confinement, full team lifecycle, SDK surrogate or whole-port acceptance claim."
+  ],
+  "sessions_created": 2,
+  "source_sha256": {
+    "mini_loop/auth.py": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+    "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "mini_loop/server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+  }
+}

@@ -6794,6 +6794,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.null_boundary_contracts import null_boundary_contracts
     from tools.public_identity_audit_contracts import public_identity_audit_contracts
     from tools.public_harness_contracts import public_harness_contracts
+    from tools.teamless_http_contracts import teamless_http_contracts
     from tools.extension_subagent_contracts import extension_subagent_contracts
     from tools.mcp_model_root_contracts import mcp_model_root_contracts
     from tools.mcp_mapping_key_contracts import mcp_mapping_key_contracts, mcp_mapping_key_journal_contracts
@@ -7208,6 +7209,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-null-boundaries.json": _json_bytes(null_boundary_contracts()),
         "python-public-identity-audit.json": _json_bytes(public_identity_audit_contracts(Path(scratch))),
         "python-public-harness.json": _json_bytes(public_harness_contracts(Path(scratch))),
+        "python-teamless-http.json": _json_bytes(teamless_http_contracts(Path(scratch))),
         "python-extension-subagents.json": _json_bytes(extension_subagent_contracts()),
         "python-mcp-model-roots.json": _json_bytes(mcp_model_root_contracts()),
         "python-mcp-mapping-keys.json": _json_bytes(mcp_mapping_key_contracts()),

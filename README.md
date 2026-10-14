@@ -570,7 +570,14 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: local main `48fd26d`. This iteration adds a
+Current runtime review baseline: local main `a378a2b`. Real HTTP comparisons
+cover controlled absent-team state, auth/owner, mailbox preservation and corrupt
+mailbox recovery. Default managed sessions still bind a team. Native absent-team
+state uses only augmented test assembly. The team route's internal errors match
+Source's opaque outer-error 500 projection, including four security headers.
+See [the iteration evidence](docs/audits/go-remaining-contract-evidence-2026-10-14.md).
+
+Previous runtime review baseline: local main `48fd26d`. That iteration added a
 shared native identity helper: a streamed executable-content fingerprint and
 one package-initialization process timestamp, PID and wall-clock uptime. Failed
 fingerprint reads remain explicit and retryable; successful results stay cached.
@@ -1069,7 +1076,7 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>streamed artifact content ID · shared process identity<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>Cron ordered field-level 422 before owner lookup<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>Python config strip / numeric parsing distinction<br/>owned routes / raw query decode / named admission cache<br/>Cron ordered field-level 422 before owner lookup<br/>owned team view / non-consuming peek / opaque internal errors<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
