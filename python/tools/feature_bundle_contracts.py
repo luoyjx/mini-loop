@@ -18,6 +18,7 @@ def feature_bundle_contracts(scratch) -> dict:
             parallel_safe=registry.get(name).parallel_safe,
             risk=registry.get(name).risk,
             capabilities=sorted(registry.get(name).capabilities),
+            handler_bound=callable(registry.get(name).handler),
             modes=[registry.get(name).execution_mode(SimpleNamespace(
                 input={"run_in_background": value})) for value in (False, True)],
         ) for name in registry.names()]
@@ -25,10 +26,14 @@ def feature_bundle_contracts(scratch) -> dict:
     groups = ("tasks", "background", "memory", "cron", "plan", "goals",
               "diagnostics", "session_query", "teams", "worktrees", "mcp",
               "self_audit")
-    registry_cases = [dict(name="default", tools=catalogue(default_registry())),
-                      dict(name="full", tools=catalogue(full_registry()))]
-    registry_cases.extend(dict(name=f"without-{group}",
-        tools=catalogue(full_registry(**{group: False}))) for group in groups)
+    def registry_case(name, *, default=False, omitted=None):
+        selection = {group: not default and group != omitted for group in groups}
+        registry = default_registry() if default else full_registry(**selection)
+        return dict(name=name, selection=dict(kind="default" if default else "full",
+                    groups=selection), tools=catalogue(registry))
+
+    registry_cases = [registry_case("default", default=True), registry_case("full")]
+    registry_cases.extend(registry_case(f"without-{group}", omitted=group) for group in groups)
 
     async def manager_case(name, *, enabled=False, custom_tools=False,
                            custom_injectors=False, workflows=False, ast=False,
@@ -50,6 +55,11 @@ def feature_bundle_contracts(scratch) -> dict:
         try:
             session = manager.create(owner="fixture")
             return dict(name=name, tools=catalogue(session.agent.tools),
+                selection=dict(enable_features=enabled, custom_tools=custom_tools,
+                    custom_injectors=custom_injectors, workflows=workflows,
+                    ast=ast, decisions=decisions),
+                bindings=dict(manager=session.agent.state.get("manager") is manager,
+                    session=session.agent.state.get("session") is session),
                 manager_injectors=[f.__name__ for f in manager.injectors],
                 agent_injectors=[f.__name__ for f in session.agent.injectors],
                 state_keys=sorted(session.agent.state),

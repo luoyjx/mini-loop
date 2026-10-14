@@ -1,0 +1,175 @@
+{
+  "payload": {
+    "nested": [
+      "visible fixture-secret-7"
+    ],
+    "token": "fixture-secret-7"
+  },
+  "rows": [
+    {
+      "busy": null,
+      "construction": "omitted",
+      "layer": "agent",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": null,
+      "secret_class": "NullSecretRegistry",
+      "session_status": null,
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": null,
+      "stored_events": null,
+      "stored_messages": null,
+      "stored_sessions": null
+    },
+    {
+      "busy": null,
+      "construction": "none",
+      "layer": "agent",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": null,
+      "secret_class": "NullSecretRegistry",
+      "session_status": null,
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": null,
+      "stored_events": null,
+      "stored_messages": null,
+      "stored_sessions": null
+    },
+    {
+      "busy": false,
+      "construction": "omitted",
+      "layer": "session",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": 1,
+      "secret_class": "NullSecretRegistry",
+      "session_status": "idle",
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": "NullStateStore",
+      "stored_events": 0,
+      "stored_messages": 0,
+      "stored_sessions": 0
+    },
+    {
+      "busy": false,
+      "construction": "none",
+      "layer": "session",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": 1,
+      "secret_class": "NullSecretRegistry",
+      "session_status": "idle",
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": "NullStateStore",
+      "stored_events": 0,
+      "stored_messages": 0,
+      "stored_sessions": 0
+    },
+    {
+      "busy": false,
+      "construction": "omitted",
+      "layer": "manager",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": 1,
+      "secret_class": "NullSecretRegistry",
+      "session_status": "idle",
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": "NullStateStore",
+      "stored_events": 0,
+      "stored_messages": 0,
+      "stored_sessions": 0
+    },
+    {
+      "busy": false,
+      "construction": "none",
+      "layer": "manager",
+      "live_messages": 2,
+      "mask_payload": {
+        "nested": [
+          "visible fixture-secret-7"
+        ],
+        "token": "fixture-secret-7"
+      },
+      "mask_text": "visible fixture-secret-7",
+      "model_calls": 1,
+      "output": "visible fixture-secret-7",
+      "persist_error": null,
+      "run_count": 1,
+      "secret_class": "NullSecretRegistry",
+      "session_status": "idle",
+      "sqlite_connect_calls": 0,
+      "sqlite_files_after_stop": [],
+      "state_class": "NullStateStore",
+      "stored_events": 0,
+      "stored_messages": 0,
+      "stored_sessions": 0
+    }
+  ],
+  "sample": "visible fixture-secret-7",
+  "scope": [
+    "Six actual public omitted/explicit-None constructors followed by an offline run; session and manager rows also stop their live owner.",
+    "Default Null secret masking and Null state readback are actual observations, not assumptions about named Go classes.",
+    "sqlite3.connect is a rejecting tripwire; temporary roots are inspected for SQLite file headers after stop.",
+    "No explicit SecretRegistry, sandbox or SQLite backend equivalence is claimed; those have separate existing evidence."
+  ],
+  "source_sha256": {
+    "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "mini_loop/secrets.py": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+    "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "mini_loop/storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+    "tools/null_boundary_contracts.py": "4786876a4ba6a483eec36091e648a69dee65e4e4e8cb8b387fe621fd01b00371"
+  }
+}
