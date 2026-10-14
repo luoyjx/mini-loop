@@ -4544,7 +4544,7 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 2000" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 2140" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
         <desc id="archify-diagram-description">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains</desc>
         <!-- Definitions -->
@@ -4639,10 +4639,12 @@
         <path data-edge-from="goGate" data-edge-to="goWorkflow" data-edge-key="50" data-edge-id="go-workflow-tools" data-composition-points="1510,1180;1510,1143;1510,1143;1510,1106" d="M 1510 1180 L 1510 1143 L 1510 1143 L 1510 1106" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goWorkflow" data-edge-to="goSession" data-edge-key="51" data-edge-id="goWorkflowEvents" data-composition-points="1370,1068;1300,1068;1300,1090;790,1090;790,1218;850,1218" d="M 1370 1068 L 1308 1068 Q 1300 1068 1300 1076 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goApprovals" data-edge-to="goChildren" data-edge-key="52" data-edge-id="goGuardianReview" data-composition-points="2200,1018;2410,1018;2410,1700;1535,1700;1535,1616" d="M 2200 1018 L 2402 1018 Q 2410 1018 2410 1026 L 2410 1692 Q 2410 1700 2402 1700 L 1543 1700 Q 1535 1700 1535 1692 L 1535 1616" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goContractInputs" data-edge-to="goContractAudit" data-edge-key="53" data-edge-id="goContractRead" data-composition-points="650,1858;990,1858" d="M 650 1858 L 990 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goContractAudit" data-edge-to="goContractEvidence" data-edge-key="54" data-edge-id="goContractRecord" data-composition-points="1310,1858;1650,1858" d="M 1310 1858 L 1650 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goContractInputs" data-edge-to="goContractAudit" data-edge-key="53" data-edge-id="goContractRead" data-composition-points="650,1851;674,1851;674,1874;966,1874;966,1858;990,1858" d="M 650 1851 L 666 1851 Q 674 1851 674 1859 L 674 1866 Q 674 1874 682 1874 L 958 1874 Q 966 1874 966 1866 L 966 1866 Q 966 1858 974 1858 L 990 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goContractAudit" data-edge-to="goContractEvidence" data-edge-key="54" data-edge-id="goContractRecord" data-composition-points="1310,1858;1334,1858;1334,1874;1626,1874;1626,1851;1650,1851" d="M 1310 1858 L 1326 1858 Q 1334 1858 1334 1866 L 1334 1866 Q 1334 1874 1342 1874 L 1618 1874 Q 1626 1874 1626 1866 L 1626 1859 Q 1626 1851 1634 1851 L 1650 1851" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goSession" data-edge-label="permission events" data-edge-key="55" data-edge-id="goPermissionEvents" data-composition-points="1370,1218;1180,1218" d="M 1370 1218 L 1180 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goFiles" data-edge-to="goPythonParser" data-edge-key="56" data-edge-id="goDefaultPythonSyntax" data-composition-points="2060,1436;2060,1460" d="M 2060 1436 L 2060 1460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goContractInputs" data-edge-to="goCI" data-edge-key="57" data-edge-id="goCIRead" data-composition-points="650,1865;820,1865;820,1978;990,1978" d="M 650 1865 L 812 1865 Q 820 1865 820 1873 L 820 1970 Q 820 1978 828 1978 L 990 1978" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goCI" data-edge-to="goContractEvidence" data-edge-key="58" data-edge-id="goCIRecord" data-composition-points="1370,1978;1510,1978;1510,1865;1650,1865" d="M 1370 1978 L 1502 1978 Q 1510 1978 1510 1970 L 1510 1873 Q 1510 1865 1518 1865 L 1650 1865" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5112,6 +5114,18 @@
         <text data-detail="context" x="2060" y="1506" class="t-muted" font-size="9" text-anchor="middle">external ast.parse · full profile</text>
         </g>
 
+        <g id="node-goCI" data-node-id="goCI" data-node-label="GitHub arm64 acceptance" tabindex="0" role="button" aria-label="Focus GitHub arm64 acceptance, same image: Source → full → vet → race, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="same image: Source → full → vet → race" data-node-tag="3 GiB · CPU2 · offline gates" data-node-context="Architecture component">
+          <title>GitHub arm64 acceptance · same image: Source → full → vet → race · Architecture component · 3 GiB · CPU2 · offline gates</title>
+          <rect x="990" y="1940" width="380" height="76" rx="6" class="c-mask"/>
+          <rect x="990" y="1940" width="380" height="76" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(996 1946) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text data-detail-anchor x="1180" y="1976" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">GitHub arm64 acceptance</text>
+        <text data-detail="context" x="1180" y="1992" class="t-muted" font-size="9" text-anchor="middle">same image: Source → full → vet → race</text>
+        <text data-detail="fine" x="1180" y="2008" class="t-cloud" font-size="7" text-anchor="middle">3 GiB · CPU2 · offline gates</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5279,32 +5293,38 @@
         </g>
 
 
+
+
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="1971" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="2111" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="1976" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="1984" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="2116" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="2124" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="1976" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="1984" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="2116" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="2124" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="1976" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="1984" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="2116" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="2124" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="1976" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="1984" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="2116" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="2124" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="1976" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="1984" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="2116" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="2124" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="1976" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="1984" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="2116" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="2124" class="t-muted" font-size="8">Database</text>
+          </g>
+          <g data-legend-kind="cloud">
+            <rect x="674" y="2116" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
+            <text x="694" y="2124" class="t-muted" font-size="8">Cloud</text>
           </g>
         </g>
       </svg>
@@ -5560,6 +5580,7 @@
           <h3>Language layout</h3>
         </div>
         <ul>
+          <li>&bull; Operator-pipeline review baseline ee9a5dd: explicit GitHub arm64 workflow prepares the same fixed public Go base configuration and existing dependencies, then recaptures Source3.11.2 and runs native full/vet/race serially in the same newly identified image. Offline test containers retain3GiB/1GiB soft/CPU2/p1/test2; Linux MemAvailable/PSI and owned RSS are recorded. No production credentials or runtime authority are granted. Raw evidence is transported with byte hashes; caches are excluded and their original CI checks remain explicit. Infrastructure tests18pass do not count as actual Linux gates. All1864 runtime inputs still match prior host evidence. No required-row delta or full acceptance until actual CI results.</li>
           <li>&bull; Validation resource review baseline 606630f runtime / 32a2286 documentation: the user approved four times the proposed768MiB/256MiB profile, now a3GiB container hard limit and1GiB Go soft target. The new runner preserves CPU2/package1/test2/offline inputs/full assertions/owned cleanup; first observed warning stops the stage. The original sealed runner and historical receipts remain unchanged. The new Source preflight stopped before container creation because host pressure was already warning;24 readiness samples also stayed warning. No new native pass, required-row delta or full acceptance. Policy approval is resolved; execution now needs host readiness. Runtime topology, authority and defaults are unchanged.</li>
           <li>&bull; Validation review baseline 606630f runtime / 322f925 documentation: Linux arm64 Source-only capture completed all six original platform-sensitive producer groups / 66 recipes on CPython3.11.2. Unchanged sealed profile, 12.32 seconds, 153.87 MiB cgroup peak, all recorded host-pressure samples normal, no OOM and owned resources absent after cleanup. The same1864 runtime inputs still match all16 current host gates. This stage executes no native3.11.3 probe, parser/IDNA Go consumer or Linux Go full/vet/race. Those three Linux native gates remain unstarted pending resource-policy approval. The original344-row ledger stays339/0/5; no delta or full acceptance. No architecture component, topology, authority or default changed.</li>
           <li>&bull; Review baseline 77a57cb + native IDNA slice: provider hostname admission uses project-owned RFC3492 Punycode and complete fixed CPython Unicode14 NFC/Bidi data with idna3.18 Unicode17 validity/context/script/joining tables. Whole-host ASCII bypass precedes Unicode lowercasing; Unicode labels must already be NFC. No new Go modules and no Python runtime call for IDNA. Constructor versus request refusal, original configured identity and existing transport routing stay explicit. Current host full Go/vet/race, exact Python2256 passed/28 skipped,268 Source contracts, four type audits and generated-byte checks pass on the same1864 inputs. All84 IDNA cases pass under ordinary/race, with actual NFC/Bidi and raw codec differential evidence. The first Source check completed under warning and remains unqualified; its identical-policy retry passed under normal pressure. App statement coverage85.53%. Prior b8dd27a platform evidence remains historical. Linux resource policy is unchanged and approval for the lower-memory profile is pending. The original row ledger stays339/0/5 until complete evidence and an explicit delta.</li>

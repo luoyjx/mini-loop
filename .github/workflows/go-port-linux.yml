@@ -1,0 +1,53 @@
+name: Go port Linux acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/go-linux-ci]
+    paths:
+      - .github/workflows/go-port-linux.yml
+      - ci/go-port/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: go-port-linux-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - name: Check out the exact public revision
+        run: |
+          sudo env -i PATH=/usr/local/bin:/usr/bin:/bin \
+            CI_REPOSITORY="$GITHUB_REPOSITORY" CI_SHA="$GITHUB_SHA" \
+            CI_WORKSPACE="$GITHUB_WORKSPACE" python3 - <<'PY'
+          import os, pathlib, re, subprocess
+          repository, revision = os.environ['CI_REPOSITORY'], os.environ['CI_SHA']
+          assert repository == 'luoyjx/mini-loop'
+          assert re.fullmatch(r'[0-9a-f]{40}', revision)
+          workspace = pathlib.Path(os.environ['CI_WORKSPACE'])
+          workspace.mkdir(parents=True, exist_ok=True)
+          assert not workspace.is_symlink()
+          os.chown(workspace, os.geteuid(), os.getegid())
+          def git(*args):
+              return subprocess.check_output(['git', '-C', str(workspace), *args], text=True).strip()
+          git('init', '-q')
+          git('remote', 'add', 'origin', 'https://github.com/' + repository + '.git')
+          git('fetch', '--no-tags', '--depth=64', 'origin', revision)
+          git('checkout', '--detach', 'FETCH_HEAD')
+          assert git('rev-parse', 'HEAD') == revision
+          PY
+      - name: Bootstrap fixed inputs and run complete Linux gates
+        run: |
+          sudo env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+            GITHUB_ACTIONS=true GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            GITHUB_SHA="$GITHUB_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" GITHUB_REF="$GITHUB_REF" \
+            GITHUB_WORKFLOW_SHA="$GITHUB_WORKFLOW_SHA" GITHUB_WORKFLOW_REF="$GITHUB_WORKFLOW_REF" \
+            PYTHONUNBUFFERED=1 nice -n 10 python3 ci/go-port/run.py \
+            --repo-root "$GITHUB_WORKSPACE" --out "$RUNNER_TEMP/go-port" \
+            --revision "$GITHUB_SHA"

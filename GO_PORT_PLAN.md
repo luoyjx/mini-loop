@@ -1,5 +1,23 @@
 # Go port plan
 
+## 2026-10-15 portable GitHub arm64 validation path
+
+The local host remains under warning pressure despite the approved 3 GiB budget.
+An explicit GitHub arm64 workflow now prepares fixed public inputs and runs
+Source/full/vet/race serially in one derived image. The official Go arm64 manifest
+resolves to the exact previous local base config; CPython versions and all 22
+wheel hashes remain fixed. No application code, dependency or feature default
+changes. Eighteen small infrastructure tests and fixed-input checks pass.
+
+The job uses real Linux MemAvailable/PSI, 3 GiB containers, a 1 GiB Go soft target,
+two cores, package concurrency one and offline test execution. Raw Source,
+package/test events, ownership cleanup and byte hashes must pass the new verifier.
+Only actual workflow results can close the remaining platform gates; 339/0/5
+remains unchanged during preparation. Next: trigger the branch workflow, inspect
+its real job/step state, recover and revalidate the raw evidence, then assemble
+the host/CI receipt and exact five-row delta. See
+[the operator CI boundary and implementation](docs/audits/go-linux-ci-2026-10-15.md).
+
 ## 2026-10-15 approved fourfold validation memory profile
 
 The user approved increasing memory fourfold relative to the proposed 768 MiB

@@ -1,0 +1,12 @@
+Use case: precise-object-edit / infographic-diagram
+Asset type: mini-loop repository iteration architecture PNG, landscape 1536x1024.
+Input image: the attached updated complete layered base is the edit target.
+Primary request: highlight the new operator GitHub arm64 Linux validation path. Preserve all five layers, all runtime cards, every arrow, all six right-column boundaries, all existing IDNA and CPython labels, and the footer. Keep migration acceptance marked as still in progress.
+Change only: add a slim orange highlight and marker1 to the existing L5 操作员契约审计 card (contractaudit · Linux CI). Put a compact legible dark panel in the decorative lower-right mountain area, below boundary6, without covering any existing text.
+Text (verbatim):
+"本轮 · GitHub arm64 验证"
+"固定 Go 镜像身份已对齐"
+"同镜像 Source → Full → Vet → Race"
+"3 GiB / 2 核 · 测试容器断网"
+"原始证据回传 · 逐项核验结果"
+This is an operator/test path, not a production component or default feature. Do not show passed checkmarks, counts of completed gates or whole-port completion. Preserve original style, canvas, colors, readable Chinese and complete architecture. No watermark.

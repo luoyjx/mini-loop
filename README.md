@@ -574,7 +574,18 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current operator-runner review baseline: `a1fb80b` + isolated Linux runner.
+Current operator-pipeline review baseline: `ee9a5dd` + GitHub arm64 orchestration.
+The explicit development workflow prepares fixed public inputs, then runs
+Source/full/vet/race serially in one pinned image with offline 3 GiB containers.
+Go's 1 GiB soft target, two cores, package concurrency one, test parallelism two,
+raw Linux pressure and owned-process cleanup remain observable. The Go base
+configuration matches the previous local image. Source3.11.2 and native3.11.3
+are probed separately; current runtime bytes still match the16 host gates.
+Retained logs carry exact package/test outcomes and byte hashes; cache trees
+are excluded from transport. Local preparation and18 small infrastructure tests
+do not count as completed Linux gates. See [the remote validation path](docs/audits/go-linux-ci-2026-10-15.md).
+
+Previous operator-runner review baseline: `a1fb80b` + isolated Linux runner.
 The new development runner records real Linux MemAvailable/PSI and owned RSS,
 keeps 3 GiB / 1 GiB, two cores and offline complete stages, and binds its pressure
 helper with Source provenance. Eight small guard tests pass. Application
@@ -1329,8 +1340,19 @@ flowchart LR
     GoContractAudit["Go contractaudit · explicit operator CLI<br/>literal / direct-call candidate links · hashes · test-root results<br/>no runtime authority · no semantic-parity certificate"]
     GoContractEvidence["Repository contract inventory receipts<br/>candidate references · branch conditions · observed test roots"]
     GoContractInputs --> GoContractAudit --> GoContractEvidence
+    GoCI["Operator GitHub arm64 acceptance job<br/>fixed public images · Source then full / vet / race<br/>3 GiB · two cores · offline test containers"]
+    GoContractInputs --> GoCI --> GoContractEvidence
 ```
 <!-- architecture-map:end -->
+
+The operator CI job is outside the deployed runtime. Its networked bootstrap
+fetches only the existing fixed public inputs; test containers receive the
+selected source and public dependencies with networking disabled. Evidence
+transport retains raw receipts and logs. Candidate discovery by `contractaudit`
+and executed CI assertions are separate evidence; neither grants runtime
+authority or changes feature defaults. Each actual Source/native cohort must
+share its revision, image, platform and six fixture overlays before it can be
+used for the final required-row transition.
 
 The standalone `go/sqlitestate` library now opens a pinned SQLite connection,
 sets WAL/NORMAL/foreign keys, and applies Source schema-v7 creation and additive

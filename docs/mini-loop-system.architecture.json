@@ -10,7 +10,7 @@
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      2000
+      2140
     ],
     "views": [
       {
@@ -651,6 +651,21 @@
         240,
         64
       ]
+    },
+    {
+      "id": "goCI",
+      "type": "cloud",
+      "label": "GitHub arm64 acceptance",
+      "sublabel": "same image: Source → full → vet → race",
+      "pos": [
+        990,
+        1940
+      ],
+      "size": [
+        380,
+        76
+      ],
+      "tag": "3 GiB · CPU2 · offline gates"
     }
   ],
   "boundaries": [
@@ -1634,6 +1649,18 @@
       "variant": "dashed",
       "fromSide": "bottom",
       "toSide": "top"
+    },
+    {
+      "id": "goCIRead",
+      "from": "goContractInputs",
+      "to": "goCI",
+      "variant": "dashed"
+    },
+    {
+      "id": "goCIRecord",
+      "from": "goCI",
+      "to": "goContractEvidence",
+      "variant": "dashed"
     }
   ],
   "cards": [
@@ -1693,6 +1720,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Operator-pipeline review baseline ee9a5dd: explicit GitHub arm64 workflow prepares the same fixed public Go base configuration and existing dependencies, then recaptures Source3.11.2 and runs native full/vet/race serially in the same newly identified image. Offline test containers retain3GiB/1GiB soft/CPU2/p1/test2; Linux MemAvailable/PSI and owned RSS are recorded. No production credentials or runtime authority are granted. Raw evidence is transported with byte hashes; caches are excluded and their original CI checks remain explicit. Infrastructure tests18pass do not count as actual Linux gates. All1864 runtime inputs still match prior host evidence. No required-row delta or full acceptance until actual CI results.",
         "Validation resource review baseline 606630f runtime / 32a2286 documentation: the user approved four times the proposed768MiB/256MiB profile, now a3GiB container hard limit and1GiB Go soft target. The new runner preserves CPU2/package1/test2/offline inputs/full assertions/owned cleanup; first observed warning stops the stage. The original sealed runner and historical receipts remain unchanged. The new Source preflight stopped before container creation because host pressure was already warning;24 readiness samples also stayed warning. No new native pass, required-row delta or full acceptance. Policy approval is resolved; execution now needs host readiness. Runtime topology, authority and defaults are unchanged.",
         "Validation review baseline 606630f runtime / 322f925 documentation: Linux arm64 Source-only capture completed all six original platform-sensitive producer groups / 66 recipes on CPython3.11.2. Unchanged sealed profile, 12.32 seconds, 153.87 MiB cgroup peak, all recorded host-pressure samples normal, no OOM and owned resources absent after cleanup. The same1864 runtime inputs still match all16 current host gates. This stage executes no native3.11.3 probe, parser/IDNA Go consumer or Linux Go full/vet/race. Those three Linux native gates remain unstarted pending resource-policy approval. The original344-row ledger stays339/0/5; no delta or full acceptance. No architecture component, topology, authority or default changed.",
         "Review baseline 77a57cb + native IDNA slice: provider hostname admission uses project-owned RFC3492 Punycode and complete fixed CPython Unicode14 NFC/Bidi data with idna3.18 Unicode17 validity/context/script/joining tables. Whole-host ASCII bypass precedes Unicode lowercasing; Unicode labels must already be NFC. No new Go modules and no Python runtime call for IDNA. Constructor versus request refusal, original configured identity and existing transport routing stay explicit. Current host full Go/vet/race, exact Python2256 passed/28 skipped,268 Source contracts, four type audits and generated-byte checks pass on the same1864 inputs. All84 IDNA cases pass under ordinary/race, with actual NFC/Bidi and raw codec differential evidence. The first Source check completed under warning and remains unqualified; its identical-policy retry passed under normal pressure. App statement coverage85.53%. Prior b8dd27a platform evidence remains historical. Linux resource policy is unchanged and approval for the lower-memory profile is pending. The original row ledger stays339/0/5 until complete evidence and an explicit delta.",

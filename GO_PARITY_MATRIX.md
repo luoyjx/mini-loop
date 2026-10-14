@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-15 portable GitHub arm64 validation path
+
+The new operator CI path preserves the complete four Linux stages and current
+1864 runtime inputs while moving heavy execution away from the warning host.
+Its public Go manifest matches the existing base config; Source3.11.2 and
+native3.11.3 are separately probed in the same new derived image. Tests retain
+3 GiB / 1 GiB soft, CPU2, p1, parallel2 and offline inputs. Eighteen small
+infrastructure checks pass, but no Linux runtime result is inferred from setup.
+The ledger remains 339/0/5 until actual CI evidence and the final delta.
+See [the fixed-input and evidence contract](docs/audits/go-linux-ci-2026-10-15.md).
+
 ## 2026-10-15 approved fourfold validation memory profile
 
 Memory-policy approval is resolved: four times the proposed 768 MiB / 256 MiB
