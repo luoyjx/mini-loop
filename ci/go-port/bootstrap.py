@@ -40,9 +40,25 @@ MODULE = "github.com/mattn/go-sqlite3"
 MODULE_VERSION = "v1.14.52"
 MEMORY = 3 * 1024 * 1024 * 1024
 LABEL = "io.mini-loop.go-port.bootstrap"
+NODE_VERSION = "v22.23.3"
+NODE_INVENTORY = ("https://github.com/actions/runner-images/blob/ubuntu24-arm64/20261012.149/"
+                  "images/ubuntu/Ubuntu2404-Arm64-Readme.md")
+# Stream the already installed executable instead of retaining a large binary
+# buffer. NODE_OPTIONS and other inherited Node configuration are absent from
+# Commands.env; the derived probe uses the same isolated container environment.
+NODE_PROBE = (
+    "const fs=require('node:fs'),crypto=require('node:crypto');"
+    "const stream=fs.createReadStream(process.execPath),hash=crypto.createHash('sha256');"
+    "stream.on('data',chunk=>hash.update(chunk));"
+    "stream.on('error',error=>{console.error(String(error));process.exitCode=1;});"
+    "stream.on('end',()=>console.log(JSON.stringify({version:process.version,"
+    "platform:process.platform,arch:process.arch,execPath:process.execPath,"
+    "bytes:fs.statSync(process.execPath).size,sha256:hash.digest('hex')})));"
+)
 EXPECTED_DOCKERFILE = (
     f"FROM {PYTHON_IMAGE} AS parser\nFROM {GO_IMAGE}\n"
     "COPY --from=parser /usr/local /usr/local\n"
+    "COPY --chmod=0555 node /usr/local/bin/node\n"
     'RUN ldconfig && /usr/local/bin/python3.11 -I -S -B -c "import ast,base64,json,resource,sys; '
     "assert sys.implementation.name == 'cpython'; assert sys.version_info[:3] == (3,11,3); "
     "ast.parse('return 1')\" && /usr/bin/python3 -I -S -B -c \"import sys; "
@@ -84,7 +100,7 @@ def check_assets(repo: Path) -> dict:
         require(observed["sha256"] == expected, "fixed asset differs: " + name)
         references[name] = observed
     require((assets / "Dockerfile").read_bytes() == EXPECTED_DOCKERFILE,
-            "Dockerfile must retain the fixed original bytes except the public Go FROM reference")
+            "Dockerfile differs from the fixed public bases, parser and installed-Node copy")
     references["Dockerfile"] = reference(assets / "Dockerfile")
     resolution = json.loads((assets / "remote-go-image-resolution.json").read_text())
     require(resolution["platform_manifest_digest"] == GO_MANIFEST
@@ -277,6 +293,48 @@ def python_probe(commands: Commands, label: str, image: str, executable: str, ve
     return value
 
 
+def node_probe(commands: Commands, label: str, executable: str, image: str | None = None) -> dict:
+    argv = [executable, "--eval", NODE_PROBE]
+    raw = (commands.container(label, image, argv) if image is not None
+           else commands.run(label, argv, timeout=30))
+    value = json.loads(raw)
+    require(set(value) == {"version", "platform", "arch", "execPath", "bytes", "sha256"}
+            and value["version"] == NODE_VERSION and value["platform"] == "linux"
+            and value["arch"] == "arm64" and value["execPath"] == executable
+            and type(value["bytes"]) is int and value["bytes"] > 0
+            and re.fullmatch(r"[0-9a-f]{64}", value["sha256"]) is not None,
+            "actual installed Node runtime probe differs: " + label)
+    return value
+
+
+def node_source(path: Path) -> dict:
+    observed = reference(path)
+    return {"reported_path": observed["path"], "bytes": observed["bytes"], "sha256": observed["sha256"]}
+
+
+def prepare_node(commands: Commands, context: Path) -> dict:
+    selected = shutil.which("node", path=commands.env["PATH"])
+    require(selected is not None, "the fixed GitHub runner Node executable is missing")
+    source = Path(selected).resolve(strict=True)
+    before = node_source(source)
+    host = node_probe(commands, "host-node-probe", str(source))
+    require(all(host[key] == before[key] for key in ("bytes", "sha256")),
+            "host Node probe differs from its original executable bytes")
+    destination = context / "node"
+    shutil.copyfile(source, destination)
+    destination.chmod(0o555)
+    copied = reference(destination)
+    after = node_source(source)
+    require(before == after and all(copied[key] == before[key] for key in ("bytes", "sha256")),
+            "installed Node changed during the build-context copy")
+    return {"selected_path": selected, "source": before, "host_probe": host,
+            "build_copy": copied, "source_after": after, "source_unchanged": True,
+            "copy_matches_source": True, "inventory_source": NODE_INVENTORY,
+            "binary_transported": False,
+            "transport_scope": "Original CI verifies the source/copy/derived executable bytes; "
+                               "transported evidence omits build-context/node and retains their recorded digests."}
+
+
 def module_inputs(repo: Path, out: Path) -> dict:
     folder = out / "module-inputs"
     folder.mkdir()
@@ -340,6 +398,8 @@ def bootstrap(repo: Path, out: Path, checked: dict) -> int:
         context = out / "build-context"
         context.mkdir()
         shutil.copyfile(assets / "Dockerfile", context / "Dockerfile")
+        node = prepare_node(commands, context)
+        record["node"] = node
         iid = out / "derived-image.id"
         commands.run("build-derived", ["docker", "build", "--platform", "linux/arm64", "--pull=false", "--no-cache",
                                       "--network=none", "--iidfile", str(iid), str(context)])
@@ -351,10 +411,13 @@ def bootstrap(repo: Path, out: Path, checked: dict) -> int:
         go_version = commands.container("derived-go-probe", image, ["go", "version"]).strip()
         require(go_version == "go version go1.23.3 linux/arm64", "actual Go toolchain probe differs")
         probes["go"] = go_version
+        node["derived_probe"] = node_probe(commands, "derived-node-probe", "/usr/local/bin/node", image)
+        require(all(node["derived_probe"][key] == node["source"][key] for key in ("bytes", "sha256")),
+                "derived Node executable differs from the original runner binary")
         image_record = {"schema_version": 1, "image_id": image, "architecture": "arm64", "os": "linux",
                         "source_runtime": "/usr/bin/python3 CPython3.11.2", "native_runtime": "/usr/local/bin/python3.11 CPython3.11.3",
                         "base_images": base, "inspection": inspection, "dockerfile": reference(context / "Dockerfile"),
-                        "probes": probes, "build_network": "none", "registry_upload": False,
+                        "probes": probes, "node": node, "build_network": "none", "registry_upload": False,
                         "scope": "New remote derived image ID; Source and native gates must both bind this image, not a historical local ID."}
         save(out / "linux-image.json", image_record)
         record["image"] = reference(out / "linux-image.json")
@@ -373,6 +436,12 @@ def bootstrap(repo: Path, out: Path, checked: dict) -> int:
                              "manifest": module_manifest(modules)}
         for name, before in record["module_inputs"].items():
             require(reference(out / "module-inputs" / name) == before, "module preparation mutated fixed input")
+        node["source_after"] = node_source(Path(node["source"]["reported_path"]))
+        require(node["source_after"] == node["source"]
+                and reference(context / "node") == node["build_copy"],
+                "installed Node or its build-context copy changed during preparation")
+        save(out / "linux-image.json", image_record)
+        record["image"] = reference(out / "linux-image.json")
         require(check_assets(repo) == checked, "tracked assets changed during bootstrap")
         record["status"] = "prepared_pinned_public_inputs_no_gates_executed"
         return 0

@@ -4,6 +4,9 @@
 The log envelope is data, never a command. Cache, dependencies, workspace trees,
 and Git metadata are excluded. Extraction verifies the whole compressed digest
 and rejects links, traversal, duplicates and oversized archives before writing.
+The large runner Node binary at build-context/node is omitted. Its source,
+copy and derived-image bytes are checked by the original CI; replay binds the
+retained probe/digest evidence and cannot re-read that omitted executable.
 """
 from __future__ import annotations
 
@@ -50,6 +53,8 @@ def members(root: Path):
             raise ValueError('bootstrap evidence directory is a link')
         if tree.exists():
             for path in tree.rglob('*'):
+                if path.relative_to(root).as_posix() == 'build-context/node':
+                    continue
                 if path.is_symlink():
                     raise ValueError('bootstrap evidence contains a link')
                 if path.is_file():

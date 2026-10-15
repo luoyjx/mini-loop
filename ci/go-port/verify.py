@@ -62,6 +62,24 @@ PARSER_TOP = {
     "launcher": "TestDefaultFullCPythonDiagnosticsThroughActualHTTP TestDefaultFullWrongPythonVersionFailsBeforeResources TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects TestFullFeatureLauncherHTTPPublishesSourceCatalogueAndRepositoryBinding".split(),
     "cmd/miniloop": ["TestFullFeatureCLIStartsWithDefaultCPython"],
 }
+SEATBELT_REASON = "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+SEATBELT_SKIPS = {
+    (MODULE + "/agent", "TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding"): "go/agent/sandbox_manager_test.go",
+    (MODULE + "/launcher", "TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy"): "go/launcher/sandbox_restart_test.go",
+    (MODULE + "/launcher", "TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt"): "go/launcher/sandbox_test.go",
+    (MODULE + "/sandbox", "TestActualDefaultSeatbeltReadWriteAndRebind"): "go/sandbox/execution_test.go",
+    (MODULE + "/sandbox", "TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed"): "go/sandbox/execution_test.go",
+    (MODULE + "/sandbox", "TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles"): "go/sandbox/execution_test.go",
+}
+LINUX_UNAVAILABLE = {
+    (MODULE + "/agent", "TestManagerUnavailableSandboxReportsBeforeAndAfterSessionCreation"),
+    (MODULE + "/sandbox", "TestUnavailableExecutorRunsHostAndReportsDetachedReason"),
+    (MODULE + "/launcher", "TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/unavailable"),
+}
+BROWSER_INTERACTION = (MODULE + "/httpapi", "TestEmbeddedBrowserScriptInteractionRegressions")
+DOCKERFILE_SHA = "2b7bec4bcc6426012f0b51f7917e9b0e3d34ebf1e2987754d1a044e31fcb0ff0"
+NODE_INVENTORY = "https://github.com/actions/runner-images/blob/ubuntu24-arm64/20261012.149/images/ubuntu/Ubuntu2404-Arm64-Readme.md"
+NODE_TRANSPORT_SCOPE = "Original CI verifies the source/copy/derived executable bytes; transported evidence omits build-context/node and retains their recorded digests."
 
 
 def require(condition, message):
@@ -198,6 +216,8 @@ def required_semantics(api, manifest):
             and len(nfc["normalization_cases"]) == 6320 and len(nfc["bidi_cases"]) == 2614 and len(nfc["invalid_utf8_cases"]) == 8, "NFC/Bidi profile differs")
     identities = {(MODULE + "/" + package, test) for package, names in CORE.items() for test in names}
     require(len(identities) == 31, "core31 inventory changed")
+    identities.update(LINUX_UNAVAILABLE)
+    identities.add(BROWSER_INTERACTION)
     for package, names in PARSER_TOP.items():
         identities.update((MODULE + "/" + package, test) for test in names)
     identities.update((MODULE + "/diagnostics", "TestCPythonParserActualSource62Profile/" + row["name"]) for row in parser["cases"])
@@ -227,6 +247,7 @@ def required_semantics(api, manifest):
                         "idna": {"cases": 84, "complete": 48, "constructor_refusal": 34, "request_refusal": 2},
                         "nfc_cases": 6320, "bidi_assertions_inside_top_test": 2614, "invalid_utf8_cases": 8,
                         "punycode_encodings": 135, "punycode_decodings": 215, "original_core_top_tests": 31,
+                        "required_browser_interaction_tests": 1, "required_linux_unavailable_tests": 3,
                         "g5_top_tests": 25, "g5_subtests": 49, "g5_inventory_source": api.ref(ledger_path),
                         "required_named_identities": len(identities)}
 
@@ -277,6 +298,39 @@ def unrestricted(argv, mode):
     require(argv == expected, "complete ordinary/vet/race command changed")
 
 
+def node_evidence(api, boot, image, commands):
+    node = boot["node"]
+    require(node == image["node"] and set(node) == {"selected_path", "source", "host_probe", "build_copy", "source_after",
+                "source_unchanged", "copy_matches_source", "inventory_source", "binary_transported", "transport_scope", "derived_probe"}
+            and node["source_unchanged"] is True and node["copy_matches_source"] is True
+            and node["binary_transported"] is False and node["inventory_source"] == NODE_INVENTORY
+            and node["transport_scope"] == NODE_TRANSPORT_SCOPE, "runner-provided Node provenance differs")
+    source, copied = node["source"], node["build_copy"]
+    require(set(source) == {"reported_path", "bytes", "sha256"} and node["source_after"] == source
+            and set(copied) == {"path", "bytes", "sha256"} and Path(source["reported_path"]).is_absolute()
+            and Path(node["selected_path"]).is_absolute() and type(source["bytes"]) is int
+            and 0 < source["bytes"] <= 256 * 1024 * 1024 and re.fullmatch(r"[0-9a-f]{64}", source["sha256"])
+            and copied["path"] == str(api.recorded_out / "build-context/node")
+            and copied["bytes"] == source["bytes"] and copied["sha256"] == source["sha256"], "Node original/copy byte chain differs")
+    for key, executable in (("host_probe", source["reported_path"]), ("derived_probe", "/usr/local/bin/node")):
+        probe = node[key]
+        require(set(probe) == {"version", "platform", "arch", "execPath", "bytes", "sha256"}
+                and probe["version"] == "v22.23.3" and probe["platform"] == "linux" and probe["arch"] == "arm64"
+                and probe["execPath"] == executable and probe["bytes"] == source["bytes"]
+                and probe["sha256"] == source["sha256"], "actual Node22.23.3 Linux/arm64 probe differs")
+    host, derived = commands["host-node-probe"], commands["derived-node-probe"]
+    require(len(host["argv"]) == 3 and host["argv"][:2] == [source["reported_path"], "--eval"]
+            and derived["argv"][-3:] == ["/usr/local/bin/node", "--eval", host["argv"][-1]]
+            and read(api.local(host["output"]["path"])) == node["host_probe"]
+            and read(api.local(derived["output"]["path"])) == node["derived_probe"], "raw Node probes/commands differ")
+    if not api.artifact_check:
+        original = Path(source["reported_path"])
+        require(original.resolve(strict=True) == original and Path(node["selected_path"]).resolve(strict=True) == original
+                and original.stat().st_size == source["bytes"] and sha(original) == source["sha256"], "actual runner Node source changed")
+        api.check_ref(copied)
+    return node
+
+
 def bootstrap_evidence(api):
     bootstrap_path, image_path = api.out / "bootstrap.json", api.out / "linux-image.json"
     boot, image = read(bootstrap_path), read(image_path)
@@ -311,7 +365,8 @@ def bootstrap_evidence(api):
                 and probe["isolated"] == probe["no_site"] == 1 and probe["dont_write_bytecode"] is True
                 and re.fullmatch(r"[0-9a-f]{64}", probe["executable_sha256"]), "actual interpreter probe differs")
     require(image["probes"]["go"] == "go version go1.23.3 linux/arm64", "actual Go toolchain differs")
-    require(api.check_ref(image["dockerfile"]).read_bytes() == (api.repo / "ci/go-port/assets/Dockerfile").read_bytes(), "derived Dockerfile differs")
+    require(sha(api.check_ref(image["dockerfile"])) == sha(api.repo / "ci/go-port/assets/Dockerfile") == DOCKERFILE_SHA,
+            "derived fixed Dockerfile differs")
     asset_pins = ASSETS | {"remote-go-image-resolution.json": "104ba2c09e218d92d5b44c40a781fc72adfa1e0e73d592bbf6969dffc3ecf2f2"}
     for name, expected in asset_pins.items():
         require(sha(api.check_ref(boot["assets"][name])) == expected
@@ -359,9 +414,10 @@ def bootstrap_evidence(api):
             and "all modules verified" in api.local(commands["existing-module-download-verify"]["output"]["path"]).read_text(), "Go/module raw probe absent")
     build = commands["build-derived"]["argv"]
     require(build[:7] == ["docker", "build", "--platform", "linux/arm64", "--pull=false", "--no-cache", "--network=none"], "build resource/network origin differs")
+    node = node_evidence(api, boot, image, commands)
     return image, {"bootstrap": api.ref(bootstrap_path), "image": api.ref(image_path), "base_images": image["base_images"],
-                   "probes": image["probes"], "wheel_count": 22, "module": "github.com/mattn/go-sqlite3@v1.14.52",
-                   "nontransported_file_checks": "Original CI verifies actual wheel/module/cache/workspace/dependency bytes; artifact --check revalidates retained raw proofs only."}
+                   "probes": image["probes"], "node": node, "wheel_count": 22, "module": "github.com/mattn/go-sqlite3@v1.14.52",
+                   "nontransported_file_checks": "Original CI verifies actual Node/wheel/module/cache/workspace/dependency bytes; artifact --check revalidates retained raw proofs only."}
 
 
 def archive_evidence(api, folder, record, manifest):
@@ -529,6 +585,7 @@ def go_evidence(api, mode, declared, manifest, required):
             "same-client forced invalidation is covered by provider tests; Launcher exposes no invalidation handle",
     }
     optional = {(MODULE + "/" + package, test): reason for (package, test), reason in optional.items()}
+    optional.update({identity: SEATBELT_REASON for identity in SEATBELT_SKIPS})
     reasons, no_tests = {}, set()
     for line, row in stream_json(path):
         action, package, test = row.get("Action"), row.get("Package"), row.get("Test")
@@ -536,7 +593,9 @@ def go_evidence(api, mode, declared, manifest, required):
         identity = (package, test)
         if action == "output":
             output = row.get("Output", "")
-            if identity in optional and optional[identity] in output:
+            exact_platform_reason = identity in SEATBELT_SKIPS and re.fullmatch(
+                r"    " + re.escape(Path(SEATBELT_SKIPS[identity]).name) + r":\d+: " + re.escape(SEATBELT_REASON) + r"\n", output)
+            if identity in optional and (exact_platform_reason if identity in SEATBELT_SKIPS else optional[identity] in output):
                 reasons.setdefault(identity, []).append({"line": line, "output": output})
             if package in (MODULE + "/internal/fnmatch", MODULE + "/runtimeconfig") and re.fullmatch(
                     r"\?\s+" + re.escape(package) + r"\s+\[no test files\]\s*", output):
@@ -556,6 +615,25 @@ def go_evidence(api, mode, declared, manifest, required):
                 and counts["subtest_" + action] == declared["subtest_counts"][action], "raw Go test count differs")
     package_skips = []
     test_skips = []
+    seatbelt_skipped = set(SEATBELT_SKIPS) & {identity for identity, action in terminals.items() if action == "skip"}
+    seatbelt_history = None
+    if seatbelt_skipped:
+        source = read(api.out / STAGES["source"] / "logs/source-capture/environment.json")
+        native = read(api.out / STAGES[mode] / "logs/platform-context.json")
+        require(source["uname"][0] == native["uname"][0] == "Linux", "Darwin-only Seatbelt skips require actual Linux Source and native contexts")
+        host_path = api.repo / HOST
+        require(sha(host_path) == HOST_SHA and read(host_path)["runtime_inputs"]["manifest"] == manifest,
+                "Seatbelt adapter lost fixed host/runtime evidence binding")
+        for identity in seatbelt_skipped:
+            name = SEATBELT_SKIPS[identity]
+            require(manifest.get(name) == sha(api.repo / name), "Seatbelt skip source changed")
+        seatbelt_history = {"host_receipt": api.ref(host_path),
+            "availability_guard": api.ref(api.repo / "go/sandbox/sandbox.go"),
+            "six_darwin_test_identities": [{"package": package, "test": test, "source": api.ref(api.repo / SEATBELT_SKIPS[(package, test)])}
+                                           for package, test in sorted(SEATBELT_SKIPS)],
+            "source_and_native_platform": "Linux", "exact_raw_reason": SEATBELT_REASON,
+            "historical_darwin_raw_passes_revalidated_here": False,
+            "final_aggregation_requirement": "Revalidate all six exact identities as pass in both preserved f198-bound Darwin host full/race raw cohorts; CI does not carry those private logs."}
     for (package, test), action in terminals.items():
         if action != "skip":
             continue
@@ -574,6 +652,7 @@ def go_evidence(api, mode, declared, manifest, required):
     require(not missing, "required semantic/core/persistence pass absent: " + repr(missing[:5]))
     return {"raw": api.ref(path), "package_count": 53, "package_terminal_counts": dict(Counter(packages.values())),
             "counts": dict(counts), "no_test_package_skips": package_skips, "actual_test_skips": test_skips,
+            "darwin_only_seatbelt_adapter": seatbelt_history,
             "required_named_semantics_passed": len(required), "required_named_semantics_skipped_or_failed": 0}
 
 
@@ -619,6 +698,7 @@ def main():
                    "required_stage_count": 4, "full_port_acceptance": False, "required_row_delta_applied": False,
                    "overall_goal_complete": False,
                    "ci_only_file_verification": {"wheel_module_cache_workspace_and_deps_bytes_checked_before_pack": True,
+                       "node_source_copy_and_derived_probe_checked_before_pack": True,
                        "artifact_recheck_does_not_revalidate_omitted_files": True},
                    "limitations": ["Only the exact original bounded Source/native contracts and named typed adaptations are verified.",
                        "Source3.11.2 six-group capture is separate from native3.11.3/62 parser execution.",
@@ -633,6 +713,7 @@ def main():
                     and original["runtime"] == runtime and original["semantic_scope"] == semantic
                     and original["stages"] == stages and original["bootstrap"] == preparation
                     and original["ci_only_file_verification"]["wheel_module_cache_workspace_and_deps_bytes_checked_before_pack"] is True
+                    and original["ci_only_file_verification"]["node_source_copy_and_derived_probe_checked_before_pack"] is True
                     and original["full_port_acceptance"] is False and original["required_row_delta_applied"] is False,
                     "original CI verification/retained artifact evidence differs")
             print(json.dumps({"status": "retained_artifact_evidence_revalidated", "verification": api.ref(target),

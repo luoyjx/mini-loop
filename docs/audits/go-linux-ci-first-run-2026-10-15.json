@@ -1,0 +1,1115 @@
+{
+  "created_utc": "2026-10-15T00:14:47.529622+00:00",
+  "driver_result": {
+    "bytes": 3800,
+    "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/driver-result.json",
+    "sha256": "adc63ae8847a65e4dee32e796131d2946e0e15e12797d1a61988d6a430744151"
+  },
+  "full_port_acceptance": false,
+  "github": {
+    "conclusion": "failure",
+    "job": {
+      "bytes": 1570,
+      "path": "var/go-idna-implementation-2026-10-14/ci-job-116168093991.failed.json",
+      "sha256": "a00521b18253bf21b67dded95ad832f830031ff22623d306bc509bdaf75f9f38"
+    },
+    "run": {
+      "bytes": 11657,
+      "path": "var/go-idna-implementation-2026-10-14/ci-run-38656712770.failed.json",
+      "sha256": "55e145c4bf40c9f0c0e6f03aac70ee4343869c952a6a043986f832a93a663def"
+    }
+  },
+  "job_id": 116168093991,
+  "limits": [
+    "Cgroup kernel memory.peak is charged container memory, not process RSS or total host footprint.",
+    "Host PSI and MemAvailable are sampled; all retained stage readings were normal, not a continuous zero-pressure proof.",
+    "Container memory and memory+swap limits are both3GiB, leaving no container swap allowance; Go1GiB is a soft target.",
+    "No tests, builds, containers or later CI runs were started while writing this summary."
+  ],
+  "overall_ci": "failed",
+  "overall_goal_complete": false,
+  "required_row_delta_applied": false,
+  "required_semantics": {
+    "bidi_assertions_inside_single_top_test": 2614,
+    "fixtures": [
+      {
+        "bytes": 16779,
+        "path": "go/testdata/python-syntax-parser.json",
+        "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42"
+      },
+      {
+        "bytes": 53047,
+        "path": "go/testdata/python-provider-idna.json",
+        "sha256": "339cee6b3f6fbda1f207551d1d9e03319b90f5c6af4509dab7a6e02d0b388eab"
+      },
+      {
+        "bytes": 194475,
+        "path": "go/testdata/python-punycode.json",
+        "sha256": "711414f1811d6c6b90cfc57331224d023d064f9d4c4257aaff4e12f4189395f9"
+      },
+      {
+        "bytes": 1332600,
+        "path": "go/testdata/python-unicode-normalization.json",
+        "sha256": "ef2be84966311dacad441ac6689a90077cd574a9bdb2f62afe6f0e804b0f0f75"
+      }
+    ],
+    "full_pass_count": 6951,
+    "g5_inventory": {
+      "bytes": 187089,
+      "path": "docs/audits/go-persistence-required-recipe-ledger-2026-10-14.json",
+      "sha256": "df1fd9ca53f60e9a6fffa92a69d2b360ad5987b020458d7a93f9c9eb0a120312"
+    },
+    "identity_count": 6951,
+    "identity_set_sha256": "dc9cd9cd0bd7b98085b79fbe3f4a61f6eda09a1c51840955352744a774b3e44a",
+    "limits": "Named pass evidence only; independent of the original verifier refusal and overall failed CI. No claim that skipped browser or Darwin-only effects ran on Linux.",
+    "race_pass_count": 6951,
+    "recomputed_from_frozen_fixtures_and_original_verifier_inventory": true,
+    "verifier_committed_blob_sha256": "82b90116944587c11906b39821a8c040bc87bdc20a4274c2167c8c59337f7fd5"
+  },
+  "run_attempt": 1,
+  "run_id": 38656712770,
+  "runner_id": 1000001919,
+  "schema_version": 1,
+  "scope": "Only the first failed CI run. Actual completed child stages and independently read raw observations do not convert failed verification or this CI run to passed, and do not cover any later run.",
+  "stages": {
+    "full": {
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "sampled.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "start.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        }
+      },
+      "cgroup_peak_bytes": {
+        "final.memory.peak": 1008062464,
+        "sampled.memory.peak": 1008062464,
+        "start.memory.peak": 4657152
+      },
+      "cleanup_errors": [],
+      "finished_utc": "2026-10-14T23:57:31.966735+00:00",
+      "go": {
+        "actual_named_skips": [
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 14650,
+            "package": "github.com/luoyjx/mini-loop/go/agent",
+            "raw_output": [
+              {
+                "line": 14647,
+                "output": "=== RUN   TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding\n"
+              },
+              {
+                "line": 14648,
+                "output": "    sandbox_manager_test.go:54: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 14649,
+                "output": "--- SKIP: TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 22783,
+            "package": "github.com/luoyjx/mini-loop/go/cron",
+            "raw_output": [
+              {
+                "line": 22780,
+                "output": "=== RUN   TestClaimProcessHelper\n"
+              },
+              {
+                "line": 22781,
+                "output": "    lifecycle_test.go:47: subprocess helper\n"
+              },
+              {
+                "line": 22782,
+                "output": "--- SKIP: TestClaimProcessHelper (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestClaimProcessHelper"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 32156,
+            "package": "github.com/luoyjx/mini-loop/go/httpapi",
+            "raw_output": [
+              {
+                "line": 32153,
+                "output": "=== RUN   TestActualSourceRoutingAudit\n"
+              },
+              {
+                "line": 32154,
+                "output": "    routing_audit_test.go:26: routing audit output was not requested\n"
+              },
+              {
+                "line": 32155,
+                "output": "--- SKIP: TestActualSourceRoutingAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSourceRoutingAudit"
+          },
+          {
+            "category": "node_missing",
+            "line": 33933,
+            "package": "github.com/luoyjx/mini-loop/go/httpapi",
+            "raw_output": [
+              {
+                "line": 33930,
+                "output": "=== RUN   TestEmbeddedBrowserScriptInteractionRegressions\n"
+              },
+              {
+                "line": 33931,
+                "output": "    webui_test.go:97: Node is unavailable; browser interaction regressions not run\n"
+              },
+              {
+                "line": 33932,
+                "output": "--- SKIP: TestEmbeddedBrowserScriptInteractionRegressions (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestEmbeddedBrowserScriptInteractionRegressions"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 62399,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62396,
+                "output": "=== RUN   TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force\n"
+              },
+              {
+                "line": 62397,
+                "output": "    credential_discovery_test.go:74: same-client forced invalidation is covered by provider tests; Launcher exposes no invalidation handle\n"
+              },
+              {
+                "line": 62398,
+                "output": "--- SKIP: TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 62782,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62779,
+                "output": "=== RUN   TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy\n"
+              },
+              {
+                "line": 62780,
+                "output": "    sandbox_restart_test.go:25: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 62781,
+                "output": "--- SKIP: TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 62793,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62790,
+                "output": "=== RUN   TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt\n"
+              },
+              {
+                "line": 62791,
+                "output": "    sandbox_test.go:31: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 62792,
+                "output": "--- SKIP: TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 70992,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 70989,
+                "output": "=== RUN   TestProviderPartialInputAudit\n"
+              },
+              {
+                "line": 70990,
+                "output": "    partial_input_audit_test.go:18: diagnostic provider audit output was not requested\n"
+              },
+              {
+                "line": 70991,
+                "output": "--- SKIP: TestProviderPartialInputAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderPartialInputAudit"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 73625,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 73622,
+                "output": "=== RUN   TestProviderURLScopeAudit\n"
+              },
+              {
+                "line": 73623,
+                "output": "    url_scope_audit_test.go:20: URL scope diagnostic output was not requested\n"
+              },
+              {
+                "line": 73624,
+                "output": "--- SKIP: TestProviderURLScopeAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderURLScopeAudit"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 73630,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 73627,
+                "output": "=== RUN   TestProviderUsageConsumerAudit\n"
+              },
+              {
+                "line": 73628,
+                "output": "    usage_consumer_audit_test.go:19: usage consumer diagnostic output was not requested\n"
+              },
+              {
+                "line": 73629,
+                "output": "--- SKIP: TestProviderUsageConsumerAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderUsageConsumerAudit"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76692,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76689,
+                "output": "=== RUN   TestActualDefaultSeatbeltReadWriteAndRebind\n"
+              },
+              {
+                "line": 76690,
+                "output": "    execution_test.go:60: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76691,
+                "output": "--- SKIP: TestActualDefaultSeatbeltReadWriteAndRebind (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualDefaultSeatbeltReadWriteAndRebind"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76697,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76694,
+                "output": "=== RUN   TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed\n"
+              },
+              {
+                "line": 76695,
+                "output": "    execution_test.go:115: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76696,
+                "output": "--- SKIP: TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76702,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76699,
+                "output": "=== RUN   TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles\n"
+              },
+              {
+                "line": 76700,
+                "output": "    execution_test.go:145: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76701,
+                "output": "--- SKIP: TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 79159,
+            "package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+            "raw_output": [
+              {
+                "line": 79156,
+                "output": "=== RUN   TestNativeSQLiteCrashProcessHelper\n"
+              },
+              {
+                "line": 79157,
+                "output": "    process_crash_test.go:29: subprocess helper\n"
+              },
+              {
+                "line": 79158,
+                "output": "--- SKIP: TestNativeSQLiteCrashProcessHelper (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestNativeSQLiteCrashProcessHelper"
+          }
+        ],
+        "counts": {
+          "package_pass": 51,
+          "package_skip": 2,
+          "subtest_pass": 19998,
+          "subtest_skip": 2,
+          "top_level_pass": 1507,
+          "top_level_skip": 12
+        },
+        "no_test_package_skips": [
+          "github.com/luoyjx/mini-loop/go/internal/fnmatch",
+          "github.com/luoyjx/mini-loop/go/runtimeconfig"
+        ],
+        "package_count": 53,
+        "raw": {
+          "bytes": 20524491,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-full/logs/stdout.log",
+          "sha256": "0fba19b5c1f634ff1df06cbbd18e74fa56e901f72a2ce734aa143faa1adc4e59"
+        },
+        "required_missing_failed_or_skipped": 0,
+        "required_named_identity_passes": 6951,
+        "skip_group_counts": {
+          "darwin_only_seatbelt": 6,
+          "node_missing": 1,
+          "original_reviewed_optional": 7
+        }
+      },
+      "image": "sha256:9e5943a21b8940ea2540a77707c0471fb23dd598dbdeec78b8af71ed7c90fc4f",
+      "input_archive_sha256": "f002cee9252a7842eeb62d08bfc122474a1e41760e0bfc6f82b3adce2359cd2a",
+      "inputs_unchanged": true,
+      "kernel_final_peak_mib": 961.36328125,
+      "oom_killed": false,
+      "owned_resources_absent": true,
+      "pressure": {
+        "maximum_full_avg10": 0.0,
+        "maximum_some_avg10": 0.0,
+        "minimum_available_bytes": 14907981824,
+        "phase_counts": {
+          "immediately_before_start": 1,
+          "preflight": 5,
+          "running": 67
+        },
+        "raw": {
+          "bytes": 174691,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-full/host-pressure-readings.jsonl",
+          "sha256": "fd88027e57fd9284b74570cd19025138a6a7514b31839dfbd43d68d172ae06c6"
+        },
+        "raw_values_recomputed": true,
+        "samples": 73,
+        "status_counts": {
+          "normal": 73
+        }
+      },
+      "profile": {
+        "automatic_retries": false,
+        "cpu_cgroup_cores": 2,
+        "go_package_parallel": 1,
+        "gogc": 75,
+        "gomaxprocs": 2,
+        "gomemlimit": "1GiB soft target",
+        "memory_and_swap_bytes": 3221225472,
+        "memory_cgroup_bytes": 3221225472,
+        "nice": 10,
+        "pids": 256,
+        "preflight_samples": 5,
+        "test_parallel": 2
+      },
+      "raw_resource_memory": {
+        "bytes": 83958,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-full/memory.jsonl",
+        "sha256": "2d57ee4e3ab50db94c24fbfc3a9ca8dac4849f0078c8a7da29d81f1431626640"
+      },
+      "raw_result": {
+        "bytes": 85842,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-full/result.json",
+        "sha256": "9b5485b0dc02ccc7d76c83c93ccbf4e5d93d9f8edf6c44f50b6f341453fedb22"
+      },
+      "recorded_status": "passed",
+      "runner_exit_code": 0,
+      "seconds": 241.62989578,
+      "stage_exit_code": 0,
+      "started_utc": "2026-10-14T23:53:30.337004+00:00"
+    },
+    "race": {
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "sampled.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "start.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        }
+      },
+      "cgroup_peak_bytes": {
+        "final.memory.peak": 1277906944,
+        "sampled.memory.peak": 1277906944,
+        "start.memory.peak": 4358144
+      },
+      "cleanup_errors": [],
+      "finished_utc": "2026-10-15T00:07:48.377152+00:00",
+      "go": {
+        "actual_named_skips": [
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 14650,
+            "package": "github.com/luoyjx/mini-loop/go/agent",
+            "raw_output": [
+              {
+                "line": 14647,
+                "output": "=== RUN   TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding\n"
+              },
+              {
+                "line": 14648,
+                "output": "    sandbox_manager_test.go:54: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 14649,
+                "output": "--- SKIP: TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestManagedSeatbeltTurnsChildrenAndWorkspaceRebinding"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 22783,
+            "package": "github.com/luoyjx/mini-loop/go/cron",
+            "raw_output": [
+              {
+                "line": 22780,
+                "output": "=== RUN   TestClaimProcessHelper\n"
+              },
+              {
+                "line": 22781,
+                "output": "    lifecycle_test.go:47: subprocess helper\n"
+              },
+              {
+                "line": 22782,
+                "output": "--- SKIP: TestClaimProcessHelper (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestClaimProcessHelper"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 32156,
+            "package": "github.com/luoyjx/mini-loop/go/httpapi",
+            "raw_output": [
+              {
+                "line": 32153,
+                "output": "=== RUN   TestActualSourceRoutingAudit\n"
+              },
+              {
+                "line": 32154,
+                "output": "    routing_audit_test.go:26: routing audit output was not requested\n"
+              },
+              {
+                "line": 32155,
+                "output": "--- SKIP: TestActualSourceRoutingAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSourceRoutingAudit"
+          },
+          {
+            "category": "node_missing",
+            "line": 33933,
+            "package": "github.com/luoyjx/mini-loop/go/httpapi",
+            "raw_output": [
+              {
+                "line": 33930,
+                "output": "=== RUN   TestEmbeddedBrowserScriptInteractionRegressions\n"
+              },
+              {
+                "line": 33931,
+                "output": "    webui_test.go:97: Node is unavailable; browser interaction regressions not run\n"
+              },
+              {
+                "line": 33932,
+                "output": "--- SKIP: TestEmbeddedBrowserScriptInteractionRegressions (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestEmbeddedBrowserScriptInteractionRegressions"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 62399,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62396,
+                "output": "=== RUN   TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force\n"
+              },
+              {
+                "line": 62397,
+                "output": "    credential_discovery_test.go:74: same-client forced invalidation is covered by provider tests; Launcher exposes no invalidation handle\n"
+              },
+              {
+                "line": 62398,
+                "output": "--- SKIP: TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns/profile-federation-force"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 62782,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62779,
+                "output": "=== RUN   TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy\n"
+              },
+              {
+                "line": 62780,
+                "output": "    sandbox_restart_test.go:25: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 62781,
+                "output": "--- SKIP: TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 62793,
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "raw_output": [
+              {
+                "line": 62790,
+                "output": "=== RUN   TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt\n"
+              },
+              {
+                "line": 62791,
+                "output": "    sandbox_test.go:31: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 62792,
+                "output": "--- SKIP: TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestLauncherSandboxHTTPExecutionAndConfiguredDeadline/seatbelt"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 70992,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 70989,
+                "output": "=== RUN   TestProviderPartialInputAudit\n"
+              },
+              {
+                "line": 70990,
+                "output": "    partial_input_audit_test.go:18: diagnostic provider audit output was not requested\n"
+              },
+              {
+                "line": 70991,
+                "output": "--- SKIP: TestProviderPartialInputAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderPartialInputAudit"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 73625,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 73622,
+                "output": "=== RUN   TestProviderURLScopeAudit\n"
+              },
+              {
+                "line": 73623,
+                "output": "    url_scope_audit_test.go:20: URL scope diagnostic output was not requested\n"
+              },
+              {
+                "line": 73624,
+                "output": "--- SKIP: TestProviderURLScopeAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderURLScopeAudit"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 73630,
+            "package": "github.com/luoyjx/mini-loop/go/provider",
+            "raw_output": [
+              {
+                "line": 73627,
+                "output": "=== RUN   TestProviderUsageConsumerAudit\n"
+              },
+              {
+                "line": 73628,
+                "output": "    usage_consumer_audit_test.go:19: usage consumer diagnostic output was not requested\n"
+              },
+              {
+                "line": 73629,
+                "output": "--- SKIP: TestProviderUsageConsumerAudit (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestProviderUsageConsumerAudit"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76692,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76689,
+                "output": "=== RUN   TestActualDefaultSeatbeltReadWriteAndRebind\n"
+              },
+              {
+                "line": 76690,
+                "output": "    execution_test.go:60: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76691,
+                "output": "--- SKIP: TestActualDefaultSeatbeltReadWriteAndRebind (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualDefaultSeatbeltReadWriteAndRebind"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76697,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76694,
+                "output": "=== RUN   TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed\n"
+              },
+              {
+                "line": 76695,
+                "output": "    execution_test.go:115: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76696,
+                "output": "--- SKIP: TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSeatbeltNetworkDeniedAndExplicitlyAllowed"
+          },
+          {
+            "category": "darwin_only_seatbelt",
+            "line": 76702,
+            "package": "github.com/luoyjx/mini-loop/go/sandbox",
+            "raw_output": [
+              {
+                "line": 76699,
+                "output": "=== RUN   TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles\n"
+              },
+              {
+                "line": 76700,
+                "output": "    execution_test.go:145: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container\n"
+              },
+              {
+                "line": 76701,
+                "output": "--- SKIP: TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestActualSeatbeltWorktreeCanCommitWithoutWritingSiblingFiles"
+          },
+          {
+            "category": "original_reviewed_optional",
+            "line": 79159,
+            "package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+            "raw_output": [
+              {
+                "line": 79156,
+                "output": "=== RUN   TestNativeSQLiteCrashProcessHelper\n"
+              },
+              {
+                "line": 79157,
+                "output": "    process_crash_test.go:29: subprocess helper\n"
+              },
+              {
+                "line": 79158,
+                "output": "--- SKIP: TestNativeSQLiteCrashProcessHelper (0.00s)\n"
+              }
+            ],
+            "terminal": "skip",
+            "test": "TestNativeSQLiteCrashProcessHelper"
+          }
+        ],
+        "counts": {
+          "package_pass": 51,
+          "package_skip": 2,
+          "subtest_pass": 19998,
+          "subtest_skip": 2,
+          "top_level_pass": 1507,
+          "top_level_skip": 12
+        },
+        "no_test_package_skips": [
+          "github.com/luoyjx/mini-loop/go/internal/fnmatch",
+          "github.com/luoyjx/mini-loop/go/runtimeconfig"
+        ],
+        "package_count": 53,
+        "raw": {
+          "bytes": 20531475,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-race/logs/stdout.log",
+          "sha256": "1c4a63e774c9124c935686e449caab0f94c27240ae10ddb417f14ad114ec8270"
+        },
+        "required_missing_failed_or_skipped": 0,
+        "required_named_identity_passes": 6951,
+        "skip_group_counts": {
+          "darwin_only_seatbelt": 6,
+          "node_missing": 1,
+          "original_reviewed_optional": 7
+        }
+      },
+      "image": "sha256:9e5943a21b8940ea2540a77707c0471fb23dd598dbdeec78b8af71ed7c90fc4f",
+      "input_archive_sha256": "f002cee9252a7842eeb62d08bfc122474a1e41760e0bfc6f82b3adce2359cd2a",
+      "inputs_unchanged": true,
+      "kernel_final_peak_mib": 1218.70703125,
+      "oom_killed": false,
+      "owned_resources_absent": true,
+      "pressure": {
+        "maximum_full_avg10": 0.0,
+        "maximum_some_avg10": 0.0,
+        "minimum_available_bytes": 15119130624,
+        "phase_counts": {
+          "immediately_before_start": 1,
+          "preflight": 5,
+          "running": 147
+        },
+        "raw": {
+          "bytes": 366134,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-race/host-pressure-readings.jsonl",
+          "sha256": "bd22ee3d7904a4ce080852eff583e10d04420e9e50d30f89ef70579571b902ff"
+        },
+        "raw_values_recomputed": true,
+        "samples": 153,
+        "status_counts": {
+          "normal": 153
+        }
+      },
+      "profile": {
+        "automatic_retries": false,
+        "cpu_cgroup_cores": 2,
+        "go_package_parallel": 1,
+        "gogc": 75,
+        "gomaxprocs": 2,
+        "gomemlimit": "1GiB soft target",
+        "memory_and_swap_bytes": 3221225472,
+        "memory_cgroup_bytes": 3221225472,
+        "nice": 10,
+        "pids": 256,
+        "preflight_samples": 5,
+        "test_parallel": 2
+      },
+      "raw_resource_memory": {
+        "bytes": 184707,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-race/memory.jsonl",
+        "sha256": "8b2ba8e4ba56a35c187db76b80d869573871c9d04bc5d3b2531c4e94565cc0ad"
+      },
+      "raw_result": {
+        "bytes": 85842,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-race/result.json",
+        "sha256": "e4e3ee6f80f12ce6d452e9408e037aa042e0a5d48f161fb6ab2b7d5fb018dfef"
+      },
+      "recorded_status": "passed",
+      "runner_exit_code": 0,
+      "seconds": 523.91578331,
+      "stage_exit_code": 0,
+      "started_utc": "2026-10-14T23:59:04.461542+00:00"
+    },
+    "source": {
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "sampled.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "start.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        }
+      },
+      "cgroup_peak_bytes": {
+        "final.memory.peak": 104071168,
+        "sampled.memory.peak": 104071168,
+        "start.memory.peak": 4341760
+      },
+      "cleanup_errors": [],
+      "finished_utc": "2026-10-14T23:53:30.242881+00:00",
+      "image": "sha256:9e5943a21b8940ea2540a77707c0471fb23dd598dbdeec78b8af71ed7c90fc4f",
+      "input_archive_sha256": "f002cee9252a7842eeb62d08bfc122474a1e41760e0bfc6f82b3adce2359cd2a",
+      "inputs_unchanged": true,
+      "kernel_final_peak_mib": 99.25,
+      "oom_killed": false,
+      "owned_resources_absent": true,
+      "pressure": {
+        "maximum_full_avg10": 0.0,
+        "maximum_some_avg10": 0.0,
+        "minimum_available_bytes": 15314198528,
+        "phase_counts": {
+          "immediately_before_start": 1,
+          "preflight": 5,
+          "running": 3
+        },
+        "raw": {
+          "bytes": 21573,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-source/host-pressure-readings.jsonl",
+          "sha256": "b741d3e1772c9eaf91916fcb807de14865d4bb039b7901efe2c05c1672c5d1a4"
+        },
+        "raw_values_recomputed": true,
+        "samples": 9,
+        "status_counts": {
+          "normal": 9
+        }
+      },
+      "profile": {
+        "automatic_retries": false,
+        "cpu_cgroup_cores": 2,
+        "go_package_parallel": 1,
+        "gogc": 75,
+        "gomaxprocs": 2,
+        "gomemlimit": "1GiB soft target",
+        "memory_and_swap_bytes": 3221225472,
+        "memory_cgroup_bytes": 3221225472,
+        "nice": 10,
+        "pids": 256,
+        "preflight_samples": 5,
+        "test_parallel": 2
+      },
+      "raw_resource_memory": {
+        "bytes": 3428,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-source/memory.jsonl",
+        "sha256": "fd6a9c9d55d3117647b15ea1ee986dd15820a56f5a27e0d6f8d5c0bc7b09338b"
+      },
+      "raw_result": {
+        "bytes": 25530,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-source/result.json",
+        "sha256": "a50e9268cc903c1b4f84bf7f29803f78adeec9102d28486840ee054b9788d0c5"
+      },
+      "recorded_status": "source_captured",
+      "runner_exit_code": 0,
+      "seconds": 13.176830313000004,
+      "stage_exit_code": 0,
+      "started_utc": "2026-10-14T23:53:17.066213+00:00"
+    },
+    "vet": {
+      "cgroup_memory_events": {
+        "final.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "sampled.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        },
+        "start.memory.events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0
+        }
+      },
+      "cgroup_peak_bytes": {
+        "final.memory.peak": 937332736,
+        "sampled.memory.peak": 937332736,
+        "start.memory.peak": 4337664
+      },
+      "cleanup_errors": [],
+      "finished_utc": "2026-10-14T23:59:04.361348+00:00",
+      "image": "sha256:9e5943a21b8940ea2540a77707c0471fb23dd598dbdeec78b8af71ed7c90fc4f",
+      "input_archive_sha256": "f002cee9252a7842eeb62d08bfc122474a1e41760e0bfc6f82b3adce2359cd2a",
+      "inputs_unchanged": true,
+      "kernel_final_peak_mib": 893.91015625,
+      "oom_killed": false,
+      "owned_resources_absent": true,
+      "pressure": {
+        "maximum_full_avg10": 0.0,
+        "maximum_some_avg10": 0.0,
+        "minimum_available_bytes": 15153405952,
+        "phase_counts": {
+          "immediately_before_start": 1,
+          "preflight": 5,
+          "running": 25
+        },
+        "raw": {
+          "bytes": 74176,
+          "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-vet/host-pressure-readings.jsonl",
+          "sha256": "8d2eb18eae5ee9621b4f3f5f2f7d2462fcb31d3b6516659825e8b09cbd7538c2"
+        },
+        "raw_values_recomputed": true,
+        "samples": 31,
+        "status_counts": {
+          "normal": 31
+        }
+      },
+      "profile": {
+        "automatic_retries": false,
+        "cpu_cgroup_cores": 2,
+        "go_package_parallel": 1,
+        "gogc": 75,
+        "gomaxprocs": 2,
+        "gomemlimit": "1GiB soft target",
+        "memory_and_swap_bytes": 3221225472,
+        "memory_cgroup_bytes": 3221225472,
+        "nice": 10,
+        "pids": 256,
+        "preflight_samples": 5,
+        "test_parallel": 2
+      },
+      "raw_resource_memory": {
+        "bytes": 31744,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-vet/memory.jsonl",
+        "sha256": "2bc67ebe75a724d7fb660d403554e1e358b2da45196a2c2bbe3264df2f6ade56"
+      },
+      "raw_result": {
+        "bytes": 82706,
+        "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/linux-ci-vet/result.json",
+        "sha256": "8d9e4804348fdf9ecbdae52e6cba9d366d83d728e0910790df649c980f8bc26a"
+      },
+      "recorded_status": "passed",
+      "runner_exit_code": 0,
+      "seconds": 92.323941881,
+      "stage_exit_code": 0,
+      "started_utc": "2026-10-14T23:57:32.037562+00:00"
+    }
+  },
+  "status": "historical_failed_ci_observation",
+  "transport": {
+    "archive_header": {
+      "bytes": 21391243,
+      "chunks": 1741,
+      "id": "029d6513ce5a4626b48fc9424089c884",
+      "sha256": "e0f57ea5a3b1cb1fabb4aa4d8c43c9f9ce0a1562a99357f4ffad1cd7d9fbdfdf"
+    },
+    "extraction_authority": "Parent performed strict streaming extraction; this summary reads and hashes the retained extracted raw files without repeating transport decoding.",
+    "header": {
+      "bytes": 166,
+      "path": "var/go-idna-implementation-2026-10-14/remote-ci-38656712770/transport.json",
+      "sha256": "be60518bff2902b1eaf4e6211304fbbc198cad83faba216ae7b4fff84174a948"
+    },
+    "original_job_log": {
+      "bytes": 28690138,
+      "path": "var/go-idna-implementation-2026-10-14/ci-job-116168093991.log",
+      "sha256": "922abf907703693d186b4066ca07412e9f6d1073e01b13fa80dbb5f6ddf52978"
+    }
+  },
+  "verification_failure": {
+    "interpretation": "The original verifier refused unreviewed named skips. Linux omitted Node browser interaction and six Darwin-only Seatbelt executions; these are retained as skips, not rewritten to pass.",
+    "raw_failure": [
+      {
+        "line": 88,
+        "text": "2026-10-15T00:07:50.3340336Z {\"status\": \"verification_failed\", \"error\": \"ValueError: unreviewed or required named test skipped\", \"full_port_acceptance\": false, \"required_row_delta_applied\": false}"
+      }
+    ],
+    "returncode": 1,
+    "status": "gate_or_environment_failed",
+    "verification_json_present": false
+  },
+  "workflow_commit": "fc53a977fa8e0035d807e7ef56d693b4bbd42fea"
+}

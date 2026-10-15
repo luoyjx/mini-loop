@@ -1,5 +1,22 @@
 # Go port plan
 
+## 2026-10-15 Linux browser tooling and platform skip correction
+
+The first actual GitHub arm64 run [38656712770](https://github.com/luoyjx/mini-loop/actions/runs/38656712770)
+completed Source, full, vet and race with successful command exits. The final
+verifier rejected unreviewed skips, so the job remains failed and supplies no
+final acceptance or row delta. Six named Seatbelt cases are Darwin-only and
+pass in the existing host ordinary/race evidence. The browser interaction case
+was skipped because Node was absent from the container.
+
+Reuse the executor's already installed Node22.23.3 in the derived validation
+image, record its actual binary and probe, and require the browser test to pass.
+No Go/Python module or npm package is added. Allow only the six exact Linux
+Seatbelt identities and raw reasons; required parser/IDNA/core/persistence
+assertions still need actual pass events. Repeat all four stages with the same
+3GiB/1GiB/two-core serial policy. The original344 ledger stays339/0/5 until the
+complete corrected receipt. See [the short correction article](docs/audits/go-linux-ci-browser-2026-10-15.md).
+
 ## 2026-10-15 portable GitHub arm64 validation path
 
 The local host remains under warning pressure despite the approved 3 GiB budget.

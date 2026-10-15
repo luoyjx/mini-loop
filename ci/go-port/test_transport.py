@@ -14,6 +14,7 @@ import random
 import tarfile
 import tempfile
 import unittest
+from unittest import mock
 
 
 SPEC = importlib.util.spec_from_file_location("go_port_evidence_transport", Path(__file__).with_name("transport.py"))
@@ -104,6 +105,29 @@ class EvidenceTransportTests(unittest.TestCase):
         chunks = [index for index, line in enumerate(lines) if line.startswith("MINILOOP_EVIDENCE_CHUNK ")]
         del lines[chunks[1]]
         self.assert_rejected_without_destination(lines)
+
+    def test_node_binary_is_omitted_before_the_evidence_file_limit(self):
+        source = self.root / "node-evidence"
+        source.mkdir()
+        expected = {
+            "bootstrap.json": b'{"node":{"binary_transported":false}}\n',
+            "build-context/Dockerfile": b"COPY --chmod=0555 node /usr/local/bin/node\n",
+            "bootstrap-logs/derived-node-probe.log": b'{"version":"v22.23.3"}\n',
+        }
+        for name, content in expected.items():
+            self.put(source, name, content)
+        # Exercise the large-binary boundary with only 8 KiB of test data.
+        self.put(source, "build-context/node", b"NODE_BINARY_MUST_NOT_BE_TRANSPORTED" * 256)
+        with mock.patch.object(transport, "MAX_FILE", 1024):
+            header, lines = self.emitted_log(source)
+            destination = self.root / "node-decoded"
+            transport.extract(self.log_file(lines), destination, header["id"])
+        self.assertFalse((destination / "build-context/node").exists())
+        for name, content in expected.items():
+            self.assertEqual((destination / name).read_bytes(), content, name)
+        for path in destination.rglob("*"):
+            if path.is_file():
+                self.assertNotIn(b"NODE_BINARY_MUST_NOT_BE_TRANSPORTED", path.read_bytes())
 
     def test_duplicate_chunk_is_rejected(self):
         _, _, lines = self.valid_evidence()

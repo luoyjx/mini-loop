@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-15 Linux browser tooling and platform skip correction
+
+Actual job38656712770 remains failed: Source/full/vet/race command exits were
+successful, but the final evidence verifier rejected unreviewed skips. Six
+exact Darwin-only Seatbelt cases have matching actual host ordinary/race passes.
+The Node-dependent browser test was skipped in the container and must run after
+the existing executor Node is copied into the fixed validation image. Its
+missing-tool skip is not accepted. Required parser62, IDNA84, Unicode/codec,
+core and persistence identities retain their actual-pass requirement.
+
+The corrected complete rerun is pending; original status remains339 verified /
+0 incomplete / 5 dependency-blocked. [Correction and retained failure](docs/audits/go-linux-ci-browser-2026-10-15.md).
+
 ## 2026-10-15 portable GitHub arm64 validation path
 
 The new operator CI path preserves the complete four Linux stages and current

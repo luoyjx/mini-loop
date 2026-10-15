@@ -574,7 +574,17 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current operator-pipeline review baseline: `ee9a5dd` + GitHub arm64 orchestration.
+Current operator-validation review baseline: `fc53a97` + browser-tool visibility
+and explicit platform skips. The first real GitHub arm64 job ran Source/full/vet/
+race to successful command exits, but its final verifier rejected unreviewed
+skips. Six are Darwin-only Seatbelt tests with actual host ordinary/race passes;
+one is a missing Node executable inside the validation image. The corrected
+bootstrap reuses the runner's existing Node for the browser interaction test,
+which must actually pass. Exact Linux platform skips retain their original
+names and reasons. The complete four-stage rerun remains pending; the ledger
+stays339/0/5. See [the observed failure and correction](docs/audits/go-linux-ci-browser-2026-10-15.md).
+
+Previous operator-pipeline review baseline: `ee9a5dd` + GitHub arm64 orchestration.
 The explicit development workflow prepares fixed public inputs, then runs
 Source/full/vet/race serially in one pinned image with offline 3 GiB containers.
 Go's 1 GiB soft target, two cores, package concurrency one, test parallelism two,
