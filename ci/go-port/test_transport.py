@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import random
+import sys
 import tarfile
 import tempfile
 import unittest
@@ -20,6 +21,9 @@ from unittest import mock
 SPEC = importlib.util.spec_from_file_location("go_port_evidence_transport", Path(__file__).with_name("transport.py"))
 transport = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(transport)
+BOOTSTRAP_SPEC = importlib.util.spec_from_file_location("go_port_bootstrap", Path(__file__).with_name("bootstrap.py"))
+bootstrap = importlib.util.module_from_spec(BOOTSTRAP_SPEC)
+BOOTSTRAP_SPEC.loader.exec_module(bootstrap)
 
 
 class EvidenceTransportTests(unittest.TestCase):
@@ -105,6 +109,34 @@ class EvidenceTransportTests(unittest.TestCase):
         chunks = [index for index, line in enumerate(lines) if line.startswith("MINILOOP_EVIDENCE_CHUNK ")]
         del lines[chunks[1]]
         self.assert_rejected_without_destination(lines)
+
+    def test_actual_bootstrap_command_logs_survive_transport(self):
+        source = self.root / "actual-bootstrap"
+        source.mkdir()
+        source = source.resolve()
+        record = {"commands": []}
+        commands = bootstrap.Commands(source, record)
+        payload = b'{"test_probe":"transport-contract-only"}\n'
+        # Exercise the real log producer, including its receipt reference;
+        # this executes only a tiny isolated Python child, never Node/Docker.
+        observed = commands.run("test-bootstrap-probe", [sys.executable, "-I", "-S", "-B", "-c",
+                                "import sys; sys.stdout.buffer.write(" + repr(payload) + ")"], timeout=10)
+        self.assertEqual(observed.encode(), payload)
+        output = record["commands"][0]["output"]
+        relative = Path(output["path"]).relative_to(source)
+        self.assertEqual(relative, Path("logs/00-test-bootstrap-probe.log"))
+        self.assertEqual(output["bytes"], len(payload))
+        self.assertEqual(output["sha256"], hashlib.sha256(payload).hexdigest())
+        for name in ("home/private-cache", "tmp/private-cache", "docker-config/config.json"):
+            self.put(source, name, b"PRIVATE_BOOTSTRAP_STATE_MUST_NOT_BE_TRANSPORTED")
+        self.put(source, "build-context/node", b"NODE_BINARY_MUST_NOT_BE_TRANSPORTED")
+        header, lines = self.emitted_log(source)
+        destination = self.root / "actual-bootstrap-decoded"
+        transport.extract(self.log_file(lines), destination, header["id"])
+        self.assertEqual((destination / relative).read_bytes(), payload)
+        self.assertEqual(json.loads((destination / "bootstrap.json").read_text()), record)
+        for name in ("home", "tmp", "docker-config", "build-context/node"):
+            self.assertFalse((destination / name).exists(), name)
 
     def test_node_binary_is_omitted_before_the_evidence_file_limit(self):
         source = self.root / "node-evidence"

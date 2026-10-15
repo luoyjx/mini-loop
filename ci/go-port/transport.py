@@ -26,7 +26,7 @@ STAGES = ('linux-ci-source', 'linux-ci-full', 'linux-ci-vet', 'linux-ci-race')
 ROOT_FILES = frozenset(('bootstrap.json', 'linux-image.json', 'host-pressure-readings.jsonl',
                         'ci-context.json', 'verification.json', 'driver-result.json',
                         'driver-memory.jsonl', 'derived-image.id'))
-SMALL_TREES = ('bootstrap-logs', 'download-metadata', 'module-inputs', 'build-context')
+SMALL_TREES = ('logs', 'bootstrap-logs', 'download-metadata', 'module-inputs', 'build-context')
 ASSET_FILES = ('Dockerfile', 'linux-source-plan.json', 'linux-source-capture.py',
                'linux-wheel-manifest.json', 'remote-go-image-resolution.json')
 MAX_COMPRESSED = 64 * 1024 * 1024

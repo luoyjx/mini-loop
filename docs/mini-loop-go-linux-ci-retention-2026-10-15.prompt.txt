@@ -1,0 +1,5 @@
+Use case: precise-object-edit / infographic-diagram
+Asset type: mini-loop full layered architecture iteration PNG, landscape1536x1024.
+Input image: docs/mini-loop-layered-architecture.png is the complete edit target.
+Primary request: preserve the entire base and highlight the operator evidence retention correction. Add a small orange marker1 on the L5 rightmost audit card, with a thin orange connector to a compact orange outlined note in the lower right column beneath all six boundary statements. Exact title: "本轮 · 原始日志归档". Exact four lines: "保留 bootstrap 实际 logs 目录", "生产器与归档路径契约测试", "完整重跑 · 原字节再次校验", "3 GiB / 2核 · 验收状态待核验". Only move bottom-right decorative mountains if needed for the note.
+Constraints: keep every L1-L5 component and arrow, ToolGate order, IDNA and CPython3.11.3 labels, all six boundary statements, current migration-in-progress subtitle, original palette, footer and canvas. Node remains validation tooling only. Do not add runtime components, pass badges or completed-migration claims. The base must remain fully visible.

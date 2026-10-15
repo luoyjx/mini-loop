@@ -574,7 +574,16 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current operator-validation review baseline: `fc53a97` + browser-tool visibility
+Current evidence-retention review baseline: `960fb87` + actual bootstrap logs.
+The corrected GitHub run passed all four stages and its on-run verifier, including
+the real browser interaction test. Artifact replay then found that bootstrap
+uses `logs/` while the transport listed `bootstrap-logs/`. The transport now
+retains the producer's actual directory, with a producer-to-archive contract
+test. A complete rerun is pending; the original ledger remains339/0/5 until
+the retained bytes also pass the unchanged verifier. See
+[the observed retention correction](docs/audits/go-linux-ci-browser-2026-10-15.md).
+
+Previous operator-validation review baseline: `fc53a97` + browser-tool visibility
 and explicit platform skips. The first real GitHub arm64 job ran Source/full/vet/
 race to successful command exits, but its final verifier rejected unreviewed
 skips. Six are Darwin-only Seatbelt tests with actual host ordinary/race passes;

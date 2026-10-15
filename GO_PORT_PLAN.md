@@ -1,5 +1,16 @@
 # Go port plan
 
+## 2026-10-15 retain the actual bootstrap log directory
+
+[Run38659480581](https://github.com/luoyjx/mini-loop/actions/runs/38659480581)
+passed all four stages and the on-run verifier. Its artifact passed the transport
+digest, but the unchanged offline verifier rejected missing bootstrap logs:
+the producer writes `logs/`; the archive listed `bootstrap-logs/`. Preserve this
+run as successful CI with incomplete retained evidence. Fix the archive directory
+and add a test using the real producer's path. Repeat the complete four-stage
+job with unchanged runtime inputs and resource limits. No final five-row delta
+is applied before the retained original bytes also pass the verifier.
+
 ## 2026-10-15 Linux browser tooling and platform skip correction
 
 The first actual GitHub arm64 run [38656712770](https://github.com/luoyjx/mini-loop/actions/runs/38656712770)

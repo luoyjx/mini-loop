@@ -1,5 +1,14 @@
 # Python to Go parity matrix
 
+## 2026-10-15 bootstrap log retention correction
+
+Run38659480581 has genuine successful Source/full/vet/race and on-run verification,
+including browser interaction. Offline replay rejected the archive's missing
+bootstrap `logs/` directory. Correct the transport whitelist and exercise the
+real producer-to-archive directory contract; the verifier stays unchanged.
+Full corrected rerun and retained-byte replay are pending. Original status
+remains339 verified / 0 incomplete / 5 blocked; no final delta has been applied.
+
 ## 2026-10-15 Linux browser tooling and platform skip correction
 
 Actual job38656712770 remains failed: Source/full/vet/race command exits were
