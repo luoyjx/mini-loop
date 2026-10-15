@@ -10,26 +10,28 @@ runtimes fail startup. An explicit provider replaces the default without an
 interpreter probe; a caller-owned Manager tool catalogue remains authoritative.
 Inspection reports selection without starting a parser process.
 
-This section supersedes older per-slice statements below that comprehensive
-`MINILOOP_FEATURES` is unsupported or that the default syntax backend is absent.
+This section and [the parity matrix](../GO_PARITY_MATRIX.md) give the current
+availability. Per-slice notes below describe their delivery baseline; later
+evidence supersedes their earlier implementation-status statements.
 The focused diagnostics package passed the actual 62 CPython recipes, the
 existing 37 scanner recipes and six injected-provider recipes. Default
 Manager/full HTTP and CLI integration are covered by focused tests. The
-iteration evidence linked below records the final full/vet/race and Linux gates;
-focused results alone do not establish whole-port acceptance.
+[final original-scope receipt](../docs/audits/go-port-completion-2026-10-15.json)
+composes the complete host/Linux gates. Earlier focused results retain their
+recorded scope and revision.
 
 Provider IDNA now uses project-owned native RFC3492 Punycode and complete
 fixed Source Unicode14 NFC/Bidi plus idna3.18 Unicode17 property data. It launches
 no Python process and adds no Go module. The original84 Source direct/SSE
 observations remain unchanged. See the
 [native IDNA implementation and validation boundary](../docs/audits/go-native-idna-2026-10-15.md).
-Earlier CPython results remain bound to their recorded revision; Linux resource
-policy approval and the complete migration receipt remain separate gates.
+Earlier results remain bound to their recorded revision. The approved Linux
+profile uses 3GiB container memory and a 1GiB Go soft target. The final receipt
+completes the original bounded migration acceptance.
 
-This directory is the independent Go port of the Python runtime in `../python/`.
-It is under construction. The httpapi package provides an embeddable HTTP/SSE
-handler; `cmd/miniloop` now provides standalone HTTP startup and signal shutdown.
-UI and the remaining Python default services are still pending. The
+This directory contains the independent Go runtime alongside `../python/`.
+The `httpapi` package provides the embedded browser UI and REST/SSE handler;
+`cmd/miniloop` provides standalone HTTP startup and signal shutdown. The
 protocol package fixes the default fake-model transcript shapes as explicit Go
 types, completed model replies, usage and stop reasons, and has concrete inputs
 for all ten Python default tools. It rejects

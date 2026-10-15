@@ -1,0 +1,90 @@
+{
+  "code_blocks_and_protected_markdown_unchanged": true,
+  "created_utc": "2026-10-15T01:12:29.948526+00:00",
+  "current_manifest_sha256": "d148048fda3cf6c3c7d6fa78b0bc8d890b3dea73a1ba6eec1ec26c04b06ca5ed",
+  "head_at_check": "075d177e98343372b69211ecee75f279acbb6112",
+  "new_readme": {
+    "bytes": 232728,
+    "path": "/Users/yanjixiong/github/mini-loop/go/README.md",
+    "sha256": "d415b58aa6050c6ea5c2cf1e8ec37a29e057d7db445581f3f096e8a7442cc9ce"
+  },
+  "new_readme_committed_at_head": false,
+  "original_final_receipt": {
+    "bytes": 370021,
+    "path": "/Users/yanjixiong/github/mini-loop/docs/audits/go-port-completion-2026-10-15.json",
+    "sha256": "0a1b1324b4dccac905104724758801e76f5c1a24f185becbb301146973069f5d"
+  },
+  "original_manifest_sha256": "b33ffab9e8e51237faa271cc077e3058bfb8887eb01d601783e5a8a537c88d52",
+  "original_readme": {
+    "bytes": 232647,
+    "git_blob": "3fccc2bec0272c1c1a0f0a8c38d812d0e3fe9917:go/README.md",
+    "sha256": "ded15ac8db6e2409a08d093afdb067c03e32cf04123e95a2b16b449e8fda377a"
+  },
+  "original_receipt_modified": false,
+  "original_runtime_commit": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+  "other_committed_blob_ids_and_modes_match": true,
+  "other_inputs_individually_hash_checked": 1863,
+  "prose_edits": [
+    {
+      "added": [
+        "This section and [the parity matrix](../GO_PARITY_MATRIX.md) give the current\n",
+        "availability. Per-slice notes below describe their delivery baseline; later\n",
+        "evidence supersedes their earlier implementation-status statements.\n"
+      ],
+      "new_start_line": 13,
+      "old_start_line": 13,
+      "removed": [
+        "This section supersedes older per-slice statements below that comprehensive\n",
+        "`MINILOOP_FEATURES` is unsupported or that the default syntax backend is absent.\n"
+      ]
+    },
+    {
+      "added": [
+        "[final original-scope receipt](../docs/audits/go-port-completion-2026-10-15.json)\n",
+        "composes the complete host/Linux gates. Earlier focused results retain their\n",
+        "recorded scope and revision.\n"
+      ],
+      "new_start_line": 19,
+      "old_start_line": 18,
+      "removed": [
+        "iteration evidence linked below records the final full/vet/race and Linux gates;\n",
+        "focused results alone do not establish whole-port acceptance.\n"
+      ]
+    },
+    {
+      "added": [
+        "Earlier results remain bound to their recorded revision. The approved Linux\n",
+        "profile uses 3GiB container memory and a 1GiB Go soft target. The final receipt\n",
+        "completes the original bounded migration acceptance.\n"
+      ],
+      "new_start_line": 28,
+      "old_start_line": 26,
+      "removed": [
+        "Earlier CPython results remain bound to their recorded revision; Linux resource\n",
+        "policy approval and the complete migration receipt remain separate gates.\n"
+      ]
+    },
+    {
+      "added": [
+        "This directory contains the independent Go runtime alongside `../python/`.\n",
+        "The `httpapi` package provides the embedded browser UI and REST/SSE handler;\n",
+        "`cmd/miniloop` provides standalone HTTP startup and signal shutdown. The\n"
+      ],
+      "new_start_line": 32,
+      "old_start_line": 29,
+      "removed": [
+        "This directory is the independent Go port of the Python runtime in `../python/`.\n",
+        "It is under construction. The httpapi package provides an embeddable HTTP/SSE\n",
+        "handler; `cmd/miniloop` now provides standalone HTTP startup and signal shutdown.\n",
+        "UI and the remaining Python default services are still pending. The\n"
+      ]
+    }
+  ],
+  "runtime_input_count": 1864,
+  "same_runtime_member_set": true,
+  "schema_version": 1,
+  "scope": "Only the Go README prose differs among the tested 1864 inputs. This candidate preserves the original evidence; it does not claim tests ran on the publication HEAD.",
+  "status": "documentation_only_delta_candidate",
+  "tested_workflow_commit": "3fccc2bec0272c1c1a0f0a8c38d812d0e3fe9917",
+  "tests_reexecuted": false
+}

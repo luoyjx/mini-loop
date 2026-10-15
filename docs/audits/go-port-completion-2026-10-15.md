@@ -88,8 +88,12 @@ packing. Transport preserves raw logs and hashes while excluding caches and the
 large Node binary; local replay explicitly does not re-read those omitted bytes.
 Use the tested CI revision for exact replay. Publication commits preserve their
 separate provenance; they do not imply tests were rerun on a new documentation HEAD.
-The strict receipt includes the old Go README. A separate prose-only availability
-correction will record its old/new hashes and the other 1,863 unchanged inputs.
+The strict receipt includes the old Go README. The separate
+[prose-only publication check](go-readme-publication-2026-10-15.json) records its
+old/new hashes and the other 1,863 unchanged inputs, including committed blobs,
+file modes and protected code blocks. It records the pre-commit observation and
+explicitly states that tests were not rerun for the prose correction. A newly
+built binary can report the newer documentation revision in its VCS metadata.
 
 ## Architecture
 
