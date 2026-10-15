@@ -1,0 +1,10 @@
+{
+  "python_version": "3.12",
+  "dependencies": ["."],
+  "graphs": {"agent": "./src/mini_loop_deepagents/graph.py:agent"},
+  "auth": {
+    "path": "./src/mini_loop_deepagents/auth.py:auth",
+    "disable_studio_auth": true
+  },
+  "env": ".env"
+}

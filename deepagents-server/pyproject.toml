@@ -1,0 +1,27 @@
+[project]
+name = "mini-loop-deepagents"
+version = "0.1.0"
+requires-python = ">=3.12"
+description = "Independent Deep Agents application for LangGraph Agent Server"
+readme = "README.md"
+dependencies = [
+    "deepagents==0.7.25",
+    "langchain-openai==1.7.2",
+    "langgraph-api==0.16.0",
+    "langgraph-cli[inmem]==0.4.35",
+    "langgraph-sdk==0.4.7",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "pytest-asyncio>=0.24,<2", "httpx>=0.28,<1"]
+
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mini_loop_deepagents"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

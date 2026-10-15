@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains",
+    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains; independent opt-in Deep Agents server module",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      2140
+      2850
     ],
     "views": [
       {
@@ -666,6 +666,123 @@
         76
       ],
       "tag": "3 GiB · CPU2 · offline gates"
+    },
+    {
+      "id": "daClients",
+      "type": "external",
+      "label": "Agent Server callers",
+      "sublabel": "SDK / REST / SSE",
+      "pos": [
+        60,
+        2320
+      ],
+      "size": [
+        230,
+        76
+      ]
+    },
+    {
+      "id": "daAuth",
+      "type": "security",
+      "label": "Bearer auth + owner scope",
+      "sublabel": "private Threads / Runs / store",
+      "pos": [
+        400,
+        2320
+      ],
+      "size": [
+        280,
+        76
+      ]
+    },
+    {
+      "id": "daServer",
+      "type": "frontend",
+      "label": "LangGraph Agent Server",
+      "sublabel": "standard API / queued execution",
+      "pos": [
+        850,
+        2320
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "0.16.0 · opt-in module"
+    },
+    {
+      "id": "daGraph",
+      "type": "backend",
+      "label": "Deep Agents graph",
+      "sublabel": "create_deep_agent / runtime tools",
+      "pos": [
+        1370,
+        2320
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "0.7.25 · separate uv environment"
+    },
+    {
+      "id": "daProvider",
+      "type": "external",
+      "label": "OpenAI provider",
+      "sublabel": "server-configured credentials / model",
+      "pos": [
+        1920,
+        2320
+      ],
+      "size": [
+        320,
+        76
+      ]
+    },
+    {
+      "id": "daDev",
+      "type": "backend",
+      "label": "Local development",
+      "sublabel": "langgraph dev / in-memory backend",
+      "pos": [
+        400,
+        2530
+      ],
+      "size": [
+        310,
+        76
+      ],
+      "tag": "local snapshots; not production durability"
+    },
+    {
+      "id": "daPersistence",
+      "type": "database",
+      "label": "Production state / coordination",
+      "sublabel": "PostgreSQL durable / Redis ephemeral",
+      "pos": [
+        850,
+        2530
+      ],
+      "size": [
+        380,
+        76
+      ],
+      "tag": "standard server deployment / license required"
+    },
+    {
+      "id": "daFiles",
+      "type": "database",
+      "label": "Virtual agent files",
+      "sublabel": "thread StateBackend / owner StoreBackend",
+      "pos": [
+        1370,
+        2530
+      ],
+      "size": [
+        410,
+        76
+      ],
+      "tag": "/memories/ owner namespace; no host shell / FS"
     }
   ],
   "boundaries": [
@@ -730,6 +847,19 @@
         "goEntry"
       ],
       "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "deepagents-server/ · independent opt-in runtime",
+      "wraps": [
+        "daAuth",
+        "daServer",
+        "daGraph",
+        "daDev",
+        "daPersistence",
+        "daFiles"
+      ],
+      "pad": 32
     }
   ],
   "connections": [
@@ -1661,6 +1791,49 @@
       "from": "goCI",
       "to": "goContractEvidence",
       "variant": "dashed"
+    },
+    {
+      "id": "daRequest",
+      "from": "daClients",
+      "to": "daAuth",
+      "variant": "security"
+    },
+    {
+      "id": "daAdmission",
+      "from": "daAuth",
+      "to": "daServer",
+      "variant": "security"
+    },
+    {
+      "id": "daExecute",
+      "from": "daServer",
+      "to": "daGraph",
+      "variant": "emphasis"
+    },
+    {
+      "id": "daModel",
+      "from": "daGraph",
+      "to": "daProvider"
+    },
+    {
+      "id": "daDevMode",
+      "from": "daDev",
+      "to": "daServer",
+      "variant": "dashed"
+    },
+    {
+      "id": "daState",
+      "from": "daServer",
+      "to": "daPersistence",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "daVirtualFiles",
+      "from": "daGraph",
+      "to": "daFiles",
+      "fromSide": "bottom",
+      "toSide": "top"
     }
   ],
   "cards": [
@@ -1875,6 +2048,17 @@
         "Direct/SSE provider endpoints retain original path bytes, literal dot normalization, percent escapes/repeated slashes and SDK v1/messages concatenation. All 224 required request observations now match. HTTPX raw_path maps to explicit URL.RawPath and full URL.String; Go EscapedPath remains canonical. Literal backslash/caret/pipe selects a privately owned standard Transport clone, one original proxy-policy call per attempt and a wire-only URL clone. Caller configuration is unchanged; Client/StreamingClient CloseIdleConnections releases selected idle connections. Ordinary paths retain the selected transport. Custom non-standard RoundTrippers own encoding/routing and receive metadata; arbitrary custom wire parity is unproven.",
         "Existing Python Unicode 14.0.0 whole-host casing/default-port normalization remains before native transport IDNA. All 40 plain HTTP wire and 24 HTTP proxy/HTTPS direct/HTTPS CONNECT observations now match, fixing the original 24 wire target failures. HTTP proxy uses absolute-form; direct/HTTPS use origin-form; standard net/http owns Host/IDNA, CONNECT, verified TLS, dial configuration and pooling. All 16 SNI and eight CONNECT authority/API-key absence observations still match; application keys/replies/identity remain asserted. Test CA/fixture.invalid/HTTP1.1 scope only. General IDNA/admission, custom transport spelling, ambient proxy discovery, proxy auth and HTTP2 acceptance remain open; broader IDNA dependencies still pending.",
         "Operator typeaudit -variables resolves all active package variable roots, including inferred/imported/generic payloads and stored function signatures. Shared compiler-selected/CGO source resolution executes no package code. Named type audits remain separate; local/body/foreign/inactive-profile flow acceptance remains open."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Independent Deep Agents server",
+      "items": [
+        "Review baseline 2026-10-16: main 3df5f4e plus independent deepagents-server/ implementation. Existing Python and Go runtimes keep their own startup, tools, state and defaults.",
+        "Deep Agents 0.7.25 runs on standard LangGraph Agent Server 0.16.0 / CLI 0.4.35. Bearer identities own private Threads, Runs and store namespaces. Crons are denied.",
+        "StateBackend virtual thread files are checkpointed; /memories/ uses an owner-scoped StoreBackend. No host shell or local filesystem execution backend is configured.",
+        "langgraph dev uses an in-memory backend with local snapshots, not production durability. The production Compose path uses PostgreSQL durable resources/checkpoints/store and Redis ephemeral coordination; platform licensing applies.",
+        "This module does not implement the MDA SDK, Context Hub, OAuth or managed sandbox capabilities from the external reference design."
       ]
     }
   ]

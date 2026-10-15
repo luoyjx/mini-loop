@@ -17,6 +17,7 @@ orchestration remain explicit choices.
 |---|---|
 | See what the project is | [30-second overview](#30-second-overview) |
 | Run it locally | [Quick start](#quick-start) |
+| Run the independent Deep Agents server | [Deep Agents server module](deepagents-server/README.md) |
 | Understand one request | [How one turn works](#how-one-turn-works) |
 | Decide what to enable | [Runtime posture](#runtime-posture) |
 | Integrate over HTTP or Python | [Use the runtime](#use-the-runtime) |
@@ -44,6 +45,9 @@ Caller
   sinks are construction-time choices.
 - **Evidence is part of the runtime.** REST/SSE status, trajectories, action
   records, audit posture, and optional SQLite state make behavior inspectable.
+- **An independent Deep Agents server is opt-in.** [`deepagents-server/`](deepagents-server/README.md)
+  serves a Deep Agents graph through the standard LangGraph Agent Server in its
+  own environment; the Python and Go runtime defaults remain separate.
 - **Capability does not imply enablement.** Default-on, default-off,
   process-local, library-only, and durable paths are labeled separately below.
 
@@ -117,6 +121,7 @@ The table is the fastest way to distinguish “implemented” from “active her
 | Typed decisions: choice, score, and noul | **Off, including the full feature bundle** | `MINILOOP_DECISIONS=llm\|jev` or explicit `install_decisions()`; judgments return data through the existing tool boundary |
 | Declarative workflow MVP | **Off, process-local** | Trusted Python construction with `enable_workflows=True` |
 | Verified execute → verify → fold loop | **Library-only** | Call `VerifiedLoopService` explicitly; no HTTP/tool surface |
+| Independent Deep Agents server | **Opt-in, separate module** | [`deepagents-server/`](deepagents-server/README.md): bearer-authenticated standard Agent Server; local dev snapshots are not production durability; production PostgreSQL/Redis configuration and licensing are explicit |
 
 <details>
 <summary>Reference curriculum mapping (learn-claude-code s01–s20)</summary>
@@ -1170,6 +1175,12 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
+Current architecture review baseline: **2026-10-16**, `main` at `3df5f4e`
+plus the independent `deepagents-server/` implementation. This lane uses Deep
+Agents **0.7.25**, standard LangGraph Agent Server **0.16.0**, and CLI **0.4.35**;
+it does not replace either existing runtime or change their feature defaults.
+The earlier Go review and acceptance labels below retain their original scope.
+
 <!-- architecture-map:start -->
 ```mermaid
 flowchart LR
@@ -1326,6 +1337,23 @@ flowchart LR
         GoChildren -. scoped events .-> GoSession
     end
 
+    subgraph DeepAgentsServer["deepagents-server/ · independent opt-in runtime"]
+        DAAuth["Bearer authentication + owner scope<br/>private Threads · Runs · store namespaces"]
+        DAAPI["Standard LangGraph Agent Server 0.16.0<br/>REST / SSE / queued execution · CLI 0.4.35"]
+        DAGraph["Deep Agents 0.7.25<br/>create_deep_agent graph · planning / subagents"]
+        DAFiles["Virtual files only<br/>StateBackend: per-thread checkpointed files<br/>/memories/: owner-scoped StoreBackend<br/>no host shell / local filesystem backend"]
+        DADev["Local development: langgraph dev<br/>in-memory backend + local snapshots<br/>not production durability"]
+        DAPostgres["Production PostgreSQL<br/>resources · checkpoints · owner store"]
+        DARedis["Production Redis<br/>ephemeral coordination / streams"]
+        DAAuth --> DAAPI --> DAGraph --> DAFiles
+        DADev -. local backend mode .-> DAAPI
+        DAAPI -. production backend mode .-> DAPostgres
+        DAAPI -. transient coordination .-> DARedis
+    end
+    DAProvider["OpenAI provider<br/>server-configured credentials / model"]
+    Caller -. explicitly select independent module .-> DAAuth
+    DAGraph -->|model requests| DAProvider
+
     Caller --> Entry
     Caller --> GoStartupEnv
     GoLaunch -. CLI main only .-> GoCLIEnv
@@ -1383,6 +1411,20 @@ flowchart LR
     GoContractInputs --> GoCI --> GoContractEvidence
 ```
 <!-- architecture-map:end -->
+
+The Deep Agents lane has its own dependency lock, process and standard Agent
+Server API; it does not route through `SessionManager` or the Go tool gate.
+Bearer authentication binds the owner before access to private Threads, Runs and
+store namespaces. Graph files are virtual checkpoint/store data, and `/memories/`
+is shared only within that owner namespace. The configured graph does not expose
+host shell or local filesystem execution. Cron access is denied initially.
+`langgraph dev` uses an in-memory backend with local snapshots. The production
+Compose path uses PostgreSQL for durable resources/checkpoints/store and Redis
+for transient coordination; it requires the applicable Agent Server license and
+operator configuration. This module does not implement MDA SDK, Context Hub,
+OAuth, or managed sandbox capabilities from the external reference design. See
+[the module guide](deepagents-server/README.md) for commands, configuration,
+verification and deployment boundaries.
 
 The operator CI job is outside the deployed runtime. Its networked bootstrap
 fetches only the existing fixed public inputs; test containers receive the
@@ -3535,6 +3577,7 @@ separate acceptance.
 | `python/tools/` | Python verification and benchmark scripts |
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
+| `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
@@ -3660,6 +3703,8 @@ Check the Python contract snapshot before extending the Go port:
 | Question | Document |
 |---|---|
 | How do I inject or replace a runtime seam? | [Extending mini-loop](./EXTENDING.md) |
+| How do I run the independent Deep Agents server? | [Deep Agents server guide](deepagents-server/README.md) |
+| Which external architecture informed that module? | [Managed Deep Agents / Agent Server reference design](docs/MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md) |
 | Why does a guard or invariant exist? | [Hardening notes](docs/HARDENING_NOTES.md) |
 | What is durable, inspectable, or exported? | [Agent trajectories](docs/TRAJECTORIES.md) |
 | How do owner skills and memory resolve? | [User-scoped skills and memory](docs/USER_SCOPED_SKILLS_MEMORY_DESIGN.md) |

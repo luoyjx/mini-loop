@@ -1,0 +1,11 @@
+Built-in imagegen edit, 2026-10-16.
+Edit target: docs/mini-loop-layered-architecture.png (clean base after module addition).
+Delivery: docs/audits/deepagents-server-2026-10-16.png.
+
+Exact prompt:
+Edit the supplied COMPLETE mini-loop layered architecture base diagram to create the 2026-10-16 iteration delivery image. Preserve all existing diagram content, exact labels, all L1-L5 components and arrows, all six boundary notes, and the independent bottom "deepagents-server/" lane. Add a thin orange highlight border ONLY around the entire bottom independent Deep Agents module lane. Add a small orange badge in the lane's upper right margin with exactly "2026-10-16 · 新增独立 Agent Server". Keep all lane labels readable and unchanged, including "LLM inference", virtual StateBackend, owner-scoped StoreBackend, dev inmem snapshots, production PostgreSQL/Redis configuration, no host shell and license condition. Do not change any architecture or add new capabilities. Retain complete expanded image, palette and mountain footer. The highlight marks only what changed in this iteration.
+
+Explanation: orange highlights only the new independent opt-in Agent Server lane.
+L1-L5 remain the existing Python/Go architecture. Local inmem snapshots and production
+PostgreSQL/Redis configuration are separate; no cloud MDA capability is implied.
+Full image visually inspected after generation.
