@@ -1,7 +1,7 @@
 # mini-loop
 
 A compact, inspectable coding-agent harness. The existing FastAPI implementation
-lives in `python/`; an independent Go implementation is being built in `go/`.
+lives in `python/`; an independent Go implementation lives in `go/`.
 See the [port plan](GO_PORT_PLAN.md) and [parity matrix](GO_PARITY_MATRIX.md).
 
 mini-loop starts with the `s01` agent loop from
@@ -574,7 +574,27 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current evidence-retention review baseline: `960fb87` + actual bootstrap logs.
+Current final-acceptance review baseline: runtime `606630f`, actual CI `3fccc2b`
+and current publication evidence. Original P0/P1/G0–G7 acceptance is complete
+within its recorded finite scope. The [final receipt](docs/audits/go-port-completion-2026-10-15.json)
+and [five-row delta](docs/audits/go-required-final-platform-delta-2026-10-15.json)
+close the original ledger at **344 verified / 0 incomplete / 0 blocked**.
+Application statement coverage is **85.53%**; contract row counts are a separate
+inventory. The [short completion article](docs/audits/go-port-completion-2026-10-15.md)
+maps each original work package to its evidence and boundaries.
+
+The unchanged 1,864 inputs bind 16 host gates, including Python 2,256 passed / 28
+skipped, and the real GitHub arm64 Source/full/vet/race gates. The retained
+original bytes also pass the unchanged verifier. Both Go cohorts pass all 6,955
+required named identities, including parser 62, IDNA 84, core 31, persistence
+recipes and browser interaction. Thirteen Linux optional/platform skips and
+two packages without test files retain their reasons; six Darwin-only cases
+have actual host ordinary/race passes. The profile remains3GiB container memory,
+1GiB Go soft target, CPU 2, package 1, test 2 and offline serial validation.
+CPython3.11.2 Source capture and the approved external CPython3.11.3 backend are
+observed separately. Earlier failed/stopped attempts retain their exact status.
+
+Previous evidence-retention review baseline: `960fb87` + actual bootstrap logs.
 The corrected GitHub run passed all four stages and its on-run verifier, including
 the real browser interaction test. Artifact replay then found that bootstrap
 uses `logs/` while the transport listed `bootstrap-logs/`. The transport now

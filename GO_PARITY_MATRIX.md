@@ -1,5 +1,29 @@
 # Python to Go parity matrix
 
+## 2026-10-15 original required rows verified
+
+Original P0/P1/G0–G7 acceptance is complete within its recorded finite scope.
+The immutable344-row audit plus prior 7/26/11/3 deltas yielded339/0/5; the
+[final five-row delta](docs/audits/go-required-final-platform-delta-2026-10-15.json)
+closes only those remaining rows at **344 verified / 0 incomplete / 0 blocked**.
+See the [final host/Linux receipt](docs/audits/go-port-completion-2026-10-15.json)
+and [work-package map](docs/audits/go-port-completion-2026-10-15.md).
+
+| Closed family | Observed acceptance |
+| --- | --- |
+| `setting:base_url`, `export:build_client` | All 84 IDNA recipes and fixed NFC/Bidi/Punycode comparisons pass in host and Linux ordinary/race cohorts. |
+| `setting:enable_features`, `export:full_registry`, `capability:04` | Approved external CPython3.11.3 `ast.parse`: actual 62 recipes and default Manager/HTTP/CLI integration pass in all four cohorts. |
+
+Runtime 606630f inputs remain unchanged at tested CI 3fccc2b. Real Source/full/vet/
+race and retained original-byte verification pass. Each Go cohort has 53 packages
+and all 6,955 required named identities, including browser interaction; core 31
+remains the original inventory. Thirteen Linux optional/platform skips and two
+no-test packages keep their actual status, with six Darwin cases separately
+passing in host full/race. Host 16 includes Python2,256 passed / 28 skipped and
+application statement coverage 85.53%. Resource profile:3GiB hard/1GiB Go soft,
+CPU 2, package 1/test 2, offline serial containers, normal pressure and no OOM.
+Historical attempts and performance bounds retain their recorded revisions.
+
 ## 2026-10-15 bootstrap log retention correction
 
 Run38659480581 has genuine successful Source/full/vet/race and on-run verification,

@@ -1,0 +1,5 @@
+Use case: precise-object-edit / infographic-diagram
+Asset type: mini-loop complete layered architecture iteration PNG, landscape1536x1024.
+Input image: attached updated complete layered base is the edit target.
+Primary request: show this iteration's validation and publication closure on the complete base. Place a small orange marker1 on the L5 rightmost operator audit card. Add a compact orange outlined note in the lower right column, moving only decorative bottom mountains if needed. Draw a thin orange connector from marker1 without obscuring runtime arrows. Exact title: "本轮 · 原定范围验收". Exact four lines: "原344契约行全部核验", "Host + Linux full / vet / race", "62解析场景 · 84 IDNA场景", "3 GiB / 2核 · 原始证据归档".
+Constraints: preserve the entire five-layer base and all components, arrows, labels, six boundary statements, completed original-scope subtitle, source attribution, dark blue palette and1536x1024 canvas. The highlight describes operator evidence closure only, with no change to runtime authority, optional feature defaults or persistence semantics. No claim of universal equivalence or speedup.

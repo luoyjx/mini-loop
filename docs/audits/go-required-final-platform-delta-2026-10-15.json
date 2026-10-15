@@ -1,0 +1,958 @@
+{
+  "acceptance_scope": "Original finite P0/P1/G0-G7 requirements, not arbitrary Python objects, universal lifecycle equivalence, power-loss certification or a new universal performance SLO.",
+  "applied": true,
+  "count_derivation": "Compose immutable original344 and applied7+26+11+3; change only five remaining rows after16host+4actualCI+2post-CI G7 gates.",
+  "created_utc": "2026-10-15T01:11:05.144448+00:00",
+  "current_status_counts": {
+    "dependency_blocked": 0,
+    "evidence_incomplete": 0,
+    "verified": 344
+  },
+  "delta_row_count": 5,
+  "evidence_groups": {
+    "approved_default_cpython": {
+      "assertion_scope": [
+        "Actual fixed ast.parse results: kind, syntax line/message/subclass, typed fault class/message and surrogatepass source bytes.",
+        "Real default Manager and Launcher HTTP diagnostic tool round: complete Source catalogue, real file syntax result and next provider request.",
+        "Full CLI health/start/cancel lifecycle, explicit provider replacement, pure inspection, missing/wrong interpreter rejection before resources.",
+        "Process queue/cancellation/isolation/input/output budgets; Linux AS512MiB and CPU4/5 limits are child-local; Darwin has no hard RAM claim."
+      ],
+      "executed_test_identities": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserConcurrentCallsAndInputBoundaries"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserIsolationVersionAndNoExecution"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserCancellationJoinsProcessAndBoundsConcurrentStarts"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserOutputBudgetFailsWithoutCleanResult"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestPythonSyntaxNativeScannerActualSourceRecipes"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestPythonSyntaxInvalidResultsFaultsAndCancellation"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "test": "TestManagerFullFeaturesUsesActualDefaultCPython"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "test": "TestManagerFullFeaturesMissingParserFailsBeforeWorkspaceEffects"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "test": "TestManagerFullFeaturesWrongPythonVersionFailsBeforeWorkspaceEffects"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "test": "TestExplicitFeatureCatalogueMatchesSourceDefinitions"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "test": "TestDefaultFullCPythonDiagnosticsThroughActualHTTP"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "test": "TestDefaultFullWrongPythonVersionFailsBeforeResources"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "test": "TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/launcher",
+          "test": "TestFullFeatureLauncherHTTPPublishesSourceCatalogueAndRepositoryBinding"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+          "test": "TestFullFeatureCLIStartsWithDefaultCPython"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/empty"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/comment"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/assignment"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unicode-identifier"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unicode-string"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/return-at-module"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/break-at-module"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/continue-at-module"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/await-at-module"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/nonlocal-at-module"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/duplicate-arguments"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/async-function"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/decorator"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/positional-only"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/type-union"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/walrus"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/match"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/exception-group"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/mixed-except"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/python312-type-statement"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/python312-type-parameter"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/fstring"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/fstring-unclosed"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/fstring-empty"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/fstring-backslash"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/fstring-same-quote"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unterminated-string"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unterminated-triple-string"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unclosed-parenthesis"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/mismatched-bracket"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unexpected-close"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/missing-colon"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/missing-indent"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unexpected-indent"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unindent"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/mixed-tabs-spaces"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/dangling-decorator"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/dangling-else"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/assignment-target"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/delete-target"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/augmented-target"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/keyword-argument-order"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/duplicate-keyword"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/argument-after-kwargs"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/leading-zero"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/numeric-underscore"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/invalid-hex"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/invalid-exponent"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/bytes-nonascii"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/null-character"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/bom-in-text"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/replacement-character"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/lone-surrogate"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/nonbreaking-space"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/line-continuation"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/line-continuation-garbage"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/crlf"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/error-line-two"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/multiline-error"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/future-import-late"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/unknown-future"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/diagnostics",
+          "test": "TestCPythonParserActualSource62Profile/invalid-unicode-escape"
+        }
+      ],
+      "observed_suites": [
+        "host-go-full",
+        "host-go-race",
+        "linux-ci-full",
+        "linux-ci-race"
+      ],
+      "references": [
+        {
+          "bytes": 4652,
+          "path": "python/tools/python_syntax_contracts.py",
+          "sha256": "c986f4e313612c18d56e1c8839cf453481a2c54ca1356c5cb93ce3ceea32aec7"
+        },
+        {
+          "bytes": 718686,
+          "path": "python/tools/export_go_contracts.py",
+          "sha256": "1a5d529fafb6d4c333d082d5d6714d5143c515e734f52c5ac4d0b3b94ff67144"
+        },
+        {
+          "bytes": 16779,
+          "path": "go/testdata/python-syntax-parser.json",
+          "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42"
+        },
+        {
+          "bytes": 8307,
+          "path": "go/diagnostics/cpython.go",
+          "sha256": "864ae237d53a521163185b44b8b2725238db7b5bf3791707a4ab08eb2ec097e1"
+        },
+        {
+          "bytes": 375,
+          "path": "go/diagnostics/process_unix.go",
+          "sha256": "647eccf9639886444ef759f7a2642b580d9244f533d9a4e88ae235db4a4c5dea"
+        },
+        {
+          "bytes": 215,
+          "path": "go/diagnostics/process_other.go",
+          "sha256": "0616585878ef0c35090af83eea969245e56d87aa73178ee446a6d8e056fd3f9b"
+        },
+        {
+          "bytes": 4663,
+          "path": "go/diagnostics/cpython_test.go",
+          "sha256": "4212d32717a54133cefde6e1f78864ef860f50da56bc0f4ff91f5890c91db933"
+        },
+        {
+          "bytes": 5141,
+          "path": "go/diagnostics/cpython_process_test.go",
+          "sha256": "5cdf69228cde7ddbbcde1e83185b239e84e9ab4198b4d33a1bc900be26a2bd4d"
+        },
+        {
+          "bytes": 7112,
+          "path": "go/diagnostics/python_syntax_test.go",
+          "sha256": "65834d94015513501a3e82dbd45c7c3ae0517285dd994df5f4f5e71f4753641b"
+        },
+        {
+          "bytes": 1040,
+          "path": "go/agent/manager_features.go",
+          "sha256": "3778d943d16ed4c6e9be6346426cfe754e0fb24bd0af943d5fb824e1a916ceb3"
+        },
+        {
+          "bytes": 6800,
+          "path": "go/agent/manager_features_test.go",
+          "sha256": "9f02bd9f64c4cad4ed96b0672902fa5c619e1026a3313e9629aec4cb2852ec1c"
+        },
+        {
+          "bytes": 10989,
+          "path": "go/agent/feature_bundle_contract_test.go",
+          "sha256": "727387e6f3ce274dd84815264bd0457f3d7ed000dab28ae6923397549c06a4fd"
+        },
+        {
+          "bytes": 10701,
+          "path": "go/launcher/diagnostics_test.go",
+          "sha256": "75fbc14c62212cb2298d64ffe55c47bc778bd5f4401d0f24762d635183053b45"
+        },
+        {
+          "bytes": 6300,
+          "path": "go/launcher/features_test.go",
+          "sha256": "9642c6488e69ab18237c43381e6a1959405576ad02789f21cf235173731ed81e"
+        },
+        {
+          "bytes": 14146,
+          "path": "go/cmd/miniloop/main_test.go",
+          "sha256": "58b0aacc10be516ee6b056e9ccd5ba1a47b445de0de11d348700bed52ca736e8"
+        }
+      ],
+      "source_profile": {
+        "cases": 62,
+        "clean": 24,
+        "fault": 2,
+        "producer": "python/tools/python_syntax_contracts.py::python_syntax_contracts",
+        "syntax": 36
+      }
+    },
+    "native_source_idna": {
+      "actual_source_profile": {
+        "httpx_version": "0.28.1",
+        "idna_table_unicode_version": "17.0.0",
+        "idna_version": "3.18",
+        "python_implementation": "CPython",
+        "python_version": "3.11.3",
+        "sdk_version": "0.107.1",
+        "unicode_version": "14.0.0"
+      },
+      "idna": {
+        "cases": 84,
+        "complete": 48,
+        "constructor_refusal": 34,
+        "module_files_unchanged_from_prior": true,
+        "request_refusal": 2,
+        "source_fixture_and_archived_consumer_unchanged": true
+      },
+      "normalization": {
+        "bidi_cases": 2614,
+        "bidi_execution": "2614 assertions inside one named passing top-level test, not 2614 subtest events",
+        "invalid_utf8_adapter_cases": 8,
+        "nfc_cases": 6320
+      },
+      "observed_suites": [
+        "host-go-full",
+        "host-go-race",
+        "linux-ci-full",
+        "linux-ci-race"
+      ],
+      "raw_punycode": {
+        "decodings": 215,
+        "encodings": 135,
+        "native_contract": {
+          "max_code_points": 4096,
+          "max_payload_bytes": 32768,
+          "scalar_only": true
+        }
+      },
+      "references": [
+        {
+          "bytes": 53047,
+          "path": "go/testdata/python-provider-idna.json",
+          "sha256": "339cee6b3f6fbda1f207551d1d9e03319b90f5c6af4509dab7a6e02d0b388eab"
+        },
+        {
+          "bytes": 194475,
+          "path": "go/testdata/python-punycode.json",
+          "sha256": "711414f1811d6c6b90cfc57331224d023d064f9d4c4257aaff4e12f4189395f9"
+        },
+        {
+          "bytes": 1332600,
+          "path": "go/testdata/python-unicode-normalization.json",
+          "sha256": "ef2be84966311dacad441ac6689a90077cd574a9bdb2f62afe6f0e804b0f0f75"
+        },
+        {
+          "bytes": 12219,
+          "path": "go/provider/provider_idna_required_test.go",
+          "sha256": "963fa0349b169843a3407639f26a24c8e0cac6eebdca6280e1c6a8406c527085"
+        },
+        {
+          "bytes": 15092,
+          "path": "go/provider/client.go",
+          "sha256": "1e8a7eaaf4a575ec8c3fbc12543d21a4c4e97ca709bfbe68fb4e5db272e93238"
+        },
+        {
+          "bytes": 3717,
+          "path": "go/provider/endpoint.go",
+          "sha256": "d494c8089d69e24c4b8bb1f384cb399345da51b4a5bf5f441fe20fda480bcffb"
+        },
+        {
+          "bytes": 6220,
+          "path": "go/provider/idna.go",
+          "sha256": "19fc09c97dde21a08f2b48bdd3114dc2af791ad01dd02599177d8b89b77d2ee5"
+        },
+        {
+          "bytes": 47477,
+          "path": "go/provider/idna_tables.go",
+          "sha256": "f700780f207edceb5babf1ad5b0fb5f9117e7a908d599c2361b67c5fec143aa8"
+        },
+        {
+          "bytes": 15911,
+          "path": "go/provider/IDNA_DATA_LICENSE.txt",
+          "sha256": "b33d7e74006e9c1be96f06672d64d2dd6243fad407123be644d0476a8a8e4e63"
+        },
+        {
+          "bytes": 6743,
+          "path": "go/internal/punycode/punycode.go",
+          "sha256": "7ca9a4e0c16a34e21f71c7521065024afcda1606909dd969dcd351ddce36693a"
+        },
+        {
+          "bytes": 8943,
+          "path": "go/internal/punycode/punycode_test.go",
+          "sha256": "46022d95b59c83d9176b7fe604ac544637c250b7f64b6e3f2d84839166aba67f"
+        },
+        {
+          "bytes": 6237,
+          "path": "go/internal/pytext/normalization.go",
+          "sha256": "77f1c09393be194e5066cc3abe98ded85c7b07fb3a84e289865606095a1e5b6d"
+        },
+        {
+          "bytes": 6153,
+          "path": "go/internal/pytext/normalization_test.go",
+          "sha256": "e1ee7ee66304ea2aa6a76179373e3a7f79352f2932b61e01fa12f99a5cdf0b79"
+        },
+        {
+          "bytes": 112754,
+          "path": "go/internal/pytext/normalization_data.go",
+          "sha256": "891296d21522fc43b4dd2dad4709cc6ca53254db87c83ec00fbe7e2d2cf946a6"
+        },
+        {
+          "bytes": 40413,
+          "path": "go/internal/pytext/bidi_data.go",
+          "sha256": "891481d2939cf87b1ba52b035fbf9015c89af3be9f84ed5e2261267421ac39f9"
+        },
+        {
+          "bytes": 8957,
+          "path": "python/tools/export_go_idna.py",
+          "sha256": "1a83c550b1cb984e94e55302ee2ae5d8a1b34f531505251b760ae8de8e495d79"
+        },
+        {
+          "bytes": 16457,
+          "path": "python/tools/export_go_normalization.py",
+          "sha256": "5f58dbd15c76e6833c7b20a3a267de90fa0662d74b6b2dc84e1d5629d5923022"
+        },
+        {
+          "bytes": 7001,
+          "path": "python/tools/export_go_punycode.py",
+          "sha256": "c58ec8fe157f123b97cc8a80f78c2219473e0b4c28c3c53b4db072f371c84120"
+        }
+      ],
+      "required_terminal_identities": 6769,
+      "scope": [
+        "Actual mock-transport direct/SSE request objects, configured identity, admission phase/error presence, exact request count/target and response text.",
+        "No DNS, TLS SNI, live-vendor network, or complete wire-host equivalence claim; native opaque errors do not claim identical Python exception classes/messages.",
+        "Fixed Source Unicode14 NFC/Bidi and IDNA17 property tables; scalar-only bounded native raw codec is an explicit typed adaptation."
+      ],
+      "top_tests": {
+        "internal/punycode": [
+          "TestRFC3492RawPayloads",
+          "TestScalarAndWorkBounds",
+          "TestCPython3113DifferentialEncodeAndDecode"
+        ],
+        "internal/pytext": [
+          "TestNFC14MatchesActualCPythonNormalization",
+          "TestNFC14RejectsInvalidUTF8WithoutReplacingIt",
+          "TestBidiClass14MatchesActualCPythonProperties"
+        ],
+        "provider": [
+          "TestRequiredIDNAActualSourceDirectAndStream"
+        ]
+      }
+    }
+  },
+  "explicit_unchanged": [],
+  "full_port_acceptance": true,
+  "github_job_id": 116184473434,
+  "github_run_id": 38661774873,
+  "original_audit": {
+    "bytes": 871815,
+    "path": "docs/audits/go-required-row-audit-2026-10-14.json",
+    "sha256": "9db38e723eb91ecaa048de86fe769b9c8cda01772596ac04bf0160d7bc27a359"
+  },
+  "original_cardinality": 344,
+  "other_rows_unchanged": 339,
+  "preceding_applied_deltas": [
+    {
+      "bytes": 36092,
+      "path": "docs/audits/go-required-row-delta-2026-10-14.json",
+      "sha256": "22b0d48c3e805db54262d21e88ef6945f58d837e33f078055da6df9b0ee025fa"
+    },
+    {
+      "bytes": 204830,
+      "path": "docs/audits/go-required-http-feature-delta-2026-10-14.json",
+      "sha256": "627be499842cbdee177bcb51e4b9d6c9cccc2f94dc3ac6e3b4a230dfa187d29f"
+    },
+    {
+      "bytes": 148466,
+      "path": "docs/audits/go-required-public-contract-delta-2026-10-14.json",
+      "sha256": "df9bd549296ceb43686387b88e2542ec917fe87322dd9bc686e342df57eeef37"
+    },
+    {
+      "bytes": 34603,
+      "path": "docs/audits/go-required-remaining-contract-delta-2026-10-14.json",
+      "sha256": "dda0cc63071e75d5e12c7673c656db5ccdfb322318e07210cb5d7d8d8dc07a2e"
+    }
+  ],
+  "previous_status_counts": {
+    "dependency_blocked": 5,
+    "evidence_incomplete": 0,
+    "verified": 339
+  },
+  "required_gate_count": 22,
+  "rows": [
+    {
+      "applied": true,
+      "bounded_scope": [
+        "Actual mock-transport direct/SSE request objects, configured identity, admission phase/error presence, exact request count/target and response text.",
+        "No DNS, TLS SNI, live-vendor network, or complete wire-host equivalence claim; native opaque errors do not claim identical Python exception classes/messages.",
+        "Fixed Source Unicode14 NFC/Bidi and IDNA17 property tables; scalar-only bounded native raw codec is an explicit typed adaptation."
+      ],
+      "evidence_group": "native_source_idna",
+      "id": "setting:base_url",
+      "previous_row": {
+        "dependency_receipt": "docs/audits/go-provider-idna-source-2026-10-13.json",
+        "environment_names": [
+          "ANTHROPIC_BASE_URL"
+        ],
+        "evidence": [
+          "CONFIG"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "core-overrides"
+        ],
+        "id": "setting:base_url",
+        "native_assertion": {
+          "line": 16,
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings"
+        },
+        "native_declaration": {
+          "line": 65,
+          "path": "go/config/settings.go",
+          "symbol": "Settings.BaseURL"
+        },
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Settings mapping itself captured; runtime Unicode-host IDNA required consumer awaits fixed dependencies."
+        ],
+        "requirements": [
+          "P0",
+          "G7",
+          "G4"
+        ],
+        "source_declaration": {
+          "line": 88,
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.base_url"
+        },
+        "source_recipe": {
+          "line": 3736,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts"
+        },
+        "status": "dependency_blocked",
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ]
+      },
+      "previous_status": "dependency_blocked",
+      "remaining_scope": [
+        "Original finite Source contracts and typed adaptations; no arbitrary-value, universal lifecycle or wire/platform certificate."
+      ],
+      "requirements": [
+        "P0",
+        "G7",
+        "G4"
+      ],
+      "status": "verified"
+    },
+    {
+      "applied": true,
+      "bounded_scope": [
+        "Actual mock-transport direct/SSE request objects, configured identity, admission phase/error presence, exact request count/target and response text.",
+        "No DNS, TLS SNI, live-vendor network, or complete wire-host equivalence claim; native opaque errors do not claim identical Python exception classes/messages.",
+        "Fixed Source Unicode14 NFC/Bidi and IDNA17 property tables; scalar-only bounded native raw codec is an explicit typed adaptation."
+      ],
+      "evidence_group": "native_source_idna",
+      "id": "export:build_client",
+      "previous_row": {
+        "evidence_ref": "baseline_public_audit.seams.client",
+        "export_name": "build_client",
+        "id": "export:build_client",
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "native_named_bindings": [
+          {
+            "file": "provider/client.go",
+            "kind": "function",
+            "line": 144,
+            "name": "New",
+            "package": "provider"
+          },
+          {
+            "file": "launcher/app.go",
+            "kind": "function",
+            "line": 207,
+            "name": "New",
+            "package": "launcher"
+          }
+        ],
+        "next_action": "Await approved pinned IDNA choice, implement actual84 Source-case native consumer; preserve separate SDK surrogate probe.",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "seam": "client",
+        "source_declaration": {
+          "line": 454,
+          "line_kind": "current_definition",
+          "path": "python/mini_loop/config.py",
+          "sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+          "symbol": "build_client"
+        },
+        "status": "dependency_blocked"
+      },
+      "previous_status": "dependency_blocked",
+      "remaining_scope": [
+        "Original finite Source contracts and typed adaptations; no arbitrary-value, universal lifecycle or wire/platform certificate."
+      ],
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "status": "verified"
+    },
+    {
+      "applied": true,
+      "bounded_scope": [
+        "Actual fixed ast.parse results: kind, syntax line/message/subclass, typed fault class/message and surrogatepass source bytes.",
+        "Real default Manager and Launcher HTTP diagnostic tool round: complete Source catalogue, real file syntax result and next provider request.",
+        "Full CLI health/start/cancel lifecycle, explicit provider replacement, pure inspection, missing/wrong interpreter rejection before resources.",
+        "Process queue/cancellation/isolation/input/output budgets; Linux AS512MiB and CPU4/5 limits are child-local; Darwin has no hard RAM claim."
+      ],
+      "evidence_group": "approved_default_cpython",
+      "id": "setting:enable_features",
+      "previous_row": {
+        "additional_native": {
+          "line": 58,
+          "path": "go/launcher/features_test.go",
+          "symbol": "TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects"
+        },
+        "environment_names": [
+          "MINILOOP_FEATURES"
+        ],
+        "evidence": [
+          "CONFIG"
+        ],
+        "fixture_cases": [
+          "defaults",
+          "optional-settings",
+          "legacy-flags"
+        ],
+        "id": "setting:enable_features",
+        "native_assertion": {
+          "line": 16,
+          "path": "go/config/settings_test.go",
+          "symbol": "TestActualPythonSettings"
+        },
+        "native_declaration": {
+          "line": 103,
+          "path": "go/config/settings.go",
+          "symbol": "Settings.EnableFeatures"
+        },
+        "remaining_scope": [
+          "Not an all-values/cross-feature/lifecycle certificate.",
+          "Default full-feature CPython parser decision pending; explicit DiagnosticsProvider fullcatalog proof does not supply a default backend."
+        ],
+        "requirements": [
+          "P0",
+          "G7",
+          "G6"
+        ],
+        "source_declaration": {
+          "line": 282,
+          "path": "python/mini_loop/config.py",
+          "symbol": "Settings.enable_features"
+        },
+        "source_recipe": {
+          "line": 3736,
+          "path": "python/tools/export_go_contracts.py",
+          "symbol": "_configuration_contracts"
+        },
+        "status": "dependency_blocked",
+        "verified_scope": [
+          "Actual constructor/load default and captured override snapshots; every49field compared. Invalid case acceptance is compared, not exact diagnostic."
+        ]
+      },
+      "previous_status": "dependency_blocked",
+      "remaining_scope": [
+        "Original finite Source contracts and typed adaptations; no arbitrary-value, universal lifecycle or wire/platform certificate."
+      ],
+      "requirements": [
+        "P0",
+        "G7",
+        "G6"
+      ],
+      "status": "verified"
+    },
+    {
+      "applied": true,
+      "bounded_scope": [
+        "Actual fixed ast.parse results: kind, syntax line/message/subclass, typed fault class/message and surrogatepass source bytes.",
+        "Real default Manager and Launcher HTTP diagnostic tool round: complete Source catalogue, real file syntax result and next provider request.",
+        "Full CLI health/start/cancel lifecycle, explicit provider replacement, pure inspection, missing/wrong interpreter rejection before resources.",
+        "Process queue/cancellation/isolation/input/output budgets; Linux AS512MiB and CPU4/5 limits are child-local; Darwin has no hard RAM claim."
+      ],
+      "evidence_group": "approved_default_cpython",
+      "id": "export:full_registry",
+      "previous_row": {
+        "evidence_ref": "baseline_public_audit.seams.full",
+        "export_name": "full_registry",
+        "id": "export:full_registry",
+        "native_binding_note": "Historical lexical inventory binding; current semantic proof is in native_assertion_refs and seam assertion excerpts, not this name match.",
+        "native_named_bindings": [
+          {
+            "file": "agent/manager_config.go",
+            "kind": "type",
+            "line": 120,
+            "name": "ManagerConfig",
+            "package": "agent"
+          },
+          {
+            "file": "agent/manager_config.go",
+            "kind": "type",
+            "line": 54,
+            "name": "ManagerServices",
+            "package": "agent"
+          }
+        ],
+        "next_action": "Await default CPython parser approval and finish9 non-full definitions/partial-selector evidence.",
+        "requirements": [
+          "P0",
+          "G0",
+          "G7"
+        ],
+        "seam": "full",
+        "source_declaration": {
+          "line": 275,
+          "line_kind": "current_definition",
+          "path": "python/mini_loop/builtins.py",
+          "sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+          "symbol": "full_registry"
+        },
+        "status": "dependency_blocked"
+      },
+      "previous_status": "dependency_blocked",
+      "remaining_scope": [
+        "Original finite Source contracts and typed adaptations; no arbitrary-value, universal lifecycle or wire/platform certificate."
+      ],
+      "requirements": [
+        "P0",
+        "G0",
+        "G7"
+      ],
+      "status": "verified"
+    },
+    {
+      "applied": true,
+      "bounded_scope": [
+        "Actual fixed ast.parse results: kind, syntax line/message/subclass, typed fault class/message and surrogatepass source bytes.",
+        "Real default Manager and Launcher HTTP diagnostic tool round: complete Source catalogue, real file syntax result and next provider request.",
+        "Full CLI health/start/cancel lifecycle, explicit provider replacement, pure inspection, missing/wrong interpreter rejection before resources.",
+        "Process queue/cancellation/isolation/input/output budgets; Linux AS512MiB and CPU4/5 limits are child-local; Darwin has no hard RAM claim."
+      ],
+      "evidence_group": "approved_default_cpython",
+      "id": "capability:04",
+      "previous_row": {
+        "capability": "Comprehensive s09–s20 feature bundle",
+        "id": "capability:04",
+        "native_assertion": {
+          "paths": [
+            "go/agent/manager_features_test.go",
+            "go/launcher/features_test.go"
+          ]
+        },
+        "remaining_scope": [
+          "Not an all-values or full public API semantic certificate.",
+          "Default full CLI refuses without explicit native CPython diagnostics backend; explicit injected backend path is covered."
+        ],
+        "requirements": [
+          "P0",
+          "G7"
+        ],
+        "scope_evidence_receipt": "docs/audits/go-stuck-thresholds-2026-10-14.json",
+        "selector": "`MINILOOP_FEATURES=all` or `enable_features=True`",
+        "source_default": "**Off**",
+        "source_recipe": {
+          "paths": [
+            "python/tests/test_features.py"
+          ]
+        },
+        "status": "dependency_blocked",
+        "verified_scope": [
+          "Existing current Source fixtures, test assertions and prior full-gate receipt cover the stated opt-in/default posture; test-name inventory is not itself proof."
+        ]
+      },
+      "previous_status": "dependency_blocked",
+      "remaining_scope": [
+        "Original finite Source contracts and typed adaptations; no arbitrary-value, universal lifecycle or wire/platform certificate."
+      ],
+      "requirements": [
+        "P0",
+        "G7"
+      ],
+      "status": "verified"
+    }
+  ],
+  "runtime_commit": "606630f5c894b03cfccaafa1d2158e3bb07863cf",
+  "schema_version": 1,
+  "stage_directories": {
+    "architecture": "native-idna-architecture",
+    "current-diff-check": "go-port-final-diff-check-2",
+    "current-documentation": "go-port-final-architecture",
+    "diff-check": "native-idna-diff-check",
+    "go-full": "native-idna-go-full",
+    "go-race": "native-idna-go-race",
+    "go-vet": "native-idna-go-vet",
+    "invariants": "native-idna-invariants",
+    "linux-ci-full": "linux-ci-full",
+    "linux-ci-race": "linux-ci-race",
+    "linux-ci-source": "linux-ci-source",
+    "linux-ci-vet": "linux-ci-vet",
+    "normalization-check": "native-idna-normalization-check-2",
+    "punycode-check": "native-idna-punycode-check-2",
+    "python-full": "native-idna-python-full",
+    "scans": "native-idna-scans",
+    "source-check": "native-idna-source-check-2",
+    "tables-check": "native-idna-tables-check-2",
+    "type-private": "native-idna-type-private",
+    "type-public": "native-idna-type-public",
+    "type-syntax": "native-idna-type-syntax",
+    "type-variables": "native-idna-type-variables"
+  },
+  "status": "applied_after_complete_original_scope_validation",
+  "validation_receipt": {
+    "bytes": 370021,
+    "path": "docs/audits/go-port-completion-2026-10-15.json",
+    "sha256": "0a1b1324b4dccac905104724758801e76f5c1a24f185becbb301146973069f5d"
+  },
+  "workflow_commit": "3fccc2bec0272c1c1a0f0a8c38d812d0e3fe9917"
+}

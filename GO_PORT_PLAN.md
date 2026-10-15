@@ -1,5 +1,28 @@
 # Go port plan
 
+## 2026-10-15 original work-package acceptance complete
+
+Original P0/P1/G0–G7 acceptance is complete within the recorded finite contracts.
+The [final receipt](docs/audits/go-port-completion-2026-10-15.json) composes16 host
+gates, four actual Linux gates and two current publication gates. The exact
+[five-row delta](docs/audits/go-required-final-platform-delta-2026-10-15.json)
+changes 339/0/5 to **344 verified / 0 incomplete / 0 blocked**.
+
+Runtime 606630f and all 1,864 inputs are unchanged at CI3fccc2b. Actual
+[run38661774873](https://github.com/luoyjx/mini-loop/actions/runs/38661774873)
+and its retained-byte recheck pass, including all 6,955 required named identities
+in full/race and the browser interaction test. The host Python result is 2,256
+passed / 28 skipped; application statement coverage is 33,286/38,919 (85.53%).
+Thirteen Linux optional/Darwin skips and two no-test packages remain explicit.
+Six Darwin tests also have actual host ordinary/race pass events. Resources
+remain 3GiB/1GiB soft/two cores with serial offline gates and owned cleanup.
+
+The [completion article](docs/audits/go-port-completion-2026-10-15.md) maps every
+original work package and keeps finite typed adaptations, persistence limits,
+historical performance measurements and the previous unsuccessful attempts.
+Earlier sections retain their delivery baselines; this section supplies the
+current disposition. Tests remain tied to their recorded revision.
+
 ## 2026-10-15 retain the actual bootstrap log directory
 
 [Run38659480581](https://github.com/luoyjx/mini-loop/actions/runs/38659480581)
