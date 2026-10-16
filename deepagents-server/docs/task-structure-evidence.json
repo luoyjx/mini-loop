@@ -1,0 +1,799 @@
+{
+  "schema_version": 1,
+  "kind": "mini-loop-task-python-structure-refactor",
+  "date": "2026-10-16",
+  "baseline_commit": "a6d61c6f2e9c150c7cc9e84268524c6376fc583a",
+  "status": "passed_with_explicit_scope_limits",
+  "scope": {
+    "deployment_topology_changed": false,
+    "new_runtime_dependencies": false,
+    "public_cli_paths_preserved": true,
+    "durable_protocols_preserved": [
+      "Workflow type names",
+      "Activity names",
+      "model alias",
+      "Task ID",
+      "request digest and memo",
+      "checkpoint envelope",
+      "signed per-Run cursor"
+    ],
+    "package_boundaries": [
+      "task_server/http.py",
+      "task_server/protocol.py",
+      "task_server/service.py",
+      "task_server/backend",
+      "temporal_support/determinism.py"
+    ],
+    "repository_only_tooling": [
+      "tooling/build_task_bundle.py",
+      "tooling/acceptance/scenarios",
+      "tooling/acceptance/support",
+      "tooling/acceptance/fixtures"
+    ]
+  },
+  "module_tests": {
+    "status": "passed",
+    "passed": 601,
+    "pytest_seconds": 5.41,
+    "wrapper_seconds": 8.14,
+    "peak_tree_rss_mib": 211.25,
+    "minimum_observed_memory_free_percent": 43,
+    "resource_samples": 4,
+    "resource_blocked": false,
+    "receipt": {
+      "path": "var/deepagents-delivery/task-structure-module-20261016T224114.summary.json",
+      "sha256": "b991474f10c8e1cd7673bae08562e4fd3d8f1208ea7e03bfa952f255e1c81cdd"
+    },
+    "log": {
+      "path": "var/deepagents-delivery/task-structure-module-20261016T224114.log",
+      "sha256": "a5d84704659bb9ad6c9f0034bfaf79d3fdf5475a3b6cdb10c9cd7cb51c53d1da"
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "deepagents-server/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "deepagents-server/tests"
+    ]
+  },
+  "native_history_replay": {
+    "status": "passed",
+    "run_id": "7e8e356142ec441b937a7ea804993909",
+    "receipt": {
+      "path": "var/task-refactor-replay/7e8e356142ec441b937a7ea804993909/receipt.json",
+      "sha256": "aea3bfb4278b10c12d20a73835e089fa1196a2b3d26149fb9f6255d8310985d3"
+    },
+    "workflow_counts": {
+      "TaskWorkflowV2": 30,
+      "TaskWorkflow": 1
+    },
+    "total_runs": 31,
+    "model_provider_calls": 0,
+    "workflow_sandbox": true,
+    "workflow_executor_threads": 1,
+    "metadata_adapter": {
+      "field": "workflow.info().task_queue",
+      "source": "hash-verified native WorkflowExecutionStarted task_queue.name",
+      "reason": "Temporal SDK 1.34 Replayer otherwise supplies synthetic replay-{build_id}",
+      "payload_memo_or_command_changes": false
+    },
+    "adapter_scope": "Acceptance runner restores only workflow.info().task_queue from hash-verified native Started metadata because SDK Replayer synthesizes replay-{build_id}; no production, payload, memo, command or History mutation.",
+    "scope": "30 native historical V2 Runs from 6 Tasks plus one original V1 step-limit Run; Activities are not executed. This is deterministic replay coverage of these histories, not arbitrary migration or new Worker recovery.",
+    "historical_receipts": {
+      "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/receipt.json": "70ffca86c8b8b259e1b03d00c61332caf2776a0ed5d6b6dbe3c799e9d497e38f",
+      "var/task-server-prototype/d252d1bc60c9470b84747c5dcbda28bc/receipt.json": "68edea12cba5f7edeb941dfda416547a45264c36bf31fca01e7086ec387f2b84"
+    },
+    "histories": [
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "b5a71f2c3f207e78d73378cd284c5781110a51c3f2da5cead9c7a4db996be42f",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "22bad808b50ac5da633a0c65b44b68dbb916c8eef6a055b7d1a7b12c5f4f0fa4",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "d6440830f00293b30165cc0e8c0178a208a2998dd4fbb7e50fab0d486afdbdce",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "d8bf9da727f8b90d951cb50a279605493f2b63da884486fa99b6355e2463e6ec",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "71eccb98c1bc9632ef5e0179a2b0d4d390edcc7ad7501174260d5c6c60b87098",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "78aa8c50fb8efe3c5c2ed901cb2298a760efb21d2e25934fe6970a16cd4d05e6",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "791de07ee3765c9aeb15ba6c2f9d3346c41c615dbed2e63410849bd26035315b",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "b6342afd08b8ae2220ffa7dde80868353047ba8f654dd91d9e5fa7a2ee0337c6",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "52d155320cc942faab25bb765b51ce10d9c7417d3e40b7b0d00f7e1250925f65",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "8b6178a8ba3dc4a8f8e164567db16170c75e3283062c60a6744dc4f1e53358d5",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "51e5aa803678dd8f2ad59eb1a87e97d9ccca01be4010797b14814fcd9bf9af31",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "52e1789f7c52a71f1cf233693e475e207012cc5342ffea5ed1fffcbe3b5bbe7d",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "a4059bf52fb116e519411d45be4b378b1aa286d658214199ef07bc226b06501b",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "c6df07411a6c427251f95628aa9b29600971f784e6ce5d824d13dd1351d6e944",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "ee7084c9b28192534416d73f89ff674d694655df0c3ceae8151f61c18785fa31",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "4f90e257f83cc186a3f135bb87933de1f90518654a2328b0ebc7e67f8ab5b374",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "d6fc30d9590d9b20f9167d7319e134c45fec9574020f439653d6358c6ae30b1b",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "62144911a70cb7b6cf80dfe910678830c19ab5e63822fb782420a728d0ee3c59",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "1abc8ef8af406b9a90cafb321110f4e87ea268f97079879312058166ff83cef6",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "404ada487faa087482c7137b1451148d2b7b6768f5fc9e336828423c5a9aff98",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "be6ccaa11f39a36ad438bf10a2c2cfd889c47cd8cec0ea2c213a8185c5b10d18",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "11832af266ca416ff3cf5f83a8f8d909346f8c2d80511ea282a9b51866b299bf",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "723a735b200e1a501328cc58d9764be6dd10661d2d943fa92b26e16117ee2ab8",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "6876892ba155e4c64b3edd88e94d129598d20e8c76944a3ce579d1fd7b51f11e",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "6fd7df952e94146d1ccadb5197f91e3d68d9aae753ba879fb56bb5631a3558ee",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 73,
+        "history_sha256": "7373c0c2d08920dac06cc5e82a4d1ca64316fa5bf293cdbdfa3a47bd87e81534",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "7258d70a9dd10e14815665c594a246ff1757f9ee0b08a788a971da7b33ac2522",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 79,
+        "history_sha256": "2a259070c06406cac10d5f7023a511c3708d4a5e88e88cd3a43b227a6a48ea28",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 55,
+        "history_sha256": "47717ef68df0fa7cd810da8b8fc37f7b5fd0908d06289211b9cb4f0b504c5a5b",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflowV2",
+        "event_count": 49,
+        "history_sha256": "52ada1bb94d59884f010588a4c94a1fbda1e6adbdfc451d8e9d6c3bbcf838585",
+        "passed": true
+      },
+      {
+        "workflow_type": "TaskWorkflow",
+        "event_count": 265,
+        "history_sha256": "8ea37f404bc6d56e9b60bb42e3a4bbf18a0cbc79535755dc192a23e8354d707f",
+        "passed": true
+      }
+    ],
+    "source_databases": [
+      {
+        "dataset": "cold-v2",
+        "original_sha256": {
+          "temporal.sqlite": "890c432e23283f6b7dbcc3a7fd7de3fc233f6c4e025b3cd9de701ca8d0cf7269"
+        },
+        "original_unchanged": true
+      },
+      {
+        "dataset": "legacy-v1",
+        "original_sha256": {
+          "temporal.sqlite": "d708d6d06cb19d2ccc568a81b5785f381d79b77176d2535076ea75d9aaacaccd"
+        },
+        "original_unchanged": true
+      }
+    ],
+    "source_sha256": {
+      "deepagents-server/pyproject.toml": "8c77011b61934fca7f21fc73e8f115bc54160d410e71c118c4759bdfb49b4a4f",
+      "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+      "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "cd8756e2cf4b80d5201a148918fec7a65c3d648dc8a908b6dfd97197dcf705c3",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/__init__.py": "b924ccac75e155177b745845153600e3e977453da08f1e534307e8f9f22cb2a7",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/cursors.py": "fca889acdd861c2d52a8b7f2e5ccf800a162259090f29c5c7e8fd2d8e2483caa",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/history.py": "a5e46b05ac33a3a1a0f4e21cdb25272a515bb5646a91d7ab08bc95e7bfed1554",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/readiness.py": "35da8cbd2b641c42b1ed0429f0293bde5b8a10f2d5db4a4bad3486736724f5e2",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/runs.py": "fda667f9b2128244816ee553b0bf50a5e8453efa35591793aeac8d57ff7456b7",
+      "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+      "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+      "deepagents-server/src/mini_loop_deepagents/task_server/http.py": "bc23949da4e1cfabd760647f4479b303cc77750aca1d4d752757232090d85e3b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+      "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/protocol.py": "fb2faeb4cbedd4389c6b2d02d32c53de5b46ec2269079c3c22d4e0a16b9c2991",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "fb9abd7630a68e5c41b6a1da953dac91b88baa18955c637a39785f99fbcb5c9f",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "c4a551a6712108f27e82cd4b3d83ef3e9fd851276337cd14afa3c7d231cf4bbb",
+      "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "5533f8e88b3bc962fa5e86c9f358f1fa29141a48306031e074194c729c31fd98",
+      "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fdb0aa84d144490448306480e1974da25dc8e6ab43166b1200e8f8ecb2d7308c",
+      "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+      "deepagents-server/src/mini_loop_deepagents/temporal_support/__init__.py": "f64a17469596a838d45198c42e852826e7e9ed3ee16182b61e8d39f23c1b60aa",
+      "deepagents-server/src/mini_loop_deepagents/temporal_support/determinism.py": "c5cfa617d8fa204a1937b6f8179f1d4a421b9951fd1fce2b00856a92f2e06b48",
+      "deepagents-server/tooling/acceptance/support/process.py": "572b401519a2cfbbab245076c242fd99ef194e3f28d86664cf546826865a14fc",
+      "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+      "var/deepagents-delivery/task-refactor-replay.py": "ffd87a36ffa5aaed104d1c41a5a5fc4766739058a8fe2d6bf54a12567b0b7272"
+    },
+    "resources": {
+      "seconds": 8.671,
+      "resource_samples": 17,
+      "peak_owned_tree_rss_mib": 308.2,
+      "minimum_observed_memory_free_percent": 49,
+      "rss_budget_mib": 2048,
+      "minimum_memory_free_percent": 15,
+      "timeout_seconds": 180,
+      "cleanup_confirmed": true
+    },
+    "preserved_failed_attempt": {
+      "run_id": "714d00b03a42452eb97a629f67cc93b2",
+      "receipt": {
+        "path": "var/task-refactor-replay/714d00b03a42452eb97a629f67cc93b2/receipt.json",
+        "sha256": "13688b6b4806a5d324cf8c19284eab7d906841d003f8ad4e04699540f0a34b64"
+      },
+      "status": "failed",
+      "cause": "SDK Replayer synthetic task queue differed from the original immutable request digest; corrected only in the acceptance metadata adapter."
+    }
+  },
+  "build_bundle": {
+    "status": "passed",
+    "manifest": {
+      "path": "var/deepagents-delivery/task-structure-final-build-context/manifest.json",
+      "sha256": "2cad74f68d5e6cd2a7d7f3366d44d1b7040535cc6cce04c56eddb7105c34fd66"
+    },
+    "wheel_sha256": "6aa8f4922ece6fcbebe60d52a504191de33c8fbb0caa9a94a41c7bd479a37450",
+    "package_source_file_count": 33,
+    "inputs": {
+      "Dockerfile.task": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+      "README.md": "f374038e0f2d59a56c164a92e8e67f8884a8b95f9208e4826a3a340361b76fec",
+      "pyproject.toml": "8c77011b61934fca7f21fc73e8f115bc54160d410e71c118c4759bdfb49b4a4f",
+      "uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+    },
+    "package_source_sha256": {
+      "mini_loop_deepagents/__init__.py": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+      "mini_loop_deepagents/auth.py": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+      "mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+      "mini_loop_deepagents/graph.py": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+      "mini_loop_deepagents/instructions.md": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+      "mini_loop_deepagents/jobs.py": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+      "mini_loop_deepagents/task_contracts.py": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+      "mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+      "mini_loop_deepagents/task_server/api.py": "cd8756e2cf4b80d5201a148918fec7a65c3d648dc8a908b6dfd97197dcf705c3",
+      "mini_loop_deepagents/task_server/backend/__init__.py": "b924ccac75e155177b745845153600e3e977453da08f1e534307e8f9f22cb2a7",
+      "mini_loop_deepagents/task_server/backend/cursors.py": "fca889acdd861c2d52a8b7f2e5ccf800a162259090f29c5c7e8fd2d8e2483caa",
+      "mini_loop_deepagents/task_server/backend/history.py": "a5e46b05ac33a3a1a0f4e21cdb25272a515bb5646a91d7ab08bc95e7bfed1554",
+      "mini_loop_deepagents/task_server/backend/readiness.py": "35da8cbd2b641c42b1ed0429f0293bde5b8a10f2d5db4a4bad3486736724f5e2",
+      "mini_loop_deepagents/task_server/backend/runs.py": "fda667f9b2128244816ee553b0bf50a5e8453efa35591793aeac8d57ff7456b7",
+      "mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+      "mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+      "mini_loop_deepagents/task_server/http.py": "bc23949da4e1cfabd760647f4479b303cc77750aca1d4d752757232090d85e3b",
+      "mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+      "mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+      "mini_loop_deepagents/task_server/protocol.py": "fb2faeb4cbedd4389c6b2d02d32c53de5b46ec2269079c3c22d4e0a16b9c2991",
+      "mini_loop_deepagents/task_server/runtime.py": "fb9abd7630a68e5c41b6a1da953dac91b88baa18955c637a39785f99fbcb5c9f",
+      "mini_loop_deepagents/task_server/runtime_v2.py": "c4a551a6712108f27e82cd4b3d83ef3e9fd851276337cd14afa3c7d231cf4bbb",
+      "mini_loop_deepagents/task_server/service.py": "5533f8e88b3bc962fa5e86c9f358f1fa29141a48306031e074194c729c31fd98",
+      "mini_loop_deepagents/task_server/summarization.py": "fdb0aa84d144490448306480e1974da25dc8e6ab43166b1200e8f8ecb2d7308c",
+      "mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+      "mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+      "mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+      "mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+      "mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+      "mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+      "mini_loop_deepagents/temporal_prototype/workflow.py": "e85140bc2f0d9e3cf512dfbbd20724c673e5a9fc60c76d33383546c4eb1f94e7",
+      "mini_loop_deepagents/temporal_support/__init__.py": "f64a17469596a838d45198c42e852826e7e9ed3ee16182b61e8d39f23c1b60aa",
+      "mini_loop_deepagents/temporal_support/determinism.py": "c5cfa617d8fa204a1937b6f8179f1d4a421b9951fd1fce2b00856a92f2e06b48"
+    },
+    "excluded": [
+      "environment files",
+      "deployment secrets",
+      "tests",
+      "scripts",
+      "tooling",
+      "runtime state"
+    ],
+    "base_image": "python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "image": {
+      "id": "sha256:520e0e67f9a1cf9e8ee1509c86803ee9c05cc77dd7f47c25ee8b1255a7465bf9",
+      "platform": "linux/arm64",
+      "bytes": 441168129,
+      "registry_published": false
+    },
+    "build_receipt": {
+      "path": "var/deepagents-delivery/task-structure-image-build-20261016T225334.receipt.json",
+      "sha256": "36722dc2b4ccc40da9919e46c47dd0f20c68d5191be89f956638bac04c3c5819"
+    },
+    "resources": {
+      "seconds": 81.5,
+      "sample_count": 74,
+      "limits": {
+        "builder_bytes": 2013265920,
+        "observer_bytes": 67108864,
+        "aggregate_bytes": 2147483648,
+        "builder_cpu": 1.9,
+        "observer_cpu": 0.1,
+        "wall_seconds": 300,
+        "host_min_free_percent": 15,
+        "vm_min_available_percent": 15,
+        "vm_growth_soft_bytes": 2147483648
+      },
+      "build_limits_observed": true,
+      "minimum_host_free_percent": 44,
+      "minimum_vm_available_percent": 90.51,
+      "peak_owned_cgroup_bytes": 534032384,
+      "peak_vm_growth_bytes": 185421824,
+      "observer_removed": true
+    }
+  },
+  "root_python_tests": {
+    "status": "passed",
+    "wrapper_seconds": 93.9,
+    "peak_tree_rss_mib": 323.562,
+    "minimum_observed_memory_free_percent": 49,
+    "resource_samples": 46,
+    "resource_blocked": false,
+    "receipt": {
+      "path": "var/deepagents-delivery/task-structure-root-20261016T230016.summary.json",
+      "sha256": "aee50444f52999493706c482d8b21d09bc2c5ce2bab86b92f9674194123164ba"
+    },
+    "log": {
+      "path": "var/deepagents-delivery/task-structure-root-20261016T230016.log",
+      "sha256": "b011592f50e1332a23a1aed35236b68e9958273f1203dd383baca4b064a31153"
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    "passed": 2256,
+    "skipped": 28,
+    "warnings": 104,
+    "pytest_seconds": 93.05
+  },
+  "refactored_container_recovery": {
+    "status": "passed",
+    "run_id": "a91bdf50d2c94169858a9988f69561c0",
+    "receipt": {
+      "path": "var/task-structure-cold/a91bdf50d2c94169858a9988f69561c0/receipt.json",
+      "sha256": "42d595f68047c3e7941201e0d597dcc7564d02679527baf218d3b7e4bc15102d"
+    },
+    "passed": [
+      "two real Tasks reach parent 24 after three CANs with child/summary state; four other owner-scoped Tasks are accepted and remain native SCHEDULED without model execution",
+      "all Temporal/API/Worker/observer processes are absent for at least three seconds; fresh processes and connections recover all accepted tasks, complete snapshots and model request identity",
+      "all six multi-owner Tasks complete 37 native parent tools, two general-purpose subagents, real summaries and four CANs; 30 native Runs have zero WorkflowTaskFailed, queued tasks drain and original identities/cursors remain valid"
+    ],
+    "image_id": "sha256:520e0e67f9a1cf9e8ee1509c86803ee9c05cc77dd7f47c25ee8b1255a7465bf9",
+    "image_manifest_probe": {
+      "exit_code": 0,
+      "manifest_sha256": "2cad74f68d5e6cd2a7d7f3366d44d1b7040535cc6cce04c56eddb7105c34fd66",
+      "installed_package_files": 33,
+      "installed_source_matches_manifest": true
+    },
+    "scale": {
+      "accepted_task_count": 6,
+      "owner_count": 3,
+      "activity_slots_per_worker": 1,
+      "api_count": 2,
+      "worker_count": 2
+    },
+    "lead_ages_before_fault_seconds": [
+      45.120456042,
+      45.009915875
+    ],
+    "dependency_outage": {
+      "readyz": 503,
+      "healthz": 200,
+      "tasks_still_inflight": true
+    },
+    "zero_service_seconds": 3.131476792,
+    "completed_tasks": [
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "2e8e9698e5c3d5ffd99715c6c23f43a76fd97d2f0da26d5d7396e8141b723000",
+        "accepted_to_observed_terminal_seconds": 72.228
+      },
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "c7f4853fb5287c48624d06be73c82075af25142915b6910f26a5860ae2a88425",
+        "accepted_to_observed_terminal_seconds": 72.226
+      },
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "50bb0bc6e18385ef0eedbc4a13f44a27ac53c7e89aa3025472340ed35f721110",
+        "accepted_to_observed_terminal_seconds": 57.031
+      },
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "6b68a359a9fcb24e667f6bd9036d8070bbcb0f7db322767505344c79ee42fee6",
+        "accepted_to_observed_terminal_seconds": 57.035
+      },
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "a074c442bd74b5a0623505e4c58fa3950772e3386484eb6d53de162f6a6b86c6",
+        "accepted_to_observed_terminal_seconds": 58.196
+      },
+      {
+        "status": "succeeded",
+        "can_count": 4,
+        "parent_tools": 37,
+        "general_purpose_subagents": 2,
+        "snapshot_sha256": "fa7f1c7807fbfbe609a40f2bd8827130d24ffbc9705625d880c84d0c188c4b7a",
+        "accepted_to_observed_terminal_seconds": 59.771
+      }
+    ],
+    "summary_calls_per_task": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "native_runs": 30,
+    "workflow_task_failures": 0,
+    "adjacent_can_input_hash_pairs": 24,
+    "all_adjacent_can_input_hashes_equal": true,
+    "history_sha256": [
+      "a4b17f9b38c158f5cb7c2c3f7195b7300c74b2d17e8c7c623db85763baeb189f",
+      "b8b89933d5a0743f750086632d48866d4319990a20b4cc9193c92391f037086d",
+      "d5313f8c449a473be921a8df1a9e0ac793a090bd5322fc72dc43b7a30420335f",
+      "2cdefe9bf7eeb9eb7ad7a991be235e7e4fc259657a9085d59744b06752c5e565",
+      "aca805a5db5d44d156cf5d1eee0b3dc5d87693273b8cd1a5a7d359d88e1ece52",
+      "d62ddc5e440e324b33f37da36f824adb1a20d280ecdd3c307d08f4ec7c2feca6",
+      "204eb8d112a3b624bd0009b70f1e5f51f390f21f28d44c9d7a50a1dceb264f64",
+      "e93af2c47daf1a0b0728cb57fde6c6496e545289d91358607c7aba1083a002f6",
+      "6baddab10556e946869517d68e85a59a524a5b829cd398ff2595648f4a6f478a",
+      "962739ceb6bf623bc32e8348e257dbbb9eb0c16cd122415a862a5be9878d98c9",
+      "f427057c2b704dfb8291bce8b2606ae52aeb0d70a7e7551e01fbc744ebe046fc",
+      "64d22b3ed0e97a50cabcff2a7d092dbd3c4804b98095d99c74b9b35e12527c35",
+      "8238dea19cebeb259821554a1af3bf282053d8904a979a85247f1db0c02f6e21",
+      "b48a1ae77d3c11302424a0310b322f27c0d110123d13bbd93c93c200aed8352d",
+      "c88f5ad7caaf9932363d07ea48dbe281dadbbc42903aa2b2ab7f034eed751ce7",
+      "dd82897f15f8a42a0ee0273efc4be94dd48e0a5046c2b61933ebe73bf36c6e7c",
+      "1b150baa1edf4d9bc1607a896c6f5e8899b5f5bca9d5ed852d50c5c0ed55106b",
+      "1a0c8e7d4ac3e34bc99d37255056efdc8a7948c9d78c941cccee95d5d0299f38",
+      "41cd9f32fb25596f49a366d3bcd51e12825189b6b46ea174be9dd067f6ea6374",
+      "3668e1bdcc3a4cc2cbcd4d8c17884ae448f36b1c434d19a1d96a8940328fbaf0",
+      "d7796035cdf448b24cb42bead052ebe530ddc8fb22f8d5584313b1e698d3a698",
+      "7b00cbd723fa2254f7641498331fbbe1db2750324d0b8f9bb397649a035ccde3",
+      "64d1d5f0a67df7ed100c4d4b704bc25a3f3debcbb2c6cfc8f3c6fcc7cea3a00d",
+      "63e6915525d54df8b15eb5ca5c392423863b32bee1a646e7de0e3f21a3b36321",
+      "faf26058b8aa99ac020d2387bd747561447fd045858ac80c3a31e1eda27249cb",
+      "e89cb15323e29c6fddc47a52f7439f041346fb09fa08c513c3a2cc5de0c02bc8",
+      "694b3f986fe0f4e45feb4eb4d6114fe4edb366a82e894e8fc0eddb7ca6ddd406",
+      "de84db45ceaa1a8f42681cd5f1073817cdbf70813c600de3fb9ff31f0abe113b",
+      "2f91f29af8364d44355f64abdb4506259f2fe94eb6210acff5489c85bb2a3f5a",
+      "b61bffd6f59180e845b844a33322b7520843c1220647407e366c639ab7ca6b61"
+    ],
+    "resumed_activities": [
+      {
+        "before_attempt": 1,
+        "after_attempt": 2,
+        "native_run_and_activity_identity_preserved": true,
+        "request_sha256": "67e99482a6ec895f22c785a8fba5d37d11d43a02b5d83b7d196240a3a057eaeb",
+        "request_sha256_preserved": true,
+        "full_native_state_equal": true,
+        "snapshot_sha256": "91e4405c5e71f2934776bb0e6450cf3e21b39a78c02757328d7e24c46f8830eb"
+      },
+      {
+        "before_attempt": 1,
+        "after_attempt": 2,
+        "native_run_and_activity_identity_preserved": true,
+        "request_sha256": "1a98708566ac70e558d48c793eace4bbdc18e81cb8dd97dd4beb065fdf0e3081",
+        "request_sha256_preserved": true,
+        "full_native_state_equal": true,
+        "snapshot_sha256": "e58721900edfb22ebba038c8f6b3698268576114db72a82290e4c0623f554a1c"
+      }
+    ],
+    "model_attempt_checks": {
+      "native_activity_count": 276,
+      "model_attempt_count": 278,
+      "maximum_attempt": 2,
+      "retried_activity_count": 2,
+      "finish_outcomes": {
+        "completed": 276
+      },
+      "request_sha_preserved_for_every_retry": true
+    },
+    "queued_tasks_observed_before_and_after_cold_start": 4,
+    "queued_native_first_starts_on_new_workers": 4,
+    "old_cursor_retained": true,
+    "queued_tasks_all_completed": true,
+    "same_key_reused_after_cold_start": true,
+    "resource": {
+      "seconds": 102.61,
+      "sample_count": 153,
+      "peak_owned_host_rss_plus_cgroup_mib": 899.1,
+      "minimum_host_free_percent": 43,
+      "minimum_vm_available_percent": 85.89,
+      "rss_budget_mib": 2048,
+      "minimum_memory_free_percent": 15,
+      "timeout_seconds": 180,
+      "cleanup_confirmed": true,
+      "containers_removed": 10,
+      "host_processes_reaped": 4,
+      "container_oom_killed": false,
+      "business_container_cleanup": "SIGKILL / exit 137; no new graceful-drain claim"
+    },
+    "secret_scan": {
+      "needle_count": 10,
+      "history_count": 30,
+      "log_count": 14,
+      "history_matches": 0,
+      "log_matches": 0,
+      "scope": "Only the actual fixture credential fragments scanned."
+    },
+    "boundaries": {
+      "long_task_worker_entrypoint": "trusted readonly fixture calling production run_process",
+      "production_ha_acceptance": false,
+      "cross_failure_domain_acceptance": false,
+      "native_temporal_tls_acceptance": false,
+      "real_model_provider_acceptance": false,
+      "environment": "Single host OrbStack containers, native plaintext Temporal CLI with retained SQLite, trusted deterministic model fixture; real Deep Agents control flow."
+    }
+  },
+  "architecture": {
+    "type": "architecture",
+    "specification": {
+      "path": "docs/mini-loop-system.architecture.json",
+      "sha256": "481662041122915eb98cc4bd71128a2ad13f31d147e9693bba5915ed9eaa6ccc"
+    },
+    "artifact": {
+      "path": "docs/mini-loop-system.architecture.html",
+      "sha256": "abe362ec53bf8e3430354258a49da0490170bc8b6143cf643e791520b52828c8"
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "receipt": {
+      "path": "var/deepagents-delivery/task-structure-archify.receipt.json",
+      "sha256": "57a99a7db33cf9eed1a13fccbe7750570a6568d78d30458441af1ec7fa67d8c8"
+    },
+    "visual_review": {
+      "status": "passed",
+      "scope": "Delivered HTML SVG static render: Task lane in dark and light, full light map. Browser interaction, focus/search, cards and exports not exercised.",
+      "font_note": "Available system fallback fonts; browser typography unverified.",
+      "correction_rounds": 0
+    },
+    "iteration_image": {
+      "path": "docs/audits/task-server-structure-2026-10-16.png",
+      "sha256": "b02657810fddf5973e690552b4f025a5a6fe91d0be04215db71ed5c7a5d25499",
+      "tool": "built-in imagegen",
+      "visual_review": "passed",
+      "exact_prompt": {
+        "path": "docs/audits/task-server-structure-2026-10-16.prompt.txt",
+        "sha256": "4e580eb7a063caefd70298d8e1f75ba15231badc5a075fca434399c0efa36978"
+      },
+      "repair_prompt": {
+        "path": "docs/audits/task-server-structure-2026-10-16.repair.prompt.txt",
+        "sha256": "9a9772ba782fefd9bb4a01933a2318d5eb50335180d5639fa01c0875da88f9d6"
+      },
+      "base_image": {
+        "path": "docs/mini-loop-layered-architecture.png",
+        "sha256": "a43c2bc413a2c4bffb695c10e0dea5b896d4fc2e5e9ba355e98ae8becb62e702"
+      },
+      "base_updated": false,
+      "base_note": "No deployment components added or removed; companion image highlights in-process source responsibilities."
+    }
+  },
+  "boundaries": {
+    "private_histories_published": false,
+    "private_payloads_published": false,
+    "historical_evidence_rewritten": false,
+    "production_ha_acceptance": false,
+    "real_provider_acceptance": false,
+    "sustained_capacity_acceptance": false,
+    "arbitrary_workflow_migration_acceptance": false
+  },
+  "python_invariants": {
+    "status": "passed",
+    "wrapper_seconds": 2.05,
+    "peak_tree_rss_mib": 0.734,
+    "minimum_observed_memory_free_percent": 46,
+    "resource_samples": 1,
+    "resource_blocked": false,
+    "receipt": {
+      "path": "var/deepagents-delivery/task-structure-invariants-20261016T230347.summary.json",
+      "sha256": "d8513857f4e14551ec034848801a0d618f53ef0708173caf792d455b1046724c"
+    },
+    "log": {
+      "path": "var/deepagents-delivery/task-structure-invariants-20261016T230347.log",
+      "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      ".venv/bin/python",
+      "python/tools/verify_invariants.py"
+    ],
+    "modules_checked": 77,
+    "scope": "Original python/mini_loop package invariant declarations only; not an independent deepagents-server invariant checker."
+  },
+  "standard_agent_server_smoke": {
+    "status": "passed",
+    "wrapper_seconds": 16.32,
+    "peak_tree_rss_mib": 250.875,
+    "minimum_observed_memory_free_percent": 43,
+    "resource_samples": 8,
+    "resource_blocked": false,
+    "receipt": {
+      "path": "var/deepagents-delivery/task-structure-langgraph-smoke-20261016T230404.summary.json",
+      "sha256": "42d0b4c8b1a1b69cd267dbd93fe2a862510dd52025c3c99fae23915507a97e66"
+    },
+    "log": {
+      "path": "var/deepagents-delivery/task-structure-langgraph-smoke-20261016T230404.log",
+      "sha256": "6beb16834ff5453b2c55bdf74b2aa9b2915270e7afa5e5f980966180f88071cd"
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "deepagents-server/.venv/bin/python",
+      "deepagents-server/scripts/smoke.py"
+    ],
+    "receipt_observations": {
+      "path": "var/deepagents-delivery/http-smoke.json",
+      "sha256": "6beb16834ff5453b2c55bdf74b2aa9b2915270e7afa5e5f980966180f88071cd"
+    },
+    "passed_count": 10,
+    "passed": [
+      "authentication and owner stamping / cross-user read denial",
+      "real Deep Agents filesystem tools and per-thread checkpoint isolation",
+      "owner memory across threads / spoofed config and context / cross-user mutation denial",
+      "direct Store API namespace authorization",
+      "actual Deep Agents subagent with inherited verified identity",
+      "actual HTTP SSE streaming",
+      "documented SDK chat client against actual server",
+      "same-thread concurrent Run rejection and active cancellation",
+      "shell execution refused by virtual backend",
+      "graceful dev-server restart restores thread files, owner memory and ownership"
+    ],
+    "peak_server_tree_rss_mib": 171.9,
+    "production_postgres_validation": "not run; licensed deployment is separate",
+    "scope": "Real langgraph dev server and Deep Agents graph with repository-only deterministic fixtures; graceful local snapshot restart, not licensed PostgreSQL/Redis crash recovery."
+  },
+  "not_run": [
+    {
+      "gate": "Go tests and vet",
+      "reason": "No Go changes."
+    },
+    {
+      "gate": "verify_scans / verify_guards",
+      "reason": "No source-scanner or guarded mutation-anchor changes."
+    },
+    {
+      "gate": "Research Atlas regeneration/tests",
+      "reason": "No top-level docs/*.md report added, renamed or removed."
+    },
+    {
+      "gate": "Native Temporal TLS / Cloud ACL / production HA / live provider capacity",
+      "reason": "Outside this local structure-refactor acceptance scope."
+    }
+  ]
+}

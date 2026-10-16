@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from task_rollout_worker_fixture import make_fixture_provider
+from .task_rollout_worker_fixture import make_fixture_provider
 from mini_loop_deepagents.task_server.connection import TemporalConnectionSettings
 from mini_loop_deepagents.task_server.worker import run_process
 

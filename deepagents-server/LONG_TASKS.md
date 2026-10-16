@@ -1,6 +1,6 @@
 # 长任务：提交、并发、恢复与部署
 
-当前模块用标准 Agent Server 的后台 Run 承载任务。`AsyncJobsClient` 与 CLI 负责
+本文描述标准 Agent Server 的后台 Run。`AsyncJobsClient` 与 CLI 负责
 提交、保存标识和观察；服务端的原生调度负责执行。Compose 已拆开 API 与 Worker，
 PostgreSQL 是持久任务与 Checkpoint 的来源，Redis 做临时协调。
 
@@ -9,6 +9,11 @@ PostgreSQL 是持久任务与 Checkpoint 的来源，Redis 做临时协调。
 重新部署与 Redis 重启仍须在有适用许可证的环境验收。最新结果见
 [交付记录](DELIVERY.md)。下一阶段持久任务控制面的完整设计见
 [持久执行设计](../docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md)。
+
+另一条已实现的独立 Temporal 路径见 [Task Server](TASK_SERVER.md)。两条入口的代码与
+验收布局见 [项目结构](docs/PROJECT_STRUCTURE.md)：标准服务的 smoke/fault 实现现位于
+`tooling/acceptance/scenarios/langgraph_smoke.py`、`langgraph_fault.py`，离线 graph 位于
+`tooling/acceptance/fixtures/`；原 `scripts/smoke.py`、`scripts/fault_smoke.py` 命令保持。
 
 ## 1. 提交后可以离开客户端
 
@@ -175,7 +180,7 @@ StreamSequence 是临时流序号，两者都不是当前已交付的 durable SS
 | 模块单元/graph/HTTP client 合同 | `deepagents-server/tests`；最终结果见 DELIVERY | 参数、隔离、错误分类、续跑检查、部署结构和纯函数合同；不等于生产数据库执行 |
 | 原 Python 回归与 invariants | 根 pytest / 77 modules | 旧 runtime 未回归；不覆盖新模块的生产恢复 |
 | 基础真实 HTTP smoke | `scripts/smoke.py` | 实际 Agent Server + Deep Agents 测试模型、授权、文件、memory、SSE 和优雅开发重启 |
-| 长任务真实 HTTP 故障 smoke | `scripts/fault_smoke.py` | 独立 Thread 并发、同 Thread 排队、等待超时、取消/错误后续跑、开发缓存刷盘后 SIGKILL 与兼容 graph 重启；本轮 receipt 修复后 6 组通过，具体 run_id 与资源结果见 DELIVERY |
+| 长任务真实 HTTP 故障 smoke | `scripts/fault_smoke.py` | 独立 Thread 并发、同 Thread 排队、等待超时、取消/错误后续跑、开发缓存刷盘后 SIGKILL 与兼容 graph 重启；历史 receipt 修复后 6 组通过，具体 run_id 与资源结果见 DELIVERY |
 | PostgreSQL/Redis 生产故障验收 | 尚未执行 | 必须证明 Worker 强杀接管、API/Worker 重部署、Redis 重启、PG 状态与 owner 隔离；缺有效许可证及实际栈证据 |
 | 真实模型与容量 | 尚未执行 | 无真实 provider 推理、长期负载或多副本容量结果 |
 

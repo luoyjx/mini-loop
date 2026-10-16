@@ -6,11 +6,16 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 这是 [README canonical architecture](../README.md#architecture) 独立模块泳道的展开，
 原 Python/Go runtime 保持各自入口与语义。
 
-本文展开标准 LangGraph 入口；新增的独立 Temporal Task HTTP 入口见
-[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-container-2026-10-16.png)。
+本文展开标准 LangGraph 入口；独立 Temporal Task HTTP 入口见
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-structure-2026-10-16.png)。
 两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
 
-Temporal 入口本轮以 `06a93d4` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
+本轮以 `a6d61c6` 为基线重构模块结构，部署角色保持。Task API 的 HTTP 层、任务编排、
+Temporal 后端以 `protocol.py` 为共同合同；生产 Workflow 的确定性适配移到
+`temporal_support/`，不依赖历史原型。构建与故障验收属于仓库 `tooling/`，原脚本保留
+兼容入口。具体目录与扩展位置见 [项目结构](docs/PROJECT_STRUCTURE.md)。
+
+Temporal 入口在 `06a93d4` 的审查基线中：新任务默认使用 `TaskWorkflowV2`，在安全的
 父 model 边界分段 Continue-As-New，已有 v1 任务继续使用不变的 v1 代码。迁移载体是
 保存在 Temporal History 中的完整 public saver 写日志，包括 DeltaChannel 祖先、
 待执行路由、摘要私有状态及虚拟文件；不在下表 L5 增加第二套 SQL checkpointer。
@@ -31,7 +36,7 @@ cancel；交接仍消耗原 Activity 尝试预算。此边界不改变下述标�
 Task HTTP 的 Bearer→owner 校验与 Temporal 自身的认证/namespace ACL 独立。
 本地 mTLS 隧道只用于故障验证，不替代原生 Temporal TLS、Cloud ACL 或生产 HA 验收。
 
-本轮新增独立 Task 镜像和 `launch api|worker`，同进程进入实际 CLI，分别读取 API
+`08b4333` 已交付独立 Task 镜像和 `launch api|worker`，同进程进入实际 CLI，分别读取 API
 与 Worker 的 Secret 文件；固定的 Python 基础镜像和锁文件依赖构建经过源码核对的
 发行 wheel。Compose 只读 root、非 root 身份、20 秒 stop grace，连接外部 Temporal。
 `GET /readyz` 以 1 秒 singleflight RPC/缓存读取并核对 namespace 的 REGISTERED 状态；

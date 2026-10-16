@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -16,11 +15,8 @@ pytest.importorskip("temporalio")
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts/task_worker_rollout_smoke.py"
-SPEC = importlib.util.spec_from_file_location("_rollout_acceptance_tests", SCRIPT)
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import rollout as scenario
+from tooling.acceptance.support import rollout as harness
 fixture = harness.FIXTURE
 
 
@@ -137,7 +133,7 @@ def test_fixture_cooperative_cancel_and_deliberate_stuck_path_are_activity_only(
 
 
 def test_missing_binary_is_terminal_private_evidence_without_children(tmp_path):
-    assert harness.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path / "runs")]) == 1
+    assert scenario.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path / "runs")]) == 1
     receipts = list((tmp_path / "runs").glob("*/receipt.json"))
     result = json.loads(receipts[0].read_text())
     assert result["status"] == "failed" and result["cleanup_confirmed"] is True

@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import asyncio
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -13,11 +12,9 @@ import pytest
 
 pytest.importorskip("temporalio")
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("tls_harness_test", ROOT / "scripts/task_tls_fault_smoke.py")
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
-tunnel = harness.load_module("tls_tunnel_test", ROOT / "tests/task_tls_tunnel.py")
+from tooling.acceptance.scenarios import tls as scenario
+from tooling.acceptance.support import tls as harness
+from tooling.acceptance.fixtures import task_tls_tunnel as tunnel
 
 
 def test_secret_scan_checks_full_escaped_and_pem_body_without_disclosing_value():
@@ -137,7 +134,7 @@ def test_negative_controls_require_rejection_and_healthy_rpc_on_both_sides(tmp_p
 
 
 def test_missing_binary_is_private_terminal_receipt_and_creates_no_processes(tmp_path):
-    assert harness.main(["--temporal-binary", str(tmp_path / "missing"), "--output-dir", str(tmp_path)]) == 1
+    assert scenario.main(["--temporal-binary", str(tmp_path / "missing"), "--output-dir", str(tmp_path)]) == 1
     receipt_path = next(tmp_path.glob("*/receipt.json"))
     value = json.loads(receipt_path.read_text())
     assert value["status"] == "failed" and value["cleanup_confirmed"] is True

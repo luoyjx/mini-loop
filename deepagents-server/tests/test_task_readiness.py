@@ -12,6 +12,7 @@ from temporalio.service import RPCError, RPCStatusCode
 
 from mini_loop_deepagents.task_server.api import create_app
 from mini_loop_deepagents.task_server import service as module
+from mini_loop_deepagents.task_server.backend import readiness as readiness_module
 
 TOKENS = {"a" * 40: "owner"}
 
@@ -75,7 +76,7 @@ async def test_bad_namespace_or_rpc_errors_fail_closed_and_are_cached(value):
 
 @pytest.mark.asyncio
 async def test_failed_readiness_recovers_after_short_ttl(monkeypatch):
-    monkeypatch.setattr(module, "READINESS_TTL_SECONDS", 0.01)
+    monkeypatch.setattr(readiness_module, "READINESS_TTL_SECONDS", 0.01)
     healthy, calls = False, []
 
     async def read(*args, **kwargs):
@@ -95,7 +96,7 @@ async def test_failed_readiness_recovers_after_short_ttl(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_namespace_probe_has_an_independent_outer_deadline(monkeypatch):
-    monkeypatch.setattr(module, "READINESS_TIMEOUT_SECONDS", 0.01)
+    monkeypatch.setattr(readiness_module, "READINESS_TIMEOUT_SECONDS", 0.01)
     cancelled = asyncio.Event()
 
     async def read(*args, **kwargs):

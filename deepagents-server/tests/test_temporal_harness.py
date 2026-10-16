@@ -1,6 +1,5 @@
 """Small harness safety checks; no Temporal service or Worker is started."""
 
-import importlib.util
 import json
 import os
 from pathlib import Path
@@ -12,11 +11,8 @@ from types import SimpleNamespace
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts/temporal_fault_smoke.py"
-SPEC = importlib.util.spec_from_file_location("mini_loop_temporal_fault_harness", SCRIPT)
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import temporal as scenario
+from tooling.acceptance.support import process as harness
 
 
 def test_rss_budget_counts_driver_descendants_and_owned_reparented_children_only():
@@ -64,13 +60,13 @@ def test_children_do_not_inherit_credentials_or_existing_temporal_deployment(mon
     result = harness.subprocess_environment()
     assert all("sensitive-untrusted-override" != value for value in result.values())
     assert result["LANGSMITH_TRACING"] == "false"
-    assert result["PYTHONPATH"] == str(harness.MODULE / "src")
+    assert result["PYTHONPATH"].split(os.pathsep) == [str(harness.MODULE / "src"), str(harness.MODULE)]
 
 
 def test_missing_binary_has_unique_terminal_receipts_without_starting_children(tmp_path, monkeypatch):
     monkeypatch.setattr(harness.Processes, "spawn", lambda *args, **kwargs: pytest.fail("A child must not start"))
     for _ in range(2):
-        assert harness.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path)]) == 1
+        assert scenario.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path)]) == 1
     receipts = [json.loads(path.read_text()) for path in tmp_path.glob("*/receipt.json")]
     assert len(receipts) == 2
     assert len({receipt["run_id"] for receipt in receipts}) == 2
@@ -83,7 +79,7 @@ def test_checksum_mismatch_stops_before_any_child_process(tmp_path, monkeypatch)
     binary.write_text("not a Temporal executable")
     binary.chmod(0o700)
     monkeypatch.setattr(harness.Processes, "spawn", lambda *args, **kwargs: pytest.fail("An unverified child must not start"))
-    assert harness.main(["--temporal-binary", str(binary), "--binary-sha256", "0" * 64,
+    assert scenario.main(["--temporal-binary", str(binary), "--binary-sha256", "0" * 64,
                          "--output-dir", str(tmp_path / "receipts")]) == 1
     receipt = json.loads(next((tmp_path / "receipts").glob("*/receipt.json")).read_text())
     assert receipt["status"] == "failed"

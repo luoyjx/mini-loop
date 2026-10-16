@@ -1,7 +1,6 @@
 """No-service acceptance-contract checks for the cold restart harness."""
 from __future__ import annotations
 
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -9,10 +8,7 @@ import sys
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("task_cold_test_harness", ROOT / "scripts/task_cold_restart_smoke.py")
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import cold_restart as harness
 
 
 def queued(task="task-a", state="PENDING_ACTIVITY_STATE_SCHEDULED"):
@@ -67,15 +63,15 @@ def test_final_long_task_rejects_fast_fixture_and_wrong_owner():
 def test_missing_cli_writes_failed_receipt_without_docker(tmp_path, monkeypatch):
     def forbidden(*args, **kwargs): raise AssertionError("Docker must not be contacted")
     monkeypatch.setattr(harness.DOCKER, "Engine", forbidden)
-    assert harness.main(["--image", harness.IMAGE, "--temporal-binary", str(tmp_path / "absent"), "--binary-sha256", "bad", "--output-dir", str(tmp_path)]) == 1
+    assert harness.main(["--image", "sha256:" + "a" * 64, "--manifest", str(tmp_path / "manifest.json"), "--temporal-binary", str(tmp_path / "absent"), "--binary-sha256", "bad", "--output-dir", str(tmp_path)]) == 1
     receipt = json.loads(next(tmp_path.glob("*/receipt.json")).read_text())
     assert receipt["status"] == "failed" and receipt["cleanup_confirmed"]
 
 
 def test_driver_does_not_create_sdk_or_http_clients():
-    text = (ROOT / "scripts/task_cold_restart_smoke.py").read_text()
+    text = Path(harness.__file__).read_text()
     assert "Client.connect(" not in text and "httpx.AsyncClient(" not in text and "SUPPORT.connect(" not in text
-    observer = (ROOT / "tests/task_cold_observer.py").read_text()
+    observer = (ROOT / "tooling/acceptance/fixtures/task_cold_observer.py").read_text()
     assert "Client.connect(" in observer and "httpx.AsyncClient(" in observer
 
 

@@ -21,7 +21,7 @@ with workflow.unsafe.imports_passed_through():
     )
     from deepagents.middleware.patch_tool_calls import PatchToolCallsMiddleware
     from langchain_core.messages import get_buffer_string
-    from mini_loop_deepagents.temporal_prototype.workflow import DeterministicStateBackend, StableToolMessageIDs
+    from mini_loop_deepagents.temporal_support.determinism import DeterministicStateBackend, StableToolMessageIDs
 
 LOG = logging.getLogger(__name__)
 SUMMARY_TRIGGER = [("messages", 40), ("tokens", 16000)]

@@ -5,8 +5,10 @@
 共用外部 Temporal 的 namespace、队列和保留历史。它不启动标准 LangGraph Agent
 Server，不共享原 Python/Go 业务，不创建 Temporal、PostgreSQL、Redis 或入口代理。
 
-本轮复用 `08b4333` 镜像做组合冷重启验收，不重建制品或改变生产 runtime；仓库
-文档晚于镜像内的构建 README。实际结果以 [交付记录](DELIVERY.md) 为准。本文中的配置
+当前源码已按 [项目结构](docs/PROJECT_STRUCTURE.md) 重构；构建实现位于
+`tooling/build_task_bundle.py`，原 `scripts/build_task_bundle.py` 保留兼容入口。
+下文 `08b4333` 镜像与冷重启结果是历史基线，当前源码需重新构建并核对自己的 manifest。
+本轮实际验证以 [交付记录](DELIVERY.md) 为准。本文中的配置
 不代表生产 HA、容量、真实模型调用或不兼容版本滚动升级已通过验收。
 
 ## 构建可审查的镜像
@@ -35,7 +37,7 @@ nice -n 10 deepagents-server/.venv/bin/python \
 `build_task_bundle.py` 先逐文件核对 wheel 中的包源码、元数据、README 和 RECORD，再
 按锁文件离线导出依赖。输出是专用 allowlist 构建上下文：Dockerfile、带 hash 的
 requirements、已验证 wheel、manifest 和 `.dockerignore`。环境文件、部署凭据、
-测试、脚本及运行状态不进入上下文；不能将仓库目录直接传给 `docker build`。
+测试、`tooling/`、脚本及运行状态不进入上下文；不能将仓库目录直接传给 `docker build`。
 生成上下文要求目标不存在，避免复用混有其他文件的旧目录。
 
 锁中既有的 `forbiddenfruit==0.1.4` 只有 sdist，纯 binary-only 下载无法完成。脚本
@@ -171,9 +173,9 @@ Temporal Worker Versioning；不兼容 Workflow/graph 升级须先实现版本�
 
 ## 验收证据与尚未覆盖项
 
-要求与证据对应关系见 [Task 验收矩阵](docs/TASK_ACCEPTANCE.md)。本轮复用下述镜像
-完成冷重启组合验收，不改变生产拓扑与代码。以下构建、Linux 修复与两任务容器故障
-保留为 `08b4333` 历史基线，组合验收见本节后半。
+要求与证据对应关系见 [Task 验收矩阵](docs/TASK_ACCEPTANCE.md)。以下构建、Linux 修复
+与两任务容器故障保留为 `08b4333` 历史基线；后半的六任务组合验收由 `a6d61c6`
+记录，复用了该镜像。它们不自动覆盖本轮重构源码。
 
 `08b4333` 的 `linux/arm64` 应用镜像内容标识为
 `sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f`，
@@ -214,12 +216,12 @@ LB。耗时 39.57 秒，61 个采样点，宿主所属 RSS 加容器 cgroup 观�
 
 ```sh
 .venv/bin/python scripts/task_container_fault_smoke.py \
-  --image sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f \
+  --image "${TASK_IMAGE_ID:?set the rebuilt local image ID sha256:<64hex>}" \
   --temporal-binary "${TEMPORAL_BIN:?set the verified Temporal CLI path}" \
   --binary-sha256 33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b
 ```
 
-本轮 `task_cold_restart_smoke.py` 运行 `c0a4afaaf20c48e5b65fc51b7e9a7580`
+历史 `task_cold_restart_smoke.py` 运行 `c0a4afaaf20c48e5b65fc51b7e9a7580`
 **3 组通过**：6 Task/3 owner，2 API/2 单 Activity 槽 Worker。两个运行中任务在
 父步骤 24/3 CAN、年龄 45.200/45.097 秒时与四项原生 SCHEDULED 任务一起经历
 全栈冷停。四旧业务容器与 Temporal/observer 全部停止，零服务窗口实测 3.189 秒；
@@ -238,25 +240,30 @@ LB。耗时 39.57 秒，61 个采样点，宿主所属 RSS 加容器 cgroup 观�
 凭据片段在 30 History/13 日志中零命中。实验为单机 OrbStack/明文 CLI SQLite 与
 确定性模拟模型，没有替代目标部署 HA、mTLS/Cloud ACL 或真实模型调用验收。
 
-以下复跑命令使用同一个已存在镜像；脚本严格核对固定 image ID、当前生产源码与
-锁，以及本地忽略目录 `var/deepagents-delivery/task-container-wakeup-build-context/manifest.json`
-的既有构建摘要。该 manifest 必须已保留在当前实验环境，不会自动重建/拉取镜像，
-也不会把本轮文档当作旧镜像 README 元数据。此脚本是固定制品的机制验收工具，
-不替代部署命令。
+当前冷重启入口要求显式提供 `--image sha256:<64hex>` 与该镜像的 `--manifest`，不再
+内置历史镜像或构建目录。先完成上面的当前源码构建，再运行下列命令。脚本核对
+manifest 中的包源码全集、`pyproject.toml`、`uv.lock` 和 `Dockerfile.task`，并用预算内
+额外 64 MiB 的短命容器检查镜像内 build-manifest 摘要及实际安装源码。
+`image_source_boundary` 与 `image_manifest_probe` 保存本次核对结果；任何不一致都拒绝
+执行恢复实验。脚本不会自动构建或拉取镜像，不能用历史 image ID 代表当前源码。
 
 ```sh
 .venv/bin/python scripts/task_cold_restart_smoke.py \
-  --image sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f \
+  --image "${TASK_IMAGE_ID:?set the rebuilt local image ID sha256:<64hex>}" \
+  --manifest "${TASK_BUILD_DIR:?set the matching build directory}/context/manifest.json" \
   --temporal-binary "${TEMPORAL_BIN:?set the verified Temporal CLI path}" \
   --binary-sha256 33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b
 ```
 
-新原始回执在忽略的 `var/task-cold-prototype/<run_id>/receipt.json`，脱敏
+新原始回执在忽略的 `var/task-cold-prototype/<run_id>/receipt.json`；已有脱敏
 [冷重启证据](docs/task-cold-restart-evidence.json) 与 [验收矩阵](docs/TASK_ACCEPTANCE.md)
-保存对应范围。旧原始回执仍在 `var/task-container-prototype/<run_id>/receipt.json`。
+保留历史运行的对应范围，新运行不覆写旧证据。容器场景原始回执位于
+`var/task-container-prototype/<run_id>/receipt.json`。
 最终门禁与推送记录见 [DELIVERY.md](DELIVERY.md)；同一实验环境的持久 SQLite 文件
 保留，不证明磁盘丢失恢复、数据库主备、跨故障域可用性或 RPO/RTO SLO。
 
-[本轮独立架构图](../docs/audits/task-server-cold-restart-2026-10-16.png) 的橙色标记为本轮组合
-冷重启验收的范围与恢复路径，不表示增加了新的生产组件。完整 Task/CAN 协议见
+[历史冷重启图](../docs/audits/task-server-cold-restart-2026-10-16.png) 标记该组合验收的范围
+与恢复路径；[本轮结构图](../docs/audits/task-server-structure-2026-10-16.png) 标明源码分工。
+验收场景、公共设施及离线 Worker 分别位于 `tooling/acceptance/scenarios/`、`support/`、
+`fixtures/`，通过原有脚本入口运行，且不打入生产 wheel。完整 Task/CAN 协议见
 [Task Server](TASK_SERVER.md)，规范拓扑以 [根 README](../README.md#architecture) 为准。

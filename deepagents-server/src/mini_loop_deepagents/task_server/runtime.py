@@ -1,8 +1,8 @@
 """A general Deep Agent loop replayed by Temporal, independent of HTTP workers.
 
 This optional path pins temporalio 1.34.0 and Deep Agents 0.7.25. The deterministic
-StateBackend and native ToolMessage ID adapters are temporarily shared with the
-fault prototype: their pinned experimental seams are not a stable SDK API.
+StateBackend and native ToolMessage ID adapters live in temporal_support and are
+shared with the fault prototype. Their pinned seams are not a stable SDK API.
 Model requests are Activities; native planning and files remain Workflow state.
 There is no cross-task memory, external-effect tool, or Continue-as-New here.
 """
@@ -22,7 +22,7 @@ with workflow.unsafe.imports_passed_through():
     from langgraph.checkpoint.memory import InMemorySaver
     from langgraph.errors import GraphRecursionError
     from temporalio.contrib.deepagents import create_temporal_deep_agent
-    from mini_loop_deepagents.temporal_prototype.workflow import (
+    from mini_loop_deepagents.temporal_support.determinism import (
         DeterministicStateBackend,
         StableToolMessageIDs,
     )

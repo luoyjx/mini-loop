@@ -3,7 +3,6 @@
 import base64
 import csv
 import hashlib
-import importlib.util
 import io
 import json
 from pathlib import Path
@@ -16,9 +15,7 @@ import pytest
 import yaml
 
 MODULE = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("build_task_bundle", MODULE / "scripts/build_task_bundle.py")
-BUNDLE = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(BUNDLE)
+from tooling import build_task_bundle as BUNDLE
 
 
 def make_wheel(module, destination, *, extra_files=None, omit_extra=False):

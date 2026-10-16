@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -12,10 +11,8 @@ import pytest
 
 pytest.importorskip("temporalio")
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("container_harness_test", ROOT / "scripts/task_container_fault_smoke.py")
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import containers as scenario
+from tooling.acceptance.support import container_checks as harness
 support = harness.DOCKER
 
 
@@ -168,7 +165,7 @@ def test_missing_cli_records_terminal_failure_without_contacting_docker(tmp_path
     def forbidden():
         raise AssertionError("Docker should not be contacted after CLI preflight failure")
     monkeypatch.setattr(support, "Engine", forbidden)
-    assert harness.main(["--image", "missing", "--temporal-binary", str(tmp_path / "missing"), "--binary-sha256", "wrong", "--output-dir", str(tmp_path)]) == 1
+    assert scenario.main(["--image", "missing", "--temporal-binary", str(tmp_path / "missing"), "--binary-sha256", "wrong", "--output-dir", str(tmp_path)]) == 1
     path = next(tmp_path.glob("*/receipt.json"))
     receipt = json.loads(path.read_text())
     assert receipt["status"] == "failed" and receipt["cleanup_confirmed"] is True

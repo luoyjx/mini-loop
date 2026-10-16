@@ -1,7 +1,6 @@
 """Lightweight safety/observation checks; these never start a server."""
 
 import copy
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -10,11 +9,8 @@ import httpx
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts/task_server_fault_smoke.py"
-SPEC = importlib.util.spec_from_file_location("task_server_fault_harness", SCRIPT)
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import task_server as scenario
+from tooling.acceptance.support import http as harness
 
 
 def page():
@@ -136,7 +132,7 @@ def test_step_limit_evidence_requires_real_native_terminal_failure_and_activity_
 def test_loop_fixture_generates_distinct_real_tool_calls_without_entering_barrier(tmp_path):
     messages_api = pytest.importorskip("langchain_core.messages")
     pytest.importorskip("temporalio")
-    from task_worker_fixture import TaskFixtureModel
+    from tooling.acceptance.fixtures.task_worker_fixture import TaskFixtureModel
     model = TaskFixtureModel(barrier_directory=str(tmp_path))
     messages = [messages_api.HumanMessage(content="[fixture:loop-limit] controlled loop")]
     call_ids = set()
@@ -167,7 +163,7 @@ def test_preflight_leaves_unique_terminal_private_receipts_without_children(tmp_
         pytest.fail("Preflight must not start the process manager")
     monkeypatch.setattr(harness.SUPPORT, "Processes", refuse_children)
     for _ in range(2):
-        assert harness.main(["--temporal-binary", str(tmp_path / "missing"),
+        assert scenario.main(["--temporal-binary", str(tmp_path / "missing"),
                              "--output-dir", str(tmp_path / "receipts")]) == 1
     receipts = list((tmp_path / "receipts").glob("*/receipt.json"))
     assert len(receipts) == 2
@@ -182,7 +178,7 @@ def test_checksum_failure_occurs_before_process_manager(tmp_path, monkeypatch):
     binary.write_text("a deliberately unused executable")
     binary.chmod(0o700)
     monkeypatch.setattr(harness.SUPPORT, "Processes", lambda *args, **kwargs: pytest.fail("No children on checksum mismatch"))
-    assert harness.main(["--temporal-binary", str(binary), "--binary-sha256", "0" * 64,
+    assert scenario.main(["--temporal-binary", str(binary), "--binary-sha256", "0" * 64,
                          "--output-dir", str(tmp_path / "receipts")]) == 1
     receipt = json.loads(next((tmp_path / "receipts").glob("*/receipt.json")).read_text())
     assert receipt["reason"] == "The Temporal executable checksum did not match"

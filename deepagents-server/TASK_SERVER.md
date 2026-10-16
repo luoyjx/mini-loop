@@ -8,8 +8,13 @@ History 为单一权威**。此路径没有另建业务 SQL 台账、Outbox 或�
 它与标准 LangGraph Agent Server、[离线故障原型](TEMPORAL_PROTOTYPE.md) 以及原
 Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Temporal Python SDK
 `1.34.0`（可选 `temporal` extra）；`08b4333` 已交付经用户批准的固定 Python
-基础镜像。本轮复用该镜像做组合冷重启验收，没有改变生产 runtime 或增加依赖。源码和本地故障测试不等于
+基础镜像。本轮重构 Python 模块分工，未增加依赖；原有入口和持久协议保留。
+`08b4333` 镜像的组合冷重启结果属于历史验收。源码和本地故障测试不等于
 生产高可用、持续容量或真实 provider 的调用验收。
+
+源码阅读顺序见 [项目结构](docs/PROJECT_STRUCTURE.md)：`api.py` 保留 CLI 与兼容导出，
+`http.py` 处理认证/路由，`service.py` 编排任务，`backend/` 负责 Run/History、cursor 与
+readiness；`protocol.py` 定义它们共用的纯协议。它们是同一 API 进程内的分工。
 
 ## 分层与一次任务的生命周期
 
@@ -355,8 +360,11 @@ Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD
 
 ## 验证与交付证据
 
-从用户目标派生的要求、证据和边界见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。本轮
-组合冷重启运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 的 **3 组通过**，复用
+从用户目标派生的要求、证据和边界见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。当前重构的
+验证结果见 [交付记录](DELIVERY.md)。下面保留原有实验身份、源码基线和结果，不能由
+目录迁移推定它们已经在新源码上重跑。
+
+历史组合冷重启运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 的 **3 组通过**，复用
 `08b4333` 镜像和生产代码。6 Task/3 owner、2 API/2 单 Activity 槽 Worker：两项任务
 在父步骤 24/3 次 CAN 处已运行 45.200/45.097 秒，四项首 Activity 为原生 SCHEDULED。
 强杀所有 Temporal/API/Worker/observer 后，观测到完整零服务窗口 3.189 秒；随后

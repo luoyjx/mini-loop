@@ -22,7 +22,7 @@ with workflow.unsafe.imports_passed_through():
     from langchain_core.messages import HumanMessage, messages_to_dict
     from langgraph.errors import GraphRecursionError
     from temporalio.contrib.deepagents import TemporalModel, create_temporal_deep_agent
-    from mini_loop_deepagents.temporal_prototype.workflow import DeterministicStateBackend
+    from mini_loop_deepagents.temporal_support.determinism import DeterministicStateBackend
     from mini_loop_deepagents.task_server.checkpoint import (
         CheckpointLimitError,
         InvalidCheckpointError,

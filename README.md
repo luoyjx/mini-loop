@@ -274,9 +274,10 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-cold-restart-2026-10-16.png)
-shows the independent Agent Server layers, with this iteration's combined cold
-restart acceptance path for running and queued tasks in orange.
+The [focused Task HTTP server diagram](docs/audits/task-server-structure-2026-10-16.png)
+shows the independent Agent Server layers and this iteration's Python module
+boundaries. The [source reading guide](deepagents-server/docs/PROJECT_STRUCTURE.md)
+maps HTTP handling, task orchestration, Temporal access and acceptance tooling.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1182,8 +1183,15 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `08b4333` plus the
-multi-task cold restart acceptance iteration. Runtime topology is unchanged.
+Current architecture review baseline: **2026-10-16**, `a6d61c6` plus the
+independent Python module structure iteration. Deployment topology is unchanged.
+Within the Task API process, `http.py` handles ASGI and authentication,
+`protocol.py` defines stable errors, identities and the operation interface,
+`service.py` orchestrates tasks, and `backend/` owns Temporal Run/History access,
+signed cursors and readiness. Shared Workflow determinism lives in
+`temporal_support/`, without a production dependency on the offline prototype.
+Repository-only acceptance scenarios, fixtures and support live in `tooling/`;
+published script and production CLI paths retain compatibility.
 Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
 owns task identity, status and events. New TaskWorkflowV2 executions carry a
@@ -1199,12 +1207,12 @@ budgets stay unchanged; library callers retain process ownership. No owner Memor
 installed. The standard Agent Server profile,
 earlier offline fault prototype and Python/Go runtimes keep their own paths.
 Temporal Python SDK **1.34.0**, Deep Agents **0.7.25**, Agent Server **0.16.0**, and CLI
-**0.4.35** remain fixed. New fault acceptance belongs to this iteration's
-separate delivery record; earlier Go review labels retain their original scope.
+**0.4.35** remain fixed. Validation of this refactor belongs to its separate
+delivery record; earlier Go review labels retain their original scope.
 The [Task acceptance matrix](deepagents-server/docs/TASK_ACCEPTANCE.md) maps the
 requested behavior to concrete evidence and separates it from production HA and
-capacity targets. This iteration reuses the `08b4333` application image; current
-documentation is newer than that image's packaged README.
+capacity targets. The earlier cold-restart experiment used the `08b4333`
+application image; its receipt remains historical evidence for that exact build.
 
 <!-- architecture-map:start -->
 ```mermaid
@@ -1396,7 +1404,7 @@ flowchart LR
     end
     subgraph TaskServer["deepagents-server/task_server · opt-in Task HTTP service"]
         TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
-        TSAPI["Independent Task HTTP API<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
+        TSAPI["Independent Task HTTP API process<br/>http → TaskService → backend · shared protocol<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
         TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
         TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
         TSLaunch["Independent Task image / role launcher<br/>non-root · role-specific secret files<br/>same-process API or Worker · external Temporal"]
@@ -1543,6 +1551,16 @@ a different payload returns 409. A 202 response requires a confirmed remote Star
 or an owned matching existing Workflow. An uncertain Start returns an unknown
 outcome with the stable TaskID, and does not acknowledge local-only admission.
 This deduplication lasts within Temporal retention, rather than forever.
+
+Its [Python module structure](deepagents-server/docs/PROJECT_STRUCTURE.md) keeps
+HTTP authentication/admission and response handling in `http.py`, task operations
+in `service.py`, and Temporal Run/History reads, signed cursors and readiness in
+`backend/`. The shared `protocol.py` has no HTTP or Temporal client dependency.
+These are in-process ownership boundaries; the diagram's API component remains
+one deployed role. Common Workflow determinism is isolated in `temporal_support/`.
+Repository-only `tooling/acceptance/` separates executable fault scenarios from
+reusable support and offline fixtures, while `scripts/` preserves existing
+command paths. The production wheel excludes this tooling.
 
 New submissions select `TaskWorkflowV2` / `task-v2`; the Worker also keeps the
 unchanged `TaskWorkflow` / `task-v1` code for existing tasks. Retrying an old key

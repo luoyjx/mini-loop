@@ -1,11 +1,111 @@
 # Deep Agents Server delivery — 2026-10-16
 
-当前迭代以已推送的 `08b4333` 为基线，补齐运行任务与排队任务共同经历全栈冷停的
-组合验收。复用已验证的固定镜像，生产源码、依赖及部署配置没有变化；新增独立的
-故障驱动、观察进程、模拟模型 fixture 和验收测试。需求对应关系见
+当前迭代以 `a6d61c6` 为基线，整理独立 Python 模块的职责与依赖方向，分离运行代码、
+仓库工具和测试。已有公开入口与持久协议保留，不新增 Python 依赖。下文的历史
+验收保留各自源码、镜像、run_id 和资源范围，不由本轮目录迁移追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
 
-## 六任务全栈冷停与冷启动验收
+## Python 项目结构重构
+
+源码导航见 [PROJECT_STRUCTURE](docs/PROJECT_STRUCTURE.md)。这次拆分有三个明确边界：
+
+- Task API 由 `api.py` 负责启动和兼容导出，`http.py` 处理 ASGI、认证、请求限制及响应；
+  `protocol.py` 定义纯错误、身份摘要和 `TaskOperations`，`service.py` 编排任务操作；
+  `backend/` 分别封装 owned Run、History 分页/导航、签名 cursor 和 readiness。
+- `temporal_support/determinism.py` 保存共用的确定性 StateBackend 和工具消息 ID 适配，
+  生产 Task Workflow 不再导入历史 `temporal_prototype` 的实现。Workflow 名称、Activity
+  名称、memo、payload、checkpoint envelope 与 cursor 格式仍是原协议。
+- `tooling/acceptance/{scenarios,support,fixtures}` 分别管理故障流程、公共设施及离线
+  模型/Worker；`tooling/build_task_bundle.py` 管理包审计与构建上下文。原有 `scripts/`
+  保留命令兼容层，`tests/` 只承载测试，工具和 fixture 不发布到生产 wheel。
+
+生产 API、Worker 和角色 launcher 的模块入口保持。目录分层发生在进程内部，没有新增
+服务或存储系统。冷重启验收现在显式要求本次 image ID 与 manifest，核对当前源码及
+镜像内实际文件后才启动故障流程，不再内置历史制品。
+
+| 本轮 Gate | 已知结果 | 边界 |
+| --- | --- | --- |
+| 模块 pytest | **601 passed in 5.41s** | wrapper 8.14 秒，采样峰值 211.25 MiB，最低 memory-free 43%，4 个采样点，无资源阻断 |
+| Archify | **9/9**，零错误/警告 | JSON 与生成 HTML 同步；双主题 Task 区域和完整浅色图静态检查通过；回退字体，浏览器交互未验 |
+| 原生 Temporal replay | **31 个 Run 通过** | 30 个历史 V2 Run、1 个原始 V1 step-limit Run；实际 Workflow sandbox，单执行线程，零模型调用 |
+| 重构后的镜像构建 | **通过** | 81.5 秒、74 个采样点，所属 cgroup 峰值 509.29 MiB，宿主最低空闲 44%、VM 最低可用 90.51%；observer 已移除 |
+| 原 Python pytest | **2256 passed, 28 skipped, 104 warnings**，93.05 秒 | wrapper 93.90 秒，采样峰值 323.56 MiB，最低 memory-free 49% |
+| 原 Python invariants | **77 modules checked** | 只检查原 Python 包的不变量声明，不是独立模块的专用 checker |
+| 标准 Agent Server HTTP smoke | **10 组通过** | wrapper 16.32 秒，采样峰值 250.88 MiB，最低 memory-free 43%；服务进程树峰值 171.9 MiB |
+| 重构后的容器恢复 | **3 组通过，六任务全部完成** | 102.61 秒、153 个采样点，所属 RSS+cgroup 峰值 899.1 MiB，最低宿主空闲 43%、VM 可用 85.89%；所属资源已清理 |
+
+原生 replay 运行 `7e8e356142ec441b937a7ea804993909` 从两份历史 SQLite 的私有副本导出
+并核对 History 摘要，原数据库保持不变。30 个 V2 Run 来自既有六任务冷重启实验，
+另一个是原始 v1 的 step-limit Run。耗时 8.671 秒、17 个资源采样点、所属进程树
+峰值 308.2 MiB，最低宿主空闲 49%；2 GiB/180 秒/free 15% 预算内完成，所属进程
+全部退出。原回执 SHA-256 为
+`aea3bfb4278b10c12d20a73835e089fa1196a2b3d26149fb9f6255d8310985d3`。
+
+首次回放 `714d00b03a42452eb97a629f67cc93b2` 失败记录保留。SDK 1.34 的 Replayer 为
+`workflow.info().task_queue` 提供合成队列，无法复现原不可变请求摘要。通过的验收
+Runner 仅把此字段还原为已核对摘要的原生 `WorkflowExecutionStarted` 队列；没有修改
+生产 runtime、History、payload、memo 或命令。此适配范围随回执公开，不能把本次结果
+扩大为任意历史/版本迁移兼容，或新 Worker 的实际故障接管。
+
+新的 wheel/构建上下文包含 33 个包源码文件，排除 `tests`、`scripts` 和 `tooling`。
+最终 manifest SHA-256 为
+`2cad74f68d5e6cd2a7d7f3366d44d1b7040535cc6cce04c56eddb7105c34fd66`，wheel SHA-256 为
+`6aa8f4922ece6fcbebe60d52a504191de33c8fbb0caa9a94a41c7bd479a37450`。
+重建的 `linux/arm64` 本地应用 image ID 为
+`sha256:520e0e67f9a1cf9e8ee1509c86803ee9c05cc77dd7f47c25ee8b1255a7465bf9`，
+441,168,129 bytes，未发布 registry。builder 为 1920 MiB/1.9 CPU，observer 为
+64 MiB/0.1 CPU，swap 0；实测 cgroup 约束符合配置。
+
+新镜像冷重启运行 `a91bdf50d2c94169858a9988f69561c0` 的 **3 组通过**。起始镜像探针
+确认内部 manifest 与本次构建相同，安装的 33 个包文件逐一匹配。两 API、两单
+Activity 槽 Worker 接受 6 Task/3 owner；两项任务在父工具步骤 24、3 次 CAN 后已
+运行 45.120/45.010 秒，另四项为原生 SCHEDULED。Temporal 被强杀时 readyz=503、
+healthz=200。全部旧 API/Worker/Temporal/observer 停止后，观测到 **3.131 秒**完整
+零服务窗口；全新进程与连接恢复，四项排队任务在新 Worker 启动前仍可查询且未执行。
+
+六项最终各完成 **37 个父工具步骤、4 次 CAN/5 Run、2 个 GP 子图及 2 次原生摘要**。
+30 份 History 没有 WorkflowTaskFailed，24 对相邻 CAN 输入摘要相等。276 个模型
+Activity、278 次尝试仅有两次故障重试；中断 Activity 的原生身份、请求摘要和完整
+native 状态保留。四项排队任务的首次执行来自新 Worker，同 key 复用、旧 cursor 与
+Task/首 Run 身份保持。观测到接受至终态为 57.031–72.228 秒，包含模拟 pacing、
+排队与故障门控，不用作真实 provider 延迟或生产容量指标。
+
+该实验在 2 GiB/180 秒/free 15% 预算内完成；10 个所属容器和 4 个宿主服务/观察
+进程已移除或回收，无容器 OOM。四个最终业务容器按清理协议 SIGKILL/137，不新
+宣称优雅排空通过。10 个测试凭据片段在 30 份 History、14 份日志中零命中，结论仅
+覆盖这些测试值。原回执 SHA-256 为
+`42d595f68047c3e7941201e0d597dcc7564d02679527baf218d3b7e4bc15102d`。
+这是当前重构代码的容器恢复证据；仍是单机、明文 CLI/SQLite 和受信任离线模型，
+不代表跨宿主故障域、原生 TLS/Cloud ACL、生产 HA 或真实模型吞吐已通过。
+
+迁移后的标准 Agent Server smoke 通过原 `scripts/smoke.py` 入口运行真实开发服务与
+Deep Agents graph，覆盖认证/owner、文件、跨 Thread memory、Store 授权、原生子代理、
+SSE、客户端、同 Thread 并发拒绝/取消、禁用 shell 与优雅开发重启。fixture 来自新
+`tooling/acceptance/fixtures/`，不需要真实模型 key；此项仍不证明带许可证的
+PostgreSQL/Redis 崩溃恢复。原始观测与资源回执在本轮 evidence 中记录摘要。
+
+重型门禁串行执行，使用既有资源守门器；本轮没有资源超限中止。Go tests/vet、
+`verify_scans` 与 `verify_guards` 未重跑，因为没有 Go、扫描器或 guarded mutation
+anchor 变化。未新增、改名或删除顶层 `docs/*.md` 研究报告，因此不触发 Research Atlas
+内容生成。静态目录/导入合同、wheel 排除规则与旧入口回归由模块测试覆盖。
+
+Archify 规范 SHA-256 为
+`481662041122915eb98cc4bd71128a2ad13f31d147e9693bba5915ed9eaa6ccc`，生成 HTML SHA-256 为
+`abe362ec53bf8e3430354258a49da0490170bc8b6143cf643e791520b52828c8`。
+生成和静态目检回执在忽略目录 `var/deepagents-delivery/task-structure-archify*.receipt.json`。
+[本轮结构图](../docs/audits/task-server-structure-2026-10-16.png) 单独标注这次职责划分；
+由 built-in imagegen 基于完整 base 图生成并经一次文字修正，精确 prompt 与 repair
+prompt 随图保存。成图 SHA-256 为
+`b02657810fddf5973e690552b4f025a5a6fe91d0be04215db71ed5c7a5d25499`。
+本轮没有增加或删除部署组件，base 图保持；规范拓扑仍以根 README Mermaid 和对应
+架构 JSON 为准。[本轮证据摘要](docs/task-structure-evidence.json) 保存源码、门禁、
+制品及提示词摘要，不发布私有 History 内容。
+
+## 六任务全栈冷停与冷启动历史验收（a6d61c6）
+
+该轮以已推送的 `08b4333` 为基线，补齐运行任务与排队任务共同经历全栈冷停的组合
+验收。复用已验证的固定镜像，生产源码、依赖及部署配置没有变化；新增独立的故障
+驱动、观察进程、模拟模型 fixture 和验收测试。以下内容记录该轮原始结果。
 
 运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 的 **3 组通过**。两 API、两单 Activity 槽
 Worker 接受 6 Task/3 owner。前两项在第 24 个父工具步骤、3 次 CAN 后停在模型门控点，

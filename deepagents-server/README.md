@@ -7,7 +7,25 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-cold-restart-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-structure-2026-10-16.png)。
+
+## 从哪里读代码
+
+完整目录说明、依赖方向和扩展位置见 [项目结构](docs/PROJECT_STRUCTURE.md)。
+`src/` 只放安装包，`tooling/` 放仓库内构建与验收程序，`tests/` 放测试；
+`scripts/` 保留原有命令入口。标准 Agent Server、Temporal Task 服务和历史原型分别维护。
+
+| 要理解的部分 | 建议阅读顺序 |
+| --- | --- |
+| 标准 Agent Server | `langgraph.json` → `config.py` / `auth.py` → `graph.py` → `jobs.py` |
+| Task HTTP 请求 | `task_server/api.py` → `http.py` → `protocol.py` → `service.py` → `backend/` |
+| Task 执行与恢复 | `task_server/worker.py` → `runtime.py` / `runtime_v2.py` → `checkpoint.py` / `summarization.py` |
+| 启动与进程退出 | `task_server/launch.py` → `connection.py` / `lifecycle.py` |
+| 构建与故障验收 | `tooling/build_task_bundle.py` → `tooling/acceptance/scenarios/`；公共设施和离线模型在相邻的 `support/`、`fixtures/` |
+
+表中标准 Agent Server 的 Python 文件位于 `src/mini_loop_deepagents/`；
+Task 各行省略前缀的文件位于该包的 `task_server/`。
+HTTP 处理、任务编排与 Temporal 访问是同一个 API 进程内的代码分工，部署仍为独立 API 与 Worker。
 
 ## 已实现与边界
 
@@ -223,9 +241,10 @@ API `/healthz` 只检查进程；`/readyz` 通过有界 DescribeNamespace 检查
 已有标准 Agent Server 的 Dockerfile/Compose 保留独立入口；部署、镜像构建和容器故障
 验收的实际范围记录在部署说明及 [DELIVERY](DELIVERY.md) 中。
 
-本轮组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
-后的恢复；生产 API/Worker、Workflow 和持久协议没有变化。当前文档晚于镜像内的
-构建 README，运行镜像和实验范围以 [验收矩阵](docs/TASK_ACCEPTANCE.md) 为准。
+此前组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
+后的恢复。对应结果是历史基线，镜像和实验范围见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。
+本轮结构重构分离 HTTP、任务编排、Temporal 后端与仓库验收工具，保留已有命令入口、
+Workflow 名称和持久协议；当前源码的验证结果单独记录在 [交付记录](DELIVERY.md)。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal
@@ -254,7 +273,8 @@ uv run python scripts/smoke.py
 uv run python scripts/fault_smoke.py
 ```
 
-Smoke 启动实际 `langgraph dev` 和真实 Deep Agents graph，使用仅位于 `tests/`
+Smoke 启动实际 `langgraph dev` 和真实 Deep Agents graph，使用仅位于
+`tooling/acceptance/fixtures/`
 的无网络模型，不需要 provider key。它检查 token/owner、真实文件工具、跨线程 memory、
 伪造身份、跨用户读写、Store API、HTTP SSE、禁用执行和优雅重启恢复，并监测进程树 RSS。
 它在私有临时目录保存开发状态并在退出时清理，仅在仓库 `var/deepagents-delivery/`

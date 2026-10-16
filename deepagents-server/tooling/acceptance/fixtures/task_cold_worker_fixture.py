@@ -14,8 +14,8 @@ from langchain_core.messages import messages_to_dict
 from langchain_core.outputs import ChatGeneration, ChatResult
 from temporalio import activity
 
-from task_can_worker_fixture import TaskCANFixtureModel, task_stem
-from task_container_worker_fixture import emit, security_probe
+from .task_can_worker_fixture import TaskCANFixtureModel, task_stem
+from .task_container_worker_fixture import emit, security_probe
 from mini_loop_deepagents.task_server.connection import TemporalConnectionSettings
 from mini_loop_deepagents.task_server.launch import load_role_secrets
 from mini_loop_deepagents.task_server.runtime import MODEL_ALIAS

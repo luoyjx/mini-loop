@@ -1,0 +1,19 @@
+Use case: infographic-diagram, editing an existing architecture base.
+Input image 1 is the complete canonical mini-loop layered architecture base. Input image 2 is an earlier focused Task Server deployment diagram, only a style reference.
+Create a focused companion iteration image about the current independent Python module refactor, derived from the Task Server portion of image 1. Preserve the dark navy / cyan technical infographic aesthetic, readable Chinese labels, crisp rectangular panels. This is a code-organization diagram, NOT a new deployment topology. Remove the previous cold-restart experiment/results panels. Do not claim new high availability or benchmark results.
+Title: "Agent Server · Python 结构重构"
+Subtitle: "职责明确 · 单向依赖 · 保留现有运行协议"
+Use a landscape canvas with three main horizontal bands, a compact right column and generous padding.
+Band 1 title "生产包  src/mini_loop_deepagents/"
+Show Task API process (one enclosing panel, not separate servers): "api.py 启动入口" → "http.py 鉴权 / 路由" → "TaskService 业务操作" → "backend/ Run 校验 / History / Cursor / Readiness". Between HTTP and service show small "protocol.py · TaskOperations". backend sends an arrow to one "外部 Temporal 服务".
+Below inside same production band show separate "worker.py / launch.py" → "TaskWorkflow v1 / v2" → "模型 Activity". Connect Workflow to external Temporal bidirectionally, label "轮询 / 回放 / 持久化".
+Band 2 title "共享确定性组件  temporal_support/"
+Show "determinism.py" receiving dependency arrows from both "Task runtime" and "temporal_prototype". Label "生产 Task 不再依赖实验原型". Arrows here mean imports, clearly label "代码依赖"; do not imply prototype execution in production.
+Band 3 title "仓库验收工具  tooling/acceptance/"
+"scripts/ 兼容入口" → "scenarios/ 场景编排" → "support/ 进程 / 资源 / HTTP"
+Place "fixtures/ 离线模型与 Worker" separately as scenario dependency.
+Below in smaller text "tests/ 单元与契约测试" and "tooling 不进入生产 wheel".
+Right column heading "兼容边界"
+Use five bullets: "原启动命令保留", "HTTP 接口不变", "Task ID / Memo 不变", "Workflow 名称不变", "Checkpoint / Cursor 格式不变".
+Footer exact: "本轮调整代码组织与职责；生产 HA、吞吐与真实模型验收仍独立进行。"
+Orange highlight on newly separated HTTP / Service / backend and shared determinism and tooling panels; cyan for unchanged runtime boundaries. No test counts or timing. Exact Python path labels, no invented technologies, no SQL app database or outbox.

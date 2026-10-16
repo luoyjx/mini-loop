@@ -6,7 +6,7 @@ from langgraph.store.memory import InMemoryStore
 
 from mini_loop_deepagents.config import AgentSettings
 from mini_loop_deepagents.graph import agent, build_agent, memory_namespace
-from smoke_graph import OfflineToolModel
+from tooling.acceptance.fixtures.smoke_graph import OfflineToolModel
 
 
 @pytest.fixture

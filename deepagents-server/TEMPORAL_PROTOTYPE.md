@@ -9,6 +9,12 @@ Workflow 中执行；模型与 Memory I/O 通过 Activities 调度。模型是�
 用户已批准 `temporalio==1.34.0` 与本地临时 Temporal 服务。依赖作为 `temporal`
 extra 固定；标准 Agent Server profile 和原 Python/Go 模块不自动接入此路径。
 
+当前源码组织见 [项目结构](docs/PROJECT_STRUCTURE.md)。原型实现仍在
+`src/mini_loop_deepagents/temporal_prototype/`；共用的确定性 backend 与消息 ID 适配位于
+`temporal_support/determinism.py`。故障驱动移到
+`tooling/acceptance/scenarios/temporal.py`，进程/资源等公共设施位于相邻 `support/`。
+原 `scripts/temporal_fault_smoke.py` 命令继续可用；下文历史运行结果保留原验收基线。
+
 ## 运行边界与数据归属
 
 | 组件 | 当前实现 | 数据归属 |

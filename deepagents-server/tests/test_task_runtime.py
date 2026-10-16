@@ -17,7 +17,7 @@ from temporalio.exceptions import ApplicationError
 from mini_loop_deepagents.config import AgentSettings
 from mini_loop_deepagents.task_server import runtime, worker
 from mini_loop_deepagents.temporal_prototype.workflow import DeterministicStateBackend, StableToolMessageIDs
-from task_worker_fixture import TaskFixtureModel, barrier_paths, make_fixture_provider
+from tooling.acceptance.fixtures.task_worker_fixture import TaskFixtureModel, barrier_paths, make_fixture_provider
 
 
 def test_task_input_rejects_provider_or_owner_ambiguity():

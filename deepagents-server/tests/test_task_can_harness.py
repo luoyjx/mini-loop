@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -15,11 +14,8 @@ import pytest
 pytest.importorskip("temporalio")
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts/task_can_fault_smoke.py"
-SPEC = importlib.util.spec_from_file_location("_task_can_acceptance_test", SCRIPT)
-harness = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = harness
-SPEC.loader.exec_module(harness)
+from tooling.acceptance.scenarios import continuation as scenario
+from tooling.acceptance.support import continuation as harness
 fixture = harness.FIXTURE
 
 
@@ -115,7 +111,7 @@ def test_private_gates_are_task_scoped_hashed_and_owner_readable_only(tmp_path):
 
 
 def test_missing_binary_yields_private_terminal_receipt_without_child_process(tmp_path):
-    assert harness.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path / "runs")]) == 1
+    assert scenario.main(["--temporal-binary", str(tmp_path / "absent"), "--output-dir", str(tmp_path / "runs")]) == 1
     receipts = list((tmp_path / "runs").glob("*/receipt.json"))
     assert len(receipts) == 1
     result = json.loads(receipts[0].read_text())
