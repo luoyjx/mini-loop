@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Independent Python / Go / standard Agent Server runtimes; optional Temporal 1.34.0 fault prototype has Workflow-held Deep Agents, Activities and separate local SQLite stores; production HA acceptance remains open</p>
+      <p class="subtitle">Independent Python / Go / standard Agent Server paths; opt-in Task HTTP service uses Temporal History as authority and a real Deep Agents Workflow Worker; offline Temporal fault prototype remains separate; production HA/capacity unverified</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4544,9 +4544,9 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 3850" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 4650" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server runtimes; optional Temporal 1.34.0 fault prototype has Workflow-held Deep Agents, Activities and separate local SQLite stores; production HA acceptance remains open</desc>
+        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; opt-in Task HTTP service uses Temporal History as authority and a real Deep Agents Workflow Worker; offline Temporal fault prototype remains separate; production HA/capacity unverified</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4590,6 +4590,9 @@
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="6" x="500" y="3150" width="1530" height="396" rx="12" class="c-region" stroke-width="1"/>
         <text x="508" y="3168" class="t-cloud" font-size="9" font-weight="600">Optional Temporal fault prototype / default-off experimental</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="7" x="500" y="4000" width="1580" height="396" rx="12" class="c-region" stroke-width="1"/>
+        <text x="508" y="4018" class="t-cloud" font-size="9" font-weight="600">Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype</text>
 
         <!-- Connection paths (before components for correct z-order) -->
         <path data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request" data-composition-points="210,296;330,296" d="M 210 296 L 330 296" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
@@ -4668,6 +4671,11 @@
         <path data-edge-from="tpWorkflow" data-edge-to="tpMemoryActivity" data-edge-key="73" data-edge-id="tpMemoryDispatch" data-composition-points="1270,3276;1270,3450" d="M 1270 3276 L 1270 3450" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="tpMemoryActivity" data-edge-to="tpApplication" data-edge-label="owner / effect ledger" data-edge-key="74" data-edge-id="tpMemoryStore" data-composition-points="1070,3488;890,3488" d="M 1070 3488 L 890 3488" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="tpClient" data-edge-to="tpApplication" data-edge-key="75" data-edge-id="tpOwnerBind" data-composition-points="370,3245;460,3245;460,3488;550,3488" d="M 370 3245 L 452 3245 Q 460 3245 460 3253 L 460 3480 Q 460 3488 468 3488 L 550 3488" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="tsClient" data-edge-to="tsApi" data-edge-key="76" data-edge-id="tsRequest" data-composition-points="370,4088;550,4088" d="M 370 4088 L 550 4088" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / inspect" data-edge-key="77" data-edge-id="tsRemoteStart" data-composition-points="910,4088;1070,4088" d="M 910 4088 L 1070 4088" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="task queue / replay" data-edge-key="78" data-edge-id="tsDispatch" data-composition-points="1470,4088;1630,4088" d="M 1470 4088 L 1630 4088" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tsWorker" data-edge-to="tsModelActivity" data-edge-key="79" data-edge-id="tsModelRequest" data-composition-points="1830,4126;1830,4300" d="M 1830 4126 L 1830 4300" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="tsModelActivity" data-edge-to="tsModel" data-edge-key="80" data-edge-id="tsModelIO" data-composition-points="1630,4338;1470,4338" d="M 1630 4338 L 1470 4338" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5364,6 +5372,82 @@
         <text data-detail="fine" x="720" y="3518" class="t-database" font-size="7" text-anchor="middle">no durable Task API / outbox / HA claim</text>
         </g>
 
+        <g id="node-tsClient" data-node-id="tsClient" data-node-label="Task HTTP clients" tabindex="0" role="button" aria-label="Focus Task HTTP clients, Bearer / Idempotency-Key / message, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Bearer / Idempotency-Key / message" data-node-context="Architecture component">
+          <title>Task HTTP clients · Bearer / Idempotency-Key / message · Architecture component</title>
+          <rect x="60" y="4050" width="310" height="76" rx="6" class="c-mask"/>
+          <rect x="60" y="4050" width="310" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(66 4056) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="215" y="4086" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Task HTTP clients</text>
+        <text data-detail="context" x="215" y="4102" class="t-muted" font-size="9" text-anchor="middle">Bearer / Idempotency-Key / message</text>
+        </g>
+
+        <g id="node-tsApi" data-node-id="tsApi" data-node-label="Independent Bearer Task API" tabindex="0" role="button" aria-label="Focus Independent Bearer Task API, submit / status / result / cancel / events, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="submit / status / result / cancel / events" data-node-tag="202 = confirmed remote Start / matching task" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Independent Bearer Task API · submit / status / result / cancel / events · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · 202 = confirmed remote Start / matching task</title>
+          <rect x="550" y="4050" width="360" height="76" rx="6" class="c-mask"/>
+          <rect x="550" y="4050" width="360" height="76" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(556 4056) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+          </g>
+          <text data-detail-anchor x="730" y="4086" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Independent Bearer Task API</text>
+        <text data-detail="context" x="730" y="4102" class="t-muted" font-size="9" text-anchor="middle">submit / status / result / cancel / events</text>
+        <text data-detail="fine" x="730" y="4118" class="t-frontend" font-size="7" text-anchor="middle">202 = confirmed remote Start / matching task</text>
+        </g>
+
+        <g id="node-tsHistory" data-node-id="tsHistory" data-node-label="Temporal service / retained History" tabindex="0" role="button" aria-label="Focus Temporal service / retained History, TaskID / immutable memo / status / events, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="database" data-node-sublabel="TaskID / immutable memo / status / events" data-node-tag="retention-bounded authority / HA unverified" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Temporal service / retained History · TaskID / immutable memo / status / events · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · retention-bounded authority / HA unverified</title>
+          <rect x="1070" y="4050" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1070" y="4050" width="400" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1076 4056) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-detail-anchor x="1270" y="4086" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Temporal service / retained History</text>
+        <text data-detail="context" x="1270" y="4102" class="t-muted" font-size="9" text-anchor="middle">TaskID / immutable memo / status / events</text>
+        <text data-detail="fine" x="1270" y="4118" class="t-database" font-size="7" text-anchor="middle">retention-bounded authority / HA unverified</text>
+        </g>
+
+        <g id="node-tsWorker" data-node-id="tsWorker" data-node-label="TaskWorkflow Worker" tabindex="0" role="button" aria-label="Focus TaskWorkflow Worker, real Deep Agents / virtual files / todos, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="real Deep Agents / virtual files / todos" data-node-tag="no default Memory or Continue-As-New" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>TaskWorkflow Worker · real Deep Agents / virtual files / todos · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · no default Memory or Continue-As-New</title>
+          <rect x="1630" y="4050" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1630" y="4050" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 4056) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1830" y="4086" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">TaskWorkflow Worker</text>
+        <text data-detail="context" x="1830" y="4102" class="t-muted" font-size="9" text-anchor="middle">real Deep Agents / virtual files / todos</text>
+        <text data-detail="fine" x="1830" y="4118" class="t-backend" font-size="7" text-anchor="middle">no default Memory or Continue-As-New</text>
+        </g>
+
+        <g id="node-tsModelActivity" data-node-id="tsModelActivity" data-node-label="Plugin model I/O Activity" tabindex="0" role="button" aria-label="Focus Plugin model I/O Activity, fixed deployment alias / retry / heartbeat, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="fixed deployment alias / retry / heartbeat" data-node-tag="openai:task-server / no public fixture option" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Plugin model I/O Activity · fixed deployment alias / retry / heartbeat · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · openai:task-server / no public fixture option</title>
+          <rect x="1630" y="4300" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1630" y="4300" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 4306) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1830" y="4336" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Plugin model I/O Activity</text>
+        <text data-detail="context" x="1830" y="4352" class="t-muted" font-size="9" text-anchor="middle">fixed deployment alias / retry / heartbeat</text>
+        <text data-detail="fine" x="1830" y="4368" class="t-backend" font-size="7" text-anchor="middle">openai:task-server / no public fixture option</text>
+        </g>
+
+        <g id="node-tsModel" data-node-id="tsModel" data-node-label="ChatOpenAI provider" tabindex="0" role="button" aria-label="Focus ChatOpenAI provider, model / credentials from Worker environment, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="external" data-node-sublabel="model / credentials from Worker environment" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>ChatOpenAI provider · model / credentials from Worker environment · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype</title>
+          <rect x="1070" y="4300" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1070" y="4300" width="400" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1076 4306) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="1270" y="4336" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ChatOpenAI provider</text>
+        <text data-detail="context" x="1270" y="4352" class="t-muted" font-size="9" text-anchor="middle">model / credentials from Worker environment</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5562,36 +5646,47 @@
         </g>
 
 
+        <g data-detail="context" data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / inspect" data-edge-key="77" data-edge-id="tsRemoteStart">
+          <rect x="949" y="4068" width="82" height="14" rx="3" class="c-mask"/>
+          <text x="990" y="4078" class="t-muted" font-size="8" text-anchor="middle">Start / inspect</text>
+        </g>
+        <g data-detail="context" data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="task queue / replay" data-edge-key="78" data-edge-id="tsDispatch">
+          <rect x="1499.4" y="4068" width="101.2" height="14" rx="3" class="c-mask"/>
+          <text x="1550" y="4078" class="t-muted" font-size="8" text-anchor="middle">task queue / replay</text>
+        </g>
+
+
+
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="3821" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="4621" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="3826" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="3834" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="4626" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="4634" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="3826" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="3834" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="4626" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="4634" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="3826" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="3834" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="4626" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="4634" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="3826" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="3834" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="4626" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="4634" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="3826" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="3834" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="4626" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="4634" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="3826" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="3834" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="4626" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="4634" class="t-muted" font-size="8">Database</text>
           </g>
           <g data-legend-kind="cloud">
-            <rect x="674" y="3826" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
-            <text x="694" y="3834" class="t-muted" font-size="8">Cloud</text>
+            <rect x="674" y="4626" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
+            <text x="694" y="4634" class="t-muted" font-size="8">Cloud</text>
           </g>
         </g>
       </svg>
@@ -6011,7 +6106,7 @@
           <h3>Independent Deep Agents server</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 2026-10-16: e67e174 plus optional Temporal 1.34.0 fault prototype. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.</li>
+          <li>&bull; Review baseline 2026-10-16: 1fd010d plus the opt-in Temporal Task HTTP server iteration. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.</li>
           <li>&bull; AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.</li>
           <li>&bull; Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.</li>
           <li>&bull; Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.</li>
@@ -6027,11 +6122,25 @@
           <h3>Optional Temporal fault prototype</h3>
         </div>
         <ul>
-          <li>&bull; Default-off temporal dependency extra and independent Worker CLI. The standard Agent Server API does not route into it. The higher-level Task control plane remains proposed; task_contracts.py is library-only.</li>
+          <li>&bull; Default-off temporal extra and independent offline Worker CLI. Standard Agent Server and the opt-in Task HTTP service do not route into it. Its local memory/effect ledger and explicit Continue-As-New remain technical-validation fixtures.</li>
           <li>&bull; Real create_temporal_deep_agent runs the Deep Agents loop inside Workflow code. DeepAgentsPlugin moves model I/O to Activities; the configured TranscriptModel is offline and has no live provider.</li>
           <li>&bull; Named memory put/get Activities use a separate local application SQLite file for trusted workflow-owner binding, memories, idempotent effect records and fault gates. The trusted local client is not production HTTP authentication or Temporal service ACL.</li>
           <li>&bull; Temporal CLI dev server keeps Workflow History in its own SQLite file. Virtual graph files/todos/messages cross one explicit Continue-As-New boundary as a versioned full-state snapshot. Local SQLite is not production HA.</li>
           <li>&bull; Fault-harness results belong to the dedicated prototype delivery record. Source/config existence is not a passing run; live-provider inference, production storage/ACL, code-upgrade compatibility and capacity need independent acceptance.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>Opt-in Temporal Task HTTP service</h3>
+        </div>
+        <ul>
+          <li>&bull; Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or an owned matching existing request. Concurrent replicas reuse matching content and reject changed payloads with 409.</li>
+          <li>&bull; Temporal retained History is direct authority for execution, owner/request memo, status, result and event pages. Start uncertainty returns the stable TaskID for reconciliation. Dedupe and event availability are retention-bounded; no permanent business admission ledger or outbox is installed.</li>
+          <li>&bull; TaskWorkflow runs the real Deep Agents loop; DeepAgentsPlugin schedules model I/O Activities, whose fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector, default Memory store or Continue-As-New is enabled.</li>
+          <li>&bull; Virtual files, todos and messages reconstruct through History replay. Signed event cursors bind namespace, owner, TaskID, RunID and an exclusive History event boundary; API replicas need a shared secret. Pages expose History metadata, not token streaming.</li>
+          <li>&bull; This independently configured Temporal service is separate from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. New fault results are recorded separately. Production HA, live-model inference, retention operations and capacity remain unverified; process-local limits are not global quotas. Raw Temporal access belongs to trusted API/Worker processes; HTTP Bearer is not a Temporal service ACL.</li>
         </ul>
       </div>
     </div>

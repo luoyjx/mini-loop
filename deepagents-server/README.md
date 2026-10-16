@@ -1,14 +1,17 @@
 # mini-loop Deep Agents Server
 
-这是使用 **Deep Agents + 标准 LangGraph Agent Server** 的独立模块，依据
-[MDA Agent Server 参考设计](../docs/MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md)
-的分层构建。它有独立环境、依赖锁和启动配置，不调用已有 `mini_loop`
-Python/Go runtime，也不替换原服务。
+这是独立的 Deep Agents 服务模块，提供 **标准 LangGraph Agent Server** 与显式启用的
+**Temporal Task HTTP 服务** 两个入口；它们分别拥有自己的调度与持久化路径，默认
+不会互相转发任务。分层参考 [MDA Agent Server 设计](../docs/MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md)。
+模块有独立环境、依赖锁和启动配置，不调用已有 `mini_loop` Python/Go runtime。
 
-图解入口：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
+标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-2026-10-16.png)。
 
 ## 已实现与边界
+
+下表与后续启动命令描述标准 LangGraph 入口；Temporal 入口见后文专节。
 
 | 层 | 实现 | 状态 |
 | --- | --- | --- |
@@ -167,6 +170,29 @@ checkpointer/store。Memory namespace 只读取执行 runtime 的 verified `serv
 自定义工具应通过受信任代码加入 `build_agent`，普通 Python 工具在 Worker 进程执行，
 不会自动进入 Sandbox。当前内存文件读改写没有跨 Thread CAS/事务合并保证；同 owner
 两个 Thread 同时改一个 memory 文件可能发生覆盖，重要业务状态应放外部业务数据库。
+
+## 可选 Temporal Task HTTP 服务
+
+[Task Server](TASK_SERVER.md) 是独立 opt-in 服务，使用 Temporal Python SDK 1.34.0；它不经过
+上面的标准 Agent Server API，也不改变原 Python/Go 业务。HTTP Bearer token 绑定
+owner，`POST /v1/tasks` 接受 `Idempotency-Key` 和 message。只有远程 Workflow Start
+已确认，或已核对为同一 owner/相同内容的现有任务，才返回 202。相同 owner/key
+生成稳定 TaskID，跨 API 副本重复相同内容复用任务，不同内容返回 409；该去重受
+Temporal retention 约束，不是永久业务台账。Start 结果未知时返回稳定 TaskID 供核对，
+不把本地请求接收当作持久接受。
+
+TaskWorkflow 运行真实 Deep Agents；模型 I/O 经 Activity，在 Worker 环境中把固定
+alias 解析为 ChatOpenAI。公开 HTTP/生产 CLI 无 fixture 或 provider 选择参数。
+默认只有虚拟 files/todos/messages，没有 Memory 或 Continue-As-New。任务状态、
+结果、取消和带签名 cursor 的持久事件分页直接使用保留的 Temporal History；事件
+是 History metadata，不是模型 token 重放。API 副本须共享 namespace、队列、token
+映射和固定 cursor secret；取消返回的是请求已提交，不是任务已停止。
+
+当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
+持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal
+服务 ACL。API/Worker 的进程内限额不等于全局配额。原型与这条 Task 服务分开：下节
+实验仍使用离线模型和自己的 SQLite memory/effect ledger。新 Task HTTP 路径的故障
+实测结果见专门说明；生产 HA、外部模型推理与容量未经源码存在本身证明。
 
 ## 可选 Temporal 故障原型
 

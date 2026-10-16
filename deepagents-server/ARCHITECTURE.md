@@ -6,6 +6,10 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 这是 [README canonical architecture](../README.md#architecture) 独立模块泳道的展开，
 原 Python/Go runtime 保持各自入口与语义。
 
+本文展开标准 LangGraph 入口；新增的独立 Temporal Task HTTP 入口见
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-2026-10-16.png)。
+两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
+
 ![当前 Agent Server 分层架构](docs/agent-server-layered-architecture.png)
 
 ## 从上往下读

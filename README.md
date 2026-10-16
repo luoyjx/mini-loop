@@ -18,6 +18,7 @@ orchestration remain explicit choices.
 | See what the project is | [30-second overview](#30-second-overview) |
 | Run it locally | [Quick start](#quick-start) |
 | Run the independent Deep Agents server | [Deep Agents server module](deepagents-server/README.md) |
+| Run the opt-in Temporal Task HTTP server | [Task server](deepagents-server/TASK_SERVER.md) |
 | Inspect the optional Temporal experiment | [Temporal fault prototype](deepagents-server/TEMPORAL_PROTOTYPE.md) |
 | Understand one request | [How one turn works](#how-one-turn-works) |
 | Decide what to enable | [Runtime posture](#runtime-posture) |
@@ -123,6 +124,7 @@ The table is the fastest way to distinguish “implemented” from “active her
 | Declarative workflow MVP | **Off, process-local** | Trusted Python construction with `enable_workflows=True` |
 | Verified execute → verify → fold loop | **Library-only** | Call `VerifiedLoopService` explicitly; no HTTP/tool surface |
 | Independent Deep Agents server | **Opt-in, separate module** | [`deepagents-server/`](deepagents-server/README.md): bearer-authenticated standard Agent Server; async Run handles; API/Worker separation; production PostgreSQL/Redis recovery acceptance and licensing remain explicit |
+| Temporal Task HTTP server | **Opt-in, separate service** | [Task server](deepagents-server/TASK_SERVER.md): confirmed remote Start; retention-bounded idempotency and History events; independent Workflow Worker; production HA/capacity acceptance remains open |
 | Temporal fault prototype | **Default-off, experimental** | [Independent Temporal Worker](deepagents-server/TEMPORAL_PROTOTYPE.md): local SQLite History and application ledger; offline model fixture; standard Agent Server profile unchanged |
 
 <details>
@@ -272,6 +274,8 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
+The [focused Task HTTP server diagram](docs/audits/task-server-2026-10-16.png)
+shows this iteration's independent Agent Server layers, with additions in orange.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1177,15 +1181,16 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `e67e174` plus the
-optional Temporal **1.34.0** fault prototype. The standard independent Agent
-Server profile retains API/Worker separation, synchronous stateful checkpoints
-and portable Run handles. A separately selected experimental Temporal Worker
-runs the real Deep Agents loop in Workflow code, model I/O through Activities,
-and local owner-memory Activities. This prototype does not replace the standard
-Agent Server path or either existing Python/Go runtime. Deep Agents **0.7.25**,
-Agent Server **0.16.0**, and CLI **0.4.35** remain fixed; earlier Go review and
-acceptance labels retain their original scope.
+Current architecture review baseline: **2026-10-16**, `1fd010d` plus the
+opt-in Temporal-backed Task HTTP server iteration. Its independent Bearer API
+confirms remote Workflow Start before returning 202; retained Temporal History
+owns task identity, status and events. A separate TaskWorkflow Worker executes
+the real Deep Agents loop with deployment-owned model Activities. This path has
+no default Memory or Continue-As-New and does not replace the standard Agent
+Server profile, the earlier offline fault prototype, or either Python/Go runtime.
+Temporal Python SDK **1.34.0**, Deep Agents **0.7.25**, Agent Server **0.16.0**, and CLI
+**0.4.35** remain fixed. New fault acceptance belongs to this iteration's
+separate delivery record; earlier Go review labels retain their original scope.
 
 <!-- architecture-map:start -->
 ```mermaid
@@ -1375,6 +1380,18 @@ flowchart LR
         TPWorkflow --> TPMemory --> TPApp
         TPClient -. trusted owner binding .-> TPApp
     end
+    subgraph TaskServer["deepagents-server/task_server · opt-in Task HTTP service"]
+        TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
+        TSAPI["Independent Task HTTP API<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
+        TSHistory["Independent Temporal service / retained History<br/>stable owner+key TaskID · immutable request memo<br/>retention bounds dedupe / signed event cursors"]
+        TSWorkflow["TaskWorkflow Worker<br/>real Deep Agents loop · virtual files / todos / messages<br/>no Memory / Continue-As-New by default"]
+        TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Temporal retry / heartbeat"]
+        TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
+        TSClient -->|authenticated request| TSAPI
+        TSAPI -->|Start / inspect / cancel / History pages| TSHistory
+        TSHistory -->|task queue / replay| TSWorkflow
+        TSWorkflow --> TSActivity --> TSModel
+    end
     DAProvider["OpenAI provider<br/>server-configured credentials / model"]
     Caller -. explicitly select independent module .-> DAAuth
     DAGraph -->|model requests| DAProvider
@@ -1469,9 +1486,10 @@ persistent volumes and graph/checkpoint schema compatibility. See the
 [long-task operating contract](deepagents-server/LONG_TASKS.md) for commands,
 recovery limits and current validation evidence. The
 [durable Task control-plane design](docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md)
-compares execution backends; those proposed services are not installed by the
-current module. Its business logic, dependencies and runtime are independent of
-the original Python/Go modules.
+compares execution backends and future SQL admission/outbox/quota layers. The
+current Task HTTP path below delegates authority directly to Temporal; it does
+not install those business database layers. This module remains independent of
+the original Python/Go business logic and runtimes.
 
 The optional [Temporal fault prototype](deepagents-server/TEMPORAL_PROTOTYPE.md)
 is a separate experiment under `deepagents-server/temporal_prototype`, selected
@@ -1488,8 +1506,37 @@ History, the application ledger, and the standard Agent Server PostgreSQL are
 different data stores. Trusted local client checks are not production HTTP
 authentication or Temporal service ACLs. Prototype fault acceptance is reported
 separately; its existence does not establish production HA or capacity. The
-higher-level Task control plane remains a proposal with library contracts, and
-the standard Agent Server API does not route into this prototype automatically.
+standard Agent Server API does not route into this prototype automatically.
+The separate Task HTTP service below uses its own TaskWorkflow and live-provider
+adapter; it does not inherit this prototype's memory ledger or Continue-As-New.
+
+The opt-in [Task HTTP server](deepagents-server/TASK_SERVER.md) exposes
+`POST /v1/tasks` plus task status, result, cancellation and retained History-event
+pages. Bearer authentication chooses the owner; the service derives a stable
+TaskID from owner and Idempotency-Key. Concurrent API replicas rely on Temporal
+Workflow-ID admission: matching immutable request content reuses the task, while
+a different payload returns 409. A 202 response requires a confirmed remote Start
+or an owned matching existing Workflow. An uncertain Start returns an unknown
+outcome with the stable TaskID, and does not acknowledge local-only admission.
+This deduplication lasts within Temporal retention, rather than forever.
+
+The independent TaskWorkflow Worker runs the real Deep Agents loop; its model
+Activity resolves a fixed alias to ChatOpenAI using Worker environment settings.
+HTTP input cannot select a model provider or test fixture. Files, todos and
+messages are Workflow graph state reconstructed through History replay; no
+Memory store or Continue-As-New is enabled by default. Status, results and signed
+event cursors are backed by retained Temporal History. Event pages contain
+History metadata, not a durable token stream. The cursor binds namespace, owner,
+TaskID and RunID and requires the same deployment secret across API replicas.
+
+This path uses no new business SQL ledger, admission database or outbox. The
+separate Temporal service owns execution and History persistence; production
+HA, retention, quotas and capacity remain deployment responsibilities and have
+not been accepted by this iteration's source/config changes. Per-process API
+and Worker bounds are not cluster-wide quotas. Raw Temporal access must be
+restricted to trusted API/Worker processes; HTTP Bearer checks are not Temporal
+service ACLs. The standard Agent Server, offline prototype and original
+Python/Go paths retain their own entry points.
 
 The operator CI job is outside the deployed runtime. Its networked bootstrap
 fetches only the existing fixed public inputs; test containers receive the

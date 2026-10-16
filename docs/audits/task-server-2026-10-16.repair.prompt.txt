@@ -1,0 +1,6 @@
+Edit target: the supplied focused Agent Server architecture diagram. Preserve its composition, all 5 layers, colors, orange iteration highlights, Chinese explanations, boundaries, and typography. Make only these precise corrections:
+1. EVERY HTTP route must include /v1. Change all "POST /tasks" (top client arrow and both API A/B boxes) to "POST /v1/tasks". Change bottom routes to exactly "GET /v1/tasks/{id}", "GET /v1/tasks/{id}/result", "POST /v1/tasks/{id}/cancel", "GET /v1/tasks/{id}/events". Ensure none remain as /tasks without /v1. Expand boxes or reduce route font slightly if needed, keep readable.
+2. Right callout ② use "同 owner + Idempotency-Key + 相同内容复用；内容冲突返回 409。" so dedupe is clearly owner scoped.
+3. At right of layer 4 the label must be "Activity 结果写入 History" and small line "模型密钥留在 Worker 环境". Do not claim arbitrary History payload can never contain credentials.
+4. The return connector at right of layer 4 is unidirectional from model Activity result BACK UP into the blue Temporal service, with its only arrowhead pointing into Temporal. Remove the arrowhead pointing into the ChatOpenAI/OpenAI box. Existing forward arrow 模型 Activity → ChatOpenAI / OpenAI remains.
+Nothing else changes.

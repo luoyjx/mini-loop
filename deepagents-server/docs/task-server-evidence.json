@@ -1,0 +1,275 @@
+{
+  "run_id": "792fc91351654e1ba8ff5f3b7fa35c32",
+  "status": "passed",
+  "started_at": "2026-10-16T05:38:35.897549+00:00",
+  "finished_at": "2026-10-16T05:39:08.345094+00:00",
+  "seconds": 32.45,
+  "passed": [
+    "two independent HTTP replicas race one owner/idempotency key: HTTP 202 responses identify exactly one native Temporal Workflow",
+    "changed payload under the same retained key returns 409; foreign owner read/result/events/cancel return 404",
+    "detached producers exit after HTTP 202; two different Tasks execute real Deep Agents planning/file/model steps concurrently on independent Worker PIDs",
+    "all HTTP API processes SIGKILL/restart: accepted Task IDs, active Run IDs, and asynchronous result handles survive without application-local durable state",
+    "signed durable lifecycle-event cursor continues across API replacement and another replica, with contiguous descending Temporal event IDs through event 1",
+    "Temporal and both Workers SIGKILL/restart on the same history database: live API replicas reconnect and new Worker PIDs retry both Tasks under their original Run identities",
+    "after API replacement, owner cancellation terminates only its selected Task; another detached Task preserves its full original message prefix/file metadata/plan content, completes its todos, and reuses retained-history duplicate submission",
+    "test-only endless real model/tool loop exhausts the 128-step graph bound: HTTP failed/ready result and native nonretryable task_step_limit failure, without repeated WorkflowTaskFailed"
+  ],
+  "scope": "private local Temporal plus two real HTTP APIs and deterministic-model Deep Agents Workers",
+  "excluded_claims": [
+    "production cluster HA",
+    "real provider inference",
+    "permanent idempotency",
+    "external-tool exactly-once",
+    "token streaming replay"
+  ],
+  "cleanup_confirmed": true,
+  "production_ha_acceptance": false,
+  "rss_budget_mib": 2048,
+  "minimum_memory_free_percent": 15,
+  "peak_owned_tree_rss_mib": 780.0,
+  "minimum_observed_memory_free_percent": 44,
+  "resource_samples": 61,
+  "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+  "supplied_checksum_verified": true,
+  "authority": "Temporal Workflow History only",
+  "idempotency_scope": "retained Temporal Workflow history; no permanent or cross-retention guarantee",
+  "cross_replica_race": {
+    "response_task_ids": [
+      "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96",
+      "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96"
+    ],
+    "reused": [
+      false,
+      true
+    ],
+    "native_temporal_workflow_count": 1
+  },
+  "accepted_run_ids": {
+    "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96": "01a14338-2a6f-789f-97b6-977dbccefca5",
+    "task-1d5f8ad2a7fb3ff4bd65f586cf7fb20e6aaf123ac789000cea58da211f543936": "01a14338-2ba5-77a1-8ace-3e6fe66feb4f"
+  },
+  "event_pagination": {
+    "first_page_ids": [
+      25,
+      24
+    ],
+    "cursor_sha256": "078fe6eaa0bf5de12082ac0f539de6bf5ecde902ee68e5282ce67fb08e4e9398",
+    "page_count": 13,
+    "all_event_ids": [
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "oldest_type": "workflow_execution_started"
+  },
+  "api_restart": {
+    "old_pids": [
+      57067,
+      57068
+    ],
+    "new_pids": [
+      57152,
+      57153
+    ]
+  },
+  "temporal_restart": {
+    "old_server_pid": 57063,
+    "new_server_pid": 57161,
+    "cold_worker_markers": [
+      {
+        "activity_id": "4",
+        "attempt": 2,
+        "pid": 57162,
+        "run_id": "01a14338-2a6f-789f-97b6-977dbccefca5",
+        "workflow_id": "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96"
+      },
+      {
+        "activity_id": "4",
+        "attempt": 2,
+        "pid": 57163,
+        "run_id": "01a14338-2ba5-77a1-8ace-3e6fe66feb4f",
+        "workflow_id": "task-1d5f8ad2a7fb3ff4bd65f586cf7fb20e6aaf123ac789000cea58da211f543936"
+      }
+    ],
+    "preserved_run_ids": {
+      "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96": "01a14338-2a6f-789f-97b6-977dbccefca5",
+      "task-1d5f8ad2a7fb3ff4bd65f586cf7fb20e6aaf123ac789000cea58da211f543936": "01a14338-2ba5-77a1-8ace-3e6fe66feb4f"
+    }
+  },
+  "cancelled_task": {
+    "task_id": "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96",
+    "run_id": "01a14338-2a6f-789f-97b6-977dbccefca5",
+    "status": "cancelled",
+    "version": "task-v1"
+  },
+  "observed_activity_types": [
+    "deepagents.invoke_model"
+  ],
+  "step_limit_failure": {
+    "task_id": "task-6803e746078f9198134b90de46a2b2e1384281969f76fc215edf55bddc59fcfe",
+    "run_id": "01a14338-52ac-78e9-8e24-b6d1feba250b",
+    "configured_graph_step_limit": 128,
+    "http_status": "failed",
+    "http_ready": true,
+    "failure_type": "task_step_limit",
+    "non_retryable": true,
+    "model_activities_scheduled": 43,
+    "activities_completed": 43,
+    "workflow_task_failed_count": 0
+  },
+  "receipt_sha256": "2c6f0225f342c3224e5ce18ed41fae91ee55cc89e1e334c855484a0c1a2b2da4",
+  "versions": {
+    "deepagents": "0.7.25",
+    "temporalio": "1.34.0",
+    "temporal_cli": "1.9.1",
+    "temporal_server": "1.32.0",
+    "workflow_code": "task-v1",
+    "snapshot_schema": 1
+  },
+  "baseline_commit": "1fd010d0aaf0db8d0c1150c6ac7fa4ea2dfee7b1",
+  "evidence_boundary": "Sanitized local multi-process fault evidence, not production HA, capacity, real-provider or external side-effect acceptance. Full snapshots/logs remain in ignored var/.",
+  "processes": [
+    {
+      "name": "temporal-1",
+      "pid": 57063,
+      "returncode": -9
+    },
+    {
+      "name": "worker-a",
+      "pid": 57065,
+      "returncode": -9
+    },
+    {
+      "name": "worker-b",
+      "pid": 57066,
+      "returncode": -9
+    },
+    {
+      "name": "api-a",
+      "pid": 57067,
+      "returncode": -9
+    },
+    {
+      "name": "api-b",
+      "pid": 57068,
+      "returncode": -9
+    },
+    {
+      "name": "producer-ee15c1adad4a",
+      "pid": 57071,
+      "returncode": 0
+    },
+    {
+      "name": "producer-59094088517d",
+      "pid": 57072,
+      "returncode": 0
+    },
+    {
+      "name": "producer-e2e6dada2889",
+      "pid": 57073,
+      "returncode": 0
+    },
+    {
+      "name": "producer-2e8251c3c56a",
+      "pid": 57075,
+      "returncode": 0
+    },
+    {
+      "name": "api-c",
+      "pid": 57152,
+      "returncode": -15
+    },
+    {
+      "name": "api-d",
+      "pid": 57153,
+      "returncode": -15
+    },
+    {
+      "name": "temporal-2",
+      "pid": 57161,
+      "returncode": -9
+    },
+    {
+      "name": "worker-c",
+      "pid": 57162,
+      "returncode": -15
+    },
+    {
+      "name": "worker-d",
+      "pid": 57163,
+      "returncode": -15
+    },
+    {
+      "name": "producer-9a985bb58146",
+      "pid": 57205,
+      "returncode": 0
+    },
+    {
+      "name": "producer-c35c20c94fae",
+      "pid": 57206,
+      "returncode": 0
+    }
+  ],
+  "completed_result": {
+    "task_id": "task-1d5f8ad2a7fb3ff4bd65f586cf7fb20e6aaf123ac789000cea58da211f543936",
+    "run_id": "01a14338-2ba5-77a1-8ace-3e6fe66feb4f",
+    "status": "succeeded",
+    "version": "task-v1",
+    "ready": true,
+    "snapshot_sha256": "2273929042b594bc65fa27251c8d284c0c3b391228601f4dffb12ebb6919ba69",
+    "snapshot_keys": [
+      "files",
+      "identity",
+      "messages",
+      "schema_version",
+      "status",
+      "todos",
+      "version"
+    ],
+    "message_count": 10,
+    "files": [
+      "/plan.md"
+    ],
+    "todo_count": 1
+  },
+  "initial_snapshot_sha256": {
+    "task-913ff17429e7467c55aeb4be509b0786d65c88d99f18946cc06cbd121a833a96": "8ee08f56682fe74b13ec94d894c1592dc3b49e3e831aadd4923d461c1a714ea2",
+    "task-1d5f8ad2a7fb3ff4bd65f586cf7fb20e6aaf123ac789000cea58da211f543936": "a0b7f8b109e21104588262b12041405b6396e00a9d316812cdfa9d7a4d14148c"
+  },
+  "tested_source_sha256": {
+    "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+    "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "377431953043a70f52250ea5d44fe06c79c3b80aa5855041d3c15f484e82165e",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+    "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "811723c665fcf430e1c7fea7ea89e47c6b61a5458281c804026cb7b3e5e3c6f1",
+    "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "43de716529e07f07d189d16477d4358d2d95fa9c3b6fcc940a40dd42fa045962",
+    "deepagents-server/scripts/task_server_fault_smoke.py": "311c8d5f412e0d6bcc7223126de66aa0dd0321f5d0ab02193c93594934f45a60",
+    "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+    "deepagents-server/tests/task_worker_fixture.py": "95f27f464636f0f19f0b9cab9c6ff2d3c9c279f99540c9df7b80500b678c96c9",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+    "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+    "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+    "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+  }
+}
