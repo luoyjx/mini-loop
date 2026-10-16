@@ -19,13 +19,17 @@ Task HTTP owner 校验和 Temporal 原生认证/namespace ACL 分开；证书启
 轮换需要重建 Client。测试 mTLS 隧道只验证 SDK 到隧道的传输边界，不能等同于
 Temporal 服务原生 TLS、Cloud ACL、跨主机 HA 或容量验收。
 
-本轮以 `06a93d4` 为审查基线，增加独立 Task 应用镜像、同进程角色 launcher、按角色
+`08b4333` 已交付独立 Task 应用镜像、同进程角色 launcher、按角色
 挂载的 Secret 与 API namespace readiness。用户批准的 Python 3.12.15 slim 镜像固定
 摘要，Python 依赖继续使用现有锁文件；部署 profile 连接已有 Temporal，不新增
 数据库/调度器或基础服务镜像。容器制品与运行证据见 [部署记录](../deepagents-server/TASK_DEPLOYMENT.md)。
 readiness 只验证有界 namespace 读取，不能代表 Start 权限、Worker/provider 可用或 HA。
 
-更完整的业务 Task 控制面仍是目标：永久接受台账、跨实例配额、业务状态投影、版本路由、外部副作用 fencing 和生产 HA/容量尚未完成。标准 LangGraph Agent Server 的 PostgreSQL/Redis 恢复验收也保持未完成。本文保留这些长期要求，同时区分已实现的直接 Temporal 路径与未来按业务需求引入的数据库层，避免把全部目标组件强制叠加成两个竞争的调度系统。
+本轮以 `08b4333` 为审查基线，仅组合验证多任务运行/排队与全栈冷重启，不改变
+生产 runtime、依赖或镜像。用户目标与可核对证据见 [验收矩阵](../deepagents-server/docs/TASK_ACCEPTANCE.md)；
+本报告后续 Phase C/D 的可选业务能力不自动成为用户逐项要求的交付范围。
+
+更完整的业务 Task 控制面仍是设计方向：永久接受台账、跨实例配额、业务状态投影、版本路由、外部副作用 fencing 和生产 HA/容量尚未完成。标准 LangGraph Agent Server 的 PostgreSQL/Redis 恢复验收也保持未完成。本文保留这些长期要求，同时区分已实现的直接 Temporal 路径与未来按业务需求引入的数据库层，避免把全部目标组件强制叠加成两个竞争的调度系统。
 
 审查日期：2026-10-16。本文是目标架构与实施决策依据；“建议”和图中的目标组件均不表示已实现。Agent Server 与原 Python/Go 模块在业务、依赖安装和运行时上独立；既有模块仅提供设计参考，不共享会话管理或调度权威。它补充 [Managed Deep Agents / Agent Server 参考设计](MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md)，当前模块使用方式以 [模块 README](../deepagents-server/README.md) 为准。
 
@@ -417,7 +421,7 @@ step 与 request SHA；不是全程同 attempt，也不是外部模型 exactly-o
 没有验证原生 Temporal 服务 TLS、真实 Cloud ACL、跨机 HA、生产轮换或容量。
 完整回执与局限见 [Task Server](../deepagents-server/TASK_SERVER.md)。
 
-本轮将相同任务协议打包成独立容器：`launch api|worker` 按角色从 Secret 文件读取
+`08b4333` 将相同任务协议打包成独立容器：`launch api|worker` 按角色从 Secret 文件读取
 凭据，随后在同进程进入实际 CLI。基础 Python 镜像固定摘要，wheel 与源码/README/
 元数据逐项核对后进入 allowlist 构建上下文；依赖使用已有锁文件与 hash。API readiness
 读取外部 namespace，1 秒 RPC/缓存与 singleflight 防止探测放大；healthz 不访问后端。
@@ -442,6 +446,25 @@ attempt 1→2 且身份/请求 SHA 相同。完成后重启同 SQLite Temporal�
 未验证生产容量、跨故障域或原生 Temporal TLS。锁中 sdist-only 的既有 forbiddenfruit
 仅以严格源码/元数据/RECORD 审计 wheel 作为显式输入，不执行源构建或新增 Python 包。
 完整 hash、历史失败和资源范围见 [Task 部署](../deepagents-server/TASK_DEPLOYMENT.md)。
+
+`08b4333` 后本轮只新增组合验收，没有更改上述镜像、生产源码、锁或调度能力。
+运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 通过 3 组：6 Task/3 owner、2 API/2 个单
+Activity 槽 Worker。两项运行中任务在父步骤 24/3 CAN 时年龄 45.200/45.097 秒，
+另四项首 Activity 是原生 SCHEDULED；所有 Temporal/API/Worker/observer 冷停后，
+零服务窗口实测 3.189 秒。新服务/observer/API 启动后、新 Worker 启动前任务仍可查，
+同 key 全部复用、四项仍排队；原生 History 证明四项的首 Activity 由新 Worker
+在启动后开始，attempt 1。两项重放任务完整 native 状态和请求 SHA 相同，attempt 1→2。
+
+六项均完成 37 个父工具步骤、4 CAN/5 Run、2 GP 子图及 2 次跨 Run 原生摘要；
+30 份 History 为 0 WorkflowTaskFailed。276 模型 Activity/278 尝试，仅两次故障
+重试。接受至观察终态 63.764–68.624 秒，包含人工 pacing、队列/门控和停机；它
+验证较多步骤的持久恢复组合，不是持续容量、真实 provider 或小时级任务验收。
+93.63 秒运行的所属 RSS+cgroup 观测峰值 912.6 MiB，142 样本，宿主空闲最低 42%、
+VM 可用最低 86.14%，无 OOM，VM PSI 不可用。9 容器、2 Temporal/2 observer 与
+驱动均清理；最后四业务容器使用 SIGKILL/137，不是全部正常排空。
+完整边界见 [按用户目标整理的验收矩阵](../deepagents-server/docs/TASK_ACCEPTANCE.md)
+与 [冷重启证据](../deepagents-server/docs/task-cold-restart-evidence.json)。此单机明文
+SQLite/模拟模型证据不代表生产 HA 或完整 mTLS Compose/真实模型验收。
 
 **阶段 C 仍未全部完成：**永久业务台账、全局 admission/owner 配额、跨后端 adapter、
 自动版本路由与外部工具副作用协议仍无实现。未来引入业务 SQL 时，必须先确定其
@@ -477,7 +500,7 @@ attempt 1→2 且身份/请求 SHA 相同。完成后重启同 SQLite Temporal�
 | Redis 丢失或重启 | 持久任务可重新发现；取消与实时流中断可观察；不依赖丢失的 PubSub 恢复历史 | 生产 PostgreSQL/Redis 路径待验收 |
 | Temporal Client TLS/mTLS 与认证失败 | 错误 CA/名称/客户端证书不能启动；连接恢复不破坏已接受任务 | 真实 SDK→本地 mTLS 隧道的四种拒绝控制、断隧道 503/重连和两 Task 各一次 CAN 已验收；原生服务 TLS/Cloud ACL 仍未验收 |
 | PostgreSQL 重启、主备切换、旧主复活 | 已接受任务符合声明 RPO；连接恢复；旧主不继续接受权威写入 | 未建立数据库 HA 环境与测量 |
-| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 本地相同 Workflow 的三种停机机制和真实容器强杀/重建恢复已通过；生产 launcher 空队列停机另测。未验收编排器滚动发布、跨故障域或不兼容版本路由 |
+| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 本地相同 Workflow 的三种停机机制、容器替换及 6 Task 全栈冷停/全新进程恢复已通过；生产 launcher 空队列停机另测。未验收编排器滚动发布、跨故障域或不兼容版本路由 |
 | 多 owner 与子代理突发、provider 429 | 全局与 owner 配额有效；有界排队、退避和公平性；扩容不放大上游超额 | `401e4d5` 的 12 Task / 3 owner / 3 Worker / 2 API 及真实 API 429 机制实验通过；未实现跨实例 admission，不能替代 provider 429 或容量压测 |
 | 持久审批等待跨重启 | 决策内容、权限与版本保留，重复批准只生效一次，等待释放执行资源 | 当前通用 resume 拒绝 graph interrupt |
 | 相同 task/handle 被另一 owner 使用 | 状态、取消、事件、memory、artifact 均拒绝越权 | Task HTTP 状态/结果/取消/事件跨 owner 404 已实测；Memory/Artifact 新接口未实现，Temporal RPC 仍是受信任边界 |

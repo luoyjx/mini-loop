@@ -1,0 +1,341 @@
+{
+  "status": "passed",
+  "baseline_commit": "08b433321a2f977962f908010e0ccf5087218e6b",
+  "module_tests": {
+    "passed": 587,
+    "pytest_duration_seconds": 5.27,
+    "scope": "deepagents-server/tests, Python 3.12 module environment with existing Temporal extra; includes final cold restart harness tests"
+  },
+  "legacy_tests": {
+    "passed": 2256,
+    "skipped": 28,
+    "warnings": 104,
+    "pytest_duration_seconds": 106.0,
+    "scope": "root pytest.ini targets python/tests"
+  },
+  "checks": [
+    {
+      "label": "task-cold-final-module",
+      "exit_code": 0,
+      "duration_seconds": 8.2,
+      "sampled_peak_tree_rss_kib": 190608,
+      "lowest_free_percent": 51,
+      "samples": 4,
+      "resource_blocked": false,
+      "log": "var/deepagents-delivery/task-cold-final-module.log",
+      "resources": "var/deepagents-delivery/task-cold-final-module.resources.jsonl",
+      "summary": "var/deepagents-delivery/task-cold-final-module.summary.json"
+    },
+    {
+      "label": "task-cold-final-legacy",
+      "exit_code": 0,
+      "duration_seconds": 108.08,
+      "sampled_peak_tree_rss_kib": 327312,
+      "lowest_free_percent": 42,
+      "samples": 53,
+      "resource_blocked": false,
+      "log": "var/deepagents-delivery/task-cold-final-legacy.log",
+      "resources": "var/deepagents-delivery/task-cold-final-legacy.resources.jsonl",
+      "summary": "var/deepagents-delivery/task-cold-final-legacy.summary.json"
+    },
+    {
+      "label": "task-cold-final-research",
+      "exit_code": 0,
+      "duration_seconds": 10.2,
+      "sampled_peak_tree_rss_kib": 478976,
+      "lowest_free_percent": 47,
+      "samples": 5,
+      "resource_blocked": false,
+      "log": "var/deepagents-delivery/task-cold-final-research.log",
+      "resources": "var/deepagents-delivery/task-cold-final-research.resources.jsonl",
+      "summary": "var/deepagents-delivery/task-cold-final-research.summary.json"
+    }
+  ],
+  "all_checks_serial": true,
+  "budget_per_check": {
+    "tree_rss_kib": 1572864,
+    "timeout_seconds": 300,
+    "memory_free_floor_percent": 15,
+    "nice": 10,
+    "sample_interval_seconds": 2,
+    "memory_pressure_interval_seconds": 10
+  },
+  "rss_note": "Reported peaks are process-tree samples, not hard memory caps.",
+  "source_freeze_files_checked": 38,
+  "source_freeze_file": "var/deepagents-delivery/task-cold-final-source-freeze.json",
+  "production_identity_receipt": "var/deepagents-delivery/task-cold-final-production-identity.receipt.json",
+  "production_files_byte_identical_to_baseline": 31,
+  "package_source_files_count": 24,
+  "new_test_and_harness_files": {
+    "deepagents-server/scripts/task_cold_restart_smoke.py": "4759806072d6c7628a5d3c78a7c5add12cc2adba1ad539447fc899b0541c22dc",
+    "deepagents-server/tests/task_cold_observer.py": "65d190afb58a9dc747ba9679e4560e8e11056e5159ba570b143df2995a19efd7",
+    "deepagents-server/tests/task_cold_worker_fixture.py": "48b0a751c26db18dd298faf954954f73c6f72e80ae76dc0c5e5cbbb0e4bc652c",
+    "deepagents-server/tests/test_task_cold_restart.py": "557b3e6c4195e7432482b7b5057870bf209efddedf9110bb376a83b1843be6b7"
+  },
+  "frozen_documents": {
+    "README.md": "1b510335eb7ffe6d969796d8633e666756a22aef450206dccc34e897abba9e08",
+    "deepagents-server/README.md": "a21659f53a65b76c53706c8d3c6fbfd003497eca4846aab8aad22a4f00b6c6bf",
+    "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md": "022bf8557dc8205767861d280eea0771d4d3b1d4c42de63b579382f1b23a79ce"
+  },
+  "research_receipt": "var/deepagents-delivery/task-cold-final-research.receipt.json",
+  "research_only_changed_source_records": [
+    "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md"
+  ],
+  "owned_process_cleanup": {
+    "observed_owned_pids": 40,
+    "remaining_observed_pids": []
+  },
+  "skipped_checks": {
+    "wheel_and_lock": "Production package source and dependency files are byte-identical to baseline; no build or lock check repeated.",
+    "invariants": "No Python production package modules changed.",
+    "docker_build_and_fault_services": "Existing image and separately recorded cold restart fault receipt reused; no service started by final validation.",
+    "go_scanners_guards": "No related implementation or targets changed."
+  },
+  "image_metadata_boundary": "Current README edits postdate the reused image build; current README metadata is not claimed to be present in that image.",
+  "no_dependency_install": true,
+  "tracked_writes_only_research_generator": true,
+  "private_receipt": {
+    "file": "var/deepagents-delivery/task-cold-final-validation.receipt.json",
+    "sha256": "583a0ee61fed9ba92bf191e9045675f953d5c16c792bd5e05936654292b218b8"
+  },
+  "source_sha256": {
+    "deepagents-server/.dockerignore": "7710053405d2e8163254350b9e3821e2e24ff1a1c7dd96d4994ac7e12195edd5",
+    "deepagents-server/Dockerfile": "acc5eada20aab28007486e4ef185f583d669cb8a48d50513d0d4496e93886174",
+    "deepagents-server/Dockerfile.task": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+    "deepagents-server/compose.task.yaml": "165038d7796901a6da0075b4fe153582664f7687f312add56062d302b493d1b7",
+    "deepagents-server/compose.yaml": "89783a9698b2b330c0e13be31b74887a543004308addf7f668de53c1da080552",
+    "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+    "deepagents-server/src/mini_loop_deepagents/__init__.py": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+    "deepagents-server/src/mini_loop_deepagents/auth.py": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+    "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+    "deepagents-server/src/mini_loop_deepagents/graph.py": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+    "deepagents-server/src/mini_loop_deepagents/instructions.md": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+    "deepagents-server/src/mini_loop_deepagents/jobs.py": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+    "deepagents-server/src/mini_loop_deepagents/task_contracts.py": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+    "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+    "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "a6dad0fbb9d087dce96cea96474ab9766c16d31a95a0da3eb8f71ab8bbffe471",
+    "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+    "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+    "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+    "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+    "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "05a4eb8f89c302618cc66f5dc4189cbe9f8740263b99349a5ce4978bdfd79622",
+    "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+    "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+    "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+    "deepagents-server/scripts/task_cold_restart_smoke.py": "4759806072d6c7628a5d3c78a7c5add12cc2adba1ad539447fc899b0541c22dc",
+    "deepagents-server/tests/task_cold_observer.py": "65d190afb58a9dc747ba9679e4560e8e11056e5159ba570b143df2995a19efd7",
+    "deepagents-server/tests/task_cold_worker_fixture.py": "48b0a751c26db18dd298faf954954f73c6f72e80ae76dc0c5e5cbbb0e4bc652c",
+    "deepagents-server/tests/test_task_cold_restart.py": "557b3e6c4195e7432482b7b5057870bf209efddedf9110bb376a83b1843be6b7",
+    "README.md": "1b510335eb7ffe6d969796d8633e666756a22aef450206dccc34e897abba9e08",
+    "deepagents-server/README.md": "a21659f53a65b76c53706c8d3c6fbfd003497eca4846aab8aad22a4f00b6c6bf",
+    "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md": "022bf8557dc8205767861d280eea0771d4d3b1d4c42de63b579382f1b23a79ce"
+  },
+  "production_identity": {
+    "status": "passed",
+    "baseline_commit": "08b433321a2f977962f908010e0ccf5087218e6b",
+    "production_files_count": 31,
+    "package_source_files_count": 24,
+    "all_production_files_byte_identical_to_baseline": true,
+    "files": {
+      "deepagents-server/.dockerignore": {
+        "sha256": "7710053405d2e8163254350b9e3821e2e24ff1a1c7dd96d4994ac7e12195edd5",
+        "bytes": 84,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/Dockerfile": {
+        "sha256": "acc5eada20aab28007486e4ef185f583d669cb8a48d50513d0d4496e93886174",
+        "bytes": 1824,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/Dockerfile.task": {
+        "sha256": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+        "bytes": 1635,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/compose.task.yaml": {
+        "sha256": "165038d7796901a6da0075b4fe153582664f7687f312add56062d302b493d1b7",
+        "bytes": 4320,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/compose.yaml": {
+        "sha256": "89783a9698b2b330c0e13be31b74887a543004308addf7f668de53c1da080552",
+        "bytes": 2818,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/pyproject.toml": {
+        "sha256": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+        "bytes": 746,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/__init__.py": {
+        "sha256": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+        "bytes": 73,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/auth.py": {
+        "sha256": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+        "bytes": 5094,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/config.py": {
+        "sha256": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+        "bytes": 2853,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/graph.py": {
+        "sha256": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+        "bytes": 2502,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/instructions.md": {
+        "sha256": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+        "bytes": 917,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/jobs.py": {
+        "sha256": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+        "bytes": 14604,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_contracts.py": {
+        "sha256": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+        "bytes": 9987,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": {
+        "sha256": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+        "bytes": 151,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/api.py": {
+        "sha256": "a6dad0fbb9d087dce96cea96474ab9766c16d31a95a0da3eb8f71ab8bbffe471",
+        "bytes": 12203,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": {
+        "sha256": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+        "bytes": 9636,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": {
+        "sha256": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+        "bytes": 8814,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": {
+        "sha256": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+        "bytes": 3349,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": {
+        "sha256": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+        "bytes": 5721,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": {
+        "sha256": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+        "bytes": 5757,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": {
+        "sha256": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+        "bytes": 10608,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/service.py": {
+        "sha256": "05a4eb8f89c302618cc66f5dc4189cbe9f8740263b99349a5ce4978bdfd79622",
+        "bytes": 24302,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": {
+        "sha256": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+        "bytes": 5323,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": {
+        "sha256": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+        "bytes": 9089,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": {
+        "sha256": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+        "bytes": 283,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": {
+        "sha256": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+        "bytes": 10677,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": {
+        "sha256": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+        "bytes": 3673,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": {
+        "sha256": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+        "bytes": 3548,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": {
+        "sha256": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+        "bytes": 2009,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": {
+        "sha256": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+        "bytes": 13339,
+        "byte_identical_to_baseline": true
+      },
+      "deepagents-server/uv.lock": {
+        "sha256": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+        "bytes": 472159,
+        "byte_identical_to_baseline": true
+      }
+    },
+    "new_test_and_harness_files": {
+      "deepagents-server/scripts/task_cold_restart_smoke.py": "4759806072d6c7628a5d3c78a7c5add12cc2adba1ad539447fc899b0541c22dc",
+      "deepagents-server/tests/task_cold_observer.py": "65d190afb58a9dc747ba9679e4560e8e11056e5159ba570b143df2995a19efd7",
+      "deepagents-server/tests/task_cold_worker_fixture.py": "48b0a751c26db18dd298faf954954f73c6f72e80ae76dc0c5e5cbbb0e4bc652c",
+      "deepagents-server/tests/test_task_cold_restart.py": "557b3e6c4195e7432482b7b5057870bf209efddedf9110bb376a83b1843be6b7"
+    },
+    "frozen_documents": {
+      "README.md": "1b510335eb7ffe6d969796d8633e666756a22aef450206dccc34e897abba9e08",
+      "deepagents-server/README.md": "a21659f53a65b76c53706c8d3c6fbfd003497eca4846aab8aad22a4f00b6c6bf",
+      "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md": "022bf8557dc8205767861d280eea0771d4d3b1d4c42de63b579382f1b23a79ce"
+    }
+  },
+  "architecture": {
+    "docs/mini-loop-system.architecture.json": "78a5f120f829378b38417639c04a9ed213ff2675dc96f81083648f5579778052",
+    "docs/mini-loop-system.architecture.html": "08daea75ce0cff46aec47c0c7a25395aefba06aca5b5e2744c9859bf9d58ec41"
+  },
+  "documentation": {
+    "status": "passed",
+    "documents": [
+      "README.md",
+      "deepagents-server/README.md",
+      "deepagents-server/ARCHITECTURE.md",
+      "deepagents-server/TASK_SERVER.md",
+      "deepagents-server/TASK_DEPLOYMENT.md",
+      "deepagents-server/docs/TASK_ACCEPTANCE.md",
+      "deepagents-server/DELIVERY.md",
+      "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md"
+    ],
+    "local_links": 238,
+    "fences_balanced": true,
+    "tested_source_hashes_match": true,
+    "container_and_diagram_hashes_match": true,
+    "generated_reports_changed": [
+      "agent-server-durable-execution-design"
+    ],
+    "receipt_sha256": "75eaaa6dfc8babe53a595f1efdcf36309c12ffdcd6e907ab72685b5b3e344ac2"
+  }
+}

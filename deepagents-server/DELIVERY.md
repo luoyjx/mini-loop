@@ -1,12 +1,61 @@
 # Deep Agents Server delivery — 2026-10-16
 
-当前迭代以已推送的 `06a93d4` 为基线，交付独立 Task API / Worker 的固定镜像、
-角色启动器、外部 Temporal Compose 配置和 API 就绪探针。真实 Linux 容器验收发现
-空闲事件循环未被 SIGTERM 唤醒；本轮修复并重新构建、重跑验证。原 Python/Go 业务、
-Workflow/CAN、重试和停机预算保持原合同。新增基础镜像已经用户明确批准，Python
-依赖及锁文件不变。部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
+当前迭代以已推送的 `08b4333` 为基线，补齐运行任务与排队任务共同经历全栈冷停的
+组合验收。复用已验证的固定镜像，生产源码、依赖及部署配置没有变化；新增独立的
+故障驱动、观察进程、模拟模型 fixture 和验收测试。需求对应关系见
+[TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
 
-## 独立 Task 容器与 Linux 停机迭代
+## 六任务全栈冷停与冷启动验收
+
+运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 的 **3 组通过**。两 API、两单 Activity 槽
+Worker 接受 6 Task/3 owner。前两项在第 24 个父工具步骤、3 次 CAN 后停在模型门控点，
+年龄分别为 45.200/45.097 秒；另四项首 Activity 被原生 Describe 确认为 SCHEDULED，
+没有模型执行。随后强杀 Temporal，实测 readyz=503、healthz=200，再终止全部旧
+API/Worker 和提交/观察进程。
+
+四旧业务容器与旧 Temporal/observer **全部不存活 3.189 秒**。保留原 SQLite 目录，
+创建全新的 Temporal、API、observer；新 Worker 启动前，六项任务仍可查询、同 key
+全部复用，四项仍为 SCHEDULED。新 Worker 随后恢复执行：原生 History 证明四排队项
+的首次 ActivityStarted 属于新 Worker、attempt 1；两项中断调用以原 Run/Activity
+及相同请求 SHA 重试为 attempt 2，完整 native snapshot 相等。
+
+六项最终各完成 **37 个父工具步骤、4 次 CAN/5 Run、2 个真实 GP 子图与2次原生摘要**。
+30 份 History 为零 WorkflowTaskFailed，24 对相邻 Run 的完整 continuation 输入
+摘要相等。276 个模型 Activity、278 次尝试，只有上述两次重试；TaskID、首 Run、
+owner、旧事件游标和最终文件/计划状态保持。任务接受至终态观测为 63.764–68.624 秒，
+包含模拟模型 pacing、排队、门控和停机；没有把它当作真实 provider 延迟或小时级容量。
+
+完整实跑 93.63 秒、142 个采样点，所属 RSS+cgroup 峰值 912.6 MiB，宿主最低空闲
+42%、VM 最低可用 86.14%，无 OOM；VM memory PSI 不可用。九个所属容器、新旧两
+Temporal 和两 observer 及驱动全部已退出/移除。最终四业务容器使用 SIGKILL/137
+清理，正常 drain 的证据仍是上一轮独立默认入口测试。十个测试凭据片段在30份
+History及13份日志中无命中，只覆盖这些实际测试值。
+
+公开原始观测摘要：[task-cold-restart-evidence.json](docs/task-cold-restart-evidence.json)。
+私有原回执 SHA-256 为 `70ffca86c8b8b259e1b03d00c61332caf2776a0ed5d6b6dbe3c799e9d497e38f`，
+源码、快照、History 与资源证据均保存摘要。观察进程通过有限的私有 mailbox 与驱动
+通信；冷启重新创建 SDK/HTTP Client，没有保留旧观察连接作为恢复条件。
+
+| 最终 Gate | 结果 | 范围与资源 |
+| --- | --- | --- |
+| 模块 pytest | **587 passed in 5.27s** | wrapper 8.20 秒；采样峰值 186.1 MiB；最低 memory-free 51% |
+| 原 Python pytest | **2256 passed, 28 skipped, 104 warnings**，106.00 秒 | wrapper 108.08 秒；采样峰值 319.6 MiB；最低 memory-free 42% |
+| 生产基线与源码冻结 | **31 个生产文件**逐字节等于 `08b4333`；38 个回归冻结文件一致 | 含24个包源码文件、锁/配置；新4个验收源码及最终README/报告有单独摘要 |
+| Archify | **9/9**，零错误/警告 | 65组件、87连线、8边界不变；只更新证据说明；明暗静态目检通过 |
+| Research Atlas | **21 篇，5/5** | wrapper 10.20 秒；采样峰值 467.8 MiB；最低 memory-free 47%；仅目标报告 record 改变 |
+| Markdown / 制品摘要 | **238 个本地引用**、fence、README outline、`git diff --check` 通过 | 38个回归冻结文件、41个故障证据源码和图片/提示词摘要一致 |
+
+三项最终执行 gate 串行、`nice -n 10`，1.5 GiB/300 秒/free 15%预算；实跑故障使用
+2 GiB/180 秒预算，无超限中止。因生产包、依赖、Docker/Compose 均未更改，本轮没有
+重复 wheel/lock/invariants 或重建镜像；也未改 Go/scanner/旧 mutation anchors，相关
+gate未重跑。当前README晚于镜像构建元数据，不声称已进入旧镜像。门禁收据见
+[task-cold-restart-validation.json](docs/task-cold-restart-validation.json)。
+
+本轮验证真实 Deep Agents/Temporal 控制流与持久恢复，模型输出使用确定性 fixture。
+本机 plaintext SQLite dev 服务、有限规模与相同版本重启的证据，不扩展为生产 HA、
+真实模型调用、任意版本迁移或持续吞吐 SLO。生产环境与负载目标未给定，这些边界保留。
+
+## 独立 Task 容器与 Linux 停机历史验证（08b4333）
 
 API 与 Worker 共用一份镜像，通过 `task_server.launch api|worker` 同进程启动，分别
 读取各自允许的 Secret 文件。Compose 设置非 root UID 10001、只读根、有限 `/tmp`、
@@ -324,8 +373,8 @@ scan 或 mutation gate。认证参数策略由新模块测试和真实 HTTP 故�
 
 - 规范：[README Mermaid](../README.md#architecture)；模块展开：[分层说明](ARCHITECTURE.md)。
 - Archify source：[architecture JSON](../docs/mini-loop-system.architecture.json)；generated [interactive HTML](../docs/mini-loop-system.architecture.html)。
-  当前容器迭代 Spec SHA-256 `ef5fd594da18617d09151dd31ccc14901ebfcf09125d82539cfd14d15159154c`；
-  HTML SHA-256 `2166d2a8c5d60482d9f70ef6672cc927cd559850c99a9c4c906ced06203ef69b`。
+  当前冷停验收迭代 Spec SHA-256 `78a5f120f829378b38417639c04a9ed213ff2675dc96f81083648f5579778052`；
+  HTML SHA-256 `08daea75ce0cff46aec47c0c7a25395aefba06aca5b5e2744c9859bf9d58ec41`。
 - 完整 base：[PNG](../docs/mini-loop-layered-architecture.png) 与 [exact prompt](../docs/mini-loop-layered-architecture.prompt.txt)。
 - 初始模块历史标注（6328007）：[PNG](../docs/audits/deepagents-server-2026-10-16.png) 与 [exact prompt](../docs/audits/deepagents-server-2026-10-16.prompt.txt)。
 - 标准模块聚焦图（e67e174）：[PNG](docs/agent-server-layered-architecture.png) 与 [exact prompt](docs/agent-server-layered-architecture.prompt.txt)。
@@ -343,11 +392,11 @@ scan 或 mutation gate。认证参数策略由新模块测试和真实 HTTP 故�
   两个未采用的完整 base 草稿提示词也保留：[初稿](../docs/audits/task-server-tls-2026-10-16.base-initial.prompt.txt)、
   [修复尝试](../docs/audits/task-server-tls-2026-10-16.base-repair.prompt.txt)；它们压缩了 CAN / lifecycle 区域，故改为最小文字编辑。
 
-- 本轮容器独立图：[PNG](../docs/audits/task-server-container-2026-10-16.png)、[exact prompt](../docs/audits/task-server-container-2026-10-16.prompt.txt)、[修图 prompt](../docs/audits/task-server-container-2026-10-16.repair.prompt.txt)。
-- 本轮完整 base 修改链：[初始 prompt](../docs/audits/task-server-container-2026-10-16.base.prompt.txt)、[期限措辞修复](../docs/audits/task-server-container-2026-10-16.base-repair.prompt.txt)。
+- 上一轮容器独立图（08b4333）：[PNG](../docs/audits/task-server-container-2026-10-16.png)、[exact prompt](../docs/audits/task-server-container-2026-10-16.prompt.txt)、[修图 prompt](../docs/audits/task-server-container-2026-10-16.repair.prompt.txt)。
+- 上一轮完整 base 修改链：[初始 prompt](../docs/audits/task-server-container-2026-10-16.base.prompt.txt)、[期限措辞修复](../docs/audits/task-server-container-2026-10-16.base-repair.prompt.txt)。
   [产物摘要与目检记录](docs/task-container-diagrams.json) 固定全部最终 PNG 和精确提示词。
 
-本轮 built-in imagegen 在完整 base 中保留旧业务所有分层、CAN 回流与生命周期区域，
+上一轮 built-in imagegen 在完整 base 中保留旧业务所有分层、CAN 回流与生命周期区域，
 增加 Task 容器、角色 Secret、readiness 和 20 秒停止预算；修正初稿将进程期限误写成
 硬杀的文字。独立图橙色表示新增容器入口、凭据挂载、探针、Linux 信号唤醒和本机验收；
 既有 TLS/CAN 保持蓝色。修图移除 API 副本间不存在的连接，并把 readiness 限定为
@@ -356,6 +405,17 @@ namespace 可用。图中明确离线 fixture、默认 Worker 入口和生产未
 Archify HTML 从冻结 JSON 生成，9/9、零错误/警告；两次局部路由修复后明暗整图及
 Task 泳道静态目检通过，56 个非 Task 组件字节未变。浏览器交互未验，本地 SVG 使用
 字体 fallback；回执见 `var/deepagents-delivery/task-container-archify.receipt.json`。
+
+- 本轮冷停独立图：[PNG](../docs/audits/task-server-cold-restart-2026-10-16.png)、[exact prompt](../docs/audits/task-server-cold-restart-2026-10-16.prompt.txt)、
+  [接口与能力措辞修复](../docs/audits/task-server-cold-restart-2026-10-16.repair.prompt.txt)、
+  [请求示例与父工具计数修复](../docs/audits/task-server-cold-restart-2026-10-16.final-repair.prompt.txt)。
+  [产物与精确请求摘要](docs/task-cold-restart-diagrams.json) 保存本轮PNG、完整base和提示词hash。
+
+本轮从完整base与上一轮独立图生成冷停验收图：已有五层全部蓝色，新增组合验收
+路径使用橙色。生产拓扑未变，完整base保持原样；修图移除误加的HTTPS/速率限制，
+校正HTTP header、模型I/O箭头及父工具计数。最终PNG已目检。交互图仅更新说明，
+从JSON重新生成，明暗静态目检通过、无几何调整；浏览器交互未验，SVG使用fallback
+字体。回执为 `var/deepagents-delivery/task-cold-archify.receipt.json`。
 
 ## 未执行和能力边界
 

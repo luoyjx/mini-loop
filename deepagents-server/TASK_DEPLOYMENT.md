@@ -1,18 +1,19 @@
 # 独立 Task API / Worker 容器部署
 
-此部署入口对应 `task_server`，以 `06a93d4` 为审查基线。一个应用镜像通过
+此部署入口对应 `task_server`，由 `08b4333` 交付。一个应用镜像通过
 `launch api` 或 `launch worker` 启动实际 CLI；API 和 Worker 是独立进程与容器，
 共用外部 Temporal 的 namespace、队列和保留历史。它不启动标准 LangGraph Agent
 Server，不共享原 Python/Go 业务，不创建 Temporal、PostgreSQL、Redis 或入口代理。
 
-本轮容器构建和故障运行的实际结果以 [交付记录](DELIVERY.md) 为准。本文中的配置
+本轮复用 `08b4333` 镜像做组合冷重启验收，不重建制品或改变生产 runtime；仓库
+文档晚于镜像内的构建 README。实际结果以 [交付记录](DELIVERY.md) 为准。本文中的配置
 不代表生产 HA、容量、真实模型调用或不兼容版本滚动升级已通过验收。
 
 ## 构建可审查的镜像
 
 新增依赖只有用户批准的 Docker 官方基础镜像：
 `python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258`。
-此摘要固定多平台索引；本轮平台验收仅针对 `linux/arm64`。Python 包继续使用已有
+此摘要固定多平台索引；已有平台验收仅针对 `linux/arm64`。Python 包继续使用已有
 `uv.lock` 的默认依赖与 `temporal` extra，没有增加包或使用浮动安装版本。镜像仍
 包含当前模块的既有依赖闭包，独立入口不等于已经裁减为只含 Temporal 的发行包。
 
@@ -151,7 +152,7 @@ no-new-privileges 和 128 PID 限额。API 默认 0.5 CPU/512 MiB，Worker 1 CPU
 Compose 用 SIGTERM 和 20 秒 stop grace，保留 Worker 默认 2 秒 drain 与 15 秒
 硬退出的时间；不能改成 Docker 默认 10 秒却仍宣称完整执行了 15 秒硬期限。
 Worker 停机不发送 Task cancel，未完成 Activity 的接管仍消耗既有重试预算。
-本轮实际 Linux 容器发现：仅在 Python signal handler 中 `Event.set()` 不能可靠
+`08b4333` 实际 Linux 容器验收发现：仅在 Python signal handler 中 `Event.set()` 不能可靠
 唤醒空闲 selector。修复在保留立即置位的同时用 `loop.call_soon_threadsafe` 唤醒
 事件循环，启动信号竞态和原硬期限语义保持不变。
 
@@ -170,7 +171,11 @@ Temporal Worker Versioning；不兼容 Workflow/graph 升级须先实现版本�
 
 ## 验收证据与尚未覆盖项
 
-本轮最终 `linux/arm64` 应用镜像内容标识为
+要求与证据对应关系见 [Task 验收矩阵](docs/TASK_ACCEPTANCE.md)。本轮复用下述镜像
+完成冷重启组合验收，不改变生产拓扑与代码。以下构建、Linux 修复与两任务容器故障
+保留为 `08b4333` 历史基线，组合验收见本节后半。
+
+`08b4333` 的 `linux/arm64` 应用镜像内容标识为
 `sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f`，
 构建 manifest SHA-256 为
 `118e0aa4e2288259745cc46ed9732d3b550c032e458c862ab9dab7281b2f5b50`。
@@ -180,7 +185,7 @@ Temporal Worker Versioning；不兼容 Workflow/graph 升级须先实现版本�
 仅作软预算观察。镜像中 24 项包源码与输入匹配，99 个 distribution 按锁/基础镜像
 版本核对；这些数量不是运行容量。
 
-完整故障运行 `0c189c0de2614b5c8d4db07c4b4268be` 的 **4 组通过**：
+该提交的历史故障运行 `0c189c0de2614b5c8d4db07c4b4268be` 的 **4 组通过**：
 
 | 实际场景 | 观察结果 |
 | --- | --- |
@@ -214,11 +219,44 @@ LB。耗时 39.57 秒，61 个采样点，宿主所属 RSS 加容器 cgroup 观�
   --binary-sha256 33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b
 ```
 
-原始回执在忽略的 `var/task-container-prototype/<run_id>/receipt.json`，脱敏证据与
-最终门禁见 [DELIVERY.md](DELIVERY.md)。测试为单机 OrbStack、宿主 CLI/SQLite、
-明文受信任连接与离线模型；不证明真实模型网络调用、原生 Temporal TLS/Cloud ACL、
-生产数据库主备切换、跨宿主故障切换、全局 owner 配额、公平性、RPO/RTO 或吞吐 SLO。
+本轮 `task_cold_restart_smoke.py` 运行 `c0a4afaaf20c48e5b65fc51b7e9a7580`
+**3 组通过**：6 Task/3 owner，2 API/2 单 Activity 槽 Worker。两个运行中任务在
+父步骤 24/3 CAN、年龄 45.200/45.097 秒时与四项原生 SCHEDULED 任务一起经历
+全栈冷停。四旧业务容器与 Temporal/observer 全部停止，零服务窗口实测 3.189 秒；
+全新的 observer/服务/业务容器冷启后，在新 Worker 启动前即可查回全部已接受任务，
+四项仍排队，首 Activity 的原生 Started 事件归属于新 Worker 且晚于其启动。
 
-[本轮独立架构图](../docs/audits/task-server-container-2026-10-16.png) 的橙色标记为容器
-入口、角色 Secret、API readiness 与 Linux 信号唤醒修复。完整 Task/CAN 协议见
+六项最终各 37 个父工具步骤、4 CAN/5 Run、2 GP 子图、2 次跨 Run 原生摘要；
+30 份 History 为 0 WorkflowTaskFailed，276 Activity/278 attempts 仅有两个故障重试。
+两项门控任务重放后的完整 native 状态与请求 SHA 相同，同 Task/首 Run、旧 cursor
+及 owner 边界保持。接受至观察终态 63.764–68.624 秒包含人工门控/排队/停机，不能
+用来承诺真实 provider 速度或生产容量。
+
+运行耗时 93.63 秒、142 样本、所属 RSS+cgroup 观测峰值 912.6 MiB，宿主最低空闲
+42%、VM 最低可用内存 86.14%，无 OOM；VM PSI 不可用。9 个容器、2 个 Temporal/
+2 个 observer 和驱动全部清理；末尾四业务容器为 cleanup SIGKILL/137。10 个测试
+凭据片段在 30 History/13 日志中零命中。实验为单机 OrbStack/明文 CLI SQLite 与
+确定性模拟模型，没有替代目标部署 HA、mTLS/Cloud ACL 或真实模型调用验收。
+
+以下复跑命令使用同一个已存在镜像；脚本严格核对固定 image ID、当前生产源码与
+锁，以及本地忽略目录 `var/deepagents-delivery/task-container-wakeup-build-context/manifest.json`
+的既有构建摘要。该 manifest 必须已保留在当前实验环境，不会自动重建/拉取镜像，
+也不会把本轮文档当作旧镜像 README 元数据。此脚本是固定制品的机制验收工具，
+不替代部署命令。
+
+```sh
+.venv/bin/python scripts/task_cold_restart_smoke.py \
+  --image sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f \
+  --temporal-binary "${TEMPORAL_BIN:?set the verified Temporal CLI path}" \
+  --binary-sha256 33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b
+```
+
+新原始回执在忽略的 `var/task-cold-prototype/<run_id>/receipt.json`，脱敏
+[冷重启证据](docs/task-cold-restart-evidence.json) 与 [验收矩阵](docs/TASK_ACCEPTANCE.md)
+保存对应范围。旧原始回执仍在 `var/task-container-prototype/<run_id>/receipt.json`。
+最终门禁与推送记录见 [DELIVERY.md](DELIVERY.md)；同一实验环境的持久 SQLite 文件
+保留，不证明磁盘丢失恢复、数据库主备、跨故障域可用性或 RPO/RTO SLO。
+
+[本轮独立架构图](../docs/audits/task-server-cold-restart-2026-10-16.png) 的橙色标记为本轮组合
+冷重启验收的范围与恢复路径，不表示增加了新的生产组件。完整 Task/CAN 协议见
 [Task Server](TASK_SERVER.md)，规范拓扑以 [根 README](../README.md#architecture) 为准。

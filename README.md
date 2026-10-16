@@ -274,9 +274,9 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-container-2026-10-16.png)
-shows the independent Agent Server layers, with this iteration's Task container
-entry points, separated secrets and API readiness in orange.
+The [focused Task HTTP server diagram](docs/audits/task-server-cold-restart-2026-10-16.png)
+shows the independent Agent Server layers, with this iteration's combined cold
+restart acceptance path for running and queued tasks in orange.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1182,8 +1182,9 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `06a93d4` plus the
-independent Task container deployment iteration. Its independent Bearer API
+Current architecture review baseline: **2026-10-16**, `08b4333` plus the
+multi-task cold restart acceptance iteration. Runtime topology is unchanged.
+Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
 owns task identity, status and events. New TaskWorkflowV2 executions carry a
 bounded native saver journal across Continue-As-New; the Worker also retains
@@ -1194,13 +1195,16 @@ for API and Worker, with role-specific secret files and same-process startup.
 API readiness checks the configured namespace with a bounded, coalesced RPC;
 liveness does not depend on Temporal. The shared TLS settings remain explicit.
 Signal handling explicitly wakes an idle event loop; Worker drain and hard-deadline
-budgets stay unchanged;
-library callers retain process ownership. No owner Memory is
+budgets stay unchanged; library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
 earlier offline fault prototype and Python/Go runtimes keep their own paths.
 Temporal Python SDK **1.34.0**, Deep Agents **0.7.25**, Agent Server **0.16.0**, and CLI
 **0.4.35** remain fixed. New fault acceptance belongs to this iteration's
 separate delivery record; earlier Go review labels retain their original scope.
+The [Task acceptance matrix](deepagents-server/docs/TASK_ACCEPTANCE.md) maps the
+requested behavior to concrete evidence and separates it from production HA and
+capacity targets. This iteration reuses the `08b4333` application image; current
+documentation is newer than that image's packaged README.
 
 <!-- architecture-map:start -->
 ```mermaid

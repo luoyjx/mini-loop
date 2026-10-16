@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [本轮分层图与修改标注](../docs/audits/task-server-container-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-cold-restart-2026-10-16.png)。
 
 ## 已实现与边界
 
@@ -222,6 +222,10 @@ API `/healthz` 只检查进程；`/readyz` 通过有界 DescribeNamespace 检查
 并合并并发探针、缓存一秒；这不证明 Start 授权、可用 Worker 槽或生产 HA。
 已有标准 Agent Server 的 Dockerfile/Compose 保留独立入口；部署、镜像构建和容器故障
 验收的实际范围记录在部署说明及 [DELIVERY](DELIVERY.md) 中。
+
+本轮组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
+后的恢复；生产 API/Worker、Workflow 和持久协议没有变化。当前文档晚于镜像内的
+构建 README，运行镜像和实验范围以 [验收矩阵](docs/TASK_ACCEPTANCE.md) 为准。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

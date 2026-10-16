@@ -7,8 +7,8 @@ History 为单一权威**。此路径没有另建业务 SQL 台账、Outbox 或�
 
 它与标准 LangGraph Agent Server、[离线故障原型](TEMPORAL_PROTOTYPE.md) 以及原
 Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Temporal Python SDK
-`1.34.0`（可选 `temporal` extra）；本轮新增经用户批准的固定 Python 基础镜像，
-没有增加 Python 包。源码和本地故障测试不等于
+`1.34.0`（可选 `temporal` extra）；`08b4333` 已交付经用户批准的固定 Python
+基础镜像。本轮复用该镜像做组合冷重启验收，没有改变生产 runtime 或增加依赖。源码和本地故障测试不等于
 生产高可用、持续容量或真实 provider 的调用验收。
 
 ## 分层与一次任务的生命周期
@@ -36,7 +36,7 @@ key 可能再次创建执行；查询与事件也可能返回 404。调用方必
 
 ## V2 分段续跑与完整状态
 
-V2 已在 `98de8d2` 交付。本轮以 `06a93d4` 为审查基线，保留相同 Workflow 代码；
+V2 已在 `98de8d2` 交付。本轮以 `08b4333` 为审查基线，保留相同 Workflow 代码；
 新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
 为 schema 2。Worker 同时注册原 `TaskWorkflow` / `task-v1`，v1 运行码保持不变。
 部署时先替换为能同时运行两版的 Worker，再切换 API；旧 Worker 无法运行 V2，不能
@@ -355,7 +355,30 @@ Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD
 
 ## 验证与交付证据
 
-本轮容器运行 `0c189c0de2614b5c8d4db07c4b4268be` **4 组通过**。使用最终固定
+从用户目标派生的要求、证据和边界见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。本轮
+组合冷重启运行 `c0a4afaaf20c48e5b65fc51b7e9a7580` 的 **3 组通过**，复用
+`08b4333` 镜像和生产代码。6 Task/3 owner、2 API/2 单 Activity 槽 Worker：两项任务
+在父步骤 24/3 次 CAN 处已运行 45.200/45.097 秒，四项首 Activity 为原生 SCHEDULED。
+强杀所有 Temporal/API/Worker/observer 后，观测到完整零服务窗口 3.189 秒；随后
+全新进程、容器与连接冷启。新 Worker 启动前四项仍 SCHEDULED，原生 History 证明
+其首 Activity 由新 Worker 在启动后开始；六项同 key 均复用原任务。
+
+两项运行中任务保留 Run/Activity/request SHA 与完整 native 状态，attempt 1→2；
+六项最终各 37 个父工具步骤、4 次 CAN/5 Run、2 GP 子图、2 次跨 Run 原生摘要。
+30 份 History 为 0 WorkflowTaskFailed；276 个模型 Activity/278 个尝试，仅两次
+故障重试。接受至观察终态 63.764–68.624 秒，包含 pacing、门控、队列与停机，不是
+真实 provider 吞吐或小时级任务时长验收。旧游标、TaskID/首 Run 与 owner 边界保留。
+
+总耗时 93.63 秒，142 样本，所属 RSS+cgroup 观测峰值 912.6 MiB，最低宿主空闲
+42%、VM 可用内存 86.14%，无 OOM；VM PSI 不可用。9 容器、4 个新旧 Temporal/
+observer 与驱动均清理，最后四业务容器清理使用 SIGKILL/137。10 个测试凭据片段
+扫描 30 History/13 日志零命中。此为单机 plaintext CLI SQLite、离线模型机制验收，
+不是 mTLS/Cloud/数据库 HA、真实 provider 或跨宿主故障验收。
+脱敏 [冷重启证据](docs/task-cold-restart-evidence.json) 与
+[部署记录](TASK_DEPLOYMENT.md) 保存固定制品、复跑命令和完整边界。以下既有运行
+保留原范围与历史身份。
+
+已提交 `08b4333` 的容器历史基线：运行 `0c189c0de2614b5c8d4db07c4b4268be` **4 组通过**。使用最终固定
 arm64 镜像：两 API、两受信任 fixture Worker 容器分别强杀重建后，两项真实 V2
 Task 均完成各 10 个 native 工具步骤和 1 次 CAN；TaskID/首 Run 保持，4 份 History
 为 0 WorkflowTaskFailed。两个门控 Activity attempt 1→2，原生身份、request SHA
@@ -364,7 +387,7 @@ readyz 200→503→200，healthz 始终 200，结果不变。
 
 独立的默认生产 `launch worker` 空队列验收中，SIGTERM 后出现 DRAINING/STOPPED，
 0.914 秒退出 0，没有调用 provider。首轮旧镜像失败揭示 Linux 空闲 selector 未被
-`Event.set()` 唤醒；本轮增加 `call_soon_threadsafe` 唤醒并重新构建，最小 Linux
+`Event.set()` 唤醒；`08b4333` 增加 `call_soon_threadsafe` 唤醒并重新构建，最小 Linux
 无周期 timer 探针 0.318611 秒退出 0，完整容器测试随后通过。失败运行
 `74a3ec4f9711414a8d41b1ad7d463d4c` 保留，不算通过。
 
@@ -496,7 +519,7 @@ RSS、180 秒和最低可用内存比例的观察预算，超限标为 resource-
 双 API 幂等竞争、独立生产者退出、双 Worker 并行、全部 API 替换、同数据库 Temporal
 重启、Worker 冷重放、跨 owner 拒绝、事件续页、取消隔离和真实步骤上限终态。
 
-本轮独立 Agent Server [架构图](../docs/audits/task-server-container-2026-10-16.png) 与
-[精确生图提示词](../docs/audits/task-server-container-2026-10-16.prompt.txt) 标注容器入口、
-角色 Secret、API readiness 与 Linux 信号唤醒；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
+本轮独立 Agent Server [架构图](../docs/audits/task-server-cold-restart-2026-10-16.png) 与
+[精确生图提示词](../docs/audits/task-server-cold-restart-2026-10-16.prompt.txt) 标注组合冷重启验收的故障边界、
+已接受运行/排队任务的恢复路径与对应证据；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
 具体运行证据与提交范围由 [DELIVERY.md](DELIVERY.md) 汇总。

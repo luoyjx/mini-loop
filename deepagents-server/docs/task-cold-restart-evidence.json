@@ -1,0 +1,1319 @@
+{
+  "schema_version": 1,
+  "run_id": "c0a4afaaf20c48e5b65fc51b7e9a7580",
+  "status": "passed",
+  "started_at": "2026-10-16T09:16:15.369878+00:00",
+  "finished_at": "2026-10-16T09:17:48.999126+00:00",
+  "seconds": 93.63,
+  "scope": "Six owner-scoped multi-segment V2 Tasks survive a measured full stop of local Temporal, all API/Worker containers and the submitting/observing process; cold replacements reuse the original SQLite store.",
+  "production_ha_acceptance": false,
+  "production_capacity_acceptance": false,
+  "cross_failure_domain_acceptance": false,
+  "native_temporal_tls_acceptance": false,
+  "real_model_provider_acceptance": false,
+  "excluded_claims": [
+    "Production Temporal or PostgreSQL availability, failover or storage durability guarantees",
+    "Cross-machine or cross-failure-domain recovery",
+    "Real external model/provider availability, side effects or cost",
+    "24-hour execution, throughput, latency or capacity SLO",
+    "A measured maximum of two concurrent Activities over the full run",
+    "Compose orchestration, native Temporal TLS or Cloud ACL acceptance"
+  ],
+  "private_receipt": {
+    "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/receipt.json",
+    "sha256": "70ffca86c8b8b259e1b03d00c61332caf2776a0ed5d6b6dbe3c799e9d497e38f"
+  },
+  "passed": [
+    "two real Tasks reach parent 24 after three CANs with child/summary state; four other owner-scoped Tasks are accepted and remain native SCHEDULED without model execution",
+    "all Temporal/API/Worker/observer processes are absent for at least three seconds; fresh processes and connections recover all accepted tasks, complete snapshots and model request identity",
+    "all six multi-owner Tasks complete 37 native parent tools, two general-purpose subagents, real summaries and four CANs; 30 native Runs have zero WorkflowTaskFailed, queued tasks drain and original identities/cursors remain valid"
+  ],
+  "versions": {
+    "python": "3.12.15",
+    "temporal_cli": "1.9.1",
+    "temporal_dev_server": "1.32.0",
+    "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+    "selected_image_packages": {
+      "mini-loop-deepagents": "0.1.0",
+      "deepagents": "0.7.25",
+      "langchain-core": "1.6.10",
+      "langchain-openai": "1.7.2",
+      "langgraph": "1.2.15",
+      "langgraph-api": "0.16.0",
+      "temporalio": "1.34.0",
+      "forbiddenfruit": "0.1.4"
+    },
+    "installed_package_count": 99
+  },
+  "image": {
+    "id": "sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f",
+    "platform": "linux/arm64",
+    "size_bytes": 441144845,
+    "baseline_commit": "08b4333",
+    "reused_without_rebuild": true,
+    "manifest": {
+      "file": "var/deepagents-delivery/task-container-wakeup-build-context/manifest.json",
+      "sha256": "118e0aa4e2288259745cc46ed9732d3b550c032e458c862ab9dab7281b2f5b50"
+    },
+    "project_wheel": {
+      "file": "var/deepagents-delivery/task-container-wakeup-build-context/wheels/mini_loop_deepagents-0.1.0-py3-none-any.whl",
+      "sha256": "f615c30db7f8b7d41344873dea2c38520a3a5c8e18aac92a4849232e83b6aeb6"
+    },
+    "source_file_count": 24,
+    "all_24_checkout_sources_match_manifest_and_wheel": true,
+    "lock_sha256": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+    "historical_build_readme_sha256": "e363cd71a3ee9c499125ef868d90f5b2794bfdc94ec8de50f492990e903153e1",
+    "readme_boundary": "Current README and acceptance documentation were edited after this image was built; the historical build README hash is provenance, not a claim that current documentation was rebuilt into the image.",
+    "packaging_provenance": {
+      "file": "deepagents-server/docs/task-container-evidence.json",
+      "sha256": "6e9ab09c7ed76a6ba3d7888becab8be17823746e660d4e83650b11b600bc313e"
+    }
+  },
+  "execution_boundary": {
+    "accepted_tasks": 6,
+    "owners": 3,
+    "apis_per_epoch": 2,
+    "workers_per_epoch": 2,
+    "activity_slots_per_worker": 1,
+    "workflow_slots_per_worker": 2,
+    "api_entrypoint": "image default: mini_loop_deepagents.task_server.launch api",
+    "worker_entrypoint": "trusted read-only task_cold_worker_fixture.py calls production load_role_secrets and run_process; image entrypoint override",
+    "fixture_baked_into_image": false,
+    "model_provider": "deterministic simulated model responses; native DeepAgents tools, general-purpose subgraphs and summarization middleware execute",
+    "activity_pacing_seconds": 0.12,
+    "gate_parent_step": 24,
+    "gate_continue_as_new_count": 3,
+    "observed_before_fault": {
+      "inflight_gated_tasks": 2,
+      "distinct_worker_identities": 2,
+      "native_scheduled_tasks": 4,
+      "queued_model_start_markers": 0
+    },
+    "full_run_concurrency_maximum_measured": false,
+    "lead_ages_before_fault_seconds": [
+      45.200386583,
+      45.097184208
+    ],
+    "duration_semantics": "Accepted-to-observed-terminal durations include deliberate pacing, gates, queuing, outage and polling; they are not provider latency or throughput."
+  },
+  "host_loopback_probe": {
+    "container_id": "d1c13116623a6be0c53eb6c8a03e9fda0ef7aa55479940870072a70462980200",
+    "host_bind": "127.0.0.1",
+    "container_target": "host.docker.internal",
+    "nonce_roundtrip": true,
+    "exit_code": 0
+  },
+  "cold_restart": {
+    "timeline_clock": "Host driver monotonic and UTC wall time; no arithmetic mixes host monotonic with Linux container monotonic timestamps.",
+    "timeline": [
+      {
+        "kind": "temporal_spawned",
+        "monotonic_ns": 299042097597750,
+        "wall_time_ns": 1792142176662409000,
+        "name": "temporal-before",
+        "pid": 46823
+      },
+      {
+        "kind": "six_tasks_accepted_and_two_slots_occupied",
+        "monotonic_ns": 299062851746125,
+        "wall_time_ns": 1792142197416512000
+      },
+      {
+        "kind": "temporal_sigkill_during_parent_24",
+        "monotonic_ns": 299091124683916,
+        "wall_time_ns": 1792142225689389000,
+        "pid": 46823,
+        "exit_code": -9
+      },
+      {
+        "kind": "all_old_services_and_observer_stopped",
+        "monotonic_ns": 299092087212916,
+        "wall_time_ns": 1792142226651914000,
+        "observer_pid": 46824
+      },
+      {
+        "kind": "zero_service_window_confirmed",
+        "monotonic_ns": 299095292329208,
+        "wall_time_ns": 1792142229857024000,
+        "seconds": 3.18912525
+      },
+      {
+        "kind": "temporal_spawned",
+        "monotonic_ns": 299095306181833,
+        "wall_time_ns": 1792142229870877000,
+        "name": "temporal-after",
+        "pid": 47026
+      },
+      {
+        "kind": "fresh_apis_observe_all_six_tasks_before_any_new_worker",
+        "monotonic_ns": 299100240212416,
+        "wall_time_ns": 1792142234804898000
+      },
+      {
+        "kind": "new_workers_starting",
+        "monotonic_ns": 299100242300291,
+        "wall_time_ns": 1792142234806984000
+      },
+      {
+        "kind": "lead_tasks_replayed_and_released",
+        "monotonic_ns": 299105856006041,
+        "wall_time_ns": 1792142240420678000
+      },
+      {
+        "kind": "six_tasks_verified_terminal",
+        "monotonic_ns": 299132982305375,
+        "wall_time_ns": 1792142267546918000
+      }
+    ],
+    "dependency_outage": {
+      "readyz": 503,
+      "healthz": 200,
+      "tasks_still_inflight": true,
+      "api_count_checked": 2,
+      "cache_control": "no-store",
+      "readyz_after_cold_reconnect": 200
+    },
+    "zero_service_window": {
+      "sample_count": 16,
+      "first_sample_monotonic_ns": 299092088281708,
+      "last_sample_monotonic_ns": 299095277406958,
+      "seconds": 3.18912525,
+      "old_container_ids": [
+        "33cff71ea2eeef92b951ffffa7442e8c62d1c6cf18df3f3d5b56658ab80566f7",
+        "728e236e8cb69dd5706dfad922b4f0d9dceb6c82105a790f0a85e8f5bd7b0fec",
+        "c63d23013ca37ff2e6559c625d6efa55857f94c81c0b39eda30a272acd619728",
+        "86c5723fddba1b39605137f288e803be253fd55dbd3020de95ca30aabaf6c2a3"
+      ],
+      "old_temporal_and_observer_pids": [
+        46823,
+        46824
+      ],
+      "running_container_count_at_every_sample": 0,
+      "live_old_host_service_count_at_every_sample": 0,
+      "harness_driver_remained_alive_as_external_coordinator": true
+    },
+    "observer_before": {
+      "pid": 46824,
+      "connected_at_monotonic_ns": 299042382934583
+    },
+    "observer_after": {
+      "pid": 47027,
+      "connected_at_monotonic_ns": 299095704059541
+    },
+    "observer_connection_boundary": "The old observer also submitted Tasks and owned its SDK/HTTP clients. It was SIGKILLed before the zero-service interval. A separate new process creates fresh SDK and HTTP clients after Temporal restarts; the driver owns neither client.",
+    "observer_command_counts": {
+      "before": 33,
+      "after": 249
+    },
+    "observer_mailbox_limits": {
+      "maximum_commands_per_epoch": 1024,
+      "request_bytes": 32768,
+      "response_bytes": 4194304,
+      "consumed_command_files_removed": true
+    },
+    "sqlite": {
+      "same_original_directory_and_filename_reused": true,
+      "filename": "temporal.sqlite",
+      "copy_or_reset_performed": false,
+      "files_observed_while_all_services_stopped": [
+        {
+          "name": "temporal.sqlite",
+          "bytes": 2535424,
+          "sha256": "eb66f235d095f3f469722e3b504361fb6fddfbd6fde1b8bdf9fed4a4b1a4b0d4"
+        }
+      ],
+      "hash_boundary": "The stopped database hash is an observed pre-restart value; normal resumed execution changes the live database. No copy is substituted for the original directory."
+    }
+  },
+  "queued_task_evidence": {
+    "before_stop": [
+      {
+        "task_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+        "run_id": "01a143ff-bf60-70ee-9e13-5d91f37f6683",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+        "run_id": "01a143ff-bfd4-76ca-a0c9-5a3cd92fc14a",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+        "run_id": "01a143ff-c02e-7eb9-a253-abe140f17f9f",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+        "run_id": "01a143ff-c0a2-7032-a2e3-1f53fc7fa5de",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      }
+    ],
+    "after_temporal_and_api_restart_before_workers": [
+      {
+        "task_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+        "run_id": "01a143ff-bf60-70ee-9e13-5d91f37f6683",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+        "run_id": "01a143ff-bfd4-76ca-a0c9-5a3cd92fc14a",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+        "run_id": "01a143ff-c02e-7eb9-a253-abe140f17f9f",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      },
+      {
+        "task_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+        "run_id": "01a143ff-c0a2-7032-a2e3-1f53fc7fa5de",
+        "status": "RUNNING",
+        "pending_activities": [
+          {
+            "activity_id": "1",
+            "attempt": 1,
+            "state": "PENDING_ACTIVITY_STATE_SCHEDULED"
+          }
+        ]
+      }
+    ],
+    "native_first_activity_starts": [
+      {
+        "task_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+        "scheduled": {
+          "event_id": 7,
+          "time_ns": 1792142196636712000,
+          "kind": "scheduled",
+          "activity_id": "1",
+          "activity_type": "deepagents.invoke_model"
+        },
+        "started": {
+          "event_id": 8,
+          "time_ns": 1792142238995363000,
+          "kind": "started",
+          "scheduled_event_id": 7,
+          "attempt": 1,
+          "identity": "cold-c0a4afaaf2-worker-3:1"
+        },
+        "clock": "host Temporal UTC event time compared with host driver UTC time"
+      },
+      {
+        "task_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+        "scheduled": {
+          "event_id": 7,
+          "time_ns": 1792142196747398000,
+          "kind": "scheduled",
+          "activity_id": "1",
+          "activity_type": "deepagents.invoke_model"
+        },
+        "started": {
+          "event_id": 8,
+          "time_ns": 1792142238998447000,
+          "kind": "started",
+          "scheduled_event_id": 7,
+          "attempt": 1,
+          "identity": "cold-c0a4afaaf2-worker-4:1"
+        },
+        "clock": "host Temporal UTC event time compared with host driver UTC time"
+      },
+      {
+        "task_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+        "scheduled": {
+          "event_id": 7,
+          "time_ns": 1792142196822406000,
+          "kind": "scheduled",
+          "activity_id": "1",
+          "activity_type": "deepagents.invoke_model"
+        },
+        "started": {
+          "event_id": 8,
+          "time_ns": 1792142239199929000,
+          "kind": "started",
+          "scheduled_event_id": 7,
+          "attempt": 1,
+          "identity": "cold-c0a4afaaf2-worker-3:1"
+        },
+        "clock": "host Temporal UTC event time compared with host driver UTC time"
+      },
+      {
+        "task_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+        "scheduled": {
+          "event_id": 7,
+          "time_ns": 1792142196941771000,
+          "kind": "scheduled",
+          "activity_id": "1",
+          "activity_type": "deepagents.invoke_model"
+        },
+        "started": {
+          "event_id": 8,
+          "time_ns": 1792142239133193000,
+          "kind": "started",
+          "scheduled_event_id": 7,
+          "attempt": 1,
+          "identity": "cold-c0a4afaaf2-worker-4:1"
+        },
+        "clock": "host Temporal UTC event time compared with host driver UTC time"
+      }
+    ],
+    "new_worker_start_wall_time_ns": 1792142234806984000,
+    "all_first_starts_after_new_worker_start": true,
+    "all_first_attempts_equal_one": true,
+    "all_first_start_identities_belong_to_new_workers": true
+  },
+  "identity_and_replay": {
+    "same_key_reused_after_cold_start": true,
+    "same_key_reused_after_completion": true,
+    "distinct_owner_key_pairs": 6,
+    "shared_key_strings_across_owners": 2,
+    "original_first_execution_run_id_preserved_for_all": true,
+    "foreign_owner_result_checks": {
+      "count": 6,
+      "http_status": 404
+    },
+    "old_first_run_cursor_retained": true,
+    "replayed_inflight_activities": [
+      {
+        "task_id": "task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64",
+        "same_native_run_id": "2d8236da-a0b6-424e-9979-bf7e7c7b54c1",
+        "same_activity_id": "1",
+        "request_sha256": "e09795029034af036cb50a7598ac56e8fa32584348b89acfbf0ac97f91aed94e",
+        "before": {
+          "attempt": 1,
+          "worker_identity": "cold-c0a4afaaf2-worker-1:1",
+          "step": 24
+        },
+        "after": {
+          "attempt": 2,
+          "worker_identity": "cold-c0a4afaaf2-worker-4:1",
+          "step": 24
+        },
+        "can_count_at_boundary": 3,
+        "full_native_snapshot_equal": true,
+        "before_snapshot_sha256": "5baa971e7a8a6b2d2d81e886fdf3dceaae2b52e2084545e6d4f10f86f41c3352",
+        "after_snapshot_sha256": "5baa971e7a8a6b2d2d81e886fdf3dceaae2b52e2084545e6d4f10f86f41c3352",
+        "snapshot_pair_file": {
+          "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64.replay.json",
+          "sha256": "616a8d9e005054793961cc4d4ca1405cea704d19e4b1adf9208adbd2e65e0796"
+        }
+      },
+      {
+        "task_id": "task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a",
+        "same_native_run_id": "353d5c77-e0c3-450d-b0cb-2ea3b9a4b61a",
+        "same_activity_id": "1",
+        "request_sha256": "d817821d0aad16a4ee7496b34ebf725bcbb9a05146342c4a10d0dde0f0b2e1b8",
+        "before": {
+          "attempt": 1,
+          "worker_identity": "cold-c0a4afaaf2-worker-2:1",
+          "step": 24
+        },
+        "after": {
+          "attempt": 2,
+          "worker_identity": "cold-c0a4afaaf2-worker-3:1",
+          "step": 24
+        },
+        "can_count_at_boundary": 3,
+        "full_native_snapshot_equal": true,
+        "before_snapshot_sha256": "e4793220c0471d8dcf7ff221d142d7126d66af8be9e3c3828dcb3a802bdba030",
+        "after_snapshot_sha256": "e4793220c0471d8dcf7ff221d142d7126d66af8be9e3c3828dcb3a802bdba030",
+        "snapshot_pair_file": {
+          "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a.replay.json",
+          "sha256": "9d99c1de9b050409978c1069d64482441062b1f7837acbeb59e1a7f88d6dad17"
+        }
+      }
+    ]
+  },
+  "completed_tasks": [
+    {
+      "task_id": "task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a",
+      "workflow_id": "task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a",
+      "owner": "bob",
+      "first_execution_run_id": "01a143ff-8098-77d3-83c5-2b60bb2f2185",
+      "final_run_id": "1590aeb9-9b41-4475-b8d9-390623a3dc7a",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "b576d6a5cd73b1c636204d27a75353780f732801e322211b6c3677d30a04ea33",
+      "accepted_to_observed_terminal_seconds": 67.905,
+      "cohort": "inflight",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "1590aeb9-9b41-4475-b8d9-390623a3dc7a",
+        "7877941b-dc84-4d42-b2fc-84ac2e3639d6"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a.result.json",
+        "sha256": "e500c55fa91866189b081ab191615630a456b5dcaf9efc9a513b4eac53d0b15c"
+      }
+    },
+    {
+      "task_id": "task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64",
+      "workflow_id": "task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64",
+      "owner": "alice",
+      "first_execution_run_id": "01a143ff-801e-700f-bc12-33ae4434e79a",
+      "final_run_id": "2a5f0572-d7ca-4a72-a495-5984fcf96c45",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "584fab6bbc82bafd69b9a022fad3accfd4b41cd0a649b5b8664411f908814fc8",
+      "accepted_to_observed_terminal_seconds": 68.624,
+      "cohort": "inflight",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "2a5f0572-d7ca-4a72-a495-5984fcf96c45",
+        "5541b3df-50b6-4807-955a-61367f2dc2bd"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64.result.json",
+        "sha256": "94629f488355aab7d289f45e2e2774f1c3d2ab0cc0af1bbddbacd81b65211aad"
+      }
+    },
+    {
+      "task_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+      "workflow_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+      "owner": "alice",
+      "first_execution_run_id": "01a143ff-bfd4-76ca-a0c9-5a3cd92fc14a",
+      "final_run_id": "50e15299-ade7-4d37-bc3e-89e6879ed5f8",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "3ff022eee4ac9760abc7169e9811cdb5ba8e25ecd5487e0bbd1b1303a6ed8855",
+      "accepted_to_observed_terminal_seconds": 63.764,
+      "cohort": "queued",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "277a8121-1049-47b8-be87-3a3b3b2b6174",
+        "50e15299-ade7-4d37-bc3e-89e6879ed5f8"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6.result.json",
+        "sha256": "4d10e9d1fcb5d21b03f9205ccbe019a59d8282274c94df1e5a344ff8dfa0c5e5"
+      }
+    },
+    {
+      "task_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+      "workflow_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+      "owner": "bob",
+      "first_execution_run_id": "01a143ff-c02e-7eb9-a253-abe140f17f9f",
+      "final_run_id": "666f171f-0dda-46c4-acb9-11be2c6b3e25",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "51a0971cef7c77fec151ee1d3a55bdb1ce4bd1822a506c51549cab290e628631",
+      "accepted_to_observed_terminal_seconds": 64.585,
+      "cohort": "queued",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "666f171f-0dda-46c4-acb9-11be2c6b3e25",
+        "9308ce1b-94ed-418c-96fa-8445fab3baa5"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80.result.json",
+        "sha256": "4ff2b9f5db1466d152df2bb26f8121a782a10c4078177a0d85743fef88c850b8"
+      }
+    },
+    {
+      "task_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+      "workflow_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+      "owner": "carol",
+      "first_execution_run_id": "01a143ff-bf60-70ee-9e13-5d91f37f6683",
+      "final_run_id": "576c2071-0b12-4fc1-ba30-5ddfdf65bedc",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "f46e0fead6f89c5cb45c8d7c04424bb0a39f7bae8864649a64cb544fe842cc6b",
+      "accepted_to_observed_terminal_seconds": 65.408,
+      "cohort": "queued",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "576c2071-0b12-4fc1-ba30-5ddfdf65bedc",
+        "e3e94622-035c-4b32-b9fc-8203050a32ea"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543.result.json",
+        "sha256": "0b43183bc08fb2b96e0bcc973e7f55c5a493d5b19b18dfac676a0dbd36f5ca0d"
+      }
+    },
+    {
+      "task_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+      "workflow_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+      "owner": "carol",
+      "first_execution_run_id": "01a143ff-c0a2-7032-a2e3-1f53fc7fa5de",
+      "final_run_id": "06eba752-8aa0-4dfa-bd46-61aa06ee0897",
+      "status": "succeeded",
+      "can_count": 4,
+      "parent_tools": 37,
+      "general_purpose_subagents": 2,
+      "snapshot_sha256": "0cf615fa60f43060de3d1d972c69749bf265f77b7df2406bef1d2b459fd971d6",
+      "accepted_to_observed_terminal_seconds": 66.023,
+      "cohort": "queued",
+      "summary_model_activities": 2,
+      "summary_run_ids": [
+        "06eba752-8aa0-4dfa-bd46-61aa06ee0897",
+        "07dae857-f413-4ad1-9abb-fa3db6136222"
+      ],
+      "total_parent_model_boundaries": 38,
+      "final_segment_model_boundaries": 6,
+      "persisted_file_count": 20,
+      "result_file": {
+        "file": "var/task-cold-prototype/c0a4afaaf20c48e5b65fc51b7e9a7580/task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26.result.json",
+        "sha256": "e60a8f4aa9ab43f78ae7a46c17c72d9e48fa27c0c304d8e6b75a8e0665eac66a"
+      }
+    }
+  ],
+  "final_state_assertions": [
+    "All six snapshots retain task_id, workflow_id, owner and first_execution_run_id, schema 2/version task-v2, completed status and no remaining graph nodes.",
+    "Exactly one original HumanMessage and parent ToolMessages can-main-000 through can-main-036 in order; no lost or duplicated parent tool steps.",
+    "Two real general-purpose subagent return values, child files and all expected parent file contents and metadata are preserved.",
+    "The native todo plan is completed; native _summarization_event, _summarization_session_id, summary message and referenced history-offload file remain present.",
+    "Each Task has 38 parent model boundaries, four CAN transitions, five native Runs and two summary model Activities in distinct Runs.",
+    "Both inflight Tasks have exactly equal complete native snapshots before and after cold restart; no message IDs, timestamps or private fields were normalized."
+  ],
+  "native_run_chains": [
+    {
+      "task_id": "task-12c3e7daa4dd31e19543b05825d8f326fdefda78bb767d29ed12f7614c5a0a64",
+      "first_execution_run_id": "01a143ff-801e-700f-bc12-33ae4434e79a",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-801e-700f-bc12-33ae4434e79a",
+          "event_count": 73,
+          "history_sha256": "b5a71f2c3f207e78d73378cd284c5781110a51c3f2da5cead9c7a4db996be42f",
+          "start_input_sha256": "b9d9c9381afd2edfcb6f2d5df4e9a438f895253fbf3d8a3cd73ce1e0e6d6239e",
+          "continued_input_sha256": "6357890316629e3a0992f2fcbc43cf3e9e048326aaa9827a9bc7bd4f5cd13a1e"
+        },
+        {
+          "run_id": "47e63378-e1b3-4659-8b59-f9e235f0aea0",
+          "event_count": 55,
+          "history_sha256": "22bad808b50ac5da633a0c65b44b68dbb916c8eef6a055b7d1a7b12c5f4f0fa4",
+          "start_input_sha256": "6357890316629e3a0992f2fcbc43cf3e9e048326aaa9827a9bc7bd4f5cd13a1e",
+          "continued_input_sha256": "41e71171b048fa3a673a3e92c3809250568a6946973dad133a6c170989d7a7d1"
+        },
+        {
+          "run_id": "5541b3df-50b6-4807-955a-61367f2dc2bd",
+          "event_count": 79,
+          "history_sha256": "d6440830f00293b30165cc0e8c0178a208a2998dd4fbb7e50fab0d486afdbdce",
+          "start_input_sha256": "41e71171b048fa3a673a3e92c3809250568a6946973dad133a6c170989d7a7d1",
+          "continued_input_sha256": "516fc43ddcc1d26b6cd30cb0877ea656a8be32496315a2a64462bced92125f47"
+        },
+        {
+          "run_id": "2d8236da-a0b6-424e-9979-bf7e7c7b54c1",
+          "event_count": 55,
+          "history_sha256": "d8bf9da727f8b90d951cb50a279605493f2b63da884486fa99b6355e2463e6ec",
+          "start_input_sha256": "516fc43ddcc1d26b6cd30cb0877ea656a8be32496315a2a64462bced92125f47",
+          "continued_input_sha256": "d06e9b5d92bb58dc347911f419b337ae0e063e5d61d797a916f21bbc930043d6"
+        },
+        {
+          "run_id": "2a5f0572-d7ca-4a72-a495-5984fcf96c45",
+          "event_count": 49,
+          "history_sha256": "71eccb98c1bc9632ef5e0179a2b0d4d390edcc7ad7501174260d5c6c60b87098",
+          "start_input_sha256": "d06e9b5d92bb58dc347911f419b337ae0e063e5d61d797a916f21bbc930043d6",
+          "continued_input_sha256": null
+        }
+      ]
+    },
+    {
+      "task_id": "task-f419d3a47a0de38c65fe2731dba95a1112de4016b5b1078be55536e83c20543a",
+      "first_execution_run_id": "01a143ff-8098-77d3-83c5-2b60bb2f2185",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-8098-77d3-83c5-2b60bb2f2185",
+          "event_count": 73,
+          "history_sha256": "78aa8c50fb8efe3c5c2ed901cb2298a760efb21d2e25934fe6970a16cd4d05e6",
+          "start_input_sha256": "c9c8a2dde8857be9c7edf2565883ae5f2ccb419c1dc2e7dfa774e51304c86f58",
+          "continued_input_sha256": "45dc6ecf172571ca435fea6cc5c6439f8677fb67ab30fd8d4b590b628814ea68"
+        },
+        {
+          "run_id": "9e207c50-238b-46d9-aa94-5f51dc021c64",
+          "event_count": 55,
+          "history_sha256": "791de07ee3765c9aeb15ba6c2f9d3346c41c615dbed2e63410849bd26035315b",
+          "start_input_sha256": "45dc6ecf172571ca435fea6cc5c6439f8677fb67ab30fd8d4b590b628814ea68",
+          "continued_input_sha256": "3cd7514f5876ce3a6f296db5190058892c7ef2bd8ab1f5306a0b014380352509"
+        },
+        {
+          "run_id": "7877941b-dc84-4d42-b2fc-84ac2e3639d6",
+          "event_count": 79,
+          "history_sha256": "b6342afd08b8ae2220ffa7dde80868353047ba8f654dd91d9e5fa7a2ee0337c6",
+          "start_input_sha256": "3cd7514f5876ce3a6f296db5190058892c7ef2bd8ab1f5306a0b014380352509",
+          "continued_input_sha256": "6cacc7bd781da8f3366e2ea7628f1d784a1e0e23a09d4ffa23955a2760f605d1"
+        },
+        {
+          "run_id": "353d5c77-e0c3-450d-b0cb-2ea3b9a4b61a",
+          "event_count": 55,
+          "history_sha256": "52d155320cc942faab25bb765b51ce10d9c7417d3e40b7b0d00f7e1250925f65",
+          "start_input_sha256": "6cacc7bd781da8f3366e2ea7628f1d784a1e0e23a09d4ffa23955a2760f605d1",
+          "continued_input_sha256": "86032774c77e584935a3d569b2fd9494a8eff85bf78210e904ca7228463373f2"
+        },
+        {
+          "run_id": "1590aeb9-9b41-4475-b8d9-390623a3dc7a",
+          "event_count": 49,
+          "history_sha256": "8b6178a8ba3dc4a8f8e164567db16170c75e3283062c60a6744dc4f1e53358d5",
+          "start_input_sha256": "86032774c77e584935a3d569b2fd9494a8eff85bf78210e904ca7228463373f2",
+          "continued_input_sha256": null
+        }
+      ]
+    },
+    {
+      "task_id": "task-ec5b3d3a42d4ecd39274f5d9b68618ec96cdb183ecdad9356d7be62e2dea9543",
+      "first_execution_run_id": "01a143ff-bf60-70ee-9e13-5d91f37f6683",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-bf60-70ee-9e13-5d91f37f6683",
+          "event_count": 73,
+          "history_sha256": "51e5aa803678dd8f2ad59eb1a87e97d9ccca01be4010797b14814fcd9bf9af31",
+          "start_input_sha256": "9b0af8a8edabc77ea40642c21828ecc22af4bd1a3470710a36e92dd1d0fc9f91",
+          "continued_input_sha256": "da77f56c3df12b05094134e03e90aa7127b0cf931e53ba70ba3d1b55b4a9157a"
+        },
+        {
+          "run_id": "f3e871aa-f42c-4a3c-b68a-e69662fe8812",
+          "event_count": 55,
+          "history_sha256": "52e1789f7c52a71f1cf233693e475e207012cc5342ffea5ed1fffcbe3b5bbe7d",
+          "start_input_sha256": "da77f56c3df12b05094134e03e90aa7127b0cf931e53ba70ba3d1b55b4a9157a",
+          "continued_input_sha256": "44041ba6705f6e0c43fcf57ef41103edd1dfe630d693111061d9171dae67cdde"
+        },
+        {
+          "run_id": "e3e94622-035c-4b32-b9fc-8203050a32ea",
+          "event_count": 79,
+          "history_sha256": "a4059bf52fb116e519411d45be4b378b1aa286d658214199ef07bc226b06501b",
+          "start_input_sha256": "44041ba6705f6e0c43fcf57ef41103edd1dfe630d693111061d9171dae67cdde",
+          "continued_input_sha256": "8de933cfb751504b8a5f3d8d136fd9529daee077af9ca58b789c65bd94039282"
+        },
+        {
+          "run_id": "0359dd2e-024c-4568-921b-f4e3cc806e48",
+          "event_count": 55,
+          "history_sha256": "c6df07411a6c427251f95628aa9b29600971f784e6ce5d824d13dd1351d6e944",
+          "start_input_sha256": "8de933cfb751504b8a5f3d8d136fd9529daee077af9ca58b789c65bd94039282",
+          "continued_input_sha256": "d191c12d105dd620262a8e3fe21f3d4233c8cfb4431e962ba8ceedb3095d919a"
+        },
+        {
+          "run_id": "576c2071-0b12-4fc1-ba30-5ddfdf65bedc",
+          "event_count": 49,
+          "history_sha256": "ee7084c9b28192534416d73f89ff674d694655df0c3ceae8151f61c18785fa31",
+          "start_input_sha256": "d191c12d105dd620262a8e3fe21f3d4233c8cfb4431e962ba8ceedb3095d919a",
+          "continued_input_sha256": null
+        }
+      ]
+    },
+    {
+      "task_id": "task-1d31670b2fe160dce0aa8a2f22e77c319b0b8f3680c56eb2c9c5c0f28bb0f2a6",
+      "first_execution_run_id": "01a143ff-bfd4-76ca-a0c9-5a3cd92fc14a",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-bfd4-76ca-a0c9-5a3cd92fc14a",
+          "event_count": 73,
+          "history_sha256": "4f90e257f83cc186a3f135bb87933de1f90518654a2328b0ebc7e67f8ab5b374",
+          "start_input_sha256": "6c8ef488f58e06579038dcff1d06d6b587db4bf1ac04754594e96c4b8c5d6bf9",
+          "continued_input_sha256": "dc16278a6cdafc6e42249648bce64f996c470b73311f27dcfe13efc73ab93adf"
+        },
+        {
+          "run_id": "c7d1f234-c6fe-432a-8f65-1d7718a2aae9",
+          "event_count": 55,
+          "history_sha256": "d6fc30d9590d9b20f9167d7319e134c45fec9574020f439653d6358c6ae30b1b",
+          "start_input_sha256": "dc16278a6cdafc6e42249648bce64f996c470b73311f27dcfe13efc73ab93adf",
+          "continued_input_sha256": "fb8b91f093464d1c788640c9a3e32a6fe20d32e27aa2e4cb8aa1e87b57232196"
+        },
+        {
+          "run_id": "277a8121-1049-47b8-be87-3a3b3b2b6174",
+          "event_count": 79,
+          "history_sha256": "62144911a70cb7b6cf80dfe910678830c19ab5e63822fb782420a728d0ee3c59",
+          "start_input_sha256": "fb8b91f093464d1c788640c9a3e32a6fe20d32e27aa2e4cb8aa1e87b57232196",
+          "continued_input_sha256": "ae816c73f9817e9e245205ed90ee0635629e2f6ec01caad15fb0f8ff9cef0c45"
+        },
+        {
+          "run_id": "c7c2e41b-838b-4043-8f60-d650e21fd1e1",
+          "event_count": 55,
+          "history_sha256": "1abc8ef8af406b9a90cafb321110f4e87ea268f97079879312058166ff83cef6",
+          "start_input_sha256": "ae816c73f9817e9e245205ed90ee0635629e2f6ec01caad15fb0f8ff9cef0c45",
+          "continued_input_sha256": "9ee9e8c65a8904549e75efd84ca4ebf303d2847bc293039ccb71936f5e018c26"
+        },
+        {
+          "run_id": "50e15299-ade7-4d37-bc3e-89e6879ed5f8",
+          "event_count": 49,
+          "history_sha256": "404ada487faa087482c7137b1451148d2b7b6768f5fc9e336828423c5a9aff98",
+          "start_input_sha256": "9ee9e8c65a8904549e75efd84ca4ebf303d2847bc293039ccb71936f5e018c26",
+          "continued_input_sha256": null
+        }
+      ]
+    },
+    {
+      "task_id": "task-fa76a591311f9576c598e678f27cad91f2438c2491f67d8e2f0ddca6d271ea80",
+      "first_execution_run_id": "01a143ff-c02e-7eb9-a253-abe140f17f9f",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-c02e-7eb9-a253-abe140f17f9f",
+          "event_count": 73,
+          "history_sha256": "be6ccaa11f39a36ad438bf10a2c2cfd889c47cd8cec0ea2c213a8185c5b10d18",
+          "start_input_sha256": "16b3815b8f6ba02a9ae804895bf34e3f1dddd9875e0fe93656aef7c64524bc45",
+          "continued_input_sha256": "f59d12a4ad7605cf01f4b0a343650ea3bd6aedd5e7a047b8747430898e6ac9cf"
+        },
+        {
+          "run_id": "0056b92e-422e-488c-94e7-af65f89aa887",
+          "event_count": 55,
+          "history_sha256": "11832af266ca416ff3cf5f83a8f8d909346f8c2d80511ea282a9b51866b299bf",
+          "start_input_sha256": "f59d12a4ad7605cf01f4b0a343650ea3bd6aedd5e7a047b8747430898e6ac9cf",
+          "continued_input_sha256": "bbf664e4bf08f29b78da445ad5c028ef6bf384ffaff20a318478c3200febb4bf"
+        },
+        {
+          "run_id": "9308ce1b-94ed-418c-96fa-8445fab3baa5",
+          "event_count": 79,
+          "history_sha256": "723a735b200e1a501328cc58d9764be6dd10661d2d943fa92b26e16117ee2ab8",
+          "start_input_sha256": "bbf664e4bf08f29b78da445ad5c028ef6bf384ffaff20a318478c3200febb4bf",
+          "continued_input_sha256": "061f3f94b5f8eea6b2da159cebf17318c4c0e17f01aa4bb9c7a0cb8b16e20c8e"
+        },
+        {
+          "run_id": "68a332f4-3240-4a9c-886b-c3891eeb483c",
+          "event_count": 55,
+          "history_sha256": "6876892ba155e4c64b3edd88e94d129598d20e8c76944a3ce579d1fd7b51f11e",
+          "start_input_sha256": "061f3f94b5f8eea6b2da159cebf17318c4c0e17f01aa4bb9c7a0cb8b16e20c8e",
+          "continued_input_sha256": "7700cdd15f154149436a3f1430d3392d14594a9f7cc934167ac55b944768fab7"
+        },
+        {
+          "run_id": "666f171f-0dda-46c4-acb9-11be2c6b3e25",
+          "event_count": 49,
+          "history_sha256": "6fd7df952e94146d1ccadb5197f91e3d68d9aae753ba879fb56bb5631a3558ee",
+          "start_input_sha256": "7700cdd15f154149436a3f1430d3392d14594a9f7cc934167ac55b944768fab7",
+          "continued_input_sha256": null
+        }
+      ]
+    },
+    {
+      "task_id": "task-851845d1f65c633f26fcd26305bb82968fe395635850e0adf195e65bcf5bab26",
+      "first_execution_run_id": "01a143ff-c0a2-7032-a2e3-1f53fc7fa5de",
+      "all_native_previous_next_links_verified": true,
+      "all_adjacent_full_payload_hashes_equal": true,
+      "runs": [
+        {
+          "run_id": "01a143ff-c0a2-7032-a2e3-1f53fc7fa5de",
+          "event_count": 73,
+          "history_sha256": "7373c0c2d08920dac06cc5e82a4d1ca64316fa5bf293cdbdfa3a47bd87e81534",
+          "start_input_sha256": "949d423ac158310ee9fef7a82f50242486276d2b7c09e6120a3763eccb03505b",
+          "continued_input_sha256": "f355feb39f6018f1634db460eeb49b2c5a325385ccca9665944aa8fdc726e3de"
+        },
+        {
+          "run_id": "6a8d9a58-6503-4078-b5e2-043fe8a48400",
+          "event_count": 55,
+          "history_sha256": "7258d70a9dd10e14815665c594a246ff1757f9ee0b08a788a971da7b33ac2522",
+          "start_input_sha256": "f355feb39f6018f1634db460eeb49b2c5a325385ccca9665944aa8fdc726e3de",
+          "continued_input_sha256": "07c64c61d122b86a9ce7aaf55e77969d11b52e09e3805badeb234c6496d0bc8f"
+        },
+        {
+          "run_id": "07dae857-f413-4ad1-9abb-fa3db6136222",
+          "event_count": 79,
+          "history_sha256": "2a259070c06406cac10d5f7023a511c3708d4a5e88e88cd3a43b227a6a48ea28",
+          "start_input_sha256": "07c64c61d122b86a9ce7aaf55e77969d11b52e09e3805badeb234c6496d0bc8f",
+          "continued_input_sha256": "cee97d6ff6f34bf1c15765332134a330ea989b6ba99f9c6ad4c4aba2fcfcdd8d"
+        },
+        {
+          "run_id": "632ec50c-3b1f-4000-9260-f5a62148efb3",
+          "event_count": 55,
+          "history_sha256": "47717ef68df0fa7cd810da8b8fc37f7b5fd0908d06289211b9cb4f0b504c5a5b",
+          "start_input_sha256": "cee97d6ff6f34bf1c15765332134a330ea989b6ba99f9c6ad4c4aba2fcfcdd8d",
+          "continued_input_sha256": "ab6618cef3660760c3dc090f402cc79c5737803bf6b50d12a8722c0c291a8d11"
+        },
+        {
+          "run_id": "06eba752-8aa0-4dfa-bd46-61aa06ee0897",
+          "event_count": 49,
+          "history_sha256": "52ada1bb94d59884f010588a4c94a1fbda1e6adbdfc451d8e9d6c3bbcf838585",
+          "start_input_sha256": "ab6618cef3660760c3dc090f402cc79c5737803bf6b50d12a8722c0c291a8d11",
+          "continued_input_sha256": null
+        }
+      ]
+    }
+  ],
+  "history_summary": {
+    "run_count": 30,
+    "workflow_task_failures": 0,
+    "scheduled_model_activities": 276,
+    "all_first_identities_and_bidirectional_links_verified": true,
+    "all_24_adjacent_continuation_payload_pairs_match": true,
+    "hash_format": "SHA-256 of deterministic protobuf History serialization or full input Payloads serialization, computed by the live observer; only hashes and selected queue events are published."
+  },
+  "model_attempt_postcheck": {
+    "native_activity_count": 276,
+    "model_attempt_count": 278,
+    "maximum_attempt": 2,
+    "retried_activity_count": 2,
+    "finish_outcomes": {
+      "completed": 276
+    },
+    "request_sha_preserved_for_every_retry": true,
+    "source": "MODEL_START / MODEL_FINISH records re-read from all four Worker logs and matched exactly against the original receipt",
+    "completed_attempt_count": 276,
+    "retry_budget": 3,
+    "all_attempt_sequences_consecutive": true,
+    "interrupted_attempts_without_finish_marker": 2,
+    "summary_activity_count": 12,
+    "general_purpose_subagent_count": 12,
+    "native_history_scheduled_count_matches_log_activity_identity_count": true
+  },
+  "container_security": {
+    "user": "10001:10001",
+    "readonly_rootfs": true,
+    "all_bind_mounts_readonly": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_options": [
+      "no-new-privileges:true"
+    ],
+    "tmpfs_bytes": 67108864,
+    "tmpfs_flags": [
+      "nosuid",
+      "nodev",
+      "noexec"
+    ],
+    "actual_uid_and_gid_checked": 10001,
+    "root_write_errno": 30,
+    "tmp_writable": true,
+    "opposite_role_secret_environment_absent": true,
+    "api_published_host_ip": "127.0.0.1",
+    "actual_contracts": [
+      {
+        "container_id": "33cff71ea2eeef92b951ffffa7442e8c62d1c6cf18df3f3d5b56658ab80566f7",
+        "hostname": "cold-c0a4afaaf2-api-1",
+        "role": "api",
+        "epoch": "before",
+        "actual_cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 60391424
+      },
+      {
+        "container_id": "728e236e8cb69dd5706dfad922b4f0d9dceb6c82105a790f0a85e8f5bd7b0fec",
+        "hostname": "cold-c0a4afaaf2-api-2",
+        "role": "api",
+        "epoch": "before",
+        "actual_cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 111460352
+      },
+      {
+        "container_id": "c63d23013ca37ff2e6559c625d6efa55857f94c81c0b39eda30a272acd619728",
+        "hostname": "cold-c0a4afaaf2-worker-1",
+        "role": "worker",
+        "epoch": "before",
+        "actual_cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 210264064
+      },
+      {
+        "container_id": "86c5723fddba1b39605137f288e803be253fd55dbd3020de95ca30aabaf6c2a3",
+        "hostname": "cold-c0a4afaaf2-worker-2",
+        "role": "worker",
+        "epoch": "before",
+        "actual_cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 207863808
+      },
+      {
+        "container_id": "7a6cf996647703708f1e705cff444b9f612bb2fe432edda0401075cafd54c150",
+        "hostname": "cold-c0a4afaaf2-api-3",
+        "role": "api",
+        "epoch": "after",
+        "actual_cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 64102400
+      },
+      {
+        "container_id": "a1db137150673d0f15170633b7a2075eb45e23b4129db3b1ea245eac49cb892e",
+        "hostname": "cold-c0a4afaaf2-api-4",
+        "role": "api",
+        "epoch": "after",
+        "actual_cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 55087104
+      },
+      {
+        "container_id": "b14cbc102883bdd7f40464e5dc0878bb61a349f847891b947fa46752400ab31e",
+        "hostname": "cold-c0a4afaaf2-worker-3",
+        "role": "worker",
+        "epoch": "after",
+        "actual_cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 226033664
+      },
+      {
+        "container_id": "f795313aa29fd6cf3210d83cc477451d4d29c6e380c253faf16f4b0b117c0806",
+        "hostname": "cold-c0a4afaaf2-worker-4",
+        "role": "worker",
+        "epoch": "after",
+        "actual_cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "observed_peak_cgroup_memory_bytes": 230469632
+      }
+    ]
+  },
+  "resources": {
+    "measurement": "Owned host process-tree RSS plus live container raw cgroup memory usage; Docker inspect exit/OOM state and VM MemAvailable are also checked.",
+    "rss_budget_mib": 2048,
+    "wall_budget_seconds": 180,
+    "minimum_memory_free_percent": 15,
+    "samples": 142,
+    "peak_aggregate_bytes": 956968960,
+    "peak_aggregate_mib": 912.6,
+    "minimum_host_free_percent": 42,
+    "minimum_vm_available_percent": 86.14,
+    "vm_total_bytes": 8373993472,
+    "memory_psi_available": false,
+    "memory_psi_limitation": "OrbStack did not expose PSI in this probe. VM MemAvailable samples are cached during brief intervals with no running owned container; host memory and process/container counts continue to be checked.",
+    "docker_platform": {
+      "OperatingSystem": "OrbStack",
+      "Architecture": "aarch64",
+      "NCPU": 10,
+      "MemTotal": 8373993472,
+      "ServerVersion": "29.4.0",
+      "CgroupVersion": "2",
+      "CgroupDriver": "cgroupfs"
+    },
+    "any_oom_killed": false,
+    "nice_priority": 10
+  },
+  "cleanup": {
+    "confirmed": true,
+    "containers": [
+      {
+        "container_id": "d1c13116623a6be0c53eb6c8a03e9fda0ef7aa55479940870072a70462980200",
+        "name": "tc-c0a4afaaf20c-probe",
+        "role": "probe",
+        "phase": "loopback_probe",
+        "exit_code": 0,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "33cff71ea2eeef92b951ffffa7442e8c62d1c6cf18df3f3d5b56658ab80566f7",
+        "name": "cold-c0a4afaaf2-api-1",
+        "role": "api",
+        "phase": "injected_cold_stop",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "728e236e8cb69dd5706dfad922b4f0d9dceb6c82105a790f0a85e8f5bd7b0fec",
+        "name": "cold-c0a4afaaf2-api-2",
+        "role": "api",
+        "phase": "injected_cold_stop",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "c63d23013ca37ff2e6559c625d6efa55857f94c81c0b39eda30a272acd619728",
+        "name": "cold-c0a4afaaf2-worker-1",
+        "role": "worker",
+        "phase": "injected_cold_stop",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "86c5723fddba1b39605137f288e803be253fd55dbd3020de95ca30aabaf6c2a3",
+        "name": "cold-c0a4afaaf2-worker-2",
+        "role": "worker",
+        "phase": "injected_cold_stop",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "7a6cf996647703708f1e705cff444b9f612bb2fe432edda0401075cafd54c150",
+        "name": "cold-c0a4afaaf2-api-3",
+        "role": "api",
+        "phase": "final_cleanup",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "a1db137150673d0f15170633b7a2075eb45e23b4129db3b1ea245eac49cb892e",
+        "name": "cold-c0a4afaaf2-api-4",
+        "role": "api",
+        "phase": "final_cleanup",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "b14cbc102883bdd7f40464e5dc0878bb61a349f847891b947fa46752400ab31e",
+        "name": "cold-c0a4afaaf2-worker-3",
+        "role": "worker",
+        "phase": "final_cleanup",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      },
+      {
+        "container_id": "f795313aa29fd6cf3210d83cc477451d4d29c6e380c253faf16f4b0b117c0806",
+        "name": "cold-c0a4afaaf2-worker-4",
+        "role": "worker",
+        "phase": "final_cleanup",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true
+      }
+    ],
+    "container_count": 9,
+    "host_processes": [
+      {
+        "name": "temporal-before",
+        "pid": 46823,
+        "returncode": -9
+      },
+      {
+        "name": "observer-before",
+        "pid": 46824,
+        "returncode": -9
+      },
+      {
+        "name": "temporal-after",
+        "pid": 47026,
+        "returncode": 0
+      },
+      {
+        "name": "observer-after",
+        "pid": 47027,
+        "returncode": -15
+      }
+    ],
+    "driver_pid": 46747,
+    "post_run_owned_label_query_empty": true,
+    "post_run_driver_and_host_pids_gone": true,
+    "final_business_container_cleanup": "Four replacement API/Worker containers were deliberately SIGKILLed during final cleanup and exited 137 without OOM. This run does not test their graceful drain."
+  },
+  "secret_scans": {
+    "native_history_count": 30,
+    "native_history_credential_matches": 0,
+    "needle_count": 10,
+    "needle_scope": "Three synthetic owner tokens, cursor secret and model secret, each raw and JSON-escaped; values omitted.",
+    "process_log_scan": {
+      "credential_matches": 0,
+      "needle_count": 10,
+      "logs": [
+        {
+          "name": "cold-c0a4afaaf2-api-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "cold-c0a4afaaf2-api-2.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "cold-c0a4afaaf2-api-3.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "cold-c0a4afaaf2-api-4.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "cold-c0a4afaaf2-worker-1.log",
+          "sha256": "9c0383c7c08ec8ca831494d3ce2f777c73ccf0f54675fd313bc52cc18b500bcf"
+        },
+        {
+          "name": "cold-c0a4afaaf2-worker-2.log",
+          "sha256": "435a160ae9b0ceda0ac2fec20d1b47ba91241277398b790fb261d0e97eb97e71"
+        },
+        {
+          "name": "cold-c0a4afaaf2-worker-3.log",
+          "sha256": "1d0c8c69e430d416ccae0b38ae5e04eb2b2a88c5d61a6ed5ff9924c1ee5271a2"
+        },
+        {
+          "name": "cold-c0a4afaaf2-worker-4.log",
+          "sha256": "dba3a3ba946677d54f0628429777ab01ecc01e5a301828feaffff62c727f8d5d"
+        },
+        {
+          "name": "observer-after.log",
+          "sha256": "86cacb288cc2a8368b9b3d870e18ea431f132c87114e7fcf61cfee4c5a553c73"
+        },
+        {
+          "name": "observer-before.log",
+          "sha256": "86cacb288cc2a8368b9b3d870e18ea431f132c87114e7fcf61cfee4c5a553c73"
+        },
+        {
+          "name": "tc-c0a4afaaf20c-probe.log",
+          "sha256": "7c3a6ba66bf00b94c89f118047894c0229c24cc364350f280d11ad3fc9306bf8"
+        },
+        {
+          "name": "temporal-after.log",
+          "sha256": "20e587b8bbe269abeff491fc9321c7caf09458594d1095180028225b3e4adcac"
+        },
+        {
+          "name": "temporal-before.log",
+          "sha256": "58d3cdbbe4636ec2ee0885eebbd89845f7ba6699d370705ed9efe10ff517fcb4"
+        }
+      ]
+    },
+    "public_summary_scan": "Exact secret needles and host absolute-path prefixes absent."
+  },
+  "source_freeze": {
+    "root": "repository-relative paths",
+    "scope": "All 24 production wheel files, four new cold-restart files, directly reused harness/fixture helpers and packaging lock inputs; evolving documentation excluded.",
+    "new_files": [
+      "deepagents-server/scripts/task_cold_restart_smoke.py",
+      "deepagents-server/tests/task_cold_worker_fixture.py",
+      "deepagents-server/tests/task_cold_observer.py",
+      "deepagents-server/tests/test_task_cold_restart.py"
+    ],
+    "sha256": {
+      "deepagents-server/Dockerfile.task": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+      "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+      "deepagents-server/scripts/task_cold_restart_smoke.py": "4759806072d6c7628a5d3c78a7c5add12cc2adba1ad539447fc899b0541c22dc",
+      "deepagents-server/scripts/task_container_fault_smoke.py": "30ef6e27590bda5b759b7290afe4a1277d229374034826fcf9562e9b2378c199",
+      "deepagents-server/scripts/task_server_fault_smoke.py": "d139ec28357ada1415e025a4b9b2cda23036956ebe8efe1c5df67241222b1861",
+      "deepagents-server/scripts/task_tls_fault_smoke.py": "6166a3b8520a250de4cbd3f260e088e4481fff852008b2b34071ef012f70d44a",
+      "deepagents-server/scripts/task_worker_rollout_smoke.py": "c7524dca09aca7bb90219e791fe44380088571e4621562d9ee261f6725be6ebf",
+      "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+      "deepagents-server/src/mini_loop_deepagents/__init__.py": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+      "deepagents-server/src/mini_loop_deepagents/auth.py": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+      "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+      "deepagents-server/src/mini_loop_deepagents/graph.py": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+      "deepagents-server/src/mini_loop_deepagents/instructions.md": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+      "deepagents-server/src/mini_loop_deepagents/jobs.py": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+      "deepagents-server/src/mini_loop_deepagents/task_contracts.py": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+      "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+      "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "a6dad0fbb9d087dce96cea96474ab9766c16d31a95a0da3eb8f71ab8bbffe471",
+      "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+      "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+      "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+      "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+      "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "05a4eb8f89c302618cc66f5dc4189cbe9f8740263b99349a5ce4978bdfd79622",
+      "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+      "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+      "deepagents-server/tests/task_can_worker_fixture.py": "1f937dbfe7495c35e06e85aeec8ee90c3184f8b9483abaecb3eb874e4030fbb8",
+      "deepagents-server/tests/task_cold_observer.py": "65d190afb58a9dc747ba9679e4560e8e11056e5159ba570b143df2995a19efd7",
+      "deepagents-server/tests/task_cold_worker_fixture.py": "48b0a751c26db18dd298faf954954f73c6f72e80ae76dc0c5e5cbbb0e4bc652c",
+      "deepagents-server/tests/task_container_support.py": "8cbae030cb1dd8ae188960024229773ffb64024923ceaea6727dea9ae6c21b0f",
+      "deepagents-server/tests/task_container_worker_fixture.py": "91034397a9c83e27a2e78d4e4593cb00d97e26d62a76d775f2e3dbefb8e68e79",
+      "deepagents-server/tests/task_rollout_worker_fixture.py": "247672a5b2c9a15f5832208f3e5775fe17283c0b42c0059170e8187eac107e17",
+      "deepagents-server/tests/task_worker_fixture.py": "95f27f464636f0f19f0b9cab9c6ff2d3c9c279f99540c9df7b80500b678c96c9",
+      "deepagents-server/tests/test_task_cold_restart.py": "557b3e6c4195e7432482b7b5057870bf209efddedf9110bb376a83b1843be6b7",
+      "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+    }
+  },
+  "validation": {
+    "focused_harness_tests": 11,
+    "focused_harness_tests_seconds": 1.52,
+    "full_cold_restart_smoke": "passed",
+    "offline_reconciliation": "Receipt/manifest/wheel/source/snapshot/result/log file hashes, queue state, all chain links and payload-hash pairs, final native state, replay equality, Activity attempts and resource totals verified.",
+    "native_hash_provenance": "Original live observer computed History/input hashes. Raw Histories and payloads are not copied into this public summary; those digest values are preserved from the immutable receipt.",
+    "git_diff_check": "passed",
+    "module_full_suite": "reported separately by the delivery validation owner"
+  }
+}

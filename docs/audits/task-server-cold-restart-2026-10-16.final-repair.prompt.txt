@@ -1,0 +1,17 @@
+Final surgical text repair. Preserve this diagram unchanged except these three small areas.
+A. Erase the ENTIRE content of the upper-right request example box below its heading, including ALL leftover braces, quote marks, dashed/vertical fragments and punctuation. Refill with exactly three clean plain text lines (no JSON, no decorative code bracket):
+POST /v1/tasks
+Authorization: Bearer …
+Idempotency-Key: …
+B. Orange timeline cell numbered5 must contain exactly three lines:
+6 Task 恢复并完成
+每项37父工具步骤
+4 CAN
+The word 父 is essential; do not replace it with 次.
+C. Blue bottom limitations panel can use five compact bullet lines:
+非生产 HA / 吞吐 SLO 证明
+未调用真实模型；未测跨主机或数据库主备
+总期限24h / 512父模型边界；Checkpoint有界
+本轮使用本机明文 dev 服务
+外部副作用不保证 exactly-once
+Preserve model I/O arrow and all verified numbers and other labels.

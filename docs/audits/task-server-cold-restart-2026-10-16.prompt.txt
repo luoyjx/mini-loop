@@ -1,0 +1,31 @@
+Use case: infographic-diagram. Create one standalone layered architecture diagram by editing the previous standalone Task container diagram and consulting the complete mini-loop layered base. Keep its five numbered layers, deep navy/cyan style and legible Chinese text, but focus the orange highlights on THIS ITERATION'S VALIDATION. No new runtime component was added. All existing deployment, launch, secrets, readiness, TLS and graceful shutdown boxes should now be blue/cyan. Do not draw API replicas connected to one another.
+
+Title: "Agent Server · 多任务全栈冷停恢复"
+Subtitle: "本轮：运行中任务与排队任务共同经历全部服务冷停"
+Legend: "橙色＝本轮验收路径；蓝色＝已有架构"
+
+Five layers, clear downward submission/model flow and labelled Worker/Temporal polling:
+L1 异步客户端 — POST /v1/tasks；Bearer + Idempotency-Key；远端接受后返回 TaskID，客户端可离开。
+L2 无状态 Task API 容器池 — API A / API B；提交、状态、结果、取消、事件；角色独立 Secret；healthz存活 / readyz检查namespace。Do not imply readyz proves Start permission or capacity.
+L3 独立 Temporal 服务 — Task Queue + Workflow History，TaskID/首Run不变；Run1→Run2→… Continue-As-New；完整Checkpoint。Explicit note "外部部署；本机验收使用 SQLite dev server".
+L4 独立 Worker 容器池 — Worker A / Worker B，各1 Activity槽；真正Deep Agents规划、工具、子代理、摘要；同镜像，独立角色凭据。Shared TLS/mTLS client connection labels stay cyan.
+L5 模型 I/O Activity — 受控并发、心跳、最多3次尝试；Worker部署凭据；Activity结果记入History。No inference vendor is claimed tested.
+
+Large orange validation timeline below the five layers:
+"6 Task / 3 owner"
+"2 项执行 + 4 项原生排队"
+"任务存活 ≥45s；前两项到第24步 / 3 CAN"
+"Temporal + API + Worker + observer 全部停止 ≥3s"
+"保留 SQLite；全新进程 / 容器冷启动"
+"6 Task 恢复并完成：各37父工具步骤 / 4 CAN"
+"每项2个真实子代理；原生摘要与完整状态保留"
+The timeline is a TEST SCENARIO, not an extra production route or new service. A dashed orange bracket may mark API/Temporal/Worker as the stopped set; do not add it to runtime dataflow.
+An evidence badge should read "离线模型 fixture · 真实Deep Agents / Temporal执行".
+A blue limitation panel:
+"非生产HA / 吞吐SLO证明"
+"没有真实模型调用；没有跨主机或数据库主备切换"
+"总期限24h / 512父模型边界；Checkpoint大小有界"
+"外部副作用不保证exactly-once"
+No testpass claims beyond these specified results; no hourly or unlimited execution guarantee. Keep enough white space, trim redundant labels, prioritize legibility.
+
+Verified actual run: total93.63s; zero-service window3.189s; 30nativeHistories with0WorkflowTaskFailed; peakownedmemory912.6MiB. You may add a small orange compact evidence badge '30 Run · 0 WorkflowTaskFailed · 本机实测93.63s'. Use actual '全停3.189s' in timeline. Do not overfill with every numeric detail.
