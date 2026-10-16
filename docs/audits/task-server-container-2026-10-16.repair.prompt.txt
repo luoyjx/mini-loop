@@ -1,0 +1,5 @@
+Make surgical corrections to this diagram; preserve its entire layout, accurate Chinese text, all five layers, evidence and limitations.
+1. Remove the small horizontal double-headed arrow between Task API A and Task API B. They are independent replicas and have no direct connection to one another. Keep the shared API-to-Temporal downward arrow.
+2. In the orange health box, replace the two-line footnote "就绪不等于 Worker 容量 / 仅表示可接受新请求" with exactly "仅检查 namespace 可用 / 不证明提交权限或 Worker 容量". The probe reads DescribeNamespace and does not prove Start authorization or capacity.
+3. The two existing gRPC TLS/mTLS connection captions and lock icons between L2-L3 and L3-L4 must be BLUE/CYAN rather than orange; TLS is existing capability. Keep all container launcher/secret/readiness/Linux wakeup/bottom acceptance changes orange.
+4. Correct any malformed "mini" role labels without changing content. Keep SIGTERM explicit idle-event-loop wakeup, Activity grace2s/processdeadline15s/containerstop20s. Do not add extra arrows or components.

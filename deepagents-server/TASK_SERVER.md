@@ -7,7 +7,8 @@ History 为单一权威**。此路径没有另建业务 SQL 台账、Outbox 或�
 
 它与标准 LangGraph Agent Server、[离线故障原型](TEMPORAL_PROTOTYPE.md) 以及原
 Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Temporal Python SDK
-`1.34.0`（可选 `temporal` extra）；本轮没有增加依赖。源码和本地故障测试不等于
+`1.34.0`（可选 `temporal` extra）；本轮新增经用户批准的固定 Python 基础镜像，
+没有增加 Python 包。源码和本地故障测试不等于
 生产高可用、持续容量或真实 provider 的调用验收。
 
 ## 分层与一次任务的生命周期
@@ -16,6 +17,7 @@ Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Tempora
 | --- | --- | --- |
 | 客户端 | 保存 Idempotency-Key、TaskID、RunID；提交后可离线 | HTTP 超时不能推出任务未创建 |
 | Task HTTP API 多副本 | Bearer→owner；提交、状态、结果、取消、事件分页 | 无本地任务队列；远端 Start 确认或核对到同内容任务后才返回 202 |
+| 镜像与角色 launcher | 同一制品分别运行 API/Worker；按角色读取 Secret 文件；API 提供 namespace readiness | 同进程信号所有权；外接 Temporal/ingress，容器配置不提供 HA 或版本路由 |
 | 共享 Client 连接配置 | API/Worker 各自显式连接；CLI 环境配置，library 显式对象 | 可选验证 TLS/mTLS；没有独立代理服务，HTTP owner 与 Temporal ACL 分开 |
 | Temporal 服务 | Workflow ID 接受、队列、History、Activity 重试与取消 | 服务器持久化与保留策略决定可恢复范围；本地 SQLite 故障实验不代表集群 HA |
 | TaskWorkflowV2 + v1 Worker | Deep Agents 规划、子代理、原生摘要、虚拟文件、todos、messages | V2 完整 public saver 日志跨 Run 迁移；同 Run 经 History 重放重建；不访问外部 checkpointer |
@@ -34,7 +36,7 @@ key 可能再次创建执行；查询与事件也可能返回 404。调用方必
 
 ## V2 分段续跑与完整状态
 
-V2 已在 `98de8d2` 交付。本轮以 `401e4d5` 为审查基线，保留相同 Workflow 代码；
+V2 已在 `98de8d2` 交付。本轮以 `06a93d4` 为审查基线，保留相同 Workflow 代码；
 新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
 为 schema 2。Worker 同时注册原 `TaskWorkflow` / `task-v1`，v1 运行码保持不变。
 部署时先替换为能同时运行两版的 Worker，再切换 API；旧 Worker 无法运行 V2，不能
@@ -78,6 +80,10 @@ CAN 缩短单个 Run 的 History，但迁移 journal 累积此前写入；它不
 升级不属于本协议。新协议的运行验收与旧 v1 故障记录分开，见文末交付证据。
 
 ## 启动与配置
+
+独立应用镜像与 Compose 部署见 [Task 容器部署](TASK_DEPLOYMENT.md)。该 profile 使用
+`launch api|worker` 在同进程进入以下 CLI，按角色加载 Secret 文件；外接 Temporal，
+不启动标准 Agent Server/SQL/Redis。以下命令仍是直接运行 Python 入口。
 
 以下命令在 `deepagents-server/` 下执行。先准备已校验的 Temporal CLI 或可访问的
 受信任 Temporal 服务；固定本地 CLI/Server 校验值见 [原型记录](TEMPORAL_PROTOTYPE.md)。
@@ -205,8 +211,8 @@ mTLS 隧道终止 TLS 后连到 loopback dev Temporal，属于测试设施，不
 `worker.run_process` 是独立 CLI 的可信进程入口，在连接 Temporal 前安装 SIGTERM /
 SIGINT handler；第一个信号触发显式 `Worker.shutdown()`。此前只有
 `graceful_shutdown_timeout=2` 配置和 `await worker.run()`，没有将 SIGTERM 接入
-SDK 停机流程，因此不能从旧配置推导出滚动排空已经工作。本轮不修改 v1/V2
-Workflow、CAN 协议或模型 Activity 重试策略，只补进程所有权。
+SDK 停机流程，因此不能从旧配置推导出滚动排空已经工作。`401e4d5` 的这项修改
+不改变 v1/V2 Workflow、CAN 协议或模型 Activity 重试策略，只补进程所有权。
 
 SDK 停机停止新的轮询，继续处理已经领取的工作；已在 Core 内缓冲的 Start 仍可能
 交给语言层，因此不能用“信号后绝无新 Activity 开始”作为保证。宽限内已领取的
@@ -226,7 +232,7 @@ Activity 仍依赖原生 heartbeat/timeout 与有限重试恢复；不要把退�
 `os._exit`。宿主应用拥有进程关闭策略，取消 library coroutine 保留取消语义。
 `run_process` 只用于专用 Worker 进程，不应嵌进承载其他业务的主进程。
 
-本轮受控替换顺序是：保留另外两个 Worker 服务，逐一给旧 Worker 发 SIGTERM，
+`401e4d5` 的受控替换顺序是：保留另外两个 Worker 服务，逐一给旧 Worker 发 SIGTERM，
 观察退出后启动相同 namespace、queue、v1/V2 注册与模型配置的替换 Worker；
 最多同时保留三个执行进程。生产环境若采用先起新副本再停旧副本，须另外预算临时
 增加的执行槽和 provider 额度，并验收该发布方式。保持原 TaskID、first Run、
@@ -237,7 +243,7 @@ graph schema 迁移、Worker Versioning、零中断服务或跨实例配额。
 SDK 行为参见 [Worker API 文档](https://python.temporal.io/temporalio.worker.Worker.html)
 与安装的固定 `temporalio==1.34.0` 源码：`worker/_worker.py` 的 `run/shutdown`，
 `bridge/sdk-core/crates/sdk-core/src/worker/activities.rs` 的 shutdown cancellation
-转换及 `worker_shutdown_failure`。真实交接、硬退和重试预算的验收仍以本轮收据为准。
+转换及 `worker_shutdown_failure`。真实交接、硬退和重试预算的历史验收见下文 rollout 收据。
 
 ## HTTP 使用与恢复语义
 
@@ -305,6 +311,26 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 64 个服务端页和请求期限；历史过大时可能明确返回不可用，尚无独立事件索引。
 这些事件不是 SSE 或逐 token 日志，不会暴露 Workflow 输入、模型正文或工具 payload。
 
+## 容器入口与 API 就绪探测
+
+`06a93d4` 之后新增 `launch api|worker`、固定基础镜像 Dockerfile 与独立 Compose
+profile。launcher 按角色读取 `*_FILE`，全部校验通过后才加载到进程环境，同进程
+调用真实 CLI，Worker 原信号所有权不变。API 挂载 Bearer 映射/cursor secret，Worker
+挂载模型 key，两者使用各自 Temporal 客户端身份；无公共 fixture 选择入口。
+
+`GET /healthz` 是纯进程 liveness；`GET /readyz` 是无认证的 namespace 只读检查，
+仅在 `DescribeNamespace` 返回配置中的名称和 REGISTERED 状态时给出 200，否则为
+503。单次 RPC 1 秒，singleflight 合并并发探测，成功/失败均缓存 1 秒；取消一个
+HTTP 请求不会取消共享、独立受限的 RPC。公开响应只有 ready/not_ready，不能证明
+Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD 不享有 GET 探测
+的认证豁免。
+
+镜像使用 UID/GID 10001，Compose 只读 root、64 MiB `/tmp`、20 秒 stop grace，
+超过 Worker 默认 15 秒硬退出期限。Secret 宿主权限必须允许此身份读取。API 只在
+容器网络 expose 8123，需要已有 ingress；Compose healthcheck 状态不会自行触发
+重启，`restart: unless-stopped` 是另一项进程退出策略。完整命令和发布边界见
+[部署说明](TASK_DEPLOYMENT.md)。
+
 ## 部署、版本与数据边界
 
 - Temporal RPC 只向可信 API/Worker 开放。HTTP Bearer 的 owner 检查不等于 Temporal
@@ -329,7 +355,28 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 
 ## 验证与交付证据
 
-本轮 TLS 故障运行 `cfdf11707eb142be9c8af50e11cb5dae` 的 **3 组验收通过**，使用真实
+本轮容器运行 `0c189c0de2614b5c8d4db07c4b4268be` **4 组通过**。使用最终固定
+arm64 镜像：两 API、两受信任 fixture Worker 容器分别强杀重建后，两项真实 V2
+Task 均完成各 10 个 native 工具步骤和 1 次 CAN；TaskID/首 Run 保持，4 份 History
+为 0 WorkflowTaskFailed。两个门控 Activity attempt 1→2，原生身份、request SHA
+与完整 native 状态相同。任务完成后同 SQLite Temporal 重启，原 API 容器保留，
+readyz 200→503→200，healthz 始终 200，结果不变。
+
+独立的默认生产 `launch worker` 空队列验收中，SIGTERM 后出现 DRAINING/STOPPED，
+0.914 秒退出 0，没有调用 provider。首轮旧镜像失败揭示 Linux 空闲 selector 未被
+`Event.set()` 唤醒；本轮增加 `call_soon_threadsafe` 唤醒并重新构建，最小 Linux
+无周期 timer 探针 0.318611 秒退出 0，完整容器测试随后通过。失败运行
+`74a3ec4f9711414a8d41b1ad7d463d4c` 保留，不算通过。
+
+最终完整运行耗时 39.57 秒，61 个资源样本，宿主所属 RSS 加 cgroup 采样峰值
+596.2 MiB，最低宿主可用内存 40%、VM 可用内存 87.44%；10 容器、2 个 Temporal
+进程和驱动已清理，末尾四个业务容器是 SIGKILL/137，不能称为全部优雅退出。
+六个测试凭据片段扫描 4 History/12 日志零匹配。该实验是单机 OrbStack、CLI SQLite
+与离线模型，不是整个 mTLS Compose profile、真实 provider、跨机 HA 或容量验收。
+完整镜像/manifest 摘要、失败原因、复跑命令与边界见 [Task 部署](TASK_DEPLOYMENT.md)。
+
+
+已提交 `06a93d4` 的 TLS 历史基线：运行 `cfdf11707eb142be9c8af50e11cb5dae` 的 **3 组验收通过**，使用真实
 SDK、生产 API 入口与 Worker 连接/执行代码、两个 API、两个 Worker 和两项 V2 Task。
 测试设施是 stdlib mTLS 隧道，TLS 后端仅为 loopback 明文 dev Temporal；模型仍为
 确定性 fixture。API、Worker、observer 分别使用测试客户端身份，未部署生产代理。
@@ -449,7 +496,7 @@ RSS、180 秒和最低可用内存比例的观察预算，超限标为 resource-
 双 API 幂等竞争、独立生产者退出、双 Worker 并行、全部 API 替换、同数据库 Temporal
 重启、Worker 冷重放、跨 owner 拒绝、事件续页、取消隔离和真实步骤上限终态。
 
-本轮独立 Agent Server [架构图](../docs/audits/task-server-tls-2026-10-16.png) 与
-[精确生图提示词](../docs/audits/task-server-tls-2026-10-16.prompt.txt) 标注共享连接配置、
-验证 TLS/mTLS 与两个认证边界；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
+本轮独立 Agent Server [架构图](../docs/audits/task-server-container-2026-10-16.png) 与
+[精确生图提示词](../docs/audits/task-server-container-2026-10-16.prompt.txt) 标注容器入口、
+角色 Secret、API readiness 与 Linux 信号唤醒；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
 具体运行证据与提交范围由 [DELIVERY.md](DELIVERY.md) 汇总。

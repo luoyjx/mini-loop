@@ -87,7 +87,21 @@ class ProcessLifecycle:
             # event loop. Set immediately: scheduling set() for a later turn can
             # let readiness slip out after a signal received during startup.
             if self._stop_event is not None:
-                self._stop_event.set()
+                try:
+                    self._stop_event.set()
+                except RuntimeError:
+                    # A signal can arrive while Runner is closing the loop.
+                    # The requested flag remains set and the watchdog is armed.
+                    pass
+                if self._loop is not None:
+                    try:
+                        # Event.set() queues callbacks but does not wake an idle
+                        # selector. PEP 475 can restart Linux epoll after this
+                        # handler, so also write the loop's thread-safe self-pipe.
+                        self._loop.call_soon_threadsafe(self._stop_event.set)
+                    except RuntimeError:
+                        # The bound loop may already have closed during cleanup.
+                        pass
         # A full stderr pipe may block this main thread. Do not hold the state
         # lock: the watchdog must still enter its nonblocking hard-exit path.
         lifecycle_log("TASK_WORKER_STOP_REQUESTED signal=" + signal.Signals(signum).name)

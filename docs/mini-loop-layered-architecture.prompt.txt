@@ -1,11 +1,10 @@
-Make a minimal targeted edit to the supplied ORIGINAL complete mini-loop architecture diagram. Keep the original canvas, every existing lane, every arrow, and the entire bottom Worker lifecycle strip exactly intact. Do NOT add a new row or route any lifecycle arrow into configuration.
+Use case: infographic-diagram. Make minimal text edits to the complete mini-loop layered architecture base supplied as reference. Preserve the original layout and all layers, all arrows, legacy Python/Go rows, standard Agent Server row, old Temporal prototype row, and the entire bottom Task CAN/lifecycle strip. No orange iteration badges in this canonical base.
 
-Only add the following compact text changes in the lowest independent Task HTTP lane:
-1. In the stateless Task API box, append "TLS / mTLS 连接".
-2. In the Worker pool box, append "TLS / mTLS 连接".
-3. Under the Temporal service box, append a small cyan lock annotation "共享连接配置 · 可选 API key".
-4. Replace the bottom constraint sentence with "无跨任务 Memory；生产 HA / 容量 / API key ACL 待验收".
-All detailed CA/SNI/certificate/file rules belong in the separate focused diagram, so do not try to fit them here.
-Keep the existing CAN LEFT return arrow labeled "Continue-As-New · 完整 Checkpoint".
-Keep the original lifecycle strip with SIGTERM/SIGINT -> stop polling/drain -> grace/harddeadline, and defaults2s/15s. Do not remove or obscure any lifecycle text.
-No orange badges in this canonical base. Never insert a test proxy into production flow. No other modifications.
+Only update the bottom independent Task HTTP lane:
+- Lane title becomes "独立 Task 容器 · task_server.launch api | worker · 显式启用".
+- API box title becomes "无状态 Task API 容器". Keep current submit/status/results/cancel/events and TLS/mTLS. Add tiny but readable "healthz 存活 / readyz 就绪".
+- Worker box title becomes "独立 Worker 容器池 · v1 + v2". Keep real Deep Agents and TLS/mTLS.
+- Add one compact normal-cyan label in this bottom lane: "同一固定镜像 · 非 root · 只读根 · 角色独立 Secret 文件". No extra network node.
+- Existing process lifecycle caption retains grace2s/hard15s and adds "容器停止预算 20s".
+- Keep complete Checkpoint/CAN return arrow, every8parent-boundary segmentation,24h/512parent-boundary/checkpoint size constraints, external Temporal History authority and productionHA/capacity pending note.
+Do not replace lifecycle or CAN with config. No TLS test tunnel. This update adds deployable containers, not new persistence or workflow execution semantics.

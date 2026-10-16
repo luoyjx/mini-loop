@@ -1,0 +1,1204 @@
+{
+  "schema_version": 1,
+  "run_id": "0c189c0de2614b5c8d4db07c4b4268be",
+  "status": "passed",
+  "started_at": "2026-10-16T08:42:24.694390+00:00",
+  "finished_at": "2026-10-16T08:43:04.260455+00:00",
+  "seconds": 39.57,
+  "scope": "Production Task image entrypoints, container isolation and durable V2 recovery on local OrbStack with a loopback plaintext Temporal CLI development server",
+  "excluded_claims": [
+    "production HA or capacity",
+    "cross-failure-domain failover",
+    "native Temporal server TLS or Temporal Cloud ACL",
+    "Compose CLI orchestration or mTLS Compose acceptance",
+    "real model-provider invocation",
+    "PostgreSQL-backed Temporal durability",
+    "external-effect exactly-once"
+  ],
+  "production_ha_acceptance": false,
+  "production_capacity_acceptance": false,
+  "cross_failure_domain_acceptance": false,
+  "native_temporal_tls_acceptance": false,
+  "compose_orchestration_acceptance": false,
+  "real_model_provider_acceptance": false,
+  "private_receipt": {
+    "file": "var/task-container-prototype/0c189c0de2614b5c8d4db07c4b4268be/receipt.json",
+    "sha256": "287d3d7823a6989f81bffbf1eda2316295e39315b2707bb3a97780ada1ca63ae"
+  },
+  "passed": [
+    "the default production Worker entrypoint becomes ready with hostname:PID identity on an empty queue, then docker stop delivers SIGTERM and exits 0 without invoking a model provider",
+    "the image reaches host loopback; two isolated production APIs and two non-root readonly Worker containers execute simultaneous real Activity gates with disjoint secret mounts",
+    "both APIs and both Workers are recreated with distinct container IDs; original Tasks and full native state survive, same-key submissions reuse existing Runs, and model Activity retries retain request SHA",
+    "both Tasks finish ten native tools and one CAN; real readiness changes 200→503→200 around Temporal restart while liveness remains 200, original API containers survive, and completed native results remain identical"
+  ],
+  "versions": {
+    "python": "3.12.15",
+    "temporal_cli": "1.9.1",
+    "temporal_dev_server": "1.32.0",
+    "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+    "supplied_checksum_verified": true,
+    "selected_image_packages": {
+      "mini-loop-deepagents": "0.1.0",
+      "deepagents": "0.7.25",
+      "langchain-core": "1.6.10",
+      "langchain-openai": "1.7.2",
+      "langgraph": "1.2.15",
+      "langgraph-api": "0.16.0",
+      "temporalio": "1.34.0",
+      "forbiddenfruit": "0.1.4"
+    },
+    "installed_package_count": 99,
+    "all_installed_packages_sha256": "2cea335afe28efc99be8bb36a222037691c323caeb4000b61c21e5e39cc6a11a"
+  },
+  "image": {
+    "id": "sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f",
+    "platform": "linux/arm64",
+    "size_bytes": 441144845,
+    "created_at": "2026-10-16T08:40:09.164452376Z",
+    "registry_push_verified": false,
+    "base_image": "python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "user": "10001:10001",
+    "entrypoint_module": "mini_loop_deepagents.task_server.launch",
+    "stop_signal": "SIGTERM",
+    "manifest": {
+      "file": "var/deepagents-delivery/task-container-wakeup-build-context/manifest.json",
+      "sha256": "118e0aa4e2288259745cc46ed9732d3b550c032e458c862ab9dab7281b2f5b50"
+    },
+    "project_wheel": {
+      "file": "var/deepagents-delivery/task-container-wakeup-build-context/wheels/mini_loop_deepagents-0.1.0-py3-none-any.whl",
+      "sha256": "f615c30db7f8b7d41344873dea2c38520a3a5c8e18aac92a4849232e83b6aeb6"
+    },
+    "lock_sha256": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+    "build_inputs_at_packaging": {
+      "Dockerfile.task": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+      "README.md": "e363cd71a3ee9c499125ef868d90f5b2794bfdc94ec8de50f492990e903153e1",
+      "pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+      "uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+    },
+    "installed_source_file_count": 24,
+    "all_installed_source_hashes_match_manifest_and_checkout": true,
+    "runtime_install_policy": "locked hashes plus one audited forbiddenfruit wheel hash; binary wheels only; full default dependencies plus temporal",
+    "audited_dependency_wheels": [
+      {
+        "filename": "forbiddenfruit-0.1.4-py3-none-any.whl",
+        "generator_claim": "setuptools (84.0.0)",
+        "matched_source_files": {
+          "forbiddenfruit-0.1.4.dist-info/licenses/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "forbiddenfruit-0.1.4.dist-info/licenses/COPYING.mit": "5672b7474a4b0fb208b7b155b235b5e3ea49b0855b7873620dce0690e9dca96d",
+          "forbiddenfruit/__init__.py": "06c3aaa83381d3dfd8ed16a4a96c8a47b6629802e67f826cfd6b09c9bf501eb8"
+        },
+        "name": "forbiddenfruit",
+        "sdist": {
+          "hash": "sha256:e3f7e66561a29ae129aac139a85d610dbf3dd896128187ed5454b6421f624253",
+          "size": 43756,
+          "upload-time": "2021-01-16T21:03:35.401Z",
+          "url": "https://files.pythonhosted.org/packages/e6/79/d4f20e91327c98096d605646bdc6a5ffedae820f38d378d3515c42ec5e60/forbiddenfruit-0.1.4.tar.gz"
+        },
+        "verification": "locked sdist hash; exact runtime and license bytes; metadata and full RECORD; no source execution",
+        "version": "0.1.4",
+        "wheel_bytes": 21879,
+        "wheel_sha256": "066ef48b13cd378d8c7a4db12d2814ad42f26646a021c60c8b0bce0290ecf4a2"
+      }
+    ],
+    "build_manifest_exclusions": [
+      "environment files",
+      "deployment secrets",
+      "tests",
+      "scripts",
+      "runtime state"
+    ]
+  },
+  "build_evidence": {
+    "wheel_build": {
+      "file": "var/deepagents-delivery/task-container-wakeup-wheel-20261016T163734.summary.json",
+      "sha256": "524260d628dae69ac0748482158b6fb3f1a733d00f8321a8af3326b9ebcac4c6",
+      "exit_code": 0,
+      "duration_seconds": 2.07,
+      "peak_tree_rss_kib": 224,
+      "lowest_free_percent": 53,
+      "samples": 1,
+      "resource_blocked": false
+    },
+    "image_build": {
+      "file": "var/deepagents-delivery/task-container-wakeup-image-build-20261016T163748.receipt.json",
+      "sha256": "1b8ef5c6aa679da4bd60ce52b9da7ab5baa73c8ff54e019de7e88943db94e7a4",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 142.31,
+      "sample_count": 127,
+      "build_limits_observed": true,
+      "minimum_host_free_percent": 38,
+      "minimum_vm_available_percent": 90.47,
+      "peak_owned_cgroup_bytes": 558096384,
+      "peak_vm_growth_bytes": 204496896,
+      "observer_removed": true,
+      "limits": {
+        "builder_bytes": 2013265920,
+        "observer_bytes": 67108864,
+        "aggregate_bytes": 2147483648,
+        "builder_cpu": 1.9,
+        "observer_cpu": 0.1,
+        "wall_seconds": 300,
+        "host_min_free_percent": 15,
+        "vm_min_available_percent": 15,
+        "vm_growth_soft_bytes": 2147483648
+      },
+      "resource_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-image-build-20261016T163748.resources.jsonl",
+        "sha256": "5e8da253c817a7aa0a2582c289291cb8af56b0447b6c7f7c8bb395479a0aa858"
+      },
+      "process_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-image-build-20261016T163748.log",
+        "sha256": "0142e36ac8bdbecca901edbf8811aa4a9957aa3239168e526d79c4ce08d9bacf"
+      }
+    },
+    "image_postcheck": {
+      "file": "var/deepagents-delivery/task-container-wakeup-postcheck-20261016T164028.receipt.json",
+      "sha256": "7a9b6a6c0453295685c6ac58b5052700ace03a16ff18244ebcecbc86382ba502",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 9.86,
+      "sample_count": 6,
+      "build_limits_observed": true,
+      "minimum_host_free_percent": 47,
+      "minimum_vm_available_percent": 92.32,
+      "peak_owned_cgroup_bytes": 40181760,
+      "peak_vm_growth_bytes": 20918272,
+      "observer_removed": true,
+      "limits": {
+        "builder_bytes": 2013265920,
+        "observer_bytes": 67108864,
+        "aggregate_bytes": 2147483648,
+        "builder_cpu": 1.9,
+        "observer_cpu": 0.1,
+        "wall_seconds": 300,
+        "host_min_free_percent": 15,
+        "vm_min_available_percent": 15,
+        "vm_growth_soft_bytes": 2147483648
+      },
+      "resource_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-postcheck-20261016T164028.resources.jsonl",
+        "sha256": "b7b272473af8764396256fd7fe1aa5fc068e1479a37b8d52bb541b62888cf1ce"
+      },
+      "process_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-postcheck-20261016T164028.log",
+        "sha256": "017bd4c30ec8c21eafa23b1e4a64f9c55c25b33f633ccdb31a89eaf2aac3c894"
+      }
+    },
+    "postcheck_output": {
+      "file": "var/deepagents-delivery/task-container-wakeup-postcheck-20261016T164028.log",
+      "sha256": "017bd4c30ec8c21eafa23b1e4a64f9c55c25b33f633ccdb31a89eaf2aac3c894"
+    },
+    "minimal_linux_probe_guard": {
+      "file": "var/deepagents-delivery/task-container-wakeup-linux-idle-20261016T164046.receipt.json",
+      "sha256": "2a7befdb6f8d74c10bc85c036f3c8b191c8b176fb199938e759e5df81b1ebe64",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.39,
+      "sample_count": 4,
+      "build_limits_observed": true,
+      "minimum_host_free_percent": 50,
+      "minimum_vm_available_percent": 92.29,
+      "peak_owned_cgroup_bytes": 30679040,
+      "peak_vm_growth_bytes": 26542080,
+      "observer_removed": true,
+      "limits": {
+        "builder_bytes": 2013265920,
+        "observer_bytes": 67108864,
+        "aggregate_bytes": 2147483648,
+        "builder_cpu": 1.9,
+        "observer_cpu": 0.1,
+        "wall_seconds": 300,
+        "host_min_free_percent": 15,
+        "vm_min_available_percent": 15,
+        "vm_growth_soft_bytes": 2147483648
+      },
+      "resource_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-linux-idle-20261016T164046.resources.jsonl",
+        "sha256": "c05c3e5ff7cae8cb0266cce25285fbad85dab019d63ef6838ddd1746cf0bbeb6"
+      },
+      "process_log": {
+        "file": "var/deepagents-delivery/task-container-wakeup-linux-idle-20261016T164046.log",
+        "sha256": "946cdd31cb86ebf15df6e74916fc355fc695f2e1053ecd1e03ee2c425d6484ed"
+      }
+    },
+    "resource_guard_sources": [
+      {
+        "file": "var/deepagents-delivery/task_container_build_guard.py",
+        "sha256": "191b4f31b8683b1df41a49539f57b270e3fbd21f0d54bb46cba0ef59c1c2730d"
+      },
+      {
+        "file": "var/deepagents-delivery/run_bounded.py",
+        "sha256": "01b8e449d6ddb6346a6ed053dfcd42d899de373a76281aedecda4f3e90046920"
+      }
+    ]
+  },
+  "production_default_worker": {
+    "container_id": "74911bf2945999f8259a883862cc7b36f89f0c27fafe443fae0d2cd28d02fe85",
+    "default_identity": "tc-0c189c0de261-production-worker:1",
+    "tasks_submitted": 0,
+    "provider_invoked": false,
+    "docker_stop_grace_seconds": 20,
+    "exit_code": 0,
+    "oom_killed": false,
+    "stop_seconds": 0.914,
+    "lifecycle_markers": [
+      "TASK_WORKER_READY identity=tc-0c189c0de261-production-worker:1",
+      "TASK_WORKER_STOP_REQUESTED signal=SIGTERM",
+      "TASK_WORKER_DRAINING",
+      "TASK_WORKER_STOPPED phase=drained"
+    ],
+    "entrypoint_module": "mini_loop_deepagents.task_server.launch",
+    "role": "worker",
+    "empty_queue_isolated_from_task_queue": true,
+    "security_contract": {
+      "container_id": "74911bf2945999f8259a883862cc7b36f89f0c27fafe443fae0d2cd28d02fe85",
+      "hostname": "tc-0c189c0de261-production-worker",
+      "role": "worker",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 402653184,
+      "memory_swap_limit_bytes": 402653184,
+      "nano_cpus": 500000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "model.txt"
+      ],
+      "published_port_bind_addresses": [],
+      "runtime_probe": {
+        "uid": 10001,
+        "gid": 10001,
+        "root_write_errno": 30,
+        "tmp_writable": true,
+        "tmp_capacity_bytes": 67108864,
+        "cgroup_v2": {
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "cpu.max": "50000 100000",
+          "pids.max": "128"
+        }
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    }
+  },
+  "long_task_boundary": {
+    "api_replica_count": 2,
+    "worker_replica_count": 2,
+    "task_count": 2,
+    "api_entrypoint": "production launch api",
+    "worker_entrypoint": "trusted readonly fixture calls production run_process with model_provider injection",
+    "production_image_fixture_selector": false,
+    "fixture_files_baked_into_image": false,
+    "synthetic_worker_model_secret_loaded": true,
+    "real_model_provider_invoked": false,
+    "simultaneous_worker_gate_count": 2,
+    "gate_parent_step": 3,
+    "activity_slots_per_worker": 1,
+    "workflow_slots_per_worker": 2
+  },
+  "host_loopback_probe": {
+    "container_id": "4220ea38b40fd3e892e13641e57574209281de41344400665815c13637845070",
+    "host_bind": "127.0.0.1",
+    "container_target": "host.docker.internal",
+    "nonce_roundtrip": true,
+    "exit_code": 0
+  },
+  "container_replacements": [
+    {
+      "role": "api",
+      "before_container_id": "8824818e6b7d3809544bb8f22526182184044c660fc043fcbd3168eaef6383c8",
+      "after_container_id": "e9f83bdc8c807bf3aa9222e13003c2265910cea54665863dfa8b959bc2559e27",
+      "signal": "SIGKILL",
+      "exit_code": 137,
+      "same_key_reused": true
+    },
+    {
+      "role": "api",
+      "before_container_id": "a4eaa67ee9df940756bae20d89e27db9c9b5c1bc6693df9429e06b4851773e65",
+      "after_container_id": "731255283eb574fb8e396e7fec9a8e1a3a9c7808f30f87a546cd4225af95afe1",
+      "signal": "SIGKILL",
+      "exit_code": 137,
+      "same_key_reused": true
+    },
+    {
+      "role": "worker",
+      "before_container_id": "6f9a9b454e1d43137e48c5a0a379180d59bb06d2d8ed6f3376ae475e1b485595",
+      "after_container_id": "7958e34cfee1c2111a51add3d823a68b2d8ff3a00f48dcea82e938bc6f2e9a7c",
+      "signal": "SIGKILL",
+      "exit_code": 137,
+      "before_activity": {
+        "activity_id": "4",
+        "attempt": 1,
+        "hostname": "tc-0c189c0de261-worker-1",
+        "pid": 1,
+        "request_sha256": "0d87c550b2b11ebb7a8dad01f785502beeb0671fc9b61963b4078bf55e49440b",
+        "run_id": "01a143e0-a269-7ecd-a812-5c374a34979a",
+        "started_monotonic_ns": 221296343871149,
+        "step": 3,
+        "worker_identity": "tc-0c189c0de261-worker-1:1",
+        "workflow_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff"
+      },
+      "after_activity": {
+        "activity_id": "4",
+        "attempt": 2,
+        "hostname": "tc-0c189c0de261-worker-3",
+        "pid": 1,
+        "request_sha256": "0d87c550b2b11ebb7a8dad01f785502beeb0671fc9b61963b4078bf55e49440b",
+        "run_id": "01a143e0-a269-7ecd-a812-5c374a34979a",
+        "started_monotonic_ns": 221310406230501,
+        "step": 3,
+        "worker_identity": "tc-0c189c0de261-worker-3:1",
+        "workflow_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff"
+      }
+    },
+    {
+      "role": "worker",
+      "before_container_id": "40cae1b4ea6db400a8f626cf6d6847b2ff82bd2e675907c2d569c86d4bc7e873",
+      "after_container_id": "87d4b19c57bf0ac23f8aae75c48e6eb6a2049e73fef12517e6c76a22203dec81",
+      "signal": "SIGKILL",
+      "exit_code": 137,
+      "before_activity": {
+        "activity_id": "4",
+        "attempt": 1,
+        "hostname": "tc-0c189c0de261-worker-2",
+        "pid": 1,
+        "request_sha256": "3dfb88a594d98a1d6aa21276c2df9617ab30ec696575672af222226c7e6e3219",
+        "run_id": "01a143e0-a2b5-7e30-b6f0-bf8eddb60bb6",
+        "started_monotonic_ns": 221296349522832,
+        "step": 3,
+        "worker_identity": "tc-0c189c0de261-worker-2:1",
+        "workflow_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11"
+      },
+      "after_activity": {
+        "activity_id": "4",
+        "attempt": 2,
+        "hostname": "tc-0c189c0de261-worker-4",
+        "pid": 1,
+        "request_sha256": "3dfb88a594d98a1d6aa21276c2df9617ab30ec696575672af222226c7e6e3219",
+        "run_id": "01a143e0-a2b5-7e30-b6f0-bf8eddb60bb6",
+        "started_monotonic_ns": 221316942833602,
+        "step": 3,
+        "worker_identity": "tc-0c189c0de261-worker-4:1",
+        "workflow_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11"
+      }
+    }
+  ],
+  "container_security_contracts": [
+    {
+      "container_id": "8824818e6b7d3809544bb8f22526182184044c660fc043fcbd3168eaef6383c8",
+      "hostname": "tc-0c189c0de261-api-1",
+      "role": "api",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 201326592,
+      "memory_swap_limit_bytes": 201326592,
+      "nano_cpus": 250000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "cursor.txt",
+        "tokens.json"
+      ],
+      "published_port_bind_addresses": [
+        "127.0.0.1"
+      ],
+      "runtime_probe": {
+        "uid": 10001,
+        "gid": 10001,
+        "root_write_errno": 30,
+        "tmp_writable": true,
+        "tmp_capacity_bytes": 67108864,
+        "cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        }
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "a4eaa67ee9df940756bae20d89e27db9c9b5c1bc6693df9429e06b4851773e65",
+      "hostname": "tc-0c189c0de261-api-2",
+      "role": "api",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 201326592,
+      "memory_swap_limit_bytes": 201326592,
+      "nano_cpus": 250000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "cursor.txt",
+        "tokens.json"
+      ],
+      "published_port_bind_addresses": [
+        "127.0.0.1"
+      ],
+      "runtime_probe": {
+        "uid": 10001,
+        "gid": 10001,
+        "root_write_errno": 30,
+        "tmp_writable": true,
+        "tmp_capacity_bytes": 67108864,
+        "cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        }
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "6f9a9b454e1d43137e48c5a0a379180d59bb06d2d8ed6f3376ae475e1b485595",
+      "hostname": "tc-0c189c0de261-worker-1",
+      "role": "worker",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 402653184,
+      "memory_swap_limit_bytes": 402653184,
+      "nano_cpus": 500000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "model.txt"
+      ],
+      "published_port_bind_addresses": [],
+      "runtime_probe": {
+        "cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "gid": 10001,
+        "hostname": "tc-0c189c0de261-worker-1",
+        "http_secret_env_present": false,
+        "http_secret_files_present": false,
+        "model_key_loaded": true,
+        "root_write_errno": 30,
+        "tmp_capacity_bytes": 67108864,
+        "tmp_writable": true,
+        "uid": 10001
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "40cae1b4ea6db400a8f626cf6d6847b2ff82bd2e675907c2d569c86d4bc7e873",
+      "hostname": "tc-0c189c0de261-worker-2",
+      "role": "worker",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 402653184,
+      "memory_swap_limit_bytes": 402653184,
+      "nano_cpus": 500000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "model.txt"
+      ],
+      "published_port_bind_addresses": [],
+      "runtime_probe": {
+        "cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "gid": 10001,
+        "hostname": "tc-0c189c0de261-worker-2",
+        "http_secret_env_present": false,
+        "http_secret_files_present": false,
+        "model_key_loaded": true,
+        "root_write_errno": 30,
+        "tmp_capacity_bytes": 67108864,
+        "tmp_writable": true,
+        "uid": 10001
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "e9f83bdc8c807bf3aa9222e13003c2265910cea54665863dfa8b959bc2559e27",
+      "hostname": "tc-0c189c0de261-api-3",
+      "role": "api",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 201326592,
+      "memory_swap_limit_bytes": 201326592,
+      "nano_cpus": 250000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "cursor.txt",
+        "tokens.json"
+      ],
+      "published_port_bind_addresses": [
+        "127.0.0.1"
+      ],
+      "runtime_probe": {
+        "uid": 10001,
+        "gid": 10001,
+        "root_write_errno": 30,
+        "tmp_writable": true,
+        "tmp_capacity_bytes": 67108864,
+        "cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        }
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "731255283eb574fb8e396e7fec9a8e1a3a9c7808f30f87a546cd4225af95afe1",
+      "hostname": "tc-0c189c0de261-api-4",
+      "role": "api",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 201326592,
+      "memory_swap_limit_bytes": 201326592,
+      "nano_cpus": 250000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "cursor.txt",
+        "tokens.json"
+      ],
+      "published_port_bind_addresses": [
+        "127.0.0.1"
+      ],
+      "runtime_probe": {
+        "uid": 10001,
+        "gid": 10001,
+        "root_write_errno": 30,
+        "tmp_writable": true,
+        "tmp_capacity_bytes": 67108864,
+        "cgroup_v2": {
+          "memory.max": "201326592",
+          "memory.swap.max": "0",
+          "cpu.max": "25000 100000",
+          "pids.max": "128"
+        }
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "7958e34cfee1c2111a51add3d823a68b2d8ff3a00f48dcea82e938bc6f2e9a7c",
+      "hostname": "tc-0c189c0de261-worker-3",
+      "role": "worker",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 402653184,
+      "memory_swap_limit_bytes": 402653184,
+      "nano_cpus": 500000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "model.txt"
+      ],
+      "published_port_bind_addresses": [],
+      "runtime_probe": {
+        "cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "gid": 10001,
+        "hostname": "tc-0c189c0de261-worker-3",
+        "http_secret_env_present": false,
+        "http_secret_files_present": false,
+        "model_key_loaded": true,
+        "root_write_errno": 30,
+        "tmp_capacity_bytes": 67108864,
+        "tmp_writable": true,
+        "uid": 10001
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    },
+    {
+      "container_id": "87d4b19c57bf0ac23f8aae75c48e6eb6a2049e73fef12517e6c76a22203dec81",
+      "hostname": "tc-0c189c0de261-worker-4",
+      "role": "worker",
+      "user": "10001:10001",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges:true"
+      ],
+      "memory_limit_bytes": 402653184,
+      "memory_swap_limit_bytes": 402653184,
+      "nano_cpus": 500000000,
+      "pids_limit": 128,
+      "all_bind_mounts_readonly": true,
+      "opposite_role_secret_environment_absent": true,
+      "secret_mount_filenames": [
+        "model.txt"
+      ],
+      "published_port_bind_addresses": [],
+      "runtime_probe": {
+        "cgroup_v2": {
+          "cpu.max": "50000 100000",
+          "memory.max": "402653184",
+          "memory.swap.max": "0",
+          "pids.max": "128"
+        },
+        "gid": 10001,
+        "hostname": "tc-0c189c0de261-worker-4",
+        "http_secret_env_present": false,
+        "http_secret_files_present": false,
+        "model_key_loaded": true,
+        "root_write_errno": 30,
+        "tmp_capacity_bytes": 67108864,
+        "tmp_writable": true,
+        "uid": 10001
+      },
+      "tmpfs_options": [
+        "rw,nosuid,nodev,noexec,size=67108864,mode=1777"
+      ]
+    }
+  ],
+  "snapshots": [
+    {
+      "task_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff",
+      "file": "var/task-container-prototype/0c189c0de2614b5c8d4db07c4b4268be/task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff.snapshots.json",
+      "file_sha256": "47414f5fcf049abbc315e3413c629af7bc9ac67c068b27357547614d9e6e8df2",
+      "full_native_state_equal": true
+    },
+    {
+      "task_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11",
+      "file": "var/task-container-prototype/0c189c0de2614b5c8d4db07c4b4268be/task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11.snapshots.json",
+      "file_sha256": "00ee1adebc84fe9f728f31a29f9df73296a102b25d1d430662a2f20a5a5bd0cc",
+      "full_native_state_equal": true
+    }
+  ],
+  "completed_tasks": [
+    {
+      "task_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff",
+      "owner": "alice",
+      "first_execution_run_id": "01a143e0-a269-7ecd-a812-5c374a34979a",
+      "final_run_id": "65fcccbd-d99a-49b0-a998-b756cd162790",
+      "status": "succeeded",
+      "can_count": 1,
+      "native_tool_steps": 10,
+      "snapshot_sha256": "b5db0c120b09735f2f627d78ab09e6cd19c426af8e2b2c4f44fc355970f8cccb"
+    },
+    {
+      "task_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11",
+      "owner": "alice",
+      "first_execution_run_id": "01a143e0-a2b5-7e30-b6f0-bf8eddb60bb6",
+      "final_run_id": "ffacf458-4b97-44f8-93a4-cd1d975aef77",
+      "status": "succeeded",
+      "can_count": 1,
+      "native_tool_steps": 10,
+      "snapshot_sha256": "795409befdb0a7fce3b6d34ef5c07a02dbc4ab7265cf33af2c248026e96fd3d9"
+    }
+  ],
+  "final_state_assertions": [
+    "original Task, owner and first execution Run identity retained",
+    "one original Human message",
+    "ten ordered native tool results with no duplicate tool-call IDs",
+    "four native files retain exact content and created/modified metadata",
+    "native plan finishes with its original single completed item",
+    "one native Continue-As-New per Task",
+    "full gated native snapshots deeply equal before and after replacements"
+  ],
+  "native_run_chains": [
+    {
+      "task_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff",
+      "first_execution_run_id": "01a143e0-a269-7ecd-a812-5c374a34979a",
+      "final_run_id": "65fcccbd-d99a-49b0-a998-b756cd162790",
+      "workflow_task_failures": 0,
+      "continuation_payload_sha256": "130c6fabc395177d2be5a1837ab396c665e563d9e70c91c65303174920300b59"
+    },
+    {
+      "task_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11",
+      "first_execution_run_id": "01a143e0-a2b5-7e30-b6f0-bf8eddb60bb6",
+      "final_run_id": "ffacf458-4b97-44f8-93a4-cd1d975aef77",
+      "workflow_task_failures": 0,
+      "continuation_payload_sha256": "42625543e54ef8a4e3682cee1c5245d266b840f5bad133b70e4b3636fc816cb1"
+    }
+  ],
+  "model_attempt_postcheck": {
+    "source": "offline structured markers from final Worker logs, bound to process_log_secret_scan hashes",
+    "native_activity_count": 22,
+    "model_attempt_count": 24,
+    "completed_attempt_count": 22,
+    "retried_activity_count": 2,
+    "maximum_attempt": 2,
+    "retry_budget": 3,
+    "all_attempts_consecutive": true,
+    "same_activity_step_and_request_sha_preserved": true,
+    "killed_attempts_have_no_finish_marker": 2
+  },
+  "readiness_dependency_outage": {
+    "first_temporal_pid": 26912,
+    "first_temporal_exit": -9,
+    "replacement_temporal_pid": 27281,
+    "same_sqlite_file": true,
+    "during_outage_readyz": 503,
+    "during_outage_healthz": 200,
+    "after_reconnect_readyz": 200,
+    "api_container_ids_preserved": [
+      "e9f83bdc8c807bf3aa9222e13003c2265910cea54665863dfa8b959bc2559e27",
+      "731255283eb574fb8e396e7fec9a8e1a3a9c7808f30f87a546cd4225af95afe1"
+    ],
+    "completed_results_unchanged": true,
+    "phase": "after both Tasks completed",
+    "cache_control": "no-store",
+    "namespace_probe": "real DescribeNamespace registered/name check",
+    "temporal_transport": "plaintext loopback",
+    "store": "same development SQLite file"
+  },
+  "resources": {
+    "measurement": "owned host process-tree RSS plus running container cgroup memory_stats.usage; Docker VM MemAvailable and host memory_pressure free percentage",
+    "rss_budget_mib": 2048,
+    "wall_budget_seconds": 180,
+    "minimum_memory_free_percent": 15,
+    "samples": 61,
+    "peak_aggregate_mib": 596.2,
+    "minimum_host_free_percent": 40,
+    "minimum_vm_available_percent": 87.44,
+    "vm_total_bytes": 8373993472,
+    "memory_psi_available": false,
+    "memory_psi_limitation": "OrbStack did not expose Linux memory PSI; null is unavailable, not zero pressure",
+    "docker_platform": {
+      "OperatingSystem": "OrbStack",
+      "Architecture": "aarch64",
+      "NCPU": 10,
+      "MemTotal": 8373993472,
+      "ServerVersion": "29.4.0",
+      "CgroupVersion": "2",
+      "CgroupDriver": "cgroupfs"
+    },
+    "per_container_observed_peaks": [
+      {
+        "container_id": "74911bf2945999f8259a883862cc7b36f89f0c27fafe443fae0d2cd28d02fe85",
+        "peak_memory_current_bytes": 269889536,
+        "last_cpu_total_ns": 3634397000
+      },
+      {
+        "container_id": "8824818e6b7d3809544bb8f22526182184044c660fc043fcbd3168eaef6383c8",
+        "peak_memory_current_bytes": 50647040,
+        "last_cpu_total_ns": 922600000
+      },
+      {
+        "container_id": "a4eaa67ee9df940756bae20d89e27db9c9b5c1bc6693df9429e06b4851773e65",
+        "peak_memory_current_bytes": 59047936,
+        "last_cpu_total_ns": 926344000
+      },
+      {
+        "container_id": "6f9a9b454e1d43137e48c5a0a379180d59bb06d2d8ed6f3376ae475e1b485595",
+        "peak_memory_current_bytes": 153714688,
+        "last_cpu_total_ns": 2744213000
+      },
+      {
+        "container_id": "40cae1b4ea6db400a8f626cf6d6847b2ff82bd2e675907c2d569c86d4bc7e873",
+        "peak_memory_current_bytes": 151457792,
+        "last_cpu_total_ns": 2788391000
+      },
+      {
+        "container_id": "e9f83bdc8c807bf3aa9222e13003c2265910cea54665863dfa8b959bc2559e27",
+        "peak_memory_current_bytes": 54714368,
+        "last_cpu_total_ns": 1479749000
+      },
+      {
+        "container_id": "731255283eb574fb8e396e7fec9a8e1a3a9c7808f30f87a546cd4225af95afe1",
+        "peak_memory_current_bytes": 46903296,
+        "last_cpu_total_ns": 855401000
+      },
+      {
+        "container_id": "7958e34cfee1c2111a51add3d823a68b2d8ff3a00f48dcea82e938bc6f2e9a7c",
+        "peak_memory_current_bytes": 153841664,
+        "last_cpu_total_ns": 2933515000
+      },
+      {
+        "container_id": "87d4b19c57bf0ac23f8aae75c48e6eb6a2049e73fef12517e6c76a22203dec81",
+        "peak_memory_current_bytes": 156753920,
+        "last_cpu_total_ns": 2970308000
+      }
+    ],
+    "any_oom_killed": false,
+    "nice_priority": 10
+  },
+  "cleanup": {
+    "confirmed": true,
+    "container_count": 10,
+    "containers": [
+      {
+        "container_id": "4220ea38b40fd3e892e13641e57574209281de41344400665815c13637845070",
+        "name": "tc-0c189c0de261-probe",
+        "role": "probe",
+        "exit_code": 0,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "loopback_probe_completed"
+      },
+      {
+        "container_id": "74911bf2945999f8259a883862cc7b36f89f0c27fafe443fae0d2cd28d02fe85",
+        "name": "tc-0c189c0de261-production-worker",
+        "role": "worker",
+        "exit_code": 0,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "production_worker_SIGTERM_drain"
+      },
+      {
+        "container_id": "8824818e6b7d3809544bb8f22526182184044c660fc043fcbd3168eaef6383c8",
+        "name": "tc-0c189c0de261-api-1",
+        "role": "api",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "fault_injection_SIGKILL"
+      },
+      {
+        "container_id": "a4eaa67ee9df940756bae20d89e27db9c9b5c1bc6693df9429e06b4851773e65",
+        "name": "tc-0c189c0de261-api-2",
+        "role": "api",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "fault_injection_SIGKILL"
+      },
+      {
+        "container_id": "6f9a9b454e1d43137e48c5a0a379180d59bb06d2d8ed6f3376ae475e1b485595",
+        "name": "tc-0c189c0de261-worker-1",
+        "role": "worker",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "fault_injection_SIGKILL"
+      },
+      {
+        "container_id": "40cae1b4ea6db400a8f626cf6d6847b2ff82bd2e675907c2d569c86d4bc7e873",
+        "name": "tc-0c189c0de261-worker-2",
+        "role": "worker",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "fault_injection_SIGKILL"
+      },
+      {
+        "container_id": "e9f83bdc8c807bf3aa9222e13003c2265910cea54665863dfa8b959bc2559e27",
+        "name": "tc-0c189c0de261-api-3",
+        "role": "api",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "final_cleanup_SIGKILL"
+      },
+      {
+        "container_id": "731255283eb574fb8e396e7fec9a8e1a3a9c7808f30f87a546cd4225af95afe1",
+        "name": "tc-0c189c0de261-api-4",
+        "role": "api",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "final_cleanup_SIGKILL"
+      },
+      {
+        "container_id": "7958e34cfee1c2111a51add3d823a68b2d8ff3a00f48dcea82e938bc6f2e9a7c",
+        "name": "tc-0c189c0de261-worker-3",
+        "role": "worker",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "final_cleanup_SIGKILL"
+      },
+      {
+        "container_id": "87d4b19c57bf0ac23f8aae75c48e6eb6a2049e73fef12517e6c76a22203dec81",
+        "name": "tc-0c189c0de261-worker-4",
+        "role": "worker",
+        "exit_code": 137,
+        "oom_killed": false,
+        "removed": true,
+        "stop_reason": "final_cleanup_SIGKILL"
+      }
+    ],
+    "host_processes": [
+      {
+        "name": "temporal-1",
+        "pid": 26912,
+        "returncode": -9
+      },
+      {
+        "name": "temporal-2",
+        "pid": 27281,
+        "returncode": 0
+      }
+    ],
+    "driver_pid": 26816,
+    "post_run_owned_label_query_empty": true,
+    "post_run_driver_and_host_pids_gone": true,
+    "final_business_container_cleanup": "Four surviving API/fixture Worker containers were deliberately SIGKILLed during cleanup and exited 137; only the separate idle default Worker proves graceful exit 0"
+  },
+  "history_secret_scan": [
+    {
+      "task_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff",
+      "run_id": "01a143e0-a269-7ecd-a812-5c374a34979a",
+      "sha256": "df4303ae57788a2c515170511d5b6a121991ed05fe63ac233d09c7c4ee4c4605",
+      "event_count": 55,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-f12a2fe5ece5aff9ffea2fc6424a4070d979f90446f14d5a06cd49b7fd2437ff",
+      "run_id": "65fcccbd-d99a-49b0-a998-b756cd162790",
+      "sha256": "9d70bcf4fdc0bf01bac7ae2d0f87829c82c9db347bb99ec2e5458eeb4575fdde",
+      "event_count": 25,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11",
+      "run_id": "01a143e0-a2b5-7e30-b6f0-bf8eddb60bb6",
+      "sha256": "585f2c7018437a9714ce9a4c0ebf5e7dd77d5803763e2efe512716ed4ea9e8c0",
+      "event_count": 55,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-73f26b28ec57600ebbaf29529bac81b7929cc8afdf5e14294b1056bd0081af11",
+      "run_id": "ffacf458-4b97-44f8-93a4-cd1d975aef77",
+      "sha256": "f8d044df6bdbadb0e5d92273391c3e7a15d6e92906b0a45a051017954bb31b49",
+      "event_count": 25,
+      "credential_matches": 0
+    }
+  ],
+  "process_log_secret_scan": {
+    "credential_matches": 0,
+    "needle_count": 6,
+    "logs": [
+      {
+        "name": "tc-0c189c0de261-api-1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "tc-0c189c0de261-api-2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "tc-0c189c0de261-api-3.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "tc-0c189c0de261-api-4.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "tc-0c189c0de261-probe.log",
+        "sha256": "7c3a6ba66bf00b94c89f118047894c0229c24cc364350f280d11ad3fc9306bf8"
+      },
+      {
+        "name": "tc-0c189c0de261-production-worker.log",
+        "sha256": "7aca4403a1916750dddb34adb5dd3e89637396e1099f49505f6923b6b9c3631b"
+      },
+      {
+        "name": "tc-0c189c0de261-worker-1.log",
+        "sha256": "c6aa6c5ef57614fe6168ceca1d797fe1c0d3876f351838b74c548f01d9938359"
+      },
+      {
+        "name": "tc-0c189c0de261-worker-2.log",
+        "sha256": "ac26527e9e7adc02c21cae915b0099a4d4b3e4985f78e2d5d31a9eb3487cce6e"
+      },
+      {
+        "name": "tc-0c189c0de261-worker-3.log",
+        "sha256": "0fc6b8b1c5531913ef6c8a76b5f50b07cf1c4fbd048a87f02e680d865efb283c"
+      },
+      {
+        "name": "tc-0c189c0de261-worker-4.log",
+        "sha256": "1da2a43a96fcc4d48d3f2dade648effc63c6264c81e82ef058758efc83d3a7b2"
+      },
+      {
+        "name": "temporal-1.log",
+        "sha256": "09f23131c4425f66ebe37bd1013334ad72637c60fa408d4b51a9d123cb1b3a00"
+      },
+      {
+        "name": "temporal-2.log",
+        "sha256": "aa5d97d748e592583b83ab7d212139c26cb232d4ca3aca224afebf594a6e8fd4"
+      }
+    ]
+  },
+  "previous_failure_and_fix": {
+    "run_id": "74a3ec4f9711414a8d41b1ad7d463d4c",
+    "status": "failed",
+    "receipt": {
+      "file": "var/task-container-prototype/74a3ec4f9711414a8d41b1ad7d463d4c/receipt.json",
+      "sha256": "e13ed08841cc4089c9181eee927c799d31e9081cc1e1b05629440465d74b8eee"
+    },
+    "image_id": "sha256:23157955d0c80c40cc5a9ce15871fc891641a0d8dfe492fedfea4a463f120228",
+    "seconds": 28.57,
+    "reason": "The production idle Worker launcher did not become ready and drain successfully on SIGTERM",
+    "observed_worker_exit": 70,
+    "observed_lifecycle_markers": [
+      "TASK_WORKER_READY identity=tc-74a3ec4f9711-production-worker:1",
+      "TASK_WORKER_STOP_REQUESTED signal=SIGTERM",
+      "TASK_WORKER_HARD_EXIT reason=deadline"
+    ],
+    "worker_log": {
+      "file": "var/task-container-prototype/74a3ec4f9711414a8d41b1ad7d463d4c/tc-74a3ec4f9711-production-worker.log",
+      "sha256": "7cd407279a37a8c487b9945f956cbe6490d62566830559406580e100046b9e50"
+    },
+    "long_task_phase_executed": false,
+    "cleanup_confirmed": true,
+    "peak_aggregate_mib": 543.7,
+    "minimum_host_free_percent": 48,
+    "minimum_vm_available_percent": 91.11,
+    "fix": "Preserve immediate stop_event.set for startup ordering and also call loop.call_soon_threadsafe(stop_event.set) to wake the idle selector; the hard shutdown deadline remains active",
+    "lifecycle_source_sha256": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+    "minimal_linux_signal_probe": {
+      "file": "var/deepagents-delivery/task-container-wakeup-idle-signal.receipt.json",
+      "sha256": "946cdd31cb86ebf15df6e74916fc355fc695f2e1053ecd1e03ee2c425d6484ed",
+      "image": "sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f",
+      "status": "passed",
+      "proof": "Linux selector timeout=None before SIGTERM to container ID; no periodic async timer",
+      "container_id": "6b414eed235f5ff3d95fdc686feb1db254e89e08dc30a5c6ef1ea279543ed6cf",
+      "exit_code": 0,
+      "signal_to_exit_seconds": 0.318611,
+      "output": [
+        "READY",
+        "IDLE",
+        "TASK_WORKER_STOP_REQUESTED signal=SIGTERM",
+        "DRAINED",
+        "CLEAN"
+      ],
+      "probe_source": {
+        "file": "var/deepagents-delivery/task_container_idle_signal_probe.py",
+        "sha256": "16e7c6a90ce7185bb9fb2f722987699e898eca370f28f233e9ca36fd309acd7f"
+      }
+    },
+    "full_runtime_confirmation": "production_default_worker and the full final container run in this evidence"
+  },
+  "source_freeze": {
+    "root": "repository-relative paths",
+    "scope": "final validated production wheel sources, packaging inputs, harnesses, trusted fixtures and focused tests; documentation may continue editing",
+    "sha256": {
+      "deepagents-server/.env.task.example": "2a8f3880599a241e0fba83a9792e3d9d0cdfd3508282dce172ff3cd9ecf44435",
+      "deepagents-server/Dockerfile.task": "51edcc09fcdc576852178edfdd6cdc0023bf9182dbc9532350629059055ca3ea",
+      "deepagents-server/compose.task.yaml": "165038d7796901a6da0075b4fe153582664f7687f312add56062d302b493d1b7",
+      "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+      "deepagents-server/scripts/build_task_bundle.py": "2a424b48ab7923257e5d66f210d53412d9008c77c94ebe60be4e1a2a8acf21d6",
+      "deepagents-server/scripts/task_container_fault_smoke.py": "30ef6e27590bda5b759b7290afe4a1277d229374034826fcf9562e9b2378c199",
+      "deepagents-server/scripts/task_server_fault_smoke.py": "d139ec28357ada1415e025a4b9b2cda23036956ebe8efe1c5df67241222b1861",
+      "deepagents-server/scripts/task_tls_fault_smoke.py": "6166a3b8520a250de4cbd3f260e088e4481fff852008b2b34071ef012f70d44a",
+      "deepagents-server/scripts/task_worker_rollout_smoke.py": "c7524dca09aca7bb90219e791fe44380088571e4621562d9ee261f6725be6ebf",
+      "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+      "deepagents-server/src/mini_loop_deepagents/__init__.py": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+      "deepagents-server/src/mini_loop_deepagents/auth.py": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+      "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+      "deepagents-server/src/mini_loop_deepagents/graph.py": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+      "deepagents-server/src/mini_loop_deepagents/instructions.md": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+      "deepagents-server/src/mini_loop_deepagents/jobs.py": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+      "deepagents-server/src/mini_loop_deepagents/task_contracts.py": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+      "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+      "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "a6dad0fbb9d087dce96cea96474ab9766c16d31a95a0da3eb8f71ab8bbffe471",
+      "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+      "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+      "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+      "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+      "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "05a4eb8f89c302618cc66f5dc4189cbe9f8740263b99349a5ce4978bdfd79622",
+      "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+      "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+      "deepagents-server/tests/task_container_support.py": "8cbae030cb1dd8ae188960024229773ffb64024923ceaea6727dea9ae6c21b0f",
+      "deepagents-server/tests/task_container_worker_fixture.py": "91034397a9c83e27a2e78d4e4593cb00d97e26d62a76d775f2e3dbefb8e68e79",
+      "deepagents-server/tests/task_rollout_worker_fixture.py": "247672a5b2c9a15f5832208f3e5775fe17283c0b42c0059170e8187eac107e17",
+      "deepagents-server/tests/task_worker_fixture.py": "95f27f464636f0f19f0b9cab9c6ff2d3c9c279f99540c9df7b80500b678c96c9",
+      "deepagents-server/tests/test_task_container_harness.py": "3464a7d7b27dc9309e0873d6ae9b1cda5589c0e1f0d752145eac6c8e861462d1",
+      "deepagents-server/tests/test_task_deployment.py": "59d56380b4c9fae606c788d30cfcd0b32ff45490c274e27f4ef658760c9b2d8d",
+      "deepagents-server/tests/test_task_launch.py": "bacb2cd4a1d97e891233be822a0d70a27c11a40a713461b264546c1d06dbeec9",
+      "deepagents-server/tests/test_task_lifecycle.py": "09f3b4a8ec41954950762e77e9704c2241894cf2345815911d467d265b714e91",
+      "deepagents-server/tests/test_task_readiness.py": "ed5e1df3b2ecba75bb2189749f8ba15daae7af15c53c0a46683261cba1ebaebf",
+      "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+    }
+  },
+  "validation": {
+    "focused_harness_tests": 11,
+    "focused_harness_tests_seconds": 2.41,
+    "full_container_fault_smoke": "passed",
+    "git_diff_check": "passed",
+    "module_full_suite": "recorded separately by root validation; not claimed here"
+  }
+}

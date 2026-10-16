@@ -1,0 +1,3 @@
+Repair only the lower-right lifecycle caption in this complete architecture image. Preserve everything else. The current image says "硬杀15s", which is inaccurate: the Worker process exits with code70 at its deadline; this is not SIGKILL. Replace that strip with exact readable text:
+"停新轮询并排空 · Activity 宽限 2s · 进程期限 15s · 容器停止预算 20s".
+Do not change the CAN return arrow, TLS, launch api|worker title, role-separated Secret label, healthz/readyz, other lanes or styling. No orange highlights.

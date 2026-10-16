@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-tls-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [本轮分层图与修改标注](../docs/audits/task-server-container-2026-10-16.png)。
 
 ## 已实现与边界
 
@@ -211,6 +211,17 @@ library 的 Temporal 连接采用显式 `TemporalConnectionSettings`，默认明
 证书在启动时加载，轮换需重建 Client/滚动替换进程。HTTP Bearer 的 owner 权限与
 Temporal namespace 原生 ACL 属于两个边界；连接成功不证明全部 RPC 已获授权。
 完整变量、约束与测试边界见 [Task Server](TASK_SERVER.md#temporal-连接与-tlsmtls)。
+
+独立 [Task 容器部署](TASK_DEPLOYMENT.md) 使用 `Dockerfile.task` 与 `compose.task.yaml`，
+锁定现有 Temporal extra 和经批准的 Python 基础镜像；两个角色共用应用镜像并连接外部
+Temporal。`task_server.launch api|worker` 在同一进程读取各自 Secret 文件后进入现有
+CLI，Worker identity 缺省使用 hostname/PID。API 不挂模型 key，Worker 不挂 HTTP
+token/cursor secret。非 root、只读根、有限临时目录和 20 秒容器停止预算是部署配置。
+信号处理显式唤醒空闲事件循环，使生产 Worker 收到 SIGTERM 后能够进入排空。
+API `/healthz` 只检查进程；`/readyz` 通过有界 DescribeNamespace 检查目标 namespace，
+并合并并发探针、缓存一秒；这不证明 Start 授权、可用 Worker 槽或生产 HA。
+已有标准 Agent Server 的 Dockerfile/Compose 保留独立入口；部署、镜像构建和容器故障
+验收的实际范围记录在部署说明及 [DELIVERY](DELIVERY.md) 中。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

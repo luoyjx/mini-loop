@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; Task API and Worker share explicit verified TLS/mTLS client settings; bounded CAN and shutdown retained; production HA/capacity unverified",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; Task containers use role-specific secrets and namespace readiness; external Temporal owns durability; production HA/capacity unverified",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      4650
+      4850
     ],
     "views": [
       {
@@ -925,7 +925,7 @@
       "sublabel": "Bearer / Idempotency-Key / message",
       "pos": [
         60,
-        4050
+        4250
       ],
       "size": [
         310,
@@ -936,10 +936,10 @@
       "id": "tsApi",
       "type": "frontend",
       "label": "Independent Bearer Task API",
-      "sublabel": "submit / status / result / cancel / events",
+      "sublabel": "submit / status / result / cancel / events / readyz",
       "pos": [
         550,
-        4050
+        4250
       ],
       "size": [
         360,
@@ -954,7 +954,7 @@
       "sublabel": "stable TaskID / first Run / retained Run chain",
       "pos": [
         1070,
-        4050
+        4250
       ],
       "size": [
         400,
@@ -969,7 +969,7 @@
       "sublabel": "Deep Agents / portable native saver journal",
       "pos": [
         1630,
-        4050
+        4250
       ],
       "size": [
         400,
@@ -984,7 +984,7 @@
       "sublabel": "fixed deployment alias / retry / heartbeat",
       "pos": [
         1630,
-        4300
+        4500
       ],
       "size": [
         400,
@@ -999,7 +999,7 @@
       "sublabel": "model / credentials from Worker environment",
       "pos": [
         1070,
-        4300
+        4500
       ],
       "size": [
         400,
@@ -1010,10 +1010,10 @@
       "id": "tsProcess",
       "type": "backend",
       "label": "Worker process lifecycle",
-      "sublabel": "SIGTERM / SIGINT to SDK shutdown",
+      "sublabel": "SIGTERM / loop wakeup / SDK shutdown",
       "pos": [
         1630,
-        3750
+        3950
       ],
       "size": [
         400,
@@ -1028,13 +1028,28 @@
       "sublabel": "CLI environment / explicit library object",
       "pos": [
         550,
-        3750
+        3950
       ],
       "size": [
         400,
         76
       ],
       "tag": "TLS / CA / mTLS pair / server name / API key"
+    },
+    {
+      "id": "tsLaunch",
+      "type": "backend",
+      "label": "Task image / role launcher",
+      "sublabel": "non-root / role-specific secret files",
+      "pos": [
+        1070,
+        3750
+      ],
+      "size": [
+        400,
+        76
+      ],
+      "tag": "same-process API or Worker / external Temporal"
     }
   ],
   "boundaries": [
@@ -1136,7 +1151,8 @@
         "tsModelActivity",
         "tsModel",
         "tsProcess",
-        "tsConnection"
+        "tsConnection",
+        "tsLaunch"
       ],
       "pad": 50
     }
@@ -2181,7 +2197,7 @@
       "label": "Start / TLS option",
       "labelAt": [
         990,
-        4140
+        4340
       ]
     },
     {
@@ -2217,7 +2233,7 @@
       "variant": "emphasis",
       "labelAt": [
         1910,
-        3938
+        4138
       ]
     },
     {
@@ -2230,7 +2246,7 @@
       "toSide": "top",
       "labelAt": [
         835,
-        3938
+        4138
       ]
     },
     {
@@ -2238,7 +2254,34 @@
       "from": "tsConnection",
       "to": "tsProcess",
       "label": "client config",
-      "variant": "security"
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          750,
+          3680
+        ],
+        [
+          1830,
+          3680
+        ]
+      ]
+    },
+    {
+      "id": "tsLaunchApi",
+      "from": "tsLaunch",
+      "to": "tsApi",
+      "label": "API startup",
+      "variant": "dashed",
+      "toSide": "top"
+    },
+    {
+      "id": "tsLaunchWorker",
+      "from": "tsLaunch",
+      "to": "tsProcess",
+      "label": "Worker startup",
+      "variant": "dashed"
     }
   ],
   "cards": [
@@ -2483,6 +2526,9 @@
       "dot": "cyan",
       "title": "Opt-in Temporal Task HTTP service",
       "items": [
+        "The optional Task image uses the approved digest-pinned Python 3.12.15 slim base and a source-verified wheel with locked hashed dependencies. launch api|worker loads only role-specific secret files, then enters the real CLI in the same process. Numeric UID 10001, read-only root and bounded /tmp are deployment controls, not a sandbox or HA claim. API and Worker scale separately against an external Temporal service; the profile creates no Temporal/SQL/Redis service or ingress. The existing sdist-only forbiddenfruit dependency requires an explicitly supplied wheel audited against the locked source archive, runtime and license bytes, metadata and RECORD; no automatic source build or new Python dependency is enabled.",
+        "GET /healthz is process liveness. GET /readyz performs a bounded DescribeNamespace read, requires the configured namespace name and REGISTERED state, and returns only ready/not_ready. One-second singleflight RPC/cache limits probe load; it does not prove Workflow Start authorization, Worker slots or model availability. Compose health status alone does not restart unhealthy processes. Its 20-second stop grace exceeds the Worker 15-second hard deadline; restart policy is separate.",
+        "Linux container acceptance exposed an idle-selector signal wakeup defect: the process handler now sets the stop event immediately and calls loop.call_soon_threadsafe to wake the loop. A no-timer Linux probe exited 0 after SIGTERM; the default production Worker entrypoint separately reached READY, DRAINING and STOPPED on an empty queue without invoking a model. Two real Task runs survived API/fixture-Worker container replacement and each completed ten native tool steps and one CAN. This single-host test is not full mTLS Compose, live-provider or production HA acceptance.",
         "Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or a verified matching task. New work selects TaskWorkflowV2/task-v2. The unchanged v1 Workflow remains registered; matching old keys reuse their retained original version and digest.",
         "Temporal retained History is direct authority for execution, owner/request memo, status, result and event pages. Start uncertainty returns the stable TaskID for reconciliation. Dedupe and event availability are retention-bounded; no permanent admission ledger, outbox or separate checkpoint database is installed.",
         "V2 carries public saver put/put_writes journal operations across Continue-As-New after eight safe parent model boundaries. Native channels, routing, pending writes, DeltaChannel ancestry and private summary state survive the transport. TaskID and first execution identity remain stable while RunID changes.",

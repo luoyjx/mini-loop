@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+!.env.task.example
 .venv/
 .langgraph_api/
 dist/

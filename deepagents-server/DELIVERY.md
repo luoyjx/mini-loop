@@ -1,12 +1,78 @@
 # Deep Agents Server delivery — 2026-10-16
 
-当前迭代以已推送的 `401e4d5` 为基线，为独立 Task API / Worker 增加共享的
-**Temporal TLS / mTLS 连接配置**。两 CLI 显式读取服务端环境或凭据文件；库调用只接收
-显式配置对象，默认不读取 Temporal 环境变量。TLS 校验 CA 与服务名，可选客户端证书
-对和 API key；携带安全字段时禁止明文，连接失败不降级。证书在启动时加载，轮转需要
-重建 Client。原 Python/Go 业务、Workflow/CAN、进程生命周期和重试预算未改，无新增依赖。
+当前迭代以已推送的 `06a93d4` 为基线，交付独立 Task API / Worker 的固定镜像、
+角色启动器、外部 Temporal Compose 配置和 API 就绪探针。真实 Linux 容器验收发现
+空闲事件循环未被 SIGTERM 唤醒；本轮修复并重新构建、重跑验证。原 Python/Go 业务、
+Workflow/CAN、重试和停机预算保持原合同。新增基础镜像已经用户明确批准，Python
+依赖及锁文件不变。部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
 
-## Temporal TLS / mTLS 连接迭代
+## 独立 Task 容器与 Linux 停机迭代
+
+API 与 Worker 共用一份镜像，通过 `task_server.launch api|worker` 同进程启动，分别
+读取各自允许的 Secret 文件。Compose 设置非 root UID 10001、只读根、有限 `/tmp`、
+CPU/内存/PID 限额和 20 秒停止预算；外部 Temporal 的部署、持久性与 HA 由运营方提供。
+`/healthz` 只表示进程存活；`/readyz` 合并并发 DescribeNamespace RPC、限定一秒并缓存
+一秒，只证明 namespace 当时可用，不证明提交权限或 Worker 容量。
+
+固定基础镜像为 `python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258`。
+最终本地应用 image ID 为
+`sha256:3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f`，
+平台 `linux/arm64`，441,144,845 bytes；没有推送镜像 registry，因此不将该 image ID
+冒充 registry digest。镜像含 99 个 distribution，除基础镜像的 pip 外全部版本匹配锁；
+24 个项目包文件逐字节匹配。Manifest SHA-256 为
+`118e0aa4e2288259745cc46ed9732d3b550c032e458c862ab9dab7281b2f5b50`。
+
+构建上下文由白名单生成，排除 checkout 环境文件、凭据、测试 fixture 和运行状态。
+首次 binary-only 构建遇到已锁定的 `forbiddenfruit==0.1.4` 只有 sdist；随后严格核对
+现有缓存 wheel 与锁内 sdist 的运行时代码、许可证、metadata 和完整 RECORD，并仅为
+该审计 wheel 添加 hash。未执行 sdist、未增加依赖或编译器；构建命令要求显式提供
+两份审计输入。最终构建 142.31 秒，观察到的自有 cgroup 峰值 532.24 MiB；builder
+配置 1920 MiB / 1.9 CPU，observer 64 MiB / 0.1 CPU，swap 0。宿主最低空闲 38%，
+VM 最低可用 90.47%；守门器没有把 Docker CLI 的 RSS 当成容器内存。
+
+首次完整容器 run `74a3ec4f9711414a8d41b1ad7d463d4c` **失败**：默认 Worker
+记录收到 SIGTERM 后，空闲 selector 未唤醒，最终 deadline exit 70；主恢复测试尚未进入。
+修复保留立即设置 stop event 的启动期合同，并用 `call_soon_threadsafe` 唤醒事件循环。
+重建镜像后，无定时器 Linux selector 探针在信号后 0.318611 秒退出 0；真实默认入口
+Worker 在独立空队列收到 docker stop 后 0.914 秒退出 0，出现完整排空日志、无 OOM。
+失败回执保留，未用后续成功覆盖。
+
+完整容器 run `0c189c0de2614b5c8d4db07c4b4268be` 在 39.57 秒内通过：两 API 和两
+Worker 各自 SIGKILL 后重建，两个并行 Task 各完成 10 个工具步骤及一次 CAN；重试前后
+完整状态与请求 SHA 相等。22 个原生模型 Activity、24 次尝试，两个 Activity 从 1 重试
+至 2，最大尝试 2；四份原生 History 没有 WorkflowTaskFailed。停掉本机 Temporal 后
+`readyz` 由 200 变 503，`healthz` 保持 200；同 SQLite 重启后 `readyz` 回到 200，
+已完成结果不变。六个合成秘密匹配项在四份 History 与十二份日志中均无命中。
+
+验收共 61 个资源样本，宿主自有 RSS 加容器 cgroup 峰值 596.2 MiB，宿主最低空闲
+40%，VM 最低可用 87.44%，无 OOM。VM 未暴露 memory PSI，未将缺测计为零。
+十个自有容器和全部自有宿主进程已清理；最终四个 fixture 业务容器用 SIGKILL 收尾，
+不能称为全部正常排空。正常停机证据来自上述独立默认入口 Worker。
+
+发布证据：[task-container-evidence.json](docs/task-container-evidence.json)。故障恢复
+使用只读挂载的离线模型 fixture，镜像中没有该 fixture 或公共 fixture selector；真实
+默认 Worker 停机验收没有提交任务或调用模型。本轮故障连接使用本机明文 Temporal dev
+服务，未验 Compose 编排或其生产 mTLS 全链路；上一轮 mTLS 测试证据独立保留。
+
+| 最终 Gate | 结果 | 范围与资源 |
+| --- | --- | --- |
+| 模块 pytest，含 Temporal extra | **576 passed in 3.79s** | wrapper 6.12 秒；采样峰值 184.5 MiB；最低 memory-free 50% |
+| 原 Python pytest | **2256 passed, 28 skipped, 104 warnings**，97.68 秒 | wrapper 99.81 秒；采样峰值 411.3 MiB；最低 memory-free 47% |
+| 原 Python invariants | **77 modules checked**，退出 0 | 仅原 Python package，不替代独立模块验收 |
+| Lock / offline wheel | **105 packages**；24 个包文件、23 个 Python 模块、其中 11 个 Task 模块 | 源码与 README metadata 逐字节匹配；package / lock 不变；最终 wheel SHA 与容器构建一致 |
+| Archify | **9/9**，0 errors / 0 warnings | 从 JSON 生成 HTML；明暗静态目检通过，浏览器交互未验 |
+| Research Atlas | content **21 篇**，build 与 HTML **5/5** 通过 | wrapper 8.16 秒；采样峰值 532.7 MiB；最低 memory-free 54%；仅目标报告 record 变化 |
+| Markdown / source freeze | **213 个本地引用**、fence、README outline、`git diff --check` 通过 | 52 个回归冻结文件、44 个容器证据文件及 PNG/prompt 摘要一致 |
+
+全部 gate 串行、`nice -n 10`，常规预算 1.5 GiB / 300 秒 / memory-free 15%；
+容器故障预算 2 GiB / 180 秒，未资源超限。短命检查只有启动采样，不把它当作可靠峰值。
+最终回归前后 52 个冻结文件摘要一致；其中已发布容器证据冻结 44 个源码/部署/测试文件。
+v1/v2 Workflow、checkpoint 和 summarization 保持基线字节一致；lifecycle 的本轮修复
+单独列明。未改 Go、source scanner 或旧 guarded mutation anchors，未运行相应 gate。
+日志索引为 `var/deepagents-delivery/task-container-final-validation.receipt.json`；
+公开门禁摘要见 [task-container-validation.json](docs/task-container-validation.json)。
+
+## Temporal TLS / mTLS 历史验证（06a93d4）
 
 真实固定 SDK 连接 stdlib mTLS 测试隧道，后端仅转发到 loopback Temporal dev server。
 两个正式 Task API 进程、两个调用正式 Worker 进程入口的离线模型 fixture，以及 observer
@@ -258,8 +324,8 @@ scan 或 mutation gate。认证参数策略由新模块测试和真实 HTTP 故�
 
 - 规范：[README Mermaid](../README.md#architecture)；模块展开：[分层说明](ARCHITECTURE.md)。
 - Archify source：[architecture JSON](../docs/mini-loop-system.architecture.json)；generated [interactive HTML](../docs/mini-loop-system.architecture.html)。
-  当前 TLS 迭代 Spec SHA-256 `0454073d4050620abc0aea0992e35d7e033510d81c645d8f2475ab0671ccd561`；
-  HTML SHA-256 `94cec61736130b25e142dd854fbcca8b936b40682ab6182b042bb442a0eb8676`。
+  当前容器迭代 Spec SHA-256 `ef5fd594da18617d09151dd31ccc14901ebfcf09125d82539cfd14d15159154c`；
+  HTML SHA-256 `2166d2a8c5d60482d9f70ef6672cc927cd559850c99a9c4c906ced06203ef69b`。
 - 完整 base：[PNG](../docs/mini-loop-layered-architecture.png) 与 [exact prompt](../docs/mini-loop-layered-architecture.prompt.txt)。
 - 初始模块历史标注（6328007）：[PNG](../docs/audits/deepagents-server-2026-10-16.png) 与 [exact prompt](../docs/audits/deepagents-server-2026-10-16.prompt.txt)。
 - 标准模块聚焦图（e67e174）：[PNG](docs/agent-server-layered-architecture.png) 与 [exact prompt](docs/agent-server-layered-architecture.prompt.txt)。
@@ -271,26 +337,31 @@ scan 或 mutation gate。认证参数策略由新模块测试和真实 HTTP 故�
 - 上一轮滚动替换图（401e4d5）：[PNG](../docs/audits/task-server-rollout-2026-10-16.png) 与 [exact prompt](../docs/audits/task-server-rollout-2026-10-16.prompt.txt)。
   [修图提示词](../docs/audits/task-server-rollout-2026-10-16.repair.prompt.txt) 校正模型 I/O 箭头方向，并将 CAN 状态传递与 Activity 心跳/结果分开表述。
 
-- 本轮 TLS 独立图：[PNG](../docs/audits/task-server-tls-2026-10-16.png) 与 [exact prompt](../docs/audits/task-server-tls-2026-10-16.prompt.txt)。
+- 上一轮 TLS 独立图（06a93d4）：[PNG](../docs/audits/task-server-tls-2026-10-16.png) 与 [exact prompt](../docs/audits/task-server-tls-2026-10-16.prompt.txt)。
   修图提示词：[路径、无状态图标与颜色](../docs/audits/task-server-tls-2026-10-16.repair.prompt.txt)、
   [凭据与认证边界](../docs/audits/task-server-tls-2026-10-16.boundary-repair.prompt.txt)。
   两个未采用的完整 base 草稿提示词也保留：[初稿](../docs/audits/task-server-tls-2026-10-16.base-initial.prompt.txt)、
   [修复尝试](../docs/audits/task-server-tls-2026-10-16.base-repair.prompt.txt)；它们压缩了 CAN / lifecycle 区域，故改为最小文字编辑。
 
-本轮 built-in imagegen 最终对完整 base 的 Task API / Worker 增加 TLS 连接文字与
-共享配置注释，保留 CAN 回流线及原停机条；再从完整 base 和上一轮聚焦图生成独立图。
-橙色只标本轮连接配置、认证边界和新增本地验收，既有 CAN 与进程生命周期保持蓝色。
-共享配置的注入线不是网络中转；测试隧道只出现在验收附图，生产拓扑不包含它。
-独立图两次修正了 `/v1/tasks`、无状态 API 图标、HTTP Bearer 与原生 ACL 边界、模型
-凭据环境变量和历史生命周期颜色。最终 PNG 已逐项静态目检，精确 prompts 与 SHA 随证据保存。
-Archify HTML 从冻结 JSON 生成，明暗整图及新增区域静态目检通过；浏览器交互未验，
-本地 SVG 渲染使用字体 fallback。
+- 本轮容器独立图：[PNG](../docs/audits/task-server-container-2026-10-16.png)、[exact prompt](../docs/audits/task-server-container-2026-10-16.prompt.txt)、[修图 prompt](../docs/audits/task-server-container-2026-10-16.repair.prompt.txt)。
+- 本轮完整 base 修改链：[初始 prompt](../docs/audits/task-server-container-2026-10-16.base.prompt.txt)、[期限措辞修复](../docs/audits/task-server-container-2026-10-16.base-repair.prompt.txt)。
+  [产物摘要与目检记录](docs/task-container-diagrams.json) 固定全部最终 PNG 和精确提示词。
+
+本轮 built-in imagegen 在完整 base 中保留旧业务所有分层、CAN 回流与生命周期区域，
+增加 Task 容器、角色 Secret、readiness 和 20 秒停止预算；修正初稿将进程期限误写成
+硬杀的文字。独立图橙色表示新增容器入口、凭据挂载、探针、Linux 信号唤醒和本机验收；
+既有 TLS/CAN 保持蓝色。修图移除 API 副本间不存在的连接，并把 readiness 限定为
+namespace 可用。图中明确离线 fixture、默认 Worker 入口和生产未验证项。
+最终 PNG 已逐项静态目检，模型 I/O、Temporal 权威与原业务独立边界一致。
+Archify HTML 从冻结 JSON 生成，9/9、零错误/警告；两次局部路由修复后明暗整图及
+Task 泳道静态目检通过，56 个非 Task 组件字节未变。浏览器交互未验，本地 SVG 使用
+字体 fallback；回执见 `var/deepagents-delivery/task-container-archify.receipt.json`。
 
 ## 未执行和能力边界
 
-本轮**未执行真实 OpenAI 推理、生产 Docker image 构建、Temporal 生产集群 HA / 容量、
+本轮**未执行真实 OpenAI 推理、镜像 registry 发布、Compose 全链路部署、Temporal 生产集群 HA / 容量、
 物理断电、任意兼容代码升级或带许可证的标准 Agent Server PostgreSQL/Redis 恢复验收**。
-Task HTTP 的本地 SIGKILL 恢复、历史 SIGTERM 进程替换与本轮 TLS 测试隧道重连已验证；该证据不能扩展为生产数据库故障转移或跨
+Task HTTP 的本机容器 SIGKILL 恢复、默认 Worker SIGTERM 退出，以及历史进程替换和 TLS 测试隧道重连已验证；该证据不能扩展为生产数据库故障转移或跨
 版本升级保证。保留 v1 原实现及其已有任务合同已单独验证；这不等于任意版本升级可重放。
 V2 全链上限为 24 小时、512 次父模型边界；每次父图调用另有 128 步限制。原生子代理
 有自己的递归上限，不能把 512 或 128 宣称为包含全部子代理和摘要模型调用的总量。

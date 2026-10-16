@@ -1,0 +1,26 @@
+# Build only from scripts/build_task_bundle.py output, never the checkout.
+# The sole approved base image is pinned to its multi-platform index digest.
+FROM python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258 AS dependencies
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+WORKDIR /opt/build
+COPY requirements.txt manifest.json Dockerfile .dockerignore ./
+COPY wheels/ ./wheels/
+RUN python -c 'import hashlib,json,pathlib; m=json.loads(pathlib.Path("manifest.json").read_text()); raise SystemExit(not all(hashlib.sha256(pathlib.Path(n).read_bytes()).hexdigest()==v["sha256"] and pathlib.Path(n).stat().st_size==v["bytes"] for n,v in m["files"].items()))' \
+    && python -m venv /opt/venv \
+    && /opt/venv/bin/python -m pip install --no-cache-dir --only-binary=:all: --find-links=/opt/build/wheels --require-hashes -r requirements.txt \
+    && /opt/venv/bin/python -m pip install --no-cache-dir --no-deps wheels/mini_loop_deepagents-*.whl \
+    && /opt/venv/bin/python -m pip check
+
+FROM python:3.12.15-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258
+ENV PATH=/opt/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
+    PYTHONNOUSERSITE=1 HOME=/tmp
+COPY --from=dependencies /opt/venv /opt/venv
+WORKDIR /opt/task
+COPY manifest.json ./build-manifest.json
+# Numeric identity avoids installing account-management or init packages.
+USER 10001:10001
+STOPSIGNAL SIGTERM
+EXPOSE 8123
+ENTRYPOINT ["/opt/venv/bin/python", "-m", "mini_loop_deepagents.task_server.launch"]
+CMD ["api", "--address", "0.0.0.0:8123"]

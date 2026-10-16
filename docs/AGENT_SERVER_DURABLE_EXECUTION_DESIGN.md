@@ -12,12 +12,18 @@ mini-loop 已新增独立、显式启用的 **Temporal Task HTTP 服务**：API 
 消耗原重试预算，不产生业务 Task cancel。固定 12 Task / 3 Worker 的本地
 滚动机制验收已通过；这组结果不能推导生产容量或 HA。
 
-本轮以 `401e4d5` 为审查基线，增加 API/Worker 共享 Temporal Client 连接层：
+`06a93d4` 已交付 API/Worker 共享 Temporal Client 连接层：
 CLI 显式加载验证 TLS/mTLS、CA、服务名与 API-key metadata；library 默认明文且
 不读环境安全变量，配置或连接失败不降级。它不改变 Workflow/CAN 或新增依赖。
 Task HTTP owner 校验和 Temporal 原生认证/namespace ACL 分开；证书启动时加载，
 轮换需要重建 Client。测试 mTLS 隧道只验证 SDK 到隧道的传输边界，不能等同于
 Temporal 服务原生 TLS、Cloud ACL、跨主机 HA 或容量验收。
+
+本轮以 `06a93d4` 为审查基线，增加独立 Task 应用镜像、同进程角色 launcher、按角色
+挂载的 Secret 与 API namespace readiness。用户批准的 Python 3.12.15 slim 镜像固定
+摘要，Python 依赖继续使用现有锁文件；部署 profile 连接已有 Temporal，不新增
+数据库/调度器或基础服务镜像。容器制品与运行证据见 [部署记录](../deepagents-server/TASK_DEPLOYMENT.md)。
+readiness 只验证有界 namespace 读取，不能代表 Start 权限、Worker/provider 可用或 HA。
 
 更完整的业务 Task 控制面仍是目标：永久接受台账、跨实例配额、业务状态投影、版本路由、外部副作用 fencing 和生产 HA/容量尚未完成。标准 LangGraph Agent Server 的 PostgreSQL/Redis 恢复验收也保持未完成。本文保留这些长期要求，同时区分已实现的直接 Temporal 路径与未来按业务需求引入的数据库层，避免把全部目标组件强制叠加成两个竞争的调度系统。
 
@@ -47,6 +53,8 @@ Temporal 服务原生 TLS、Cloud ACL、跨主机 HA 或容量验收。
 | 同目录的 `runtime.py` / `worker.py` | v1/V2 Workflow 代码保持不变，Worker 同时注册两版；模型 Activity 经 Worker 环境解析为 ChatOpenAI | 真实 provider 已验收、自动版本路由或任意 graph 升级兼容 |
 | `worker.run_process` / `lifecycle.py` | CLI 首信号显式 SDK shutdown；默认 2 秒 grace、15 秒 hard deadline，第二信号或超期退出 70；library `serve` 不接管进程信号/强退 | 退出 70 即证明任务已恢复、无限重试、信号后绝无 buffered Start、任意宿主进程可安全强退 |
 | 同目录的 `runtime_v2.py` / `checkpoint.py` / `summarization.py` | V2 每 8 个安全父 model 边界 CAN；完整 public saver 日志保留 DeltaChannel 祖先、路由和摘要私有状态；累计 512 父边界、原始 24 小时及传输大小预算 | 无限任务、512 是所有模型调用上限、所有子图都被父 invocation 128 步限制、默认 Memory 或通用 graph 迁移 |
+| `task_server/launch.py`、`Dockerfile.task`、`compose.task.yaml` | 同进程角色启动、分离 Secret 文件、非 root/只读根、外接 Temporal 的独立镜像部署 | 已有跨宿主 HA、自动零停机滚动、Secret 服务或 Workflow Versioning |
+| `TaskService.readiness` / `GET /readyz` | 1 秒 singleflight RPC 与 1 秒缓存；DescribeNamespace 名称匹配且 REGISTERED 才 ready；healthz 只判断进程存活 | Start 授权、任务队列容量、provider 可用；Compose unhealthy 自动重启 |
 | [compose.yaml](../deepagents-server/compose.yaml) | 描述同一不可变镜像的 API-only 与 Worker 分离，连接 PostgreSQL/Redis，并限制小规模验证资源 | 已通过多副本部署、数据库故障切换或高并发容量验收 |
 | [fault_smoke.py](../deepagents-server/scripts/fault_smoke.py) | 脚本覆盖独立客户端提交、两个并发 Run、排队、取消/续跑、owner 隔离，以及开发快照写出后的 SIGKILL 与进程替换 | 提交确认后立即崩溃的数据安全、生产 PostgreSQL 恢复、Docker 滚动部署或高吞吐能力已得到证明 |
 
@@ -265,7 +273,7 @@ Task/Attempt 应记录不可变应用镜像或构建摘要、graph ID、状态 s
 
 **事实：**Temporal Worker Versioning 提供版本路由与 Workflow pinning，需要符合版本要求，并采用支持旧版本并存的发布方式；长生命周期任务还需要适当的 Continue-as-New 或兼容策略。[S8] DBOS 也区分 patching 与应用版本，恢复时匹配版本并建议保留旧进程排空。[S13] **建议：**不要将这两种产品能力预先写成 mini-loop 的部署功能。
 
-本轮明确补上进程停机边界。固定 SDK 的 `graceful_shutdown_timeout` 只有在真正
+`401e4d5` 补上进程停机边界。固定 SDK 的 `graceful_shutdown_timeout` 只有在真正
 调用 shutdown 后才进入排空过程，不能因为配置了 2 秒就宣称 SIGTERM 会优雅交接。
 SDK 停止新轮询、处理已领取/缓冲工作，宽限到期后取消未完成 Activity。[S17]
 本地 1.34.0 Core 将 WorkerShutdown cancellation 转成 retryable failure；重试仍
@@ -383,7 +391,7 @@ Activity 槽 Worker / 2 API，初始 3 Activity 执行、9 项原生排队；替
 全局租户配额、生产 HA 或跨版本升级验收。详细证据见
 [Task Server](../deepagents-server/TASK_SERVER.md)。
 
-本轮新增共享连接配置，按固定 SDK `TLSConfig` 和 `Client.connect` 接口实现。
+`06a93d4` 新增共享连接配置，按固定 SDK `TLSConfig` 和 `Client.connect` 接口实现。
 `MINILOOP_TASK_TEMPORAL_TLS` 缺省 false，安全字段必须显式配合 true；支持自定义
 CA、成对客户端证书/私钥、`domain` 服务名与 API key。`domain` 同时影响 SNI、
 HTTP/2 authority 与默认证书校验名，没有关闭验证的开关。[S18] 只有两生产 CLI
@@ -391,7 +399,7 @@ HTTP/2 authority 与默认证书校验名，没有关闭验证的开关。[S18] 
 普通文件/大小约束，固定错误码不带原始异常。一次连接不证明全部 RPC 权限。
 
 Temporal 服务端 frontend TLS、internode TLS 和认证/授权插件有各自配置，[S19]
-本轮客户端配置不代替这些部署工作。证书读取一次，轮换必须重建 Client/滚动替换；
+该客户端配置不代替这些部署工作。证书读取一次，轮换必须重建 Client/滚动替换；
 HTTP Bearer owner、Temporal namespace ACL 与 History 静态加密分别是独立边界。[S20]
 本地 stdlib mTLS 隧道接 loopback dev Temporal 仅是故障设施，不进入生产组件图。
 实际故障运行 `cfdf11707eb142be9c8af50e11cb5dae` 的 3 组通过：错 CA、错服务名、
@@ -405,9 +413,35 @@ step 与 request SHA；不是全程同 attempt，也不是外部模型 exactly-o
 
 耗时 13.8 秒，采样峰值 822.0 MiB、最低可用内存 43%，23 个所属进程全部退出。
 四份 Run History 和 23 份进程日志的测试凭据扫描匹配为零；这只覆盖所用测试凭据。
-本轮证明 SDK 到测试隧道的传输和中断恢复；合成 API key 只覆盖 metadata 配置，
+该 TLS 验收证明 SDK 到测试隧道的传输和中断恢复；合成 API key 只覆盖 metadata 配置，
 没有验证原生 Temporal 服务 TLS、真实 Cloud ACL、跨机 HA、生产轮换或容量。
 完整回执与局限见 [Task Server](../deepagents-server/TASK_SERVER.md)。
+
+本轮将相同任务协议打包成独立容器：`launch api|worker` 按角色从 Secret 文件读取
+凭据，随后在同进程进入实际 CLI。基础 Python 镜像固定摘要，wheel 与源码/README/
+元数据逐项核对后进入 allowlist 构建上下文；依赖使用已有锁文件与 hash。API readiness
+读取外部 namespace，1 秒 RPC/缓存与 singleflight 防止探测放大；healthz 不访问后端。
+Compose 使用非 root、只读根、角色 Secret、20 秒 stop grace，分别缩放 API/Worker。
+它没有部署 Temporal/SQL/Redis/LB，readiness 不保证完整 RPC 权限，也不会驱动
+Compose 自动重启。具体容器运行与故障验收由 [部署记录](../deepagents-server/TASK_DEPLOYMENT.md)
+和 [交付证据](../deepagents-server/DELIVERY.md) 维护，不能用配置文件存在代替实测。
+
+最终 arm64 镜像内容 ID `3ccfbdd7c2a184b8e655f012a81da5d42310f733e07b0108a1c742763411e30f`
+通过运行 `0c189c0de2614b5c8d4db07c4b4268be` 的 4 组机制验收：两 API 与两 fixture
+Worker 容器各强杀并重建；两真实 V2 Task 各 10 个工具步骤/1 次 CAN，4 份 History
+没有 WorkflowTaskFailed，Task/首 Run 与门控点完整 native 状态保持，两个 Activity
+attempt 1→2 且身份/请求 SHA 相同。完成后重启同 SQLite Temporal，readyz 转为
+503 后恢复 200，healthz 仍 200，原 API 容器和已完成结果保留。
+
+首轮失败揭示 Linux 空闲 selector 信号唤醒缺陷，修复为立即置位停止事件并用
+`call_soon_threadsafe` 唤醒。新镜像最小无 timer Linux 探针 0.318611 秒退出 0；
+默认生产 launcher Worker 空队列 SIGTERM→DRAINING→STOPPED，0.914 秒退出 0，
+没有真实模型调用。完整运行 39.57 秒，所属 RSS+cgroup 观测峰值 596.2 MiB，所有
+所属资源已清理；末尾四个业务容器清理使用 SIGKILL/137，不能推导全部正常 drain。
+该证据仍是单机 OrbStack/宿主 CLI SQLite/离线模型，未跑完整 mTLS Compose/LB，
+未验证生产容量、跨故障域或原生 Temporal TLS。锁中 sdist-only 的既有 forbiddenfruit
+仅以严格源码/元数据/RECORD 审计 wheel 作为显式输入，不执行源构建或新增 Python 包。
+完整 hash、历史失败和资源范围见 [Task 部署](../deepagents-server/TASK_DEPLOYMENT.md)。
 
 **阶段 C 仍未全部完成：**永久业务台账、全局 admission/owner 配额、跨后端 adapter、
 自动版本路由与外部工具副作用协议仍无实现。未来引入业务 SQL 时，必须先确定其
@@ -443,7 +477,7 @@ step 与 request SHA；不是全程同 attempt，也不是外部模型 exactly-o
 | Redis 丢失或重启 | 持久任务可重新发现；取消与实时流中断可观察；不依赖丢失的 PubSub 恢复历史 | 生产 PostgreSQL/Redis 路径待验收 |
 | Temporal Client TLS/mTLS 与认证失败 | 错误 CA/名称/客户端证书不能启动；连接恢复不破坏已接受任务 | 真实 SDK→本地 mTLS 隧道的四种拒绝控制、断隧道 503/重连和两 Task 各一次 CAN 已验收；原生服务 TLS/Cloud ACL 仍未验收 |
 | PostgreSQL 重启、主备切换、旧主复活 | 已接受任务符合声明 RPO；连接恢复；旧主不继续接受权威写入 | 未建立数据库 HA 环境与测量 |
-| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 本地相同 Workflow 版本的正常 drain、grace 后交接与硬退恢复三例通过；没有容器编排/不兼容版本路由验收 |
+| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 本地相同 Workflow 的三种停机机制和真实容器强杀/重建恢复已通过；生产 launcher 空队列停机另测。未验收编排器滚动发布、跨故障域或不兼容版本路由 |
 | 多 owner 与子代理突发、provider 429 | 全局与 owner 配额有效；有界排队、退避和公平性；扩容不放大上游超额 | `401e4d5` 的 12 Task / 3 owner / 3 Worker / 2 API 及真实 API 429 机制实验通过；未实现跨实例 admission，不能替代 provider 429 或容量压测 |
 | 持久审批等待跨重启 | 决策内容、权限与版本保留，重复批准只生效一次，等待释放执行资源 | 当前通用 resume 拒绝 graph interrupt |
 | 相同 task/handle 被另一 owner 使用 | 状态、取消、事件、memory、artifact 均拒绝越权 | Task HTTP 状态/结果/取消/事件跨 owner 404 已实测；Memory/Artifact 新接口未实现，Temporal RPC 仍是受信任边界 |

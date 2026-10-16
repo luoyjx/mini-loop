@@ -274,9 +274,9 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-tls-2026-10-16.png)
-shows the independent Agent Server layers, with this iteration's shared
-Temporal client TLS/mTLS settings and authentication boundaries in orange.
+The [focused Task HTTP server diagram](docs/audits/task-server-container-2026-10-16.png)
+shows the independent Agent Server layers, with this iteration's Task container
+entry points, separated secrets and API readiness in orange.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1182,16 +1182,19 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `401e4d5` plus the
-shared Temporal TLS/mTLS client-connection iteration. Its independent Bearer API
+Current architecture review baseline: **2026-10-16**, `06a93d4` plus the
+independent Task container deployment iteration. Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
 owns task identity, status and events. New TaskWorkflowV2 executions carry a
 bounded native saver journal across Continue-As-New; the Worker also retains
 the unchanged v1 Workflow. Deployment-owned model Activities run real Deep
 Agents, including deterministic native summarization and general-purpose
-subagents. API and Worker now share explicit TLS/mTLS client settings; only
-CLI entry points load environment credentials, and library defaults remain
-plaintext. Worker signal shutdown and the hard exit deadline stay unchanged;
+subagents. A separate Task container profile uses one immutable application image
+for API and Worker, with role-specific secret files and same-process startup.
+API readiness checks the configured namespace with a bounded, coalesced RPC;
+liveness does not depend on Temporal. The shared TLS settings remain explicit.
+Signal handling explicitly wakes an idle event loop; Worker drain and hard-deadline
+budgets stay unchanged;
 library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
 earlier offline fault prototype and Python/Go runtimes keep their own paths.
@@ -1392,11 +1395,14 @@ flowchart LR
         TSAPI["Independent Task HTTP API<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
         TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
         TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
+        TSLaunch["Independent Task image / role launcher<br/>non-root · role-specific secret files<br/>same-process API or Worker · external Temporal"]
         TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>grace + hard deadline · library serve stays caller-owned"]
         TSWorkflow["TaskWorkflowV2 + unchanged v1 Worker<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
         TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Temporal retry / heartbeat"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
         TSClient -->|authenticated request| TSAPI
+        TSLaunch -. API startup / liveness and readiness .-> TSAPI
+        TSLaunch -. Worker startup / 20s container stop budget .-> TSProcess
         TSConnection -. startup client configuration .-> TSAPI
         TSConnection -. startup client configuration .-> TSProcess
         TSAPI -->|Start / inspect via optional verified TLS| TSHistory
@@ -1592,6 +1598,20 @@ protect client transport, not History payloads at rest or namespace ACL policy.
 The local mTLS fault tunnel is test infrastructure, not a deployed component;
 native Temporal server TLS, Cloud API-key authorization and cross-host HA remain
 separate acceptance.
+
+The [Task container profile](deepagents-server/TASK_DEPLOYMENT.md) builds from the
+locked Temporal extra and an approved fixed Python base image. It starts API and
+Worker through a same-process role launcher, with non-root containers, read-only
+root filesystems and bounded temporary storage. API receives only its HTTP token
+mapping and cursor secret; Worker receives its model key. Both may receive their
+own Temporal credentials. The existing licensed Agent Server Dockerfile/Compose
+remain a separate profile. API `/healthz` is process liveness; `/readyz` uses a
+one-second namespace RPC and one-second result cache, coalescing concurrent probes.
+Readiness requires DescribeNamespace permission and does not prove Start permission,
+Worker capacity or HA. Dependency outages must not be used as liveness failures.
+The container stop budget is 20 seconds, longer than the existing 15-second Worker
+hard deadline. A local container replacement test cannot establish multi-host
+fault domains or production Temporal/database availability.
 
 This path uses no new business SQL ledger, admission database or outbox. The
 separate Temporal service owns execution and History persistence; production

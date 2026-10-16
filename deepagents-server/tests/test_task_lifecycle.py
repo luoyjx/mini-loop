@@ -14,6 +14,48 @@ import pytest
 from mini_loop_deepagents.task_server import lifecycle, worker
 
 
+# Standalone stdlib-only program also executed against the rebuilt Linux image.
+# The selector handshake fixes timeout=None before announcing IDLE, so a signal
+# arriving just before the syscall still requires a self-pipe wakeup. No sleep or
+# periodic asyncio timer can accidentally hide the idle-selector regression.
+IDLE_SIGNAL_PROBE = """
+import asyncio
+import os
+from mini_loop_deepagents.task_server.lifecycle import ProcessLifecycle
+
+async def main(control):
+    loop = asyncio.get_running_loop()
+    stop = asyncio.Event()
+    control.bind(loop, stop)
+    command = loop.create_future()
+    def on_input():
+        value = os.read(0, 1)
+        loop.remove_reader(0)
+        if value != b'I':
+            command.set_exception(RuntimeError('probe_command_invalid'))
+        else:
+            command.set_result(None)
+    loop.add_reader(0, on_input)
+    print('READY', flush=True)
+    await command
+    original_select = loop._selector.select
+    def observed_select(timeout=None):
+        if timeout is None:
+            print('IDLE', flush=True)
+        return original_select(timeout)
+    loop._selector.select = observed_select
+    try:
+        await stop.wait()
+    finally:
+        loop._selector.select = original_select
+    print('DRAINED', flush=True)
+
+with ProcessLifecycle(1.0) as control:
+    asyncio.run(main(control))
+print('CLEAN', flush=True)
+"""
+
+
 @pytest.mark.parametrize("grace,timeout", [
     (-1, 15), (301, 350), (True, 15), ("2", 15), (float("nan"), 15),
     (float("inf"), 15), (2, 0), (2, 2), (2, 1), (2, 361),
@@ -107,6 +149,51 @@ def test_process_fatal_exception_restores_handlers_and_cancels_watchdog(process_
     assert raised.value is failure
     assert handlers == originals and not exits
     assert timers[0].cancelled and timers[0].joined
+
+
+def test_signal_keeps_immediate_stop_state_when_bound_loop_has_closed(process_environment):
+    _, handlers, exits, _, timers = process_environment
+    calls = []
+
+    class ClosedLoop:
+        def call_soon_threadsafe(self, callback):
+            calls.append(callback)
+            raise RuntimeError("Event loop is closed")
+
+    stop = asyncio.Event()
+    with lifecycle.ProcessLifecycle(15) as control:
+        control.bind(ClosedLoop(), stop)
+        handlers[signal.SIGTERM](signal.SIGTERM, None)
+        assert stop.is_set() and len(calls) == 1 and not exits
+    assert timers[0].cancelled and timers[0].joined
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX selector, pipe and signal contract")
+def test_signal_wakes_idle_selector_without_a_periodic_timer():
+    process = subprocess.Popen([sys.executable, "-c", IDLE_SIGNAL_PROBE], stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
+
+    def line():
+        assert select.select([process.stdout], [], [], 3)[0], "selector probe handshake timed out"
+        return process.stdout.readline()
+
+    try:
+        assert line() == b"READY\n"
+        process.stdin.write(b"I")
+        process.stdin.flush()
+        assert line() == b"IDLE\n"
+        process.send_signal(signal.SIGTERM)
+        assert line() == b"DRAINED\n"
+        assert line() == b"CLEAN\n"
+        assert process.wait(timeout=3) == 0
+        assert b"TASK_WORKER_HARD_EXIT" not in process.stderr.read()
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait(timeout=3)
+        process.stdin.close()
+        process.stdout.close()
+        process.stderr.close()
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX process signal and pipe contract")

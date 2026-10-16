@@ -57,7 +57,7 @@ class AccessBoundary:
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
-        if scope["path"] == "/healthz" and scope["method"] == "GET":
+        if scope["path"] in {"/healthz", "/readyz"} and scope["method"] == "GET":
             await self.app(scope, receive, send)
             return
         authorization = [v for k, v in scope["headers"] if k.lower() == b"authorization"]
@@ -163,6 +163,14 @@ def create_app(service: Any, *, tokens: Mapping[str, str], max_inflight: int = 3
     async def health(request: Request) -> JSONResponse:
         return JSONResponse({"status": "ok", "service": "task-server", "check": "process_liveness"})
 
+    async def ready(request: Request) -> JSONResponse:
+        try:
+            available = await request.app.state.task_service.readiness() is True
+        except Exception:
+            available = False
+        return JSONResponse({"status": "ready" if available else "not_ready"},
+                            status_code=200 if available else 503, headers={"Cache-Control": "no-store"})
+
     async def submit(request: Request) -> JSONResponse:
         key, message = await _submission(request)
         result = await call("submit", request, key, message)
@@ -203,6 +211,7 @@ def create_app(service: Any, *, tokens: Mapping[str, str], max_inflight: int = 3
 
     app = Starlette(routes=[
         Route("/healthz", health, methods=["GET"]),
+        Route("/readyz", ready, methods=["GET"]),
         Route("/v1/tasks", submit, methods=["POST"]),
         Route("/v1/tasks/{task_id}", get, methods=["GET"]),
         Route("/v1/tasks/{task_id}/result", result, methods=["GET"]),

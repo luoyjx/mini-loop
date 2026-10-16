@@ -1,0 +1,10 @@
+Use case: infographic-diagram. Make minimal text edits to the complete mini-loop layered architecture base supplied as reference. Preserve the original layout and all layers, all arrows, legacy Python/Go rows, standard Agent Server row, old Temporal prototype row, and the entire bottom Task CAN/lifecycle strip. No orange iteration badges in this canonical base.
+
+Only update the bottom independent Task HTTP lane:
+- Lane title becomes "独立 Task 容器 · task_server.launch api | worker · 显式启用".
+- API box title becomes "无状态 Task API 容器". Keep current submit/status/results/cancel/events and TLS/mTLS. Add tiny but readable "healthz 存活 / readyz 就绪".
+- Worker box title becomes "独立 Worker 容器池 · v1 + v2". Keep real Deep Agents and TLS/mTLS.
+- Add one compact normal-cyan label in this bottom lane: "同一固定镜像 · 非 root · 只读根 · 角色独立 Secret 文件". No extra network node.
+- Existing process lifecycle caption retains grace2s/hard15s and adds "容器停止预算 20s".
+- Keep complete Checkpoint/CAN return arrow, every8parent-boundary segmentation,24h/512parent-boundary/checkpoint size constraints, external Temporal History authority and productionHA/capacity pending note.
+Do not replace lifecycle or CAN with config. No TLS test tunnel. This update adds deployable containers, not new persistence or workflow execution semantics.

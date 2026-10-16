@@ -1,0 +1,29 @@
+Use case: infographic-diagram. Edit the two references into ONE standalone layered architecture diagram focused exclusively on mini-loop's independent durable Task API / Worker server. Preserve the polished deep navy/cyan visual style, legible Chinese labels and five clearly numbered horizontal layers of the previous standalone diagram. Reference 2 is the complete canonical base; focus only its bottom independent Task container lane. Do not include legacy Python/Go or standard licensed LangGraph server. No decorative clutter that competes with architecture.
+
+Title: "Agent Server · 可恢复的长任务"
+Subtitle: "本轮：独立容器部署、就绪探针与 Linux 停机修复"
+Legend: "橙色 = 本轮修改 / 新增验收；蓝色 = 既有能力"
+
+L1 异步客户端 (blue): Web / CLI / 业务系统, submit then disconnect, preserve TaskID + Idempotency-Key, HTTP Bearer identity. Exact request example POST /v1/tasks. Arrow into L2 labelled HTTP Bearer.
+L2 无状态 Task API 容器池: show API A and API B network/service icons (NEVER database cylinders). Blue existing submit/status/result/cancel/events/owner checks, return202 only after Temporal accepts Start. Orange small badge "launch api · 角色独立 Secret 文件". Orange health box "healthz：进程存活" and "readyz：Temporal namespace 可用". Keep caveat "就绪不等于 Worker 容量".
+L3 独立 Temporal 服务 (blue): Task Queue + durable Workflow History, accepted work survives API/Worker replacement; stable TaskID/firstRun; full Checkpoint; Run1→Run2 Continue-As-New. Arrows FROM API TO Temporal for submission and Worker↔Temporal for poll/heartbeat/results. Label both API and Worker connections "gRPC · TLS / mTLS 可配置". Temporal deployment is external to this Compose profile; do NOT invent an embedded production database, proxy, built-inHTTPS or HA cluster.
+L4 独立 Worker 容器池: Worker A, Worker B, more Workers; blue real Deep Agents workflow/planning/tools/subagents/summaries and controlled model Activity concurrency. Orange badge "launch worker · 默认 hostname:PID". Orange strip clearly say "SIGTERM 显式唤醒空闲事件循环 → 停新轮询 → 排空". A second line: "Activity 宽限 2s · 进程期限 15s · 容器停止预算 20s". Do NOT label the15s deadline SIGKILL or硬杀.
+L5 模型 I/O Activity (blue): ChatOpenAI / configured provider; heartbeats/retry(max3)/resultHistory. Model secrets injected via Worker Secret file → launcher → environment. No provider secrets from client. Model I/O arrow downward fromWorker toActivity.
+
+One orange side/shared deployment box associated only with API/Worker: "同一固定镜像 · Python 3.12.15", "非 root UID 10001 · 只读根 · /tmp", "API / Worker 独立凭据挂载". This is configuration, NOT an extra network hop. Full base dependencies/HA layout not needed.
+
+Bottom left orange evidence panel, exact compact facts:
+"本轮本机容器验收 · 离线模型"
+"2 API + 2 Worker 强杀重建，任务恢复"
+"2 Task：各 10 工具步骤 + 1 次 CAN"
+"完整状态、重试请求 SHA 一致"
+"readyz 200 → 503 → 200；healthz 200"
+"真实默认 Worker 停机 exit 0"
+Small clear note: "恢复测试使用 fixture；退出测试使用默认 Worker 入口".
+Bottom right blue limitations panel:
+"外部 Temporal 生产 HA / 跨主机故障 / 容量待验"
+"未调用真实模型；本轮故障连接为本机明文 dev 服务"
+"Compose 的 mTLS 配置未做生产全链验收"
+"外部副作用不保证 exactly-once"
+"全链 24h / 512 父模型边界；Checkpoint 大小有界"
+Ensure no suggestion all test fixtureWorkers gracefully exited; only defaultWorker is exit0. Diagram should explain actual implementation, not claim production highavailability or highconcurrency measured. Prefer fewer words and readable hierarchy over tiny labels.

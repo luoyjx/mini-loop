@@ -1,0 +1,110 @@
+# Independent Task HTTP profile. No licensed Agent Server, Redis or local DB.
+# Use: docker compose --env-file .env.task -f compose.task.yaml ...
+# API traffic requires an existing ingress attached to this project's network.
+name: mini-loop-task
+
+x-task: &task
+  image: "${MINILOOP_TASK_IMAGE:?Set the immutable Task application image}"
+  init: true
+  user: "10001:10001"
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777,noexec,nosuid,nodev
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  restart: unless-stopped
+  stop_signal: SIGTERM
+  # Worker hard exit is 15s; Docker must not SIGKILL it at its default 10s.
+  stop_grace_period: 20s
+  pids_limit: 128
+
+x-temporal: &temporal
+  MINILOOP_TASK_TEMPORAL_TLS: "true"
+  MINILOOP_TASK_TEMPORAL_CA_CERT_FILE: /run/secrets/temporal_ca
+  MINILOOP_TASK_TEMPORAL_SERVER_NAME: "${TASK_TEMPORAL_SERVER_NAME:?Set the verified Temporal server name}"
+  LANGSMITH_TRACING: "false"
+
+services:
+  task-api:
+    <<: *task
+    command:
+      - api
+      - --address
+      - 0.0.0.0:8123
+      - --temporal-address
+      - "${TASK_TEMPORAL_ADDRESS:?Set the external Temporal host:port}"
+      - --namespace
+      - "${TASK_NAMESPACE:-default}"
+      - --task-queue
+      - "${TASK_QUEUE:-mini-loop-task-v1}"
+      - --max-inflight
+      - "${TASK_API_MAX_INFLIGHT:-32}"
+    environment:
+      <<: *temporal
+      MINILOOP_DEEPAGENTS_TOKENS_FILE: /run/secrets/task_tokens
+      MINILOOP_TASK_SERVER_CURSOR_SECRET_FILE: /run/secrets/task_cursor
+      MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_api_cert
+      MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_api_key
+    secrets: [task_tokens, task_cursor, temporal_ca, temporal_api_cert, temporal_api_key]
+    # No fixed host port or container_name: replicas can share an ingress.
+    expose: ["8123"]
+    healthcheck:
+      # Readiness only. Compose does not restart a merely unhealthy container.
+      test: [CMD, /opt/venv/bin/python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8123/readyz', timeout=2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    cpus: 0.5
+    mem_limit: 512m
+  task-worker:
+    <<: *task
+    command:
+      - worker
+      - --address
+      - "${TASK_TEMPORAL_ADDRESS:?Set the external Temporal host:port}"
+      - --namespace
+      - "${TASK_NAMESPACE:-default}"
+      - --task-queue
+      - "${TASK_QUEUE:-mini-loop-task-v1}"
+      - --activity-slots
+      - "${TASK_ACTIVITY_SLOTS:-1}"
+      - --workflow-slots
+      - "${TASK_WORKFLOW_SLOTS:-2}"
+      - --shutdown-grace-seconds
+      - "2"
+      - --shutdown-timeout-seconds
+      - "15"
+    environment:
+      <<: *temporal
+      OPENAI_API_KEY_FILE: /run/secrets/openai_key
+      MINILOOP_DEEPAGENTS_MODEL: "${TASK_MODEL:-openai:gpt-4.1-mini}"
+      MINILOOP_DEEPAGENTS_MAX_TOKENS: "${TASK_MAX_TOKENS:-4096}"
+      MINILOOP_DEEPAGENTS_TIMEOUT_SECONDS: "${TASK_MODEL_TIMEOUT_SECONDS:-60}"
+      MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_worker_cert
+      MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_worker_key
+    secrets: [openai_key, temporal_ca, temporal_worker_cert, temporal_worker_key]
+    # launch assigns hostname:pid identity. A transient connection outage is
+    # handled by the SDK; no connection-based liveness restart is installed.
+    cpus: 1
+    mem_limit: 1g
+
+# These source files stay on the deployment host; none enters the build bundle.
+# File-backed Compose secrets retain host permissions: UID 10001 must read them.
+secrets:
+  task_tokens:
+    file: "${TASK_TOKENS_FILE:?Set the token-to-owner JSON Secret file}"
+  task_cursor:
+    file: "${TASK_CURSOR_FILE:?Set the shared cursor Secret file}"
+  openai_key:
+    file: "${TASK_OPENAI_KEY_FILE:?Set the model provider Secret file}"
+  temporal_ca:
+    file: "${TASK_TEMPORAL_CA_FILE:?Set the Temporal CA file}"
+  temporal_api_cert:
+    file: "${TASK_TEMPORAL_API_CERT_FILE:?Set the API client certificate file}"
+  temporal_api_key:
+    file: "${TASK_TEMPORAL_API_KEY_FILE:?Set the API client private key file}"
+  temporal_worker_cert:
+    file: "${TASK_TEMPORAL_WORKER_CERT_FILE:?Set the Worker client certificate file}"
+  temporal_worker_key:
+    file: "${TASK_TEMPORAL_WORKER_KEY_FILE:?Set the Worker client private key file}"

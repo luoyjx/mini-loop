@@ -7,10 +7,10 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 原 Python/Go runtime 保持各自入口与语义。
 
 本文展开标准 LangGraph 入口；新增的独立 Temporal Task HTTP 入口见
-[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-tls-2026-10-16.png)。
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-container-2026-10-16.png)。
 两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
 
-Temporal 入口本轮以 `401e4d5` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
+Temporal 入口本轮以 `06a93d4` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
 父 model 边界分段 Continue-As-New，已有 v1 任务继续使用不变的 v1 代码。迁移载体是
 保存在 Temporal History 中的完整 public saver 写日志，包括 DeltaChannel 祖先、
 待执行路由、摘要私有状态及虚拟文件；不在下表 L5 增加第二套 SQL checkpointer。
@@ -24,12 +24,24 @@ shutdown，宽限内排空已领取工作，宽限后交回可重试 Activity；
 cancel；交接仍消耗原 Activity 尝试预算。此边界不改变下述标准 Agent Server 的
 180 秒 graceful/210 秒容器配置，也不证明多机 HA 或旧 graph 自动升级。
 
-本轮增加 API/Worker 共用的 Temporal Client 连接配置层。CLI 从明确的环境变量
+`06a93d4` 增加 API/Worker 共用的 Temporal Client 连接配置层。CLI 从明确的环境变量
 加载 TLS、CA、mTLS 证书对、服务名与 API key；library 的 Temporal 连接默认明文并忽略对应环境变量，
 可由可信调用方显式传入设置。连接层是两个进程内部共用的代码，并非新的代理服务。
 错误配置/握手失败拒绝启动且不降级；证书校验不能关闭，轮换需要重新创建 Client。
 Task HTTP 的 Bearer→owner 校验与 Temporal 自身的认证/namespace ACL 独立。
 本地 mTLS 隧道只用于故障验证，不替代原生 Temporal TLS、Cloud ACL 或生产 HA 验收。
+
+本轮新增独立 Task 镜像和 `launch api|worker`，同进程进入实际 CLI，分别读取 API
+与 Worker 的 Secret 文件；固定的 Python 基础镜像和锁文件依赖构建经过源码核对的
+发行 wheel。Compose 只读 root、非 root 身份、20 秒 stop grace，连接外部 Temporal。
+`GET /readyz` 以 1 秒 singleflight RPC/缓存读取并核对 namespace 的 REGISTERED 状态；
+`/healthz` 仍仅是进程 liveness。就绪不证明 Start 权限、Worker 槽或模型可用；
+Compose 不因 unhealthy 自动重启。容器内 API 需要已有 ingress，镜像 pinning 不等于
+Workflow 版本路由。真实容器验收发现并修复 Linux 空闲 selector 在 SIGTERM 后未
+唤醒的问题：立即置位停止事件，再调用 thread-safe 唤醒，保留既有启动/硬退出语义。
+最终同镜像两 API/两 fixture Worker 强杀替换后，两 Task 各 10 工具/1 CAN 完成；
+默认生产 Worker 空队列正常停机，provider 未调用。命令与证据边界见
+[Task 部署](TASK_DEPLOYMENT.md)。
 
 ![当前 Agent Server 分层架构](docs/agent-server-layered-architecture.png)
 
