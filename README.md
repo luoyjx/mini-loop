@@ -18,6 +18,7 @@ orchestration remain explicit choices.
 | See what the project is | [30-second overview](#30-second-overview) |
 | Run it locally | [Quick start](#quick-start) |
 | Run the independent Deep Agents server | [Deep Agents server module](deepagents-server/README.md) |
+| Inspect the optional Temporal experiment | [Temporal fault prototype](deepagents-server/TEMPORAL_PROTOTYPE.md) |
 | Understand one request | [How one turn works](#how-one-turn-works) |
 | Decide what to enable | [Runtime posture](#runtime-posture) |
 | Integrate over HTTP or Python | [Use the runtime](#use-the-runtime) |
@@ -122,6 +123,7 @@ The table is the fastest way to distinguish “implemented” from “active her
 | Declarative workflow MVP | **Off, process-local** | Trusted Python construction with `enable_workflows=True` |
 | Verified execute → verify → fold loop | **Library-only** | Call `VerifiedLoopService` explicitly; no HTTP/tool surface |
 | Independent Deep Agents server | **Opt-in, separate module** | [`deepagents-server/`](deepagents-server/README.md): bearer-authenticated standard Agent Server; async Run handles; API/Worker separation; production PostgreSQL/Redis recovery acceptance and licensing remain explicit |
+| Temporal fault prototype | **Default-off, experimental** | [Independent Temporal Worker](deepagents-server/TEMPORAL_PROTOTYPE.md): local SQLite History and application ledger; offline model fixture; standard Agent Server profile unchanged |
 
 <details>
 <summary>Reference curriculum mapping (learn-claude-code s01–s20)</summary>
@@ -1175,14 +1177,15 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, implementation `6328007`
-and architecture `9ba2a49` plus the asynchronous long-task iteration. The
-independent module separates API admission from background workers, requests
-synchronous checkpoints, and provides portable job handles with explicit
-continuation. This lane uses Deep Agents **0.7.25**, standard LangGraph Agent
-Server **0.16.0**, and CLI **0.4.35**;
-it does not replace either existing runtime or change their feature defaults.
-The earlier Go review and acceptance labels below retain their original scope.
+Current architecture review baseline: **2026-10-16**, `e67e174` plus the
+optional Temporal **1.34.0** fault prototype. The standard independent Agent
+Server profile retains API/Worker separation, synchronous stateful checkpoints
+and portable Run handles. A separately selected experimental Temporal Worker
+runs the real Deep Agents loop in Workflow code, model I/O through Activities,
+and local owner-memory Activities. This prototype does not replace the standard
+Agent Server path or either existing Python/Go runtime. Deep Agents **0.7.25**,
+Agent Server **0.16.0**, and CLI **0.4.35** remain fixed; earlier Go review and
+acceptance labels retain their original scope.
 
 <!-- architecture-map:start -->
 ```mermaid
@@ -1358,6 +1361,20 @@ flowchart LR
         DAWorkers --> DAGraph --> DAFiles
         DADev -. local combined backend mode .-> DAAPI
     end
+    subgraph TemporalPrototype["deepagents-server/temporal_prototype · optional experimental · default-off"]
+        TPClient["Trusted local PrototypeClient<br/>start / query / cancel · fixed owner adapter<br/>not production HTTP or Temporal ACL"]
+        TPHistory["Temporal CLI local dev server<br/>SQLite Workflow History<br/>not a production HA deployment"]
+        TPWorkflow["Separate Temporal Worker · SDK 1.34.0<br/>real Deep Agents loop in Workflow<br/>full messages / files / todos snapshot at CAN"]
+        TPModel["DeepAgentsPlugin model Activity<br/>model I/O stays outside Workflow replay"]
+        TPFixture["TranscriptModel offline fixture<br/>no live model provider configured"]
+        TPMemory["Named memory put/get Activities<br/>stable operation IDs · commit-before-ack fault gate"]
+        TPApp["Application SQLite · local shared file<br/>trusted owner binding · memory · effect ledger<br/>not TaskControlPlane / outbox / HA storage"]
+        TPClient -->|submit / inspect| TPHistory
+        TPHistory -->|task queue / replay| TPWorkflow
+        TPWorkflow --> TPModel --> TPFixture
+        TPWorkflow --> TPMemory --> TPApp
+        TPClient -. trusted owner binding .-> TPApp
+    end
     DAProvider["OpenAI provider<br/>server-configured credentials / model"]
     Caller -. explicitly select independent module .-> DAAuth
     DAGraph -->|model requests| DAProvider
@@ -1455,6 +1472,24 @@ recovery limits and current validation evidence. The
 compares execution backends; those proposed services are not installed by the
 current module. Its business logic, dependencies and runtime are independent of
 the original Python/Go modules.
+
+The optional [Temporal fault prototype](deepagents-server/TEMPORAL_PROTOTYPE.md)
+is a separate experiment under `deepagents-server/temporal_prototype`, selected
+with the optional `temporal` dependency extra and an independent Worker CLI.
+Its Workflow executes the real Deep Agents loop; the SDK plugin schedules model
+I/O as an Activity. The configured model is an offline transcript fixture, so
+this path does not call a live provider. Owner-memory tools schedule named
+Activities against a separate local application SQLite file with owner bindings
+and an effect ledger. Virtual files and todos remain graph state; an explicit
+Continue-As-New boundary carries the full versioned snapshot.
+
+The local Temporal CLI stores Workflow History in its own SQLite file. That
+History, the application ledger, and the standard Agent Server PostgreSQL are
+different data stores. Trusted local client checks are not production HTTP
+authentication or Temporal service ACLs. Prototype fault acceptance is reported
+separately; its existence does not establish production HA or capacity. The
+higher-level Task control plane remains a proposal with library contracts, and
+the standard Agent Server API does not route into this prototype automatically.
 
 The operator CI job is outside the deployed runtime. Its networked bootstrap
 fetches only the existing fixed public inputs; test containers receive the

@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open",
+    "subtitle": "Independent Python / Go / standard Agent Server runtimes; optional Temporal 1.34.0 fault prototype has Workflow-held Deep Agents, Activities and separate local SQLite stores; production HA acceptance remains open",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      3050
+      3850
     ],
     "views": [
       {
@@ -813,6 +813,110 @@
         76
       ],
       "tag": "restart does not replace PostgreSQL truth"
+    },
+    {
+      "id": "tpClient",
+      "type": "external",
+      "label": "Trusted local prototype client",
+      "sublabel": "start / query / cancel; fixed owner adapter",
+      "pos": [
+        60,
+        3200
+      ],
+      "size": [
+        310,
+        76
+      ],
+      "tag": "default-off experiment / not production ACL"
+    },
+    {
+      "id": "tpHistory",
+      "type": "database",
+      "label": "Temporal local dev server",
+      "sublabel": "CLI SQLite Workflow History",
+      "pos": [
+        550,
+        3200
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "SDK 1.34.0 / not production HA"
+    },
+    {
+      "id": "tpWorkflow",
+      "type": "backend",
+      "label": "Independent Temporal Worker",
+      "sublabel": "real Deep Agents loop in Workflow",
+      "pos": [
+        1070,
+        3200
+      ],
+      "size": [
+        400,
+        76
+      ],
+      "tag": "versioned full-state Continue-As-New"
+    },
+    {
+      "id": "tpModelActivity",
+      "type": "backend",
+      "label": "Plugin model I/O Activity",
+      "sublabel": "model execution outside Workflow replay",
+      "pos": [
+        1630,
+        3200
+      ],
+      "size": [
+        350,
+        76
+      ],
+      "tag": "DeepAgentsPlugin / experimental"
+    },
+    {
+      "id": "tpFixture",
+      "type": "external",
+      "label": "Offline TranscriptModel",
+      "sublabel": "controlled fixture / no live provider",
+      "pos": [
+        1630,
+        3450
+      ],
+      "size": [
+        350,
+        76
+      ]
+    },
+    {
+      "id": "tpMemoryActivity",
+      "type": "backend",
+      "label": "Memory put / get Activities",
+      "sublabel": "owner scope / stable operation IDs",
+      "pos": [
+        1070,
+        3450
+      ],
+      "size": [
+        400,
+        76
+      ],
+      "tag": "after-commit / before-ack fault gate"
+    },
+    {
+      "id": "tpApplication",
+      "type": "database",
+      "label": "Local application SQLite",
+      "sublabel": "owner binding / memories / effect ledger",
+      "pos": [
+        550,
+        3450
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "no durable Task API / outbox / HA claim"
     }
   ],
   "boundaries": [
@@ -890,6 +994,19 @@
         "daFiles"
       ],
       "pad": 32
+    },
+    {
+      "kind": "region",
+      "label": "Optional Temporal fault prototype / default-off experimental",
+      "wraps": [
+        "tpHistory",
+        "tpWorkflow",
+        "tpModelActivity",
+        "tpFixture",
+        "tpMemoryActivity",
+        "tpApplication"
+      ],
+      "pad": 50
     }
   ],
   "connections": [
@@ -1879,6 +1996,45 @@
       "from": "daDev",
       "to": "daServer",
       "variant": "dashed"
+    },
+    {
+      "id": "tpSubmit",
+      "from": "tpClient",
+      "to": "tpHistory"
+    },
+    {
+      "id": "tpReplay",
+      "from": "tpHistory",
+      "to": "tpWorkflow",
+      "label": "task queue / replay"
+    },
+    {
+      "id": "tpModelRequest",
+      "from": "tpWorkflow",
+      "to": "tpModelActivity",
+      "variant": "emphasis"
+    },
+    {
+      "id": "tpFixtureReply",
+      "from": "tpModelActivity",
+      "to": "tpFixture"
+    },
+    {
+      "id": "tpMemoryDispatch",
+      "from": "tpWorkflow",
+      "to": "tpMemoryActivity"
+    },
+    {
+      "id": "tpMemoryStore",
+      "from": "tpMemoryActivity",
+      "to": "tpApplication",
+      "label": "owner / effect ledger"
+    },
+    {
+      "id": "tpOwnerBind",
+      "from": "tpClient",
+      "to": "tpApplication",
+      "variant": "security"
     }
   ],
   "cards": [
@@ -2099,13 +2255,24 @@
       "dot": "violet",
       "title": "Independent Deep Agents server",
       "items": [
-        "Review baseline 2026-10-16: implementation 6328007 and architecture 9ba2a49 plus this long-task iteration. Existing Python and Go runtimes retain their startup, tools, state and defaults.",
+        "Review baseline 2026-10-16: e67e174 plus optional Temporal 1.34.0 fault prototype. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.",
         "AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.",
         "Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.",
         "Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.",
         "Checkpoint continuation creates a new Run with null input after conservative checks. request_id aids uncertain-submission reconciliation; it is not server-enforced deduplication. Checkpoints are not exactly-once side effects or durable token streams.",
         "Bearer owners scope Threads, Runs and memory. StateBackend files are virtual; /memories/ uses owner StoreBackend. No host shell, cron, MDA SDK, Context Hub, OAuth or managed sandbox is enabled.",
         "langgraph dev uses in-memory state and local snapshots, not production durability. PostgreSQL worker crash/redeploy recovery still requires a licensed production-stack acceptance run. Graph/checkpoint compatibility and stable identity configuration are deployment responsibilities."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Optional Temporal fault prototype",
+      "items": [
+        "Default-off temporal dependency extra and independent Worker CLI. The standard Agent Server API does not route into it. The higher-level Task control plane remains proposed; task_contracts.py is library-only.",
+        "Real create_temporal_deep_agent runs the Deep Agents loop inside Workflow code. DeepAgentsPlugin moves model I/O to Activities; the configured TranscriptModel is offline and has no live provider.",
+        "Named memory put/get Activities use a separate local application SQLite file for trusted workflow-owner binding, memories, idempotent effect records and fault gates. The trusted local client is not production HTTP authentication or Temporal service ACL.",
+        "Temporal CLI dev server keeps Workflow History in its own SQLite file. Virtual graph files/todos/messages cross one explicit Continue-As-New boundary as a versioned full-state snapshot. Local SQLite is not production HA.",
+        "Fault-harness results belong to the dedicated prototype delivery record. Source/config existence is not a passing run; live-provider inference, production storage/ACL, code-upgrade compatibility and capacity need independent acceptance."
       ]
     }
   ]

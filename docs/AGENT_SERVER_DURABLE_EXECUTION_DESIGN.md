@@ -14,7 +14,7 @@ mini-loop 应把业务长任务的生命周期提升为独立的 **Task 控制�
 | --- | --- | --- |
 | 当前 mini-loop 模块 | `deepagents==0.7.25`、`langgraph-api==0.16.0`、`langgraph-cli[inmem]==0.4.35`、`langgraph-sdk==0.4.7`；来源为模块 `pyproject.toml` | 当前工作树包含本轮修改；类型和配置存在不等于生产能力已验证 |
 | LangSmith Agent Server | 2026-10-16 查阅官方 Agent Server、data plane 与环境变量文档 [S1], [S2][S3] | 在线文档会变化，不能将新文档中的全部能力倒推为本地 0.16.0 已支持 |
-| Temporal Python SDK | `1.34.0`，tag 指向 `a4c2bb38c3bad43498dfa6bd849e8d85bb684e94` [S4] | 固定版本研究，未安装或运行；Deep Agents 集成明确为 experimental |
+| Temporal Python SDK | `1.34.0`，tag 指向 `a4c2bb38c3bad43498dfa6bd849e8d85bb684e94` [S4] | 已按批准安装为可选 extra；独立故障原型的结果见专门交付记录；Deep Agents 集成仍为 experimental |
 | DBOS Python | `3.3.0`，tag 指向 `61426cb95bcd749dd18137b4eb483d02b9975d7d` [S11] | 固定版本候选；队列与恢复行为参考当天官方文档，未进行集成验收 |
 | PostgreSQL | 16 系列的 SELECT 与 HA 官方文档 [S15], [S16] | 仅用来论证数据库原语与部署责任，与现有 Compose 的 PostgreSQL 16 对齐 |
 
@@ -30,6 +30,12 @@ mini-loop 应把业务长任务的生命周期提升为独立的 **Task 控制�
 | [fault_smoke.py](../deepagents-server/scripts/fault_smoke.py) | 脚本覆盖独立客户端提交、两个并发 Run、排队、取消/续跑、owner 隔离，以及开发快照写出后的 SIGKILL 与进程替换 | 提交确认后立即崩溃的数据安全、生产 PostgreSQL 恢复、Docker 滚动部署或高吞吐能力已得到证明 |
 
 开发故障脚本特意等待周期性 inmem 快照写出再强杀，并设置 `production_acceptance=False`。这是受限故障场景；本报告没有重新执行该脚本，也不将脚本存在当作通过记录。
+
+`e67e174` 之后新增的 [Temporal 故障原型](../deepagents-server/TEMPORAL_PROTOTYPE.md)
+与上述标准 Agent Server 路径分开：真实 Deep Agents 在 Workflow 中运行，模型与
+Memory 分别进入 Activities，本地 SQLite 保存 History 与应用操作回执。固定版本、
+真实故障结果、首次失败原因和资源证据由该记录维护；这不会把第 3 节的 Task 控制面
+或第 9 节的生产 HA 设计变成已实现能力。
 
 ## 2. 从 LangSmith 借鉴的职责分离
 
@@ -245,7 +251,11 @@ Temporal 也需要持久服务与数据库；官方将服务拆为可独立扩�
 
 ### 阶段 B：隔离 Temporal 技术验证
 
-2026-10-16 用户已批准固定 `temporalio==1.34.0` 与本地临时 Temporal 服务的独立故障原型。批准覆盖该技术验证，不等于生产后端已经完成选型或验收；本报告交付时尚未安装或运行。DBOS 或其他新增依赖仍需另行批准。验证后端与现有生产 profile 分开，固定版本，不改变现有默认路径。
+2026-10-16 用户已批准固定 `temporalio==1.34.0` 与本地临时 Temporal 服务的独立故障原型。
+目前已实现独立 Worker、完整状态 Continue-as-New 协议与本地故障脚本；
+[原型记录](../deepagents-server/TEMPORAL_PROTOTYPE.md) 区分运行结果和未覆盖项。
+批准覆盖该技术验证，不等于生产后端已经完成选型或验收。DBOS 或其他新增依赖仍需另行批准。
+验证后端与现有生产 profile 分开，固定版本，不改变现有默认路径。
 
 验证任务至少覆盖真实 Deep Agents 控制循环、两个独立任务、多进程 Worker、模型与工具 Activity、owner 隔离、进程强杀、版本并存、Continue-as-New 与完整虚拟文件/Memory 恢复。模型可以先用可计数的确定性假服务建立故障证据；真实 provider 的速率和成本行为另验。
 

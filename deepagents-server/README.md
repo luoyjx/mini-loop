@@ -168,6 +168,19 @@ checkpointer/store。Memory namespace 只读取执行 runtime 的 verified `serv
 不会自动进入 Sandbox。当前内存文件读改写没有跨 Thread CAS/事务合并保证；同 owner
 两个 Thread 同时改一个 memory 文件可能发生覆盖，重要业务状态应放外部业务数据库。
 
+## 可选 Temporal 故障原型
+
+[Temporal 原型说明](TEMPORAL_PROTOTYPE.md) 提供独立的实验路径，需显式安装
+`temporal` extra；固定 SDK 1.34.0，不在标准 Agent Server graph、认证或 Compose
+profile 中启用，也不接入原 Python/Go runtime。
+
+真实 Deep Agents loop 在 Temporal Workflow 中执行，DeepAgentsPlugin 将模型 I/O
+放进 Activity；当前只配置无网络的 TranscriptModel fixture。Memory put/get 是命名
+Activities，访问本机共享的应用 SQLite；CLI dev server 的另一份 SQLite 保存 Temporal
+History。Workflow 的虚拟文件、计划和消息通过显式完整 snapshot 跨 Continue-As-New。
+这是本地故障实验，不是生产 Task API、Temporal ACL 或 HA 部署。原型验收结果和
+运行命令由专门说明列出；高层 Task control plane 仍是设计与库合同。
+
 ## 验证
 
 ```sh

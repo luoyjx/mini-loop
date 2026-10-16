@@ -1,6 +1,37 @@
 # Deep Agents Server delivery — 2026-10-16
 
-本轮在实现 `6328007`、架构说明 `9ba2a49` 的基础上，补充异步长任务客户端、
+当前迭代在已推送的 `e67e174` 上增加可选 Temporal 故障原型，固定
+`temporalio==1.34.0`，独立 Worker 运行真实 Deep Agents；标准 Agent Server 和原
+Python/Go 的业务入口保持独立。原型机制、故障证据、运行命令与验收边界见
+[TEMPORAL_PROTOTYPE.md](TEMPORAL_PROTOTYPE.md)。生产 Task 控制面和 HA 验收尚未完成。
+
+## Temporal 迭代验证
+
+| Gate | 结果 | 范围与资源 |
+| --- | --- | --- |
+| 模块 pytest，含 Temporal extra | **238 passed in 1.78s** | wrapper 4.08 秒；采样峰值 171.7 MiB；最低 memory-free 46% |
+| 原 Python pytest | **2256 passed, 28 skipped, 104 warnings**，101.87 秒 | wrapper 104.12 秒；采样峰值 287.5 MiB；最低 memory-free 39% |
+| 原 Python invariants | **77 modules checked**，退出 0 | 只覆盖原 Python package，不把该结果当作 Temporal 验收 |
+| Temporal 真故障验收 | 并发、Worker 强杀接管、服务强杀重启、全部旧 Worker 丢弃、完整状态迁移与副作用去重通过 | 唯一 run_id、实际 History 与清理证据见 [原型记录](TEMPORAL_PROTOTYPE.md#验收与资源限制)；`production_ha_acceptance=false` |
+| 最新 harness 单元检查 | **9 passed** | wrapper 6.12 秒，峰值 67.2 MiB；最终状态断言单独复核 |
+| Lock / offline wheel | `uv lock --check --offline` 与离线构建、内容审计通过 | 105 packages；12 个 Python 模块与源码逐字节匹配，含 6 个 Temporal 模块；保留 instructions.md，不含测试、日志、数据库或 .env |
+| Archify | **9/9 showcase**，0 errors / 0 warnings | JSON 生成 HTML；新增泳道已静态渲染并目检深浅主题，未做浏览器交互验收 |
+| Research Atlas | content **21 篇**、build、HTML **5 tests passed** | bundled Node 24.19.0；wrapper 10.23 秒；采样峰值 467.8 MiB |
+| Markdown / whitespace | 本地链接与 fence 检查、`git diff --check` 通过 | README outline 与新增/修改文档核对，最终暂存另复核 |
+
+验证串行运行，使用 `nice -n 10`；普通 gate 的进程树预算为 1.5 GiB、300 秒、
+memory-free 15%，真实故障脚本为 2 GiB、180 秒。无资源超限中止。短 gate 只有启动
+采样，不能据此推算实际峰值。日志与逐次采样索引保存在
+`var/deepagents-delivery/temporal-final-validation.receipt.json`。
+本轮只新增已获批准的可选 Temporal SDK 及其锁定传递依赖，默认依赖与现有包版本保持。
+没有改 Go、scanner 或既有 guarded mutation anchors，未运行对应 gate。
+
+## 上一轮交付基线
+
+下列长任务客户端交付记录属于 **`e67e174` 的上一轮基线**；其中测试数字与依赖描述
+保留当时范围，不作为新增 Temporal 代码的测试结果。
+
+上一轮在实现 `6328007`、架构说明 `9ba2a49` 的基础上，补充异步长任务客户端、
 API/Worker 分离部署、stateful Run 同步 Checkpoint 策略和可测试的持久任务库合同。
 原 Python/Go runtime 保持原入口；本模块继续使用标准 Agent Server 调度。
 **生产 PostgreSQL/Redis 崩溃与部署恢复尚未验收，不能据此宣布生产恢复保证。**
@@ -26,7 +57,7 @@ API/Worker 分离部署、stateful Run 同步 Checkpoint 策略和可测试的�
 版本保持 Deep Agents 0.7.25、Agent Server 0.16.0、CLI 0.4.35、SDK 0.4.7、
 OpenAI adapter 1.7.2；Python 3.12.10。没有新增依赖，传递依赖与包 hashes 保持在 `uv.lock`。
 
-## 本轮验证记录
+## 上一轮验证记录（e67e174）
 
 | Gate | 已读取结果 | 范围与资源 |
 | --- | --- | --- |
@@ -65,15 +96,16 @@ scan 或 mutation gate。认证参数策略由新模块测试和真实 HTTP 故�
 
 - 规范：[README Mermaid](../README.md#architecture)；模块展开：[分层说明](ARCHITECTURE.md)。
 - Archify source：[architecture JSON](../docs/mini-loop-system.architecture.json)；generated [interactive HTML](../docs/mini-loop-system.architecture.html)。
-  Spec SHA-256 `f91fb2ee07b6fed13b152ef9c1eeac971807062cefd134bbedfeb64d7680bbb8`（176560 bytes）；
-  HTML SHA-256 `3fc68eac12e25d52bf8ea2034e23c3ba1c849857eb26438c56549396887d5a89`（850684 bytes）。
+  当前 Temporal 迭代 Spec SHA-256 `2ba6118f1622154541e12f72d907f79357b39aba341fe9c7bbb4d25ad971903f`（181163 bytes）；
+  HTML SHA-256 `88afbcc0448ce97bba65286fbf1219d0815885fe94aeb694f7485b70236f678c`（866451 bytes）。
 - 完整 base：[PNG](../docs/mini-loop-layered-architecture.png) 与 [exact prompt](../docs/mini-loop-layered-architecture.prompt.txt)。
 - 初始模块历史标注（6328007）：[PNG](../docs/audits/deepagents-server-2026-10-16.png) 与 [exact prompt](../docs/audits/deepagents-server-2026-10-16.prompt.txt)。
-- 本轮模块聚焦与变更标注图：[PNG](docs/agent-server-layered-architecture.png) 与 [exact prompt](docs/agent-server-layered-architecture.prompt.txt)。
+- 标准模块聚焦图（e67e174）：[PNG](docs/agent-server-layered-architecture.png) 与 [exact prompt](docs/agent-server-layered-architecture.prompt.txt)。
+- 本轮独立 Temporal 泳道标注：[PNG](../docs/audits/temporal-prototype-2026-10-16.png) 与 [exact prompt](../docs/audits/temporal-prototype-2026-10-16.prompt.txt)。
 
-本轮 built-in imagegen 更新完整 base，再由该 base 编辑模块聚焦图，橙色标注异步
-handle、API/Worker 配置与故障测试。已保存精确 prompt 并目检五层职责、模型连线、
-文件与 memory 作用域，以及开发通过/生产未验收标签。Archify HTML 由冻结的 JSON 生成，没有手改 HTML。
+本轮 built-in imagegen 在完整 base 增加 Temporal 独立泳道，再由更新后的 base 编辑
+橙色迭代标注，保存完整 prompt 与一次 client.py 标签修正 prompt。已目检五层结构、
+标准模块、两个本地 SQLite、离线模型与未验收边界。Archify HTML 由冻结 JSON 生成。
 
 ## 未执行和能力边界
 

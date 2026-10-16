@@ -1,0 +1,93 @@
+{
+  "run_id": "a21cf53c8ef04a54911debb5e0e4e277",
+  "status": "passed",
+  "started_at": "2026-10-16T05:09:42.578371+00:00",
+  "finished_at": "2026-10-16T05:09:58.674983+00:00",
+  "seconds": 16.1,
+  "passed": [
+    "two real Deep Agents workflows have checkpointed plans/files/messages and committed memory effects while concurrently blocked",
+    "foreign owner handle, snapshot, result, and cancellation rejected by trusted mapping adapter",
+    "SIGKILL after effect commit/before Activity acknowledgement; new Worker PID retries with the same stable effect ID and no duplicate effect",
+    "Temporal server SIGKILL and all old Workers discarded: new server PID and cold Workers retain SQLite history, active Workflow IDs/Run IDs, and original client handles",
+    "cold Workflow replay and Continue-as-New finish both tasks with files/todos/messages migrated and stable effect deduplication",
+    "completed logical Workflow IDs reject repeated identical submissions after the Continue-as-New chain closes"
+  ],
+  "scope": "local SQLite Temporal server plus independent Python Workers; deterministic model and real Deep Agents harness",
+  "excluded_claims": [
+    "production cluster HA",
+    "physical power-loss",
+    "arbitrary external-tool exactly-once",
+    "production owner ACL"
+  ],
+  "cleanup_confirmed": true,
+  "production_ha_acceptance": false,
+  "rss_budget_mib": 2048,
+  "minimum_memory_free_percent": 15,
+  "peak_owned_tree_rss_mib": 663.9,
+  "minimum_observed_memory_free_percent": 41,
+  "resource_samples": 30,
+  "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+  "observed_activity_types": [
+    "deepagents.invoke_model",
+    "prototype_memory_get",
+    "prototype_memory_put"
+  ],
+  "continue_as_new": [
+    {
+      "workflow_id": "temporal-fault-a21cf53c8ef04a54911debb5e0e4e277-a",
+      "old_run_id": "01a1431d-bc71-769f-874d-2e81bf1eb0c9",
+      "new_run_id": "956c2af4-3574-4f1b-8713-4f25b5ac92dd",
+      "snapshot_sha256": "c5a409b854ba76dc20b11f7b5064dc6b6981cf5985072881f684cd82b1857970",
+      "snapshot_keys": [
+        "can_count",
+        "files",
+        "identity",
+        "messages",
+        "phase",
+        "schema_version",
+        "status",
+        "todos",
+        "version"
+      ]
+    },
+    {
+      "workflow_id": "temporal-fault-a21cf53c8ef04a54911debb5e0e4e277-b",
+      "old_run_id": "01a1431d-bc80-778d-9bed-3b50efda60ae",
+      "new_run_id": "a447afdc-ca95-4792-84a4-850dd84ebb30",
+      "snapshot_sha256": "9880ed9d4e2d645dd62ad916f72d165b09715297cc9ffd7cd24d59a8f445d962",
+      "snapshot_keys": [
+        "can_count",
+        "files",
+        "identity",
+        "messages",
+        "phase",
+        "schema_version",
+        "status",
+        "todos",
+        "version"
+      ]
+    }
+  ],
+  "receipt_sha256": "f5f43d568740e954881ab9bbde57702603a307c39731b08df070c7524e1a91cb",
+  "versions": {
+    "deepagents": "0.7.25",
+    "temporalio": "1.34.0",
+    "temporal_cli": "1.9.1",
+    "temporal_server": "1.32.0",
+    "workflow_code": "prototype-v1",
+    "snapshot_schema": 1
+  },
+  "baseline_commit": "e67e174ab547e9c3ea5060fd9be64bb7ac18cc9b",
+  "evidence_boundary": "Sanitized local fault-run summary, not production HA acceptance; full snapshots and logs stay in the ignored run directory.",
+  "tested_source_sha256": {
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+    "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+    "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+    "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+  }
+}

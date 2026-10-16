@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open</p>
+      <p class="subtitle">Independent Python / Go / standard Agent Server runtimes; optional Temporal 1.34.0 fault prototype has Workflow-held Deep Agents, Activities and separate local SQLite stores; production HA acceptance remains open</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4544,9 +4544,9 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 3050" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 3850" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open</desc>
+        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server runtimes; optional Temporal 1.34.0 fault prototype has Workflow-held Deep Agents, Activities and separate local SQLite stores; production HA acceptance remains open</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4587,6 +4587,9 @@
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="5" x="368" y="2288" width="1934" height="578" rx="12" class="c-region" stroke-width="1"/>
         <text x="376" y="2306" class="t-cloud" font-size="9" font-weight="600">deepagents-server/ · independent opt-in runtime</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="6" x="500" y="3150" width="1530" height="396" rx="12" class="c-region" stroke-width="1"/>
+        <text x="508" y="3168" class="t-cloud" font-size="9" font-weight="600">Optional Temporal fault prototype / default-off experimental</text>
 
         <!-- Connection paths (before components for correct z-order) -->
         <path data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request" data-composition-points="210,296;330,296" d="M 210 296 L 330 296" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
@@ -4658,6 +4661,13 @@
         <path data-edge-from="daGraph" data-edge-to="daProvider" data-edge-key="66" data-edge-id="daModel" data-composition-points="2095,2626;2095,2770" d="M 2095 2626 L 2095 2770" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="daGraph" data-edge-to="daFiles" data-edge-key="67" data-edge-id="daVirtualFiles" data-composition-points="1920,2595;1850,2595;1850,2808;1780,2808" d="M 1920 2595 L 1858 2595 Q 1850 2595 1850 2603 L 1850 2800 Q 1850 2808 1842 2808 L 1780 2808" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="daDev" data-edge-to="daServer" data-edge-key="68" data-edge-id="daDevMode" data-composition-points="710,2588;780,2588;780,2365;850,2365" d="M 710 2588 L 772 2588 Q 780 2588 780 2580 L 780 2373 Q 780 2365 788 2365 L 850 2365" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="tpClient" data-edge-to="tpHistory" data-edge-key="69" data-edge-id="tpSubmit" data-composition-points="370,3231;394,3231;394,3254;526,3254;526,3238;550,3238" d="M 370 3231 L 386 3231 Q 394 3231 394 3239 L 394 3246 Q 394 3254 402 3254 L 518 3254 Q 526 3254 526 3246 L 526 3246 Q 526 3238 534 3238 L 550 3238" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tpHistory" data-edge-to="tpWorkflow" data-edge-label="task queue / replay" data-edge-key="70" data-edge-id="tpReplay" data-composition-points="890,3238;1070,3238" d="M 890 3238 L 1070 3238" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tpWorkflow" data-edge-to="tpModelActivity" data-edge-key="71" data-edge-id="tpModelRequest" data-composition-points="1470,3238;1630,3238" d="M 1470 3238 L 1630 3238" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="tpModelActivity" data-edge-to="tpFixture" data-edge-key="72" data-edge-id="tpFixtureReply" data-composition-points="1805,3276;1805,3450" d="M 1805 3276 L 1805 3450" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tpWorkflow" data-edge-to="tpMemoryActivity" data-edge-key="73" data-edge-id="tpMemoryDispatch" data-composition-points="1270,3276;1270,3450" d="M 1270 3276 L 1270 3450" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tpMemoryActivity" data-edge-to="tpApplication" data-edge-label="owner / effect ledger" data-edge-key="74" data-edge-id="tpMemoryStore" data-composition-points="1070,3488;890,3488" d="M 1070 3488 L 890 3488" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tpClient" data-edge-to="tpApplication" data-edge-key="75" data-edge-id="tpOwnerBind" data-composition-points="370,3245;460,3245;460,3488;550,3488" d="M 370 3245 L 452 3245 Q 460 3245 460 3253 L 460 3480 Q 460 3488 468 3488 L 550 3488" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5267,6 +5277,93 @@
         <text data-detail="fine" x="1015" y="2618" class="t-messagebus" font-size="7" text-anchor="middle">restart does not replace PostgreSQL truth</text>
         </g>
 
+        <g id="node-tpClient" data-node-id="tpClient" data-node-label="Trusted local prototype client" tabindex="0" role="button" aria-label="Focus Trusted local prototype client, start / query / cancel; fixed owner adapter, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="start / query / cancel; fixed owner adapter" data-node-tag="default-off experiment / not production ACL" data-node-context="Architecture component">
+          <title>Trusted local prototype client · start / query / cancel; fixed owner adapter · Architecture component · default-off experiment / not production ACL</title>
+          <rect x="60" y="3200" width="310" height="76" rx="6" class="c-mask"/>
+          <rect x="60" y="3200" width="310" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(66 3206) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="215" y="3236" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Trusted local prototype client</text>
+        <text data-detail="context" x="215" y="3252" class="t-muted" font-size="9" text-anchor="middle">start / query / cancel; fixed owner adapter</text>
+        <text data-detail="fine" x="215" y="3268" class="t-external" font-size="7" text-anchor="middle">default-off experiment / not production ACL</text>
+        </g>
+
+        <g id="node-tpHistory" data-node-id="tpHistory" data-node-label="Temporal local dev server" tabindex="0" role="button" aria-label="Focus Temporal local dev server, CLI SQLite Workflow History, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="database" data-node-sublabel="CLI SQLite Workflow History" data-node-tag="SDK 1.34.0 / not production HA" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Temporal local dev server · CLI SQLite Workflow History · Optional Temporal fault prototype / default-off experimental · SDK 1.34.0 / not production HA</title>
+          <rect x="550" y="3200" width="340" height="76" rx="6" class="c-mask"/>
+          <rect x="550" y="3200" width="340" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(556 3206) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-detail-anchor x="720" y="3236" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Temporal local dev server</text>
+        <text data-detail="context" x="720" y="3252" class="t-muted" font-size="9" text-anchor="middle">CLI SQLite Workflow History</text>
+        <text data-detail="fine" x="720" y="3268" class="t-database" font-size="7" text-anchor="middle">SDK 1.34.0 / not production HA</text>
+        </g>
+
+        <g id="node-tpWorkflow" data-node-id="tpWorkflow" data-node-label="Independent Temporal Worker" tabindex="0" role="button" aria-label="Focus Independent Temporal Worker, real Deep Agents loop in Workflow, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="backend" data-node-sublabel="real Deep Agents loop in Workflow" data-node-tag="versioned full-state Continue-As-New" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Independent Temporal Worker · real Deep Agents loop in Workflow · Optional Temporal fault prototype / default-off experimental · versioned full-state Continue-As-New</title>
+          <rect x="1070" y="3200" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1070" y="3200" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1076 3206) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1270" y="3236" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Independent Temporal Worker</text>
+        <text data-detail="context" x="1270" y="3252" class="t-muted" font-size="9" text-anchor="middle">real Deep Agents loop in Workflow</text>
+        <text data-detail="fine" x="1270" y="3268" class="t-backend" font-size="7" text-anchor="middle">versioned full-state Continue-As-New</text>
+        </g>
+
+        <g id="node-tpModelActivity" data-node-id="tpModelActivity" data-node-label="Plugin model I/O Activity" tabindex="0" role="button" aria-label="Focus Plugin model I/O Activity, model execution outside Workflow replay, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="backend" data-node-sublabel="model execution outside Workflow replay" data-node-tag="DeepAgentsPlugin / experimental" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Plugin model I/O Activity · model execution outside Workflow replay · Optional Temporal fault prototype / default-off experimental · DeepAgentsPlugin / experimental</title>
+          <rect x="1630" y="3200" width="350" height="76" rx="6" class="c-mask"/>
+          <rect x="1630" y="3200" width="350" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 3206) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1805" y="3236" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Plugin model I/O Activity</text>
+        <text data-detail="context" x="1805" y="3252" class="t-muted" font-size="9" text-anchor="middle">model execution outside Workflow replay</text>
+        <text data-detail="fine" x="1805" y="3268" class="t-backend" font-size="7" text-anchor="middle">DeepAgentsPlugin / experimental</text>
+        </g>
+
+        <g id="node-tpFixture" data-node-id="tpFixture" data-node-label="Offline TranscriptModel" tabindex="0" role="button" aria-label="Focus Offline TranscriptModel, controlled fixture / no live provider, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="external" data-node-sublabel="controlled fixture / no live provider" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Offline TranscriptModel · controlled fixture / no live provider · Optional Temporal fault prototype / default-off experimental</title>
+          <rect x="1630" y="3450" width="350" height="76" rx="6" class="c-mask"/>
+          <rect x="1630" y="3450" width="350" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1636 3456) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="1805" y="3486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Offline TranscriptModel</text>
+        <text data-detail="context" x="1805" y="3502" class="t-muted" font-size="9" text-anchor="middle">controlled fixture / no live provider</text>
+        </g>
+
+        <g id="node-tpMemoryActivity" data-node-id="tpMemoryActivity" data-node-label="Memory put / get Activities" tabindex="0" role="button" aria-label="Focus Memory put / get Activities, owner scope / stable operation IDs, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owner scope / stable operation IDs" data-node-tag="after-commit / before-ack fault gate" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Memory put / get Activities · owner scope / stable operation IDs · Optional Temporal fault prototype / default-off experimental · after-commit / before-ack fault gate</title>
+          <rect x="1070" y="3450" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="1070" y="3450" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1076 3456) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1270" y="3486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Memory put / get Activities</text>
+        <text data-detail="context" x="1270" y="3502" class="t-muted" font-size="9" text-anchor="middle">owner scope / stable operation IDs</text>
+        <text data-detail="fine" x="1270" y="3518" class="t-backend" font-size="7" text-anchor="middle">after-commit / before-ack fault gate</text>
+        </g>
+
+        <g id="node-tpApplication" data-node-id="tpApplication" data-node-label="Local application SQLite" tabindex="0" role="button" aria-label="Focus Local application SQLite, owner binding / memories / effect ledger, Optional Temporal fault prototype / default-off experimental" aria-pressed="false" data-node-kind="database" data-node-sublabel="owner binding / memories / effect ledger" data-node-tag="no durable Task API / outbox / HA claim" data-node-context="Optional Temporal fault prototype / default-off experimental">
+          <title>Local application SQLite · owner binding / memories / effect ledger · Optional Temporal fault prototype / default-off experimental · no durable Task API / outbox / HA claim</title>
+          <rect x="550" y="3450" width="340" height="76" rx="6" class="c-mask"/>
+          <rect x="550" y="3450" width="340" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(556 3456) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-detail-anchor x="720" y="3486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Local application SQLite</text>
+        <text data-detail="context" x="720" y="3502" class="t-muted" font-size="9" text-anchor="middle">owner binding / memories / effect ledger</text>
+        <text data-detail="fine" x="720" y="3518" class="t-database" font-size="7" text-anchor="middle">no durable Task API / outbox / HA claim</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5452,36 +5549,49 @@
 
 
 
+        <g data-detail="context" data-edge-from="tpHistory" data-edge-to="tpWorkflow" data-edge-label="task queue / replay" data-edge-key="70" data-edge-id="tpReplay">
+          <rect x="929.4" y="3218" width="101.2" height="14" rx="3" class="c-mask"/>
+          <text x="980" y="3228" class="t-muted" font-size="8" text-anchor="middle">task queue / replay</text>
+        </g>
+
+
+
+        <g data-detail="context" data-edge-from="tpMemoryActivity" data-edge-to="tpApplication" data-edge-label="owner / effect ledger" data-edge-key="74" data-edge-id="tpMemoryStore">
+          <rect x="924.6" y="3468" width="110.8" height="14" rx="3" class="c-mask"/>
+          <text x="980" y="3478" class="t-muted" font-size="8" text-anchor="middle">owner / effect ledger</text>
+        </g>
+
+
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="3021" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="3821" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="3026" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="3034" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="3826" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="3834" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="3026" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="3034" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="3826" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="3834" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="3026" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="3034" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="3826" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="3834" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="3026" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="3034" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="3826" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="3834" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="3026" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="3034" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="3826" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="3834" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="3026" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="3034" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="3826" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="3834" class="t-muted" font-size="8">Database</text>
           </g>
           <g data-legend-kind="cloud">
-            <rect x="674" y="3026" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
-            <text x="694" y="3034" class="t-muted" font-size="8">Cloud</text>
+            <rect x="674" y="3826" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
+            <text x="694" y="3834" class="t-muted" font-size="8">Cloud</text>
           </g>
         </g>
       </svg>
@@ -5901,13 +6011,27 @@
           <h3>Independent Deep Agents server</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 2026-10-16: implementation 6328007 and architecture 9ba2a49 plus this long-task iteration. Existing Python and Go runtimes retain their startup, tools, state and defaults.</li>
+          <li>&bull; Review baseline 2026-10-16: e67e174 plus optional Temporal 1.34.0 fault prototype. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.</li>
           <li>&bull; AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.</li>
           <li>&bull; Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.</li>
           <li>&bull; Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.</li>
           <li>&bull; Checkpoint continuation creates a new Run with null input after conservative checks. request_id aids uncertain-submission reconciliation; it is not server-enforced deduplication. Checkpoints are not exactly-once side effects or durable token streams.</li>
           <li>&bull; Bearer owners scope Threads, Runs and memory. StateBackend files are virtual; /memories/ uses owner StoreBackend. No host shell, cron, MDA SDK, Context Hub, OAuth or managed sandbox is enabled.</li>
           <li>&bull; langgraph dev uses in-memory state and local snapshots, not production durability. PostgreSQL worker crash/redeploy recovery still requires a licensed production-stack acceptance run. Graph/checkpoint compatibility and stable identity configuration are deployment responsibilities.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Optional Temporal fault prototype</h3>
+        </div>
+        <ul>
+          <li>&bull; Default-off temporal dependency extra and independent Worker CLI. The standard Agent Server API does not route into it. The higher-level Task control plane remains proposed; task_contracts.py is library-only.</li>
+          <li>&bull; Real create_temporal_deep_agent runs the Deep Agents loop inside Workflow code. DeepAgentsPlugin moves model I/O to Activities; the configured TranscriptModel is offline and has no live provider.</li>
+          <li>&bull; Named memory put/get Activities use a separate local application SQLite file for trusted workflow-owner binding, memories, idempotent effect records and fault gates. The trusted local client is not production HTTP authentication or Temporal service ACL.</li>
+          <li>&bull; Temporal CLI dev server keeps Workflow History in its own SQLite file. Virtual graph files/todos/messages cross one explicit Continue-As-New boundary as a versioned full-state snapshot. Local SQLite is not production HA.</li>
+          <li>&bull; Fault-harness results belong to the dedicated prototype delivery record. Source/config existence is not a passing run; live-provider inference, production storage/ACL, code-upgrade compatibility and capacity need independent acceptance.</li>
         </ul>
       </div>
     </div>
