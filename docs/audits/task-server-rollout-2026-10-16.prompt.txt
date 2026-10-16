@@ -1,0 +1,31 @@
+Use case: infographic-diagram. Create an updated STANDALONE independent Agent Server architecture by editing the supplied UPDATED full base and previous focused diagram. Focus only on the Temporal Task HTTP Agent Server, independent of Python/Go and the standard LangGraph server. Keep the previous focused diagram's spacious navy/cyan/white five-layer visual style. Portrait canvas, large readable precise Chinese. This iteration is Worker rolling shutdown and concurrent-task acceptance. Previously implemented CAN/checkpoint/old-v1 compatibility should now be BLUE, not orange. ORANGE marks only new process-lifecycle code and this iteration's new validation.
+
+Title "Agent Server · 并发长任务与滚动替换"
+Subtitle "本轮：Worker 排空、超时交接与最终退出期限"
+Legend "橙色 = 本轮修改 / 新增验收".
+Keep five layers with centered downward main path:
+L1 客户端 — 异步提交后可离线；保存 TaskID 与幂等键，凭认证查询.
+L2 无状态 Task API — Bearer → owner；Temporal 确认 Start 后 202；状态 / 结果 / 取消 / 事件；单进程容量超限 429. No literal HTTP path examples, no DELETE endpoint, no database icon for this layer.
+L3 Temporal 持久执行 — Task Queue + Workflow History；稳定 TaskID；V2 多 Run 分段与完整 Checkpoint；执行槽满时，已接受任务在队列等待. Show small blue Run1→Run2 chain.
+L4 独立 Worker 池 — Worker A / Worker B / Worker C, same task queue, each running real Deep Agents. Preserve text "v1 / v2 同时保留；计划 · 文件 · 子代理 · 摘要".
+Make L4 tall enough for the main ORANGE lifecycle panel, labelled "新增：CLI 进程生命周期":
+"SIGTERM / SIGINT → 停止新轮询 · 排空已领取任务"
+Three precise outcomes:
+"宽限内完成 → 正常退出"
+"宽限到期 → SDK 取消 Activity，Temporal 按预算重试"
+"总期限 / 第二次信号 → 强退（exit 70）"
+Footer within orange panel: "默认：宽限 2s / 总期限 15s；库 serve 不接管宿主信号".
+Draw a clear small orange replacement arrow from an old Worker icon to a new Worker icon, labelled "替代 Worker 从同一队列接管". This is process replacement, not cancelling the business Task. Explain "允许处理已缓冲的领取；重试消耗原有尝试预算" in smaller but legible text. Do not suggest zero Activity starts after SIGTERM.
+L5 模型 I/O — Temporal Activity → ChatOpenAI；心跳 · 最多 3 次尝试；模型与凭据由 Worker 环境配置. Results recorded in History.
+
+Bottom ORANGE validated panel labelled "本轮本地验收 · 离线模型 fixture":
+"12 任务全部完成 · 每项 1 次 CAN"
+"3 执行 + 9 排队；最大模型并发 3"
+"三类停机退出码：0 / 0 / 70"
+"验收使用宽限 1s / 总期限 5s"
+"API 429 后同 key 重试；跨 owner 隔离".
+Beside it a muted boundaries panel:
+"生产 HA / 高并发容量 / 真实 provider 待验收"
+"连续重试可能耗尽 3 次尝试；外部副作用不保证只执行一次"
+"全链 24h / 512 次父模型边界；Checkpoint 有大小上限".
+Do not present these 12 tasks as a production throughput benchmark. No new business DB, outbox, Redis, global quota, sandbox, permanent idempotency or arbitrary-version migration. Main arrows must show client→API→Temporal→Workers→model I/O. Avoid unlabeled return arrows. Any CAN return arrow should be blue and clearly go from Worker checkpoint to Temporal, separate from orange process replacement. Prioritize clean legibility over decorative text; no marketing slogans or invented features.

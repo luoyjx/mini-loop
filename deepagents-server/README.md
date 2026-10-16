@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-can-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-rollout-2026-10-16.png)。
 
 ## 已实现与边界
 
@@ -197,6 +197,12 @@ HTTP/生产 CLI 无 fixture 或 provider 选择参数，未启用 owner Memory�
 `run_id` 与 first/previous/next 字段支持跨 Run 导航。相邻 History 已被清理时显式标注
 导航不完整；不拼造任务级统一事件序号。事件是 History metadata，不是 token 重放。
 API 副本共享 namespace、队列、token 映射和 cursor secret；取消响应只确认请求。
+
+Worker CLI 的进程边界接管 SIGTERM/SIGINT，显式触发 SDK shutdown：停止新轮询，
+排空已领取或已缓冲工作，宽限结束后让未完成 Activity 按原重试预算交接。默认宽限
+2 秒、硬退出期限 15 秒；第二次信号或超过硬期限退出码为 70，未完成 Activity 依赖
+原生 heartbeat/timeout 恢复。进程退出不等于取消用户 Task。library `serve` 不接管
+信号或强退宿主，调用方保留生命周期责任；这不是跨版本路由或全局并发配额。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

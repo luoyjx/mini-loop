@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; opt-in Task V2 uses Temporal Run chains and bounded native checkpoint CAN; unchanged v1 and offline prototype retained; production HA/capacity unverified",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; Task V2 retains bounded native checkpoint CAN; Worker CLI adds signal-driven SDK shutdown and hard exit; production HA/capacity unverified",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -1005,6 +1005,21 @@
         400,
         76
       ]
+    },
+    {
+      "id": "tsProcess",
+      "type": "backend",
+      "label": "Worker process lifecycle",
+      "sublabel": "SIGTERM / SIGINT to SDK shutdown",
+      "pos": [
+        1630,
+        3750
+      ],
+      "size": [
+        400,
+        76
+      ],
+      "tag": "CLI only / grace and hard deadline"
     }
   ],
   "boundaries": [
@@ -1104,7 +1119,8 @@
         "tsHistory",
         "tsWorker",
         "tsModelActivity",
-        "tsModel"
+        "tsModel",
+        "tsProcess"
       ],
       "pad": 50
     }
@@ -2172,6 +2188,17 @@
       "to": "tsHistory",
       "label": "CAN + checkpoint",
       "variant": "emphasis"
+    },
+    {
+      "id": "tsShutdown",
+      "from": "tsProcess",
+      "to": "tsWorker",
+      "label": "stop polls / drain",
+      "variant": "emphasis",
+      "labelAt": [
+        1910,
+        3938
+      ]
     }
   ],
   "cards": [
@@ -2392,7 +2419,7 @@
       "dot": "violet",
       "title": "Independent Deep Agents server",
       "items": [
-        "Review baseline 2026-10-16: 9af554a plus Task V2 bounded Continue-As-New, native saver transport and cross-Run observation. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.",
+        "Review baseline 2026-10-16: 98de8d2 plus Worker CLI rolling shutdown and bounded concurrency validation. V1/V2 Workflow code, standard Agent Server, Python and Go paths keep their existing execution semantics.",
         "AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.",
         "Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.",
         "Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.",
@@ -2422,6 +2449,7 @@
         "The original total 24-hour deadline does not reset at CAN. The 512 parent-boundary budget excludes additional summary and general-purpose subgraph model calls; GP retains its native 9999 recursion setting, while each parent invocation is capped at 128 steps. Transport refuses state above 16 MiB raw journal, 384 KiB compressed checkpoint or 512 KiB continuation envelope.",
         "Native summarization triggers at 40 messages OR 16000 tokens and retains 12 messages. Workflow-owned clocks and IDs stabilize archived virtual files and summary state. The real patch-tool slot retains repair behavior and stable ToolMessage IDs in parent and GP subgraphs. No default owner Memory or arbitrary graph migration is installed.",
         "DeepAgentsPlugin schedules model I/O Activities; a fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector. Status/result/cancel use the verified Run chain; signed cursors bind namespace, owner, TaskID and one Run. Optional run_id and verified first/previous/next navigation never merge event IDs. Missing adjacent retained Runs set an explicit incomplete flag.",
+        "Worker CLI process lifecycle owns SIGTERM/SIGINT and explicit SDK shutdown: stop new polls, drain already claimed or buffered work, then cancel unfinished Activities after the grace interval. Shutdown retries consume the existing Activity attempt budget and do not cancel the Task. Defaults are 2 seconds grace and a 15-second hard deadline; a second signal or elapsed deadline forces CLI exit 70. Library serve neither owns signals nor forces process exit. This is compatible-process replacement, not automatic Worker Versioning.",
         "This Temporal service remains independent from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. Dedicated CAN fault evidence is recorded separately; source/config existence is not a passing run. Production HA, live-provider inference, retention operations, arbitrary code-upgrade compatibility and capacity remain unverified. Process-local limits are not global quotas. Raw Temporal access is trusted; Bearer checks are not service ACLs."
       ]
     }

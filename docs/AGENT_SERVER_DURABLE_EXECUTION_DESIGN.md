@@ -4,7 +4,13 @@
 
 mini-loop 已新增独立、显式启用的 **Temporal Task HTTP 服务**：API 在远端 Start 确认后返回任务，Worker 运行真实 Deep Agents，状态与事件直接来自保留的 Workflow History。此阶段以 Temporal 为单一执行权威，复用已批准的 SDK 1.34.0；没有再建立业务 SQL 台账、Outbox 或第二套任务重试器。稳定 owner/key 在 History 保留范围内去重，模型 I/O 经 Activity，可脱离客户端和 API 进程执行。最终故障验收见 [Task Server 记录](../deepagents-server/TASK_SERVER.md)，源码存在本身不证明高可用。
 
-本轮以 `9af554a` 为审查基线，新增 TaskWorkflowV2 的有界 Continue-As-New：每 8 个安全父 model 边界携带完整 public saver 写日志进入下一 Run；原始 24 小时期限不重置，最多 512 个父 model 边界。原生摘要、子图与迁移 journal 的边界见下文，不能将它理解成无限长任务或所有模型调用的统一上限。
+`98de8d2` 已交付 TaskWorkflowV2 的有界 Continue-As-New：每 8 个安全父 model 边界携带完整 public saver 写日志进入下一 Run；原始 24 小时期限不重置，最多 512 个父 model 边界。原生摘要、子图与迁移 journal 的边界见下文，不能将它理解成无限长任务或所有模型调用的统一上限。
+
+本轮以 `98de8d2` 为审查基线，补充 Worker CLI 的信号与停机入口：SIGTERM/SIGINT
+触发 SDK shutdown，默认 2 秒宽限处理已领取工作，15 秒硬期限或第二次信号退出
+专用进程；library `serve` 保持宿主所有权。Workflow 和 Activity 策略不变，交接
+消耗原重试预算，不产生业务 Task cancel。固定 12 Task / 3 Worker 的本地
+滚动机制验收已通过；这组结果不能推导生产容量或 HA。
 
 更完整的业务 Task 控制面仍是目标：永久接受台账、跨实例配额、业务状态投影、版本路由、外部副作用 fencing 和生产 HA/容量尚未完成。标准 LangGraph Agent Server 的 PostgreSQL/Redis 恢复验收也保持未完成。本文保留这些长期要求，同时区分已实现的直接 Temporal 路径与未来按业务需求引入的数据库层，避免把全部目标组件强制叠加成两个竞争的调度系统。
 
@@ -31,7 +37,8 @@ mini-loop 已新增独立、显式启用的 **Temporal Task HTTP 服务**：API 
 | 同一客户端的 `resume` | 检查最新 Run 与未完成 Checkpoint，以 `input=None` 创建 continuation Run；拒绝需要人工答案的 graph interrupt | 检查与创建是跨客户端原子操作；重复 resume 一定只产生一个 continuation |
 | [task_contracts.py](../deepagents-server/src/mini_loop_deepagents/task_contracts.py) | 纯数据类型、状态迁移校验、能力声明、fencing 谓词、事件游标和 `ExecutionAdapter` Protocol | 已有 Task HTTP API、数据库事务、租约服务、运行适配器或真正 fencing |
 | [task_server/](../deepagents-server/src/mini_loop_deepagents/task_server/) | 新独立 Bearer Task HTTP 服务；Temporal 原生 Start/Describe/Result/Cancel/History；同 owner/key 的相同请求复用、不同请求 409；远端接受确认后 202 | 永久幂等台账、跨副本全局配额、跨后端统一 adapter 或生产 HA 已完成 |
-| 同目录的 `runtime.py` / `worker.py` | v1 代码保持不变，Worker 同时注册 v1/V2；模型 Activity 经 Worker 环境解析为 ChatOpenAI | 真实 provider 已验收、自动版本路由或任意 graph 升级兼容 |
+| 同目录的 `runtime.py` / `worker.py` | v1/V2 Workflow 代码保持不变，Worker 同时注册两版；模型 Activity 经 Worker 环境解析为 ChatOpenAI | 真实 provider 已验收、自动版本路由或任意 graph 升级兼容 |
+| `worker.run_process` / `lifecycle.py` | CLI 首信号显式 SDK shutdown；默认 2 秒 grace、15 秒 hard deadline，第二信号或超期退出 70；library `serve` 不接管进程信号/强退 | 退出 70 即证明任务已恢复、无限重试、信号后绝无 buffered Start、任意宿主进程可安全强退 |
 | 同目录的 `runtime_v2.py` / `checkpoint.py` / `summarization.py` | V2 每 8 个安全父 model 边界 CAN；完整 public saver 日志保留 DeltaChannel 祖先、路由和摘要私有状态；累计 512 父边界、原始 24 小时及传输大小预算 | 无限任务、512 是所有模型调用上限、所有子图都被父 invocation 128 步限制、默认 Memory 或通用 graph 迁移 |
 | [compose.yaml](../deepagents-server/compose.yaml) | 描述同一不可变镜像的 API-only 与 Worker 分离，连接 PostgreSQL/Redis，并限制小规模验证资源 | 已通过多副本部署、数据库故障切换或高并发容量验收 |
 | [fault_smoke.py](../deepagents-server/scripts/fault_smoke.py) | 脚本覆盖独立客户端提交、两个并发 Run、排队、取消/续跑、owner 隔离，以及开发快照写出后的 SIGKILL 与进程替换 | 提交确认后立即崩溃的数据安全、生产 PostgreSQL 恢复、Docker 滚动部署或高吞吐能力已得到证明 |
@@ -251,6 +258,18 @@ Task/Attempt 应记录不可变应用镜像或构建摘要、graph ID、状态 s
 
 **事实：**Temporal Worker Versioning 提供版本路由与 Workflow pinning，需要符合版本要求，并采用支持旧版本并存的发布方式；长生命周期任务还需要适当的 Continue-as-New 或兼容策略。[S8] DBOS 也区分 patching 与应用版本，恢复时匹配版本并建议保留旧进程排空。[S13] **建议：**不要将这两种产品能力预先写成 mini-loop 的部署功能。
 
+本轮明确补上进程停机边界。固定 SDK 的 `graceful_shutdown_timeout` 只有在真正
+调用 shutdown 后才进入排空过程，不能因为配置了 2 秒就宣称 SIGTERM 会优雅交接。
+SDK 停止新轮询、处理已领取/缓冲工作，宽限到期后取消未完成 Activity。[S17]
+本地 1.34.0 Core 将 WorkerShutdown cancellation 转成 retryable failure；重试仍
+消耗原 Activity 最多 3 次尝试，耗尽可能让任务失败。吞 cancellation 的 Activity
+可使 SDK 等待，因此 CLI 用独立硬期限退出 70，再由原生 timeout/heartbeat 恢复。
+
+`run_process` 只拥有专用 Worker 的信号和硬退；异步库 `serve` 仅接收 stop event。
+替换 Worker 必须兼容同一队列上的历史执行；先启动兼容替代进程，再停止旧进程。
+这提供兼容代码的进程替换入口，不提供自动 graph 迁移或版本路由。正常排空、
+宽限后交接、硬退后恢复与多任务背压需要各自的运行证据。
+
 ### 9.2 持久执行不等于数据库已经高可用
 
 | 指标或责任 | 本设计要求 |
@@ -321,7 +340,7 @@ Temporal 也需要持久服务与数据库；官方将服务拆为可独立扩�
 WorkflowTaskFailed 重试循环。完整收据、源码摘要与测试范围见
 [Task Server](../deepagents-server/TASK_SERVER.md)。该结果只证明这组本地机制场景。
 
-本轮 V2 在源码层补充了安全父 model 边界 CAN、native saver public 写日志迁移、
+已交付 `98de8d2` 的 V2 在源码层补充了安全父 model 边界 CAN、native saver public 写日志迁移、
 原生摘要确定性及跨 Run 状态/结果/取消/事件观察。迁移分别限制 16 MiB raw journal、
 384 KiB compressed checkpoint 和 512 KiB continuation envelope，超限进入明确失败。
 原始 24 小时总期限不重置，512 只计父 model 边界；原生 GP 子图仍为 9999 步，
@@ -334,9 +353,28 @@ chain 导航、同 key 复用、owner 边界与第二项 continued Task 的取�
 耗时 45.86 秒、峰值 797.3 MiB、最低可用内存 37%，19 个所属进程全部退出。
 模型仍为确定性 fixture，持久服务仍是本地 SQLite；这是机制验收而不是生产 HA。
 
-当前代码另通过 HTTP 8 组回归 `d252d1bc60c9470b84747c5dcbda28bc`，包括原生 Start
+同一 V2 历史基线另通过 HTTP 8 组回归 `d252d1bc60c9470b84747c5dcbda28bc`，包括原生 Start
 创建 v1 后的 HTTP 复用/409/404 与原 128 步失败终态。完整范围、资源证据和门禁
 见 [Task Server](../deepagents-server/TASK_SERVER.md) 及其交付记录。
+
+本轮在相同 v1/V2 Workflow 上补进程停机：`worker.run_process` / `lifecycle.py`
+显式接入 SIGTERM/SIGINT、SDK drain 和有硬期限的专用进程退出。真实运行
+`7058dd0bb0f84158bb1d8a76155b59e4` 已通过 4 组：12 Task / 3 owner / 3 个单
+Activity 槽 Worker / 2 API，初始 3 Activity 执行、9 项原生排队；替换 Worker 承接
+原 9 项，全部任务成功、各 10 个真实工具步骤与 1 次 CAN。
+
+三次 SIGTERM 分别覆盖宽限内完成（退出 0）、配合 cancellation 后交接（退出 0）、
+吞 cancellation 后硬退出（退出 70）。试验用 grace 1 秒/hard 5 秒，默认仍是
+2/15 秒；硬退出实测 5.087 秒。两项重试都保留 Activity/Run/request SHA，attempt
+1→2，未耗尽原 3 次预算。134 个模型执行区间为 132 完成、1 配合取消、1 进程退出，
+最大同时执行 3。API admission 真正返回 429 后原生 Workflow NOT_FOUND，同 key
+重试可接受；owner 隔离与跨副本重试均有验证。源码中的 buffered Start 可能性保留，
+没有以“signal 后零开始”代替真实 slot/交接观察。
+
+此运行耗时 20.95 秒、峰值 1059.5 MiB、最低可用内存 47%，45 个所属进程全部退出。
+它是固定规模、离线模型、单机 SQLite 的机制验收，不是 provider 429、吞吐 SLO、
+全局租户配额、生产 HA 或跨版本升级验收。详细证据见
+[Task Server](../deepagents-server/TASK_SERVER.md)。
 
 **阶段 C 仍未全部完成：**永久业务台账、全局 admission/owner 配额、跨后端 adapter、
 自动版本路由与外部工具副作用协议仍无实现。未来引入业务 SQL 时，必须先确定其
@@ -371,8 +409,8 @@ chain 导航、同 key 复用、owner 边界与第二项 continued Task 的取�
 | SSE 中断、慢消费者和事件服务重启 | 执行继续；生命周期事件按游标回放；token 流缺口有明确语义 | Task HTTP 签名 History 游标跨 API 重启/副本以及 V2 旧 Run 续页与 chain 导航已实测；无 SSE/token 持久流或独立事件索引 |
 | Redis 丢失或重启 | 持久任务可重新发现；取消与实时流中断可观察；不依赖丢失的 PubSub 恢复历史 | 生产 PostgreSQL/Redis 路径待验收 |
 | PostgreSQL 重启、主备切换、旧主复活 | 已接受任务符合声明 RPO；连接恢复；旧主不继续接受权威写入 | 未建立数据库 HA 环境与测量 |
-| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 当前仅配置同镜像 API/Worker，未证明版本路由 |
-| 多 owner 与子代理突发、provider 429 | 全局与 owner 配额有效；有界排队、退避和公平性；扩容不放大上游超额 | 未实现跨实例 admission 或压测 |
+| 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 本地相同 Workflow 版本的正常 drain、grace 后交接与硬退恢复三例通过；没有容器编排/不兼容版本路由验收 |
+| 多 owner 与子代理突发、provider 429 | 全局与 owner 配额有效；有界排队、退避和公平性；扩容不放大上游超额 | 本轮 12 Task / 3 owner / 3 Worker / 2 API 及真实 API 429 机制实验通过；未实现跨实例 admission，不能替代 provider 429 或容量压测 |
 | 持久审批等待跨重启 | 决策内容、权限与版本保留，重复批准只生效一次，等待释放执行资源 | 当前通用 resume 拒绝 graph interrupt |
 | 相同 task/handle 被另一 owner 使用 | 状态、取消、事件、memory、artifact 均拒绝越权 | Task HTTP 状态/结果/取消/事件跨 owner 404 已实测；Memory/Artifact 新接口未实现，Temporal RPC 仍是受信任边界 |
 | 图步骤预算耗尽 | 业务任务进入可观察失败终态，不形成无限 Workflow Task 重试 | v1 本地真实循环达到 128 步后已进入 `task_step_limit`；V2 分别限制父 invocation、总父 model 边界和 checkpoint 大小，新故障证据单列；不是全部模型调用配额 |
@@ -399,6 +437,7 @@ chain 导航、同 key 复用、owner 边界与第二项 continued Task 的取�
 - [S14] [DBOS Concurrent Executions](https://docs.dbos.dev/explanations/concurrent-executions)：ownership token 与 checkpoint 事务检查；不能据此声称外部副作用 exactly-once。
 - [S15] [PostgreSQL 16 SELECT](https://www.postgresql.org/docs/16/sql-select.html)：`FOR UPDATE SKIP LOCKED` 的队列场景和不一致视图限制。
 - [S16] [PostgreSQL 16 High Availability](https://www.postgresql.org/docs/16/high-availability.html) 与 [Log-Shipping Standby Servers](https://www.postgresql.org/docs/16/warm-standby.html)：复制、故障切换与持久性选择。
+- [S17] [Temporal Python Worker API](https://python.temporal.io/temporalio.worker.Worker.html) 与 [固定 1.34.0 Worker 源码](https://github.com/temporalio/sdk-python/blob/a4c2bb38c3bad43498dfa6bd849e8d85bb684e94/temporalio/worker/_worker.py)：显式 shutdown、Activity grace 与等待完成语义；另核本地 wheel 中 `bridge/sdk-core/crates/sdk-core/src/worker/activities.rs` 的 WorkerShutdown retryable 转换。
 
 [S1]: https://docs.langchain.com/langsmith/agent-server
 [S2]: https://docs.langchain.com/langsmith/data-plane
@@ -418,3 +457,5 @@ chain 导航、同 key 复用、owner 边界与第二项 continued Task 的取�
 [S14]: https://docs.dbos.dev/explanations/concurrent-executions
 [S15]: https://www.postgresql.org/docs/16/sql-select.html
 [S16]: https://www.postgresql.org/docs/16/high-availability.html
+
+[S17]: https://python.temporal.io/temporalio.worker.Worker.html

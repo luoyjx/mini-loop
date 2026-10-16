@@ -33,7 +33,8 @@ key 可能再次创建执行；查询与事件也可能返回 404。调用方必
 
 ## V2 分段续跑与完整状态
 
-本轮审查基线为 `9af554a`。新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
+V2 已在 `98de8d2` 交付。本轮以该提交为审查基线，保留相同 Workflow 代码；
+新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
 为 schema 2。Worker 同时注册原 `TaskWorkflow` / `task-v1`，v1 运行码保持不变。
 部署时先替换为能同时运行两版的 Worker，再切换 API；旧 Worker 无法运行 V2，不能
 把新任务直接派给只认识 v1 的 Worker 池。这里没有自动 Worker Versioning 路由。
@@ -123,7 +124,8 @@ export LANGSMITH_TRACING=false
 .venv/bin/python -m mini_loop_deepagents.task_server.worker \
   --address 127.0.0.1:7233 --namespace default \
   --task-queue mini-loop-task-v1 --identity task-worker-a \
-  --activity-slots 1 --workflow-slots 2
+  --activity-slots 1 --workflow-slots 2 \
+  --shutdown-grace-seconds 2 --shutdown-timeout-seconds 15
 ```
 
 生产 CLI 只使用真实 ChatOpenAI adapter，没有切换测试 fixture 的参数。缺少 provider
@@ -138,6 +140,7 @@ export LANGSMITH_TRACING=false
 | 模型输出与调用超时 | `MAX_TOKENS=4096`（1–32768）；`TIMEOUT_SECONDS=60`（1–300 秒）；均带 `MINILOOP_DEEPAGENTS_` 前缀 |
 | 单 API 进程 | `--max-inflight=32`（1–1024）；应用层超限 429，底层连接过载也可能返回 503；请求时限 20 秒 |
 | 单 Worker 进程 | Activity 槽默认 1，Workflow task 槽默认 2，均为 1–32；Workflow cache 为 0 |
+| Worker CLI 停机 | `--shutdown-grace-seconds=2`，有限数 0–300；`--shutdown-timeout-seconds=15`，有限数、大于 grace、最多 360 秒 |
 | V2 单任务 | 原始 Workflow execution timeout 24 小时；512 个父 model 边界；每 8 个安全边界 CAN；不是全部模型调用上限 |
 | 图 invocation | 父图 128 步；原生 GP 子图 9999 步；v1 仍沿用原 128 步任务行为 |
 | V2 状态迁移 | 16 MiB raw journal、384 KiB compressed checkpoint、512 KiB continuation envelope |
@@ -146,6 +149,45 @@ export LANGSMITH_TRACING=false
 
 排队时间包含在 Workflow execution timeout 内，重启与 CAN 都不会重置这项总期限。
 各层预算分别生效；CAN 不放宽 provider 时限、Activity 重试或父/子图自己的限制。
+
+## Worker 滚动停机与任务交接
+
+`worker.run_process` 是独立 CLI 的可信进程入口，在连接 Temporal 前安装 SIGTERM /
+SIGINT handler；第一个信号触发显式 `Worker.shutdown()`。此前只有
+`graceful_shutdown_timeout=2` 配置和 `await worker.run()`，没有将 SIGTERM 接入
+SDK 停机流程，因此不能从旧配置推导出滚动排空已经工作。本轮不修改 v1/V2
+Workflow、CAN 协议或模型 Activity 重试策略，只补进程所有权。
+
+SDK 停机停止新的轮询，继续处理已经领取的工作；已在 Core 内缓冲的 Start 仍可能
+交给语言层，因此不能用“信号后绝无新 Activity 开始”作为保证。宽限内已领取的
+Activity 可以完成并提交结果，超过宽限则收到 SDK cancellation。固定 SDK 1.34.0
+Core 对因 Worker shutdown 而取消的 Activity 返回可重试 `WorkerShutdown` failure，
+由同队列存活 Worker 承接；它消耗原本最多 **3 次 Activity 尝试**，不额外增加重试
+预算，也不向用户 Task 发送取消请求。若原尝试已经耗尽，Task 仍可能失败。
+
+宽限不是进程总停机时限：Activity 若吞掉 cancellation，SDK 可继续等待。CLI 另设
+从首信号开始的硬期限，默认 15 秒；第二次 SIGTERM/SIGINT 或到期通过 `os._exit(70)`
+退出此专用进程，跳过可能继续等待的 asyncio Runner cleanup。未提交完成的
+Activity 仍依赖原生 heartbeat/timeout 与有限重试恢复；不要把退出码 70 当作
+已成功交接或任务完成。部署方容器/进程管理器应给硬期限留出退出与观察余量。
+
+异步库入口 `serve(..., shutdown_grace_seconds=2, stop_event=...)` 接受调用方的
+`asyncio.Event` 来请求 SDK 停机；它不安装进程信号、不启动强退 watchdog、不调用
+`os._exit`。宿主应用拥有进程关闭策略，取消 library coroutine 保留取消语义。
+`run_process` 只用于专用 Worker 进程，不应嵌进承载其他业务的主进程。
+
+本轮受控替换顺序是：保留另外两个 Worker 服务，逐一给旧 Worker 发 SIGTERM，
+观察退出后启动相同 namespace、queue、v1/V2 注册与模型配置的替换 Worker；
+最多同时保留三个执行进程。生产环境若采用先起新副本再停旧副本，须另外预算临时
+增加的执行槽和 provider 额度，并验收该发布方式。保持原 TaskID、first Run、
+请求 memo 与队列配置，不重新提交用户输入。
+当前停机入口使用固定生命周期日志，不将 Task 输入或凭据放入日志。进程替换不等于
+graph schema 迁移、Worker Versioning、零中断服务或跨实例配额。
+
+SDK 行为参见 [Worker API 文档](https://python.temporal.io/temporalio.worker.Worker.html)
+与安装的固定 `temporalio==1.34.0` 源码：`worker/_worker.py` 的 `run/shutdown`，
+`bridge/sdk-core/crates/sdk-core/src/worker/activities.rs` 的 shutdown cancellation
+转换及 `worker_shutdown_failure`。真实交接、硬退和重试预算的验收仍以本轮收据为准。
 
 ## HTTP 使用与恢复语义
 
@@ -237,7 +279,39 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 
 ## 验证与交付证据
 
-本轮 V2 专用故障运行 `caffa4578ab348a3bc7198eb430bcbfb` 的 **4 组验收通过**：
+本轮滚动停机运行 `7058dd0bb0f84158bb1d8a76155b59e4` 的 **4 组验收通过**。两个真实
+HTTP API 接受 3 个 owner 的 12 项 V2 任务，三个生产 Worker 进程各有一个 Activity
+槽。初始有 3 个 model Activity 执行、9 个原生 pending Activity 为 SCHEDULED；
+替换 Worker 接续这 9 项排队任务，最终 **12 项全部 succeeded，各有 10 个真实工具
+步骤和 1 次 CAN**。这一固定规模实验不代表生产吞吐或时延指标。
+
+| 注入场景 | 实际观察 |
+| --- | --- |
+| SIGTERM 后在宽限内释放 Activity | 原 Worker 退出 0，已领取 Activity 完成 |
+| SIGTERM 后超过宽限，Activity 配合 cancellation | 原 Worker 退出 0；另一 Worker 以同 Activity ID / RunID / request SHA 从 attempt 1 接到 2 |
+| Activity 吞掉 cancellation | 原 Worker 在首信号后 5.087 秒退出 70；替换 Worker 以同身份与 request SHA 从 attempt 1 接到 2 |
+| 两个已认证慢请求占满 API 的 2 个 admission 槽 | 下一次提交返回真实 HTTP 429 `api_capacity_exceeded`；原生查询为 NOT_FOUND，释放占用后同 key 重试接受 |
+
+故障验收显式使用 **grace 1 秒 / hard deadline 5 秒**；生产默认仍是 **2 / 15 秒**。
+观察到 134 个 model Activity 执行区间：132 完成、1 配合取消、1 因进程退出结束；
+最大同时执行为 3。两次交接仅使用到 attempt 2，未穷尽原最多 3 次预算，不能据此
+宣称无限次滚动替换都能恢复。本脚本也不作“信号后没有 buffered Start”的断言。
+跨 API 同 key 重试、不同 owner 同 key 的独立身份，以及跨 owner 的状态/结果/事件/
+取消 404 均已覆盖。API 429 是进程 admission 背压，不是 provider 429 或全局租户限额。
+
+本次耗时 **20.95 秒**，owned 进程树采样峰值 **1059.5 MiB**，最低可用内存 **47%**，
+40 个资源样本，45 个所属进程已退出。使用真实生产 `run_process`、Workflow、工具与
+Temporal 服务，模型仍为确定性 fixture；本地 Temporal SQLite 不是集群 HA。
+脱敏 [滚动停机证据](docs/task-rollout-evidence.json) 与 [交付记录](DELIVERY.md) 保存
+范围与门禁，私有原始收据位于忽略的 `var/task-rollout-prototype/<run_id>/receipt.json`。
+
+```sh
+.venv/bin/python scripts/task_worker_rollout_smoke.py \
+  --temporal-binary /absolute/path/to/temporal \
+  --binary-sha256 EXPECTED_EXTRACTED_BINARY_SHA256
+```
+
+以下为 `98de8d2` 的 V2 历史基线。V2 专用故障运行 `caffa4578ab348a3bc7198eb430bcbfb` 的 **4 组验收通过**：
 主任务经过 **4 次 CAN、5 个 Run、37 个父工具步骤、2 个真实 general-purpose
 子代理和 2 次原生摘要 Activity**。在子代理 Activity 中、第一次 CAN 前、CAN 后
 以及第三次 CAN 后分别强杀 Worker，后两组还替换全部 API，最后一组重启同数据库
@@ -256,7 +330,7 @@ Agents 工具、子图和摘要控制流，模型由确定性 fixture 提供，�
   --binary-sha256 EXPECTED_EXTRACTED_BINARY_SHA256
 ```
 
-此前 HTTP 故障脚本也在当前代码重新运行：`d252d1bc60c9470b84747c5dcbda28bc`，
+同一 V2 历史基线的 HTTP 故障脚本运行：`d252d1bc60c9470b84747c5dcbda28bc`，
 **8 组通过**；22.18 秒、峰值 827.9 MiB、最低可用内存 40%，17 个所属进程退出。
 它覆盖新 V2 API 的基础恢复，并以受信任原生 Start 创建旧 v1，验证 HTTP 同 key
 复用、变更正文 409、外 owner 404，以及 v1 原 128 步限制仍进入失败终态。
@@ -292,7 +366,7 @@ RSS、180 秒和最低可用内存比例的观察预算，超限标为 resource-
 双 API 幂等竞争、独立生产者退出、双 Worker 并行、全部 API 替换、同数据库 Temporal
 重启、Worker 冷重放、跨 owner 拒绝、事件续页、取消隔离和真实步骤上限终态。
 
-本轮独立 Agent Server [架构图](../docs/audits/task-server-can-2026-10-16.png) 与
-[精确生图提示词](../docs/audits/task-server-can-2026-10-16.prompt.txt) 标注 V2 分段续跑、
-原生状态迁移与跨 Run 观察；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
+本轮独立 Agent Server [架构图](../docs/audits/task-server-rollout-2026-10-16.png) 与
+[精确生图提示词](../docs/audits/task-server-rollout-2026-10-16.prompt.txt) 标注 Worker
+进程停机边界、宽限交接与硬退出；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
 具体运行证据与提交范围由 [DELIVERY.md](DELIVERY.md) 汇总。

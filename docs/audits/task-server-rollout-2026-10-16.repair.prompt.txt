@@ -1,0 +1,13 @@
+Use case: infographic-diagram. Precisely correct the supplied standalone Agent Server rolling-shutdown diagram. Preserve its five-layer layout, all orange lifecycle highlights, test numbers, navy/cyan style, large Chinese labels, and all other verified facts.
+
+Fix the lower L4/L5 flow:
+- DELETE the blue dashed UPWARD arrow that currently rises from L5 into L4.
+- DELETE the label "CAN / Checkpoint（结果 / 进度 / 心跳）" and the line claiming that arrow returns Worker state to Temporal. This wrongly conflates Activity heartbeat/result with CAN.
+- Replace that label area at the bottom of L4 with a small BLUE text note only, exactly: "已有 V2：完整 Checkpoint 跨 Run 传递；状态由 Temporal History 恢复".
+- Add one clear solid CYAN DOWNWARD main-flow arrow from L4 Worker pool to L5 model I/O, centered in the gap, labelled "调用模型 Activity". It must point down. There must be no upward arrow in or near this gap.
+- Do not draw any CAN return arrow anywhere; describe existing CAN using text only.
+
+In the orange normal-completion branch, replace "已领取的任务在宽限内完成" with "已领取的 Activity 在宽限内完成".
+In the orange grace-expiry branch, use "SDK 发送 Activity 取消请求" and "Temporal 按原有预算重试". Avoid claiming cancellation is always obeyed, because the third branch covers cancellation-ignoring code.
+
+Keep tested setup exactly 12 tasks / 3 Worker slots, 3 active + 9 queued, maximum observed model concurrency 3, defaults 2s grace and 15s deadline, acceptance override 1s/5s, exit codes 0/0/70. Keep production HA/capacity/provider unverified. No additional changes.

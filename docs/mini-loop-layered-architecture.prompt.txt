@@ -1,10 +1,11 @@
-Use case: infographic-diagram. Edit the supplied complete mini-loop layered base architecture. Preserve ALL existing L1-L5 architecture, right-side boundary column, standard Agent Server lane, and old Temporal fault prototype lane exactly. Only update and slightly expand the BOTTOM "独立 Task HTTP 服务 · task_server/ · 显式启用" lane for the implemented task-v2 Continue-As-New iteration. This is the canonical base update, no orange iteration badges.
-Keep client -> stateless API -> Temporal -> Worker -> model Activity/ChatOpenAI main path.
-Update API box to "无状态 Task API" with short text "新任务 v2 / 旧 key 复用 v1" and "状态 · 结果 · 取消 · Run 事件".
-Temporal box: "Temporal 服务 / Workflow History", "同一 TaskID · 多 Run 执行链", "任务权威 · 保留期内幂等".
-Worker box: "独立 Worker · v1 + v2", "TaskWorkflowV2 / 真实 Deep Agents", "子代理 · 文件 · 计划 · 确定性摘要".
-Add a clearly labelled back arrow FROM V2 Worker TO Temporal called "Continue-As-New · 完整 Checkpoint". Make it a short return rail below the main path so it crosses no box.
-Add a narrow new subrow beneath this lane: "每 8 次父模型边界分段 · 完整 saver 写入日志：Delta 祖先 / 路由 / 摘要状态" and "TaskID 不变，RunID 更新".
-Replace the old "本轮无 Memory / Continue-as-New" bottom note with "无跨任务 Memory；V2 已启用受控 CAN；生产 HA / 容量待验收".
-Keep a note "全链 24h；最多 512 次父模型边界；检查点有大小上限". Do not call 512 the limit for all subagent/summary model calls.
-Use enough vertical space for the changed lane; extend canvas down if necessary instead of shrinking the legacy diagram. Preserve style/font/colors. No new SQL database, Redis or business outbox in Task lane. Do not present local SQLite testing as production HA.
+Use case: infographic-diagram. Update the supplied complete mini-loop layered base architecture for the Worker rolling-shutdown iteration. Preserve all legacy L1-L5, right boundary column, standard Agent Server lane, old Temporal prototype lane, and the Task V2 CAN/checkpoint design. Edit ONLY the bottom independent Task HTTP lane and extend canvas downward a little if more room is needed. This is a canonical base image, without orange iteration badges.
+
+The main client -> stateless Task API -> Temporal History -> Worker -> model Activity / ChatOpenAI flow stays.
+Change Worker title to "独立 Worker 池 · v1 + v2" and keep "真实 Deep Agents · 子代理 · 确定性摘要".
+Add a clear small lifecycle strip directly below this Worker lane, with three steps:
+"SIGTERM / SIGINT" -> "停止新轮询 · 排空已领取任务" -> "宽限到期交接 / 最终期限退出".
+Below it add "默认：Activity 宽限 2s · 整进程期限 15s；第二次信号可强退".
+Add compact note "未完成 Activity 由 Temporal 重试；消耗原有尝试预算".
+Keep existing orange-free cyan CAN return arrow from Worker to Temporal with label "Continue-As-New · 完整 Checkpoint"; do not confuse shutdown with Continue-As-New or a business Task cancel.
+Keep current constraints: "每 8 次父模型边界分段", "全链 24h；最多 512 次父模型边界；检查点有大小上限", "无跨任务 Memory；生产 HA / 高并发容量待验收".
+Preserve all existing styling, precise Chinese labels, font legibility, and architecture boundaries. No new DB/Redis/outbox/global quota layer. No claim that rolling workers is database HA, no production throughput claim. The lifecycle is a CLI process responsibility; the library does not own host signals.
