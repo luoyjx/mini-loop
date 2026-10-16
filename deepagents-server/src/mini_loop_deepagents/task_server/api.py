@@ -178,7 +178,7 @@ def create_app(service: Any, *, tokens: Mapping[str, str], max_inflight: int = 3
 
     async def events(request: Request) -> JSONResponse:
         query = request.query_params
-        if set(query) - {"cursor", "limit"} or any(len(query.getlist(k)) != 1 for k in query):
+        if set(query) - {"cursor", "limit", "run_id"} or any(len(query.getlist(k)) != 1 for k in query):
             raise HTTPException(400, "invalid_event_query")
         try:
             limit_text = query.get("limit", "50")
@@ -189,7 +189,8 @@ def create_app(service: Any, *, tokens: Mapping[str, str], max_inflight: int = 3
                 raise ValueError()
         except ValueError:
             raise HTTPException(400, "invalid_event_limit") from None
-        return JSONResponse(await call("events", request, request.path_params["task_id"], cursor=query.get("cursor"), limit=limit))
+        return JSONResponse(await call("events", request, request.path_params["task_id"], cursor=query.get("cursor"),
+                                       limit=limit, run_id=query.get("run_id")))
 
     async def http_error(request: Request, error: HTTPException) -> JSONResponse:
         return error_response(error.detail if isinstance(error.detail, str) else "invalid_request", error.status_code)

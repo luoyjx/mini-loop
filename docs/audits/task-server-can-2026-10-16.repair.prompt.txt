@@ -1,0 +1,14 @@
+Use case: infographic-diagram. Precisely edit the supplied standalone Agent Server Task V2 layered diagram. Keep its five-layer layout, dark navy/cyan styling, orange V2 change highlights, CAN return arrow, and validation/boundary panels. Correct the following factual wording; do not invent new HTTP endpoints.
+
+1. In the center L2 "Task API (HTTP)" box, REMOVE the three endpoint rows including DELETE and /tasks. Replace with exactly these three lines (no REST path examples):
+"Bearer → owner 身份边界"
+"远端 Start 确认 → 202"
+"状态 / 结果 / 取消 / 事件"
+Use an API/network icon rather than a database cylinder for this STATELESS API box.
+2. Change the arrow label from L2 to L3 to exactly "Start / 查询 / 取消". The API does not issue Continue-As-New; that happens on the orange Worker-to-Temporal path.
+3. Under the main subtitle, replace "稳定执行 · 可恢复 · 可扩展 · 面向真实生产" with "异步提交 · 多 Worker · 持久恢复 · 有界分段".
+4. In L1 replace "只需保存 TaskID，随时查询状态" with "保存 TaskID 与幂等键，凭认证查询".
+5. In both Worker A/B boxes replace the last bullet "隔离的执行环境" with "独立 Worker 进程". Do not imply a sandbox.
+6. In bottom "当前边界" replace the parenthetical "仅统计父模型调用次数" with "不含子代理与摘要调用". Keep "全链 24h；最多 512 次父模型边界".
+7. The orange CAN return rail must run in blank space, not through the old-v1 box. Shift/narrow that small old-v1 box slightly left if needed to leave a clear right-side corridor. Keep arrow direction from complete checkpoint strip UP INTO Temporal.
+All other factual labels remain unchanged. No deletion API, no business DB, no production HA claim. Ensure all Chinese remains legible.

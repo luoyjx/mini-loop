@@ -1,0 +1,18 @@
+Use case: infographic-diagram. Edit the supplied updated complete mini-loop base architecture into a NEW STANDALONE layered diagram focused ONLY on the independent Temporal Task HTTP Agent Server. Do not show legacy Python/Go layers, standard Agent Server, or the old experimental Memory prototype. Reuse the supplied base's clear technical visual language but make this diagram spacious, readable and elegant: dark navy background, cyan/blue layer borders, white Chinese text, orange for THIS ITERATION'S CHANGES. Portrait or near-square canvas around 1600x1800, generous margins, clean vector-like shapes.
+
+Title: "Agent Server · 长任务分层架构"
+Subtitle: "Task V2：分段续跑与完整状态恢复"
+Legend: "橙色 = 本轮新增 / 修改" and small "独立于原 Python / Go 业务".
+
+Five stacked horizontal layers, with clear downward MAIN arrows centered and no misleading crossovers:
+L1 "客户端" — "提交任务后可离线", "Bearer · Idempotency-Key · TaskID".
+L2 "无状态 Task API" — "提交 / 状态 / 结果 / 取消", "Temporal 确认后返回 202", "owner 隔离 · 保留期内幂等". Orange small box within L2: "跨 Run 事件导航" and "旧 v1 key 继续复用".
+L3 "持久执行层 · Temporal" — "Task Queue + Workflow History", "同一 TaskID → 多个 RunID", "状态 · 结果 · 恢复的唯一权威". Show a compact orange Run1 → Run2 → Run3 chain and label "Continue-As-New". In small secondary text: "生产持久库与 HA 配置待验收".
+L4 "独立 Worker 池" — two side-by-side Worker A / Worker B boxes, "并行处理独立任务". Within a large V2 execution box: "真实 Deep Agents", "计划 · 虚拟文件 · 子代理". Highlight orange: "每 8 次父模型边界分段" and "确定性摘要". Beside it a narrow muted box "旧 TaskWorkflow v1 保留". Add a large readable orange checkpoint strip inside L4: "完整 Checkpoint 日志：消息 / 文件 / 计划 / 路由 / 摘要状态 / Delta 祖先". Draw ONE orange return arrow FROM this checkpoint strip UP TO L3 Temporal (route along an outer right rail, never through boxes), labelled "完整状态进入下一 Run". Arrow direction must be Worker-to-Temporal. The main Temporal-to-Workers arrow remains separately visible.
+L5 "模型 I/O 层" — "Temporal Activity → ChatOpenAI", "重试 · 心跳 · Worker 环境配置模型与凭据". Model Activity results are recorded in History; say this as small text without another return arrow.
+
+Below layers, two compact evidence/boundary panels:
+"已验证（本地多进程）" — "4 次 CAN / 5 个 Run", "真实子代理与跨 Run 摘要", "Worker / API / Temporal 强杀后恢复", "旧 v1 任务兼容".
+"当前边界" — "全链 24h；最多 512 次父模型边界", "Checkpoint 有大小上限；无跨任务 Memory", "生产 HA / 高并发容量 / 真实 provider 待验收".
+
+Make it unmistakable that 512 counts PARENT model boundaries, not all subagent or summary calls. No SQL business ledger, Redis, outbox, global quotas, arbitrary tool exactly-once or unlimited tasks. Do not draw provider secrets flowing to client. Do not imply local SQLite fault tests prove production HA. All orange highlights refer only to this V2 iteration; previously implemented API and general infrastructure stay blue. Chinese labels must be precise and large enough to read.

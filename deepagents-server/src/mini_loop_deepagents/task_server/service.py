@@ -21,15 +21,16 @@ from uuid import UUID
 
 from temporalio.api.common.v1 import WorkflowExecution
 from temporalio.api.enums.v1 import EventType
-from temporalio.api.workflowservice.v1 import GetWorkflowExecutionHistoryReverseRequest
-from temporalio.client import Client
+from temporalio.api.workflowservice.v1 import GetWorkflowExecutionHistoryRequest, GetWorkflowExecutionHistoryReverseRequest
+from temporalio.client import Client, WorkflowContinuedAsNewError
 from temporalio.common import WorkflowIDConflictPolicy, WorkflowIDReusePolicy
 from temporalio.exceptions import WorkflowAlreadyStartedError
 from temporalio.service import RPCError, RPCStatusCode
 
 
-TASK_VERSION = "task-v1"
-WORKFLOW_TYPE = "TaskWorkflow"
+TASK_VERSION = "task-v2"
+WORKFLOW_TYPE = "TaskWorkflowV2"
+TRUSTED_WORKFLOWS = {"TaskWorkflow": "task-v1", "TaskWorkflowV2": "task-v2"}
 _TASK_ID = re.compile(r"task-[a-f0-9]{64}\Z")
 _SHA256 = re.compile(r"[a-f0-9]{64}\Z")
 _STATUSES = {
@@ -51,6 +52,10 @@ class TaskServiceError(Exception):
 
 class TaskNotFound(TaskServiceError):
     status_code, code = 404, "task_not_found"
+
+
+class _RunMissing(TaskNotFound):
+    """Native NOT_FOUND, distinct internally from rejected authority metadata."""
 
 
 class TaskConflict(TaskServiceError):
@@ -88,6 +93,19 @@ def task_id_for(owner: str, key: str) -> str:
     return "task-" + hashlib.sha256(b"mini-loop:task-id:v1\0" + _canonical([owner, key])).hexdigest()
 
 
+def _request_digest(task_id: str, owner: str, message: str, version: str, task_queue: str) -> str:
+    # Keep the original v1 digest shape. Continuation state is not a submission.
+    payload = {"task_id": task_id, "owner": owner, "message": message, "version": version}
+    return hashlib.sha256(_canonical({"payload": payload, "task_queue": task_queue})).hexdigest()
+
+
+def _valid_run_id(value: Any) -> bool:
+    try:
+        return isinstance(value, str) and str(UUID(value)) == value
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+
 def _encoded(value: bytes) -> str:
     return base64.urlsafe_b64encode(value).decode("ascii").rstrip("=")
 
@@ -122,6 +140,8 @@ class TaskService:
         try:
             async with asyncio.timeout(self._seconds):
                 return await call
+        except WorkflowContinuedAsNewError:
+            raise
         except RPCError as error:
             if error.status == RPCStatusCode.NOT_FOUND:
                 raise TaskNotFound() from None
@@ -132,15 +152,19 @@ class TaskService:
     async def _owned(self, owner: str, task_id: str, *, run_id: str | None = None) -> tuple[Any, dict[str, Any]]:
         self._validate_identity(owner, task_id)
         handle = self.client.get_workflow_handle(task_id, run_id=run_id)
-        description = await self._rpc(handle.describe(rpc_timeout=self._timeout))
+        try:
+            description = await self._rpc(handle.describe(rpc_timeout=self._timeout))
+        except TaskNotFound:
+            raise _RunMissing() from None
         try:
             async with asyncio.timeout(self._seconds):
                 memo = dict(await description.memo())
             valid = (
-                description.id == task_id and description.workflow_type == WORKFLOW_TYPE
+                description.id == task_id and _valid_run_id(description.run_id)
+                and TRUSTED_WORKFLOWS.get(description.workflow_type) == memo.get("version")
+                and memo.get("version") in TRUSTED_WORKFLOWS.values()
                 and (run_id is None or description.run_id == run_id)
                 and memo.get("owner") == owner and memo.get("task_id") == task_id
-                and memo.get("version") == TASK_VERSION
                 and isinstance(memo.get("request_sha256"), str) and _SHA256.fullmatch(memo["request_sha256"])
             )
         except Exception:
@@ -150,12 +174,46 @@ class TaskService:
         return description, memo
 
     @staticmethod
-    def _summary(description: Any) -> dict[str, Any]:
+    def _first_run_id(description: Any) -> str:
+        first = getattr(description.raw_info, "first_run_id", "")
+        if not _valid_run_id(first):
+            # Guessing the current Run would lose the native chain guard at CAN.
+            raise TaskUnavailable()
+        return first
+
+    @classmethod
+    def _same_chain(cls, original: tuple[Any, dict[str, Any]], current: tuple[Any, dict[str, Any]]) -> None:
+        left, left_memo = original
+        right, right_memo = current
+        if (cls._first_run_id(left) != cls._first_run_id(right)
+                or left.workflow_type != right.workflow_type
+                or any(left_memo[key] != right_memo[key] for key in ("owner", "task_id", "version", "request_sha256"))):
+            raise TaskNotFound()
+
+    async def _latest_owned(self, owner: str, task_id: str) -> tuple[Any, dict[str, Any]]:
+        try:
+            async with asyncio.timeout(self._seconds):
+                original = await self._owned(owner, task_id)
+                current = original
+                # Continue-as-New is atomic, but a read can still observe an old
+                # closed Run. Refresh at most twice and never cross a new chain.
+                for _ in range(2):
+                    if getattr(current[0].status, "name", None) != "CONTINUED_AS_NEW":
+                        break
+                    current = await self._owned(owner, task_id)
+                    self._same_chain(original, current)
+                return current
+        except TimeoutError:
+            raise TaskUnavailable() from None
+
+    @classmethod
+    def _summary(cls, description: Any, memo: dict[str, Any]) -> dict[str, Any]:
         status = _STATUSES.get(getattr(description.status, "name", None))
         if status is None:
             raise TaskUnavailable()
         return {"task_id": description.id, "run_id": description.run_id,
-                "status": status, "version": TASK_VERSION}
+                "status": status, "version": memo["version"],
+                "first_execution_run_id": cls._first_run_id(description)}
 
     async def submit(self, owner: str, key: str, message: str) -> dict[str, Any]:
         if not isinstance(owner, str) or not owner:
@@ -174,7 +232,7 @@ class TaskService:
             raise TaskInvalidRequest("message")
         task_id = task_id_for(owner, key)
         payload = {"task_id": task_id, "owner": owner, "message": message, "version": TASK_VERSION}
-        digest = hashlib.sha256(_canonical({"payload": payload, "task_queue": self.task_queue})).hexdigest()
+        digest = _request_digest(task_id, owner, message, TASK_VERSION, self.task_queue)
         memo = {"owner": owner, "request_sha256": digest, "version": TASK_VERSION, "task_id": task_id}
         try:
             async with asyncio.timeout(self._seconds):
@@ -185,10 +243,11 @@ class TaskService:
                     execution_timeout=self._execution_timeout, rpc_timeout=self._timeout,
                 )
         except WorkflowAlreadyStartedError:
-            description, existing = await self._owned(owner, task_id)
-            if existing["request_sha256"] != digest:
+            description, existing = await self._latest_owned(owner, task_id)
+            expected = _request_digest(task_id, owner, message, existing["version"], self.task_queue)
+            if existing["request_sha256"] != expected:
                 raise TaskConflict(task_id)
-            return {**self._summary(description), "reused": True, "write_confirmed": True}
+            return {**self._summary(description, existing), "reused": True, "write_confirmed": True}
         except (Exception, asyncio.CancelledError):
             # The wrapper does not create another business submission. The SDK
             # may retry this same Start RPC/request ID; retain the stable Task ID.
@@ -197,40 +256,53 @@ class TaskService:
         if not isinstance(run_id, str) or not run_id:
             raise TaskSubmissionUnknown(task_id)
         return {"task_id": task_id, "run_id": run_id, "status": "running", "version": TASK_VERSION,
+                "first_execution_run_id": handle.first_execution_run_id or run_id,
                 "reused": False, "write_confirmed": True}
 
     async def get(self, owner: str, task_id: str) -> dict[str, Any]:
-        description, _ = await self._owned(owner, task_id)
-        return self._summary(description)
+        description, memo = await self._latest_owned(owner, task_id)
+        return self._summary(description, memo)
 
     async def result(self, owner: str, task_id: str) -> dict[str, Any]:
-        description, _ = await self._owned(owner, task_id)
-        summary = self._summary(description)
-        if summary["status"] not in _TERMINAL:
-            return {**summary, "ready": False}
-        if summary["status"] != "succeeded":
-            return {**summary, "ready": True, "result": None, "error": {"code": "workflow_" + summary["status"]}}
-        handle = self.client.get_workflow_handle(task_id, run_id=description.run_id)
-        value = await self._rpc(handle.result(follow_runs=False, rpc_timeout=self._timeout))
         try:
-            value = json.loads(_canonical(value))
-        except (ValueError, TypeError):
+            async with asyncio.timeout(self._seconds):
+                original = await self._latest_owned(owner, task_id)
+                current = original
+                for _ in range(2):
+                    description, memo = current
+                    self._same_chain(original, current)
+                    summary = self._summary(description, memo)
+                    if summary["status"] not in _TERMINAL:
+                        return {**summary, "ready": False}
+                    if summary["status"] != "succeeded":
+                        return {**summary, "ready": True, "result": None, "error": {"code": "workflow_" + summary["status"]}}
+                    handle = self.client.get_workflow_handle(task_id, run_id=description.run_id)
+                    try:
+                        value = await self._rpc(handle.result(follow_runs=False, rpc_timeout=self._timeout))
+                    except WorkflowContinuedAsNewError:
+                        current = await self._latest_owned(owner, task_id)
+                        continue
+                    return {**summary, "ready": True, "result": json.loads(_canonical(value))}
+        except (ValueError, TypeError, TimeoutError):
             raise TaskUnavailable() from None
-        return {**summary, "ready": True, "result": value}
+        raise TaskUnavailable()
 
     async def cancel(self, owner: str, task_id: str) -> dict[str, Any]:
-        description, _ = await self._owned(owner, task_id)
-        summary = self._summary(description)
+        original = await self._latest_owned(owner, task_id)
+        description, memo = original
+        summary = self._summary(description, memo)
         if summary["status"] in _TERMINAL:
             return {**summary, "cancel_requested": False}
-        first_run_id = getattr(description.raw_info, "first_run_id", "") or description.run_id
+        first_run_id = self._first_run_id(description)
         handle = self.client.get_workflow_handle(task_id, first_execution_run_id=first_run_id)
         try:
             async with asyncio.timeout(self._seconds):
                 await handle.cancel(rpc_timeout=self._timeout)
         except RPCError as error:
             if error.status in {RPCStatusCode.NOT_FOUND, RPCStatusCode.FAILED_PRECONDITION}:
-                current = await self.get(owner, task_id)
+                refreshed = await self._latest_owned(owner, task_id)
+                self._same_chain(original, refreshed)
+                current = self._summary(*refreshed)
                 if current["status"] in _TERMINAL:
                     return {**current, "cancel_requested": False}
             raise TaskUnavailable() from None
@@ -263,24 +335,72 @@ class TaskService:
         except (ValueError, TypeError, KeyError, UnicodeError, AttributeError):
             raise TaskInvalidRequest("cursor") from None
 
-    async def events(self, owner: str, task_id: str, cursor: str | None = None, limit: int = 50) -> dict[str, Any]:
+    async def _navigation(self, owner: str, task_id: str, current: tuple[Any, dict[str, Any]]) -> dict[str, Any]:
+        description, _ = current
+        execution = WorkflowExecution(workflow_id=task_id, run_id=description.run_id)
+        first = await self.client.workflow_service.get_workflow_execution_history(
+            GetWorkflowExecutionHistoryRequest(namespace=self.client.namespace, execution=execution,
+                                                maximum_page_size=1), retry=True, timeout=self._timeout)
+        if (not first.history.events or first.history.events[0].event_id != 1
+                or not first.history.events[0].HasField("workflow_execution_started_event_attributes")):
+            raise TaskUnavailable()
+        started = first.history.events[0].workflow_execution_started_event_attributes
+        if (started.first_execution_run_id != self._first_run_id(description)
+                or started.workflow_type.name != description.workflow_type):
+            raise TaskNotFound()
+        last = await self.client.workflow_service.get_workflow_execution_history_reverse(
+            GetWorkflowExecutionHistoryReverseRequest(namespace=self.client.namespace, execution=execution,
+                                                       maximum_page_size=1), retry=True, timeout=self._timeout)
+        next_run_id = None
+        if last.history.events and last.history.events[0].HasField("workflow_execution_continued_as_new_event_attributes"):
+            next_run_id = last.history.events[0].workflow_execution_continued_as_new_event_attributes.new_execution_run_id
+        if getattr(description.status, "name", None) == "CONTINUED_AS_NEW" and not next_run_id:
+            raise TaskUnavailable()
+        navigation = {"first_execution_run_id": self._first_run_id(description),
+                      "previous_run_id": None, "next_run_id": None, "history_navigation_incomplete": False}
+        for key, run_id in (("previous_run_id", started.continued_execution_run_id), ("next_run_id", next_run_id)):
+            if not run_id:
+                continue
+            if not _valid_run_id(run_id) or run_id == description.run_id:
+                raise TaskNotFound()
+            try:
+                adjacent = await self._owned(owner, task_id, run_id=run_id)
+                self._same_chain(current, adjacent)
+            except _RunMissing:
+                # An expired adjacent Run grants no navigation capability, but
+                # this independently owned Run's retained History remains useful.
+                navigation["history_navigation_incomplete"] = True
+                continue
+            navigation[key] = run_id
+        return navigation
+
+    async def events(self, owner: str, task_id: str, cursor: str | None = None, limit: int = 50,
+                     *, run_id: str | None = None) -> dict[str, Any]:
         """Read native retained History, newest first; no token-stream guarantee.
 
         The signed exclusive event-ID boundary survives appended History and API
-        restarts. Old pages scan from the head under one deadline and a 64-page
-        cap; this prototype has no persistent event projection/index of its own.
+        restarts. Each page and event ID belongs to one Run; navigation never
+        merges them into a task-global sequence. Old pages scan from the head
+        under one deadline and a 64-page cap; there is no event projection.
         """
         if type(limit) is not int or not 1 <= limit <= 100:
             raise TaskInvalidRequest("limit")
+        if run_id is not None and not _valid_run_id(run_id):
+            raise TaskInvalidRequest("run_id")
         try:
             async with asyncio.timeout(self._seconds):
-                description, _ = await self._owned(owner, task_id)
-                before = None
-                if cursor is not None:
-                    parsed = self._parse_cursor(cursor, owner, task_id)
-                    before = parsed["before_event_id"]
-                    if parsed["run_id"] != description.run_id:
-                        description, _ = await self._owned(owner, task_id, run_id=parsed["run_id"])
+                latest = await self._latest_owned(owner, task_id)
+                parsed = self._parse_cursor(cursor, owner, task_id) if cursor is not None else None
+                if parsed is not None and run_id is not None and parsed["run_id"] != run_id:
+                    raise TaskInvalidRequest("run_id")
+                selected_run_id = parsed["run_id"] if parsed is not None else run_id
+                current = latest
+                if selected_run_id is not None and selected_run_id != latest[0].run_id:
+                    current = await self._owned(owner, task_id, run_id=selected_run_id)
+                    self._same_chain(latest, current)
+                description, _ = current
+                before = parsed["before_event_id"] if parsed is not None else None
+                navigation = await self._navigation(owner, task_id, current)
                 token, events = b"", []
                 for _ in range(64):
                     page = await self.client.workflow_service.get_workflow_execution_history_reverse(
@@ -299,11 +419,11 @@ class TaskService:
                         if len(events) == limit:
                             next_cursor = self._cursor(owner, task_id, description.run_id, event.event_id) if event.event_id > 1 else None
                             return {"task_id": task_id, "run_id": description.run_id, "order": "descending",
-                                    "events": events, "next_cursor": next_cursor}
+                                    "events": events, "next_cursor": next_cursor, **navigation}
                     token = page.next_page_token
                     if not token:
                         return {"task_id": task_id, "run_id": description.run_id, "order": "descending",
-                                "events": events, "next_cursor": None}
+                                "events": events, "next_cursor": None, **navigation}
                 raise TaskUnavailable({"operation": "history_scan_limit"})
         except TaskServiceError:
             raise

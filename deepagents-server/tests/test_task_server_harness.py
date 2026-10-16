@@ -77,6 +77,42 @@ def test_recovered_result_preserves_complete_messages_file_metadata_and_plan():
         assert field in str(failure.value) and changed not in str(failure.value)
 
 
+def test_current_snapshot_contract_requires_v2_first_execution_identity_and_native_state():
+    snapshot = {"schema_version": 2, "version": "task-v2", "status": "running", "state": {},
+                "identity": {"task_id": "task-a", "workflow_id": "task-a", "owner": "alice",
+                             "first_execution_run_id": "run-a"}}
+    harness.check_snapshot_contract(snapshot, "task-a", "run-a", "task-v2", "running")
+    for damaged in (dict(snapshot, schema_version=1), dict(snapshot, version="task-v1"),
+                    dict(snapshot, state=None), dict(snapshot, identity={**snapshot["identity"], "first_execution_run_id": "foreign"})):
+        with pytest.raises(harness.HarnessFailure):
+            harness.check_snapshot_contract(damaged, "task-a", "run-a", "task-v2", "running")
+
+
+def test_original_v1_start_contract_remains_reusable_by_current_identity_and_digest():
+    pytest.importorskip("temporalio")
+    from mini_loop_deepagents.task_server.service import _request_digest, task_id_for
+    legacy = harness.legacy_submission("alice", "retained-key", "original message", "queue")
+    assert legacy["task_id"] == task_id_for("alice", "retained-key")
+    assert legacy["payload"]["version"] == legacy["memo"]["version"] == "task-v1"
+    assert legacy["memo"]["request_sha256"] == _request_digest(legacy["task_id"], "alice", "original message", "task-v1", "queue")
+    assert legacy["memo"]["request_sha256"] != _request_digest(legacy["task_id"], "alice", "original message", "task-v2", "queue")
+
+
+def test_preservation_rejects_changed_private_native_state_without_normalization():
+    before = {"identity": {}, "schema_version": 2, "version": "task-v2", "files": {},
+              "messages": [{"type": "human", "data": {"id": "original"}}],
+              "todos": [{"content": "same plan", "status": "in_progress"}],
+              "state": {"_summarization_event": {"summary_message": {"kwargs": {"id": "stable"}}}}}
+    after = copy.deepcopy(before)
+    after["messages"].append({"type": "ai", "data": {"id": "final"}})
+    after["todos"][0]["status"] = "completed"
+    after["status"] = "completed"
+    harness.check_preserved_state(before, after)
+    after["state"]["_summarization_event"]["summary_message"]["kwargs"]["id"] = "random"
+    with pytest.raises(harness.HarnessFailure, match="native state"):
+        harness.check_preserved_state(before, after)
+
+
 def test_step_limit_evidence_requires_real_native_terminal_failure_and_activity_loop():
     native = pytest.importorskip("temporalio.api.history.v1")
     history = native.History()

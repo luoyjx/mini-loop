@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; opt-in Task HTTP service uses Temporal History as authority and a real Deep Agents Workflow Worker; offline Temporal fault prototype remains separate; production HA/capacity unverified",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; opt-in Task V2 uses Temporal Run chains and bounded native checkpoint CAN; unchanged v1 and offline prototype retained; production HA/capacity unverified",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -951,7 +951,7 @@
       "id": "tsHistory",
       "type": "database",
       "label": "Temporal service / retained History",
-      "sublabel": "TaskID / immutable memo / status / events",
+      "sublabel": "stable TaskID / first Run / retained Run chain",
       "pos": [
         1070,
         4050
@@ -960,13 +960,13 @@
         400,
         76
       ],
-      "tag": "retention-bounded authority / HA unverified"
+      "tag": "per-Run cursors / retention-bounded authority"
     },
     {
       "id": "tsWorker",
       "type": "backend",
-      "label": "TaskWorkflow Worker",
-      "sublabel": "real Deep Agents / virtual files / todos",
+      "label": "TaskWorkflowV2 + v1 Worker",
+      "sublabel": "Deep Agents / portable native saver journal",
       "pos": [
         1630,
         4050
@@ -975,7 +975,7 @@
         400,
         76
       ],
-      "tag": "no default Memory or Continue-As-New"
+      "tag": "8 parent boundaries per CAN / 512 total"
     },
     {
       "id": "tsModelActivity",
@@ -2152,7 +2152,8 @@
       "id": "tsDispatch",
       "from": "tsHistory",
       "to": "tsWorker",
-      "label": "task queue / replay"
+      "label": "task queue / replay",
+      "labelDy": 26
     },
     {
       "id": "tsModelRequest",
@@ -2164,6 +2165,13 @@
       "id": "tsModelIO",
       "from": "tsModelActivity",
       "to": "tsModel"
+    },
+    {
+      "id": "tsContinue",
+      "from": "tsWorker",
+      "to": "tsHistory",
+      "label": "CAN + checkpoint",
+      "variant": "emphasis"
     }
   ],
   "cards": [
@@ -2384,7 +2392,7 @@
       "dot": "violet",
       "title": "Independent Deep Agents server",
       "items": [
-        "Review baseline 2026-10-16: 1fd010d plus the opt-in Temporal Task HTTP server iteration. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.",
+        "Review baseline 2026-10-16: 9af554a plus Task V2 bounded Continue-As-New, native saver transport and cross-Run observation. Standard Agent Server, Python and Go startup paths, tools, state and feature defaults remain unchanged.",
         "AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.",
         "Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.",
         "Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.",
@@ -2408,11 +2416,13 @@
       "dot": "cyan",
       "title": "Opt-in Temporal Task HTTP service",
       "items": [
-        "Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or an owned matching existing request. Concurrent replicas reuse matching content and reject changed payloads with 409.",
-        "Temporal retained History is direct authority for execution, owner/request memo, status, result and event pages. Start uncertainty returns the stable TaskID for reconciliation. Dedupe and event availability are retention-bounded; no permanent business admission ledger or outbox is installed.",
-        "TaskWorkflow runs the real Deep Agents loop; DeepAgentsPlugin schedules model I/O Activities, whose fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector, default Memory store or Continue-As-New is enabled.",
-        "Virtual files, todos and messages reconstruct through History replay. Signed event cursors bind namespace, owner, TaskID, RunID and an exclusive History event boundary; API replicas need a shared secret. Pages expose History metadata, not token streaming.",
-        "This independently configured Temporal service is separate from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. New fault results are recorded separately. Production HA, live-model inference, retention operations and capacity remain unverified; process-local limits are not global quotas. Raw Temporal access belongs to trusted API/Worker processes; HTTP Bearer is not a Temporal service ACL."
+        "Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or a verified matching task. New work selects TaskWorkflowV2/task-v2. The unchanged v1 Workflow remains registered; matching old keys reuse their retained original version and digest.",
+        "Temporal retained History is direct authority for execution, owner/request memo, status, result and event pages. Start uncertainty returns the stable TaskID for reconciliation. Dedupe and event availability are retention-bounded; no permanent admission ledger, outbox or separate checkpoint database is installed.",
+        "V2 carries public saver put/put_writes journal operations across Continue-As-New after eight safe parent model boundaries. Native channels, routing, pending writes, DeltaChannel ancestry and private summary state survive the transport. TaskID and first execution identity remain stable while RunID changes.",
+        "The original total 24-hour deadline does not reset at CAN. The 512 parent-boundary budget excludes additional summary and general-purpose subgraph model calls; GP retains its native 9999 recursion setting, while each parent invocation is capped at 128 steps. Transport refuses state above 16 MiB raw journal, 384 KiB compressed checkpoint or 512 KiB continuation envelope.",
+        "Native summarization triggers at 40 messages OR 16000 tokens and retains 12 messages. Workflow-owned clocks and IDs stabilize archived virtual files and summary state. The real patch-tool slot retains repair behavior and stable ToolMessage IDs in parent and GP subgraphs. No default owner Memory or arbitrary graph migration is installed.",
+        "DeepAgentsPlugin schedules model I/O Activities; a fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector. Status/result/cancel use the verified Run chain; signed cursors bind namespace, owner, TaskID and one Run. Optional run_id and verified first/previous/next navigation never merge event IDs. Missing adjacent retained Runs set an explicit incomplete flag.",
+        "This Temporal service remains independent from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. Dedicated CAN fault evidence is recorded separately; source/config existence is not a passing run. Production HA, live-provider inference, retention operations, arbitrary code-upgrade compatibility and capacity remain unverified. Process-local limits are not global quotas. Raw Temporal access is trusted; Bearer checks are not service ACLs."
       ]
     }
   ]

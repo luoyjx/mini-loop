@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-can-2026-10-16.png)。
 
 ## 已实现与边界
 
@@ -181,12 +181,22 @@ owner，`POST /v1/tasks` 接受 `Idempotency-Key` 和 message。只有远程 Wor
 Temporal retention 约束，不是永久业务台账。Start 结果未知时返回稳定 TaskID 供核对，
 不把本地请求接收当作持久接受。
 
-TaskWorkflow 运行真实 Deep Agents；模型 I/O 经 Activity，在 Worker 环境中把固定
-alias 解析为 ChatOpenAI。公开 HTTP/生产 CLI 无 fixture 或 provider 选择参数。
-默认只有虚拟 files/todos/messages，没有 Memory 或 Continue-As-New。任务状态、
-结果、取消和带签名 cursor 的持久事件分页直接使用保留的 Temporal History；事件
-是 History metadata，不是模型 token 重放。API 副本须共享 namespace、队列、token
-映射和固定 cursor secret；取消返回的是请求已提交，不是任务已停止。
+新提交使用 `TaskWorkflowV2` / `task-v2`；Worker 同时保留不变的 v1 运行码，旧 key
+重试按其原版本摘要复用。真实 Deep Agents 每经过 8 个安全父 model 边界执行
+Continue-As-New，完整 public saver 写日志携带路由、DeltaChannel 祖先、files/todos、
+messages 和摘要私有状态进入下一 Run；没有新增 checkpoint 数据库。固定原生摘要
+以 40 messages 或 16000 tokens 触发并保留 12 messages，使用 Workflow 确定性时钟/ID。
+
+模型 I/O 经 Activity，在 Worker 环境中把固定 alias 解析为 ChatOpenAI。公开
+HTTP/生产 CLI 无 fixture 或 provider 选择参数，未启用 owner Memory。24 小时总期限
+不随 CAN 重置，最多 512 个父 model 边界；不等于全部模型调用上限。原生 GP 子图
+保留 9999 步上限，父图每次 invocation 为 128 步。状态迁移受 16 MiB 原始日志、
+384 KiB 压缩 checkpoint、512 KiB continuation envelope 限制，超限明确失败。
+
+状态、结果与取消跟随经身份核对的执行链；签名事件 cursor 仍属于某个 Run，
+`run_id` 与 first/previous/next 字段支持跨 Run 导航。相邻 History 已被清理时显式标注
+导航不完整；不拼造任务级统一事件序号。事件是 History metadata，不是 token 重放。
+API 副本共享 namespace、队列、token 映射和 cursor secret；取消响应只确认请求。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

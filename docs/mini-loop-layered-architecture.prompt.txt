@@ -1,14 +1,10 @@
-Edit the supplied complete mini-loop layered architecture image as the exact base. Preserve ALL existing L1–L5 layers, the right boundary column, the standard Agent Server lane and the independent Temporal fault prototype lane, their topology and texts. This is a full architecture update, not a cropped detail. Extend the canvas DOWNWARD as needed with the same dark navy, cyan/purple outlines, white Chinese typography and mountain footer. Add a THIRD separate wide lane below the existing two independent modules, titled "独立 Task HTTP 服务 · task_server/ · 显式启用". Give this new lane a clean cyan/purple border (no orange highlight yet).
-Within the NEW lane, arrange 5 readable boxes left to right with arrows:
-1. "异步客户端" / "Bearer · Idempotency-Key · message"
-2. "无状态 Task API" / "提交 · 查询 · 结果 · 取消 · 事件" / "Start 确认后返回 202"
-3. "Temporal 服务" / "队列 + 持久 Workflow History" / "Task 状态的唯一权威"
-4. "独立 TaskWorkflow Worker" / "真实 Deep Agents 循环" / "规划 · 虚拟文件 · 消息"
-5. "模型 Activity → ChatOpenAI" / "模型与凭据由 Worker 环境配置" / "重试 · 心跳"
-Keep box texts short, legible and aligned, use a 2-row composition if necessary rather than squeezing the entire page.
-Below these boxes add three explicit small boundary notes:
-"同 owner + key：保留期内去重；内容冲突 409"
-"签名事件游标可跨 API 重启；不是 token 日志"
-"本轮无 Memory / Continue-as-New；生产 HA 与容量未验收"
-The Task HTTP service is INDEPENDENT of the standard LangGraph Agent Server and original Python/Go; do not draw any runtime calls to those modules.
-Keep the older Temporal prototype lane separate and explicitly offline/local experiment; its explicit full-state Continue-as-New and Memory Activities still belong only to that prototype. In the older prototype's dashed rightmost box, replace "Task 控制面仍是后续设计" with "独立业务台账 / 配额仍是后续设计" to avoid implying that the new HTTP Task service does not exist. Do not claim permanent idempotency, production HA, completed real-provider validation, global quota, or generic exactly-once. Preserve all previous layers and diagrams without clipping.
+Use case: infographic-diagram. Edit the supplied complete mini-loop layered base architecture. Preserve ALL existing L1-L5 architecture, right-side boundary column, standard Agent Server lane, and old Temporal fault prototype lane exactly. Only update and slightly expand the BOTTOM "独立 Task HTTP 服务 · task_server/ · 显式启用" lane for the implemented task-v2 Continue-As-New iteration. This is the canonical base update, no orange iteration badges.
+Keep client -> stateless API -> Temporal -> Worker -> model Activity/ChatOpenAI main path.
+Update API box to "无状态 Task API" with short text "新任务 v2 / 旧 key 复用 v1" and "状态 · 结果 · 取消 · Run 事件".
+Temporal box: "Temporal 服务 / Workflow History", "同一 TaskID · 多 Run 执行链", "任务权威 · 保留期内幂等".
+Worker box: "独立 Worker · v1 + v2", "TaskWorkflowV2 / 真实 Deep Agents", "子代理 · 文件 · 计划 · 确定性摘要".
+Add a clearly labelled back arrow FROM V2 Worker TO Temporal called "Continue-As-New · 完整 Checkpoint". Make it a short return rail below the main path so it crosses no box.
+Add a narrow new subrow beneath this lane: "每 8 次父模型边界分段 · 完整 saver 写入日志：Delta 祖先 / 路由 / 摘要状态" and "TaskID 不变，RunID 更新".
+Replace the old "本轮无 Memory / Continue-as-New" bottom note with "无跨任务 Memory；V2 已启用受控 CAN；生产 HA / 容量待验收".
+Keep a note "全链 24h；最多 512 次父模型边界；检查点有大小上限". Do not call 512 the limit for all subagent/summary model calls.
+Use enough vertical space for the changed lane; extend canvas down if necessary instead of shrinking the legacy diagram. Preserve style/font/colors. No new SQL database, Redis or business outbox in Task lane. Do not present local SQLite testing as production HA.

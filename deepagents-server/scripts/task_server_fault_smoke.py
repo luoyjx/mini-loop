@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+from datetime import timedelta
 import hashlib
 import importlib.util
 import json
@@ -136,6 +137,51 @@ def check_preserved_state(before, after):
             raise HarnessFailure("The completed Task did not preserve and complete its plan at " + (difference or f"todos[{index}].status"))
     if after.get("status") != "completed":
         raise HarnessFailure("The completed Task snapshot lacks its terminal state")
+    if "state" in before:
+        initial, completed = before["state"], after.get("state")
+        if not isinstance(initial, dict) or not isinstance(completed, dict):
+            raise HarnessFailure("The completed Task lost its full native state")
+        for key, original in initial.items():
+            expected = original
+            if key == "messages":
+                candidate = completed.get(key, [])[:len(original)]
+            elif key == "todos":
+                # A final native write_todos completes this exact original plan.
+                expected = [{**item, "status": "completed"} for item in original]
+                candidate = completed.get(key)
+            else:
+                candidate = completed.get(key)
+            difference = SUPPORT.first_difference(expected, candidate, "state." + key)
+            if difference:
+                raise HarnessFailure("The completed Task changed preserved native state at " + difference)
+
+
+def check_snapshot_contract(snapshot, task_id, run_id, version, status):
+    schemas = {"task-v1": 1, "task-v2": 2}
+    identity = {"task_id": task_id, "workflow_id": task_id, "owner": "alice"}
+    if version == "task-v2":
+        identity["first_execution_run_id"] = run_id
+        if not isinstance(snapshot.get("state"), dict):
+            raise HarnessFailure("A V2 Task lacks its complete native state")
+    if (version not in schemas or snapshot.get("identity") != identity
+            or snapshot.get("schema_version") != schemas[version]
+            or snapshot.get("version") != version or snapshot.get("status") != status):
+        raise HarnessFailure("The Task snapshot lost its trusted version, identity, schema, or status")
+
+
+def legacy_submission(owner, key, message, task_queue):
+    """Frozen original v1 Start contract, submitted only through trusted RPC.
+
+    This deliberately does not call the current TaskService submit implementation:
+    an already-existing v1 execution must remain readable/reusable after upgrade.
+    """
+    canonical = lambda value: json.dumps(value, sort_keys=True, ensure_ascii=False,
+                                         separators=(",", ":"), allow_nan=False).encode()
+    task_id = "task-" + hashlib.sha256(b"mini-loop:task-id:v1\0" + canonical([owner, key])).hexdigest()
+    payload = {"task_id": task_id, "owner": owner, "message": message, "version": "task-v1"}
+    digest = hashlib.sha256(canonical({"payload": payload, "task_queue": task_queue})).hexdigest()
+    return {"task_id": task_id, "payload": payload,
+            "memo": {"owner": owner, "request_sha256": digest, "version": "task-v1", "task_id": task_id}}
 
 
 def check_step_limit_history(history):
@@ -267,6 +313,8 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
             raise HarnessFailure("Two API replicas did not converge on the same accepted Task ID")
         if sorted(value.get("reused") for value in admitted) != [False, True]:
             raise HarnessFailure("The competing submissions did not distinguish one create and one reuse")
+        if any(value.get("version") != "task-v2" for value in admitted):
+            raise HarnessFailure("The production API did not select the current V2 Workflow for new Tasks")
 
         async def count():
             return (await temporal_client.count_workflows(query=f'WorkflowId = "{task_a}"')).count
@@ -300,8 +348,8 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
         initial_snapshots = {task_id: await temporal_client.get_workflow_handle(task_id).query("snapshot")
                              for task_id in (task_a, task_b)}
         for task_id, snapshot in initial_snapshots.items():
-            if (snapshot.get("identity") != {"task_id": task_id, "workflow_id": task_id, "owner": "alice"}
-                    or snapshot.get("status") != "running" or not snapshot.get("messages")
+            check_snapshot_contract(snapshot, task_id, run_ids[task_id], "task-v2", "running")
+            if (not snapshot.get("messages")
                     or not snapshot.get("files") or not snapshot.get("todos")):
                 raise HarnessFailure("An accepted blocked Task lacks its native running state")
             SUPPORT.private_json(directory / (task_id + "-initial-snapshot.json"), snapshot, run_id)
@@ -382,6 +430,11 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
             def retries_visible(value):
                 return all(value) and {item["pid"] for item in value} == {record.process.pid for record in workers} and all(item["attempt"] > 1 for item in value)
             retried = await SUPPORT.eventually(processes, markers, retries_visible, timeout=30)
+            for task_id in (task_a, task_b):
+                recovered = await temporal_client.get_workflow_handle(task_id).query("snapshot")
+                difference = SUPPORT.first_difference(initial_snapshots[task_id], recovered, "snapshot")
+                if difference:
+                    raise HarnessFailure("Cold replay changed the full native V2 state at " + difference)
             receipt["temporal_restart"] = {"old_server_pid": old_server_pid, "new_server_pid": temporal.process.pid,
                                             "cold_worker_markers": retried, "preserved_run_ids": run_ids}
             receipt["passed"].append("Temporal and both Workers SIGKILL/restart on the same history database: live API replicas reconnect and new Worker PIDs retry both Tasks under their original Run identities")
@@ -407,9 +460,7 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
         snapshot = final.get("result")
         if final.get("status") != "succeeded" or final.get("run_id") != run_ids[task_b] or not isinstance(snapshot, dict):
             raise HarnessFailure("The detached Task did not return its completed result under the accepted Run identity")
-        expected_identity = {"task_id": task_b, "workflow_id": task_b, "owner": "alice"}
-        if snapshot.get("identity") != expected_identity or snapshot.get("schema_version") != 1 or snapshot.get("version") != "task-v1" or snapshot.get("status") != "completed":
-            raise HarnessFailure("The completed HTTP result lost Task identity, schema, version, or completion state")
+        check_snapshot_contract(snapshot, task_b, run_ids[task_b], "task-v2", "completed")
         if snapshot.get("files", {}).get("/plan.md", {}).get("content") != "plan:" + message_b:
             raise HarnessFailure("The completed HTTP result lost the real Deep Agents virtual file")
         check_preserved_state(initial_snapshots[task_b], snapshot)
@@ -425,9 +476,29 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
         receipt["passed"].append("after API replacement, owner cancellation terminates only its selected Task; another detached Task preserves its full original message prefix/file metadata/plan content, completes its todos, and reuses retained-history duplicate submission")
         persist()
 
-        task_limit = decode(await detached_submit(processes, urls[0], alice, "key-loop-" + run_id,
-                                                   "[fixture:loop-limit] " + run_id), 202)["task_id"]
+        from temporalio.common import WorkflowIDConflictPolicy, WorkflowIDReusePolicy
+        legacy_key, legacy_message = "key-loop-" + run_id, "[fixture:loop-limit] " + run_id
+        legacy = legacy_submission("alice", legacy_key, legacy_message, queue)
+        task_limit = legacy["task_id"]
+        legacy_handle = await temporal_client.start_workflow(
+            "TaskWorkflow", legacy["payload"], id=task_limit, task_queue=queue, memo=legacy["memo"],
+            id_reuse_policy=WorkflowIDReusePolicy.REJECT_DUPLICATE,
+            id_conflict_policy=WorkflowIDConflictPolicy.FAIL,
+            execution_timeout=timedelta(hours=24), rpc_timeout=timedelta(seconds=5))
+        reused_legacy = decode(await detached_submit(processes, urls[0], alice, legacy_key, legacy_message), 202)
+        if (reused_legacy.get("task_id") != task_limit or reused_legacy.get("reused") is not True
+                or reused_legacy.get("version") != "task-v1"
+                or reused_legacy.get("run_id") != legacy_handle.first_execution_run_id):
+            raise HarnessFailure("The new production API failed to reuse an existing native v1 Task")
+        decode(await detached_submit(processes, urls[1], alice, legacy_key, legacy_message + " changed"), 409)
+        for suffix, method in (("", "GET"), ("/result", "GET"), ("/events", "GET"), ("/cancel", "POST")):
+            decode(await observer.request(method, urls[1] + "/v1/tasks/" + task_limit + suffix,
+                headers={"Authorization": "Bearer " + bob}), 404)
         receipt["step_limit_task_id"] = task_limit
+        receipt["legacy_v1_compatibility"] = {"created_via": "trusted Temporal Start using original v1 contract",
+            "workflow_type": "TaskWorkflow", "version": reused_legacy["version"], "http_reused": True,
+            "payload_conflict_status": 409, "foreign_owner_status": 404,
+            "first_execution_run_id": legacy_handle.first_execution_run_id}
         persist()
         failed_response = await read_until(processes, observer, urls[1] + "/v1/tasks/" + task_limit, alice,
                                             lambda response: response.status_code == 200 and response.json().get("status") == "failed",
@@ -445,7 +516,7 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
         receipt["step_limit_failure"] = {"task_id": task_limit, "run_id": failed_result["run_id"],
                                          "configured_graph_step_limit": 128, "http_status": failed_result["status"],
                                          "http_ready": failed_result["ready"], **failure_evidence}
-        receipt["passed"].append("test-only endless real model/tool loop exhausts the 128-step graph bound: HTTP failed/ready result and native nonretryable task_step_limit failure, without repeated WorkflowTaskFailed")
+        receipt["passed"].append("existing native v1 Task reuses through the upgraded API with conflict/owner isolation; its real loop exhausts the original 128-step bound with HTTP failed/ready and native task_step_limit, without WorkflowTaskFailed")
         persist()
 
 

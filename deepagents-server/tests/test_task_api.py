@@ -140,9 +140,17 @@ async def test_event_query_and_result_status(service):
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=create_app(service, tokens=TOKENS)), base_url="http://test") as client:
         assert (await client.get("/v1/tasks/a/result", headers=HEADERS)).status_code == 202
         assert (await client.get("/v1/tasks/a/events?limit=2&cursor=signed", headers=HEADERS)).status_code == 200
-        for query in ("limit=0", "limit=101", "limit=2&limit=3", "owner=bob", "limit=nan"):
+        for query in ("limit=0", "limit=101", "limit=2&limit=3", "run_id=a&run_id=b", "owner=bob", "limit=nan"):
             assert (await client.get("/v1/tasks/a/events?" + query, headers=HEADERS)).status_code == 400
-    assert service.calls[-1] == ("events", "alice", "a", {"cursor": "signed", "limit": 2})
+    assert service.calls[-1] == ("events", "alice", "a", {"cursor": "signed", "limit": 2, "run_id": None})
+
+
+@pytest.mark.asyncio
+async def test_history_run_selection_is_forwarded_without_becoming_a_new_route(service):
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=create_app(service, tokens=TOKENS)), base_url="http://test") as client:
+        response = await client.get("/v1/tasks/a/events?run_id=selected&cursor=signed&limit=3", headers=HEADERS)
+    assert response.status_code == 200
+    assert service.calls[-1] == ("events", "alice", "a", {"cursor": "signed", "limit": 3, "run_id": "selected"})
 
 
 @pytest.mark.parametrize("kwargs", [{"tokens": {}}, {"tokens": {"short": "alice"}},

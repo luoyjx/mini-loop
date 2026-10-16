@@ -1,0 +1,796 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "baseline_commit": "9af554a801863ea0272e350d3d563548c320395b",
+  "assembled_at": "2026-10-16T06:26:24.518954+00:00",
+  "evidence_boundary": "Sanitized local multi-process acceptance of production TaskWorkflowV2 with deterministic model Activities. Full state/logs remain in ignored var/. No production HA, capacity, real-provider inference, arbitrary side-effect exactly-once or unlimited-duration claim.",
+  "versions": {
+    "deepagents": "0.7.25",
+    "temporalio": "1.34.0",
+    "temporal_cli": "1.9.1",
+    "temporal_server": "1.32.0",
+    "new_workflow_type": "TaskWorkflowV2",
+    "new_workflow_version": "task-v2",
+    "snapshot_schema": 2,
+    "retained_workflow_type": "TaskWorkflow",
+    "retained_workflow_version": "task-v1"
+  },
+  "limits": {
+    "can_after_parent_model_boundaries": 8,
+    "total_parent_model_boundary_limit": 512,
+    "total_workflow_execution_hours": 24,
+    "fault_run_timeout_seconds": 180
+  },
+  "continue_as_new_acceptance": {
+    "run_id": "caffa4578ab348a3bc7198eb430bcbfb",
+    "status": "passed",
+    "started_at": "2026-10-16T06:15:03.289632+00:00",
+    "finished_at": "2026-10-16T06:15:49.145400+00:00",
+    "seconds": 45.86,
+    "passed": [
+      "two independent API replicas converge one key; two Tasks reach real model Activities on independent Workers",
+      "child Activity replay, pre-CAN Worker kill, post-CAN Worker/API kill, and third-CAN Temporal/Worker/API kill preserve byte-exact native state and model request",
+      "at least three native Continue-As-New links retain Task identity, latest result, owner isolation, same-key reuse, and original Run cursor navigation",
+      "real summary Activities run across segments; private summary/offload state and 37 real parent tools plus two subagents survive; cancelling a second continued Task is isolated"
+    ],
+    "scope": "production TaskWorkflowV2 with real native tools/subagents/summarization and deterministic model Activities",
+    "excluded_claims": [
+      "production cluster HA",
+      "real provider inference",
+      "permanent idempotency",
+      "external-tool exactly-once",
+      "unlimited task duration"
+    ],
+    "cleanup_confirmed": true,
+    "production_ha_acceptance": false,
+    "rss_budget_mib": 2048,
+    "minimum_memory_free_percent": 15,
+    "peak_owned_tree_rss_mib": 797.3,
+    "minimum_observed_memory_free_percent": 37,
+    "resource_samples": 87,
+    "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+    "supplied_checksum_verified": true,
+    "authority": "Temporal Workflow History",
+    "receipt_sha256": "32d308552b085b45aeb07cee2ed97225a06cdd7db35db15f17cde95e389fc3e1",
+    "receipt_relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/receipt.json",
+    "processes": [
+      {
+        "name": "temporal-1",
+        "pid": 75831,
+        "returncode": -9
+      },
+      {
+        "name": "worker-1",
+        "pid": 75833,
+        "returncode": -9
+      },
+      {
+        "name": "worker-2",
+        "pid": 75834,
+        "returncode": -9
+      },
+      {
+        "name": "api-1-0",
+        "pid": 75835,
+        "returncode": -9
+      },
+      {
+        "name": "api-1-1",
+        "pid": 75836,
+        "returncode": -9
+      },
+      {
+        "name": "producer-bab45ead6a26",
+        "pid": 75844,
+        "returncode": 0
+      },
+      {
+        "name": "producer-bc8688debca7",
+        "pid": 75845,
+        "returncode": 0
+      },
+      {
+        "name": "producer-b84e85b8a978",
+        "pid": 75846,
+        "returncode": 0
+      },
+      {
+        "name": "worker-3",
+        "pid": 75889,
+        "returncode": -9
+      },
+      {
+        "name": "worker-4",
+        "pid": 76330,
+        "returncode": -9
+      },
+      {
+        "name": "api-2-0",
+        "pid": 76443,
+        "returncode": -9
+      },
+      {
+        "name": "api-2-1",
+        "pid": 76444,
+        "returncode": -9
+      },
+      {
+        "name": "worker-5",
+        "pid": 76453,
+        "returncode": -9
+      },
+      {
+        "name": "api-3-0",
+        "pid": 76670,
+        "returncode": -15
+      },
+      {
+        "name": "api-3-1",
+        "pid": 76671,
+        "returncode": -15
+      },
+      {
+        "name": "temporal-2",
+        "pid": 76672,
+        "returncode": 0
+      },
+      {
+        "name": "worker-6",
+        "pid": 76674,
+        "returncode": -15
+      },
+      {
+        "name": "worker-7",
+        "pid": 76675,
+        "returncode": -15
+      },
+      {
+        "name": "producer-497978997dec",
+        "pid": 76768,
+        "returncode": 0
+      }
+    ],
+    "process_count": 19,
+    "all_owned_processes_terminal": true,
+    "task_a": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+    "task_b": "task-43f2b5aa9aa792878bca48a8874b5bcfdb97268057983f45b599f8031a742ba2",
+    "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+    "continuation_count": 4,
+    "run_chain": [
+      {
+        "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "previous_run_id": null,
+        "next_run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+        "status": "continued_as_new",
+        "start_input_sha256": "70af46ab0195d14489b2ae66a6b66a1e3a25619ecc59483256dcefce0c8921d7",
+        "continued_input_sha256": "cbf8993aa7aa90dcac8e364de250598d996ab6a9042894025954189450c0013e",
+        "workflow_task_failures": 0,
+        "event_count": 73
+      },
+      {
+        "run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+        "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "previous_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "next_run_id": "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+        "status": "continued_as_new",
+        "start_input_sha256": "cbf8993aa7aa90dcac8e364de250598d996ab6a9042894025954189450c0013e",
+        "continued_input_sha256": "1afc0cb6c0f60be6daa7e0f619d82e647cb6f163cdf12619bc102fb6c4803d50",
+        "workflow_task_failures": 0,
+        "event_count": 55
+      },
+      {
+        "run_id": "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+        "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "previous_run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+        "next_run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+        "status": "continued_as_new",
+        "start_input_sha256": "1afc0cb6c0f60be6daa7e0f619d82e647cb6f163cdf12619bc102fb6c4803d50",
+        "continued_input_sha256": "542d33759334f48d207c25075c3f961789d69a56f98eaa77a5da55f968638485",
+        "workflow_task_failures": 0,
+        "event_count": 79
+      },
+      {
+        "run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+        "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "previous_run_id": "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+        "next_run_id": "4f264cec-dcda-486e-b5e4-c3147b700903",
+        "status": "continued_as_new",
+        "start_input_sha256": "542d33759334f48d207c25075c3f961789d69a56f98eaa77a5da55f968638485",
+        "continued_input_sha256": "4ee1bb2b2501854616da63cc74cbfd5a55a1fb3ee2aa80cf4a43032b772f1be3",
+        "workflow_task_failures": 0,
+        "event_count": 55
+      },
+      {
+        "run_id": "4f264cec-dcda-486e-b5e4-c3147b700903",
+        "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "previous_run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+        "next_run_id": null,
+        "status": "completed",
+        "start_input_sha256": "4ee1bb2b2501854616da63cc74cbfd5a55a1fb3ee2aa80cf4a43032b772f1be3",
+        "continued_input_sha256": null,
+        "workflow_task_failures": 0,
+        "event_count": 49
+      }
+    ],
+    "observed_run_ids": [
+      "01a14359-8b5c-780a-931e-4829527ad6fe",
+      "09446423-d62a-46d1-8bb6-a98e7a571924",
+      "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+      "162eed1e-1834-4a90-952c-944939b94e72",
+      "4f264cec-dcda-486e-b5e4-c3147b700903"
+    ],
+    "cancelled_task": {
+      "task_id": "task-43f2b5aa9aa792878bca48a8874b5bcfdb97268057983f45b599f8031a742ba2",
+      "run_id": "7de40832-d988-43b7-a696-5b444e33503b",
+      "status": "cancelled",
+      "version": "task-v2",
+      "first_execution_run_id": "01a14359-8c18-75b8-a871-c395bf993a14"
+    },
+    "faults": [
+      {
+        "before": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+          "pid": 75833,
+          "attempt": 1,
+          "activity_id": "6",
+          "role": "child003",
+          "step": 1,
+          "call_id": "can-child003-001",
+          "summary": false,
+          "request_sha256": "278b70045b5295b04ecff93e09b3e0468726fc81c28f2d156fd0e255a269437a"
+        },
+        "after": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+          "pid": 75889,
+          "attempt": 2,
+          "activity_id": "6",
+          "role": "child003",
+          "step": 1,
+          "call_id": "can-child003-001",
+          "summary": false,
+          "request_sha256": "278b70045b5295b04ecff93e09b3e0468726fc81c28f2d156fd0e255a269437a"
+        },
+        "replaced_api": false,
+        "replaced_temporal": false,
+        "snapshot_relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/replay-0.json",
+        "snapshot_file_sha256": "dd67bc545791c9778d7ac3e63884a6a79b03330ef4f7a3c3481ad6553fb2c8b0",
+        "before_snapshot_canonical_sha256": "5f1373fb288be3f52a4d3ed97a3ad56a2b3f86d118a865fdb741c87ad153f2d8",
+        "after_snapshot_canonical_sha256": "5f1373fb288be3f52a4d3ed97a3ad56a2b3f86d118a865fdb741c87ad153f2d8",
+        "full_snapshot_exactly_equal": true
+      },
+      {
+        "before": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+          "pid": 75889,
+          "attempt": 1,
+          "activity_id": "11",
+          "role": "main",
+          "step": 7,
+          "call_id": "can-main-007",
+          "summary": false,
+          "request_sha256": "a5d1bbe76ab67af9afe91086fa5eef07f8d56a20a915787df5a600a575d146b1"
+        },
+        "after": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+          "pid": 76330,
+          "attempt": 2,
+          "activity_id": "11",
+          "role": "main",
+          "step": 7,
+          "call_id": "can-main-007",
+          "summary": false,
+          "request_sha256": "a5d1bbe76ab67af9afe91086fa5eef07f8d56a20a915787df5a600a575d146b1"
+        },
+        "replaced_api": false,
+        "replaced_temporal": false,
+        "snapshot_relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/replay-1.json",
+        "snapshot_file_sha256": "6629ba2ccdf5f2daacc2ebfb2652f4d47a5950750c21e18ea150cbb251e30107",
+        "before_snapshot_canonical_sha256": "acb1b6058eecef8e1784767ea484a402b76a2f32d90512804a4fa9e307d383ee",
+        "after_snapshot_canonical_sha256": "acb1b6058eecef8e1784767ea484a402b76a2f32d90512804a4fa9e307d383ee",
+        "full_snapshot_exactly_equal": true
+      },
+      {
+        "before": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+          "pid": 76330,
+          "attempt": 1,
+          "activity_id": "1",
+          "role": "main",
+          "step": 8,
+          "call_id": "can-main-008",
+          "summary": false,
+          "request_sha256": "df0d7f2ae4fb38d696d5f9c8970dbb89d83bf03913ca4faed1120f0b6e127d41"
+        },
+        "after": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+          "pid": 76453,
+          "attempt": 2,
+          "activity_id": "1",
+          "role": "main",
+          "step": 8,
+          "call_id": "can-main-008",
+          "summary": false,
+          "request_sha256": "df0d7f2ae4fb38d696d5f9c8970dbb89d83bf03913ca4faed1120f0b6e127d41"
+        },
+        "replaced_api": true,
+        "replaced_temporal": false,
+        "snapshot_relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/replay-2.json",
+        "snapshot_file_sha256": "009265bfca51170d8248c220805ba74d7b82d66d8d534d3bc657a3e5a52ba16c",
+        "before_snapshot_canonical_sha256": "3d9938195fbf4b388a1f581151ecdc393bc48bd590d9e0578d7f165300162570",
+        "after_snapshot_canonical_sha256": "3d9938195fbf4b388a1f581151ecdc393bc48bd590d9e0578d7f165300162570",
+        "full_snapshot_exactly_equal": true
+      },
+      {
+        "before": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+          "pid": 76453,
+          "attempt": 1,
+          "activity_id": "1",
+          "role": "main",
+          "step": 24,
+          "call_id": "can-main-024",
+          "summary": false,
+          "request_sha256": "9f9012486c9696e69d035a39cba3c4158a6866e1d5bbf6f1fec2837646699b6f"
+        },
+        "after": {
+          "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+          "run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+          "pid": 76674,
+          "attempt": 2,
+          "activity_id": "1",
+          "role": "main",
+          "step": 24,
+          "call_id": "can-main-024",
+          "summary": false,
+          "request_sha256": "9f9012486c9696e69d035a39cba3c4158a6866e1d5bbf6f1fec2837646699b6f"
+        },
+        "replaced_api": true,
+        "replaced_temporal": true,
+        "snapshot_relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/replay-3.json",
+        "snapshot_file_sha256": "fa6988d6fbf71e53f300ea65e2d864517213a4efc80a580b49bc9ea194c93fe6",
+        "before_snapshot_canonical_sha256": "c6d59cf840132cd5fa9c9c0265aba791184428202e7653bb9accaaf1471979da",
+        "after_snapshot_canonical_sha256": "c6d59cf840132cd5fa9c9c0265aba791184428202e7653bb9accaaf1471979da",
+        "full_snapshot_exactly_equal": true
+      }
+    ],
+    "boundary_snapshots": [
+      {
+        "step": 7,
+        "run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+        "can_count": 0,
+        "has_summary": false,
+        "relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/boundary-007.json",
+        "file_sha256": "6fa3861332b9ec8cd89835e187d5f04022ec8229f6622b9ec4f543cf7603334a"
+      },
+      {
+        "step": 8,
+        "run_id": "09446423-d62a-46d1-8bb6-a98e7a571924",
+        "can_count": 1,
+        "has_summary": false,
+        "relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/boundary-008.json",
+        "file_sha256": "eb88f220d8ce2de4106c4024635a36a7468e6b2befb9b344c53200fb39875456"
+      },
+      {
+        "step": 16,
+        "run_id": "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+        "can_count": 2,
+        "has_summary": false,
+        "relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/boundary-016.json",
+        "file_sha256": "a80127f505d3cb7882c70f05b07df084474200d76f06dfa79d63a9e17855360c"
+      },
+      {
+        "step": 24,
+        "run_id": "162eed1e-1834-4a90-952c-944939b94e72",
+        "can_count": 3,
+        "has_summary": true,
+        "relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/boundary-024.json",
+        "file_sha256": "cd4c859c8bf35faabe143e16ddb9d7b11d99958c661f51347b303917a4a4806b"
+      },
+      {
+        "step": 32,
+        "run_id": "4f264cec-dcda-486e-b5e4-c3147b700903",
+        "can_count": 4,
+        "has_summary": true,
+        "relative_path": "var/task-can-prototype/caffa4578ab348a3bc7198eb430bcbfb/boundary-032.json",
+        "file_sha256": "cb52b73558686f040db274be12290458b4608178096ee86febaf00761d28efff"
+      }
+    ],
+    "completed_result": {
+      "task_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+      "run_id": "4f264cec-dcda-486e-b5e4-c3147b700903",
+      "status": "succeeded",
+      "version": "task-v2",
+      "ready": true,
+      "first_execution_run_id": "01a14359-8b5c-780a-931e-4829527ad6fe",
+      "snapshot_canonical_sha256": "108fe168ad28d5a7b20b7b365b8cc9cd80faff6d91cab3125112b2c0d4676df5",
+      "snapshot_keys": [
+        "can_count",
+        "files",
+        "identity",
+        "messages",
+        "next",
+        "schema_version",
+        "segment_model_boundaries",
+        "state",
+        "status",
+        "todos",
+        "total_model_boundaries",
+        "version"
+      ],
+      "native_state_keys": [
+        "_summarization_event",
+        "_summarization_session_id",
+        "files",
+        "messages",
+        "todos"
+      ],
+      "message_count": 76,
+      "virtual_file_count": 20,
+      "todo_count": 1,
+      "all_todos_completed": true,
+      "native_tool_steps": 37,
+      "can_count": 4,
+      "summary_cutoff_index": 57,
+      "summary_history_file_canonical_sha256": "39b197b325204877659543882c01d7c58e7516073bc6cce3dbc9feb504a1b49b"
+    },
+    "summary_model_activities": [
+      {
+        "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+        "run_id": "4f264cec-dcda-486e-b5e4-c3147b700903",
+        "pid": 76674,
+        "attempt": 1,
+        "activity_id": "3",
+        "role": "main",
+        "step": -1,
+        "call_id": "fixture:summary:da6ee1433a18dd7c4084",
+        "summary": true,
+        "request_sha256": "e973020e74a7de9741224dbc6ebb532775a5799911dc990765a3f6ceccf6971f"
+      },
+      {
+        "workflow_id": "task-004c43b22d8b5c549eff027bd3aada0fcd5cccd1a03b3fae7579188a0e3d74d2",
+        "run_id": "bce7b934-03ea-46aa-a4d0-6b0ac3a9fb5c",
+        "pid": 76453,
+        "attempt": 1,
+        "activity_id": "8",
+        "role": "main",
+        "step": -1,
+        "call_id": "fixture:summary:8fdb21d56f00a3cf2703",
+        "summary": true,
+        "request_sha256": "740a925b0143f338877d24e9330024a5da6f75ac0e0d3d710a540a205c8e40d5"
+      }
+    ],
+    "full_checkpoint_transport_sha256_verified_across_all_can": true
+  },
+  "http_restart_and_v1_compatibility": {
+    "run_id": "d252d1bc60c9470b84747c5dcbda28bc",
+    "status": "passed",
+    "started_at": "2026-10-16T06:20:45.945618+00:00",
+    "finished_at": "2026-10-16T06:21:08.121593+00:00",
+    "seconds": 22.18,
+    "passed": [
+      "two independent HTTP replicas race one owner/idempotency key: HTTP 202 responses identify exactly one native Temporal Workflow",
+      "changed payload under the same retained key returns 409; foreign owner read/result/events/cancel return 404",
+      "detached producers exit after HTTP 202; two different Tasks execute real Deep Agents planning/file/model steps concurrently on independent Worker PIDs",
+      "all HTTP API processes SIGKILL/restart: accepted Task IDs, active Run IDs, and asynchronous result handles survive without application-local durable state",
+      "signed durable lifecycle-event cursor continues across API replacement and another replica, with contiguous descending Temporal event IDs through event 1",
+      "Temporal and both Workers SIGKILL/restart on the same history database: live API replicas reconnect and new Worker PIDs retry both Tasks under their original Run identities",
+      "after API replacement, owner cancellation terminates only its selected Task; another detached Task preserves its full original message prefix/file metadata/plan content, completes its todos, and reuses retained-history duplicate submission",
+      "existing native v1 Task reuses through the upgraded API with conflict/owner isolation; its real loop exhausts the original 128-step bound with HTTP failed/ready and native task_step_limit, without WorkflowTaskFailed"
+    ],
+    "scope": "private local Temporal plus two real HTTP APIs and deterministic-model Deep Agents Workers",
+    "excluded_claims": [
+      "production cluster HA",
+      "real provider inference",
+      "permanent idempotency",
+      "external-tool exactly-once",
+      "token streaming replay"
+    ],
+    "cleanup_confirmed": true,
+    "production_ha_acceptance": false,
+    "rss_budget_mib": 2048,
+    "minimum_memory_free_percent": 15,
+    "peak_owned_tree_rss_mib": 827.9,
+    "minimum_observed_memory_free_percent": 40,
+    "resource_samples": 42,
+    "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+    "supplied_checksum_verified": true,
+    "authority": "Temporal Workflow History only",
+    "receipt_sha256": "68edea12cba5f7edeb941dfda416547a45264c36bf31fca01e7086ec387f2b84",
+    "receipt_relative_path": "var/task-server-prototype/d252d1bc60c9470b84747c5dcbda28bc/receipt.json",
+    "processes": [
+      {
+        "name": "temporal-1",
+        "pid": 78495,
+        "returncode": -9
+      },
+      {
+        "name": "worker-a",
+        "pid": 78497,
+        "returncode": -9
+      },
+      {
+        "name": "worker-b",
+        "pid": 78498,
+        "returncode": -9
+      },
+      {
+        "name": "api-a",
+        "pid": 78499,
+        "returncode": -9
+      },
+      {
+        "name": "api-b",
+        "pid": 78500,
+        "returncode": -9
+      },
+      {
+        "name": "producer-97d89793a426",
+        "pid": 78505,
+        "returncode": 0
+      },
+      {
+        "name": "producer-09de73190245",
+        "pid": 78506,
+        "returncode": 0
+      },
+      {
+        "name": "producer-2dc819d7ee8c",
+        "pid": 78511,
+        "returncode": 0
+      },
+      {
+        "name": "producer-c435af6dae0d",
+        "pid": 78515,
+        "returncode": 0
+      },
+      {
+        "name": "api-c",
+        "pid": 78524,
+        "returncode": -15
+      },
+      {
+        "name": "api-d",
+        "pid": 78525,
+        "returncode": -15
+      },
+      {
+        "name": "temporal-2",
+        "pid": 78528,
+        "returncode": 0
+      },
+      {
+        "name": "worker-c",
+        "pid": 78529,
+        "returncode": -15
+      },
+      {
+        "name": "worker-d",
+        "pid": 78530,
+        "returncode": -15
+      },
+      {
+        "name": "producer-136215bed377",
+        "pid": 78614,
+        "returncode": 0
+      },
+      {
+        "name": "producer-1df059b16f94",
+        "pid": 78615,
+        "returncode": 0
+      },
+      {
+        "name": "producer-c827374294a7",
+        "pid": 78616,
+        "returncode": 0
+      }
+    ],
+    "process_count": 17,
+    "all_owned_processes_terminal": true,
+    "idempotency_scope": "retained Temporal Workflow history; no permanent or cross-retention guarantee",
+    "cross_replica_race": {
+      "response_task_ids": [
+        "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e",
+        "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e"
+      ],
+      "reused": [
+        false,
+        true
+      ],
+      "native_temporal_workflow_count": 1
+    },
+    "accepted_run_ids": {
+      "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e": "01a1435e-c63a-7d0b-a238-c05446441565",
+      "task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8": "01a1435e-c832-79a4-a2ea-9c0a10dd50cd"
+    },
+    "event_pagination": {
+      "first_page_ids": [
+        25,
+        24
+      ],
+      "cursor_sha256": "b851da219372adc5dea2e672ee46f68f00e9714e8ea64320fb6defb4f14ea1e1",
+      "page_count": 13,
+      "all_event_ids": [
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "oldest_type": "workflow_execution_started"
+    },
+    "api_restart": {
+      "old_pids": [
+        78499,
+        78500
+      ],
+      "new_pids": [
+        78524,
+        78525
+      ]
+    },
+    "temporal_restart": {
+      "old_server_pid": 78495,
+      "new_server_pid": 78528,
+      "cold_worker_markers": [
+        {
+          "activity_id": "4",
+          "attempt": 2,
+          "pid": 78529,
+          "run_id": "01a1435e-c63a-7d0b-a238-c05446441565",
+          "workflow_id": "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e"
+        },
+        {
+          "activity_id": "4",
+          "attempt": 2,
+          "pid": 78530,
+          "run_id": "01a1435e-c832-79a4-a2ea-9c0a10dd50cd",
+          "workflow_id": "task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8"
+        }
+      ],
+      "preserved_run_ids": {
+        "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e": "01a1435e-c63a-7d0b-a238-c05446441565",
+        "task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8": "01a1435e-c832-79a4-a2ea-9c0a10dd50cd"
+      }
+    },
+    "cancelled_task": {
+      "task_id": "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e",
+      "run_id": "01a1435e-c63a-7d0b-a238-c05446441565",
+      "status": "cancelled",
+      "version": "task-v2",
+      "first_execution_run_id": "01a1435e-c63a-7d0b-a238-c05446441565"
+    },
+    "observed_activity_types": [
+      "deepagents.invoke_model"
+    ],
+    "step_limit_failure": {
+      "task_id": "task-dd5d1a0be30a54bb58be5d5b8667a267d4eda360653e7282e9ca772539307f7d",
+      "run_id": "01a1435e-eac8-7e0d-b25c-7c2c01cb10a6",
+      "configured_graph_step_limit": 128,
+      "http_status": "failed",
+      "http_ready": true,
+      "failure_type": "task_step_limit",
+      "non_retryable": true,
+      "model_activities_scheduled": 43,
+      "activities_completed": 43,
+      "workflow_task_failed_count": 0
+    },
+    "legacy_v1_compatibility": {
+      "created_via": "trusted Temporal Start using original v1 contract",
+      "workflow_type": "TaskWorkflow",
+      "version": "task-v1",
+      "http_reused": true,
+      "payload_conflict_status": 409,
+      "foreign_owner_status": 404,
+      "first_execution_run_id": "01a1435e-eac8-7e0d-b25c-7c2c01cb10a6"
+    },
+    "completed_result": {
+      "task_id": "task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8",
+      "run_id": "01a1435e-c832-79a4-a2ea-9c0a10dd50cd",
+      "status": "succeeded",
+      "version": "task-v2",
+      "ready": true,
+      "first_execution_run_id": "01a1435e-c832-79a4-a2ea-9c0a10dd50cd",
+      "snapshot_canonical_sha256": "23ede6104f65f9a0addf039aa34433b0f3c10490f9bac32c0b84a4fd23d91add",
+      "snapshot_keys": [
+        "can_count",
+        "files",
+        "identity",
+        "messages",
+        "next",
+        "schema_version",
+        "segment_model_boundaries",
+        "state",
+        "status",
+        "todos",
+        "total_model_boundaries",
+        "version"
+      ],
+      "native_state_keys": [
+        "files",
+        "messages",
+        "todos"
+      ],
+      "message_count": 10,
+      "virtual_file_count": 1,
+      "todo_count": 1
+    },
+    "initial_snapshots": [
+      {
+        "task_id": "task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e",
+        "relative_path": "var/task-server-prototype/d252d1bc60c9470b84747c5dcbda28bc/task-b800ac5471fd4c47b80cf4654a2ebb0f83525409baf5ba5d76646495d8658f8e-initial-snapshot.json",
+        "file_sha256": "99afd184cf8d7f4de042a413d50e3a1d5868942f30e8de6fbf27abc2c8b3b099"
+      },
+      {
+        "task_id": "task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8",
+        "relative_path": "var/task-server-prototype/d252d1bc60c9470b84747c5dcbda28bc/task-a3bb586c125ab9d375e2be92150adf9f253127d2fb33540eed1c1de1ae31b7b8-initial-snapshot.json",
+        "file_sha256": "da242c8bfb691a4e665018ec2604a991624adba26ba444aa3e341d9e864ab609"
+      }
+    ]
+  },
+  "source_hash_scope": "Current repository files captured after both completed acceptance runs. Production task_server code is common to both. The HTTP harness was updated between the CAN run and the separate compatibility run; its current version is the compatibility-run version. These hashes are a delivery freeze inventory, not a retroactive claim that every file had this exact hash during both runs.",
+  "source_sha256": {
+    "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+    "deepagents-server/scripts/task_can_fault_smoke.py": "a48b72ce7dcc949d3aff7bcd5c097f8ebe917f0c15ca73763f9b451a9748fe2f",
+    "deepagents-server/scripts/task_server_fault_smoke.py": "d139ec28357ada1415e025a4b9b2cda23036956ebe8efe1c5df67241222b1861",
+    "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+    "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+    "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+    "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "8103907cb1248fe69e78c8aa474e37c4ab90bffaa22b4f1d436413550f089739",
+    "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+    "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "f16b38bcbd5e6d6f4a0f5816658f0216988241f822b9384662d5f17c029c5d67",
+    "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+    "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "3cf81fdbfdbf2a33130652744456c18298b677e1b90b143b45537baf829f1590",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+    "deepagents-server/tests/task_can_worker_fixture.py": "1f937dbfe7495c35e06e85aeec8ee90c3184f8b9483abaecb3eb874e4030fbb8",
+    "deepagents-server/tests/task_worker_fixture.py": "95f27f464636f0f19f0b9cab9c6ff2d3c9c279f99540c9df7b80500b678c96c9",
+    "deepagents-server/tests/test_task_can_harness.py": "74626a5e293b7e67b864d832d9616da684ee177232209db5afff08153468db16",
+    "deepagents-server/tests/test_task_server_harness.py": "ac76cab421575a1aaff08f0e58fd332e5a818b305f70f5710ecc44540c96b566",
+    "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+  },
+  "architecture_artifacts": {
+    "image_tool": "built-in imagegen",
+    "image_lineage": "Edit previous full base; derive a focused Task V2 diagram from the updated base; correct API wording and return-arrow layout in one repair.",
+    "visual_review": "Five layers, orange V2 changes, owner boundary, bounded CAN, and local-versus-production validation labels visually checked.",
+    "sha256": {
+      "docs/mini-loop-layered-architecture.png": "51b2b240abdc4a457b9cca5e43744bf201a3268c6d4bea0d40fbef77fbed0919",
+      "docs/mini-loop-layered-architecture.prompt.txt": "6ed4b48babfd53de7ac4de9df1bfc4e83cbbdadc3a687c42bd814424511d401e",
+      "docs/audits/task-server-can-2026-10-16.png": "ccb00150acd77caacab5550be3a4d620475a18338eaa048f90146c6bb42f5172",
+      "docs/audits/task-server-can-2026-10-16.prompt.txt": "57ca9d31dc98939ead82f9ba7e1efb1f2e0943790ff297e5d7f72646d88df10b",
+      "docs/audits/task-server-can-2026-10-16.repair.prompt.txt": "238bb847f3d75de34fa935a0f6b0f717c67589a8279db9591d71548bf98ad5e6",
+      "docs/mini-loop-system.architecture.json": "e38eed9658d2cfdff97915804a3a0bca0b0be8cf8754c9f2364c8cecfef49cd0",
+      "docs/mini-loop-system.architecture.html": "31d6488ebe37fb8f036cc17256c8ae31dff4aea202f5ab009a6c6ff86097e798"
+    }
+  }
+}

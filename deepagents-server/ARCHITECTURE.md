@@ -7,8 +7,16 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 原 Python/Go runtime 保持各自入口与语义。
 
 本文展开标准 LangGraph 入口；新增的独立 Temporal Task HTTP 入口见
-[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-2026-10-16.png)。
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-can-2026-10-16.png)。
 两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
+
+Temporal 入口本轮以 `9af554a` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
+父 model 边界分段 Continue-As-New，已有 v1 任务继续使用不变的 v1 代码。迁移载体是
+保存在 Temporal History 中的完整 public saver 写日志，包括 DeltaChannel 祖先、
+待执行路由、摘要私有状态及虚拟文件；不在下表 L5 增加第二套 SQL checkpointer。
+API 的任务身份跨 Run 稳定，状态/结果/取消跟随经校验的执行链，事件保留每个 Run
+独立序号并支持导航。单任务仍受原始 24 小时期限、512 个父 model 边界及 checkpoint
+大小预算约束。详细协议、旧版本保留与尚未验收项见 [Task Server](TASK_SERVER.md)。
 
 ![当前 Agent Server 分层架构](docs/agent-server-layered-architecture.png)
 

@@ -4,6 +4,8 @@
 
 mini-loop 已新增独立、显式启用的 **Temporal Task HTTP 服务**：API 在远端 Start 确认后返回任务，Worker 运行真实 Deep Agents，状态与事件直接来自保留的 Workflow History。此阶段以 Temporal 为单一执行权威，复用已批准的 SDK 1.34.0；没有再建立业务 SQL 台账、Outbox 或第二套任务重试器。稳定 owner/key 在 History 保留范围内去重，模型 I/O 经 Activity，可脱离客户端和 API 进程执行。最终故障验收见 [Task Server 记录](../deepagents-server/TASK_SERVER.md)，源码存在本身不证明高可用。
 
+本轮以 `9af554a` 为审查基线，新增 TaskWorkflowV2 的有界 Continue-As-New：每 8 个安全父 model 边界携带完整 public saver 写日志进入下一 Run；原始 24 小时期限不重置，最多 512 个父 model 边界。原生摘要、子图与迁移 journal 的边界见下文，不能将它理解成无限长任务或所有模型调用的统一上限。
+
 更完整的业务 Task 控制面仍是目标：永久接受台账、跨实例配额、业务状态投影、版本路由、外部副作用 fencing 和生产 HA/容量尚未完成。标准 LangGraph Agent Server 的 PostgreSQL/Redis 恢复验收也保持未完成。本文保留这些长期要求，同时区分已实现的直接 Temporal 路径与未来按业务需求引入的数据库层，避免把全部目标组件强制叠加成两个竞争的调度系统。
 
 审查日期：2026-10-16。本文是目标架构与实施决策依据；“建议”和图中的目标组件均不表示已实现。Agent Server 与原 Python/Go 模块在业务、依赖安装和运行时上独立；既有模块仅提供设计参考，不共享会话管理或调度权威。它补充 [Managed Deep Agents / Agent Server 参考设计](MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md)，当前模块使用方式以 [模块 README](../deepagents-server/README.md) 为准。
@@ -29,7 +31,8 @@ mini-loop 已新增独立、显式启用的 **Temporal Task HTTP 服务**：API 
 | 同一客户端的 `resume` | 检查最新 Run 与未完成 Checkpoint，以 `input=None` 创建 continuation Run；拒绝需要人工答案的 graph interrupt | 检查与创建是跨客户端原子操作；重复 resume 一定只产生一个 continuation |
 | [task_contracts.py](../deepagents-server/src/mini_loop_deepagents/task_contracts.py) | 纯数据类型、状态迁移校验、能力声明、fencing 谓词、事件游标和 `ExecutionAdapter` Protocol | 已有 Task HTTP API、数据库事务、租约服务、运行适配器或真正 fencing |
 | [task_server/](../deepagents-server/src/mini_loop_deepagents/task_server/) | 新独立 Bearer Task HTTP 服务；Temporal 原生 Start/Describe/Result/Cancel/History；同 owner/key 的相同请求复用、不同请求 409；远端接受确认后 202 | 永久幂等台账、跨副本全局配额、跨后端统一 adapter 或生产 HA 已完成 |
-| 同目录的 `runtime.py` / `worker.py` | 真实 Deep Agents Workflow；模型 Activity 经 Worker 环境解析为 ChatOpenAI；24 小时任务时限、128 图步骤及有限重试 | 真实 provider 已验收、无限长任务、默认 Memory/Continue-as-New、所有 graph 组合通用兼容 |
+| 同目录的 `runtime.py` / `worker.py` | v1 代码保持不变，Worker 同时注册 v1/V2；模型 Activity 经 Worker 环境解析为 ChatOpenAI | 真实 provider 已验收、自动版本路由或任意 graph 升级兼容 |
+| 同目录的 `runtime_v2.py` / `checkpoint.py` / `summarization.py` | V2 每 8 个安全父 model 边界 CAN；完整 public saver 日志保留 DeltaChannel 祖先、路由和摘要私有状态；累计 512 父边界、原始 24 小时及传输大小预算 | 无限任务、512 是所有模型调用上限、所有子图都被父 invocation 128 步限制、默认 Memory 或通用 graph 迁移 |
 | [compose.yaml](../deepagents-server/compose.yaml) | 描述同一不可变镜像的 API-only 与 Worker 分离，连接 PostgreSQL/Redis，并限制小规模验证资源 | 已通过多副本部署、数据库故障切换或高并发容量验收 |
 | [fault_smoke.py](../deepagents-server/scripts/fault_smoke.py) | 脚本覆盖独立客户端提交、两个并发 Run、排队、取消/续跑、owner 隔离，以及开发快照写出后的 SIGKILL 与进程替换 | 提交确认后立即崩溃的数据安全、生产 PostgreSQL 恢复、Docker 滚动部署或高吞吐能力已得到证明 |
 
@@ -41,10 +44,14 @@ Memory 分别进入 Activities，本地 SQLite 保存 History 与应用操作回
 真实故障结果、首次失败原因和资源证据由该记录维护；这不会把第 3 节的 Task 控制面
 或第 9 节的生产 HA 设计变成已实现能力。
 
-`1fd010d` 之后的 Task HTTP 路径复用该原型中固定版本的确定性文件与消息 ID
-适配器，但不继承 Memory ledger 或 Continue-as-New。它直接使用 Temporal 作为
-任务接受和恢复权威，不引入新的本地业务 SQLite。其专用故障脚本与最终收据单独
-维护；旧原型的通过结果不能自动覆盖新 HTTP 入口。
+`1fd010d` 之后的 Task HTTP 路径直接使用 Temporal 作为任务接受和恢复权威，
+不引入业务 SQLite，也不继承旧原型的 Memory ledger。`9af554a` 之后新增 V2：
+在安全父 model 边界用完整 public saver 日志 CAN，协议与旧原型 snapshot 分开。
+它保留 native channels、pending writes、task_path、DeltaChannel 祖先、路由和私有
+摘要状态；迁移只从受信任 History 读取。原生摘要以 40 messages 或 16000 tokens
+触发、保留 12 messages，时钟和 ID 由 Workflow 固定；原生 patch-tool slot 同时
+保留父图与 GP 子图修复。旧 v1 代码仍注册，旧 key 按原版本摘要复用。专用故障
+脚本与最终收据单独维护，旧原型或 v1 的通过结果不能自动覆盖 V2。
 
 ## 2. 从 LangSmith 借鉴的职责分离
 
@@ -75,7 +82,7 @@ flowchart TB
     LG --> H[Deep Agents Harness<br/>规划 / 模型 / 工具 / 子代理]
     TW --> H
     LG --> LP[(Runtime Checkpoint / Store)]
-    TW --> TH[(Temporal History<br/>另行定义完整状态迁移)]
+    TW --> TH[(Temporal History<br/>V2 已有有界 native saver CAN)]
     H --> IO[受配额控制的模型与工具适配器]
     IO --> ART[(持久 Artifact / Workspace / Memory)]
     DB --> EV[持久生命周期事件 + 观察接口]
@@ -126,7 +133,8 @@ flowchart TB
 
 **当前 Temporal 路径的不同选择：**TaskID 是 owner 与 Idempotency-Key 的稳定摘要，
 也是 Workflow ID；原生 `REJECT_DUPLICATE` / conflict `FAIL` 负责接受竞争，API 再核对
-owner、请求摘要、版本与队列。已确认 Start 或核对到同内容执行才返回 202。这里没有
+owner、请求摘要、版本与队列。新任务默认 V2；同 key 重试旧 v1 时，用旧版本摘要
+确认同内容并复用，不能悄然创建新 V2。已确认 Start 或核对到同内容执行才返回 202。这里没有
 业务数据库与远端 Start 的双写事务，因此不需要另一个本地 Outbox；代价是关闭执行
 的去重、结果读取和事件读取受 namespace retention 约束。若以后要求保留期之外的
 永久幂等，须显式设计长期台账与一致性协议，不能直接宣称当前方案已提供。
@@ -204,11 +212,13 @@ stateDiagram-v2
 
 当前 `EventCursor` 与 `StreamSequence` 的类型区分只是一项合同，未接入事件数据库或 SSE 回放服务。现有 `/plan.md` 等线程虚拟文件由原生 Checkpoint 保存，`/memories/` 经 owner Store 路由；换 runtime 时须显式迁移其语义。
 
-新 Task HTTP 服务已经提供保留 History 的倒序分页，返回 event_id、事件类型和时间。
+Task HTTP 服务提供保留 History 的单 Run 倒序分页，返回 event_id、事件类型和时间。
 签名 cursor 绑定 namespace、owner、TaskID、RunID 与事件边界；API 副本共享固定
-secret，因此重启后可续页。它没有新增事件数据库，也不提供逐 token 或 SSE 重放。
-TaskWorkflow 的 messages/files/todos 由 History 重放恢复，默认没有 owner Memory
-或 Continue-as-New；旧原型对完整状态迁移的证据不能据此扩展到该公开任务路径。
+secret，重启后可续页。V2 支持可选 `run_id` 与经过 chain/owner/memo 核对的
+first/previous/next 导航，每个 Run 的 event_id 独立。相邻 Run 因 retention 消失时
+显式 `history_navigation_incomplete=true`，不能把不完整链拼成连续任务事件。
+没有新增事件数据库或逐 token/SSE 重放。V2 的 native saver public 写日志通过 CAN
+携带完整路由和私有状态；owner Memory 仍未启用。旧原型证据不自动覆盖这条路径。
 
 ## 8. 高并发：准入、背压与容量
 
@@ -235,6 +245,9 @@ Worker 数量扩大后，全局预算不能随进程数等比例扩大。不要�
 Task/Attempt 应记录不可变应用镜像或构建摘要、graph ID、状态 schema 版本、工具协议版本、模型配置引用和执行后端版本。密钥引用可以轮换，密钥值不进入快照。
 
 兼容升级可以恢复旧 checkpoint；不兼容升级应让旧 worker 池排空、保留旧版本，或执行显式迁移。API 与 Worker 使用同一镜像只解决同批部署的一致性，不证明所有旧任务都与新 graph 兼容。不能在旧任务尚未完成时删除它唯一可用的执行版本。
+
+当前 V2 通过新 Workflow type 与不变 v1 同时注册保留旧任务；旧 key 仍核对旧版本。
+这只处理此次显式协议分叉，不是通用 Worker Versioning、镜像路由或任意版本迁移。
 
 **事实：**Temporal Worker Versioning 提供版本路由与 Workflow pinning，需要符合版本要求，并采用支持旧版本并存的发布方式；长生命周期任务还需要适当的 Continue-as-New 或兼容策略。[S8] DBOS 也区分 patching 与应用版本，恢复时匹配版本并建议保留旧进程排空。[S13] **建议：**不要将这两种产品能力预先写成 mini-loop 的部署功能。
 
@@ -294,18 +307,36 @@ Temporal 也需要持久服务与数据库；官方将服务拆为可独立扩�
 
 ### 阶段 C：实现持久 Task 控制面
 
-**本轮已实现的切片：**独立 Task HTTP API + TaskWorkflow Worker，直接以 Temporal
+**已实现的切片：**独立 Task HTTP API + v1/V2 Workflow Worker，直接以 Temporal
 作为保留期内的接受与执行权威。同 owner/key 竞争依赖原生 Workflow ID 约束；请求
 摘要不匹配为 409，确认远端 Start 或核对到同请求才返回 202。状态、结果、取消与
 签名事件分页都经过 owner 校验；没有新增业务数据库依赖或本地 Outbox。
 
-2026-10-16 专用故障运行 `792fc91351654e1ba8ff5f3b7fa35c32` 的 **8 组通过**：
+已提交 `9af554a` 的 v1 历史基线：2026-10-16 专用故障运行
+`792fc91351654e1ba8ff5f3b7fa35c32` 的 **8 组通过**：
 覆盖双 API 同 key 竞争、独立提交进程退出、两个真实 Deep Agents 任务、多 Worker、
 全部 API 替换、同 SQLite Temporal 重启及 Worker 冷重放、owner 隔离、事件续页和
 取消隔离。另以真实循环任务触发 128 步上限：43 个模型 Activity 完成后 Workflow
 进入不可重试的 `task_step_limit` 失败，HTTP 返回 `failed/ready=true`，没有
 WorkflowTaskFailed 重试循环。完整收据、源码摘要与测试范围见
 [Task Server](../deepagents-server/TASK_SERVER.md)。该结果只证明这组本地机制场景。
+
+本轮 V2 在源码层补充了安全父 model 边界 CAN、native saver public 写日志迁移、
+原生摘要确定性及跨 Run 状态/结果/取消/事件观察。迁移分别限制 16 MiB raw journal、
+384 KiB compressed checkpoint 和 512 KiB continuation envelope，超限进入明确失败。
+原始 24 小时总期限不重置，512 只计父 model 边界；原生 GP 子图仍为 9999 步，
+父图每次 invocation 为 128 步。CAN journal 累积写日志，并非恒定状态大小。新的
+`task_can_fault_smoke.py` 运行 `caffa4578ab348a3bc7198eb430bcbfb` 已通过 4 组：
+4 次 CAN / 5 个 Run、37 个父工具步骤、2 个真实 GP 子代理与 2 次原生摘要。
+子 Activity、CAN 前后及第三次 CAN 后注入 Worker/API/Temporal 强杀，恢复后的
+完整语义状态与模型请求摘要一致；5 Run 都为 0 WorkflowTaskFailed。旧 Run cursor、
+chain 导航、同 key 复用、owner 边界与第二项 continued Task 的取消隔离已覆盖。
+耗时 45.86 秒、峰值 797.3 MiB、最低可用内存 37%，19 个所属进程全部退出。
+模型仍为确定性 fixture，持久服务仍是本地 SQLite；这是机制验收而不是生产 HA。
+
+当前代码另通过 HTTP 8 组回归 `d252d1bc60c9470b84747c5dcbda28bc`，包括原生 Start
+创建 v1 后的 HTTP 复用/409/404 与原 128 步失败终态。完整范围、资源证据和门禁
+见 [Task Server](../deepagents-server/TASK_SERVER.md) 及其交付记录。
 
 **阶段 C 仍未全部完成：**永久业务台账、全局 admission/owner 配额、跨后端 adapter、
 自动版本路由与外部工具副作用协议仍无实现。未来引入业务 SQL 时，必须先确定其
@@ -335,16 +366,16 @@ WorkflowTaskFailed 重试循环。完整收据、源码摘要与测试范围见
 | 未 checkpoint 的外部动作成功后 worker 崩溃 | 重试复用稳定逻辑操作 key，或核对回执；不会无依据宣称只调用一次 | 当前没有此类外部工具验收 |
 | lease 过期后旧 worker 恢复 | 旧 epoch 的受保护数据库/Artifact 写入被拒绝；外部动作另行保证 | 只有纯 fencing 谓词，未接存储与 runtime |
 | 两个 worker 随机接收 backend Activity | 任一进程可重新定位 owner 的持久 backend；原进程消失不破坏任务 | 旧原型使用显式 Memory Activity + 持久绑定规避进程 ref；不证明原生 backend ref 可跨进程；Task HTTP 未启用 Memory |
-| Continue-as-New 或 agent 版本迁移 | messages、todos、files、Memory、审批状态按声明协议保存，旧任务可继续 | 旧原型固定阶段全状态迁移已通过；Task HTTP 无 Continue-as-New；任意版本迁移和审批状态仍未覆盖 |
+| Continue-as-New 或 agent 版本迁移 | messages、todos、files、Memory、审批状态按声明协议保存，旧任务可继续 | Task V2 本地 4 次 CAN / 5 Run、真实子图/摘要与跨故障状态保持已通过；Memory、任意版本迁移和审批状态仍未覆盖 |
 | 取消与完成、重复取消、重复 resume 竞争 | 持久终态一致；重复决策不创建多条 continuation；失效尝试不能复活任务 | Task HTTP 取消一项任务不影响另一项已实测；全部竞争组合及恢复决策尚未验收 |
-| SSE 中断、慢消费者和事件服务重启 | 执行继续；生命周期事件按游标回放；token 流缺口有明确语义 | Task HTTP 签名 History 游标跨 API 重启/副本续页已实测；无 SSE/token 持久流或独立事件索引 |
+| SSE 中断、慢消费者和事件服务重启 | 执行继续；生命周期事件按游标回放；token 流缺口有明确语义 | Task HTTP 签名 History 游标跨 API 重启/副本以及 V2 旧 Run 续页与 chain 导航已实测；无 SSE/token 持久流或独立事件索引 |
 | Redis 丢失或重启 | 持久任务可重新发现；取消与实时流中断可观察；不依赖丢失的 PubSub 恢复历史 | 生产 PostgreSQL/Redis 路径待验收 |
 | PostgreSQL 重启、主备切换、旧主复活 | 已接受任务符合声明 RPO；连接恢复；旧主不继续接受权威写入 | 未建立数据库 HA 环境与测量 |
 | 部署新版本并终止旧容器 | 兼容 checkpoint 可恢复；不兼容任务路由旧版本或显式迁移；无孤儿任务 | 当前仅配置同镜像 API/Worker，未证明版本路由 |
 | 多 owner 与子代理突发、provider 429 | 全局与 owner 配额有效；有界排队、退避和公平性；扩容不放大上游超额 | 未实现跨实例 admission 或压测 |
 | 持久审批等待跨重启 | 决策内容、权限与版本保留，重复批准只生效一次，等待释放执行资源 | 当前通用 resume 拒绝 graph interrupt |
 | 相同 task/handle 被另一 owner 使用 | 状态、取消、事件、memory、artifact 均拒绝越权 | Task HTTP 状态/结果/取消/事件跨 owner 404 已实测；Memory/Artifact 新接口未实现，Temporal RPC 仍是受信任边界 |
-| 图步骤预算耗尽 | 业务任务进入可观察失败终态，不形成无限 Workflow Task 重试 | 本地真实循环达到 128 步后 `task_step_limit` 失败、0 个 WorkflowTaskFailed；不代表所有应用异常都已分类 |
+| 图步骤预算耗尽 | 业务任务进入可观察失败终态，不形成无限 Workflow Task 重试 | v1 本地真实循环达到 128 步后已进入 `task_step_limit`；V2 分别限制父 invocation、总父 model 边界和 checkpoint 大小，新故障证据单列；不是全部模型调用配额 |
 
 ## 13. 来源与固定版本
 

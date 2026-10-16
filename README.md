@@ -274,8 +274,9 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-2026-10-16.png)
-shows this iteration's independent Agent Server layers, with additions in orange.
+The [focused Task HTTP server diagram](docs/audits/task-server-can-2026-10-16.png)
+shows the independent Agent Server layers, with this iteration's bounded
+Continue-As-New and cross-Run navigation additions in orange.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1181,13 +1182,15 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `1fd010d` plus the
-opt-in Temporal-backed Task HTTP server iteration. Its independent Bearer API
+Current architecture review baseline: **2026-10-16**, `9af554a` plus the
+Task HTTP bounded Continue-As-New iteration. Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
-owns task identity, status and events. A separate TaskWorkflow Worker executes
-the real Deep Agents loop with deployment-owned model Activities. This path has
-no default Memory or Continue-As-New and does not replace the standard Agent
-Server profile, the earlier offline fault prototype, or either Python/Go runtime.
+owns task identity, status and events. New TaskWorkflowV2 executions carry a
+bounded native saver journal across Continue-As-New; the Worker also retains
+the unchanged v1 Workflow. Deployment-owned model Activities run real Deep
+Agents, including deterministic native summarization and general-purpose
+subagents. No owner Memory is installed. The standard Agent Server profile,
+earlier offline fault prototype and Python/Go runtimes keep their own paths.
 Temporal Python SDK **1.34.0**, Deep Agents **0.7.25**, Agent Server **0.16.0**, and CLI
 **0.4.35** remain fixed. New fault acceptance belongs to this iteration's
 separate delivery record; earlier Go review labels retain their original scope.
@@ -1383,13 +1386,14 @@ flowchart LR
     subgraph TaskServer["deepagents-server/task_server · opt-in Task HTTP service"]
         TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
         TSAPI["Independent Task HTTP API<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
-        TSHistory["Independent Temporal service / retained History<br/>stable owner+key TaskID · immutable request memo<br/>retention bounds dedupe / signed event cursors"]
-        TSWorkflow["TaskWorkflow Worker<br/>real Deep Agents loop · virtual files / todos / messages<br/>no Memory / Continue-As-New by default"]
+        TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
+        TSWorkflow["TaskWorkflowV2 + unchanged v1 Worker<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
         TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Temporal retry / heartbeat"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
         TSClient -->|authenticated request| TSAPI
         TSAPI -->|Start / inspect / cancel / History pages| TSHistory
         TSHistory -->|task queue / replay| TSWorkflow
+        TSWorkflow -->|bounded native checkpoint / Continue-As-New| TSHistory
         TSWorkflow --> TSActivity --> TSModel
     end
     DAProvider["OpenAI provider<br/>server-configured credentials / model"]
@@ -1507,8 +1511,9 @@ different data stores. Trusted local client checks are not production HTTP
 authentication or Temporal service ACLs. Prototype fault acceptance is reported
 separately; its existence does not establish production HA or capacity. The
 standard Agent Server API does not route into this prototype automatically.
-The separate Task HTTP service below uses its own TaskWorkflow and live-provider
-adapter; it does not inherit this prototype's memory ledger or Continue-As-New.
+The separate Task HTTP service below uses its own versioned Workflows and
+live-provider adapter. Its new Continue-As-New protocol transports native saver
+writes; it does not inherit this prototype's memory ledger or snapshot protocol.
 
 The opt-in [Task HTTP server](deepagents-server/TASK_SERVER.md) exposes
 `POST /v1/tasks` plus task status, result, cancellation and retained History-event
@@ -1520,14 +1525,38 @@ or an owned matching existing Workflow. An uncertain Start returns an unknown
 outcome with the stable TaskID, and does not acknowledge local-only admission.
 This deduplication lasts within Temporal retention, rather than forever.
 
-The independent TaskWorkflow Worker runs the real Deep Agents loop; its model
-Activity resolves a fixed alias to ChatOpenAI using Worker environment settings.
-HTTP input cannot select a model provider or test fixture. Files, todos and
-messages are Workflow graph state reconstructed through History replay; no
-Memory store or Continue-As-New is enabled by default. Status, results and signed
-event cursors are backed by retained Temporal History. Event pages contain
-History metadata, not a durable token stream. The cursor binds namespace, owner,
-TaskID and RunID and requires the same deployment secret across API replicas.
+New submissions select `TaskWorkflowV2` / `task-v2`; the Worker also keeps the
+unchanged `TaskWorkflow` / `task-v1` code for existing tasks. Retrying an old key
+with the same content checks the retained version's digest and reuses that task.
+No automatic v1-to-v2 graph migration is implied. Model Activities resolve a
+fixed alias to ChatOpenAI using Worker environment settings; HTTP input cannot
+select a provider or fixture.
+
+V2 continues after each eight safe **parent model boundaries**, after preceding
+tools, subagents and summarization have settled. A bounded journal of public
+saver writes preserves native channels, routing, pending writes, DeltaChannel
+ancestry and private summary state; it is carried in Temporal History, without
+a second persistence service. The same TaskID and first-execution identity span
+new RunIDs. The original total 24-hour timeout is not reset, and the task is
+limited to 512 parent boundaries; this is not a bound on all model calls,
+including summary calls or the general-purpose subgraph. The latter retains its
+native 9999-step recursion setting; each parent invocation retains 128 steps.
+The transport refuses oversize state at 16 MiB raw journal, 384 KiB compressed
+checkpoint or 512 KiB continuation envelope. These budgets bound this protocol,
+not an unlimited-duration or constant-size History guarantee.
+
+Native summarization triggers at 40 messages **or** 16000 tokens and keeps 12
+messages; Workflow-owned time/IDs stabilize its state and archived virtual
+files. The native patch-tool slot also retains repair behavior in the parent
+and general-purpose subagent. Memory, arbitrary graph migration and universal
+custom-tool compatibility remain outside this implementation.
+
+Status and results follow the verified execution chain; cancellation is pinned
+to its first Run. History events retain independent per-Run IDs and signed
+namespace/owner/TaskID/RunID cursors. Optional `run_id` selects retained earlier
+Runs, with verified first/previous/next navigation and an explicit incomplete
+flag when an adjacent Run has expired. Pages contain History metadata, not a
+durable token stream; API replicas share the deployment cursor secret.
 
 This path uses no new business SQL ledger, admission database or outbox. The
 separate Temporal service owns execution and History persistence; production
