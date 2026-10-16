@@ -107,6 +107,15 @@ async def test_thread_run_without_metadata_is_owned(policy):
 
 
 @pytest.mark.asyncio
+async def test_direct_run_cannot_disable_sync_checkpoints(policy):
+    arguments = {"durability": "exit", "checkpoint_during": False, "input": {"messages": []}}
+    value = {"kwargs": arguments}
+    await handler(policy, "threads")(context("threads", "create_run"), value)
+    assert value["kwargs"] is arguments
+    assert arguments == {"durability": "sync", "checkpoint_during": True, "input": {"messages": []}}
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("action", ["put", "get", "search", "delete", "list_namespaces"])
 async def test_store_operations_preserve_explicit_owner_namespace(policy, action):
     value = {"namespace": ("alice", "memories")}

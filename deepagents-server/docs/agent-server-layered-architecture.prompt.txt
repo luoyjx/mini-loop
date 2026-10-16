@@ -1,28 +1,23 @@
-Built-in imagegen edit; educational focused view of implementation 6328007.
-Edit input: docs/mini-loop-layered-architecture.png (complete repository base).
+Built-in imagegen edit, 2026-10-16 asynchronous long-task iteration.
+Input: updated docs/mini-loop-layered-architecture.png.
 Output: deepagents-server/docs/agent-server-layered-architecture.png.
-Scope: expand only the existing independent module lane; do not add capabilities.
+Iteration highlights: asynchronous handles, split API/Worker configuration, dev fault checks.
+Selected repaired output: exec-370c897e-1279-419d-9678-6f70b1224056.png.
+Visual review: five layers, L4-to-OpenAI edge, file/memory scopes, production-unverified labels; next-stage control plane is a proposal callout only.
 
-Exact prompt:
-Use the supplied complete mini-loop architecture base as the visual edit target, and make a NEW focused educational diagram by expanding ONLY its bottom independent deepagents-server lane into a full five-layer architecture. This is a focused explanatory view of existing code, not new features. Do not retain the unrelated original Python/Go L1-L5 runtime boxes in the new image. Preserve the source image's polished dark navy, cyan/teal, violet blueprint visual language, crisp Chinese typography and restrained mountain footer. A single clear readable infographic, landscape around 1600x1200; use large type and concise labels. Title exactly "当前 Agent Server · 分层架构". Subtitle exactly "deepagents-server/ · 实现基线 6328007". A small subtitle says "独立安装、独立进程；与原 Python / Go runtime 分开".
+Exact initial prompt:
+Edit the supplied complete mini-loop architecture image into a NEW focused five-layer educational diagram of ONLY its independent deepagents-server module. Use the supplied image as edit target and visual foundation; expand the bottom independent lane into full canvas. Omit the original Python/Go L1-L5 in this focused output because this module has independent business/runtime. Preserve polished navy/cyan/violet blueprint style, clean Chinese typography and mountains. Title: "独立 Agent Server · 长任务分层架构". Subtitle: "2026-10-16 · 异步执行、并发与恢复". Large legible stacked layers:
+L1 "客户端" with "jobs.py / AsyncJobsClient → JobHandle", "submit 后可退出 · status / wait / cancel / resume", small "wait 超时不取消；state 是当前 Thread 状态".
+L2 "接入与身份" with "LangGraph Agent Server 0.16.0 API", "Bearer → 可信 owner · Thread / Run 所有权校验", "部署配置：API 执行槽 = 0".
+L3 "队列与执行调度" with "独立 Worker · 默认 2 并发槽", "不同 Thread 并行 · 同 Thread 排队串行", "PG pending Run 是持久任务来源 · Redis 临时唤醒/取消/事件". Mark L3 deployment configuration with amber dashed border and text "生产栈尚未验收".
+L4 "Agent 执行" with "Deep Agents 0.7.25 · create_deep_agent", "planning / 子代理 / 模型与虚拟工具循环", "stateful 长任务强制 sync Checkpoint". Put an external OpenAI card to the RIGHT of L4 at SAME vertical position and connect L4 bidirectionally to it with one short clean arrow "LLM inference". Do not connect OpenAI to other layers.
+L5 "状态与 Memory" two cards "StateBackend：Thread 虚拟文件" and "StoreBackend：(owner, memories)". Clear note "虚拟文件不是宿主文件系统；无宿主 Shell".
+Connect L1→L2→L3→L4→L5 using narrow downward control arrows without crossing text, and use a separate upward status/events arrow.
+Below layers, two mutually alternative mode boxes: green "开发模式 · 已验证" with "inmem 定期快照" and "2 个长 Run 并发、排队、SIGKILL 后续跑"; amber dashed "生产部署 · 配置未验收" with "PostgreSQL + Redis + API/Worker" and "多副本、数据库切换、滚动部署待验证".
+Small right sidebar above OpenAI: orange badge "本轮新增", three concise lines "异步 JobHandle" / "API / Worker 分离配置" / "强杀与续跑故障测试".
+Small right sidebar below OpenAI: "高可用控制面：下一阶段设计" / "Task / Outbox / 幂等 / 配额 / Adapter" / "当前仅契约，尚未接入服务". This is a proposal note, not an implemented runtime node; NO arrows to it.
+Footer: "客户端不自动重试提交 · request_id 用于核对，非幂等保证 · 外部副作用不保证 exactly-once".
+Keep all labels concise/legible. No tokens, no invented capabilities, no MDA managed cloud, no claim actual production HA passed. This image serves as the iteration highlight edited from the complete base.
 
-Organize the main left 75% into five stacked horizontal rounded layers, with simple downward request arrows and a separate upward SSE return arrow. The right 25% holds one external model card and compact explanatory notes, no tangled routes.
-L1 title "客户端与接入". Cards "SDK / scripts/chat.py" and "REST / SSE :2024". Meaning "Thread = 一段对话；Run = 一次执行".
-L2 title "身份与访问控制". Cards "Bearer token → 可信 owner" and "Thread / Run 所有权过滤". Small line "Store namespace 首段必须是 owner；客户端 context 不授予身份". Mark this layer with a tiny label "本模块 auth.py".
-L3 title "服务与调度". One main card "标准 LangGraph Agent Server 0.16.0", with short function tags "Threads / Runs" "排队 / 取消 / 状态" "SSE". Small line "同一 Thread 的 Run 串行；当前 API / Worker 未拆部署池". At the bottom a small cyan box "graph.agent(runtime) → build_agent" with note "本模块：无副作用 factory；服务端管理 Checkpoint / Store".
-L4 title "Agent 执行". Main violet card "Deep Agents 0.7.25 · create_deep_agent". Three equal short tool cards "planning / todos", "general-purpose 子代理", "虚拟文件工具". Place "模型 ↔ 工具循环" visibly. To its right, outside the server boundary, external card "OpenAI" and "ChatOpenAI · LLM inference". Bidirectional arrow connects only L4 to OpenAI. Small note "模型与 API key 由服务端环境配置". Do not depict embeddings, external tool APIs, real-provider validation, web search or MCP.
-L5 title "状态、文件与 Memory". Two side-by-side cards: "StateBackend" with "普通文件 /plan.md" and "当前 Thread 的 Checkpoint"; "StoreBackend" with "/memories/*" and "(owner, memories) · 同 owner 跨 Thread". Arrows from L4 virtual file tools to these cards. Clear note "虚拟文件 ≠ 宿主文件系统".
-Directly BELOW these five layers, draw two clearly ALTERNATIVE storage realization boxes, not two simultaneously enabled systems. Green solid box titled "开发路径 · 已验证" with "langgraph dev" and "inmem + .langgraph_api 本地快照", small "已验证优雅退出后恢复". Amber dashed box titled "部署配置 · 未验收" with "PostgreSQL：Run / Thread / Checkpoint / Store" and "Redis：唤醒 / 取消 / 临时 PubSub", small "需要平台凭据 / 许可证；尚未部署验证". Label above this pair "底层存储：按运行模式选择".
-Right sidebar, below OpenAI, three concise callouts:
-"我们实现：graph factory、认证、owner 隔离、backend 路由与配置"
-"框架提供：Agent loop、子代理、Run 调度、Checkpoint 与 SSE"
-"当前边界：无宿主 Shell / 托管 Sandbox；Assistant 是共享只读定义".
-Bottom footer exact text "已验证：测试模型下真实 HTTP / SSE / 子代理 / 隔离 / 优雅重启；真实 OpenAI 与生产数据库未验证".
-Keep API key text generic, no secrets. Do not claim exactly-once recovery or token replay. No MDA Context Hub, OAuth or Cloud managed services. No orange change badge or the previous whole-repository diagram. Prioritize truthful scope and legibility over ornamental detail.
-
-
-Exact targeted repair prompt (edit input: first focused diagram):
-Precise diagram repair. Use the supplied Agent Server five-layer diagram as the complete edit target. Preserve the entire layout, every card, all Chinese/English labels, five layers, development-vs-deployment boxes, status caveats, mountains, colors and footer. Repair ONLY the LLM request/response connection: the external OpenAI card in the top-right currently has no connected edge, and the short LLM double arrow beside L4 is floating. Replace that floating arrow with one thin bright cyan ELBOW connection, bidirectional, from the RIGHT edge of the L4 "Agent 执行 / Deep Agents" layer to the LEFT edge of the actual top-right OpenAI card. Route the vertical segment up through the narrow empty gutter BETWEEN the five-layer panel and right sidebar divider. Then turn right into the left edge of the OpenAI card at its vertical center. Do not connect to the "框架提供" explanatory icon or notes. Avoid crossing layer boxes or any text. Keep label "LLM 推理" near the L4 end. The line should unambiguously mean L4 Deep Agents <-> external OpenAI. Do not add or change any capability, architecture or label; this is a single route repair.
-
-Selected output: exec-504a0cda-e26a-4c75-9f73-81d6696edbc0.png.
-Visual QA passed: five layers, actual L4-to-OpenAI connection, owner scopes, and alternative dev/production statuses checked against implementation 6328007. Original full-repository base and canonical topology are unchanged.
+Exact repair prompt:
+Precise text-only correction to the supplied focused Agent Server layered diagram. Preserve all layout, arrows, titles, layers, colors, right sidebar, status caveats, footer and mountains. In L5, the StateBackend card currently has secondary text "线程文件 · checkpoints · runs · logs". Replace only that secondary line with "/plan.md 等文件内容进入 Thread Checkpoint". StateBackend stores virtual files inside graph state; it does not itself store Run rows or logs. In the adjacent StoreBackend card replace secondary line "长期记忆 · 用户数据 · 领域上下文" with "/memories/* · 同 owner 跨 Thread". Keep primary labels "StateBackend: Thread 虚拟文件" and "StoreBackend: (owner, memories)" unchanged. Everything else must stay unchanged. Avoid adding any capabilities or new text.

@@ -1,27 +1,55 @@
 name: mini-loop-deepagents
+
+# Build once, then select the same immutable image ID/digest for both services.
+# Queue startup follows the pinned Agent Server image's standard entrypoint.
+x-agent: &agent
+  image: "${MINILOOP_DEEPAGENTS_IMAGE:?Set the immutable application image ID or registry digest}"
+  env_file: .env
+  restart: unless-stopped
+  stop_grace_period: 210s
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+x-agent-environment: &agent-environment
+  DATABASE_URI: &database-uri "postgres://postgres:${POSTGRES_PASSWORD:?Set a database password}@postgres:5432/postgres?sslmode=disable"
+  POSTGRES_URI: *database-uri
+  REDIS_URI: redis://redis:6379
+  LANGSMITH_API_KEY: "${LANGSMITH_API_KEY:?Licensed Agent Server requires a LangSmith API key}"
+  LANGGRAPH_CLOUD_LICENSE_KEY: "${LANGGRAPH_CLOUD_LICENSE_KEY:?Custom auth in standalone Agent Server requires an appropriate license}"
+  BG_JOB_TIMEOUT_SECS: "${BG_JOB_TIMEOUT_SECS:-86400}"
+  # In langgraph-api 0.16.0 this bounds total execution attempts, including the first.
+  BG_JOB_MAX_RETRIES: "${BG_JOB_MAX_RETRIES:-3}"
+  BG_JOB_SHUTDOWN_GRACE_PERIOD_SECS: "180"
+
 services:
   api:
-    build: .
-    image: mini-loop-deepagents:0.1.0
+    <<: *agent
     ports:
       - "127.0.0.1:2024:8000"
-    env_file: .env
     environment:
-      DATABASE_URI: "postgres://postgres:${POSTGRES_PASSWORD:?Set a database password}@postgres:5432/postgres?sslmode=disable"
-      REDIS_URI: redis://redis:6379
-      LANGSMITH_API_KEY: "${LANGSMITH_API_KEY:?Licensed Agent Server requires a LangSmith API key}"
-      LANGGRAPH_CLOUD_LICENSE_KEY: "${LANGGRAPH_CLOUD_LICENSE_KEY:?Custom auth in standalone Agent Server requires an appropriate license}"
-      N_JOBS_PER_WORKER: "2"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    cpus: 2
+      <<: *agent-environment
+      N_JOBS_PER_WORKER: "0"
+      BG_JOB_ISOLATED_LOOPS: "false"
+      LANGGRAPH_POSTGRES_POOL_MAX_SIZE: "10"
+    cpus: 0.5
+    mem_limit: 512m
+  worker:
+    <<: *agent
+    command: ["/storage/queue_entrypoint.sh"]
+    environment:
+      <<: *agent-environment
+      N_JOBS_PER_WORKER: "${N_JOBS_PER_WORKER:-2}"
+      BG_JOB_ISOLATED_LOOPS: "true"
+      # Isolated worker threads each receive max_pool_size // concurrency connections.
+      LANGGRAPH_POSTGRES_POOL_MAX_SIZE: "${LANGGRAPH_POSTGRES_POOL_MAX_SIZE:-32}"
+    cpus: 1
     mem_limit: 1g
-    stop_grace_period: 60s
   postgres:
     image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set a database password}"
     volumes:
@@ -31,16 +59,19 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    cpus: 1
+    cpus: 0.5
     mem_limit: 512m
   redis:
     image: redis:7-alpine@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499
+    restart: unless-stopped
+    # Redis carries ephemeral coordination/stream data; PostgreSQL owns durable runs.
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "96mb", "--maxmemory-policy", "noeviction"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 10
-    cpus: 1
+    cpus: 0.25
     mem_limit: 128m
 volumes:
   postgres-data:

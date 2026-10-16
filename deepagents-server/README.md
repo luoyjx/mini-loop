@@ -5,21 +5,23 @@
 的分层构建。它有独立环境、依赖锁和启动配置，不调用已有 `mini_loop`
 Python/Go runtime，也不替换原服务。
 
-图解入口：[五层架构与一次请求的完整路径](ARCHITECTURE.md)。
+图解入口：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
+长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
 
 ## 已实现与边界
 
 | 层 | 实现 | 状态 |
 | --- | --- | --- |
 | Agent harness | `create_deep_agent`，planning、文件工具、默认 general-purpose subagent | 真实 Deep Agents graph |
-| Server | 标准 Threads、Runs、状态/历史、取消、同线程 Run 调度、SSE API | 使用 Agent Server，自行实现的调度器为零 |
+| Server | 标准 Threads、Runs、状态/历史、取消、同线程 Run 调度、SSE API | 原生后台 Run 调度，不自行实现队列 |
+| 长任务客户端 | `AsyncJobsClient` 和 `scripts/jobs.py`：提交后返回 handle，查询、等待、取消、显式续跑 | 等待超时/客户端断线不取消 Run；每次提交默认新 Thread |
 | 身份 | 服务端配置的随机 Bearer token → owner；禁用 Studio 旁路 | 默认拒绝未认证访问 |
 | 资源授权 | Thread/Run owner metadata filter；Store namespace 首段必须为 owner | 模型输入和客户端 context 不授予身份 |
 | 文件 | StateBackend，线程虚拟文件，由 Checkpoint 保存 | 无宿主文件访问 |
 | Memory | `/memories/` → StoreBackend `(owner, "memories")` | 同 owner 跨 Thread 可用；不跨 owner 共享 |
 | Model | 服务端 `ChatOpenAI` 实例；模型、超时、输出上限来自环境 | 真实 provider 调用需要自己的 API key |
 | 本地开发 | `langgraph dev`，inmem runtime + 本地快照 | 可检查优雅退出后的恢复；非生产持久性保证 |
-| 部署配置 | 标准 Agent Server image + PostgreSQL + Redis | 需平台凭据/许可证，验证状态见交付记录 |
+| 部署配置 | 同一不可变 image 分为 API-only + Worker；PostgreSQL 持久数据 + Redis 临时协调 | 默认 Worker 两个并发槽；生产崩溃/部署恢复仍待带许可证验收 |
 
 没有实现 MDA Compiler、Context Hub、OAuth Connections、Channels 或托管 Sandbox。
 用户不得创建/修改 Assistant，预安装 graph 的 Assistant 定义可供已认证用户读取；
@@ -75,36 +77,77 @@ curl -N http://127.0.0.1:2024/threads/THREAD_ID/runs/stream \
   -d '{"assistant_id":"agent","input":{"messages":[{"role":"user","content":"你好"}]},"stream_mode":["values"],"multitask_strategy":"enqueue"}'
 ```
 
-## 部署配置
+## 提交异步长任务
 
-`Dockerfile` 由固定版本 CLI 从 `langgraph.json` 生成；`compose.yaml` 配置
-PostgreSQL 持久卷及 Redis 临时协调，不公开数据库端口，API 只绑定宿主 loopback。
-API、PG、Redis 分别限为 1 GiB、512 MiB、128 MiB 内存；这些是开发验证/小型部署的起点，
-并非已测量的生产容量。没有另行拆分 API/Worker 池。
-
-标准 Agent Server 及其自定义认证具有独立的许可条件。必须自行配置有效的
-`LANGSMITH_API_KEY`、`LANGGRAPH_CLOUD_LICENSE_KEY` 和 `POSTGRES_PASSWORD`；
-数据库密码请用 `secrets.token_urlsafe(32)` 生成（Compose 直接将它放入 URI，
-只使用 URL-safe 字符，不使用 `@`、`#`、`?`、`%` 等需要编码的字符）。
-Compose 缺少它们时会在启动前失败。检查适用的
-[Standalone 部署要求](https://docs.langchain.com/langsmith/deploy-standalone-server)
-和[自定义认证许可说明](https://docs.langchain.com/langsmith/custom-auth)。
-本仓库不提供这些凭据，不通过关闭认证绕过许可。
+交互式 `scripts/chat.py` 用 SSE 等待结果；长任务使用 `scripts/jobs.py`，先拿到
+包含 `server_url`、`thread_id`、`run_id`、`request_id` 的 handle，随后可以退出终端。
+文件不包含 token，仍应视作用户任务标识妥善保存；CLI 用 0600 权限原子写入。
 
 ```sh
-uv run langgraph dockerfile Dockerfile --api-version 0.16.0
-docker compose config --quiet
-docker compose up --build -d
-docker compose logs -f api
-docker compose down
+uv run python scripts/jobs.py submit '规划并完成一个长任务' --output job.json
+uv run python scripts/jobs.py status --job-file job.json
+uv run python scripts/jobs.py wait --job-file job.json --timeout 30
+uv run python scripts/jobs.py state --job-file job.json
+uv run python scripts/jobs.py cancel --job-file job.json
+uv run python scripts/jobs.py resume --job-file job.json --output continued-job.json
 ```
 
-`docker compose down` 保留 PG 卷；`down -v` 会删除持久数据。开发快照不会自动迁入 PG。
-基础镜像及 PG/Redis 镜像已固定 registry digest；重新生成 Dockerfile 后需重新固定
-并验证 digest。生产镜像受平台基础镜像 constraints 管理，本地安装使用 `uv.lock`；镜像构建与许可证
-验证应在实际部署环境单独验收。PostgreSQL 是 Run/Thread/Checkpoint/Store 的持久来源，
-Redis 用于唤醒、取消、实时 PubSub。SSE 不能因此获得逐 token 持久重放保证。
-恢复不保证外部副作用 exactly-once；未来增加外部工具时必须设计幂等/审批和执行隔离。
+每次 `submit` 默认创建新 Thread，以便独立任务并发；加 `--thread THREAD_ID` 会在
+该 Thread 排队串行。`wait` 超时只结束本地等待（退出码 2），Run 继续执行；
+`status` 查询该 Run，`state` 读取整个 Thread 的当前状态，可能包含后续 Run。
+取消采用 `interrupt`，保留 Checkpoint。`resume` 只接受最近一个 error/timeout/
+interrupted Run 且仍有未完成 Checkpoint 任务的情况，以 `input=None` 新建 Run；
+它拒绝需要人工答案的 graph interrupt。预检查不是跨客户端原子去重锁，续跑必须由
+单一操作者协调。SDK 用法和失败判定见 [长任务运行约束](LONG_TASKS.md)。
+
+创建 Thread/Run 不自动重试。请求发送后响应丢失时，CLI 以退出码 3 输出
+`submission_uncertain` 与已知 Thread/Run/request 标识；应先查询服务端，避免直接重复
+提交。`request_id` 是核对 metadata，不是服务端强制的幂等键。保存 handle 失败时仍会先
+输出已接受的 handle；不要因此重新提交。客户端提交请求指定 `durability="sync"`。
+
+## 部署配置
+
+`Dockerfile` 由固定版本 CLI 从 `langgraph.json` 生成。`compose.yaml` 将 API 接入与
+后台执行拆成两个进程，两者必须使用**同一个不可变应用镜像 ID 或 registry digest**：
+API 的执行槽固定为 0；Worker 用标准 `/storage/queue_entrypoint.sh` 启动，默认两个
+并发槽并开启 isolated loops。Worker 可按 `--scale worker=N` 横向增加；每个实例默认
+两个槽，同一 Thread 仍串行。增加实例前按模型配额、数据库连接与内存重新配置容量。
+
+PostgreSQL 持久卷保存 pending Run、执行状态、Checkpoint 和 owner Store；Redis
+只承载临时唤醒、取消与事件，不是持久任务来源。数据库不公开宿主端口，API 只绑定
+loopback。默认内存上限为 API 512 MiB、每个 Worker 1 GiB、PG 512 MiB、Redis 128 MiB，
+单 Worker 实例的合计为 2.125 GiB；CPU 上限合计 2.25 核。这是小规模验证配置，
+不是生产容量测量。进程隔离不提供工具 Sandbox；阻塞工具仍须审查或隔离执行。
+
+标准 Agent Server 与自定义认证有独立许可条件。必须配置有效的
+`LANGSMITH_API_KEY`、`LANGGRAPH_CLOUD_LICENSE_KEY`、`POSTGRES_PASSWORD` 和
+`MINILOOP_DEEPAGENTS_IMAGE`。数据库密码使用 `secrets.token_urlsafe(32)` 生成；
+Compose 将它放入 URI，只使用 URL-safe 字符。缺少必需配置会在启动前失败。检查
+[Standalone 部署要求](https://docs.langchain.com/langsmith/deploy-standalone-server)
+和[自定义认证许可说明](https://docs.langchain.com/langsmith/custom-auth)。
+
+```sh
+# Use the checked-in Dockerfile with its pinned base image digest.
+docker build -t mini-loop-deepagents:local .
+export MINILOOP_DEEPAGENTS_IMAGE="$(docker image inspect mini-loop-deepagents:local --format '{{.Id}}')"
+docker compose config --quiet
+docker compose up -d
+docker compose logs -f api worker
+```
+
+默认每次执行 attempt 上限为 24 小时，原生执行 attempt 总数上限为 3（0.16.0 的
+`BG_JOB_MAX_RETRIES` 包含第一次执行）。这约束可重试执行故障，不代表任意模型错误都
+会自动重试。Worker 优雅停机窗口为 180 秒，容器停机窗口为 210 秒。部署时先停止旧
+Worker 接新任务并等待退出，再用同一新镜像重建 API/Worker；未完成任务的恢复以
+PostgreSQL 中的 Run 与 Checkpoint 为依据。示例操作和强杀验收见
+[长任务运行约束](LONG_TASKS.md)。
+
+`docker compose down` 保留 PG 卷；`down -v` 删除持久数据。开发快照不会自动迁入 PG。
+发布须保持 graph ID、Checkpoint schema、包/工具兼容和 token→owner 映射；不兼容
+更新需要迁移或先排空任务。同步 Checkpoint 仍会重放未完成步骤，不保证外部副作用
+exactly-once；未来添加外部工具时必须有业务幂等键。SSE 也不是逐 token 持久日志。
+**真实 PostgreSQL/Redis 部署及 Worker 崩溃、滚动部署恢复尚未通过生产栈验收**，需要
+适用许可证与该栈的故障注入结果；本地快照恢复不能替代这项证据。
 
 ## 配置与扩展
 
@@ -130,6 +173,7 @@ checkpointer/store。Memory namespace 只读取执行 runtime 的 verified `serv
 ```sh
 uv run pytest -q
 uv run python scripts/smoke.py
+uv run python scripts/fault_smoke.py
 ```
 
 Smoke 启动实际 `langgraph dev` 和真实 Deep Agents graph，使用仅位于 `tests/`
@@ -138,6 +182,12 @@ Smoke 启动实际 `langgraph dev` 和真实 Deep Agents graph，使用仅位于
 它在私有临时目录保存开发状态并在退出时清理，仅在仓库 `var/deepagents-delivery/`
 留下日志；生产配置不会加载测试模型。模型 API 和持久 PG 部署需在对应环境另行验证。
 
+`scripts/fault_smoke.py` 是单独的开发模式故障检查：覆盖并发与同 Thread 排队、
+客户端等待超时、终态错误后显式续跑、取消后续跑，以及缓存已刷盘后 SIGKILL 开发
+进程再用兼容 graph 代码重启。它仍使用本地快照，不能证明 PostgreSQL/Redis 的
+生产恢复；执行结果与尚待生产验收项见 [长任务运行约束](LONG_TASKS.md)。
+
 版本基线：`deepagents==0.7.25`、`langgraph-api==0.16.0`、
 `langgraph-cli==0.4.35`、`langgraph-sdk==0.4.7`、`langchain-openai==1.7.2`。
-完整结果及架构图说明见 [交付记录](DELIVERY.md)。
+完整结果及架构图说明见 [交付记录](DELIVERY.md)；本轮长任务验收边界见
+[长任务运行约束](LONG_TASKS.md)。

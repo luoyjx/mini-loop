@@ -1,9 +1,10 @@
 # Agent Server 分层架构
 
-这张图解释 `6328007` 中的 `deepagents-server/`：标准 Agent Server 负责服务与调度，
-Deep Agents 负责模型和工具循环，本模块提供 graph、认证、用户隔离及存储绑定。
-它是 [README canonical architecture](../README.md#architecture) 中独立模块泳道的展开视图，
-不新增运行能力，也不改变原 Python/Go runtime。
+当前分层以实现 `6328007`、架构图 `9ba2a49` 为起点，加入异步长任务客户端与
+API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态，Deep Agents 执行
+模型和工具循环，本模块负责 graph、认证、用户隔离、存储绑定与长任务客户端。
+这是 [README canonical architecture](../README.md#architecture) 独立模块泳道的展开，
+原 Python/Go runtime 保持各自入口与语义。
 
 ![当前 Agent Server 分层架构](docs/agent-server-layered-architecture.png)
 
@@ -11,52 +12,65 @@ Deep Agents 负责模型和工具循环，本模块提供 graph、认证、用�
 
 | 层 | 回答的问题 | 当前实现 |
 | --- | --- | --- |
-| L1 客户端与接入 | 用户怎样调用？ | SDK 或 REST 发请求，SSE 接收事件；`scripts/chat.py` 是可运行示例 |
-| L2 身份与访问控制 | 这个用户能访问什么？ | Bearer token 映射到可信 owner；Thread/Run 按 owner 过滤；Store namespace 首段必须匹配 owner |
-| L3 服务与调度 | 一次任务怎样被管理？ | 标准 Agent Server 提供 Threads、Runs、排队、取消、状态和 SSE；本模块注册无副作用 graph factory |
-| L4 Agent 执行 | 任务具体怎样完成？ | `create_deep_agent` 构造 graph，框架执行 planning、general-purpose 子代理和模型/虚拟文件工具循环；ChatOpenAI 调用外部模型 |
-| L5 状态、文件与 Memory | 数据属于谁，怎样保存？ | StateBackend 保存线程虚拟文件；StoreBackend 将 `/memories/` 路由到 `(owner, memories)` |
+| L1 客户端与接入 | 长任务怎样提交与观察？ | `scripts/jobs.py` / `AsyncJobsClient` 提交后返回可保存的 Thread/Run handle；状态查询、轮询等待、取消、显式续跑；SDK/HTTP/SSE 仍可使用 |
+| L2 身份与访问控制 | 这个用户能访问什么？ | Bearer token → 可信 owner；Thread/Run 按 owner 过滤；Store namespace 首段必须匹配 owner |
+| L3 API 与后台 Worker | 接入服务重启会不会带走执行？ | Compose 的 API 只接入、不执行；独立 Worker 默认两个槽，原生认领排队 Run；HTTP/SSE 连接不拥有任务生命周期 |
+| L4 Agent 执行 | 怎样完成并保存任务进度？ | `create_deep_agent` 执行 planning、general-purpose 子代理、模型/虚拟工具循环；长任务客户端请求 sync Checkpoint durability |
+| L5 持久状态与协调 | 哪些数据能够用于恢复？ | PostgreSQL 保存 Run/Checkpoint/Store；Redis 只负责临时唤醒、取消与事件；线程 StateBackend 文件和 owner StoreBackend memory 保持原作用域 |
 
-Thread 是一段有身份的对话，Run 是这段对话中的一次执行。一个 Thread 的 Run 串行，
-不同 Thread 可以并发。当前 Compose 只有一个 Agent Server API 服务，没有拆出独立 Worker 池；
-图中的分层表示逻辑职责，不表示每层各占一个容器。
+Thread 是一段对话，Run 是其中一次执行。客户端每次提交默认新 Thread，独立 Thread
+可并发；显式复用 Thread 则 enqueue 串行。Compose 将 API 与 Worker 拆为不同容器，
+两者使用同一不可变 image、graph 注册和数据库。五层是职责，只有 API/Worker/PG/Redis
+是此部署中独立的服务；本地 `langgraph dev` 仍是组合式开发进程。
 
-## 一条消息的路径
+## 一条长任务的路径
 
-1. 客户端携带 token 创建或选择 Thread，再提交 Run。
-2. `auth.py` 验证 token，得出 owner，检查对话归属。请求中的 `context.user_id` 或伪造的认证 config 不会成为可信身份。
-3. Agent Server 调度 Run，调用 `graph.agent(runtime)` 构建 graph。factory 也用于 schema/state inspection，因此不能在其中创建业务资源或写库。
-4. Deep Agents 调用模型，由模型选择 planning、子代理或虚拟文件工具，工具结果再进入循环。
-5. Server 管理 Checkpoint/Store，并通过 SSE 返回事件。Checkpoint 不构成逐 token 持久日志，也不提供外部副作用 exactly-once 保证。
+1. 客户端带 token 创建 Thread，再以 `durability="sync"` 提交后台 Run。认证验证 owner，模型输入和客户端 context 不能授予身份。
+2. Agent Server 记录 Run 后返回 handle；任务并不等待 HTTP 客户端持续连接。PostgreSQL 是排队任务的持久来源，Redis 通知 Worker。
+3. Worker 认领可执行 Run。不同 Thread 可占用不同槽，同一 Thread 的 Run 串行；无副作用 `graph.agent(runtime)` 构建 graph，不在 factory 创建业务资源。
+4. Deep Agents 执行模型/工具步骤，Server 保存 Checkpoint 与执行状态。线程虚拟文件进入 Checkpoint，长期 memory 进入 owner Store。
+5. 客户端可凭 handle 在另一进程查询或等待。等待超时或断线不会取消任务；显式 cancel 请求 checkpoint-preserving interruption。SSE 是实时观察，不是恢复所需的持久 token 日志。
+
+`state` 返回 Thread 当前状态，可能已包含该 handle 之后的新 Run；判断单个任务结果应
+读取 `status`。创建请求响应丢失会产生 uncertain submission，先按已知标识核对；
+`request_id` 不是服务端原子去重键，也没有自动重新提交输入。
+
+## 故障、重启与部署的边界
+
+| 事件 | 恢复路径 | 限制 |
+| --- | --- | --- |
+| 客户端退出、网络断线、等待超时 | 保存 handle，重新连接并查询同一 Run | Run 生命周期不属于等待连接 |
+| API 容器重启 | Worker 独立执行，API 恢复后继续读取 PostgreSQL 状态 | API 与 Worker 必须共享注册和数据底座 |
+| Worker 优雅停止 | 180 秒退出窗口；Compose 210 秒后才强制终止；由原生调度处理剩余执行 | 不等于等待任意长任务全部跑完 |
+| Worker 崩溃或部署终止 | 生产运行时依据持久 Run/Checkpoint 认领符合条件的未完成任务 | 真实 PostgreSQL/Redis 故障恢复尚待带许可证验收；本地快照证据不能替代 |
+| Run 进入 error/timeout/interrupted | 操作者检查最新 Run 和未完成 Checkpoint，再以空 input 新建 continuation Run | 不把原消息重复加入对话；graph interrupt 需明确人工答案，通用 resume 会拒绝 |
+
+默认 attempt 时间上限 24 小时，原生 attempt 总数上限 3。进程故障与终态模型/graph
+错误不能统称为自动重试；耗尽后需检查错误并决定是否续跑。客户端 resume 的预检查
+不能代替跨操作者原子锁；部署升级必须保持 graph/Checkpoint schema 和工具兼容，
+以及稳定的 token→owner 映射与持久卷。不可兼容升级须迁移或先排空任务。
+
+同步 Checkpoint 允许从已保存边界继续，未完成步骤可能重放。调用外部 API、支付或
+发信等副作用不因此 exactly-once；增加工具前需要业务幂等和执行隔离。Worker 的
+isolated loops 不等于 Sandbox。生产部署许可、数据库备份和容量验收仍由运营方负责。
 
 ## 两种文件作用域
 
-假设 Alice 有两个 Thread：A 和 B，Bob 有 Thread C。
+假设 Alice 有 Thread A、B，Bob 有 C。
 
-- Alice 在 A 写 `/plan.md`：文件属于 A 的虚拟状态，B 和 C 都不会自动看到它。
-- Alice 在 A 写 `/memories/preference.txt`：它进入 `(alice, memories)`，B 可以读取，C 仍不能读取。namespace 从 verified server user 得出，不由模型输入选择。
-- `/memories/AGENTS.md` 会作为用户长期指令/知识载入上下文；它仍是不可信数据，不能改变工具权限或身份。不同 Thread 同时修改同一 memory 文件没有 CAS 合并保证。
+- A 的 `/plan.md` 属于 A 的虚拟状态，B/C 不会自动读取。
+- A 的 `/memories/preference.txt` 进入 `(alice, memories)`，B 可读、C 不可读；namespace 来自 verified server user。
+- `/memories/AGENTS.md` 可作为用户知识进入上下文，仍是不可信数据，不能改变身份或工具权限。不同 Thread 同时修改同一 memory 文件没有 CAS/事务合并保证。
 
-这里的文件都是 graph state/store 中的虚拟文件。没有宿主文件系统 backend 或 shell executor；
-即使 schema 中出现 `execute`，当前 backend 也会返回 execution unavailable。
+当前都是 graph state/store 虚拟文件，没有宿主文件 backend 或 shell executor；即使
+工具 schema 中出现 `execute`，backend 仍返回 execution unavailable。共享 Assistant
+是只读定义，Thread/Run/memory 才是用户私有数据。Cron 拒绝访问；没有 Context Hub、
+OAuth、Channels 或托管 Sandbox。
 
-## 底层存储是二选一的运行模式
+## 验证与制图证据
 
-| 模式 | 数据底座 | 当前证据 |
-| --- | --- | --- |
-| 本地开发 `langgraph dev` | inmem runtime + `.langgraph_api/` 本地快照 | 已用测试模型验证真实 HTTP/SSE、工具、隔离、取消和优雅退出后的恢复 |
-| Compose 部署配置 | PostgreSQL 保存 Run/Thread/Checkpoint/Store；Redis 做临时协调和 PubSub | 配置已校验，真实部署和崩溃/断电恢复尚未验收，需平台凭据与适用许可证 |
-
-真实 OpenAI adapter 已完成构造/schema 检查，尚未使用真实 provider key 执行推理。
-预安装 Assistant 是共享只读定义；私有的是 Thread/Run 与用户 memory。
-Cron 当前拒绝访问，没有 MDA Context Hub、OAuth、Channels 或托管 Sandbox。
-
-## 代码与制图证据
-
-- 接入：[chat.py](scripts/chat.py)。
-- 授权：[auth.py](src/mini_loop_deepagents/auth.py)。
-- graph/model/backend 绑定：[graph.py](src/mini_loop_deepagents/graph.py)。
-- 服务注册：[langgraph.json](langgraph.json)；部署配置：[compose.yaml](compose.yaml)。
-- 已有验证结果：[DELIVERY.md](DELIVERY.md)，82 项模块检查及 10 组真实 HTTP 检查；本次制图没有重新运行实现测试。
-- Built-in imagegen 以仓库完整 layered base 为编辑输入，聚焦并展开独立模块泳道；[exact prompt](docs/agent-server-layered-architecture.prompt.txt) 与图片同目录保存。
-- 逐层核对当前代码及 canonical Mermaid；区分框架能力、模块代码、开发证据和部署配置。
+- [异步客户端](src/mini_loop_deepagents/jobs.py)、[任务 CLI](scripts/jobs.py)、[交互 SSE 示例](scripts/chat.py)。
+- [授权](src/mini_loop_deepagents/auth.py)、[graph/model/backend 绑定](src/mini_loop_deepagents/graph.py)、[服务注册](langgraph.json)、[API/Worker Compose](compose.yaml)。
+- [长任务运行约束及恢复验证](LONG_TASKS.md)；[交付记录](DELIVERY.md) 区分单元检查、真实开发 HTTP 与生产栈验收。
+- `langgraph dev` 是 inmem runtime + 本地快照；生产 PostgreSQL/Redis 崩溃与部署恢复尚未验收。真实 OpenAI 推理也须在有 provider key 的环境另验。
+- Built-in imagegen 维护 [模块架构图](docs/agent-server-layered-architecture.png)；精确 prompt 随交付证据保存。仓库 canonical Mermaid、Archify JSON 和生成 HTML 同步表达 API/Worker 分离，图不能用作生产恢复测试证据。

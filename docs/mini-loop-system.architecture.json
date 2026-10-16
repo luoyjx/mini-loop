@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains; independent opt-in Deep Agents server module",
+    "subtitle": "Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      2850
+      3050
     ],
     "views": [
       {
@@ -670,14 +670,14 @@
     {
       "id": "daClients",
       "type": "external",
-      "label": "Agent Server callers",
-      "sublabel": "SDK / REST / SSE",
+      "label": "Long task clients",
+      "sublabel": "submit handle / poll / SSE / resume",
       "pos": [
         60,
         2320
       ],
       "size": [
-        230,
+        250,
         76
       ]
     },
@@ -698,8 +698,8 @@
     {
       "id": "daServer",
       "type": "frontend",
-      "label": "LangGraph Agent Server",
-      "sublabel": "standard API / queued execution",
+      "label": "Agent Server API only",
+      "sublabel": "admit Run / return handle / inspect",
       "pos": [
         850,
         2320
@@ -708,22 +708,22 @@
         330,
         76
       ],
-      "tag": "0.16.0 · opt-in module"
+      "tag": "0 jobs / independent API lifecycle"
     },
     {
       "id": "daGraph",
       "type": "backend",
       "label": "Deep Agents graph",
-      "sublabel": "create_deep_agent / runtime tools",
+      "sublabel": "planning / subagents / model-tool loop",
       "pos": [
-        1370,
-        2320
+        1920,
+        2550
       ],
       "size": [
-        330,
+        350,
         76
       ],
-      "tag": "0.7.25 · separate uv environment"
+      "tag": "0.7.25 / checkpoint durability=sync"
     },
     {
       "id": "daProvider",
@@ -732,10 +732,10 @@
       "sublabel": "server-configured credentials / model",
       "pos": [
         1920,
-        2320
+        2770
       ],
       "size": [
-        320,
+        350,
         76
       ]
     },
@@ -746,7 +746,7 @@
       "sublabel": "langgraph dev / in-memory backend",
       "pos": [
         400,
-        2530
+        2550
       ],
       "size": [
         310,
@@ -757,17 +757,17 @@
     {
       "id": "daPersistence",
       "type": "database",
-      "label": "Production state / coordination",
-      "sublabel": "PostgreSQL durable / Redis ephemeral",
+      "label": "PostgreSQL job truth",
+      "sublabel": "queued Runs / checkpoints / owner store",
       "pos": [
-        850,
-        2530
+        1370,
+        2320
       ],
       "size": [
         380,
         76
       ],
-      "tag": "standard server deployment / license required"
+      "tag": "durable volume / production acceptance open"
     },
     {
       "id": "daFiles",
@@ -776,13 +776,43 @@
       "sublabel": "thread StateBackend / owner StoreBackend",
       "pos": [
         1370,
-        2530
+        2770
       ],
       "size": [
         410,
         76
       ],
       "tag": "/memories/ owner namespace; no host shell / FS"
+    },
+    {
+      "id": "daWorker",
+      "type": "backend",
+      "label": "Separate background workers",
+      "sublabel": "2 slots / claim / retry / checkpoint",
+      "pos": [
+        1370,
+        2550
+      ],
+      "size": [
+        380,
+        76
+      ],
+      "tag": "same immutable image / isolated loops"
+    },
+    {
+      "id": "daRedis",
+      "type": "messagebus",
+      "label": "Redis wake / cancel / events",
+      "sublabel": "ephemeral; not the durable job queue",
+      "pos": [
+        850,
+        2550
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "restart does not replace PostgreSQL truth"
     }
   ],
   "boundaries": [
@@ -1805,8 +1835,32 @@
       "variant": "security"
     },
     {
-      "id": "daExecute",
+      "id": "daState",
       "from": "daServer",
+      "to": "daPersistence",
+      "label": "persist Run"
+    },
+    {
+      "id": "daClaim",
+      "from": "daWorker",
+      "to": "daPersistence",
+      "label": "claim / checkpoint"
+    },
+    {
+      "id": "daWake",
+      "from": "daServer",
+      "to": "daRedis",
+      "variant": "dashed"
+    },
+    {
+      "id": "daDispatch",
+      "from": "daRedis",
+      "to": "daWorker",
+      "variant": "dashed"
+    },
+    {
+      "id": "daExecute",
+      "from": "daWorker",
       "to": "daGraph",
       "variant": "emphasis"
     },
@@ -1816,24 +1870,15 @@
       "to": "daProvider"
     },
     {
+      "id": "daVirtualFiles",
+      "from": "daGraph",
+      "to": "daFiles"
+    },
+    {
       "id": "daDevMode",
       "from": "daDev",
       "to": "daServer",
       "variant": "dashed"
-    },
-    {
-      "id": "daState",
-      "from": "daServer",
-      "to": "daPersistence",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "daVirtualFiles",
-      "from": "daGraph",
-      "to": "daFiles",
-      "fromSide": "bottom",
-      "toSide": "top"
     }
   ],
   "cards": [
@@ -2054,11 +2099,13 @@
       "dot": "violet",
       "title": "Independent Deep Agents server",
       "items": [
-        "Review baseline 2026-10-16: main 3df5f4e plus independent deepagents-server/ implementation. Existing Python and Go runtimes keep their own startup, tools, state and defaults.",
-        "Deep Agents 0.7.25 runs on standard LangGraph Agent Server 0.16.0 / CLI 0.4.35. Bearer identities own private Threads, Runs and store namespaces. Crons are denied.",
-        "StateBackend virtual thread files are checkpointed; /memories/ uses an owner-scoped StoreBackend. No host shell or local filesystem execution backend is configured.",
-        "langgraph dev uses an in-memory backend with local snapshots, not production durability. The production Compose path uses PostgreSQL durable resources/checkpoints/store and Redis ephemeral coordination; platform licensing applies.",
-        "This module does not implement the MDA SDK, Context Hub, OAuth or managed sandbox capabilities from the external reference design."
+        "Review baseline 2026-10-16: implementation 6328007 and architecture 9ba2a49 plus this long-task iteration. Existing Python and Go runtimes retain their startup, tools, state and defaults.",
+        "AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.",
+        "Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.",
+        "Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.",
+        "Checkpoint continuation creates a new Run with null input after conservative checks. request_id aids uncertain-submission reconciliation; it is not server-enforced deduplication. Checkpoints are not exactly-once side effects or durable token streams.",
+        "Bearer owners scope Threads, Runs and memory. StateBackend files are virtual; /memories/ uses owner StoreBackend. No host shell, cron, MDA SDK, Context Hub, OAuth or managed sandbox is enabled.",
+        "langgraph dev uses in-memory state and local snapshots, not production durability. PostgreSQL worker crash/redeploy recovery still requires a licensed production-stack acceptance run. Graph/checkpoint compatibility and stable identity configuration are deployment responsibilities."
       ]
     }
   ]

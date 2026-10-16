@@ -66,6 +66,17 @@ def create_auth(tokens: Mapping[str, str]) -> Auth:
         ctx: Auth.types.AuthContext, value: dict[str, Any]
     ) -> Auth.types.FilterType:
         owner_filter = {"owner": ctx.user.identity}
+        if ctx.action == "create_run":
+            # Run arguments are deployment policy as well as client input. The
+            # server keeps this dict by reference when persisting its queue row.
+            # Stateful Thread jobs request synchronous step checkpoints, including
+            # direct REST callers which request exit-only durability. Stateless
+            # or delete-on-completion Runs have separate runtime retention rules.
+            kwargs = value.setdefault("kwargs", {})
+            if not isinstance(kwargs, dict):
+                raise Auth.exceptions.HTTPException(status_code=400, detail="Invalid Run arguments")
+            kwargs["durability"] = "sync"
+            kwargs["checkpoint_during"] = True
         if ctx.action in {"create", "create_run", "update", "search"}:
             metadata = value.get("metadata")
             if not isinstance(metadata, dict):

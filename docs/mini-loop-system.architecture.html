@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains; independent opt-in Deep Agents server module</p>
+      <p class="subtitle">Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4544,9 +4544,9 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 2850" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 3050" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains; independent opt-in Deep Agents server module</desc>
+        <desc id="archify-diagram-description">Independent runtimes; Deep Agents server separates API admission from background workers; PostgreSQL owns durable jobs/checkpoints, Redis wakes workers; production recovery acceptance remains open</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4585,7 +4585,7 @@
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" x="306" y="776" width="378" height="120" rx="12" class="c-region" stroke-width="1"/>
         <text x="314" y="794" class="t-cloud" font-size="9" font-weight="600">Go startup / HTTP admission</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="5" x="368" y="2288" width="1444" height="338" rx="12" class="c-region" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="5" x="368" y="2288" width="1934" height="578" rx="12" class="c-region" stroke-width="1"/>
         <text x="376" y="2306" class="t-cloud" font-size="9" font-weight="600">deepagents-server/ · independent opt-in runtime</text>
 
         <!-- Connection paths (before components for correct z-order) -->
@@ -4648,13 +4648,16 @@
         <path data-edge-from="goFiles" data-edge-to="goPythonParser" data-edge-key="56" data-edge-id="goDefaultPythonSyntax" data-composition-points="2060,1436;2060,1460" d="M 2060 1436 L 2060 1460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goContractInputs" data-edge-to="goCI" data-edge-key="57" data-edge-id="goCIRead" data-composition-points="650,1865;820,1865;820,1978;990,1978" d="M 650 1865 L 812 1865 Q 820 1865 820 1873 L 820 1970 Q 820 1978 828 1978 L 990 1978" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goCI" data-edge-to="goContractEvidence" data-edge-key="58" data-edge-id="goCIRecord" data-composition-points="1370,1978;1510,1978;1510,1865;1650,1865" d="M 1370 1978 L 1502 1978 Q 1510 1978 1510 1970 L 1510 1873 Q 1510 1865 1518 1865 L 1650 1865" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="daClients" data-edge-to="daAuth" data-edge-key="59" data-edge-id="daRequest" data-composition-points="290,2358;400,2358" d="M 290 2358 L 400 2358" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="daClients" data-edge-to="daAuth" data-edge-key="59" data-edge-id="daRequest" data-composition-points="310,2358;400,2358" d="M 310 2358 L 400 2358" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="daAuth" data-edge-to="daServer" data-edge-key="60" data-edge-id="daAdmission" data-composition-points="680,2358;704,2358;704,2374;826,2374;826,2351;850,2351" d="M 680 2358 L 696 2358 Q 704 2358 704 2366 L 704 2366 Q 704 2374 712 2374 L 818 2374 Q 826 2374 826 2366 L 826 2359 Q 826 2351 834 2351 L 850 2351" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="daServer" data-edge-to="daGraph" data-edge-key="61" data-edge-id="daExecute" data-composition-points="1180,2358;1370,2358" d="M 1180 2358 L 1370 2358" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="daGraph" data-edge-to="daProvider" data-edge-key="62" data-edge-id="daModel" data-composition-points="1700,2358;1920,2358" d="M 1700 2358 L 1920 2358" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="daDev" data-edge-to="daServer" data-edge-key="63" data-edge-id="daDevMode" data-composition-points="710,2568;780,2568;780,2365;850,2365" d="M 710 2568 L 772 2568 Q 780 2568 780 2560 L 780 2373 Q 780 2365 788 2365 L 850 2365" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="daServer" data-edge-to="daPersistence" data-edge-key="64" data-edge-id="daState" data-composition-points="1015,2396;1015,2463;1040,2463;1040,2530" d="M 1015 2396 L 1015 2455 Q 1015 2463 1023 2463 L 1032 2463 Q 1040 2463 1040 2471 L 1040 2530" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="daGraph" data-edge-to="daFiles" data-edge-key="65" data-edge-id="daVirtualFiles" data-composition-points="1535,2396;1535,2463;1575,2463;1575,2530" d="M 1535 2396 L 1535 2455 Q 1535 2463 1543 2463 L 1567 2463 Q 1575 2463 1575 2471 L 1575 2530" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="daServer" data-edge-to="daPersistence" data-edge-label="persist Run" data-edge-key="61" data-edge-id="daState" data-composition-points="1180,2358;1370,2358" d="M 1180 2358 L 1370 2358" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="daWorker" data-edge-to="daPersistence" data-edge-label="claim / checkpoint" data-edge-key="62" data-edge-id="daClaim" data-composition-points="1560,2550;1560,2396" d="M 1560 2550 L 1560 2396" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="daServer" data-edge-to="daRedis" data-edge-key="63" data-edge-id="daWake" data-composition-points="1015,2396;1015,2550" d="M 1015 2396 L 1015 2550" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="daRedis" data-edge-to="daWorker" data-edge-key="64" data-edge-id="daDispatch" data-composition-points="1180,2588;1370,2588" d="M 1180 2588 L 1370 2588" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="daWorker" data-edge-to="daGraph" data-edge-key="65" data-edge-id="daExecute" data-composition-points="1750,2588;1774,2588;1774,2604;1896,2604;1896,2581;1920,2581" d="M 1750 2588 L 1766 2588 Q 1774 2588 1774 2596 L 1774 2596 Q 1774 2604 1782 2604 L 1888 2604 Q 1896 2604 1896 2596 L 1896 2589 Q 1896 2581 1904 2581 L 1920 2581" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="daGraph" data-edge-to="daProvider" data-edge-key="66" data-edge-id="daModel" data-composition-points="2095,2626;2095,2770" d="M 2095 2626 L 2095 2770" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="daGraph" data-edge-to="daFiles" data-edge-key="67" data-edge-id="daVirtualFiles" data-composition-points="1920,2595;1850,2595;1850,2808;1780,2808" d="M 1920 2595 L 1858 2595 Q 1850 2595 1850 2603 L 1850 2800 Q 1850 2808 1842 2808 L 1780 2808" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="daDev" data-edge-to="daServer" data-edge-key="68" data-edge-id="daDevMode" data-composition-points="710,2588;780,2588;780,2365;850,2365" d="M 710 2588 L 772 2588 Q 780 2588 780 2580 L 780 2373 Q 780 2365 788 2365 L 850 2365" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5136,16 +5139,16 @@
         <text data-detail="fine" x="1180" y="2008" class="t-cloud" font-size="7" text-anchor="middle">3 GiB · CPU2 · offline gates</text>
         </g>
 
-        <g id="node-daClients" data-node-id="daClients" data-node-label="Agent Server callers" tabindex="0" role="button" aria-label="Focus Agent Server callers, SDK / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="SDK / REST / SSE" data-node-context="Architecture component">
-          <title>Agent Server callers · SDK / REST / SSE · Architecture component</title>
-          <rect x="60" y="2320" width="230" height="76" rx="6" class="c-mask"/>
-          <rect x="60" y="2320" width="230" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+        <g id="node-daClients" data-node-id="daClients" data-node-label="Long task clients" tabindex="0" role="button" aria-label="Focus Long task clients, submit handle / poll / SSE / resume, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="submit handle / poll / SSE / resume" data-node-context="Architecture component">
+          <title>Long task clients · submit handle / poll / SSE / resume · Architecture component</title>
+          <rect x="60" y="2320" width="250" height="76" rx="6" class="c-mask"/>
+          <rect x="60" y="2320" width="250" height="76" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(66 2326) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-detail-anchor x="175" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Agent Server callers</text>
-        <text data-detail="context" x="175" y="2372" class="t-muted" font-size="9" text-anchor="middle">SDK / REST / SSE</text>
+          <text data-detail-anchor x="185" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Long task clients</text>
+        <text data-detail="context" x="185" y="2372" class="t-muted" font-size="9" text-anchor="middle">submit handle / poll / SSE / resume</text>
         </g>
 
         <g id="node-daAuth" data-node-id="daAuth" data-node-label="Bearer auth + owner scope" tabindex="0" role="button" aria-label="Focus Bearer auth + owner scope, private Threads / Runs / store, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="security" data-node-sublabel="private Threads / Runs / store" data-node-context="deepagents-server/ · independent opt-in runtime">
@@ -5160,8 +5163,8 @@
         <text data-detail="context" x="540" y="2372" class="t-muted" font-size="9" text-anchor="middle">private Threads / Runs / store</text>
         </g>
 
-        <g id="node-daServer" data-node-id="daServer" data-node-label="LangGraph Agent Server" tabindex="0" role="button" aria-label="Focus LangGraph Agent Server, standard API / queued execution, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="standard API / queued execution" data-node-tag="0.16.0 · opt-in module" data-node-context="deepagents-server/ · independent opt-in runtime">
-          <title>LangGraph Agent Server · standard API / queued execution · deepagents-server/ · independent opt-in runtime · 0.16.0 · opt-in module</title>
+        <g id="node-daServer" data-node-id="daServer" data-node-label="Agent Server API only" tabindex="0" role="button" aria-label="Focus Agent Server API only, admit Run / return handle / inspect, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="admit Run / return handle / inspect" data-node-tag="0 jobs / independent API lifecycle" data-node-context="deepagents-server/ · independent opt-in runtime">
+          <title>Agent Server API only · admit Run / return handle / inspect · deepagents-server/ · independent opt-in runtime · 0 jobs / independent API lifecycle</title>
           <rect x="850" y="2320" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="2320" width="330" height="76" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(856 2326) scale(0.6875)">
@@ -5170,71 +5173,98 @@
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-detail-anchor x="1015" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">LangGraph Agent Server</text>
-        <text data-detail="context" x="1015" y="2372" class="t-muted" font-size="9" text-anchor="middle">standard API / queued execution</text>
-        <text data-detail="fine" x="1015" y="2388" class="t-frontend" font-size="7" text-anchor="middle">0.16.0 · opt-in module</text>
+          <text data-detail-anchor x="1015" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Agent Server API only</text>
+        <text data-detail="context" x="1015" y="2372" class="t-muted" font-size="9" text-anchor="middle">admit Run / return handle / inspect</text>
+        <text data-detail="fine" x="1015" y="2388" class="t-frontend" font-size="7" text-anchor="middle">0 jobs / independent API lifecycle</text>
         </g>
 
-        <g id="node-daGraph" data-node-id="daGraph" data-node-label="Deep Agents graph" tabindex="0" role="button" aria-label="Focus Deep Agents graph, create_deep_agent / runtime tools, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="backend" data-node-sublabel="create_deep_agent / runtime tools" data-node-tag="0.7.25 · separate uv environment" data-node-context="deepagents-server/ · independent opt-in runtime">
-          <title>Deep Agents graph · create_deep_agent / runtime tools · deepagents-server/ · independent opt-in runtime · 0.7.25 · separate uv environment</title>
-          <rect x="1370" y="2320" width="330" height="76" rx="6" class="c-mask"/>
-          <rect x="1370" y="2320" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 2326) scale(0.6875)">
+        <g id="node-daGraph" data-node-id="daGraph" data-node-label="Deep Agents graph" tabindex="0" role="button" aria-label="Focus Deep Agents graph, planning / subagents / model-tool loop, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="backend" data-node-sublabel="planning / subagents / model-tool loop" data-node-tag="0.7.25 / checkpoint durability=sync" data-node-context="deepagents-server/ · independent opt-in runtime">
+          <title>Deep Agents graph · planning / subagents / model-tool loop · deepagents-server/ · independent opt-in runtime · 0.7.25 / checkpoint durability=sync</title>
+          <rect x="1920" y="2550" width="350" height="76" rx="6" class="c-mask"/>
+          <rect x="1920" y="2550" width="350" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 2556) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="1535" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Deep Agents graph</text>
-        <text data-detail="context" x="1535" y="2372" class="t-muted" font-size="9" text-anchor="middle">create_deep_agent / runtime tools</text>
-        <text data-detail="fine" x="1535" y="2388" class="t-backend" font-size="7" text-anchor="middle">0.7.25 · separate uv environment</text>
+          <text data-detail-anchor x="2095" y="2586" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Deep Agents graph</text>
+        <text data-detail="context" x="2095" y="2602" class="t-muted" font-size="9" text-anchor="middle">planning / subagents / model-tool loop</text>
+        <text data-detail="fine" x="2095" y="2618" class="t-backend" font-size="7" text-anchor="middle">0.7.25 / checkpoint durability=sync</text>
         </g>
 
         <g id="node-daProvider" data-node-id="daProvider" data-node-label="OpenAI provider" tabindex="0" role="button" aria-label="Focus OpenAI provider, server-configured credentials / model, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="server-configured credentials / model" data-node-context="Architecture component">
           <title>OpenAI provider · server-configured credentials / model · Architecture component</title>
-          <rect x="1920" y="2320" width="320" height="76" rx="6" class="c-mask"/>
-          <rect x="1920" y="2320" width="320" height="76" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1926 2326) scale(0.6875)">
+          <rect x="1920" y="2770" width="350" height="76" rx="6" class="c-mask"/>
+          <rect x="1920" y="2770" width="350" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1926 2776) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-detail-anchor x="2080" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">OpenAI provider</text>
-        <text data-detail="context" x="2080" y="2372" class="t-muted" font-size="9" text-anchor="middle">server-configured credentials / model</text>
+          <text data-detail-anchor x="2095" y="2806" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">OpenAI provider</text>
+        <text data-detail="context" x="2095" y="2822" class="t-muted" font-size="9" text-anchor="middle">server-configured credentials / model</text>
         </g>
 
         <g id="node-daDev" data-node-id="daDev" data-node-label="Local development" tabindex="0" role="button" aria-label="Focus Local development, langgraph dev / in-memory backend, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="backend" data-node-sublabel="langgraph dev / in-memory backend" data-node-tag="local snapshots; not production durability" data-node-context="deepagents-server/ · independent opt-in runtime">
           <title>Local development · langgraph dev / in-memory backend · deepagents-server/ · independent opt-in runtime · local snapshots; not production durability</title>
-          <rect x="400" y="2530" width="310" height="76" rx="6" class="c-mask"/>
-          <rect x="400" y="2530" width="310" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(406 2536) scale(0.6875)">
+          <rect x="400" y="2550" width="310" height="76" rx="6" class="c-mask"/>
+          <rect x="400" y="2550" width="310" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(406 2556) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="555" y="2566" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Local development</text>
-        <text data-detail="context" x="555" y="2582" class="t-muted" font-size="9" text-anchor="middle">langgraph dev / in-memory backend</text>
-        <text data-detail="fine" x="555" y="2598" class="t-backend" font-size="7" text-anchor="middle">local snapshots; not production durability</text>
+          <text data-detail-anchor x="555" y="2586" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Local development</text>
+        <text data-detail="context" x="555" y="2602" class="t-muted" font-size="9" text-anchor="middle">langgraph dev / in-memory backend</text>
+        <text data-detail="fine" x="555" y="2618" class="t-backend" font-size="7" text-anchor="middle">local snapshots; not production durability</text>
         </g>
 
-        <g id="node-daPersistence" data-node-id="daPersistence" data-node-label="Production state / coordination" tabindex="0" role="button" aria-label="Focus Production state / coordination, PostgreSQL durable / Redis ephemeral, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="database" data-node-sublabel="PostgreSQL durable / Redis ephemeral" data-node-tag="standard server deployment / license required" data-node-context="deepagents-server/ · independent opt-in runtime">
-          <title>Production state / coordination · PostgreSQL durable / Redis ephemeral · deepagents-server/ · independent opt-in runtime · standard server deployment / license required</title>
-          <rect x="850" y="2530" width="380" height="76" rx="6" class="c-mask"/>
-          <rect x="850" y="2530" width="380" height="76" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(856 2536) scale(0.6875)">
+        <g id="node-daPersistence" data-node-id="daPersistence" data-node-label="PostgreSQL job truth" tabindex="0" role="button" aria-label="Focus PostgreSQL job truth, queued Runs / checkpoints / owner store, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="database" data-node-sublabel="queued Runs / checkpoints / owner store" data-node-tag="durable volume / production acceptance open" data-node-context="deepagents-server/ · independent opt-in runtime">
+          <title>PostgreSQL job truth · queued Runs / checkpoints / owner store · deepagents-server/ · independent opt-in runtime · durable volume / production acceptance open</title>
+          <rect x="1370" y="2320" width="380" height="76" rx="6" class="c-mask"/>
+          <rect x="1370" y="2320" width="380" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1376 2326) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-detail-anchor x="1040" y="2566" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Production state / coordination</text>
-        <text data-detail="context" x="1040" y="2582" class="t-muted" font-size="9" text-anchor="middle">PostgreSQL durable / Redis ephemeral</text>
-        <text data-detail="fine" x="1040" y="2598" class="t-database" font-size="7" text-anchor="middle">standard server deployment / license required</text>
+          <text data-detail-anchor x="1560" y="2356" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">PostgreSQL job truth</text>
+        <text data-detail="context" x="1560" y="2372" class="t-muted" font-size="9" text-anchor="middle">queued Runs / checkpoints / owner store</text>
+        <text data-detail="fine" x="1560" y="2388" class="t-database" font-size="7" text-anchor="middle">durable volume / production acceptance open</text>
         </g>
 
         <g id="node-daFiles" data-node-id="daFiles" data-node-label="Virtual agent files" tabindex="0" role="button" aria-label="Focus Virtual agent files, thread StateBackend / owner StoreBackend, deepagents-server/ · independent opt-in runtime" aria-pressed="false" data-node-kind="database" data-node-sublabel="thread StateBackend / owner StoreBackend" data-node-tag="/memories/ owner namespace; no host shell / FS" data-node-context="deepagents-server/ · independent opt-in runtime">
           <title>Virtual agent files · thread StateBackend / owner StoreBackend · deepagents-server/ · independent opt-in runtime · /memories/ owner namespace; no host shell / FS</title>
-          <rect x="1370" y="2530" width="410" height="76" rx="6" class="c-mask"/>
-          <rect x="1370" y="2530" width="410" height="76" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1376 2536) scale(0.6875)">
+          <rect x="1370" y="2770" width="410" height="76" rx="6" class="c-mask"/>
+          <rect x="1370" y="2770" width="410" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1376 2776) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-detail-anchor x="1575" y="2566" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Virtual agent files</text>
-        <text data-detail="context" x="1575" y="2582" class="t-muted" font-size="9" text-anchor="middle">thread StateBackend / owner StoreBackend</text>
-        <text data-detail="fine" x="1575" y="2598" class="t-database" font-size="7" text-anchor="middle">/memories/ owner namespace; no host shell / FS</text>
+          <text data-detail-anchor x="1575" y="2806" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Virtual agent files</text>
+        <text data-detail="context" x="1575" y="2822" class="t-muted" font-size="9" text-anchor="middle">thread StateBackend / owner StoreBackend</text>
+        <text data-detail="fine" x="1575" y="2838" class="t-database" font-size="7" text-anchor="middle">/memories/ owner namespace; no host shell / FS</text>
+        </g>
+
+        <g id="node-daWorker" data-node-id="daWorker" data-node-label="Separate background workers" tabindex="0" role="button" aria-label="Focus Separate background workers, 2 slots / claim / retry / checkpoint, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="2 slots / claim / retry / checkpoint" data-node-tag="same immutable image / isolated loops" data-node-context="Architecture component">
+          <title>Separate background workers · 2 slots / claim / retry / checkpoint · Architecture component · same immutable image / isolated loops</title>
+          <rect x="1370" y="2550" width="380" height="76" rx="6" class="c-mask"/>
+          <rect x="1370" y="2550" width="380" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 2556) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1560" y="2586" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Separate background workers</text>
+        <text data-detail="context" x="1560" y="2602" class="t-muted" font-size="9" text-anchor="middle">2 slots / claim / retry / checkpoint</text>
+        <text data-detail="fine" x="1560" y="2618" class="t-backend" font-size="7" text-anchor="middle">same immutable image / isolated loops</text>
+        </g>
+
+        <g id="node-daRedis" data-node-id="daRedis" data-node-label="Redis wake / cancel / events" tabindex="0" role="button" aria-label="Focus Redis wake / cancel / events, ephemeral; not the durable job queue, Architecture component" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="ephemeral; not the durable job queue" data-node-tag="restart does not replace PostgreSQL truth" data-node-context="Architecture component">
+          <title>Redis wake / cancel / events · ephemeral; not the durable job queue · Architecture component · restart does not replace PostgreSQL truth</title>
+          <rect x="850" y="2550" width="330" height="76" rx="6" class="c-mask"/>
+          <rect x="850" y="2550" width="330" height="76" rx="6" class="c-messagebus" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(856 2556) scale(0.6875)">
+            <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
+            <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
+            <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
+            <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
+          </g>
+          <text data-detail-anchor x="1015" y="2586" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Redis wake / cancel / events</text>
+        <text data-detail="context" x="1015" y="2602" class="t-muted" font-size="9" text-anchor="middle">ephemeral; not the durable job queue</text>
+        <text data-detail="fine" x="1015" y="2618" class="t-messagebus" font-size="7" text-anchor="middle">restart does not replace PostgreSQL truth</text>
         </g>
 
         <!-- Connection labels -->
@@ -5407,6 +5437,15 @@
 
 
 
+        <g data-detail="context" data-edge-from="daServer" data-edge-to="daPersistence" data-edge-label="persist Run" data-edge-key="61" data-edge-id="daState">
+          <rect x="1243.6" y="2338" width="62.8" height="14" rx="3" class="c-mask"/>
+          <text x="1275" y="2348" class="t-muted" font-size="8" text-anchor="middle">persist Run</text>
+        </g>
+        <g data-detail="context" data-edge-from="daWorker" data-edge-to="daPersistence" data-edge-label="claim / checkpoint" data-edge-key="62" data-edge-id="daClaim">
+          <rect x="1511.8" y="2530" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
+          <text x="1560" y="2540" class="t-muted" font-size="8" text-anchor="middle">claim / checkpoint</text>
+        </g>
+
 
 
 
@@ -5415,34 +5454,34 @@
 
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="2821" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="3021" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="2826" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="2834" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="3026" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="3034" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="2826" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="2834" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="3026" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="3034" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="2826" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="2834" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="3026" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="3034" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="2826" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="2834" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="3026" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="3034" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="2826" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="2834" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="3026" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="3034" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="2826" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="2834" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="3026" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="3034" class="t-muted" font-size="8">Database</text>
           </g>
           <g data-legend-kind="cloud">
-            <rect x="674" y="2826" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
-            <text x="694" y="2834" class="t-muted" font-size="8">Cloud</text>
+            <rect x="674" y="3026" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
+            <text x="694" y="3034" class="t-muted" font-size="8">Cloud</text>
           </g>
         </g>
       </svg>
@@ -5862,11 +5901,13 @@
           <h3>Independent Deep Agents server</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 2026-10-16: main 3df5f4e plus independent deepagents-server/ implementation. Existing Python and Go runtimes keep their own startup, tools, state and defaults.</li>
-          <li>&bull; Deep Agents 0.7.25 runs on standard LangGraph Agent Server 0.16.0 / CLI 0.4.35. Bearer identities own private Threads, Runs and store namespaces. Crons are denied.</li>
-          <li>&bull; StateBackend virtual thread files are checkpointed; /memories/ uses an owner-scoped StoreBackend. No host shell or local filesystem execution backend is configured.</li>
-          <li>&bull; langgraph dev uses an in-memory backend with local snapshots, not production durability. The production Compose path uses PostgreSQL durable resources/checkpoints/store and Redis ephemeral coordination; platform licensing applies.</li>
-          <li>&bull; This module does not implement the MDA SDK, Context Hub, OAuth or managed sandbox capabilities from the external reference design.</li>
+          <li>&bull; Review baseline 2026-10-16: implementation 6328007 and architecture 9ba2a49 plus this long-task iteration. Existing Python and Go runtimes retain their startup, tools, state and defaults.</li>
+          <li>&bull; AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.</li>
+          <li>&bull; Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.</li>
+          <li>&bull; Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.</li>
+          <li>&bull; Checkpoint continuation creates a new Run with null input after conservative checks. request_id aids uncertain-submission reconciliation; it is not server-enforced deduplication. Checkpoints are not exactly-once side effects or durable token streams.</li>
+          <li>&bull; Bearer owners scope Threads, Runs and memory. StateBackend files are virtual; /memories/ uses owner StoreBackend. No host shell, cron, MDA SDK, Context Hub, OAuth or managed sandbox is enabled.</li>
+          <li>&bull; langgraph dev uses in-memory state and local snapshots, not production durability. PostgreSQL worker crash/redeploy recovery still requires a licensed production-stack acceptance run. Graph/checkpoint compatibility and stable identity configuration are deployment responsibilities.</li>
         </ul>
       </div>
     </div>

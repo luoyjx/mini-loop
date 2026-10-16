@@ -121,7 +121,7 @@ The table is the fastest way to distinguish “implemented” from “active her
 | Typed decisions: choice, score, and noul | **Off, including the full feature bundle** | `MINILOOP_DECISIONS=llm\|jev` or explicit `install_decisions()`; judgments return data through the existing tool boundary |
 | Declarative workflow MVP | **Off, process-local** | Trusted Python construction with `enable_workflows=True` |
 | Verified execute → verify → fold loop | **Library-only** | Call `VerifiedLoopService` explicitly; no HTTP/tool surface |
-| Independent Deep Agents server | **Opt-in, separate module** | [`deepagents-server/`](deepagents-server/README.md): bearer-authenticated standard Agent Server; local dev snapshots are not production durability; production PostgreSQL/Redis configuration and licensing are explicit |
+| Independent Deep Agents server | **Opt-in, separate module** | [`deepagents-server/`](deepagents-server/README.md): bearer-authenticated standard Agent Server; async Run handles; API/Worker separation; production PostgreSQL/Redis recovery acceptance and licensing remain explicit |
 
 <details>
 <summary>Reference curriculum mapping (learn-claude-code s01–s20)</summary>
@@ -1175,9 +1175,12 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `main` at `3df5f4e`
-plus the independent `deepagents-server/` implementation. This lane uses Deep
-Agents **0.7.25**, standard LangGraph Agent Server **0.16.0**, and CLI **0.4.35**;
+Current architecture review baseline: **2026-10-16**, implementation `6328007`
+and architecture `9ba2a49` plus the asynchronous long-task iteration. The
+independent module separates API admission from background workers, requests
+synchronous checkpoints, and provides portable job handles with explicit
+continuation. This lane uses Deep Agents **0.7.25**, standard LangGraph Agent
+Server **0.16.0**, and CLI **0.4.35**;
 it does not replace either existing runtime or change their feature defaults.
 The earlier Go review and acceptance labels below retain their original scope.
 
@@ -1339,16 +1342,21 @@ flowchart LR
 
     subgraph DeepAgentsServer["deepagents-server/ · independent opt-in runtime"]
         DAAuth["Bearer authentication + owner scope<br/>private Threads · Runs · store namespaces"]
-        DAAPI["Standard LangGraph Agent Server 0.16.0<br/>REST / SSE / queued execution · CLI 0.4.35"]
-        DAGraph["Deep Agents 0.7.25<br/>create_deep_agent graph · planning / subagents"]
+        DAAPI["Standard Agent Server API only<br/>submit Run → handle · poll / SSE / cancel<br/>0 execution slots"]
+        DAWorkers["Independent background Worker pool<br/>2 concurrent slots by default · per-thread enqueue<br/>same immutable image · isolated execution loops"]
+        DAGraph["Deep Agents 0.7.25<br/>planning / subagents · model-tool loop<br/>sync checkpoint durability per submitted Run"]
         DAFiles["Virtual files only<br/>StateBackend: per-thread checkpointed files<br/>/memories/: owner-scoped StoreBackend<br/>no host shell / local filesystem backend"]
         DADev["Local development: langgraph dev<br/>in-memory backend + local snapshots<br/>not production durability"]
-        DAPostgres["Production PostgreSQL<br/>resources · checkpoints · owner store"]
-        DARedis["Production Redis<br/>ephemeral coordination / streams"]
-        DAAuth --> DAAPI --> DAGraph --> DAFiles
-        DADev -. local backend mode .-> DAAPI
-        DAAPI -. production backend mode .-> DAPostgres
-        DAAPI -. transient coordination .-> DARedis
+        DAPostgres["Production PostgreSQL · durable volume<br/>pending Runs · claims · checkpoints · owner store<br/>crash/redeploy acceptance still open"]
+        DARedis["Production Redis<br/>ephemeral wakeups · cancellation · events"]
+        DAAuth --> DAAPI
+        DAAPI -->|persist Run / return handle| DAPostgres
+        DAAPI -. wake / inspect / cancel .-> DARedis
+        DARedis -. notify .-> DAWorkers
+        DAPostgres -->|claim queued / recover eligible Run| DAWorkers
+        DAWorkers -->|save checkpoint / execution status| DAPostgres
+        DAWorkers --> DAGraph --> DAFiles
+        DADev -. local combined backend mode .-> DAAPI
     end
     DAProvider["OpenAI provider<br/>server-configured credentials / model"]
     Caller -. explicitly select independent module .-> DAAuth
@@ -1412,19 +1420,41 @@ flowchart LR
 ```
 <!-- architecture-map:end -->
 
-The Deep Agents lane has its own dependency lock, process and standard Agent
-Server API; it does not route through `SessionManager` or the Go tool gate.
-Bearer authentication binds the owner before access to private Threads, Runs and
-store namespaces. Graph files are virtual checkpoint/store data, and `/memories/`
-is shared only within that owner namespace. The configured graph does not expose
-host shell or local filesystem execution. Cron access is denied initially.
-`langgraph dev` uses an in-memory backend with local snapshots. The production
-Compose path uses PostgreSQL for durable resources/checkpoints/store and Redis
-for transient coordination; it requires the applicable Agent Server license and
-operator configuration. This module does not implement MDA SDK, Context Hub,
-OAuth, or managed sandbox capabilities from the external reference design. See
-[the module guide](deepagents-server/README.md) for commands, configuration,
-verification and deployment boundaries.
+The Deep Agents lane has its own dependency lock and standard Agent Server API.
+Compose separates the API (zero execution slots) from background workers (two
+slots by default); both use the same immutable image and shared PostgreSQL and
+Redis. A submission returns a portable Thread/Run handle after admission. The
+HTTP connection and later polling do not own execution lifetime. Independent
+Threads run concurrently; Runs on one Thread enqueue serially. The job client
+requests `durability="sync"` and provides status, wait, cancel and explicit
+null-input checkpoint continuation. A local wait timeout does not cancel work.
+
+PostgreSQL owns pending Runs, execution claims, checkpoints and owner Store;
+Redis provides ephemeral wakeups, cancellation and events. Graceful shutdown
+allows 180 seconds, while Compose allows 210 seconds before termination. The
+pinned server bounds native execution attempts at three by default and each
+attempt at 24 hours. Eligible crash recovery and operator-requested continuation
+are different paths: a terminal model/graph error is inspected before resuming
+unfinished checkpoint tasks as a new Run. The client does not retry submissions
+automatically; `request_id` helps reconcile uncertain responses and does not
+enforce deduplication. Neither checkpointing nor retry guarantees exactly-once
+external effects, and SSE is not a durable token log.
+
+Bearer authentication binds the owner before private resource access. Virtual
+files and `/memories/` retain their thread/owner scopes; host shell and cron
+remain disabled. This module does not route through `SessionManager` or the Go
+tool gate. `langgraph dev` remains an in-memory development mode with local
+snapshots. Production worker crash/redeploy recovery requires the applicable
+license and a real PostgreSQL/Redis acceptance run; it is not established by a
+development snapshot test. Deployments must preserve token-owner mappings,
+persistent volumes and graph/checkpoint schema compatibility. See the
+[module guide](deepagents-server/README.md) and
+[long-task operating contract](deepagents-server/LONG_TASKS.md) for commands,
+recovery limits and current validation evidence. The
+[durable Task control-plane design](docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md)
+compares execution backends; those proposed services are not installed by the
+current module. Its business logic, dependencies and runtime are independent of
+the original Python/Go modules.
 
 The operator CI job is outside the deployed runtime. Its networked bootstrap
 fetches only the existing fixed public inputs; test containers receive the
