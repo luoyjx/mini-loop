@@ -1,0 +1,24 @@
+Use case: infographic-diagram. Create the next focused Agent Server architecture iteration by editing the two provided references (complete canonical base and prior standalone Worker-rollout diagram). Output a crisp tall portrait infographic, Chinese, dark navy/cyan style, large readable text. Focus ONLY the independent Temporal Task HTTP Agent Server. Do not include the legacy mini-loop Python/Go business, standard LangGraph Agent Server lane, or old prototype.
+Title "Agent Server · 长任务持久执行"
+Subtitle "本轮：API / Worker 到 Temporal 的 TLS / mTLS"
+Legend orange = "本轮修改与新增验收"; all existing architecture cyan/blue.
+
+Five horizontal layers:
+L1 "异步客户端": submit and leave; save TaskID + Idempotency-Key; Bearer for HTTP identity.
+L2 "无状态 Task API": submit/status/result/cancel/events; verified owner; only return202 after Temporal confirmsStart; per-process overload429.
+L3 "Temporal 持久执行": Task Queue + Workflow History; stable TaskID / first Run; V2 Run1 -> Run2 -> Run3 through complete Checkpoint; queued accepted tasks wait.
+L4 "独立 Worker 池": Worker A / Worker B connected to sameTaskQueue; real Deep Agents planning/tools/subagents/summary; bounded model Activity concurrency. Compact existing strip in BLUE: "CLI 停新轮询 → 排空 → 超时交接 / 最终退出；默认 2s / 15s".
+L5 "模型 I/O Activity": ChatOpenAI through deployment environment; heartbeat/retry up to3attempt; result recorded in History; provider credentials never from client. Blue arrow DOWN Worker to model layer labeled "模型 I/O"; do not depict CAN as model I/O.
+
+NEW ORANGE SHARED CONFIG PANEL to the side spanning API and Worker, titled "新增：共享 Temporal 连接配置". Orange dashed CONFIG lines point to API and Worker; these are configuration injection, not an extra network hop. Inside: "TLS：验证 CA / 服务名", "mTLS：客户端证书 + 私钥", "可选 API key（必须 TLS）", "服务端环境 / 文件；禁止静默降级", "证书轮转需重建 Client".
+API -> Temporal and Worker <-> Temporal RPC links carry small orange lock icon. No client to Temporal direct access. Small boundary "HTTP Bearer ≠ Temporal 原生 ACL".
+Do not put a TLS tunnel between production components.
+
+Bottom orange inset titled "本轮本地验收 · 测试隧道 / 离线模型", strictly separate from production diagram:
+"4 类错误证书配置均拒绝"
+"2 API + 2 Worker 原进程重连"
+"断链 503 → 恢复；2 Task 各 10 工具步骤 + 1 CAN"
+"Activity 重试 1→2；身份 / 请求摘要不变"
+Tiny flow ONLY WITHIN THIS INSET: "真实 SDK ─ mTLS ─ 测试隧道 ─ loopback Temporal".
+Separate BLUE boundary box: "原生 Temporal TLS / Cloud ACL / 生产 HA 与容量仍待验收", "外部副作用不保证 exactly-once", "全链24h / 512次父模型边界；Checkpoint大小有上限".
+Maintain substantial whitespace and legibility. Fewer short phrases preferred to tiny text. Orange only highlights TLS connection config/new verification, not previous rollout orCAN.

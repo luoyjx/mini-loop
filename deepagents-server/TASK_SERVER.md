@@ -16,6 +16,7 @@ Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Tempora
 | --- | --- | --- |
 | 客户端 | 保存 Idempotency-Key、TaskID、RunID；提交后可离线 | HTTP 超时不能推出任务未创建 |
 | Task HTTP API 多副本 | Bearer→owner；提交、状态、结果、取消、事件分页 | 无本地任务队列；远端 Start 确认或核对到同内容任务后才返回 202 |
+| 共享 Client 连接配置 | API/Worker 各自显式连接；CLI 环境配置，library 显式对象 | 可选验证 TLS/mTLS；没有独立代理服务，HTTP owner 与 Temporal ACL 分开 |
 | Temporal 服务 | Workflow ID 接受、队列、History、Activity 重试与取消 | 服务器持久化与保留策略决定可恢复范围；本地 SQLite 故障实验不代表集群 HA |
 | TaskWorkflowV2 + v1 Worker | Deep Agents 规划、子代理、原生摘要、虚拟文件、todos、messages | V2 完整 public saver 日志跨 Run 迁移；同 Run 经 History 重放重建；不访问外部 checkpointer |
 | 模型 Activity | 以 Worker 配置创建 ChatOpenAI，调用外部模型 | 重试可能重复调用模型；固定 alias，HTTP 输入不能选择 provider、模型或 fixture |
@@ -33,7 +34,7 @@ key 可能再次创建执行；查询与事件也可能返回 404。调用方必
 
 ## V2 分段续跑与完整状态
 
-V2 已在 `98de8d2` 交付。本轮以该提交为审查基线，保留相同 Workflow 代码；
+V2 已在 `98de8d2` 交付。本轮以 `401e4d5` 为审查基线，保留相同 Workflow 代码；
 新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
 为 schema 2。Worker 同时注册原 `TaskWorkflow` / `task-v1`，v1 运行码保持不变。
 部署时先替换为能同时运行两版的 Worker，再切换 API；旧 Worker 无法运行 V2，不能
@@ -150,6 +151,55 @@ export LANGSMITH_TRACING=false
 排队时间包含在 Workflow execution timeout 内，重启与 CAN 都不会重置这项总期限。
 各层预算分别生效；CAN 不放宽 provider 时限、Activity 重试或父/子图自己的限制。
 
+## Temporal 连接与 TLS/mTLS
+
+API 与 Worker 共用 `task_server/connection.py` 中的不可变
+`TemporalConnectionSettings` 与 `connect_temporal`。生产 CLI 才调用 `from_env`；
+library `serve` / `run_process` / `connect_temporal` 的 `connection=None` 明确使用
+明文默认值，**不读取宿主环境中的安全变量**。可信库调用方需要显式构造并传入设置。
+地址仍用现有 API `--temporal-address` / Worker `--address`，格式为 `host:port`
+（支持带方括号的 IPv6），不接受含 URL scheme、路径或凭据的地址。
+
+所有变量以前缀 `MINILOOP_TASK_TEMPORAL_` 开头：
+
+| 后缀 | 用途与约束 |
+| --- | --- |
+| `TLS` | 缺省 `false`；只接受小写 `true` / `false`，不自动推断 |
+| `CA_CERT_FILE` | 自定义服务端信任 CA 的 PEM 文件；未提供时使用 SDK 默认根证书策略 |
+| `CLIENT_CERT_FILE` / `CLIENT_KEY_FILE` | mTLS 客户端 PEM 证书/私钥，必须同时提供 |
+| `SERVER_NAME` | 可选 `TLSConfig.domain`：同时设置 SNI、HTTP/2 authority 和默认证书校验名；不是跳过校验 |
+| `API_KEY` / `API_KEY_FILE` | SDK API-key metadata，两者只能选一个；与 Task HTTP Bearer token 不同 |
+
+安全字段要求 `TLS=true`；即使字段为空，`TLS=false` 与任何安全变量同时出现也拒绝。
+证书/私钥各最多 1 MiB，API key 最多 16 KiB；key 文件只容许一个末尾 LF 或 CRLF，
+不把多行或空白无条件裁掉。文件必须为可读的非空普通文件（允许 Secret 挂载符号链接），
+FIFO、目录和超限文件被拒绝。没有 skip-verify 开关，也不在握手失败后退回明文。
+配置与连接异常只公开固定错误码，隐藏原始异常内容；这些保护不改变操作系统对文件
+权限的责任。请由部署的 Secret 管理机制提供证书与凭据，不把它们放入 Task message。
+
+例如在启动两个 CLI 前为各进程配置下列环境；示例路径是部署方预置的 Secret 文件：
+
+```sh
+export MINILOOP_TASK_TEMPORAL_TLS=true
+export MINILOOP_TASK_TEMPORAL_CA_CERT_FILE=/run/secrets/temporal-ca.pem
+export MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE=/run/secrets/temporal-client.pem
+export MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE=/run/secrets/temporal-client.key
+export MINILOOP_TASK_TEMPORAL_SERVER_NAME=temporal.example.internal
+```
+
+API-key 部署可改用 `MINILOOP_TASK_TEMPORAL_API_KEY_FILE`，仍需显式 `TLS=true`。
+是否需要 mTLS、API key 或服务端支持的组合，由 Temporal 部署策略决定；本模块不配置
+Cloud ACL 或服务端 Authorizer。共享工厂保留 namespace/Worker identity，采用
+`lazy=False`，首次连接有 10 秒总预算。连接成功只证明该连接完成，不等于所有 namespace
+RPC 已获授权；服务端拒绝授权仍由后续 RPC 返回。HTTP Bearer→owner 校验只保护本
+Task API，不能保护绕过 HTTP 直接调用 Temporal 的主体，服务端管理员也能读取 History。
+
+证书与 key 在启动时读取一次，不监听文件轮换。替换 Secret 文件后必须重新创建 Client；
+CLI 部署应滚动替换 API/Worker，并继续遵守已有 Activity 重试预算与排空协议。TLS 只覆盖
+客户端传输，不提供 History 的静态加密、永久留存或数据库 HA。本地测试所用 stdlib
+mTLS 隧道终止 TLS 后连到 loopback dev Temporal，属于测试设施，不是产品部署组件；
+原生 Temporal 服务 TLS、Cloud API-key ACL、跨主机 HA 与容量仍需目标环境验收。
+
 ## Worker 滚动停机与任务交接
 
 `worker.run_process` 是独立 CLI 的可信进程入口，在连接 Temporal 前安装 SIGTERM /
@@ -258,8 +308,8 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 ## 部署、版本与数据边界
 
 - Temporal RPC 只向可信 API/Worker 开放。HTTP Bearer 的 owner 检查不等于 Temporal
-  ACL；直接访问 Temporal 的管理员可看到 History 中的输入与执行数据。当前 CLI
-  未接入 TLS/mTLS 参数，跨主机生产部署的传输与访问控制仍待实现和验收。
+  ACL；直接访问 Temporal 的管理员可看到 History 中的输入与执行数据。CLI 已接入
+  验证 TLS/mTLS 与 API-key metadata，但服务端 ACL 和跨主机生产部署仍需单独验收。
 - API 副本共享 Temporal namespace、task queue、协议版本、token→owner 映射和
   cursor secret。不要把既有 token 改绑给其他 owner。输入摘要包括队列，滚动发布时
   随意换队列会使原 key 重试发生 409；当前没有按旧任务自动选择旧队列的路由器。
@@ -279,7 +329,40 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 
 ## 验证与交付证据
 
-本轮滚动停机运行 `7058dd0bb0f84158bb1d8a76155b59e4` 的 **4 组验收通过**。两个真实
+本轮 TLS 故障运行 `cfdf11707eb142be9c8af50e11cb5dae` 的 **3 组验收通过**，使用真实
+SDK、生产 API 入口与 Worker 连接/执行代码、两个 API、两个 Worker 和两项 V2 Task。
+测试设施是 stdlib mTLS 隧道，TLS 后端仅为 loopback 明文 dev Temporal；模型仍为
+确定性 fixture。API、Worker、observer 分别使用测试客户端身份，未部署生产代理。
+
+| 注入场景 | 实际观察 |
+| --- | --- |
+| 错 CA、错服务名、缺客户端证书、不受信任的客户端证书 | 四项真实 SDK 连接均返回固定 `temporal_connection_failed`；每个负例前后均有新的有效 RPC 成功控制，失败连接未进入隧道的已接受计数 |
+| SIGKILL mTLS 隧道并在同端口重建 | API 返回真实 503 `task_service_unavailable`；6.133 秒后原两个 API、两个 Worker 与 observer 重新连接，四个业务进程 PID 保持不变；门控点完整 native 状态、Task/Run/Activity 身份与请求摘要一致 |
+| 重连后执行至完成 | 两项 Task 全部 succeeded，各 10 个真实工具步骤、1 次 CAN；4 个 Run History，0 WorkflowTaskFailed；模型 Activity 总尝试记录 24，最多使用 attempt 2，仍受原最多 3 次预算约束 |
+
+离线 attempt 后检进一步确认：22 个原生模型 Activity 共执行 24 次，其中两个门控
+Activity 均从 attempt 1 重试到 2，由两个原 Worker 互换承接；每个 Activity 的
+Workflow/Run/Activity ID、step 与 request SHA 保持一致。这是连接恢复和真实 Activity
+重试共同完成的恢复，不意味着从头到尾保持同一次 attempt，也不保证外部模型只被调用一次。
+
+四个 Run 的原生 History 和本次 23 份进程日志未匹配到测试凭据内容。这是针对所用
+凭据与 PEM 片段的检查，不是任意未来日志的无泄漏证明；API key 只使用合成值验证
+SDK metadata 配置，**没有验证真实 Cloud API-key ACL**。
+运行耗时 **13.8 秒**，owned 进程树采样峰值 **822.0 MiB**，最低可用内存 **43%**，
+26 个资源样本，23 个所属进程全部退出（包含故障注入及清理强停，不代表全部正常排空）。
+脱敏 [TLS 证据](docs/task-tls-evidence.json) 与 [交付记录](DELIVERY.md) 保存最终范围；
+原始收据位于忽略的 `var/task-tls-prototype/<run_id>/receipt.json`。
+
+```sh
+.venv/bin/python scripts/task_tls_fault_smoke.py \
+  --temporal-binary /absolute/path/to/temporal \
+  --binary-sha256 EXPECTED_EXTRACTED_BINARY_SHA256
+```
+
+以上验证 SDK→测试隧道的真实 TLS/mTLS 与连接中断恢复，不是原生 Temporal 服务 TLS、
+多机或多区域 HA、生产证书轮换、数据库 HA、真实 provider 或容量验收。
+
+`401e4d5` 的滚动停机历史基线运行 `7058dd0bb0f84158bb1d8a76155b59e4` 的 **4 组验收通过**。两个真实
 HTTP API 接受 3 个 owner 的 12 项 V2 任务，三个生产 Worker 进程各有一个 Activity
 槽。初始有 3 个 model Activity 执行、9 个原生 pending Activity 为 SCHEDULED；
 替换 Worker 接续这 9 项排队任务，最终 **12 项全部 succeeded，各有 10 个真实工具
@@ -366,7 +449,7 @@ RSS、180 秒和最低可用内存比例的观察预算，超限标为 resource-
 双 API 幂等竞争、独立生产者退出、双 Worker 并行、全部 API 替换、同数据库 Temporal
 重启、Worker 冷重放、跨 owner 拒绝、事件续页、取消隔离和真实步骤上限终态。
 
-本轮独立 Agent Server [架构图](../docs/audits/task-server-rollout-2026-10-16.png) 与
-[精确生图提示词](../docs/audits/task-server-rollout-2026-10-16.prompt.txt) 标注 Worker
-进程停机边界、宽限交接与硬退出；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
+本轮独立 Agent Server [架构图](../docs/audits/task-server-tls-2026-10-16.png) 与
+[精确生图提示词](../docs/audits/task-server-tls-2026-10-16.prompt.txt) 标注共享连接配置、
+验证 TLS/mTLS 与两个认证边界；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
 具体运行证据与提交范围由 [DELIVERY.md](DELIVERY.md) 汇总。

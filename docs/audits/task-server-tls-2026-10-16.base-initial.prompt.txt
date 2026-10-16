@@ -1,0 +1,7 @@
+Use case: infographic-diagram. Edit the supplied complete mini-loop layered architecture base for the shared Temporal TLS connection iteration. Preserve the entire legacy L1-L5 diagram, right boundary column, standard Agent Server lane, old Temporal prototype lane, and all Task V2 CAN and Worker lifecycle semantics. Only modify the bottom independent Task HTTP lane, extending the canvas downward if necessary for readable text. This canonical base has no orange iteration highlights.
+
+Keep main flow client -> stateless Task API -> independent Temporal History -> independent Worker pool -> model Activity / ChatOpenAI. Add a clearly visible shared connection band spanning Task API and Worker to Temporal, labeled "API / Worker 共享连接配置 · TLS / mTLS · 可选 API key". Connect it explicitly to the Temporal transport only, not the user HTTP request or model-provider network.
+Within this band use: "验证 CA / 服务名 · 客户端证书成对 · 凭据来自服务端环境或文件", "禁止明文携带凭据 / 禁止静默降级", "CLI 显式加载；证书轮转需重建 Client".
+Small boundary note: "HTTP Bearer ≠ Temporal 原生 ACL；API key 授权与生产 HA 待验收".
+Keep v1+v2 Worker, complete checkpoint CAN every 8 parent model boundaries, 24h / 512 parent model boundaries with checkpoint size limits, no cross-task memory, and existing CLI stop-poll/drain/grace2s/hard15s lifecycle strip in normal cyan. Preserve truthful local-vs-production labels.
+Do not add a TLS proxy as a production component: the loopback test tunnel belongs only in later acceptance illustrations. No new database/outbox/global quota layer. Preserve source visual style and Chinese legibility.

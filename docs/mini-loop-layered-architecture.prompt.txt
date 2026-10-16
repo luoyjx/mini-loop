@@ -1,11 +1,11 @@
-Use case: infographic-diagram. Update the supplied complete mini-loop layered base architecture for the Worker rolling-shutdown iteration. Preserve all legacy L1-L5, right boundary column, standard Agent Server lane, old Temporal prototype lane, and the Task V2 CAN/checkpoint design. Edit ONLY the bottom independent Task HTTP lane and extend canvas downward a little if more room is needed. This is a canonical base image, without orange iteration badges.
+Make a minimal targeted edit to the supplied ORIGINAL complete mini-loop architecture diagram. Keep the original canvas, every existing lane, every arrow, and the entire bottom Worker lifecycle strip exactly intact. Do NOT add a new row or route any lifecycle arrow into configuration.
 
-The main client -> stateless Task API -> Temporal History -> Worker -> model Activity / ChatOpenAI flow stays.
-Change Worker title to "独立 Worker 池 · v1 + v2" and keep "真实 Deep Agents · 子代理 · 确定性摘要".
-Add a clear small lifecycle strip directly below this Worker lane, with three steps:
-"SIGTERM / SIGINT" -> "停止新轮询 · 排空已领取任务" -> "宽限到期交接 / 最终期限退出".
-Below it add "默认：Activity 宽限 2s · 整进程期限 15s；第二次信号可强退".
-Add compact note "未完成 Activity 由 Temporal 重试；消耗原有尝试预算".
-Keep existing orange-free cyan CAN return arrow from Worker to Temporal with label "Continue-As-New · 完整 Checkpoint"; do not confuse shutdown with Continue-As-New or a business Task cancel.
-Keep current constraints: "每 8 次父模型边界分段", "全链 24h；最多 512 次父模型边界；检查点有大小上限", "无跨任务 Memory；生产 HA / 高并发容量待验收".
-Preserve all existing styling, precise Chinese labels, font legibility, and architecture boundaries. No new DB/Redis/outbox/global quota layer. No claim that rolling workers is database HA, no production throughput claim. The lifecycle is a CLI process responsibility; the library does not own host signals.
+Only add the following compact text changes in the lowest independent Task HTTP lane:
+1. In the stateless Task API box, append "TLS / mTLS 连接".
+2. In the Worker pool box, append "TLS / mTLS 连接".
+3. Under the Temporal service box, append a small cyan lock annotation "共享连接配置 · 可选 API key".
+4. Replace the bottom constraint sentence with "无跨任务 Memory；生产 HA / 容量 / API key ACL 待验收".
+All detailed CA/SNI/certificate/file rules belong in the separate focused diagram, so do not try to fit them here.
+Keep the existing CAN LEFT return arrow labeled "Continue-As-New · 完整 Checkpoint".
+Keep the original lifecycle strip with SIGTERM/SIGINT -> stop polling/drain -> grace/harddeadline, and defaults2s/15s. Do not remove or obscure any lifecycle text.
+No orange badges in this canonical base. Never insert a test proxy into production flow. No other modifications.

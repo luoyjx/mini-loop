@@ -1,0 +1,4 @@
+Perform only two small text corrections on this infographic; preserve all other pixels/layout/content.
+1. In the lower-right L5 model provider box, replace "通过环境变量 / 密钥文件" with "通过 Worker 环境变量". The model-provider code reads environment variables; the new secret-file support belongs only to Temporal connection settings.
+2. Add the exact short boundary note "HTTP Bearer ≠ Temporal 原生 ACL" in the blank space below the L1 client/API boundary, or as the last line of the orange shared Temporal settings panel. Keep it readable without overlapping arrows.
+Do not alter the correct /v1/tasks path, no-state API network icon, blue lifecycle strip, orange TLS panel, local test-only inset, numbers, or pending production acceptance labels.

@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Independent Python / Go / standard Agent Server paths; Task V2 retains bounded native checkpoint CAN; Worker CLI adds signal-driven SDK shutdown and hard exit; production HA/capacity unverified</p>
+      <p class="subtitle">Independent Python / Go / standard Agent Server paths; Task API and Worker share explicit verified TLS/mTLS client settings; bounded CAN and shutdown retained; production HA/capacity unverified</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 4650" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; Task V2 retains bounded native checkpoint CAN; Worker CLI adds signal-driven SDK shutdown and hard exit; production HA/capacity unverified</desc>
+        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; Task API and Worker share explicit verified TLS/mTLS client settings; bounded CAN and shutdown retained; production HA/capacity unverified</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4672,12 +4672,14 @@
         <path data-edge-from="tpMemoryActivity" data-edge-to="tpApplication" data-edge-label="owner / effect ledger" data-edge-key="74" data-edge-id="tpMemoryStore" data-composition-points="1070,3488;890,3488" d="M 1070 3488 L 890 3488" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="tpClient" data-edge-to="tpApplication" data-edge-key="75" data-edge-id="tpOwnerBind" data-composition-points="370,3245;460,3245;460,3488;550,3488" d="M 370 3245 L 452 3245 Q 460 3245 460 3253 L 460 3480 Q 460 3488 468 3488 L 550 3488" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="tsClient" data-edge-to="tsApi" data-edge-key="76" data-edge-id="tsRequest" data-composition-points="370,4088;550,4088" d="M 370 4088 L 550 4088" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / inspect" data-edge-key="77" data-edge-id="tsRemoteStart" data-composition-points="910,4088;1070,4088" d="M 910 4088 L 1070 4088" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="task queue / replay" data-edge-key="78" data-edge-id="tsDispatch" data-composition-points="1470,4095;1630,4095" d="M 1470 4095 L 1630 4095" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / TLS option" data-edge-key="77" data-edge-id="tsRemoteStart" data-composition-points="910,4088;1070,4088" d="M 910 4088 L 1070 4088" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="SDK polls / TLS option" data-edge-key="78" data-edge-id="tsDispatch" data-composition-points="1470,4095;1630,4095" d="M 1470 4095 L 1630 4095" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="tsWorker" data-edge-to="tsModelActivity" data-edge-key="79" data-edge-id="tsModelRequest" data-composition-points="1830,4126;1830,4300" d="M 1830 4126 L 1830 4300" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="tsModelActivity" data-edge-to="tsModel" data-edge-key="80" data-edge-id="tsModelIO" data-composition-points="1630,4338;1470,4338" d="M 1630 4338 L 1470 4338" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="tsWorker" data-edge-to="tsHistory" data-edge-label="CAN + checkpoint" data-edge-key="81" data-edge-id="tsContinue" data-composition-points="1630,4081;1470,4081" d="M 1630 4081 L 1470 4081" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="tsProcess" data-edge-to="tsWorker" data-edge-label="stop polls / drain" data-edge-key="82" data-edge-id="tsShutdown" data-composition-points="1830,3826;1830,4050" d="M 1830 3826 L 1830 4050" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="tsConnection" data-edge-to="tsApi" data-edge-label="client config" data-edge-key="83" data-edge-id="tsApiConnection" data-composition-points="750,3826;750,3938;730,3938;730,4050" d="M 750 3826 L 750 3930 Q 750 3938 742 3938 L 738 3938 Q 730 3938 730 3946 L 730 4050" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="tsConnection" data-edge-to="tsProcess" data-edge-label="client config" data-edge-key="84" data-edge-id="tsWorkerConnection" data-composition-points="950,3788;1630,3788" d="M 950 3788 L 1630 3788" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5462,6 +5464,18 @@
         <text data-detail="fine" x="1830" y="3818" class="t-backend" font-size="7" text-anchor="middle">CLI only / grace and hard deadline</text>
         </g>
 
+        <g id="node-tsConnection" data-node-id="tsConnection" data-node-label="Shared Temporal client settings" tabindex="0" role="button" aria-label="Focus Shared Temporal client settings, CLI environment / explicit library object, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CLI environment / explicit library object" data-node-tag="TLS / CA / mTLS pair / server name / API key" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Shared Temporal client settings · CLI environment / explicit library object · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · TLS / CA / mTLS pair / server name / API key</title>
+          <rect x="550" y="3750" width="400" height="76" rx="6" class="c-mask"/>
+          <rect x="550" y="3750" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(556 3756) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="750" y="3786" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Shared Temporal client settings</text>
+        <text data-detail="context" x="750" y="3802" class="t-muted" font-size="9" text-anchor="middle">CLI environment / explicit library object</text>
+        <text data-detail="fine" x="750" y="3818" class="t-backend" font-size="7" text-anchor="middle">TLS / CA / mTLS pair / server name / API key</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5660,13 +5674,13 @@
         </g>
 
 
-        <g data-detail="context" data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / inspect" data-edge-key="77" data-edge-id="tsRemoteStart">
-          <rect x="949" y="4068" width="82" height="14" rx="3" class="c-mask"/>
-          <text x="990" y="4078" class="t-muted" font-size="8" text-anchor="middle">Start / inspect</text>
+        <g data-detail="context" data-edge-from="tsApi" data-edge-to="tsHistory" data-edge-label="Start / TLS option" data-edge-key="77" data-edge-id="tsRemoteStart">
+          <rect x="941.8" y="4130" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
+          <text x="990" y="4140" class="t-muted" font-size="8" text-anchor="middle">Start / TLS option</text>
         </g>
-        <g data-detail="context" data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="task queue / replay" data-edge-key="78" data-edge-id="tsDispatch">
-          <rect x="1499.4" y="4101" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="1550" y="4111" class="t-muted" font-size="8" text-anchor="middle">task queue / replay</text>
+        <g data-detail="context" data-edge-from="tsHistory" data-edge-to="tsWorker" data-edge-label="SDK polls / TLS option" data-edge-key="78" data-edge-id="tsDispatch">
+          <rect x="1492.2" y="4101" width="115.6" height="14" rx="3" class="c-mask"/>
+          <text x="1550" y="4111" class="t-muted" font-size="8" text-anchor="middle">SDK polls / TLS option</text>
         </g>
 
 
@@ -5677,6 +5691,14 @@
         <g data-detail="context" data-edge-from="tsProcess" data-edge-to="tsWorker" data-edge-label="stop polls / drain" data-edge-key="82" data-edge-id="tsShutdown">
           <rect x="1861.8" y="3928" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
           <text x="1910" y="3938" class="t-backend" font-size="8" text-anchor="middle">stop polls / drain</text>
+        </g>
+        <g data-detail="context" data-edge-from="tsConnection" data-edge-to="tsApi" data-edge-label="client config" data-edge-key="83" data-edge-id="tsApiConnection">
+          <rect x="798.8" y="3928" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="835" y="3938" class="t-security" font-size="8" text-anchor="middle">client config</text>
+        </g>
+        <g data-detail="context" data-edge-from="tsConnection" data-edge-to="tsProcess" data-edge-label="client config" data-edge-key="84" data-edge-id="tsWorkerConnection">
+          <rect x="1253.8" y="3768" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="1290" y="3778" class="t-security" font-size="8" text-anchor="middle">client config</text>
         </g>
 
         <!-- Legend -->
@@ -6128,7 +6150,7 @@
           <h3>Independent Deep Agents server</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 2026-10-16: 98de8d2 plus Worker CLI rolling shutdown and bounded concurrency validation. V1/V2 Workflow code, standard Agent Server, Python and Go paths keep their existing execution semantics.</li>
+          <li>&bull; Review baseline 2026-10-16: 401e4d5 plus shared verified TLS/mTLS client configuration for Task API and Worker. V1/V2 Workflow code, standard Agent Server, Python and Go paths keep their existing execution semantics.</li>
           <li>&bull; AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.</li>
           <li>&bull; Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.</li>
           <li>&bull; Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.</li>
@@ -6165,6 +6187,8 @@
           <li>&bull; Native summarization triggers at 40 messages OR 16000 tokens and retains 12 messages. Workflow-owned clocks and IDs stabilize archived virtual files and summary state. The real patch-tool slot retains repair behavior and stable ToolMessage IDs in parent and GP subgraphs. No default owner Memory or arbitrary graph migration is installed.</li>
           <li>&bull; DeepAgentsPlugin schedules model I/O Activities; a fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector. Status/result/cancel use the verified Run chain; signed cursors bind namespace, owner, TaskID and one Run. Optional run_id and verified first/previous/next navigation never merge event IDs. Missing adjacent retained Runs set an explicit incomplete flag.</li>
           <li>&bull; Worker CLI process lifecycle owns SIGTERM/SIGINT and explicit SDK shutdown: stop new polls, drain already claimed or buffered work, then cancel unfinished Activities after the grace interval. Shutdown retries consume the existing Activity attempt budget and do not cancel the Task. Defaults are 2 seconds grace and a 15-second hard deadline; a second signal or elapsed deadline forces CLI exit 70. Library serve neither owns signals nor forces process exit. This is compatible-process replacement, not automatic Worker Versioning.</li>
+          <li>&bull; API and Worker share immutable TemporalConnectionSettings and an eager Client factory with a 10-second startup budget. Only production CLIs load MINILOOP_TASK_TEMPORAL_*; library callers pass settings explicitly, with plaintext defaults that ignore ambient environment. Verified TLS supports CA, paired mTLS certificate/key, server-name override and API-key metadata. Security fields require TLS; invalid combinations and failed connections refuse startup without downgrade. No verification bypass. Files load once, so rotation rebuilds Clients and replaces processes.</li>
+          <li>&bull; Shared settings are code within API/Worker processes, not a network proxy. Task HTTP Bearer owner authorization and Temporal native namespace ACL are separate. Client settings do not configure server authorization or encrypt History at rest. The local stdlib mTLS tunnel is test-only; native Temporal TLS, Cloud API-key ACL and cross-host production HA remain unverified.</li>
           <li>&bull; This Temporal service remains independent from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. Dedicated CAN fault evidence is recorded separately; source/config existence is not a passing run. Production HA, live-provider inference, retention operations, arbitrary code-upgrade compatibility and capacity remain unverified. Process-local limits are not global quotas. Raw Temporal access is trusted; Bearer checks are not service ACLs.</li>
         </ul>
       </div>

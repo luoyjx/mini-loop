@@ -274,9 +274,9 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-rollout-2026-10-16.png)
-shows the independent Agent Server layers, with this iteration's Worker process
-shutdown and bounded handoff changes in orange.
+The [focused Task HTTP server diagram](docs/audits/task-server-tls-2026-10-16.png)
+shows the independent Agent Server layers, with this iteration's shared
+Temporal client TLS/mTLS settings and authentication boundaries in orange.
 The Go runtime assembly includes an explicitly marked external CPython parser;
 that process is a selected dependency and does not represent a native Go grammar.
 
@@ -1182,15 +1182,17 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `98de8d2` plus the
-Task Worker rolling-shutdown and bounded-concurrency iteration. Its independent Bearer API
+Current architecture review baseline: **2026-10-16**, `401e4d5` plus the
+shared Temporal TLS/mTLS client-connection iteration. Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
 owns task identity, status and events. New TaskWorkflowV2 executions carry a
 bounded native saver journal across Continue-As-New; the Worker also retains
 the unchanged v1 Workflow. Deployment-owned model Activities run real Deep
 Agents, including deterministic native summarization and general-purpose
-subagents. The CLI process now owns signal-triggered SDK shutdown and a hard
-exit deadline; library callers retain process ownership. No owner Memory is
+subagents. API and Worker now share explicit TLS/mTLS client settings; only
+CLI entry points load environment credentials, and library defaults remain
+plaintext. Worker signal shutdown and the hard exit deadline stay unchanged;
+library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
 earlier offline fault prototype and Python/Go runtimes keep their own paths.
 Temporal Python SDK **1.34.0**, Deep Agents **0.7.25**, Agent Server **0.16.0**, and CLI
@@ -1389,14 +1391,17 @@ flowchart LR
         TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
         TSAPI["Independent Task HTTP API<br/>submit · status · result · cancel · retained events<br/>202 only after remote Start confirmation"]
         TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
+        TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
         TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>grace + hard deadline · library serve stays caller-owned"]
         TSWorkflow["TaskWorkflowV2 + unchanged v1 Worker<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
         TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Temporal retry / heartbeat"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
         TSClient -->|authenticated request| TSAPI
-        TSAPI -->|Start / inspect / cancel / History pages| TSHistory
+        TSConnection -. startup client configuration .-> TSAPI
+        TSConnection -. startup client configuration .-> TSProcess
+        TSAPI -->|Start / inspect via optional verified TLS| TSHistory
         TSProcess -->|stop polling / drain claimed work| TSWorkflow
-        TSHistory -->|task queue / replay| TSWorkflow
+        TSHistory -->|SDK polling / replay via optional verified TLS| TSWorkflow
         TSWorkflow -->|bounded native checkpoint / Continue-As-New| TSHistory
         TSWorkflow --> TSActivity --> TSModel
     end
@@ -1572,6 +1577,21 @@ the owned process with code 70. An unresponsive Activity then recovers through
 its native timeout and retry policy. Library `serve` does not install signal
 handlers or force process exit. These are process-lifecycle controls, not
 Worker Versioning, cluster-wide quotas or a capacity guarantee.
+
+API and Worker share `TemporalConnectionSettings` and one eager SDK connection
+factory. Only their production CLIs load `MINILOOP_TASK_TEMPORAL_*`; library
+callers pass settings explicitly, with plaintext as the explicit default even
+when security variables exist in the host environment. TLS can use a CA, paired
+client certificate/private key, verified server-name override and API-key
+metadata. Security fields require TLS; invalid combinations, unreadable bounded
+files and connection failures stop startup without plaintext fallback. The
+server-name override controls SNI, HTTP/2 authority and certificate verification;
+there is no skip-verification switch. Credentials are loaded once, so rotation
+requires rebuilding the Client and replacing API/Worker processes. These settings
+protect client transport, not History payloads at rest or namespace ACL policy.
+The local mTLS fault tunnel is test infrastructure, not a deployed component;
+native Temporal server TLS, Cloud API-key authorization and cross-host HA remain
+separate acceptance.
 
 This path uses no new business SQL ledger, admission database or outbox. The
 separate Temporal service owns execution and History persistence; production

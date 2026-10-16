@@ -7,10 +7,10 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 原 Python/Go runtime 保持各自入口与语义。
 
 本文展开标准 LangGraph 入口；新增的独立 Temporal Task HTTP 入口见
-[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-rollout-2026-10-16.png)。
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-tls-2026-10-16.png)。
 两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
 
-Temporal 入口本轮以 `98de8d2` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
+Temporal 入口本轮以 `401e4d5` 为审查基线：新任务默认使用 `TaskWorkflowV2`，在安全的
 父 model 边界分段 Continue-As-New，已有 v1 任务继续使用不变的 v1 代码。迁移载体是
 保存在 Temporal History 中的完整 public saver 写日志，包括 DeltaChannel 祖先、
 待执行路由、摘要私有状态及虚拟文件；不在下表 L5 增加第二套 SQL checkpointer。
@@ -18,11 +18,18 @@ API 的任务身份跨 Run 稳定，状态/结果/取消跟随经校验的执行
 独立序号并支持导航。单任务仍受原始 24 小时期限、512 个父 model 边界及 checkpoint
 大小预算约束。详细协议、旧版本保留与尚未验收项见 [Task Server](TASK_SERVER.md)。
 
-本轮新增的是 Temporal Worker CLI 的进程生命周期边界：SIGTERM/SIGINT 调用 SDK
+`401e4d5` 已交付 Temporal Worker CLI 的进程生命周期边界：SIGTERM/SIGINT 调用 SDK
 shutdown，宽限内排空已领取工作，宽限后交回可重试 Activity；硬期限和第二次信号
 保证 CLI 有界退出。library `serve` 保持宿主进程所有权。Worker 停机不发送 Task
 cancel；交接仍消耗原 Activity 尝试预算。此边界不改变下述标准 Agent Server 的
 180 秒 graceful/210 秒容器配置，也不证明多机 HA 或旧 graph 自动升级。
+
+本轮增加 API/Worker 共用的 Temporal Client 连接配置层。CLI 从明确的环境变量
+加载 TLS、CA、mTLS 证书对、服务名与 API key；library 的 Temporal 连接默认明文并忽略对应环境变量，
+可由可信调用方显式传入设置。连接层是两个进程内部共用的代码，并非新的代理服务。
+错误配置/握手失败拒绝启动且不降级；证书校验不能关闭，轮换需要重新创建 Client。
+Task HTTP 的 Bearer→owner 校验与 Temporal 自身的认证/namespace ACL 独立。
+本地 mTLS 隧道只用于故障验证，不替代原生 Temporal TLS、Cloud ACL 或生产 HA 验收。
 
 ![当前 Agent Server 分层架构](docs/agent-server-layered-architecture.png)
 

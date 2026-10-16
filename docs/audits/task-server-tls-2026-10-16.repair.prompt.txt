@@ -1,0 +1,10 @@
+Correct only the following inaccuracies in the supplied focused Agent Server infographic. Keep its five-layer layout and legibility.
+1. Request example must read exactly "POST /v1/tasks" (it currently omits /v1).
+2. Label client-to-API arrow "HTTP Bearer 身份验证". Do NOT claim built-in HTTPS ingress; this iteration encrypts native Temporal RPC, not the HTTP listener.
+3. Stateless Task API must use a network/API icon, NOT a database cylinder. It owns no durable state.
+4. Rename "Temporal Cluster" to "独立 Temporal 服务"; production HA is not verified.
+5. Recolor the entire existing Worker lifecycle strip BLUE/CYAN rather than orange. This feature is historical. Likewise Worker A/B labels should just say "Worker A" / "Worker B", remove "old/new process". Both existing processes reconnect in this iteration.
+6. Remove the confusing dashed orange line running beside the client HTTP arrow into the configuration panel. Configuration comes from server environment/files, never from the client's Bearer. Retain ONLY the two orange CONFIG arrows from shared settings to API and Worker.
+7. Inside local acceptance inset, test tunnel icon should be a network bridge, not a persistence database. Keep its flow "真实 SDK ←mTLS→ 测试隧道 → loopback Temporal" and keep it confined to inset.
+8. Ensure orange legend text at top "橙色 = 本轮修改 / 新增验收". Orange applies to TLS configuration and local acceptance, not prior CAN or lifecycle.
+Preserve the accurate acceptance numbers, identity/retry limits, complete-checkpoint chain, native Temporal TLS/Cloud ACL/HA capacity pending boundary, and blue downward Worker to model I/O arrow.

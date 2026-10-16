@@ -1,0 +1,1310 @@
+{
+  "run_id": "cfdf11707eb142be9c8af50e11cb5dae",
+  "status": "passed",
+  "started_at": "2026-10-16T07:27:52.761901+00:00",
+  "finished_at": "2026-10-16T07:28:06.562459+00:00",
+  "seconds": 13.8,
+  "passed": [
+    "real SDK refuses wrong CA, wrong DNS name, absent client identity and untrusted client identity, each between successful fresh verified RPC controls",
+    "SIGKILL and same-port restart of the mTLS proxy yields real HTTP 503 then reconnects both original APIs, both original Workers and observer; complete gated native state and Task identity remain equal",
+    "both real V2 Tasks complete ten native tools and one native CAN each after reconnect, within three Activity attempts; four native Run Histories contain none of the test credentials"
+  ],
+  "scope": "two real V2 Tasks, two production APIs and two production Workers reconnect through test-only mTLS termination",
+  "excluded_claims": [
+    "native Temporal server TLS",
+    "Temporal Cloud API-key ACL",
+    "production ingress",
+    "certificate rotation",
+    "production HA or throughput",
+    "external-effect exactly-once"
+  ],
+  "production_ha_acceptance": false,
+  "production_capacity_acceptance": false,
+  "native_temporal_tls_acceptance": false,
+  "cloud_api_key_acl_acceptance": false,
+  "rss_budget_mib": 2048,
+  "minimum_memory_free_percent": 15,
+  "peak_owned_tree_rss_mib": 822.0,
+  "minimum_observed_memory_free_percent": 43,
+  "resource_samples": 26,
+  "cleanup_confirmed": true,
+  "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+  "supplied_checksum_verified": true,
+  "negative_controls": [
+    {
+      "case": "wrong_server_ca",
+      "result": "rejected",
+      "error_code": "temporal_connection_failed",
+      "healthy_rpc_before": true,
+      "healthy_rpc_after": true,
+      "accepted_connections_before": 1,
+      "accepted_connections_after_rejection": 1,
+      "accepted_connections_after_healthy": 2,
+      "seconds": 0.005
+    },
+    {
+      "case": "wrong_server_name",
+      "result": "rejected",
+      "error_code": "temporal_connection_failed",
+      "healthy_rpc_before": true,
+      "healthy_rpc_after": true,
+      "accepted_connections_before": 3,
+      "accepted_connections_after_rejection": 3,
+      "accepted_connections_after_healthy": 4,
+      "seconds": 0.007
+    },
+    {
+      "case": "missing_client_identity",
+      "result": "rejected",
+      "error_code": "temporal_connection_failed",
+      "healthy_rpc_before": true,
+      "healthy_rpc_after": true,
+      "accepted_connections_before": 5,
+      "accepted_connections_after_rejection": 5,
+      "accepted_connections_after_healthy": 6,
+      "seconds": 0.006
+    },
+    {
+      "case": "untrusted_client_identity",
+      "result": "rejected",
+      "error_code": "temporal_connection_failed",
+      "healthy_rpc_before": true,
+      "healthy_rpc_after": true,
+      "accepted_connections_before": 7,
+      "accepted_connections_after_rejection": 7,
+      "accepted_connections_after_healthy": 8,
+      "seconds": 0.004
+    }
+  ],
+  "roles": {
+    "api-1": "fccdaad1421461f672fbcba2b23360481baa0d4d470a2843ec395df9c8d4d685",
+    "api-2": "5b5bf4c9f284c262921afb3f6f0146ca44fc80d0ceee05016e2f84e7ba77bb76",
+    "worker-1": "9e9fbc63fb789e8434534a3f045877876287b7d511b57b762b9dbdee468219a9",
+    "worker-2": "16542a650ade4e77b57b60db32baf3c989d27e588be1d31880d6050d2af7bd43",
+    "observer": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd"
+  },
+  "api_replica_count": 2,
+  "worker_count": 2,
+  "synthetic_api_key_metadata_only": true,
+  "tls_backend": "loopback plaintext start-dev",
+  "proxy_restart": {
+    "signal": "SIGKILL",
+    "before_pid": 84772,
+    "before_returncode": -9,
+    "replacement_pid": 84871,
+    "same_listen_port": true,
+    "outage_http_status": 503,
+    "outage_error_code": {
+      "code": "task_service_unavailable"
+    },
+    "api_worker_pids_preserved": [
+      84774,
+      84776,
+      84773,
+      84775
+    ],
+    "reconnect_seconds": 6.133,
+    "before_activities": [
+      {
+        "activity_id": "4",
+        "attempt": 1,
+        "pid": 84775,
+        "request_sha256": "769820f48113970d0edaf703a5292bec432f85426dddac0271ccd903fd2693ab",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "started_monotonic_ns": 292542570877500,
+        "step": 3,
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615"
+      },
+      {
+        "activity_id": "4",
+        "attempt": 1,
+        "pid": 84773,
+        "request_sha256": "e6b23404675ee703bd1fcfe01bc5d2b4472b0a48e0776bbe0ffa08ef59ac230a",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "started_monotonic_ns": 292542568920458,
+        "step": 3,
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e"
+      }
+    ],
+    "after_activities": [
+      {
+        "activity_id": "4",
+        "attempt": 1,
+        "pid": 84775,
+        "request_sha256": "769820f48113970d0edaf703a5292bec432f85426dddac0271ccd903fd2693ab",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "started_monotonic_ns": 292542570877500,
+        "step": 3,
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615"
+      },
+      {
+        "activity_id": "4",
+        "attempt": 1,
+        "pid": 84773,
+        "request_sha256": "e6b23404675ee703bd1fcfe01bc5d2b4472b0a48e0776bbe0ffa08ef59ac230a",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "started_monotonic_ns": 292542568920458,
+        "step": 3,
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e"
+      }
+    ],
+    "snapshots": [
+      {
+        "task_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "file": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615.snapshots.json",
+        "file_sha256": "ce8bfe95dcf4d4a387272a2bf895ce8063064091ad7ddd89abd712b142e86422",
+        "snapshot_sha256": "17176a956a888c701376a8b9a9af9cc9b516a1c322fd3daeb1541b791dc57445",
+        "full_native_state_equal": true
+      },
+      {
+        "task_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "file": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e.snapshots.json",
+        "file_sha256": "ec138ebad289a146c24372f8e9e5be237ecb961365c0c32acf69d832bc4155ab",
+        "snapshot_sha256": "18451bb339d713230632eae2a447ba837cac736fdb28c6d486ea425affad2294",
+        "full_native_state_equal": true
+      }
+    ]
+  },
+  "completed_tasks": [
+    {
+      "task_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+      "owner": "alice",
+      "first_execution_run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+      "final_run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+      "status": "succeeded",
+      "can_count": 1,
+      "native_tool_steps": 10,
+      "snapshot_sha256": "90a3727ae2c22678f5a86086f763169e78d808aecbf312a7fe213686c7f469e5"
+    },
+    {
+      "task_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+      "owner": "alice",
+      "first_execution_run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+      "final_run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+      "status": "succeeded",
+      "can_count": 1,
+      "native_tool_steps": 10,
+      "snapshot_sha256": "43923f268c6e120c6b599fd6835c35f31c62dfffd6d19442688c58943bc1c948"
+    }
+  ],
+  "native_run_chains": [
+    {
+      "task_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+      "first_execution_run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+      "final_run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+      "workflow_task_failures": 0,
+      "continuation_payload_sha256": "290053b6c7aae17e57440eb798396e0131c1aab45a0069d0d3963c89edb702b1"
+    },
+    {
+      "task_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+      "first_execution_run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+      "final_run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+      "workflow_task_failures": 0,
+      "continuation_payload_sha256": "57c8a362a69ce99d908153046ecb520ac60ea4fe98d09ddf314dd1ba191aadbd"
+    }
+  ],
+  "history_secret_scan": [
+    {
+      "task_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+      "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+      "sha256": "51c6f22fab83255c698602b87e9ee2dea183d386f1107dd4ecbf9cddc7948d70",
+      "event_count": 55,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+      "run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+      "sha256": "f02f4da8c045149992719c368eac432ae507bc2d87e809a6c85cab18fb967a8e",
+      "event_count": 25,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+      "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+      "sha256": "cd0e4c262ca07beac3778ae730cd9d05c54e245c561ead04afc40d0b839b6131",
+      "event_count": 55,
+      "credential_matches": 0
+    },
+    {
+      "task_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+      "run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+      "sha256": "6475019cbb3a5533ba271e616dd9a8f180fa216b741598ed1276d1256a320856",
+      "event_count": 25,
+      "credential_matches": 0
+    }
+  ],
+  "maximum_activity_attempt": 2,
+  "model_activity_attempt_count": 24,
+  "tunnel_audits": [
+    {
+      "file": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/tls-audit-1.json",
+      "sha256": "0da993a366b6b69bb9c7ed293c0d6e76df5c6deba1b0b6aabdbd7e16d208c09f",
+      "connections": [
+        {
+          "accepted_monotonic_ns": 292540564445625,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 1,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540575621416,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 2,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540581108250,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 3,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540585740208,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 4,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540593959791,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 5,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540602666750,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 6,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540608840666,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 7,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540612721041,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 8,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540617812250,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 9,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540916677375,
+          "alpn": "h2",
+          "client_certificate_sha256": "fccdaad1421461f672fbcba2b23360481baa0d4d470a2843ec395df9c8d4d685",
+          "connection_id": 10,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292540919900250,
+          "alpn": "h2",
+          "client_certificate_sha256": "5b5bf4c9f284c262921afb3f6f0146ca44fc80d0ceee05016e2f84e7ba77bb76",
+          "connection_id": 11,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292541900487666,
+          "alpn": "h2",
+          "client_certificate_sha256": "16542a650ade4e77b57b60db32baf3c989d27e588be1d31880d6050d2af7bd43",
+          "connection_id": 12,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292541901933583,
+          "alpn": "h2",
+          "client_certificate_sha256": "9e9fbc63fb789e8434534a3f045877876287b7d511b57b762b9dbdee468219a9",
+          "connection_id": 13,
+          "tls_version": "TLSv1.3"
+        }
+      ]
+    },
+    {
+      "file": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/tls-audit-2.json",
+      "sha256": "b1f032803246dfc63b5ba91770f0d9a6745c70132173fadce6c762429905b9e1",
+      "connections": [
+        {
+          "accepted_monotonic_ns": 292547900465083,
+          "alpn": "h2",
+          "client_certificate_sha256": "fccdaad1421461f672fbcba2b23360481baa0d4d470a2843ec395df9c8d4d685",
+          "connection_id": 1,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292547913510541,
+          "alpn": "h2",
+          "client_certificate_sha256": "5b5bf4c9f284c262921afb3f6f0146ca44fc80d0ceee05016e2f84e7ba77bb76",
+          "connection_id": 2,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292547923856416,
+          "alpn": "h2",
+          "client_certificate_sha256": "7aed9204c1f4a2deeda133ff36d7b97301248fd9c5f23284c9e871a5cfa344cd",
+          "connection_id": 3,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292548350297916,
+          "alpn": "h2",
+          "client_certificate_sha256": "16542a650ade4e77b57b60db32baf3c989d27e588be1d31880d6050d2af7bd43",
+          "connection_id": 4,
+          "tls_version": "TLSv1.3"
+        },
+        {
+          "accepted_monotonic_ns": 292548677388458,
+          "alpn": "h2",
+          "client_certificate_sha256": "9e9fbc63fb789e8434534a3f045877876287b7d511b57b762b9dbdee468219a9",
+          "connection_id": 5,
+          "tls_version": "TLSv1.3"
+        }
+      ]
+    }
+  ],
+  "process_log_secret_scan": {
+    "needle_count": 147,
+    "credential_labels": [
+      "api-1.crt",
+      "api-1.key",
+      "api-2.crt",
+      "api-2.key",
+      "cursor_secret",
+      "http_bearer",
+      "observer.crt",
+      "observer.key",
+      "server.crt",
+      "server.key",
+      "synthetic_temporal_api_key",
+      "trusted-ca.crt",
+      "trusted-ca.key",
+      "untrusted-ca.crt",
+      "untrusted-ca.key",
+      "untrusted-client.crt",
+      "untrusted-client.key",
+      "worker-1.crt",
+      "worker-1.key",
+      "worker-2.crt",
+      "worker-2.key"
+    ],
+    "log_count": 23,
+    "credential_matches": 0,
+    "logs": [
+      {
+        "name": "api-1-certificate.log",
+        "sha256": "81f93aed8f0f60ef4d486876647a52cb49a2f47f992433dbb56af50c79c8660e"
+      },
+      {
+        "name": "api-1-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "api-1.log",
+        "sha256": "7ce7358f1da3ef313655e3706e12002859e243dd5be95ec0d0f0a61794d35a0e"
+      },
+      {
+        "name": "api-2-certificate.log",
+        "sha256": "f66958b60070106e4ed8e1e80cd778f6683348127a311da2767806d74ca7c4d1"
+      },
+      {
+        "name": "api-2-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "api-2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "observer-certificate.log",
+        "sha256": "4253a9e1a502130d4ba19b6814a4b0501cbda9f82686faa6775574e4c824355a"
+      },
+      {
+        "name": "observer-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "server-certificate.log",
+        "sha256": "ef9dbdb38489512a2f513a6687d7826aa7713ac7227cf04bb9cc424f5c7a5519"
+      },
+      {
+        "name": "server-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "temporal.log",
+        "sha256": "6eff454f29276c4a7382f3730d7dacd46c70a57ae267cdafd33151f34b180231"
+      },
+      {
+        "name": "tls-proxy-1.log",
+        "sha256": "ef000c916ffeeae98fb549f135a2e4ab27a4e8cbdc67525b7e080dee73a6b265"
+      },
+      {
+        "name": "tls-proxy-2.log",
+        "sha256": "ef000c916ffeeae98fb549f135a2e4ab27a4e8cbdc67525b7e080dee73a6b265"
+      },
+      {
+        "name": "trusted-ca.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "untrusted-ca.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "untrusted-client-certificate.log",
+        "sha256": "d11a9f423f86b3ed8db4ba6f7ce5aee26332b081fe6d73aa9e096695747cf952"
+      },
+      {
+        "name": "untrusted-client-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "worker-1-certificate.log",
+        "sha256": "9d1d3af3f2cf9f7e8e6a4713704fe2189219b2cb05107cb2e441c726e4babc2e"
+      },
+      {
+        "name": "worker-1-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "worker-1.log",
+        "sha256": "93e79ac365fc3c54f7792dfcea631463a7ce91a0bfc8642ffe32086f02351c41"
+      },
+      {
+        "name": "worker-2-certificate.log",
+        "sha256": "bdbb49cdcc20cce5545e67d418bc4bca5e348d1cc9132c88064b027c50dac75b"
+      },
+      {
+        "name": "worker-2-request.log",
+        "sha256": "c50a939cb5df0f354df7e34da4deaaa0031cb068f9d9090c306642cd10287cfa"
+      },
+      {
+        "name": "worker-2.log",
+        "sha256": "f94287a757c8759ba27dbc70c55504c090b7b5e4831665eb63c0b69674f3e643"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "name": "trusted-ca",
+      "pid": 84727,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/trusted-ca.log"
+    },
+    {
+      "name": "untrusted-ca",
+      "pid": 84728,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/untrusted-ca.log"
+    },
+    {
+      "name": "server-request",
+      "pid": 84731,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/server-request.log"
+    },
+    {
+      "name": "server-certificate",
+      "pid": 84733,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/server-certificate.log"
+    },
+    {
+      "name": "api-1-request",
+      "pid": 84734,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-1-request.log"
+    },
+    {
+      "name": "api-1-certificate",
+      "pid": 84739,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-1-certificate.log"
+    },
+    {
+      "name": "api-2-request",
+      "pid": 84740,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-2-request.log"
+    },
+    {
+      "name": "api-2-certificate",
+      "pid": 84741,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-2-certificate.log"
+    },
+    {
+      "name": "worker-1-request",
+      "pid": 84744,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-1-request.log"
+    },
+    {
+      "name": "worker-1-certificate",
+      "pid": 84747,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-1-certificate.log"
+    },
+    {
+      "name": "worker-2-request",
+      "pid": 84754,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-2-request.log"
+    },
+    {
+      "name": "worker-2-certificate",
+      "pid": 84756,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-2-certificate.log"
+    },
+    {
+      "name": "observer-request",
+      "pid": 84759,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/observer-request.log"
+    },
+    {
+      "name": "observer-certificate",
+      "pid": 84763,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/observer-certificate.log"
+    },
+    {
+      "name": "untrusted-client-request",
+      "pid": 84764,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/untrusted-client-request.log"
+    },
+    {
+      "name": "untrusted-client-certificate",
+      "pid": 84767,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/untrusted-client-certificate.log"
+    },
+    {
+      "name": "temporal",
+      "pid": 84768,
+      "returncode": 0,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/temporal.log"
+    },
+    {
+      "name": "tls-proxy-1",
+      "pid": 84772,
+      "returncode": -9,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/tls-proxy-1.log"
+    },
+    {
+      "name": "worker-1",
+      "pid": 84773,
+      "returncode": -9,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-1.log"
+    },
+    {
+      "name": "api-1",
+      "pid": 84774,
+      "returncode": -15,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-1.log"
+    },
+    {
+      "name": "worker-2",
+      "pid": 84775,
+      "returncode": -9,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/worker-2.log"
+    },
+    {
+      "name": "api-2",
+      "pid": 84776,
+      "returncode": -15,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/api-2.log"
+    },
+    {
+      "name": "tls-proxy-2",
+      "pid": 84871,
+      "returncode": -15,
+      "log": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/tls-proxy-2.log"
+    }
+  ],
+  "schema_version": 1,
+  "baseline_commit": "401e4d5a4aebb46307f1438cc2ca88672de1ab90",
+  "assembled_at": "2026-10-16T07:42:02.362853+00:00",
+  "receipt_relative_path": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/receipt.json",
+  "receipt_sha256": "593822f62dfd5017c8fbf418db2d8dd74e59df1cad00c766c2b850a30561eb70",
+  "postcheck_relative_path": "var/task-tls-prototype/cfdf11707eb142be9c8af50e11cb5dae/activity-postcheck.json",
+  "postcheck_sha256": "8bc1cdcee1b4f41c94f5d6de593f15d3509fc97a8e7ebc7425c530b37b228b56",
+  "activity_attempts": {
+    "model_activity_attempt_count": 24,
+    "maximum_activity_attempt": 2,
+    "retried_activity_count": 2,
+    "activities": [
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "1",
+        "step": 0,
+        "request_sha256": "5502d572ef1babd910684d07331975407d6459cac1b1506dfecc6e065596f4a7",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292542256802875
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "2",
+        "step": 1,
+        "request_sha256": "685b2a179bc01330a71035b0114960251a5fda0fb383e180f3765c55a1518fa1",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292542365135250
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "3",
+        "step": 2,
+        "request_sha256": "fe4abd0e3cc1ce48c534ba155b8181acd1601a9b3f4c0226a60a5505ee887cbc",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292542449848833
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "4",
+        "step": 3,
+        "request_sha256": "e6b23404675ee703bd1fcfe01bc5d2b4472b0a48e0776bbe0ffa08ef59ac230a",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292542568920458
+          },
+          {
+            "attempt": 2,
+            "pid": 84775,
+            "started_monotonic_ns": 292549260604208
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "5",
+        "step": 4,
+        "request_sha256": "6c0914d5c9b3a75cf05bcbd67a11e60a3ce4fe037bdf2eddb2aa25afd66619fa",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292549421137958
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "6",
+        "step": 5,
+        "request_sha256": "27fb056e7d59c215d3d1fb06f2e0ff288a09474796f131ab5eb6e6bd2c46f347",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292549513279125
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "7",
+        "step": 6,
+        "request_sha256": "479ea0be4658ec136eb9ee3e90f04c715782f055fe1e88c93ca4984634d1a6b2",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292549608328791
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "01a1439c-3f05-7776-8e76-e9a7d06e114d",
+        "activity_id": "8",
+        "step": 7,
+        "request_sha256": "0482b15ca31c7b174ae5f53179ce6ea135640c98c80811376ec3835de5b74323",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292549718811416
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+        "activity_id": "1",
+        "step": 8,
+        "request_sha256": "1d3978117c43f82338a0bb1420c8e7fe6fe6d1502d5f001878c7b1e719982752",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292549914399291
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+        "activity_id": "2",
+        "step": 9,
+        "request_sha256": "ac5bd3f9dae6dbc3956361e5d5d3bc4e86414ee38ca63a3789fb5a246eb7eacd",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292549998580000
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-8775dd3f02c45a06553dea423d0445297f725cd09f110bd6e4e00ae460792a3e",
+        "run_id": "6328a939-d9c3-471c-96bb-7aef368ac55f",
+        "activity_id": "3",
+        "step": 10,
+        "request_sha256": "f0f242ba33066facc8af0ec9bb0376c0253078b8dc94c01cf2064e44ecdaf2f3",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292550078465291
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "1",
+        "step": 0,
+        "request_sha256": "4faa67ac2a14823d6650de8ca44c9ca4e81a5e5b4e4cce3f9aadf6cd7894ba4e",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292542248142333
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "2",
+        "step": 1,
+        "request_sha256": "71f8c049ab8bba399bba98bc3c1660be4e0bfcd3881b793a5ddc71f1d1b74cc0",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292542366894333
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "3",
+        "step": 2,
+        "request_sha256": "245d972b1ff11efd8fdf7e24f4db3dd47f3c85ff97cc71cc2fed680e5a789c26",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292542453815416
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "4",
+        "step": 3,
+        "request_sha256": "769820f48113970d0edaf703a5292bec432f85426dddac0271ccd903fd2693ab",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292542570877500
+          },
+          {
+            "attempt": 2,
+            "pid": 84773,
+            "started_monotonic_ns": 292549262794833
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "5",
+        "step": 4,
+        "request_sha256": "263917624f53585526452046e35f6528c7a6aeb740becea017aa975fc9d9ea4d",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292549486372083
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "6",
+        "step": 5,
+        "request_sha256": "80160978accdb1f1efabd23b91af5e9857a42914932abca45d1a945313ae9157",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292549577455958
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "7",
+        "step": 6,
+        "request_sha256": "b4520452dbec324013998270b3340c9e47d59371142c826e399e5d43cc8257f8",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292549684448833
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "01a1439c-3efa-7e6f-9013-5705881b9d85",
+        "activity_id": "8",
+        "step": 7,
+        "request_sha256": "bfeff6e3a83af4a6a0a356a8ff877bb006012e9b9823ba5ee709a989f20ca069",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292549802520625
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+        "activity_id": "1",
+        "step": 8,
+        "request_sha256": "2b85ab4cfb41f9a4053058e92e3178df2ac641a465b47dfe6feb114b2aef007e",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84775,
+            "started_monotonic_ns": 292550006571125
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+        "activity_id": "2",
+        "step": 9,
+        "request_sha256": "603c32af97f3085cab715fecffdd0a8e72e0e3a7562f156b282350039bfa4e29",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292550070421166
+          }
+        ]
+      },
+      {
+        "workflow_id": "task-a2aa7ddee4c22c64e76a4efd2b40367d2f6ee1e8ed4465e6143417d429ed6615",
+        "run_id": "28712685-ece4-4427-a66c-ef24b755d371",
+        "activity_id": "3",
+        "step": 10,
+        "request_sha256": "73048ad37b292d532d29b8f134bbbc4d4aa217289d56c4277e48af4367c514be",
+        "attempts": [
+          {
+            "attempt": 1,
+            "pid": 84773,
+            "started_monotonic_ns": 292550149518250
+          }
+        ]
+      }
+    ],
+    "source_files": [
+      {
+        "name": "04ac8f9d19c2ed4f3ee61e1ba43aa697b64267a44ad4f29e8379b94bdd56948a.started.json",
+        "sha256": "7a761e751102d4f8f2c33edfde5c845364001df5093f6c24a641d62febfafc47"
+      },
+      {
+        "name": "06a80b4e6a9684fe078c7f2a9a2974a41e873a1fe2f8926abbd483474836f309.started.json",
+        "sha256": "ea76461293edbfccfd24cb29f1f4d1693017226f5357856464f24f84e889d97d"
+      },
+      {
+        "name": "090079b5a98810ccdd1dfde9766fe2b88739c3898c55450e2a1abef4ea7bb2f5.started.json",
+        "sha256": "1e3a370082a648c8b7bb78b7473da0a7b2ce3309108bb78ab66b2933b73d6d67"
+      },
+      {
+        "name": "145d9e7fd3ada8edf1bb60d35a4dc669a66dcb41c20a1823cdb82f7174d04bca.started.json",
+        "sha256": "bc1b2655a453488c72ca5bd9989d58dbf6518720abfe9e39301c85a46e6618d2"
+      },
+      {
+        "name": "24c78470866894ba3aa8a2c183aaa02f349513cd9fc60c4396cb673e0983b0ad.started.json",
+        "sha256": "8d70efb3a487101df75a0e94b5a2be59cd950dd67167bdbc9c1af1f1860b68d9"
+      },
+      {
+        "name": "26c028697a9cfebdebdbf9886778299767bf1c6c8038f3a731a798ea8ad63a2a.started.json",
+        "sha256": "67868cc06ea2c114c2f40cd743c89bb3ef3af8ceb9401cf02ff0e85b92a045ed"
+      },
+      {
+        "name": "339959a9bce6e362ce1d62cd04ca9145eca6b4bce5712c009cffd7a5c01c51a1.started.json",
+        "sha256": "187e41dc55e7f97aeb12e0ea4df51d85d559eba9c160844d392a2748719e3733"
+      },
+      {
+        "name": "38f9bd788bca8ed7de9a34a7d7ed1a3b001bb5dc80c3a178d9a268a88ec66d47.started.json",
+        "sha256": "70579e4979d3a0d9af7e86ecdd1970fddd1417fb5f9cf18b5b90b767922a6c0d"
+      },
+      {
+        "name": "3934615a976a09e08d0af42fa1c868304005a9421becb43c3e21fa330040c35c.started.json",
+        "sha256": "c303f4656e6c4c2157655a03cf5fdf184574f2365a8351dc9e8cd8847b363262"
+      },
+      {
+        "name": "525850ff09eebb5f792c125bc2687533dfdd7973f483b6da65ee143dc17e9c0c.started.json",
+        "sha256": "3d9aa2af6fd0d52f3486ad1f3515a59c202d37aa3a7490d62e74c23e4b04e536"
+      },
+      {
+        "name": "5674b3e20c706f4654e0b7fb07f74a06d369688e4ec08f0d21dae831169f45b9.started.json",
+        "sha256": "99400b408ce5d6bf1c38c839958162713848e6fcf5ec8299a3c11c2593b5ec8b"
+      },
+      {
+        "name": "640f6f54c8fd30135e139c853f1180b42ae05c454aeedf266e6fbd0c07389350.started.json",
+        "sha256": "a84db6bc44f17e625c2253f4993365cac5d18afbfa6c3871a965ead349de61ce"
+      },
+      {
+        "name": "6f4d824153af676ebc04073d1a2ea75d9e7a86a7addd73205127a7f4101a200b.started.json",
+        "sha256": "78781c979a6107c3b7b64dc0ef9a027594b0973098df7ad03718449ecaa7d4d4"
+      },
+      {
+        "name": "6fd922685634b637c5ddf5a7e8162a0fb6e276eb0bf1c39ac3fe402276cc965f.started.json",
+        "sha256": "1333965e3d928b949ea9f4946cb2377b06e385607c2e25161a7855ff09c096eb"
+      },
+      {
+        "name": "7ec7d3d102d9836d124f8151cd8b6429b29543ecd3666cd91afdde63ed5be017.started.json",
+        "sha256": "f51f733539d5797643afe3f64240530ea10016c21477a749211f877b05c94a6f"
+      },
+      {
+        "name": "9ab51fcdefd841fcde6034b214e9f306e59d694813a405f97fc2bd3e9b101cdd.started.json",
+        "sha256": "e8190b657d35ad6379cd70ea2a32242dfcd148f159ba2d9ca305bc6047d2c451"
+      },
+      {
+        "name": "b12b282ea4951eb1e1a315279c9a1d78a2065c527465197d4aeb27ea6c48ce19.started.json",
+        "sha256": "97ef1cabead43ea29f3b170d30d2755a0f8dc102a5d55d9f76861cc5614aecfa"
+      },
+      {
+        "name": "b519d315a40b59576be8f1f27b2af31b43c51d04de1c6e23073603814eda2cb1.started.json",
+        "sha256": "2c1dd8e9ffd9270e2253c5bf51f0b00d24b03e73b07eddaab6bd74f3526aeb6d"
+      },
+      {
+        "name": "bd5f52bb5c9d520408db36f09e242dbb52febea4f44b54acb8028388eeee6ecf.started.json",
+        "sha256": "4a4ddf365a81a509cc0ff4cf8299bc33e9fa898036a704c0d50aa4dbffe9c719"
+      },
+      {
+        "name": "e166f08a3449cd439f9adba72c69975b650a4d6cce549300e9dbf84504c8582d.started.json",
+        "sha256": "66f024921614180e1526e29bbd46ed36485f1260657df24463daa6b72ec5bdc3"
+      },
+      {
+        "name": "e42ca6d7f12c24b85bab77ec895e28c7d7779f7b6ae483e01d82e9e05508f859.started.json",
+        "sha256": "2b092fbea0d4d309f97b337a87455c40d52db7cea608a64b5fae663a91217cd3"
+      },
+      {
+        "name": "f1470a03d62b33498762cd852b029aee28ae507f7f8671257f13f7759a95681a.started.json",
+        "sha256": "26cfc051dd520def16c865a58b6175e043aa1bbfadf09f316094ef9bf9410683"
+      },
+      {
+        "name": "f76a70be57127b6917ae1290a6d75d9f7ad55cbed1423a71944fe37e4a996635.started.json",
+        "sha256": "859b7bacddc53a884331f9f28672e04e95c5c67f2e18e6bf020919b2b5ffde63"
+      },
+      {
+        "name": "fe42d7150ed34e66cf136d03c575a6d3614047a5563054d32f1a8ba8c72b9cbf.started.json",
+        "sha256": "eecc6cd4fa0dbf55b717a1fd961c43ad064903f9e3c8a19834d5da294406894f"
+      }
+    ]
+  },
+  "process_count": 23,
+  "all_owned_processes_terminal": true,
+  "versions": {
+    "temporalio": "1.34.0",
+    "deepagents": "0.7.25",
+    "temporal_cli": "1.9.1",
+    "temporal_server": "1.32.0",
+    "python": "3.12.10",
+    "openssl_cli": "3.6.3",
+    "python_ssl_openssl": "3.0.16",
+    "workflow": "TaskWorkflowV2",
+    "task_version": "task-v2"
+  },
+  "evidence_boundary": "Real production API and Worker connection settings against a test-only stdlib mTLS termination tunnel forwarding to loopback Temporal dev server; deterministic offline model fixture. Not native Temporal TLS, Cloud API-key authorization, production ingress/HA/capacity or provider inference acceptance.",
+  "observation_limits": [
+    "The transport-only fault preserves original API and Worker processes; heartbeat expiry caused two Activity retries, each attempt1 to2 with identical native identity and request SHA.",
+    "Synthetic API key is configured on the real SDK; the tunnel does not inspect or authorize that key.",
+    "Harness final cleanup may SIGKILL idle Workers using the historical 1.5-second cleanup helper; this is not rolling drain evidence.",
+    "After the successful service run, a pure retry-summary helper and its unit test were added. The unchanged recorded audits were checked offline by that helper; the final full module suite covers it, and the service was not rerun for this helper-only addition.",
+    "Certificate rotation requires new Clients and was not exercised; source inventory below is a final delivery freeze, not a pre-run trace."
+  ],
+  "source_hash_scope": "Final source and dependency delivery inventory. API/Worker/connection/runtime frozen before service acceptance; post-run pure retry-summary helper addition explicitly separated in observation_limits.",
+  "source_sha256": {
+    "deepagents-server/pyproject.toml": "21ac8372b56ed365f3606d3aae034572544c41601ffd7ad1358e3a33f033c024",
+    "deepagents-server/scripts/task_server_fault_smoke.py": "d139ec28357ada1415e025a4b9b2cda23036956ebe8efe1c5df67241222b1861",
+    "deepagents-server/scripts/task_tls_fault_smoke.py": "6166a3b8520a250de4cbd3f260e088e4481fff852008b2b34071ef012f70d44a",
+    "deepagents-server/scripts/task_worker_rollout_smoke.py": "c7524dca09aca7bb90219e791fe44380088571e4621562d9ee261f6725be6ebf",
+    "deepagents-server/scripts/temporal_fault_smoke.py": "083ddec59cce9451d7229e899d0088fd4774300db068e353dcbaf44534908583",
+    "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+    "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+    "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "a1ee8bb2b278a41cab67081ad6ada766d14f86cc73b1f7369a4861295b66c9b5",
+    "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+    "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+    "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "11530671fa52da52e953f47f611b91f461d81a20b36a277cadaa751e58f65d5d",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "9c616e915da172f37f4f84ec0c8108b1c4b46fc4c61d7d3b44407c6e966ef4d5",
+    "deepagents-server/src/mini_loop_deepagents/task_server/runtime_v2.py": "0cf1a730baf8550b00d163740b242d6d64a9b1c95d176c438aeab08e1a2446c2",
+    "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "f16b38bcbd5e6d6f4a0f5816658f0216988241f822b9384662d5f17c029c5d67",
+    "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "fe64edf4b04d66db9c0aca11da2ed44928f1086227e8419eef9ecf137ec9aaad",
+    "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "f787df5d3ea0bcd143a2a014918ef7aa699a5ad0d73ccf22e9c4ec8d2f3102e0",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+    "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "8453341fd33373acf16bda32f77669f210806e44a47b56888d52b0f4c808aa7c",
+    "deepagents-server/tests/task_rollout_worker_fixture.py": "247672a5b2c9a15f5832208f3e5775fe17283c0b42c0059170e8187eac107e17",
+    "deepagents-server/tests/task_tls_tunnel.py": "67314543dc5aa4d92fa1c8f6309dbb57b2e5d222286fac56bb623432c4afbed6",
+    "deepagents-server/tests/task_tls_worker_fixture.py": "58061b1ac33fe4f32752c1f4d8c772fac456b44bee9f9a57dfa08c94c2d629d3",
+    "deepagents-server/tests/test_task_connection.py": "9f283fc719f4717dc99625a98d50abdbf0bbe4b92a5f513e99bf53f588e72f49",
+    "deepagents-server/tests/test_task_lifecycle.py": "a3d667a394315a03024ecb00bf77ebe024f74f0be4f795cf8a889827e147d277",
+    "deepagents-server/tests/test_task_tls_harness.py": "1d284283899d813c9d06ebadcaf12121185a4a817fdf3f2404d732f957d611c9",
+    "deepagents-server/tests/test_task_worker_rollout_harness.py": "3a021acd214724e0aabfba47a33009d943048c9f57a41cc01a4a912db0f3f5cf",
+    "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781"
+  },
+  "architecture_artifacts": {
+    "image_tool": "built-in imagegen",
+    "image_lineage": "Full base was minimally edited from the401e4d5 base; focused diagram derived from the new base and previous rollout diagram, then corrected twice. Two over-dense base drafts were rejected; exact prompts retained.",
+    "visual_review": "Final full base and standalone PNG inspected; TLS injection separated from production transport and test-only tunnel; /v1/tasks, stateless API, HTTP Bearer vs Temporal ACL, provider env and historical lifecycle corrected. Archify dark/light static review passed; browser interaction not tested.",
+    "sha256": {
+      "docs/mini-loop-system.architecture.json": "0454073d4050620abc0aea0992e35d7e033510d81c645d8f2475ab0671ccd561",
+      "docs/mini-loop-system.architecture.html": "94cec61736130b25e142dd854fbcca8b936b40682ab6182b042bb442a0eb8676",
+      "docs/mini-loop-layered-architecture.png": "713e3495270d3ff2343e12723515cb692c908efc97c99e968b7e7304c0f60e8a",
+      "docs/mini-loop-layered-architecture.prompt.txt": "ece75cdaa3a9063be79a4d010b550e7d504bc98feb92d54373c75284cc9363f2",
+      "docs/audits/task-server-tls-2026-10-16.base-initial.prompt.txt": "60f320a79712dc9a964e687db9ab04581d533da672952835eaa89225cb53a743",
+      "docs/audits/task-server-tls-2026-10-16.base-repair.prompt.txt": "73dafbdfdf0d439062ba15e080dd75ccd3b728a612d58114ce215a46bed8caba",
+      "docs/audits/task-server-tls-2026-10-16.boundary-repair.prompt.txt": "78a68538b1b89cc43b5ca36dbd1d52eb18fb05a68ad3e442c3591579687f3835",
+      "docs/audits/task-server-tls-2026-10-16.png": "05862d4278dd0a3de6263cadef9385a5f24c7a5144d0f04733352f03ccb5026b",
+      "docs/audits/task-server-tls-2026-10-16.prompt.txt": "c2cc41b968df0114aae1827454677f7f5ec13857be619b18dbaad778363f0857",
+      "docs/audits/task-server-tls-2026-10-16.repair.prompt.txt": "5aa29c719fbf8ddb843fed069567af6d0ac81a28021e5b3fe731ee9d8c0780ba"
+    }
+  },
+  "final_validation": {
+    "status": "passed",
+    "module_tests": {
+      "passed": 491,
+      "pytest_duration_seconds": 3.65,
+      "scope": "deepagents-server/tests, module Python3.12 .venv, Temporal extra installed; includes final TLS retry-helper test"
+    },
+    "legacy_tests": {
+      "passed": 2256,
+      "skipped": 28,
+      "warnings": 104,
+      "pytest_duration_seconds": 120.6,
+      "scope": "root pytest.ini targets python/tests"
+    },
+    "invariants": {
+      "modules": 77,
+      "scope": "python/mini_loop only"
+    },
+    "lock": {
+      "packages": 105,
+      "offline": true,
+      "check_only": true
+    },
+    "wheel_audit": "task-tls-final-wheel-check.receipt.json",
+    "research_receipt": "task-tls-final-research.receipt.json",
+    "checks": [
+      {
+        "label": "task-tls-final-module",
+        "exit_code": 0,
+        "duration_seconds": 6.11,
+        "sampled_peak_tree_rss_kib": 188576,
+        "lowest_free_percent": 48,
+        "samples": 3,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-module-20261016T153145.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-module.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-module.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-module.summary.json"
+      },
+      {
+        "label": "task-tls-final-legacy",
+        "exit_code": 0,
+        "duration_seconds": 122.46,
+        "sampled_peak_tree_rss_kib": 337088,
+        "lowest_free_percent": 43,
+        "samples": 60,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-legacy-20261016T153158.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-legacy.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-legacy.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-legacy.summary.json"
+      },
+      {
+        "label": "task-tls-final-invariants",
+        "exit_code": 0,
+        "duration_seconds": 2.05,
+        "sampled_peak_tree_rss_kib": 192,
+        "lowest_free_percent": 47,
+        "samples": 1,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-invariants-20261016T153407.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-invariants.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-invariants.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-invariants.summary.json"
+      },
+      {
+        "label": "task-tls-final-lock",
+        "exit_code": 0,
+        "duration_seconds": 2.06,
+        "sampled_peak_tree_rss_kib": 1680,
+        "lowest_free_percent": 47,
+        "samples": 1,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-lock-20261016T153412.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-lock.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-lock.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-lock.summary.json"
+      },
+      {
+        "label": "task-tls-final-wheel",
+        "exit_code": 0,
+        "duration_seconds": 2.05,
+        "sampled_peak_tree_rss_kib": 208,
+        "lowest_free_percent": 47,
+        "samples": 1,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-wheel-20261016T153419.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-wheel.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-wheel.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-wheel.summary.json"
+      },
+      {
+        "label": "task-tls-final-wheel-check",
+        "exit_code": 0,
+        "duration_seconds": 2.04,
+        "sampled_peak_tree_rss_kib": 176,
+        "lowest_free_percent": 47,
+        "samples": 1,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-wheel-check-20261016T153424.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-wheel-check.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-wheel-check.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-wheel-check.summary.json"
+      },
+      {
+        "label": "task-tls-final-research",
+        "exit_code": 0,
+        "duration_seconds": 8.17,
+        "sampled_peak_tree_rss_kib": 541680,
+        "lowest_free_percent": 46,
+        "samples": 4,
+        "resource_blocked": false,
+        "log": "var/deepagents-delivery/task-tls-final-research-20261016T154544.log",
+        "stable_log": "var/deepagents-delivery/task-tls-final-research.log",
+        "stable_resources": "var/deepagents-delivery/task-tls-final-research.resources.jsonl",
+        "stable_summary": "var/deepagents-delivery/task-tls-final-research.summary.json"
+      }
+    ],
+    "all_checks_serial": true,
+    "budget_per_check": {
+      "tree_rss_kib": 1572864,
+      "timeout_seconds": 300,
+      "memory_free_floor_percent": 15,
+      "nice": 10,
+      "sample_interval_seconds": 2,
+      "memory_pressure_interval_seconds": 10
+    },
+    "short_check_rss_note": "Single startup samples do not reliably establish peak RSS for sub-two-second commands. All reported RSS values are sampled peaks.",
+    "readme_and_source_frozen_before_packaging": true,
+    "source_freeze_rechecked_after_all_gates": true,
+    "package_and_lock_unchanged": true,
+    "service_smokes_not_rerun": true,
+    "no_dependency_install": true,
+    "no_go_scanner_or_guard_runs": true,
+    "tracked_writes_only_research_generator": true,
+    "owned_process_cleanup": {
+      "observed_owned_pids": 53,
+      "remaining_observed_pids": [],
+      "check": "ps after all seven gates and Research documentation rerun; all sampled owned PIDs gone"
+    },
+    "research_rerun_reason": "Top-level design document corrected model Activity intervals wording to attempt records; runtime and both README files unchanged.",
+    "superseded_research_check": {
+      "label": "task-tls-final-research",
+      "exit_code": 0,
+      "duration_seconds": 10.23,
+      "sampled_peak_tree_rss_kib": 833040,
+      "lowest_free_percent": 47,
+      "samples": 5,
+      "resource_blocked": false,
+      "log": "var/deepagents-delivery/task-tls-final-research-20261016T153435.log",
+      "stable_log": "var/deepagents-delivery/task-tls-final-research.log",
+      "stable_resources": "var/deepagents-delivery/task-tls-final-research.resources.jsonl",
+      "stable_summary": "var/deepagents-delivery/task-tls-final-research.summary.json"
+    }
+  },
+  "documentation_checks": {
+    "status": "passed",
+    "documents": [
+      "README.md",
+      "deepagents-server/README.md",
+      "deepagents-server/ARCHITECTURE.md",
+      "deepagents-server/TASK_SERVER.md",
+      "deepagents-server/DELIVERY.md",
+      "docs/AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md"
+    ],
+    "local_links": 186,
+    "fences_balanced": true,
+    "tested_source_hashes_match": true,
+    "generated_reports_changed": [
+      "agent-server-durable-execution-design"
+    ]
+  }
+}

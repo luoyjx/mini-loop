@@ -173,7 +173,7 @@ def compose_worker(monkeypatch):
     async def connect(*args, **kwargs):
         return object()
 
-    monkeypatch.setattr(worker.Client, "connect", connect)
+    monkeypatch.setattr(worker, "connect_temporal", connect)
     monkeypatch.setattr(worker, "ProcessLifecycle", lambda *args: pytest.fail("library must not own process"))
 
     def compose(instance):
@@ -229,7 +229,7 @@ async def test_stop_during_connect_cancels_startup_without_model_or_worker(monke
         finally:
             cancelled.set()
 
-    monkeypatch.setattr(worker.Client, "connect", connect)
+    monkeypatch.setattr(worker, "connect_temporal", connect)
     monkeypatch.setattr(worker, "Worker", lambda *a, **k: pytest.fail("stopped before Worker"))
     task = asyncio.create_task(worker.serve("address", "queue", "identity", stop_event=stop))
     await connecting.wait()
@@ -243,7 +243,7 @@ async def test_stop_during_connect_cancels_startup_without_model_or_worker(monke
 async def test_stopped_before_start_does_not_connect(monkeypatch, capsys):
     stop = asyncio.Event()
     stop.set()
-    monkeypatch.setattr(worker.Client, "connect", lambda *a, **k: pytest.fail("already stopped"))
+    monkeypatch.setattr(worker, "connect_temporal", lambda *a, **k: pytest.fail("already stopped"))
     await worker.serve("address", "queue", "identity", stop_event=stop)
     assert "TASK_WORKER_READY" not in capsys.readouterr().out
 

@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-rollout-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [本轮分层图与修改标注](../docs/audits/task-server-tls-2026-10-16.png)。
 
 ## 已实现与边界
 
@@ -203,6 +203,14 @@ Worker CLI 的进程边界接管 SIGTERM/SIGINT，显式触发 SDK shutdown：�
 2 秒、硬退出期限 15 秒；第二次信号或超过硬期限退出码为 70，未完成 Activity 依赖
 原生 heartbeat/timeout 恢复。进程退出不等于取消用户 Task。library `serve` 不接管
 信号或强退宿主，调用方保留生命周期责任；这不是跨版本路由或全局并发配额。
+
+API 与 Worker 复用同一个 Temporal 连接工厂，生产 CLI 显式读取
+`MINILOOP_TASK_TEMPORAL_*`，支持验证 TLS、CA、成对的 mTLS 证书/私钥、服务名与
+API key。安全字段必须配合 TLS，错误配置或握手失败停止启动，不自动退回明文。
+library 的 Temporal 连接采用显式 `TemporalConnectionSettings`，默认明文且不读对应环境变量；
+证书在启动时加载，轮换需重建 Client/滚动替换进程。HTTP Bearer 的 owner 权限与
+Temporal namespace 原生 ACL 属于两个边界；连接成功不证明全部 RPC 已获授权。
+完整变量、约束与测试边界见 [Task Server](TASK_SERVER.md#temporal-连接与-tlsmtls)。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

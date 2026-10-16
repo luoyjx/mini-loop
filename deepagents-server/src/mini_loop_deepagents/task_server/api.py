@@ -24,6 +24,9 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 
 from mini_loop_deepagents.config import load_tokens
+from mini_loop_deepagents.task_server.connection import (
+    TemporalConfigurationError, TemporalConnectionSettings, connect_temporal,
+)
 
 LOG = logging.getLogger(__name__)
 MAX_BODY_BYTES = 16 * 1024
@@ -219,11 +222,14 @@ def main() -> None:
     parser.add_argument("--task-queue", default="mini-loop-task-v1")
     parser.add_argument("--max-inflight", type=int, default=32)
     args = parser.parse_args()
-    from temporalio.client import Client
     import uvicorn
     from .service import TaskService
 
     tokens = load_tokens()
+    try:
+        connection = TemporalConnectionSettings.from_env()
+    except TemporalConfigurationError as error:
+        parser.error(str(error))
     secret = os.environ.get("MINILOOP_TASK_SERVER_CURSOR_SECRET", "")
     if len(secret) < 32 or not secret.isascii() or any(c.isspace() for c in secret):
         parser.error("MINILOOP_TASK_SERVER_CURSOR_SECRET requires 32 or more non-whitespace ASCII characters")
@@ -237,8 +243,7 @@ def main() -> None:
 
     @asynccontextmanager
     async def lifespan(app: Starlette):
-        async with asyncio.timeout(10):
-            client = await Client.connect(args.temporal_address, namespace=args.namespace)
+        client = await connect_temporal(args.temporal_address, namespace=args.namespace, connection=connection)
         app.state.task_service = TaskService(client, task_queue=args.task_queue, cursor_secret=secret)
         yield
 

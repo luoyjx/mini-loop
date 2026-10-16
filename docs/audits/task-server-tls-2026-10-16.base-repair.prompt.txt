@@ -1,0 +1,9 @@
+Repair the latest TLS base diagram using both references: first is the original complete architecture with the Worker lifecycle strip and CAN return arrow; second is the new TLS version. The new version accidentally removed the Worker lifecycle strip and the CAN return arrow. Restore BOTH and retain the newly added TLS connection band. Extend canvas vertically below the Task HTTP lane by at least 220 pixels rather than shrinking any content. Keep every other lane unchanged.
+
+Bottom Task HTTP lane layout:
+main flow client -> Task API -> Temporal History -> Worker pool -> model Activity.
+Immediately below main flow, a cyan arrow goes from Worker back LEFT to Temporal with label "Continue-As-New · 完整 Checkpoint".
+Next, keep new cyan shared connection band: "API / Worker 共享连接配置 · TLS / mTLS · 可选 API key", "验证 CA / 服务名 · 客户端证书成对 · 凭据来自服务端环境或文件", "禁止明文携带凭据 / 禁止静默降级", "CLI 显式加载；证书轮转需重建 Client".
+Next, RESTORE the original lifecycle strip titled "Worker 滚动关闭生命周期（CLI 进程责任）": "SIGTERM / SIGINT" -> "停止新轮询 · 排空已领取任务" -> "宽限到期交接 / 最终期限退出". Below exact text "默认宽限 2s / 总期限 15s；第二次信号可强退；重试消耗原有预算".
+Bottom constraints: "每 8 次父模型边界分段 · 全链 24h / 512 次父模型边界 · Checkpoint 有大小上限". "无跨任务 Memory；生产 HA / 高并发容量待验收". Separate note "HTTP Bearer ≠ Temporal 原生 ACL；API key 授权待验收".
+Do not let TLS replace lifecycle or CAN. No orange highlights in base. Do not add test TLS tunnel to production architecture.

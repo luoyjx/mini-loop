@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; Task V2 retains bounded native checkpoint CAN; Worker CLI adds signal-driven SDK shutdown and hard exit; production HA/capacity unverified",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; Task API and Worker share explicit verified TLS/mTLS client settings; bounded CAN and shutdown retained; production HA/capacity unverified",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -1020,6 +1020,21 @@
         76
       ],
       "tag": "CLI only / grace and hard deadline"
+    },
+    {
+      "id": "tsConnection",
+      "type": "backend",
+      "label": "Shared Temporal client settings",
+      "sublabel": "CLI environment / explicit library object",
+      "pos": [
+        550,
+        3750
+      ],
+      "size": [
+        400,
+        76
+      ],
+      "tag": "TLS / CA / mTLS pair / server name / API key"
     }
   ],
   "boundaries": [
@@ -1120,7 +1135,8 @@
         "tsWorker",
         "tsModelActivity",
         "tsModel",
-        "tsProcess"
+        "tsProcess",
+        "tsConnection"
       ],
       "pad": 50
     }
@@ -2162,13 +2178,17 @@
       "id": "tsRemoteStart",
       "from": "tsApi",
       "to": "tsHistory",
-      "label": "Start / inspect"
+      "label": "Start / TLS option",
+      "labelAt": [
+        990,
+        4140
+      ]
     },
     {
       "id": "tsDispatch",
       "from": "tsHistory",
       "to": "tsWorker",
-      "label": "task queue / replay",
+      "label": "SDK polls / TLS option",
       "labelDy": 26
     },
     {
@@ -2199,6 +2219,26 @@
         1910,
         3938
       ]
+    },
+    {
+      "id": "tsApiConnection",
+      "from": "tsConnection",
+      "to": "tsApi",
+      "label": "client config",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        835,
+        3938
+      ]
+    },
+    {
+      "id": "tsWorkerConnection",
+      "from": "tsConnection",
+      "to": "tsProcess",
+      "label": "client config",
+      "variant": "security"
     }
   ],
   "cards": [
@@ -2419,7 +2459,7 @@
       "dot": "violet",
       "title": "Independent Deep Agents server",
       "items": [
-        "Review baseline 2026-10-16: 98de8d2 plus Worker CLI rolling shutdown and bounded concurrency validation. V1/V2 Workflow code, standard Agent Server, Python and Go paths keep their existing execution semantics.",
+        "Review baseline 2026-10-16: 401e4d5 plus shared verified TLS/mTLS client configuration for Task API and Worker. V1/V2 Workflow code, standard Agent Server, Python and Go paths keep their existing execution semantics.",
         "AsyncJobsClient / scripts/jobs.py create background Runs, return portable handles and poll existing Runs; HTTP disconnect or local wait timeout does not cancel work. Separate Threads run concurrently; one Thread enqueues serially.",
         "Compose splits an API-only process (0 execution slots) from workers (2 slots by default). Both use the same immutable image, PostgreSQL durable job/checkpoint/store truth, and Redis ephemeral wake/cancel/event coordination.",
         "Submissions request sync checkpoint durability. Graceful shutdown allows 180 seconds; containers allow 210 seconds. Native 0.16.0 execution attempts are bounded at 3 by default, with 24 hours per attempt. Terminal graph/model errors require inspection and explicit checkpoint continuation.",
@@ -2450,6 +2490,8 @@
         "Native summarization triggers at 40 messages OR 16000 tokens and retains 12 messages. Workflow-owned clocks and IDs stabilize archived virtual files and summary state. The real patch-tool slot retains repair behavior and stable ToolMessage IDs in parent and GP subgraphs. No default owner Memory or arbitrary graph migration is installed.",
         "DeepAgentsPlugin schedules model I/O Activities; a fixed alias resolves to ChatOpenAI from Worker environment. No public fixture/provider selector. Status/result/cancel use the verified Run chain; signed cursors bind namespace, owner, TaskID and one Run. Optional run_id and verified first/previous/next navigation never merge event IDs. Missing adjacent retained Runs set an explicit incomplete flag.",
         "Worker CLI process lifecycle owns SIGTERM/SIGINT and explicit SDK shutdown: stop new polls, drain already claimed or buffered work, then cancel unfinished Activities after the grace interval. Shutdown retries consume the existing Activity attempt budget and do not cancel the Task. Defaults are 2 seconds grace and a 15-second hard deadline; a second signal or elapsed deadline forces CLI exit 70. Library serve neither owns signals nor forces process exit. This is compatible-process replacement, not automatic Worker Versioning.",
+        "API and Worker share immutable TemporalConnectionSettings and an eager Client factory with a 10-second startup budget. Only production CLIs load MINILOOP_TASK_TEMPORAL_*; library callers pass settings explicitly, with plaintext defaults that ignore ambient environment. Verified TLS supports CA, paired mTLS certificate/key, server-name override and API-key metadata. Security fields require TLS; invalid combinations and failed connections refuse startup without downgrade. No verification bypass. Files load once, so rotation rebuilds Clients and replaces processes.",
+        "Shared settings are code within API/Worker processes, not a network proxy. Task HTTP Bearer owner authorization and Temporal native namespace ACL are separate. Client settings do not configure server authorization or encrypt History at rest. The local stdlib mTLS tunnel is test-only; native Temporal TLS, Cloud API-key ACL and cross-host production HA remain unverified.",
         "This Temporal service remains independent from standard Agent Server PostgreSQL/Redis and the offline prototype SQLite files. Dedicated CAN fault evidence is recorded separately; source/config existence is not a passing run. Production HA, live-provider inference, retention operations, arbitrary code-upgrade compatibility and capacity remain unverified. Process-local limits are not global quotas. Raw Temporal access is trusted; Bearer checks are not service ACLs."
       ]
     }

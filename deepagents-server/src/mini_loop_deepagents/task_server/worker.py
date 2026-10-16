@@ -13,11 +13,13 @@ from datetime import timedelta
 from typing import Any
 
 from langchain_openai import ChatOpenAI
-from temporalio.client import Client
 from temporalio.contrib.deepagents import DeepAgentsPlugin
 from temporalio.worker import PollerBehaviorSimpleMaximum, Worker
 
 from mini_loop_deepagents.config import AgentSettings
+from mini_loop_deepagents.task_server.connection import (
+    TemporalConnectionSettings, connect_temporal,
+)
 from mini_loop_deepagents.task_server.lifecycle import (
     ProcessLifecycle, lifecycle_log, validate_shutdown_settings,
 )
@@ -53,6 +55,7 @@ async def serve(
     model_provider: Callable[[str], Any] | None = None,
     shutdown_grace_seconds: float = 2.0,
     stop_event: asyncio.Event | None = None,
+    connection: TemporalConnectionSettings | None = None,
 ) -> None:
     """Run the production Workflow with an optional trusted test-process provider.
 
@@ -70,11 +73,8 @@ async def serve(
         lifecycle_log("TASK_WORKER_STOPPED phase=startup")
         return
 
-    async def connect() -> Any:
-        async with asyncio.timeout(10):
-            return await Client.connect(address, namespace=namespace, identity=identity)
-
-    connecting = asyncio.create_task(connect())
+    connecting = asyncio.create_task(connect_temporal(address, namespace=namespace, identity=identity,
+                                                      connection=connection))
     stopping = asyncio.create_task(stop.wait())
     run_task: asyncio.Task | None = None
     worker: Worker | None = None
@@ -164,6 +164,7 @@ def run_process(
     model_provider: Callable[[str], Any] | None = None,
     shutdown_grace_seconds: float = 2.0,
     shutdown_timeout_seconds: float = 15.0,
+    connection: TemporalConnectionSettings | None = None,
 ) -> None:
     """Trusted process entry point shared by the production CLI and fixtures.
 
@@ -178,7 +179,8 @@ def run_process(
         lifecycle.bind(asyncio.get_running_loop(), stop)
         await serve(address, task_queue, identity, namespace=namespace,
                     activity_slots=activity_slots, workflow_slots=workflow_slots,
-                    model_provider=model_provider, shutdown_grace_seconds=grace, stop_event=stop)
+                    model_provider=model_provider, shutdown_grace_seconds=grace, stop_event=stop,
+                    connection=connection)
 
     with ProcessLifecycle(timeout) as lifecycle:
         asyncio.run(run(lifecycle))
@@ -197,12 +199,13 @@ def main() -> None:
     args = parser.parse_args()
     try:
         validate_shutdown_settings(args.shutdown_grace_seconds, args.shutdown_timeout_seconds)
+        connection = TemporalConnectionSettings.from_env()
     except ValueError as error:
         parser.error(str(error))
     run_process(args.address, args.task_queue, args.identity,
                 namespace=args.namespace, activity_slots=args.activity_slots, workflow_slots=args.workflow_slots,
                 shutdown_grace_seconds=args.shutdown_grace_seconds,
-                shutdown_timeout_seconds=args.shutdown_timeout_seconds)
+                shutdown_timeout_seconds=args.shutdown_timeout_seconds, connection=connection)
 
 
 if __name__ == "__main__":
