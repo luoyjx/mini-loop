@@ -274,7 +274,7 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
-The [focused Task HTTP server diagram](docs/audits/task-server-structure-2026-10-16.png)
+The [current Task server architecture](docs/audits/task-server-single-runtime-2026-10-17.png)
 shows the independent Agent Server layers and this iteration's Python module
 boundaries. The [source reading guide](deepagents-server/docs/PROJECT_STRUCTURE.md)
 maps HTTP handling, task orchestration, Temporal access and acceptance tooling.
@@ -1183,8 +1183,9 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-16**, `a6d61c6` plus the
-independent Python module structure iteration. Deployment topology is unchanged.
+Current architecture review baseline: **2026-10-17**, `2b85676` plus the
+single Task runtime cleanup. API, Worker and Temporal deployment roles are unchanged;
+the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
 `protocol.py` defines stable errors, identities and the operation interface,
 `service.py` orchestrates tasks, and `backend/` owns Temporal Run/History access,
@@ -1194,9 +1195,10 @@ Repository-only acceptance scenarios, fixtures and support live in `tooling/`;
 published script and production CLI paths retain compatibility.
 Its independent Bearer API
 confirms remote Workflow Start before returning 202; retained Temporal History
-owns task identity, status and events. New TaskWorkflowV2 executions carry a
-bounded native saver journal across Continue-As-New; the Worker also retains
-the unchanged v1 Workflow. Deployment-owned model Activities run real Deep
+owns task identity, status and events. The sole `runtime.py:TaskWorkflow` retains
+the current wire identity `TaskWorkflowV2` / `task-v2` and carries a bounded native
+saver journal across Continue-As-New. The default Task queue is `mini-loop-task`.
+Deployment-owned model Activities run real Deep
 Agents, including deterministic native summarization and general-purpose
 subagents. A separate Task container profile uses one immutable application image
 for API and Worker, with role-specific secret files and same-process startup.
@@ -1409,7 +1411,7 @@ flowchart LR
         TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
         TSLaunch["Independent Task image / role launcher<br/>non-root · role-specific secret files<br/>same-process API or Worker · external Temporal"]
         TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>grace + hard deadline · library serve stays caller-owned"]
-        TSWorkflow["TaskWorkflowV2 + unchanged v1 Worker<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
+        TSWorkflow["Single TaskWorkflow · runtime.py<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
         TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Temporal retry / heartbeat"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
         TSClient -->|authenticated request| TSAPI
@@ -1562,14 +1564,16 @@ Repository-only `tooling/acceptance/` separates executable fault scenarios from
 reusable support and offline fixtures, while `scripts/` preserves existing
 command paths. The production wheel excludes this tooling.
 
-New submissions select `TaskWorkflowV2` / `task-v2`; the Worker also keeps the
-unchanged `TaskWorkflow` / `task-v1` code for existing tasks. Retrying an old key
-with the same content checks the retained version's digest and reuses that task.
-No automatic v1-to-v2 graph migration is implied. Model Activities resolve a
+Only `runtime.py:TaskWorkflow` is registered. Its existing Temporal name
+`TaskWorkflowV2`, payload version `task-v2` and snapshot schema 2 identify the
+current serialized contract, not a second implementation. Obsolete V1 Tasks
+are no longer accepted or executed; this pre-production module has no V1
+migration requirement. Matching current keys still reuse the same immutable
+request. Model Activities resolve a
 fixed alias to ChatOpenAI using Worker environment settings; HTTP input cannot
 select a provider or fixture.
 
-V2 continues after each eight safe **parent model boundaries**, after preceding
+The Workflow continues after each eight safe **parent model boundaries**, after preceding
 tools, subagents and summarization have settled. A bounded journal of public
 saver writes preserves native channels, routing, pending writes, DeltaChannel
 ancestry and private summary state; it is carried in Temporal History, without

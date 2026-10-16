@@ -1,4 +1,4 @@
-"""Bounded real TaskWorkflowV2 Continue-As-New and cold-replay acceptance.
+"""Bounded current TaskWorkflow Continue-As-New and cold-replay acceptance.
 
 Uses the production API/Worker/Workflow with only a trusted model fixture. Every
 gate is inside a model Activity; no Workflow test branches or replacement graph.
@@ -237,7 +237,7 @@ def main(argv=None):
     receipt = {"run_id": run_id, "driver_pid": os.getpid(), "status": "running", "started_at": SUPPORT.timestamp(),
         "passed": [], "cleanup_confirmed": False, "production_ha_acceptance": False,
         "rss_budget_mib": 2048, "minimum_memory_free_percent": 15,
-        "scope": "production TaskWorkflowV2 with real native tools/subagents/summarization and deterministic model Activities",
+        "scope": "production TaskWorkflow with real native tools/subagents/summarization and deterministic model Activities",
         "excluded_claims": ["production cluster HA", "real provider inference", "permanent idempotency", "external-tool exactly-once", "unlimited task duration"]}
     persist = lambda: SUPPORT.private_json(receipt_path, receipt, run_id)
     persist()

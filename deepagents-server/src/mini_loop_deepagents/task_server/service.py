@@ -23,7 +23,7 @@ from .backend.history import HistoryReader
 from .backend.readiness import NamespaceReadiness
 from .backend.runs import OwnedRuns
 from .protocol import (
-    TASK_VERSION, TERMINAL_STATUSES, TRUSTED_WORKFLOWS, WORKFLOW_TYPE,
+    TASK_VERSION, TERMINAL_STATUSES, WORKFLOW_TYPE,
     TaskConflict, TaskInvalidRequest, TaskNotFound, TaskServiceError,
     TaskSubmissionUnknown, TaskUnavailable, canonical_json, request_digest, task_id_for,
 )
@@ -33,7 +33,7 @@ _request_digest = request_digest
 __all__ = [
     "TaskService", "TaskServiceError", "TaskNotFound", "TaskConflict",
     "TaskInvalidRequest", "TaskSubmissionUnknown", "TaskUnavailable",
-    "TASK_VERSION", "WORKFLOW_TYPE", "TRUSTED_WORKFLOWS", "task_id_for",
+    "TASK_VERSION", "WORKFLOW_TYPE", "task_id_for",
 ]
 
 
@@ -87,8 +87,7 @@ class TaskService:
                 )
         except WorkflowAlreadyStartedError:
             description, existing = await self._runs.latest(owner, task_id)
-            expected = request_digest(task_id, owner, message, existing["version"], self.task_queue)
-            if existing["request_sha256"] != expected:
+            if existing["request_sha256"] != digest:
                 raise TaskConflict(task_id)
             return {**self._runs.summary(description, existing), "reused": True, "write_confirmed": True}
         except (Exception, asyncio.CancelledError):

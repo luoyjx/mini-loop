@@ -26,7 +26,7 @@ deepagents-server/
 │   │   │   ├── cursors.py           有签名的每 Run 分页 cursor
 │   │   │   └── readiness.py         有界 namespace 探活与并发合并
 │   │   ├── worker.py                model provider、Worker 装配及 CLI
-│   │   ├── runtime.py / runtime_v2.py   已发布的 Workflow 版本
+│   │   ├── runtime.py               唯一的 TaskWorkflow 实现
 │   │   ├── checkpoint.py            跨 Continue-As-New 的 saver 日志
 │   │   ├── summarization.py         原生摘要中间件的确定性适配
 │   │   └── connection.py / lifecycle.py / launch.py
@@ -50,6 +50,22 @@ deepagents-server/
 SQL admission、outbox 或配额实现。当前任务身份、状态与事件仍由保留中的 Temporal History
 提供。`temporal_prototype/` 的本地 SQLite memory/effect ledger 也没有接入 Task 服务。
 
+## 目录保持多浅
+
+`src/mini_loop_deepagents/` 是 Python 安装包布局，用于分开可安装代码与仓库工具；
+业务层次从包内开始计数。当前 Task 模块采用“文件优先、按实际职责建子包”的布局：
+HTTP、协议、编排、Workflow、连接与生命周期文件直接放在 `task_server/`，不再套
+`domain/application/infrastructure` 等目录层级。
+
+`backend/` 保留一层，因为 Run 身份校验、History 分页、cursor 签名与 readiness
+已有四个独立模块，并共同依赖 Temporal 访问边界。把这些文件移回根部会增加并列文件数，
+没有减少职责。`tooling/acceptance/` 的场景、公共设施和 fixture 分组则只影响仓库验收，
+不增加生产导入层次。后续仅在一组文件具有独立职责和清晰依赖边界时新增子包。
+
+这里区分 [PyPA 的 src / flat 安装布局](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
+与包内的业务分组。[PEP 20](https://peps.python.org/pep-0020/) 倾向简单、浅层和可读性，
+没有规定目录最大深度；上述分组是针对当前模块职责的选择。
+
 ## 跟随一个 Task 请求
 
 1. `api.py` 解析启动参数并装配连接；`http.py` 负责 ASGI 生命周期、Bearer 身份、
@@ -60,7 +76,7 @@ SQL admission、outbox 或配额实现。当前任务身份、状态与事件仍
    History 并构造事件页，`cursors.py` 验签和绑定 namespace/owner/TaskID/RunID。
    `readiness.py` 单独管理探活的超时、并发合并和短缓存。
 4. Temporal 服务持久接受 Workflow 后，API 才能返回 202。Worker 独立轮询并执行
-   `runtime.py` 或 `runtime_v2.py`；HTTP 连接的生命期不拥有任务执行。
+   `runtime.py:TaskWorkflow`；HTTP 连接的生命期不拥有任务执行。
 
 依赖方向是 `api → http → protocol` 与 `api → service → backend`。
 HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定义，既不导入 HTTP 层，
@@ -78,7 +94,7 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 | History 导航或 cursor | `task_server/backend/history.py`、`cursors.py` | 保留期限、每 Run 的事件编号与现有签名格式 |
 | Temporal 连接或探活 | `connection.py`、`backend/readiness.py` | CLI 环境读取与 library 显式配置分开；不降低 TLS 验证 |
 | 模型部署设置 | `config.py`、`task_server/worker.py` | 凭据留在 Worker；固定 alias 不由 HTTP 输入覆盖 |
-| Workflow / 工具执行行为 | 对应版本的 `runtime*.py`、`checkpoint.py`、`summarization.py` | 先考虑历史 replay 和状态格式，再决定新版本；不能只通过改模块名迁移旧任务 |
+| Workflow / 工具执行行为 | `runtime.py`、`checkpoint.py`、`summarization.py` | 当前只维护一份实现；变更须核对当前持久格式与 replay，不为未部署的迭代累积兼容版本 |
 | Worker 退出行为 | `lifecycle.py` 与 `worker.py` | library `serve` 不接管宿主信号；CLI 才拥有强退责任 |
 | 新故障验收场景 | `tooling/acceptance/scenarios/`；共用设施放 `support/` | 离线模型与故障注入留在 `fixtures/`，不进入生产输入或 wheel |
 | 打包规则 | `tooling/build_task_bundle.py`、`Dockerfile.task` | wheel 源文件和锁文件一致性；不从测试目录拼装生产包 |
@@ -94,9 +110,11 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 - 原 `scripts/*.py` 命令保持可调用；故障验收和构建脚本通过普通包导入进入 `tooling/`，
   不依赖按文件路径动态加载其他脚本，也不从 `tests/` 导入运行组件。
   `scripts/chat.py` 与 `scripts/jobs.py` 仍是原位的客户端示例和客户端 CLI。
-- Workflow 名称 `TaskWorkflow` / `TaskWorkflowV2`、固定模型 alias、Activity 名称、
-  request memo、状态 payload、checkpoint envelope 与 cursor 编码保持。
-  代码重排不等于任意 Workflow 版本升级已通过 replay 验证。
+- Python 类统一为 `runtime.TaskWorkflow`，Worker 只注册当前实现；早期 Task v1 已删除，
+  `runtime_v2.py` 不再保留兼容副本。Temporal wire type `TaskWorkflowV2`、`task-v2`、
+  schema 2、固定模型 alias、Activity 名称、request memo、checkpoint envelope 与 cursor
+  编码仍标识当前协议。Python 类名、HTTP `/v1/tasks` 的 API 路径和持久协议版本是三个
+  独立概念，不能从名称中的数字推断存在几份实现。
 - 生产依赖仍由现有 `pyproject.toml` / `uv.lock` 管理；`tooling` 和验收 fixtures 不发布到
   应用 wheel。它们只在受控验收时以明确的仓库路径运行。
 
@@ -112,4 +130,5 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 
 [验收矩阵](TASK_ACCEPTANCE.md) 和现有 evidence JSON 保留各自原始源码、镜像及实验基线。
 新目录结构不回写历史收据；本轮重新运行的检查另记在 [交付记录](../DELIVERY.md)。
+早期 v1 的历史结果只说明当时的实现；当前包不注册、执行或兼容该版本。
 这些本地证据仍不证明生产 Temporal HA、跨主机故障域、真实 provider 吞吐或任意版本迁移。

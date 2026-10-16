@@ -1,6 +1,6 @@
 """Resource-bounded multi-owner Task queue and rolling Worker acceptance.
 
-Twelve real V2 Tasks, three single-Activity Workers and two production APIs test
+Twelve real Tasks, three single-Activity Workers and two production APIs test
 admission backpressure, pending work, native continuation and three shutdown
 paths. Deterministic model Activities keep this a mechanism check, not a
 production throughput/latency or real-provider capacity measurement."""
@@ -237,7 +237,7 @@ def main(argv=None):
     receipt = {"run_id": run_id, "driver_pid": os.getpid(), "status": "running", "started_at": SUPPORT.timestamp(),
         "passed": [], "cleanup_confirmed": False, "rss_budget_mib": 2048, "minimum_memory_free_percent": 15,
         "production_ha_acceptance": False, "production_capacity_acceptance": False,
-        "scope": "twelve real V2 Tasks, three owners, three single-Activity production Workers and two production HTTP APIs",
+        "scope": "twelve real Tasks, three owners, three single-Activity production Workers and two production HTTP APIs",
         "excluded_claims": ["production throughput or latency", "production cluster HA", "real provider capacity", "external-effect exactly-once", "global tenant quotas"]}
     persist = lambda: SUPPORT.private_json(receipt_path, receipt, run_id)
     persist()

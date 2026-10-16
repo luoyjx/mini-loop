@@ -7,21 +7,22 @@ API/Worker 分离部署。标准 Agent Server 管理 Run 调度与持久状态�
 原 Python/Go runtime 保持各自入口与语义。
 
 本文展开标准 LangGraph 入口；独立 Temporal Task HTTP 入口见
-[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-structure-2026-10-16.png)。
+[Task Server](TASK_SERVER.md) 与 [本轮独立分层图](../docs/audits/task-server-single-runtime-2026-10-17.png)。
 两条入口各有自己的调度权威，不能把这里的 PostgreSQL/Redis 或 Store 直接视作 Task HTTP 的底座。
 
-本轮以 `a6d61c6` 为基线重构模块结构，部署角色保持。Task API 的 HTTP 层、任务编排、
-Temporal 后端以 `protocol.py` 为共同合同；生产 Workflow 的确定性适配移到
+当前模块保留单一 `runtime.py:TaskWorkflow`，删除早期未生产使用的 v1；部署角色保持。
+Task API 的 HTTP 层、任务编排、Temporal 后端以 `protocol.py` 为共同合同；
+生产 Workflow 的确定性适配位于
 `temporal_support/`，不依赖历史原型。构建与故障验收属于仓库 `tooling/`，原脚本保留
 兼容入口。具体目录与扩展位置见 [项目结构](docs/PROJECT_STRUCTURE.md)。
 
-Temporal 入口在 `06a93d4` 的审查基线中：新任务默认使用 `TaskWorkflowV2`，在安全的
-父 model 边界分段 Continue-As-New，已有 v1 任务继续使用不变的 v1 代码。迁移载体是
+Temporal 中的当前 Workflow type 仍为 `TaskWorkflowV2`，在安全的父 model 边界分段
+Continue-As-New；这是持久协议标识，Worker 只注册一份当前实现。迁移载体是
 保存在 Temporal History 中的完整 public saver 写日志，包括 DeltaChannel 祖先、
 待执行路由、摘要私有状态及虚拟文件；不在下表 L5 增加第二套 SQL checkpointer。
 API 的任务身份跨 Run 稳定，状态/结果/取消跟随经校验的执行链，事件保留每个 Run
 独立序号并支持导航。单任务仍受原始 24 小时期限、512 个父 model 边界及 checkpoint
-大小预算约束。详细协议、旧版本保留与尚未验收项见 [Task Server](TASK_SERVER.md)。
+大小预算约束。详细协议与尚未验收项见 [Task Server](TASK_SERVER.md)。
 
 `401e4d5` 已交付 Temporal Worker CLI 的进程生命周期边界：SIGTERM/SIGINT 调用 SDK
 shutdown，宽限内排空已领取工作，宽限后交回可重试 Activity；硬期限和第二次信号

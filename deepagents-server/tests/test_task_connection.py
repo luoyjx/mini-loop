@@ -259,14 +259,18 @@ def test_library_process_entry_forwards_explicit_settings_without_loading_env(mo
     assert captured == [settings, None]
 
 
-def test_api_cli_loads_shared_settings_into_lifespan_without_a_server(monkeypatch):
+@pytest.mark.parametrize("queue_arguments,expected_queue", [
+    ([], "mini-loop-task"),
+    (["--task-queue", "deployment-queue"], "deployment-queue"),
+])
+def test_api_cli_loads_shared_settings_into_lifespan_without_a_server(monkeypatch, queue_arguments, expected_queue):
     import uvicorn
     captured = []
     monkeypatch.setenv(P + "TLS", "true")
     monkeypatch.setenv(P + "API_KEY", "deployment-key")
     monkeypatch.setenv("MINILOOP_TASK_SERVER_CURSOR_SECRET", "c" * 40)
     monkeypatch.setattr(api, "load_tokens", lambda *a: {"a" * 40: "owner"})
-    monkeypatch.setattr(sys, "argv", ["api", "--temporal-address", "temporal.example:7233", "--namespace", "owned-ns"])
+    monkeypatch.setattr(sys, "argv", ["api", "--temporal-address", "temporal.example:7233", "--namespace", "owned-ns", *queue_arguments])
 
     async def connect(*args, **kwargs):
         captured.append((args, kwargs))
@@ -276,6 +280,7 @@ def test_api_cli_loads_shared_settings_into_lifespan_without_a_server(monkeypatc
         async def startup():
             async with app.router.lifespan_context(app):
                 assert app.state.task_service is not None
+                assert app.state.task_service.task_queue == expected_queue
         asyncio.run(startup())
 
     monkeypatch.setattr(api, "connect_temporal", connect)

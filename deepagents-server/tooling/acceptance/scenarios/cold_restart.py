@@ -1,4 +1,4 @@
-"""Six real V2 Tasks across an observed all-service cold restart, bounded locally.
+"""Six real Tasks across an observed all-service cold restart, bounded locally.
 
 The driver never creates an HTTP or Temporal client. An owned subprocess is
 both submitter and observer; it is killed with the old application and replaced.

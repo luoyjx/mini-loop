@@ -49,14 +49,6 @@ class TaskFixtureModel(BaseChatModel):
         for message in messages:
             if message.type == "tool" and getattr(message, "status", "success") == "error":
                 raise ValueError(f"Task tool failed: {message.name}: {str(message.content)[:1200]}")
-        if label.startswith("[fixture:loop-limit]"):
-            # Test-only endless planning: the actual graph must enforce its bound.
-            # Derive IDs from persisted transcript state so replay stays stable.
-            call_id = f"task-loop-{len(completed):04d}"
-            return AIMessage(content="", id=f"fixture:{call_id}", tool_calls=[{
-                "id": call_id, "name": "write_todos",
-                "args": {"todos": [{"content": "loop until the real graph step limit", "status": "in_progress"}]},
-            }]), False
         script = [
             ("task-plan", "write_todos", {"todos": [{"content": "complete task files", "status": "in_progress"}]}),
             ("task-write", "write_file", {"file_path": "/plan.md", "content": f"plan:{label}"}),

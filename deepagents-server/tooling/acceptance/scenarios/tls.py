@@ -113,7 +113,7 @@ async def exercise(processes, binary, openssl, directory, run_id, receipt, persi
             result = HTTP.decode(await http.post(url + "/v1/tasks", headers={**headers, "Idempotency-Key": key},
                                                 json={"message": f"[rollout] TLS {run_id} {index}"}), 202)
             if result.get("task_id") != task_id or result.get("version") != "task-v2" or result.get("reused") is not False:
-                raise HarnessFailure("The TLS APIs did not create two fresh production V2 Tasks")
+                raise HarnessFailure("The TLS APIs did not create two fresh production Tasks")
             records.append({"owner": "alice", "task_id": task_id, "first_execution_run_id": result["first_execution_run_id"]})
         async def blocked():
             return [ROLLOUT.read_marker(barriers, record["task_id"]) for record in records]
@@ -194,7 +194,7 @@ async def exercise(processes, binary, openssl, directory, run_id, receipt, persi
                        model_activity_attempt_count=attempts["model_activity_attempt_count"], activity_attempts=attempts,
                        tunnel_audits=[{"file": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                                        "connections": audit_connections(path)} for path in (original_audit, replacement_audit)])
-        receipt["passed"].append("both real V2 Tasks complete ten native tools and one native CAN each after reconnect, within three Activity attempts; four native Run Histories contain none of the test credentials")
+        receipt["passed"].append("both real Tasks complete ten native tools and one native CAN each after reconnect, within three Activity attempts; four native Run Histories contain none of the test credentials")
         persist()
 
 
@@ -214,7 +214,7 @@ def main(argv=None):
         "passed": [], "cleanup_confirmed": False, "rss_budget_mib": 2048, "minimum_memory_free_percent": 15,
         "production_ha_acceptance": False, "production_capacity_acceptance": False,
         "native_temporal_tls_acceptance": False, "cloud_api_key_acl_acceptance": False,
-        "scope": "two real V2 Tasks, two production APIs and two production Workers reconnect through test-only mTLS termination",
+        "scope": "two real Tasks, two production APIs and two production Workers reconnect through test-only mTLS termination",
         "excluded_claims": ["native Temporal server TLS", "Temporal Cloud API-key ACL", "production ingress", "certificate rotation", "production HA or throughput", "external-effect exactly-once"]}
     persist = lambda: SUPPORT.private_json(receipt_path, receipt, run_id)
     persist()

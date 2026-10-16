@@ -8,7 +8,7 @@ History 为单一权威**。此路径没有另建业务 SQL 台账、Outbox 或�
 它与标准 LangGraph Agent Server、[离线故障原型](TEMPORAL_PROTOTYPE.md) 以及原
 Python/Go 业务分别运行。固定依赖仍为 Deep Agents `0.7.25`、Temporal Python SDK
 `1.34.0`（可选 `temporal` extra）；`08b4333` 已交付经用户批准的固定 Python
-基础镜像。本轮重构 Python 模块分工，未增加依赖；原有入口和持久协议保留。
+基础镜像。当前只维护一份 Task Workflow 实现；早期未生产使用的 v1 已移除，未增加依赖。
 `08b4333` 镜像的组合冷重启结果属于历史验收。源码和本地故障测试不等于
 生产高可用、持续容量或真实 provider 的调用验收。
 
@@ -25,12 +25,12 @@ readiness；`protocol.py` 定义它们共用的纯协议。它们是同一 API �
 | 镜像与角色 launcher | 同一制品分别运行 API/Worker；按角色读取 Secret 文件；API 提供 namespace readiness | 同进程信号所有权；外接 Temporal/ingress，容器配置不提供 HA 或版本路由 |
 | 共享 Client 连接配置 | API/Worker 各自显式连接；CLI 环境配置，library 显式对象 | 可选验证 TLS/mTLS；没有独立代理服务，HTTP owner 与 Temporal ACL 分开 |
 | Temporal 服务 | Workflow ID 接受、队列、History、Activity 重试与取消 | 服务器持久化与保留策略决定可恢复范围；本地 SQLite 故障实验不代表集群 HA |
-| TaskWorkflowV2 + v1 Worker | Deep Agents 规划、子代理、原生摘要、虚拟文件、todos、messages | V2 完整 public saver 日志跨 Run 迁移；同 Run 经 History 重放重建；不访问外部 checkpointer |
+| 单一 TaskWorkflow 实现 | Deep Agents 规划、子代理、原生摘要、虚拟文件、todos、messages | 完整 public saver 日志跨 Run 迁移；同 Run 经 History 重放重建；不访问外部 checkpointer |
 | 模型 Activity | 以 Worker 配置创建 ChatOpenAI，调用外部模型 | 重试可能重复调用模型；固定 alias，HTTP 输入不能选择 provider、模型或 fixture |
 
 同 owner 的 Idempotency-Key 经确定性摘要形成 TaskID，也是 Workflow ID。请求摘要
-包含 message、TaskID、owner、协议版本和 task queue。新提交为 `task-v2`，重复旧 key
-使用已有任务版本的摘要核对，不会将 v1 自动迁移为 v2。并发 API 副本依赖 Temporal
+包含 message、TaskID、owner、协议版本和 task queue。当前只接受 `task-v2`，重复 key
+按同一协议摘要核对，不接受早期 `task-v1` 记录。并发 API 副本依赖 Temporal
 原生 Workflow ID 冲突保护：同 key 同摘要复用现有任务，不同摘要返回 409。
 已完成任务也可复用，前提是服务仍保留该执行。
 
@@ -39,15 +39,16 @@ key 可能再次创建执行；查询与事件也可能返回 404。调用方必
 并让部署保留期覆盖业务重试和结果读取窗口。当前没有永久幂等台账、任务列表接口
 或自动归档服务。
 
-## V2 分段续跑与完整状态
+## 分段续跑与完整状态
 
-V2 已在 `98de8d2` 交付。本轮以 `08b4333` 为审查基线，保留相同 Workflow 代码；
-新任务启动 `TaskWorkflowV2` / `task-v2`，结果 snapshot
-为 schema 2。Worker 同时注册原 `TaskWorkflow` / `task-v1`，v1 运行码保持不变。
-部署时先替换为能同时运行两版的 Worker，再切换 API；旧 Worker 无法运行 V2，不能
-把新任务直接派给只认识 v1 的 Worker 池。这里没有自动 Worker Versioning 路由。
+实现统一放在 `runtime.py`，Python 类名为 `TaskWorkflow`；Worker 仅注册这一份。
+此前为旧代码保留的 v1 实现及兼容分支已删除，不再要求双版本 Worker 或双版本发布顺序。
+当前 Temporal Workflow type 继续使用 `TaskWorkflowV2`，请求 memo 与 payload 的 version
+均为 `task-v2`，结果 snapshot schema 为 2。这些是正在使用的持久格式标识，
+不代表目录中还存在两套实现，也不提供早期 Task v1 的执行或迁移路径。
+HTTP `/v1/tasks` 是独立的 API 路径版本，与 Workflow 实现数量无关。
 
-V2 让 Deep Agents 在父图 `model` 节点前暂停，等待前一轮工具、general-purpose
+当前 Workflow 让 Deep Agents 在父图 `model` 节点前暂停，等待前一轮工具、general-purpose
 子图与摘要 middleware 完成，且确认没有未完成子状态、错误或人工 interrupt。
 每完成 8 个这样的父 model 边界，在下一次 model 前执行 Continue-As-New（CAN）。
 这是同一 Task/Workflow execution chain 的新 Run，不是再发一次用户请求；TaskID、
@@ -92,8 +93,8 @@ CAN 缩短单个 Run 的 History，但迁移 journal 累积此前写入；它不
 
 以下命令在 `deepagents-server/` 下执行。先准备已校验的 Temporal CLI 或可访问的
 受信任 Temporal 服务；固定本地 CLI/Server 校验值见 [原型记录](TEMPORAL_PROTOTYPE.md)。
-服务端地址、namespace 和队列必须由部署方统一配置。示例保留原队列名
-`mini-loop-task-v1` 以兼容既有请求摘要；队列名称不决定 Workflow 版本，新任务仍为 V2。
+服务端地址、namespace 和队列必须由部署方统一配置。默认队列与以下示例统一使用
+中性名称 `mini-loop-task`；队列名是配置值，不决定 Workflow 版本。
 
 ```sh
 uv sync --locked --extra temporal
@@ -122,7 +123,7 @@ export MINILOOP_DEEPAGENTS_TOKENS="$(.venv/bin/python -c \
   'import json,os; print(json.dumps({os.environ["TASK_TOKEN"]: os.environ["TASK_OWNER"]}))')"
 .venv/bin/python -m mini_loop_deepagents.task_server.api \
   --address 127.0.0.1:8123 --temporal-address 127.0.0.1:7233 \
-  --namespace default --task-queue mini-loop-task-v1 --max-inflight 32
+  --namespace default --task-queue mini-loop-task --max-inflight 32
 ```
 
 在另一终端以 Worker 凭据环境启动执行进程。相同队列可运行多个 Worker，各自使用
@@ -135,7 +136,7 @@ export MINILOOP_DEEPAGENTS_TIMEOUT_SECONDS=60
 export LANGSMITH_TRACING=false
 .venv/bin/python -m mini_loop_deepagents.task_server.worker \
   --address 127.0.0.1:7233 --namespace default \
-  --task-queue mini-loop-task-v1 --identity task-worker-a \
+  --task-queue mini-loop-task --identity task-worker-a \
   --activity-slots 1 --workflow-slots 2 \
   --shutdown-grace-seconds 2 --shutdown-timeout-seconds 15
 ```
@@ -153,9 +154,9 @@ export LANGSMITH_TRACING=false
 | 单 API 进程 | `--max-inflight=32`（1–1024）；应用层超限 429，底层连接过载也可能返回 503；请求时限 20 秒 |
 | 单 Worker 进程 | Activity 槽默认 1，Workflow task 槽默认 2，均为 1–32；Workflow cache 为 0 |
 | Worker CLI 停机 | `--shutdown-grace-seconds=2`，有限数 0–300；`--shutdown-timeout-seconds=15`，有限数、大于 grace、最多 360 秒 |
-| V2 单任务 | 原始 Workflow execution timeout 24 小时；512 个父 model 边界；每 8 个安全边界 CAN；不是全部模型调用上限 |
-| 图 invocation | 父图 128 步；原生 GP 子图 9999 步；v1 仍沿用原 128 步任务行为 |
-| V2 状态迁移 | 16 MiB raw journal、384 KiB compressed checkpoint、512 KiB continuation envelope |
+| 单任务 | 原始 Workflow execution timeout 24 小时；512 个父 model 边界；每 8 个安全边界 CAN；不是全部模型调用上限 |
+| 图 invocation | 父图 128 步；原生 GP 子图 9999 步 |
+| 状态迁移 | 16 MiB raw journal、384 KiB compressed checkpoint、512 KiB continuation envelope |
 | 单模型 Activity | 每次 start-to-close 上限 330 秒、heartbeat timeout 5 秒、最多 3 次尝试；OpenAI SDK 重试关闭 |
 | 提交与事件 | HTTP JSON body 上限 16 KiB；事件每页 1–100 条（默认 50）；Temporal RPC 默认 5 秒 |
 
@@ -216,8 +217,9 @@ mTLS 隧道终止 TLS 后连到 loopback dev Temporal，属于测试设施，不
 `worker.run_process` 是独立 CLI 的可信进程入口，在连接 Temporal 前安装 SIGTERM /
 SIGINT handler；第一个信号触发显式 `Worker.shutdown()`。此前只有
 `graceful_shutdown_timeout=2` 配置和 `await worker.run()`，没有将 SIGTERM 接入
-SDK 停机流程，因此不能从旧配置推导出滚动排空已经工作。`401e4d5` 的这项修改
-不改变 v1/V2 Workflow、CAN 协议或模型 Activity 重试策略，只补进程所有权。
+SDK 停机流程，因此不能从旧配置推导出滚动排空已经工作。`401e4d5` 的历史修改
+只补进程所有权，没有改变当时的 Workflow、CAN 协议或模型 Activity 重试策略。
+当前这项进程边界服务于唯一的 `runtime.TaskWorkflow`，不要求保留早期 Task v1。
 
 SDK 停机停止新的轮询，继续处理已经领取的工作；已在 Core 内缓冲的 Start 仍可能
 交给语言层，因此不能用“信号后绝无新 Activity 开始”作为保证。宽限内已领取的
@@ -238,7 +240,7 @@ Activity 仍依赖原生 heartbeat/timeout 与有限重试恢复；不要把退�
 `run_process` 只用于专用 Worker 进程，不应嵌进承载其他业务的主进程。
 
 `401e4d5` 的受控替换顺序是：保留另外两个 Worker 服务，逐一给旧 Worker 发 SIGTERM，
-观察退出后启动相同 namespace、queue、v1/V2 注册与模型配置的替换 Worker；
+观察退出后启动相同 namespace、queue、当时的 Workflow 注册与模型配置的替换 Worker；
 最多同时保留三个执行进程。生产环境若采用先起新副本再停旧副本，须另外预算临时
 增加的执行槽和 provider 额度，并验收该发布方式。保持原 TaskID、first Run、
 请求 memo 与队列配置，不重新提交用户输入。
@@ -344,9 +346,9 @@ Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD
 - API 副本共享 Temporal namespace、task queue、协议版本、token→owner 映射和
   cursor secret。不要把既有 token 改绑给其他 owner。输入摘要包括队列，滚动发布时
   随意换队列会使原 key 重试发生 409；当前没有按旧任务自动选择旧队列的路由器。
-- Worker 必须保留兼容的代码与模型配置。`task-v2`/schema 2 与 `task-v1`/schema 1
-  是协议标签，不是镜像 pinning；当前没有 Worker Versioning 部署、构建摘要路由或
-  不兼容 graph 自动迁移。新 Worker 注册两版，旧 key 保留旧版本语义。
+- Worker 使用单一当前实现与对应模型配置。`task-v2`/schema 2 是持久协议标签，
+  不是镜像 pinning；当前没有 Worker Versioning 部署、构建摘要路由或不兼容 graph
+  自动迁移。早期 Task v1 不再注册，历史 v1 验收结果不代表当前包支持该版本。
 - V2 默认启用上文限定的 CAN，没有 owner Memory、审批恢复、宿主 shell 或外部
   Artifact 服务。旧原型的 SQLite Memory 回执不被此服务继承。files 为虚拟图状态；
   CAN 迁移和完整结果仍占用 Temporal payload/History，当前没有大结果外置。
@@ -515,6 +517,9 @@ v1 基线全模块 **323 passed**，根 Python **2256 passed / 28 skipped**，�
 保留在 [TEMPORAL_PROTOTYPE.md](TEMPORAL_PROTOTYPE.md)。此轮使用真实 Task API、
 TaskWorkflow 与 Deep Agents，但测试 Worker 注入确定性模型，未调用外部 provider。
 
+下面的脚本入口继续可用，但执行的是当前单一 Workflow 场景；早期 v1 的直接 Start、
+兼容复用和旧 128 步任务上限场景已删除。上述历史运行次数与通过数不能套用到新执行。
+
 ```sh
 .venv/bin/python scripts/task_server_fault_smoke.py \
   --temporal-binary /absolute/path/to/temporal \
@@ -525,9 +530,11 @@ TaskWorkflow 与 Deep Agents，但测试 Worker 注入确定性模型，未调�
 脚本只启动自身持有的隔离服务和 Worker，生成私有运行目录；它对进程树施加 2 GiB
 RSS、180 秒和最低可用内存比例的观察预算，超限标为 resource-blocked。验收要覆盖
 双 API 幂等竞争、独立生产者退出、双 Worker 并行、全部 API 替换、同数据库 Temporal
-重启、Worker 冷重放、跨 owner 拒绝、事件续页、取消隔离和真实步骤上限终态。
+重启、Worker 冷重放、跨 owner 拒绝、事件续页和取消隔离。当前 CAN 与完整状态的
+故障场景由 `scripts/task_can_fault_smoke.py` 运行，不再调用旧 v1 实现来替代。
 
-本轮独立 Agent Server [架构图](../docs/audits/task-server-cold-restart-2026-10-16.png) 与
-[精确生图提示词](../docs/audits/task-server-cold-restart-2026-10-16.prompt.txt) 标注组合冷重启验收的故障边界、
-已接受运行/排队任务的恢复路径与对应证据；全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
+本轮独立 Agent Server [架构图](../docs/audits/task-server-single-runtime-2026-10-17.png) 与
+[精确生图提示词](../docs/audits/task-server-single-runtime-2026-10-17.prompt.txt) 标注单一 Workflow
+和源码职责；先前的 [冷重启图](../docs/audits/task-server-cold-restart-2026-10-16.png) 保留为
+对应历史实验的说明。全仓库规范仍以 [README 架构图](../README.md#architecture) 为准。
 具体运行证据与提交范围由 [DELIVERY.md](DELIVERY.md) 汇总。

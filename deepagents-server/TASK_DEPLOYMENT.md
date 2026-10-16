@@ -7,6 +7,10 @@ Server，不共享原 Python/Go 业务，不创建 Temporal、PostgreSQL、Redis
 
 当前源码已按 [项目结构](docs/PROJECT_STRUCTURE.md) 重构；构建实现位于
 `tooling/build_task_bundle.py`，原 `scripts/build_task_bundle.py` 保留兼容入口。
+Task Worker 仅包含 `runtime.py:TaskWorkflow` 当前实现；早期 Task v1 不再打包或注册。
+当前持久协议仍为 `TaskWorkflowV2` / `task-v2` / schema 2，默认队列统一为
+`mini-loop-task`。镜像中仍有标准 LangGraph 和历史实验包，它们不表示 Task Worker
+同时加载多版 Workflow。
 下文 `08b4333` 镜像与冷重启结果是历史基线，当前源码需重新构建并核对自己的 manifest。
 本轮实际验证以 [交付记录](DELIVERY.md) 为准。本文中的配置
 不代表生产 HA、容量、真实模型调用或不兼容版本滚动升级已通过验收。
@@ -263,7 +267,7 @@ manifest 中的包源码全集、`pyproject.toml`、`uv.lock` 和 `Dockerfile.ta
 保留，不证明磁盘丢失恢复、数据库主备、跨故障域可用性或 RPO/RTO SLO。
 
 [历史冷重启图](../docs/audits/task-server-cold-restart-2026-10-16.png) 标记该组合验收的范围
-与恢复路径；[本轮结构图](../docs/audits/task-server-structure-2026-10-16.png) 标明源码分工。
+与恢复路径；[本轮结构图](../docs/audits/task-server-single-runtime-2026-10-17.png) 标明单一实现与源码分工。
 验收场景、公共设施及离线 Worker 分别位于 `tooling/acceptance/scenarios/`、`support/`、
 `fixtures/`，通过原有脚本入口运行，且不打入生产 wheel。完整 Task/CAN 协议见
 [Task Server](TASK_SERVER.md)，规范拓扑以 [根 README](../README.md#architecture) 为准。

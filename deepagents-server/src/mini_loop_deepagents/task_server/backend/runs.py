@@ -14,7 +14,7 @@ from temporalio.client import Client, WorkflowContinuedAsNewError
 from temporalio.service import RPCError, RPCStatusCode
 
 from ..protocol import (
-    SHA256_PATTERN, STATUSES, TASK_ID_PATTERN, TRUSTED_WORKFLOWS,
+    SHA256_PATTERN, STATUSES, TASK_ID_PATTERN, TASK_VERSION, WORKFLOW_TYPE,
     TaskNotFound, TaskUnavailable, valid_run_id,
 )
 
@@ -59,8 +59,7 @@ class OwnedRuns:
                 memo = dict(await description.memo())
             valid = (
                 description.id == task_id and valid_run_id(description.run_id)
-                and TRUSTED_WORKFLOWS.get(description.workflow_type) == memo.get("version")
-                and memo.get("version") in TRUSTED_WORKFLOWS.values()
+                and description.workflow_type == WORKFLOW_TYPE and memo.get("version") == TASK_VERSION
                 and (run_id is None or description.run_id == run_id)
                 and memo.get("owner") == owner and memo.get("task_id") == task_id
                 and isinstance(memo.get("request_sha256"), str) and SHA256_PATTERN.fullmatch(memo["request_sha256"])

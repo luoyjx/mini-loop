@@ -52,8 +52,9 @@ def test_response_validation_does_not_print_private_body():
 
 
 def test_recovered_result_preserves_complete_messages_file_metadata_and_plan():
-    before = {"identity": {"task_id": "task-a", "owner": "alice", "workflow_id": "task-a"},
-              "schema_version": 1, "version": "task-v1", "status": "running",
+    before = {"identity": {"task_id": "task-a", "owner": "alice", "workflow_id": "task-a",
+                           "first_execution_run_id": "run-a"},
+              "schema_version": 2, "version": "task-v2", "status": "running", "state": {},
               "messages": [{"type": "tool", "data": {"id": "stable-id", "content": "original"}}],
               "files": {"/plan.md": {"content": "original", "created_at": "time-1", "modified_at": "time-1"}},
               "todos": [{"content": "original task", "status": "in_progress"}]}
@@ -73,25 +74,15 @@ def test_recovered_result_preserves_complete_messages_file_metadata_and_plan():
         assert field in str(failure.value) and changed not in str(failure.value)
 
 
-def test_current_snapshot_contract_requires_v2_first_execution_identity_and_native_state():
+def test_current_snapshot_contract_requires_first_execution_identity_and_native_state():
     snapshot = {"schema_version": 2, "version": "task-v2", "status": "running", "state": {},
                 "identity": {"task_id": "task-a", "workflow_id": "task-a", "owner": "alice",
                              "first_execution_run_id": "run-a"}}
     harness.check_snapshot_contract(snapshot, "task-a", "run-a", "task-v2", "running")
-    for damaged in (dict(snapshot, schema_version=1), dict(snapshot, version="task-v1"),
+    for damaged in (dict(snapshot, schema_version=1), dict(snapshot, version="unsupported-version"),
                     dict(snapshot, state=None), dict(snapshot, identity={**snapshot["identity"], "first_execution_run_id": "foreign"})):
         with pytest.raises(harness.HarnessFailure):
             harness.check_snapshot_contract(damaged, "task-a", "run-a", "task-v2", "running")
-
-
-def test_original_v1_start_contract_remains_reusable_by_current_identity_and_digest():
-    pytest.importorskip("temporalio")
-    from mini_loop_deepagents.task_server.service import _request_digest, task_id_for
-    legacy = harness.legacy_submission("alice", "retained-key", "original message", "queue")
-    assert legacy["task_id"] == task_id_for("alice", "retained-key")
-    assert legacy["payload"]["version"] == legacy["memo"]["version"] == "task-v1"
-    assert legacy["memo"]["request_sha256"] == _request_digest(legacy["task_id"], "alice", "original message", "task-v1", "queue")
-    assert legacy["memo"]["request_sha256"] != _request_digest(legacy["task_id"], "alice", "original message", "task-v2", "queue")
 
 
 def test_preservation_rejects_changed_private_native_state_without_normalization():
@@ -104,45 +95,13 @@ def test_preservation_rejects_changed_private_native_state_without_normalization
     after["todos"][0]["status"] = "completed"
     after["status"] = "completed"
     harness.check_preserved_state(before, after)
+    for initial, completed in (({k: v for k, v in before.items() if k != "state"}, after),
+                               (before, dict(after, state=None))):
+        with pytest.raises(harness.HarnessFailure, match="full native state"):
+            harness.check_preserved_state(initial, completed)
     after["state"]["_summarization_event"]["summary_message"]["kwargs"]["id"] = "random"
     with pytest.raises(harness.HarnessFailure, match="native state"):
         harness.check_preserved_state(before, after)
-
-
-def test_step_limit_evidence_requires_real_native_terminal_failure_and_activity_loop():
-    native = pytest.importorskip("temporalio.api.history.v1")
-    history = native.History()
-    for _ in range(2):
-        history.events.add().activity_task_scheduled_event_attributes.activity_type.name = "deepagents.invoke_model"
-        history.events.add().activity_task_completed_event_attributes.SetInParent()
-    failure = history.events.add().workflow_execution_failed_event_attributes.failure
-    failure.application_failure_info.type = "task_step_limit"
-    failure.application_failure_info.non_retryable = True
-    evidence = harness.check_step_limit_history(history)
-    assert evidence["model_activities_scheduled"] == 2 and evidence["workflow_task_failed_count"] == 0
-    failure.application_failure_info.non_retryable = False
-    with pytest.raises(harness.HarnessFailure):
-        harness.check_step_limit_history(history)
-    failure.application_failure_info.non_retryable = True
-    history.events.add().workflow_task_failed_event_attributes.SetInParent()
-    with pytest.raises(harness.HarnessFailure):
-        harness.check_step_limit_history(history)
-
-
-def test_loop_fixture_generates_distinct_real_tool_calls_without_entering_barrier(tmp_path):
-    messages_api = pytest.importorskip("langchain_core.messages")
-    pytest.importorskip("temporalio")
-    from tooling.acceptance.fixtures.task_worker_fixture import TaskFixtureModel
-    model = TaskFixtureModel(barrier_directory=str(tmp_path))
-    messages = [messages_api.HumanMessage(content="[fixture:loop-limit] controlled loop")]
-    call_ids = set()
-    for _ in range(3):
-        reply, blocked = model._reply(messages)
-        call = reply.tool_calls[0]
-        assert not blocked and call["name"] == "write_todos" and call["id"] not in call_ids
-        call_ids.add(call["id"])
-        messages.extend([reply, messages_api.ToolMessage(content="updated", tool_call_id=call["id"], name=call["name"])])
-    assert not list(tmp_path.iterdir())
 
 
 def test_control_files_are_hashed_and_private(tmp_path):

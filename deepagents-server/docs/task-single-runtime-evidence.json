@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-17",
+  "baseline": "2b856764bad263e65d52af83d61ac61850dd86f3",
+  "scope": "remove obsolete Task V1; sole current runtime.py:TaskWorkflow; preserve current serialized protocol",
+  "tests": {
+    "module_passed": 599,
+    "root_passed": 2256,
+    "root_skipped": 28,
+    "root_warnings": 104,
+    "original_python_invariant_modules": 77
+  },
+  "resource_policy": {
+    "serial_heavy_gates": true,
+    "nice": 10,
+    "tree_rss_budget_mib": 1536,
+    "minimum_memory_free_percent": 15,
+    "timeout_seconds": 300
+  },
+  "gates": {
+    "module": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-module-20261017T074650.summary.json",
+      "sha256": "bc437b9250a3cf83a26606a3dd34111ce0c6fd9d60ac1143be670fb0173b9678",
+      "label": "task-single-runtime-module",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "deepagents-server/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "deepagents-server/tests"
+      ],
+      "pid": 26658,
+      "exit_code": 0,
+      "duration_seconds": 26.68,
+      "peak_tree_rss_kib": 318048,
+      "lowest_free_percent": 64,
+      "samples": 13,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-module-20261017T074650.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-module-20261017T074650.resources.jsonl"
+    },
+    "root": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-root-20261017T074731.summary.json",
+      "sha256": "a4dee86fe24cef9ac33d370c9642f452288319121d1edfab3b203a1315ab7f07",
+      "label": "task-single-runtime-root",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "pid": 26898,
+      "exit_code": 0,
+      "duration_seconds": 110.36,
+      "peak_tree_rss_kib": 421264,
+      "lowest_free_percent": 58,
+      "samples": 54,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-root-20261017T074731.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-root-20261017T074731.resources.jsonl"
+    },
+    "invariants": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-invariants-20261017T075048.summary.json",
+      "sha256": "0750243161da775bc35ad1b560937702d64f18d4d7158cc678de64d410f216d8",
+      "label": "task-single-runtime-invariants",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "pid": 29681,
+      "exit_code": 0,
+      "duration_seconds": 2.05,
+      "peak_tree_rss_kib": 320,
+      "lowest_free_percent": 57,
+      "samples": 1,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-invariants-20261017T075048.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-invariants-20261017T075048.resources.jsonl"
+    },
+    "replay": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-replay-20261017T075003.summary.json",
+      "sha256": "11ad07c92770195440dc4d1a5743c9d2e6afa68660a2d2b1f8709d01a59f0c4d",
+      "label": "task-single-runtime-replay",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "deepagents-server/.venv/bin/python",
+        "var/deepagents-delivery/task-single-runtime-replay.py"
+      ],
+      "pid": 29143,
+      "exit_code": 0,
+      "duration_seconds": 6.13,
+      "peak_tree_rss_kib": 212848,
+      "lowest_free_percent": 59,
+      "samples": 3,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-replay-20261017T075003.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-replay-20261017T075003.resources.jsonl"
+    },
+    "wheel": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-wheel-20261017T075109.summary.json",
+      "sha256": "82f241c2a50e436541806c0a7cdea9c24fd41182ed8848666f9a6dd4a9b8ec2d",
+      "label": "task-single-runtime-wheel",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "uv",
+        "build",
+        "--offline",
+        "--wheel",
+        "--project",
+        "deepagents-server",
+        "--out-dir",
+        "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-wheel-dist"
+      ],
+      "pid": 29745,
+      "exit_code": 0,
+      "duration_seconds": 2.05,
+      "peak_tree_rss_kib": 32,
+      "lowest_free_percent": 59,
+      "samples": 1,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-wheel-20261017T075109.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-wheel-20261017T075109.resources.jsonl"
+    },
+    "visual": {
+      "receipt": "var/deepagents-delivery/task-single-runtime-visual-20261017T075145.summary.json",
+      "sha256": "14b43fb1f1ef65eda48ad1ac675026f331800ea97bc994b468aea8f812987eab",
+      "label": "task-single-runtime-visual",
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        ".venv/bin/python",
+        "var/deepagents-delivery/task-single-runtime-render.py"
+      ],
+      "pid": 29898,
+      "exit_code": 0,
+      "duration_seconds": 2.04,
+      "peak_tree_rss_kib": 256,
+      "lowest_free_percent": 58,
+      "samples": 1,
+      "resource_blocked": false,
+      "reason": null,
+      "log": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-visual-20261017T075145.log",
+      "resources": "/Users/yanjixiong/github/mini-loop/var/deepagents-delivery/task-single-runtime-visual-20261017T075145.resources.jsonl"
+    }
+  },
+  "replay": {
+    "run_id": "5da4ea69e1254f7aad40ec20a3b68109",
+    "status": "passed",
+    "started_at": "2026-10-16T23:50:03.211326+00:00",
+    "driver_pid": 29143,
+    "source_sha256": {
+      "deepagents-server/pyproject.toml": "8c77011b61934fca7f21fc73e8f115bc54160d410e71c118c4759bdfb49b4a4f",
+      "deepagents-server/src/mini_loop_deepagents/__init__.py": "a111e8e1aae9a483bfb9da6319d5acb5a2f3c02ab51319e4d0bd8f2860b75b5f",
+      "deepagents-server/src/mini_loop_deepagents/auth.py": "14c21ad70abe7773d09e03fb47d527a63a4f29fec3a6038f35f7772fc4e53f6c",
+      "deepagents-server/src/mini_loop_deepagents/config.py": "4064215c8d0d304641dd0727abc3eebc99a12f78bd28245f11ebb5f904508328",
+      "deepagents-server/src/mini_loop_deepagents/graph.py": "be7ad538729f9daad5942e79e1097c82dbfc2488c4e2ac2cabedb1fbbc124c06",
+      "deepagents-server/src/mini_loop_deepagents/instructions.md": "fb74df65af8a2c75bdb888e93311fc8a08f576a98c1ae7f97b535d7296bac9e6",
+      "deepagents-server/src/mini_loop_deepagents/jobs.py": "e54cd5756f85ffbae0d192e41536f854e391852d7723edcfd11b0a2b1a3fb673",
+      "deepagents-server/src/mini_loop_deepagents/task_contracts.py": "d6e672aaca8dc5b5b06ababaa0d9e577102e4ac750cf12139925799d6ab6b32c",
+      "deepagents-server/src/mini_loop_deepagents/task_server/__init__.py": "1560c40637e1d81964c0dd2af65751392db9dddffaa7c73352ca21f4540865db",
+      "deepagents-server/src/mini_loop_deepagents/task_server/api.py": "bdd080bdfd0d8a64219ef762a2f8668620257188ef71f75eb8f5eb63f2ef5a91",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/__init__.py": "b924ccac75e155177b745845153600e3e977453da08f1e534307e8f9f22cb2a7",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/cursors.py": "fca889acdd861c2d52a8b7f2e5ccf800a162259090f29c5c7e8fd2d8e2483caa",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/history.py": "a5e46b05ac33a3a1a0f4e21cdb25272a515bb5646a91d7ab08bc95e7bfed1554",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/readiness.py": "35da8cbd2b641c42b1ed0429f0293bde5b8a10f2d5db4a4bad3486736724f5e2",
+      "deepagents-server/src/mini_loop_deepagents/task_server/backend/runs.py": "80d07350fbe128b79226e8ccf165cc5a781621f926ba32af2df434344eb02db2",
+      "deepagents-server/src/mini_loop_deepagents/task_server/checkpoint.py": "6b6d52aecfbea50e8f05b7af89c9e50453f9d294e7f3b6be72f90f6b854e5ea3",
+      "deepagents-server/src/mini_loop_deepagents/task_server/connection.py": "3cf252f70ef21ffd18b6108eef77612dbe25aa8546ca2c899a8fdcf157173761",
+      "deepagents-server/src/mini_loop_deepagents/task_server/http.py": "bc23949da4e1cfabd760647f4479b303cc77750aca1d4d752757232090d85e3b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/launch.py": "44f6cd1363b4e1703fa1a2c0914267d8c7e5052a90542d7c79a1ebb5c4ea9686",
+      "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py": "d049f6e6a5bc7299677688a924e1f4ccbf75a5f926a91fec62c2ae75f3a99c5b",
+      "deepagents-server/src/mini_loop_deepagents/task_server/protocol.py": "608af772bd3398b623501ae75ea3616b798d8663c49fde16320e8dc79242135c",
+      "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py": "b3fc685db04be4503b2daf8c0888752d20c64746215671828a5ae7767748e0ea",
+      "deepagents-server/src/mini_loop_deepagents/task_server/service.py": "28e2155f93b2aae3f57da7472ff431c913911c360f582f1c02882fb4093447c5",
+      "deepagents-server/src/mini_loop_deepagents/task_server/summarization.py": "ac3d18c917439689fb016b49def256d8bffdf79bfce4613006554d460f731487",
+      "deepagents-server/src/mini_loop_deepagents/task_server/worker.py": "20c18a5baa8fd90d2554252de11e7aa021f0382856609f2ec8179b195cba5f8d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/__init__.py": "66c801947b39ee8299d736e141fc1d5791e6033d05860d33e67e8ab62a19832e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py": "3b14bd80c0903e1839fd535d6c3a9cdc004705f20c303968db48475967398c5d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py": "274a41227dc4622ce9a0bfeb48e89df73ca4fa06454dcf92a899c525a903b596",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py": "8b21c2d84e6dbcc368b24cb1c48366a77bc80673233a729bffba826025e5751e",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/worker.py": "8e928f6f497d6bf267805513670577e31e762f25e86cdfe50c40eac4d4a0066d",
+      "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py": "e85140bc2f0d9e3cf512dfbbd20724c673e5a9fc60c76d33383546c4eb1f94e7",
+      "deepagents-server/src/mini_loop_deepagents/temporal_support/__init__.py": "f64a17469596a838d45198c42e852826e7e9ed3ee16182b61e8d39f23c1b60aa",
+      "deepagents-server/src/mini_loop_deepagents/temporal_support/determinism.py": "c5cfa617d8fa204a1937b6f8179f1d4a421b9951fd1fce2b00856a92f2e06b48",
+      "deepagents-server/tooling/acceptance/support/process.py": "572b401519a2cfbbab245076c242fd99ef194e3f28d86664cf546826865a14fc",
+      "deepagents-server/tooling/paths.py": "08e17ac80ede76d87a6607463c4432af25bfef16bde0b0ec120ba728f1db01da",
+      "deepagents-server/uv.lock": "e466af5f69cd2a7644a33adc108b6eea17c2a6721a4aba6fb44069719a2d0781",
+      "var/deepagents-delivery/task-single-runtime-replay.py": "2651784a122f5919e4d3efebd6170210b78e707fb9bc5bbe3f13a6f67185c0e3"
+    },
+    "scope": "read-only native current-protocol History replay against sole current TaskWorkflow",
+    "legacy_v1_coverage": false,
+    "production_ha_acceptance": false,
+    "new_worker_recovery_acceptance": false,
+    "real_provider_acceptance": false,
+    "database_or_service_started": false,
+    "workflow_sandbox": true,
+    "workflow_executor_threads": 1,
+    "timeout_seconds": 120,
+    "resource_control": "outer resource watchdog supplied by caller",
+    "dependencies": {
+      "temporalio": "1.34.0",
+      "deepagents": "0.7.25"
+    },
+    "source_manifest": {
+      "path": "var/task-refactor-replay/7e8e356142ec441b937a7ea804993909/exported.json",
+      "sha256": "21ec0ec1c4dc99123af8a77c00f279f555e5e6c381ee59366dfebb53f3c0ad60"
+    },
+    "selection": {
+      "total_manifest_entries": 31,
+      "selected_count": 30,
+      "excluded_count": 1,
+      "selected_native_type": "TaskWorkflowV2",
+      "excluded": [
+        {
+          "run_id": "01a1435e-eac8-7e0d-b25c-7c2c01cb10a6",
+          "task_id": "task-dd5d1a0be30a54bb58be5d5b8667a267d4eda360653e7282e9ca772539307f7d",
+          "workflow_type": "TaskWorkflow",
+          "json_sha256": "0739550b44a42e745b91892073cbf3de61312d33ee476cd6bb359e81f89d1b83",
+          "reason": "removed legacy implementation; not replayed and not counted as coverage"
+        }
+      ]
+    },
+    "replay_results": {
+      "path": "var/task-single-runtime-replay/5da4ea69e1254f7aad40ec20a3b68109/replay-results.json",
+      "sha256": "1d679e41b14674047734b4a51cff70983c5eff42f5dbd240d0beee953929f1b4",
+      "completed": 30,
+      "passed": 30,
+      "model_provider_calls": 0
+    },
+    "historical_inputs_unchanged": true,
+    "finished_at": "2026-10-16T23:50:08.412935+00:00",
+    "seconds": 5.202,
+    "cleanup_confirmed": true,
+    "spawned_service_processes": []
+  },
+  "wheel": {
+    "wheel": "var/deepagents-delivery/task-single-runtime-wheel-dist/mini_loop_deepagents-0.1.0-py3-none-any.whl",
+    "sha256": "1c0b566d2d1bff3accf2d3bb5629d9bb98b46f349e3572aeb8140b0e71abb636",
+    "source_files": 31,
+    "all_source_bytes_match": true,
+    "obsolete_runtime_absent": true,
+    "tooling_tests_absent": true,
+    "scope": "offline wheel build and ZIP source audit; no new container image"
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "2e9e36ea61fa15b0457d03fb729cf115a8cfbdb3ba4a84e71514421c3b7a52a2",
+      "bytes": 194232
+    },
+    "artifact": {
+      "sha256": "d9b1127d7d9cce43fb736a45268444b4eac737a5820eaf7831ea60354ede808c",
+      "bytes": 896486
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "visual_review": {
+    "static_task_lane_dark_light": true,
+    "fallback_fonts": true,
+    "browser_interaction_verified": false,
+    "imagegen": "built-in edit of canonical complete base",
+    "artifacts": {
+      "docs/mini-loop-layered-architecture.png": {
+        "sha256": "3578cd733e904d3aa8d79524fb16e59d2d524ffe4204cd1f70dc41009c226c25",
+        "bytes": 2398217
+      },
+      "docs/mini-loop-layered-architecture.prompt.txt": {
+        "sha256": "804e4331ec8d391e0b69ef3a139f541a3ec764d1b0d1c9fc9e4fd2ee0d778c8b",
+        "bytes": 1961
+      },
+      "docs/audits/task-server-single-runtime-2026-10-17.png": {
+        "sha256": "3578cd733e904d3aa8d79524fb16e59d2d524ffe4204cd1f70dc41009c226c25",
+        "bytes": 2398217
+      },
+      "docs/audits/task-server-single-runtime-2026-10-17.prompt.txt": {
+        "sha256": "804e4331ec8d391e0b69ef3a139f541a3ec764d1b0d1c9fc9e4fd2ee0d778c8b",
+        "bytes": 1961
+      }
+    }
+  },
+  "not_run": [
+    "new container image",
+    "fresh fault or cold-restart experiment",
+    "live model provider",
+    "production HA or capacity"
+  ]
+}

@@ -2,7 +2,7 @@
 
 These narrow private hooks match Deep Agents 0.7.25. Keep native summary model
 calls, cutoff selection, media handling, backend effects and private state. This
-adapter changes neither global datetime/UUID functions nor the original v1 graph.
+adapter changes neither global datetime/UUID functions nor native summary semantics.
 """
 
 from __future__ import annotations

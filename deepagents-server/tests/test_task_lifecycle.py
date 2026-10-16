@@ -273,7 +273,7 @@ def compose_worker(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_library_stop_drains_registered_v1_v2_without_cancelling_worker(compose_worker, capsys):
+async def test_library_stop_drains_the_single_registered_workflow_without_cancelling_worker(compose_worker, capsys):
     instance = ControlledWorker()
     captures = compose_worker(instance)
     stop = asyncio.Event()
@@ -286,7 +286,7 @@ async def test_library_stop_drains_registered_v1_v2_without_cancelling_worker(co
     await asyncio.wait_for(task, 1)
     assert instance.shutdown_called.is_set()
     assert captures[0]["graceful_shutdown_timeout"] == timedelta(seconds=3)
-    assert captures[0]["workflows"] == [worker.TaskWorkflow, worker.TaskWorkflowV2]
+    assert captures[0]["workflows"] == [worker.TaskWorkflow]
     assert "TASK_WORKER_READY identity=identity" in capsys.readouterr().out
 
 

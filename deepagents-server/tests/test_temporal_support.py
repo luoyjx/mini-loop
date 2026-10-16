@@ -39,7 +39,7 @@ def test_task_workflows_import_without_loading_the_prototype_profile():
                     raise AssertionError("production import reached " + fullname)
 
         sys.meta_path.insert(0, NoPrototype())
-        for name in ("runtime", "runtime_v2", "summarization"):
+        for name in ("runtime", "summarization"):
             importlib.import_module("mini_loop_deepagents.task_server." + name)
         assert not any(name.startswith("mini_loop_deepagents.temporal_prototype")
                        for name in sys.modules)

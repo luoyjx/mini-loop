@@ -144,7 +144,7 @@ async def exercise(processes, containers, binary, directory, run_id, receipt, pe
             value = HTTP.decode(await http.post(url + "/v1/tasks", headers={**headers, "Idempotency-Key": key}, json={"message": message}), 202)
             task_id = task_id_for("alice", key)
             if value.get("task_id") != task_id or value.get("reused") is not False or value.get("version") != "task-v2":
-                raise HarnessFailure("A container API did not create a new real V2 Task")
+                raise HarnessFailure("A container API did not create a new real Task")
             records.append({"task_id": task_id, "owner": "alice", "first_execution_run_id": value["first_execution_run_id"], "key": key, "message": message})
         initial = await SUPPORT.eventually(processes, worker_gates, lambda values: len({row["hostname"] for row in values}) == 2)
         if {row["hostname"] for row in initial} != {row["name"] for row in workers}:

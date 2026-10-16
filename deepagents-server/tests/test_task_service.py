@@ -3,8 +3,6 @@
 import asyncio
 from copy import deepcopy
 from datetime import datetime, timezone
-import hashlib
-import json
 from types import SimpleNamespace
 
 import pytest
@@ -121,7 +119,7 @@ class FakeTemporal:
 
 
 def service(client, **options):
-    return TaskService(client, task_queue="task-v1", cursor_secret=SECRET, **options)
+    return TaskService(client, task_queue="task-queue", cursor_secret=SECRET, **options)
 
 
 def event(ordinal):
@@ -181,22 +179,19 @@ async def test_concurrent_identical_submissions_reuse_native_execution_and_confl
     assert len(client.descriptions) == 1
 
 
-@pytest.mark.parametrize("status", [WorkflowExecutionStatus.RUNNING, WorkflowExecutionStatus.COMPLETED])
-async def test_default_version_upgrade_reuses_retained_legacy_keys_with_legacy_digest(status):
-    client, task_id = FakeTemporal(), task_id_for("alice", "legacy")
-    payload = {"task_id": task_id, "owner": "alice", "message": "original", "version": "task-v1"}
-    digest = hashlib.sha256(json.dumps({"payload": payload, "task_queue": "task-v1"},
-                                       sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
-    memo = {"owner": "alice", "task_id": task_id, "version": "task-v1", "request_sha256": digest}
-    client.descriptions[task_id] = FakeDescription(task_id, memo, status, workflow_type="TaskWorkflow")
-    reused = await service(client).submit("alice", "legacy", "original")
-    assert reused["reused"] and reused["version"] == "task-v1" and reused["run_id"] == RUN_ID
-    assert client.start_calls[-1][0] == "TaskWorkflowV2"
-    assert (await service(client).get("alice", task_id))["version"] == "task-v1"
-    with pytest.raises(TaskConflict):
-        await service(client).submit("alice", "legacy", "changed")
-    with pytest.raises(TaskConflict):
-        await TaskService(client, task_queue="other-queue", cursor_secret=SECRET).submit("alice", "legacy", "original")
+@pytest.mark.parametrize("workflow_type,version", [("TaskWorkflow", "task-v1"), (WORKFLOW_TYPE, "task-v1")])
+async def test_existing_unsupported_protocol_is_not_adopted_as_a_current_task(workflow_type, version):
+    client = FakeTemporal()
+    connection = service(client)
+    task = await connection.submit("alice", "key", "work")
+    description = client.descriptions[task["task_id"]]
+    description.workflow_type = workflow_type
+    description._memo["version"] = version
+    with pytest.raises(TaskNotFound):
+        await connection.submit("alice", "key", "work")
+    with pytest.raises(TaskNotFound):
+        await connection.get("alice", task["task_id"])
+    assert len(client.descriptions) == 1
 
 
 @pytest.mark.parametrize("error", [RPCError("credential-secret", RPCStatusCode.UNAVAILABLE, b""), TimeoutError("credential-secret")])
@@ -224,6 +219,7 @@ async def test_start_deadline_is_bounded_and_reports_unknown_instead_of_cancelle
 @pytest.mark.parametrize("mutation", [
     lambda d: d._memo.update(owner="bob"),
     lambda d: d._memo.update(version="foreign-v2"),
+    lambda d: d._memo.update(version="task-v1"),
     lambda d: d._memo.update(task_id=task_id_for("bob", "other")),
     lambda d: d._memo.update(request_sha256="not-a-digest"),
     lambda d: setattr(d, "workflow_type", "UntrustedWorkflow"),
@@ -335,7 +331,7 @@ async def test_history_cursor_rejects_tampering_cross_task_namespace_and_untrust
             await connection.events("alice", task["task_id"], invalid)
     with pytest.raises(TaskInvalidRequest):
         await connection.events("alice", other["task_id"], cursor)
-    changed_secret = TaskService(client, task_queue="task-v1", cursor_secret=b"a" * 32)
+    changed_secret = TaskService(client, task_queue="task-queue", cursor_secret=b"a" * 32)
     with pytest.raises(TaskInvalidRequest):
         await changed_secret.events("alice", task["task_id"], cursor)
     client.namespace = "different-namespace"
@@ -372,7 +368,7 @@ async def test_backend_not_found_and_other_rpc_failures_remain_distinct_and_reda
 
 def test_constructor_requires_fixed_strong_cursor_key_and_positive_deadlines():
     for options in ({"cursor_secret": "short"}, {"rpc_timeout_seconds": 0}, {"workflow_execution_timeout_seconds": float("nan")}):
-        arguments = {"task_queue": "task-v1", "cursor_secret": SECRET} | options
+        arguments = {"task_queue": "task-queue", "cursor_secret": SECRET} | options
         with pytest.raises(ValueError):
             TaskService(FakeTemporal(), **arguments)
 

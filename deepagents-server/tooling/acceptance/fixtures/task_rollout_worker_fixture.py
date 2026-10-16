@@ -1,6 +1,6 @@
 """Trusted model Activities for production Worker shutdown/rollout acceptance.
 
-The real TaskWorkflowV2 executes eleven parent model calls, native planning/files,
+The current TaskWorkflow executes eleven parent model calls, native planning/files,
 and at least one Continue-As-New. Only model Activities read test gates. A local
 per-task flag can deliberately ignore Activity cancellation to test the process
 hard deadline; it is never an HTTP parameter or a production Workflow branch.

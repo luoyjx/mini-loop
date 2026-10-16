@@ -1,11 +1,53 @@
-# Deep Agents Server delivery — 2026-10-16
+# Deep Agents Server delivery — 2026-10-17
 
-当前迭代以 `a6d61c6` 为基线，整理独立 Python 模块的职责与依赖方向，分离运行代码、
-仓库工具和测试。已有公开入口与持久协议保留，不新增 Python 依赖。下文的历史
-验收保留各自源码、镜像、run_id 和资源范围，不由本轮目录迁移追认。需求对应关系见
+当前迭代以 `2b85676` 为基线。按用户明确的未生产使用前提，移除早期 Task V1，
+收敛为唯一 `runtime.py:TaskWorkflow`；不新增依赖。下文的历史
+验收保留各自源码、镜像、run_id 和资源范围，不由本轮清理追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
 
-## Python 项目结构重构
+## 单一 Task runtime 与浅层包结构
+
+- 删除旧 V1 实现、双 Workflow 注册、旧任务复用分支和 V1 专用故障 fixture。
+  将原 `runtime_v2.py` 移为唯一 `runtime.py`，Python 类统一为 `TaskWorkflow`。
+- 当前持久协议仍为 Temporal type `TaskWorkflowV2`、payload `task-v2`、snapshot
+  schema 2；这些是格式身份，不是第二套代码。旧 V1 执行明确不支持、不迁移。
+- 默认 Task 队列从 `mini-loop-task-v1` 改为 `mini-loop-task`；CLI、Compose 和环境
+  示例保持一致，显式配置自定义队列仍可用。HTTP `/v1/tasks` 路径保持。
+- 保留 `src/` 安装布局；Task 包主要平铺，`backend/` 聚合四个有独立职责的模块。
+  标准 LangGraph 服务与独立 Temporal 原型不属于本轮 V1 清理范围。
+
+| 本轮 Gate | 结果 | 范围 |
+| --- | --- | --- |
+| 独立模块 pytest | **599 passed in 8.18s** | 包含单 Workflow 注册、默认/自定义队列、拒绝旧协议与完整状态检查 |
+| 根 Python pytest | **2256 passed / 28 skipped / 104 warnings**，108.10 秒 | 原 Python 回归；跳过与告警保留在日志 |
+| Python invariants | **77 modules checked** | 只覆盖原 `python/mini_loop`，不冒充独立模块覆盖 |
+| 原生 History replay | **30 / 30 Run**，零模型调用 | 仅当前协议，显式排除 1 个旧 V1 Run；单线程 Workflow sandbox |
+| 离线 wheel | **31 个 Python 源文件逐字节一致** | 旧 `runtime_v2.py`、tooling 和 tests 不进入 wheel |
+| Archify | **9 / 9**，零错误/警告 | 重新生成 HTML；深浅色 Task 区域静态检查，回退字体；浏览器交互未验 |
+| Diff / 文档引用 | **通过** | 本轮修改的 Markdown、架构引用与空白检查 |
+
+重型检查串行执行，`nice -n 10`、单 pytest 进程、1.5 GiB 任务进程树 RSS 预算、
+15% memory-free 停止阈值与 300 秒超时。模块、根回归、replay 的采样峰值分别为
+310.59 / 411.39 / 207.86 MiB；所有 gate 最低观察到的 memory-free 为 57%，无资源阻断。
+短 gate 的采样峰值可能漏掉瞬时进程，不能当作硬内存上限。
+
+回放使用先前导出的 native History，只读核对 JSON、protobuf、RunID 和 Workflow type。
+SDK 1.34.0 Replayer 会替换 task queue 为合成值；本轮沿用公开 WorkflowRunner seam，
+从已校验 Started event 恢复该 metadata，保留原 sandbox、payload、memo 和 command。
+本轮没有启动 Temporal 服务、执行模型 Activity 或重新进行强杀/容器/生产 HA 验收，
+也没有构建新的 Docker 镜像。
+
+可审计结果见 [task-single-runtime-evidence.json](docs/task-single-runtime-evidence.json)。
+回放收据：`var/task-single-runtime-replay/5da4ea69e1254f7aad40ec20a3b68109/receipt.json`。
+离线 wheel SHA-256：`1c0b566d2d1bff3accf2d3bb5629d9bb98b46f349e3572aeb8140b0e71abb636`。
+
+README Mermaid、架构 JSON/HTML 与完整分层底图同步。使用 built-in Imagegen 编辑
+底图的 Task Worker 区域，标明唯一实现并保留 CAN、TLS、部署与恢复边界；
+[本轮图](../docs/audits/task-server-single-runtime-2026-10-17.png)与
+[精确提示词](../docs/audits/task-server-single-runtime-2026-10-17.prompt.txt)一并保留，
+canonical 底图与其提示词使用同一结果。
+
+## Python 项目结构重构（2b85676 历史基线）
 
 源码导航见 [PROJECT_STRUCTURE](docs/PROJECT_STRUCTURE.md)。这次拆分有三个明确边界：
 

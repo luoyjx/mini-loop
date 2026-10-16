@@ -14,7 +14,6 @@ from uuid import UUID
 
 TASK_VERSION = "task-v2"
 WORKFLOW_TYPE = "TaskWorkflowV2"
-TRUSTED_WORKFLOWS = {"TaskWorkflow": "task-v1", "TaskWorkflowV2": "task-v2"}
 TASK_ID_PATTERN = re.compile(r"task-[a-f0-9]{64}\Z")
 SHA256_PATTERN = re.compile(r"[a-f0-9]{64}\Z")
 STATUSES = {
@@ -74,7 +73,7 @@ def task_id_for(owner: str, key: str) -> str:
 
 
 def request_digest(task_id: str, owner: str, message: str, version: str, task_queue: str) -> str:
-    # Keep the original v1 digest shape. Continuation state is not a submission.
+    # Digest the immutable submission; continuation state is not a submission.
     payload = {"task_id": task_id, "owner": owner, "message": message, "version": version}
     return hashlib.sha256(canonical_json({"payload": payload, "task_queue": task_queue})).hexdigest()
 

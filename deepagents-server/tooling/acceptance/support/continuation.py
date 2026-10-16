@@ -63,7 +63,7 @@ def check_final(snapshot, task_id, first_run_id):
     identity = {"task_id": task_id, "workflow_id": task_id, "owner": "alice",
                 "first_execution_run_id": first_run_id}
     if snapshot.get("identity") != identity or snapshot.get("version") != "task-v2" or snapshot.get("schema_version") != 2:
-        raise HarnessFailure("The final V2 snapshot lost its stable Task identity or schema")
+        raise HarnessFailure("The final snapshot lost its stable Task identity or schema")
     if snapshot.get("status") != "completed" or snapshot.get("can_count", 0) < 3:
         raise HarnessFailure("The Task did not complete after at least three continuations")
     for path, content in FIXTURE.expected_files().items():

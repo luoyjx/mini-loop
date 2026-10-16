@@ -36,7 +36,7 @@ services:
       - --namespace
       - "${TASK_NAMESPACE:-default}"
       - --task-queue
-      - "${TASK_QUEUE:-mini-loop-task-v1}"
+      - "${TASK_QUEUE:-mini-loop-task}"
       - --max-inflight
       - "${TASK_API_MAX_INFLIGHT:-32}"
     environment:
@@ -66,7 +66,7 @@ services:
       - --namespace
       - "${TASK_NAMESPACE:-default}"
       - --task-queue
-      - "${TASK_QUEUE:-mini-loop-task-v1}"
+      - "${TASK_QUEUE:-mini-loop-task}"
       - --activity-slots
       - "${TASK_ACTIVITY_SLOTS:-1}"
       - --workflow-slots

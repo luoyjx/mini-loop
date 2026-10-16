@@ -103,74 +103,33 @@ def check_preserved_state(before, after):
             raise HarnessFailure("The completed Task did not preserve and complete its plan at " + (difference or f"todos[{index}].status"))
     if after.get("status") != "completed":
         raise HarnessFailure("The completed Task snapshot lacks its terminal state")
-    if "state" in before:
-        initial, completed = before["state"], after.get("state")
-        if not isinstance(initial, dict) or not isinstance(completed, dict):
-            raise HarnessFailure("The completed Task lost its full native state")
-        for key, original in initial.items():
-            expected = original
-            if key == "messages":
-                candidate = completed.get(key, [])[:len(original)]
-            elif key == "todos":
-                # A final native write_todos completes this exact original plan.
-                expected = [{**item, "status": "completed"} for item in original]
-                candidate = completed.get(key)
-            else:
-                candidate = completed.get(key)
-            difference = SUPPORT.first_difference(expected, candidate, "state." + key)
-            if difference:
-                raise HarnessFailure("The completed Task changed preserved native state at " + difference)
+    initial, completed = before.get("state"), after.get("state")
+    if not isinstance(initial, dict) or not isinstance(completed, dict):
+        raise HarnessFailure("The completed Task lost its full native state")
+    for key, original in initial.items():
+        expected = original
+        if key == "messages":
+            candidate = completed.get(key, [])[:len(original)]
+        elif key == "todos":
+            # A final native write_todos completes this exact original plan.
+            expected = [{**item, "status": "completed"} for item in original]
+            candidate = completed.get(key)
+        else:
+            candidate = completed.get(key)
+        difference = SUPPORT.first_difference(expected, candidate, "state." + key)
+        if difference:
+            raise HarnessFailure("The completed Task changed preserved native state at " + difference)
 
 
 def check_snapshot_contract(snapshot, task_id, run_id, version, status):
-    schemas = {"task-v1": 1, "task-v2": 2}
-    identity = {"task_id": task_id, "workflow_id": task_id, "owner": "alice"}
-    if version == "task-v2":
-        identity["first_execution_run_id"] = run_id
-        if not isinstance(snapshot.get("state"), dict):
-            raise HarnessFailure("A V2 Task lacks its complete native state")
-    if (version not in schemas or snapshot.get("identity") != identity
-            or snapshot.get("schema_version") != schemas[version]
+    identity = {"task_id": task_id, "workflow_id": task_id, "owner": "alice",
+                "first_execution_run_id": run_id}
+    if not isinstance(snapshot.get("state"), dict):
+        raise HarnessFailure("The Task lacks its complete native state")
+    if (version != "task-v2" or snapshot.get("identity") != identity
+            or snapshot.get("schema_version") != 2
             or snapshot.get("version") != version or snapshot.get("status") != status):
         raise HarnessFailure("The Task snapshot lost its trusted version, identity, schema, or status")
-
-
-def legacy_submission(owner, key, message, task_queue):
-    """Frozen original v1 Start contract, submitted only through trusted RPC.
-
-    This deliberately does not call the current TaskService submit implementation:
-    an already-existing v1 execution must remain readable/reusable after upgrade.
-    """
-    canonical = lambda value: json.dumps(value, sort_keys=True, ensure_ascii=False,
-                                         separators=(",", ":"), allow_nan=False).encode()
-    task_id = "task-" + hashlib.sha256(b"mini-loop:task-id:v1\0" + canonical([owner, key])).hexdigest()
-    payload = {"task_id": task_id, "owner": owner, "message": message, "version": "task-v1"}
-    digest = hashlib.sha256(canonical({"payload": payload, "task_queue": task_queue})).hexdigest()
-    return {"task_id": task_id, "payload": payload,
-            "memo": {"owner": owner, "request_sha256": digest, "version": "task-v1", "task_id": task_id}}
-
-
-def check_step_limit_history(history):
-    """Require a real terminal History failure after repeated model Activities."""
-    failed = [event.workflow_execution_failed_event_attributes for event in history.events
-              if event.HasField("workflow_execution_failed_event_attributes")]
-    if len(failed) != 1:
-        raise HarnessFailure("The exhausted Task lacks one native WorkflowExecutionFailed event")
-    failure = failed[0].failure
-    if (not failure.HasField("application_failure_info")
-            or failure.application_failure_info.type != "task_step_limit"
-            or not failure.application_failure_info.non_retryable):
-        raise HarnessFailure("The graph limit did not become the expected nonretryable native Task failure")
-    model_scheduled = sum(event.HasField("activity_task_scheduled_event_attributes")
-                          and event.activity_task_scheduled_event_attributes.activity_type.name == "deepagents.invoke_model"
-                          for event in history.events)
-    model_completed = sum(event.HasField("activity_task_completed_event_attributes") for event in history.events)
-    workflow_task_failed = sum(event.HasField("workflow_task_failed_event_attributes") for event in history.events)
-    if model_scheduled < 2 or model_completed < 2 or workflow_task_failed:
-        raise HarnessFailure("The exhausted Task did not finish a real repeated-model loop without WorkflowTask failure retries")
-    return {"failure_type": failure.application_failure_info.type, "non_retryable": True,
-            "model_activities_scheduled": model_scheduled, "activities_completed": model_completed,
-            "workflow_task_failed_count": workflow_task_failed}
 
 
 async def ready(processes, observer, url):

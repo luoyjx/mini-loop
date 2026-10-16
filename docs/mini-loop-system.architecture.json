@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; Task API modules separate HTTP, orchestration and Temporal access; repository-only acceptance tooling; deployment and durable protocols retained",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with HTTP, orchestration and Temporal access boundaries; repository-only acceptance tooling",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -965,8 +965,8 @@
     {
       "id": "tsWorker",
       "type": "backend",
-      "label": "TaskWorkflowV2 + v1 Worker",
-      "sublabel": "Deep Agents / portable native saver journal",
+      "label": "Single TaskWorkflow",
+      "sublabel": "runtime.py / portable native saver journal",
       "pos": [
         1630,
         4250
@@ -2526,13 +2526,13 @@
       "dot": "cyan",
       "title": "Opt-in Temporal Task HTTP service",
       "items": [
-        "Structure review baseline a6d61c6 plus this iteration: the API process separates ASGI authentication/admission/routes in http.py, stable errors/identity/TaskOperations in protocol.py, task orchestration in service.py, and Temporal Run/History access, cursors and readiness in backend/. These modules remain inside one API process. Existing API/Worker/launch CLI paths and published script commands remain available. Workflow names, payloads, immutable memo, cursor encoding and deployment roles are preserved.",
+        "Single-runtime review baseline 2b85676 plus 2026-10-17 cleanup: pre-production Task V1 implementation and registration are removed. runtime.py:TaskWorkflow is the sole current Workflow; the current serialized TaskWorkflowV2/task-v2/schema2 identity remains. Obsolete V1 Tasks are refused, not migrated. Default Task queue is mini-loop-task. HTTP, service and backend are in-process responsibilities; API, Worker and external Temporal remain the deployment roles.",
         "Shared Workflow determinism now lives in temporal_support/determinism.py; production Task Workflows no longer import the historical temporal_prototype implementation. Repository-only tooling/acceptance separates scenarios, reusable support and offline fixtures; tooling/build_task_bundle.py owns the package audit and sanitized build context. scripts remains a thin compatibility layer. tooling and fixtures are excluded from the application wheel. This source organization does not add a service, storage layer or runtime dependency.",
         "Historical cold-restart acceptance used the 08b4333 application image. Run c0a4afaaf20c48e5b65fc51b7e9a7580 completed six Tasks across three owners after all old API/Worker/Temporal/observer processes were absent for an observed 3.189-second interval. Two Tasks had reached parent step 24 after three CANs; four were natively SCHEDULED without model execution. Each completed 37 parent tool steps, four CANs/five Runs, two general-purpose subagents and two native summaries. Thirty Histories had zero WorkflowTaskFailed; two interrupted Activities retried with matching identity, request hash and full state. This receipt remains tied to its original build, not proof of the refactored source. It is a single-host plaintext CLI/SQLite and deterministic-model test, not live-provider, native TLS, production HA or capacity evidence.",
         "The optional Task image uses the approved digest-pinned Python 3.12.15 slim base and a source-verified wheel with locked hashed dependencies. launch api|worker loads only role-specific secret files, then enters the real CLI in the same process. Numeric UID 10001, read-only root and bounded /tmp are deployment controls, not a sandbox or HA claim. API and Worker scale separately against an external Temporal service; the profile creates no Temporal/SQL/Redis service or ingress. The existing sdist-only forbiddenfruit dependency requires an explicitly supplied wheel audited against the locked source archive, runtime and license bytes, metadata and RECORD; no automatic source build or new Python dependency is enabled.",
         "GET /healthz is process liveness. GET /readyz performs a bounded DescribeNamespace read, requires the configured namespace name and REGISTERED state, and returns only ready/not_ready. One-second singleflight RPC/cache limits probe load; it does not prove Workflow Start authorization, Worker slots or model availability. Compose health status alone does not restart unhealthy processes. Its 20-second stop grace exceeds the Worker 15-second hard deadline; restart policy is separate.",
         "Linux container acceptance exposed an idle-selector signal wakeup defect: the process handler now sets the stop event immediately and calls loop.call_soon_threadsafe to wake the loop. A no-timer Linux probe exited 0 after SIGTERM; the default production Worker entrypoint separately reached READY, DRAINING and STOPPED on an empty queue without invoking a model. Two real Task runs survived API/fixture-Worker container replacement and each completed ten native tool steps and one CAN. This single-host test is not full mTLS Compose, live-provider or production HA acceptance.",
-        "Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or a verified matching task. New work selects TaskWorkflowV2/task-v2. The unchanged v1 Workflow remains registered; matching old keys reuse their retained original version and digest.",
+        "Task HTTP API authenticates Bearer owner, derives a stable TaskID from owner/key and returns 202 only after confirmed remote Workflow Start or a verified matching current task. Only the current TaskWorkflowV2/task-v2 wire contract is accepted. Duplicate current keys still require matching immutable request digests; obsolete V1 executions are not reused.",
         "Temporal retained History is direct authority for execution, owner/request memo, status, result and event pages. Start uncertainty returns the stable TaskID for reconciliation. Dedupe and event availability are retention-bounded; no permanent admission ledger, outbox or separate checkpoint database is installed.",
         "V2 carries public saver put/put_writes journal operations across Continue-As-New after eight safe parent model boundaries. Native channels, routing, pending writes, DeltaChannel ancestry and private summary state survive the transport. TaskID and first execution identity remain stable while RunID changes.",
         "The original total 24-hour deadline does not reset at CAN. The 512 parent-boundary budget excludes additional summary and general-purpose subgraph model calls; GP retains its native 9999 recursion setting, while each parent invocation is capped at 128 steps. Transport refuses state above 16 MiB raw journal, 384 KiB compressed checkpoint or 512 KiB continuation envelope.",

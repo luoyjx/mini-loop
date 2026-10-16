@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-structure-2026-10-16.png)。
+独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-single-runtime-2026-10-17.png)。
 
 ## 从哪里读代码
 
@@ -19,13 +19,15 @@
 | --- | --- |
 | 标准 Agent Server | `langgraph.json` → `config.py` / `auth.py` → `graph.py` → `jobs.py` |
 | Task HTTP 请求 | `task_server/api.py` → `http.py` → `protocol.py` → `service.py` → `backend/` |
-| Task 执行与恢复 | `task_server/worker.py` → `runtime.py` / `runtime_v2.py` → `checkpoint.py` / `summarization.py` |
+| Task 执行与恢复 | `task_server/worker.py` → `runtime.py` → `checkpoint.py` / `summarization.py` |
 | 启动与进程退出 | `task_server/launch.py` → `connection.py` / `lifecycle.py` |
 | 构建与故障验收 | `tooling/build_task_bundle.py` → `tooling/acceptance/scenarios/`；公共设施和离线模型在相邻的 `support/`、`fixtures/` |
 
 表中标准 Agent Server 的 Python 文件位于 `src/mini_loop_deepagents/`；
 Task 各行省略前缀的文件位于该包的 `task_server/`。
 HTTP 处理、任务编排与 Temporal 访问是同一个 API 进程内的代码分工，部署仍为独立 API 与 Worker。
+`src/` 是安装包布局，不额外代表一层业务架构。Task 代码大多直接放在 `task_server/`；
+只有 Run、History、cursor 和 readiness 这组 Temporal 访问职责放进 `backend/` 子包。
 
 ## 已实现与边界
 
@@ -199,8 +201,10 @@ owner，`POST /v1/tasks` 接受 `Idempotency-Key` 和 message。只有远程 Wor
 Temporal retention 约束，不是永久业务台账。Start 结果未知时返回稳定 TaskID 供核对，
 不把本地请求接收当作持久接受。
 
-新提交使用 `TaskWorkflowV2` / `task-v2`；Worker 同时保留不变的 v1 运行码，旧 key
-重试按其原版本摘要复用。真实 Deep Agents 每经过 8 个安全父 model 边界执行
+当前只有 `runtime.py:TaskWorkflow` 一份实现，Worker 只注册这一份；早期 Task v1
+实现和双版本兼容分支已删除。Temporal 中的 Workflow type 仍为 `TaskWorkflowV2`，
+请求协议仍为 `task-v2`、snapshot 为 schema 2；这些是当前持久格式的标识，不表示
+同时维护两套代码。真实 Deep Agents 每经过 8 个安全父 model 边界执行
 Continue-As-New，完整 public saver 写日志携带路由、DeltaChannel 祖先、files/todos、
 messages 和摘要私有状态进入下一 Run；没有新增 checkpoint 数据库。固定原生摘要
 以 40 messages 或 16000 tokens 触发并保留 12 messages，使用 Workflow 确定性时钟/ID。
@@ -243,8 +247,9 @@ API `/healthz` 只检查进程；`/readyz` 通过有界 DescribeNamespace 检查
 
 此前组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
 后的恢复。对应结果是历史基线，镜像和实验范围见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。
-本轮结构重构分离 HTTP、任务编排、Temporal 后端与仓库验收工具，保留已有命令入口、
-Workflow 名称和持久协议；当前源码的验证结果单独记录在 [交付记录](DELIVERY.md)。
+源码按 HTTP、任务编排、Temporal 后端与仓库验收工具分工；本轮进一步删除尚未生产
+使用的早期 Task v1，保留单一当前实现及其持久格式。当前源码的验证结果单独记录在
+[交付记录](DELIVERY.md)，历史 v1 验收记录不代表当前 Worker 继续支持它。
 
 当前不增加业务 SQL admission/outbox/quotas 层；Temporal 是独立服务，负责 History
 持久性。Temporal 端点只应向受信任 API/Worker 开放，HTTP Bearer 不等于 Temporal

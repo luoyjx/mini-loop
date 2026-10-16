@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-from datetime import timedelta
 import hashlib
 import json
 import os
@@ -31,8 +30,6 @@ from tooling.acceptance.support.http import (
     check_page,
     check_preserved_state,
     check_snapshot_contract,
-    legacy_submission,
-    check_step_limit_history,
     ready,
     read_until,
     detached_submit,
@@ -90,7 +87,7 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
         if sorted(value.get("reused") for value in admitted) != [False, True]:
             raise HarnessFailure("The competing submissions did not distinguish one create and one reuse")
         if any(value.get("version") != "task-v2" for value in admitted):
-            raise HarnessFailure("The production API did not select the current V2 Workflow for new Tasks")
+            raise HarnessFailure("The production API did not select the current Workflow for new Tasks")
 
         async def count():
             return (await temporal_client.count_workflows(query=f'WorkflowId = "{task_a}"')).count
@@ -210,7 +207,7 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
                 recovered = await temporal_client.get_workflow_handle(task_id).query("snapshot")
                 difference = SUPPORT.first_difference(initial_snapshots[task_id], recovered, "snapshot")
                 if difference:
-                    raise HarnessFailure("Cold replay changed the full native V2 state at " + difference)
+                    raise HarnessFailure("Cold replay changed the full native state at " + difference)
             receipt["temporal_restart"] = {"old_server_pid": old_server_pid, "new_server_pid": temporal.process.pid,
                                             "cold_worker_markers": retried, "preserved_run_ids": run_ids}
             receipt["passed"].append("Temporal and both Workers SIGKILL/restart on the same history database: live API replicas reconnect and new Worker PIDs retry both Tasks under their original Run identities")
@@ -250,49 +247,6 @@ async def exercise(processes, binary, directory, run_id, receipt, persist, *, re
             raise HarnessFailure("A repeated completed submission was not reconciled with its retained Workflow history")
         receipt.update(cancelled_task=cancelled, completed_result=final, observed_activity_types=activity_types)
         receipt["passed"].append("after API replacement, owner cancellation terminates only its selected Task; another detached Task preserves its full original message prefix/file metadata/plan content, completes its todos, and reuses retained-history duplicate submission")
-        persist()
-
-        from temporalio.common import WorkflowIDConflictPolicy, WorkflowIDReusePolicy
-        legacy_key, legacy_message = "key-loop-" + run_id, "[fixture:loop-limit] " + run_id
-        legacy = legacy_submission("alice", legacy_key, legacy_message, queue)
-        task_limit = legacy["task_id"]
-        legacy_handle = await temporal_client.start_workflow(
-            "TaskWorkflow", legacy["payload"], id=task_limit, task_queue=queue, memo=legacy["memo"],
-            id_reuse_policy=WorkflowIDReusePolicy.REJECT_DUPLICATE,
-            id_conflict_policy=WorkflowIDConflictPolicy.FAIL,
-            execution_timeout=timedelta(hours=24), rpc_timeout=timedelta(seconds=5))
-        reused_legacy = decode(await detached_submit(processes, urls[0], alice, legacy_key, legacy_message), 202)
-        if (reused_legacy.get("task_id") != task_limit or reused_legacy.get("reused") is not True
-                or reused_legacy.get("version") != "task-v1"
-                or reused_legacy.get("run_id") != legacy_handle.first_execution_run_id):
-            raise HarnessFailure("The new production API failed to reuse an existing native v1 Task")
-        decode(await detached_submit(processes, urls[1], alice, legacy_key, legacy_message + " changed"), 409)
-        for suffix, method in (("", "GET"), ("/result", "GET"), ("/events", "GET"), ("/cancel", "POST")):
-            decode(await observer.request(method, urls[1] + "/v1/tasks/" + task_limit + suffix,
-                headers={"Authorization": "Bearer " + bob}), 404)
-        receipt["step_limit_task_id"] = task_limit
-        receipt["legacy_v1_compatibility"] = {"created_via": "trusted Temporal Start using original v1 contract",
-            "workflow_type": "TaskWorkflow", "version": reused_legacy["version"], "http_reused": True,
-            "payload_conflict_status": 409, "foreign_owner_status": 404,
-            "first_execution_run_id": legacy_handle.first_execution_run_id}
-        persist()
-        failed_response = await read_until(processes, observer, urls[1] + "/v1/tasks/" + task_limit, alice,
-                                            lambda response: response.status_code == 200 and response.json().get("status") == "failed",
-                                            timeout=60)
-        failed_summary = decode(failed_response, 200)
-        failed_result = decode(await observer.get(urls[0] + "/v1/tasks/" + task_limit + "/result",
-                                                  headers={"Authorization": "Bearer " + alice}), 200)
-        if (failed_result.get("status") != "failed" or failed_result.get("ready") is not True
-                or failed_result.get("result") is not None or failed_result.get("error", {}).get("code") != "workflow_failed"
-                or failed_result.get("run_id") != failed_summary.get("run_id")):
-            raise HarnessFailure("The graph step limit did not expose a completed HTTP failure result")
-        if read_marker(barriers, task_limit) is not None:
-            raise HarnessFailure("The endless planning fixture unexpectedly entered a model barrier")
-        failure_evidence = check_step_limit_history(await temporal_client.get_workflow_handle(task_limit).fetch_history())
-        receipt["step_limit_failure"] = {"task_id": task_limit, "run_id": failed_result["run_id"],
-                                         "configured_graph_step_limit": 128, "http_status": failed_result["status"],
-                                         "http_ready": failed_result["ready"], **failure_evidence}
-        receipt["passed"].append("existing native v1 Task reuses through the upgraded API with conflict/owner isolation; its real loop exhausts the original 128-step bound with HTTP failed/ready and native task_step_limit, without WorkflowTaskFailed")
         persist()
 
 

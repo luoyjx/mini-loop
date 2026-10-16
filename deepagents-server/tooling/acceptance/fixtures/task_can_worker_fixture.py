@@ -1,4 +1,4 @@
-"""Trusted deterministic model for the real TaskWorkflowV2 fault acceptance.
+"""Trusted deterministic model for the current TaskWorkflow fault acceptance.
 
 Only model Activities access these local test gates. The production Workflow,
 native task/subagent tools, summarization, files and checkpointer stay in use.

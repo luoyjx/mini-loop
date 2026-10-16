@@ -24,7 +24,6 @@ from mini_loop_deepagents.task_server.lifecycle import (
     ProcessLifecycle, lifecycle_log, validate_shutdown_settings,
 )
 from mini_loop_deepagents.task_server.runtime import MODEL_ALIAS, TaskWorkflow
-from mini_loop_deepagents.task_server.runtime_v2 import TaskWorkflowV2
 
 
 def make_model_provider(settings: AgentSettings) -> Callable[[str], Any]:
@@ -110,7 +109,7 @@ async def serve(
         worker = Worker(
             client,
             task_queue=task_queue,
-            workflows=[TaskWorkflow, TaskWorkflowV2],
+            workflows=[TaskWorkflow],
             plugins=[DeepAgentsPlugin(model_provider=model_provider)],
             identity=identity,
             max_cached_workflows=0,

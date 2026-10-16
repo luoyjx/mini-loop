@@ -23,7 +23,7 @@ def main() -> None:
     parser.add_argument("--address", default="127.0.0.1:8123")
     parser.add_argument("--temporal-address", default="127.0.0.1:7233")
     parser.add_argument("--namespace", default="default")
-    parser.add_argument("--task-queue", default="mini-loop-task-v1")
+    parser.add_argument("--task-queue", default="mini-loop-task")
     parser.add_argument("--max-inflight", type=int, default=32)
     args = parser.parse_args()
     import uvicorn
