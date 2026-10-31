@@ -1,5 +1,18 @@
 # Go implementation
 
+## Opt-in personal-assistant demo — 2026-11-01
+
+`go/assistant` and `go/cmd/miniloop-assistant` are a **Go addition** with no
+Python contract. They run a loopback-only demo of a proactive personal agent.
+It has a SQLite trigger queue, a routine scheduler, thread-subscribed worker
+sessions, typed mock mail and calendar connectors, a proposal outbox that only
+a human can release, and an append-only ledger. The channel is a simulated web
+page. The demo wires the existing `SessionManager`, `ToolGate`, `memory` and
+`sqlitestate` packages. It is the first non-test importer of `sqlitestate`.
+No other package or default changes: `cmd/miniloop` still opens no SQLite file.
+See [the demo README](assistant/README.md) and the
+[roadmap](../docs/PROACTIVE_AGENT_ROADMAP.md).
+
 ## Current full-profile status — 2026-10-15
 
 The approved default Python syntax backend now uses external **CPython 3.11.3

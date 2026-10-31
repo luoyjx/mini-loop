@@ -13573,3 +13573,43 @@ Canonical map reviewed, baseline updated, graph unchanged; no rendered acceptanc
 or push. Native reliability/default diagnostics/broader IDNA/full G0–G7 remain open.
 [Collector](docs/audits/go-reload-required-queue-control-2026-10-11.py),
 [exact evidence](docs/audits/go-reload-required-queue-control-2026-10-11.json).
+
+## Go-only slice — proactive personal-assistant demo (2026-11-01)
+
+Code baseline: `c65073a` plus `go/assistant` and `go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is a labeled Go addition. No Python module,
+fixture or exported contract changes, and `export_go_contracts.py` inputs are untouched.
+
+**Go evidence:**
+
+- The demo composes the existing seams:
+  - `ManagerServices.Tools`: a typed extension catalogue that replaces Bash and file tools.
+  - `StateStore`: caller-owned `sqlitestate`.
+  - `Memory` / `MemoryTools`.
+  - A `GateHooks` result observer that writes the ledger.
+  - `RestoreScheduledSession`, to restore subscribed workers lazily.
+- New domain records are named types. No `any` or `map[string]any` is stored.
+- Tests in `go/assistant` cover:
+  - the rule fast path;
+  - drafts that are never sent before approval;
+  - single approval and denial;
+  - ledger linkage of effect, `action_id` and actor;
+  - quiet workers staying off the channel;
+  - routine exactly-once and same-day catch-up across restart;
+  - follow-up routing to a worker restored from `agent.db`;
+  - requeue of interrupted triggers, and proposal dedupe;
+  - HTTP host and content-type guards.
+- `go/cmd/miniloop-assistant` tests cover the loopback-only bind, refused unsafe
+  startup and graceful cancellation.
+
+**Not claimed:**
+
+- real mail, calendar or chat connectors;
+- push delivery;
+- authentication;
+- an LLM router;
+- a Watchdog;
+- durable resume of `ApprovalBroker` asks;
+- multi-process trigger claims beyond the single SQLite connection;
+- a Python counterpart.

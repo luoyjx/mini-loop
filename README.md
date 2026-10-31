@@ -20,6 +20,7 @@ orchestration remain explicit choices.
 | Run the independent Deep Agents server | [Deep Agents server module](deepagents-server/README.md) |
 | Run the opt-in Temporal Task HTTP server | [Task server](deepagents-server/TASK_SERVER.md) |
 | Inspect the optional Temporal experiment | [Temporal fault prototype](deepagents-server/TEMPORAL_PROTOTYPE.md) |
+| Try the proactive personal-assistant demo (Go) | [Go assistant demo](go/assistant/README.md) |
 | Understand one request | [How one turn works](#how-one-turn-works) |
 | Decide what to enable | [Runtime posture](#runtime-posture) |
 | Integrate over HTTP or Python | [Use the runtime](#use-the-runtime) |
@@ -1183,7 +1184,18 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-10-17**, `2b85676` plus the
+Current architecture review baseline: **2026-11-01**, `c65073a` plus the opt-in Go
+personal-assistant demo. `go/assistant` and `go/cmd/miniloop-assistant` are a Go
+addition with no Python counterpart; `cmd/miniloop`, the Python runtime and both
+Deep Agents lanes keep their defaults. The demo is a loopback-only daemon without
+authentication. Its own SQLite file holds simulated mail and calendar data, the trigger
+queue, thread subscriptions, a proposal outbox, the channel log and an append-only
+ledger; worker sessions use the existing Go `SessionManager`, `ToolGate` and caller-owned
+`sqlitestate` store. Workers have only typed connector tools: reads plus `propose_*`
+drafts. Only a human decision on the simulated channel releases an external effect,
+and mail and calendar are mock data. See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
+
+Previous architecture review baseline: **2026-10-17**, `2b85676` plus the
 single Task runtime cleanup. API, Worker and Temporal deployment roles are unchanged;
 the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
@@ -1425,6 +1437,24 @@ flowchart LR
         TSWorkflow -->|bounded native checkpoint / Continue-As-New| TSHistory
         TSWorkflow --> TSActivity --> TSModel
     end
+    subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>chat · event presets · approval cards · ledger view"]
+        PAStore["assistant.db · SQLite<br/>mock mail / calendar · trigger queue · thread subscriptions<br/>proposal outbox · channel log · append-only ledger"]
+        PAScheduler["Routine scheduler<br/>daily slot claim + trigger in one transaction<br/>same-day catch-up once · no back-fill"]
+        PARouter["Assistant Router<br/>rule fast path · per-thread serial claims<br/>subscribed worker reuse / lazy restore · sole channel writer"]
+        PATools["Connector tools · typed extensions<br/>mail / calendar reads · propose_* drafts<br/>no send tool · replaces Bash / file catalogue"]
+        PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
+        PAChannel -->|webhook-like delivery / chat| PAStore
+        PAScheduler -->|claim slot + enqueue| PAStore
+        PAStore -->|claim trigger| PARouter
+        PATools -->|read world · append pending proposal| PAStore
+        PAChannel -->|human approve or deny · atomic effect + ledger| PAStore
+    end
+    Caller -. explicit demo command .-> PAChannel
+    PARouter -->|untrusted trigger turn / explicit-human chat turn| GoManager
+    GoGate -->|typed extension dispatch| PATools
+    GoGate -. result observer to ledger .-> PARouter
+    GoSession -->|model requests| PAModel
     DAProvider["OpenAI provider<br/>server-configured credentials / model"]
     Caller -. explicitly select independent module .-> DAAuth
     DAGraph -->|model requests| DAProvider
@@ -1486,6 +1516,16 @@ flowchart LR
     GoContractInputs --> GoCI --> GoContractEvidence
 ```
 <!-- architecture-map:end -->
+
+The Go assistant lane is a demo of the six personal-agent parts, not a product
+surface. One daemon owns two SQLite files: `assistant.db` for the simulated world
+and assistant state, and `agent.db` for session transcripts, the action journal and
+leases. Triggers are claimed serially per thread, and a claim never runs while
+another trigger of the same thread is running. Rules ignore bulk mail before any
+model call. A worker may answer `[QUIET]` to stay off the channel. Approval is a
+durable outbox state, not a parked turn, so a pending proposal survives restarts
+without blocking any session. The process-local `ApprovalBroker` and its 300s
+timeout are unchanged.
 
 The Deep Agents lane has its own dependency lock and standard Agent Server API.
 Compose separates the API (zero execution slots) from background workers (two
@@ -3801,6 +3841,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo: SQLite triggers, routines, proposal outbox, ledger and simulated channel page (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mini-loop 个人助理</title>
+<style>
+:root {
+  --bg: #f6f6f3; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6b66; --line: #e3e2dc;
+  --accent: #4f46e5; --accent-ink: #ffffff; --accent-soft: #eceafd;
+  --ok: #15803d; --ok-soft: #e7f5ec; --warn: #b45309; --warn-soft: #fdf3e2; --bad: #b91c1c; --bad-soft: #fbeaea;
+  --bubble: #f0efe9; --mine: #4f46e5; --mine-ink: #fff;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141413; --panel: #1d1d1b; --ink: #ecebe6; --muted: #9c9b95; --line: #2f2e2b;
+    --accent: #8b85ff; --accent-ink: #141413; --accent-soft: #2a2850;
+    --ok: #4ade80; --ok-soft: #173322; --warn: #fbbf24; --warn-soft: #3a2c10; --bad: #f87171; --bad-soft: #3b1a1a;
+    --bubble: #262624; --mine: #8b85ff; --mine-ink: #141413;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.55 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif; }
+header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+header h1 { font-size: 16px; margin: 0; font-weight: 650; }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.legend { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.legend span { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px; padding: 16px 20px; height: calc(100% - 57px); }
+section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; min-height: 0; }
+.card > h2 { font-size: 13px; margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.card > h2 small { color: var(--muted); font-weight: 400; }
+#messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; padding: 8px 12px; border-radius: 12px; white-space: pre-wrap; word-break: break-word; }
+.msg.assistant { background: var(--bubble); align-self: flex-start; border-bottom-left-radius: 4px; }
+.msg.user { background: var(--mine); color: var(--mine-ink); align-self: flex-end; border-bottom-right-radius: 4px; }
+.msg.system { align-self: center; background: transparent; color: var(--muted); font-size: 12px; text-align: center; max-width: 95%; }
+.msg .meta { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.msg.user .meta { color: inherit; opacity: .75; }
+.proposal { align-self: stretch; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 10px; padding: 10px 12px; background: var(--panel); }
+.proposal.sent { border-left-color: var(--ok); }
+.proposal.denied { border-left-color: var(--muted); opacity: .8; }
+.proposal .title { font-weight: 650; }
+.proposal .to { font-size: 12px; color: var(--muted); }
+.proposal pre { white-space: pre-wrap; font: inherit; margin: 8px 0; padding: 8px; background: var(--bubble); border-radius: 8px; }
+.proposal .reason { font-size: 12px; color: var(--muted); }
+.actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+button { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+.chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+.chip.pending { background: var(--warn-soft); color: var(--warn); }
+.chip.sent, .chip.done, .chip.confirmed { background: var(--ok-soft); color: var(--ok); }
+.chip.denied, .chip.ignored, .chip.quiet, .chip.declined { background: var(--bubble); color: var(--muted); }
+.chip.failed { background: var(--bad-soft); color: var(--bad); }
+.chip.running, .chip.invited { background: var(--accent-soft); color: var(--accent); }
+form.compose { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); }
+form.compose input { flex: 1; }
+input, textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; width: 100%; }
+textarea { resize: vertical; min-height: 64px; }
+.quick { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 10px 10px; }
+.quick button { font-size: 12px; padding: 3px 9px; border-radius: 999px; }
+nav.tabs { display: flex; gap: 2px; padding: 6px 8px 0; border-bottom: 1px solid var(--line); overflow-x: auto; }
+nav.tabs button { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--muted); padding: 8px 10px; white-space: nowrap; }
+nav.tabs button.active { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+.pane { flex: 1; overflow: auto; padding: 14px; display: none; }
+.pane.active { display: block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.grid button { text-align: left; padding: 10px 12px; }
+h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 18px 0 8px; }
+h3:first-child { margin-top: 0; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.hint { font-size: 12px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; position: sticky; top: -14px; background: var(--panel); }
+td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.list-item { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.list-item .sub { color: var(--muted); font-size: 12px; }
+.empty { color: var(--muted); font-size: 13px; padding: 12px 0; }
+.toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.toast.show { opacity: .92; }
+@media (max-width: 860px) {
+  main { grid-template-columns: 1fr; height: auto; padding: 12px 16px; }
+  section.card { min-height: 70vh; }
+  .legend { display: none; }
+  header { padding: 10px 16px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>mini-loop 个人助理</h1>
+  <span class="badge" id="model">model …</span>
+  <div class="legend" title="图中 6 个组件在 demo 里的位置">
+    <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟邮件/日历</span><span>记忆 · recall/remember</span>
+    <span>Routine · 晨报 + 事件触发</span><span>审批闸 · 提案卡片</span><span>审计 · 账本</span>
+  </div>
+</header>
+<main>
+  <section class="card" aria-label="模拟信道">
+    <h2>模拟 IM 信道 <small>助理只通过 Router 在这里说话</small></h2>
+    <div id="messages" aria-live="polite"></div>
+    <div class="quick" id="quick"></div>
+    <form class="compose" id="compose">
+      <input id="text" autocomplete="off" placeholder="和助理说话，例如：记住 周三下午不开会" maxlength="2000">
+      <button class="primary" type="submit">发送</button>
+    </form>
+  </section>
+  <section class="card" aria-label="外部世界与账本">
+    <nav class="tabs" id="tabs">
+      <button data-pane="world" class="active">外部世界</button>
+      <button data-pane="mail">邮箱</button>
+      <button data-pane="calendar">日历</button>
+      <button data-pane="triggers">触发器</button>
+      <button data-pane="ledger">审计账本</button>
+    </nav>
+    <div class="pane active" id="pane-world">
+      <h3>投递一个事件（相当于邮件 webhook）</h3>
+      <div class="grid" id="presets"></div>
+      <h3>自定义来信</h3>
+      <form id="custom">
+        <div class="row"><input name="from" placeholder="发件地址，如 dave@acme.example" required><input name="from_name" placeholder="发件人名字"></div>
+        <input name="subject" placeholder="主题" required style="margin-bottom:8px">
+        <textarea name="body" placeholder="正文"></textarea>
+        <div class="actions"><label class="hint"><input type="checkbox" name="bulk" style="width:auto"> 批量邮件（newsletter）</label><button class="primary" type="submit" style="margin-left:auto">投递</button></div>
+      </form>
+      <h3>Routines</h3>
+      <div id="routines"></div>
+      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，待批准的提案和账本都还在；错过今天 07:00 的晨报会补跑一次。</p>
+    </div>
+    <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准过的提案）</h3><div id="sent"></div></div>
+    <div class="pane" id="pane-calendar"><div id="calendar"></div></div>
+    <div class="pane" id="pane-triggers"><div id="triggers"></div></div>
+    <div class="pane" id="pane-ledger"><p class="hint">每一行都能追溯到触发器、worker session、闸门 action_id 和批准人。</p><div id="ledger"></div></div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const $ = (id) => document.getElementById(id);
+function el(tag, props, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(props || {})) {
+    if (key === "class") node.className = value;
+    else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else if (value !== undefined && value !== null && value !== false) node.setAttribute(key, value === true ? "" : value);
+  }
+  for (const child of children.flat()) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+const time = (s) => new Date(s).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+const dateTime = (s) => new Date(s).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+const short = (s) => (s ? String(s).slice(0, 10) : "");
+const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
+const statusLabel = { pending: "待批准", sent: "已发出", denied: "已拒绝", failed: "失败" };
+
+function toast(text) {
+  const t = $("toast"); t.textContent = text; t.classList.add("show");
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function post(path, body) {
+  const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || response.statusText);
+  return data;
+}
+
+let state = null, lastJSON = "";
+async function refresh() {
+  try {
+    const response = await fetch("/api/state", { cache: "no-store" });
+    const text = await response.text();
+    if (text === lastJSON) return;
+    lastJSON = text; state = JSON.parse(text); render();
+  } catch (e) { /* daemon restarting: keep the last view */ }
+}
+
+function proposalCard(p) {
+  const actions = p.status === "pending"
+    ? el("div", { class: "actions" },
+        el("button", { class: "primary", onclick: () => decide(p.id, "approve") }, "批准发送"),
+        el("button", { onclick: () => decide(p.id, "deny") }, "拒绝"))
+    : el("div", { class: "actions" }, el("span", { class: "chip " + p.status }, statusLabel[p.status] || p.status),
+        p.decided_by ? el("span", { class: "hint" }, "由 " + p.decided_by + " 于 " + time(p.decided_at)) : null);
+  return el("div", { class: "proposal " + p.status },
+    el("div", { class: "title" }, "提案 #" + p.id + " · " + (kindLabel[p.kind] || p.kind) + "：" + p.subject),
+    el("div", { class: "to" }, "收件人 " + p.to + (p.response ? " · " + (p.response === "accept" ? "接受" : "婉拒") : "")),
+    el("pre", {}, p.body),
+    p.reason ? el("div", { class: "reason" }, "理由：" + p.reason) : null,
+    actions);
+}
+
+function renderChannel() {
+  const box = $("messages");
+  const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+  const proposals = new Map(state.proposals.map((p) => [p.id, p]));
+  box.replaceChildren(...state.channel.map((m) => {
+    if (m.proposal_id && proposals.has(m.proposal_id)) return proposalCard(proposals.get(m.proposal_id));
+    return el("div", { class: "msg " + m.role }, m.text,
+      el("span", { class: "meta" }, time(m.created_at) + (m.trigger_id ? " · 触发器 #" + m.trigger_id : "")));
+  }));
+  if (nearBottom) box.scrollTop = box.scrollHeight;
+}
+
+function mailList(items) {
+  if (!items.length) return el("div", { class: "empty" }, "空");
+  return items.map((m) => el("div", { class: "list-item" },
+    el("div", {}, el("b", {}, m.subject), " ", m.category !== "person" ? el("span", { class: "chip quiet" }, m.category) : null),
+    el("div", { class: "sub" }, (m.folder === "sent" ? "→ " + m.to : m.from_name + " <" + m.from + ">") + " · " + dateTime(m.received_at) + " · thread " + m.thread),
+    el("div", { class: "sub" }, m.body.slice(0, 120))));
+}
+
+function render() {
+  $("model").textContent = "model · " + state.model;
+  renderChannel();
+  $("presets").replaceChildren(...state.presets.map((p) =>
+    el("button", { onclick: () => post("/api/simulate", { preset: p.id }).then(() => toast("已投递：" + p.label)).catch((e) => toast(e.message)) }, p.label)));
+  $("routines").replaceChildren(...state.routines.map((r) => el("div", { class: "list-item" },
+    el("div", {}, el("b", {}, r.name), " 每天 " + String(r.hour).padStart(2, "0") + ":" + String(r.minute).padStart(2, "0"),
+      el("button", { style: "margin-left:10px", onclick: () => post("/api/routines/" + r.id + "/run").then(() => toast("已触发：" + r.name)).catch((e) => toast(e.message)) }, "立即运行")),
+    el("div", { class: "sub" }, "最近时段：" + (r.last_slot || "从未") + " · " + r.prompt))));
+  $("inbox").replaceChildren(...[mailList(state.inbox)].flat());
+  $("sent").replaceChildren(...[mailList(state.sent)].flat());
+  $("calendar").replaceChildren(state.calendar.length ? el("table", {},
+    el("thead", {}, el("tr", {}, ["时间", "日程", "状态", "组织者"].map((h) => el("th", {}, h)))),
+    el("tbody", {}, state.calendar.map((e) => el("tr", {},
+      el("td", {}, dateTime(e.start) + "–" + time(e.end).slice(0, 5)), el("td", {}, e.title),
+      el("td", {}, el("span", { class: "chip " + e.status }, e.status)), el("td", { class: "mono" }, e.organizer))))) : el("div", { class: "empty" }, "未来 7 天没有日程"));
+  $("triggers").replaceChildren(el("table", {},
+    el("thead", {}, el("tr", {}, ["#", "类型", "摘要", "状态", "决定", "worker"].map((h) => el("th", {}, h)))),
+    el("tbody", {}, state.triggers.map((t) => el("tr", {},
+      el("td", { class: "mono" }, t.id), el("td", {}, t.kind), el("td", {}, t.summary.slice(0, 60)),
+      el("td", {}, el("span", { class: "chip " + t.status }, t.status + (t.attempts > 1 ? " ×" + t.attempts : ""))),
+      el("td", { class: "hint" }, t.decision), el("td", { class: "mono" }, short(t.session_id)))))));
+  $("ledger").replaceChildren(el("table", {},
+    el("thead", {}, el("tr", {}, ["时间", "类型", "执行者", "触发器", "session", "action", "工具 / 风险", "详情"].map((h) => el("th", {}, h)))),
+    el("tbody", {}, state.ledger.map((e) => el("tr", {},
+      el("td", { class: "mono" }, time(e.at)), el("td", {}, e.kind), el("td", {}, e.actor),
+      el("td", { class: "mono" }, e.trigger_id || ""), el("td", { class: "mono" }, short(e.session_id)),
+      el("td", { class: "mono" }, short(e.action_id)), el("td", {}, e.tool ? e.tool + " · " + e.risk : (e.risk || "")),
+      el("td", {}, e.detail))))));
+}
+
+async function decide(id, decision) {
+  try { await post("/api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，正在发出" : "已拒绝"); refresh(); }
+  catch (e) { toast(e.message); }
+}
+
+$("compose").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const input = $("text"), text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  try { await post("/api/chat", { text }); refresh(); } catch (e) { toast(e.message); input.value = text; }
+});
+$("custom").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = new FormData(event.target);
+  try {
+    await post("/api/simulate/custom", { from: form.get("from"), from_name: form.get("from_name"), subject: form.get("subject"), body: form.get("body"), bulk: form.get("bulk") === "on" });
+    event.target.reset(); toast("已投递自定义来信"); refresh();
+  } catch (e) { toast(e.message); }
+});
+$("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "我的经理是谁", "记住 周三下午不开会"].map((text) =>
+  el("button", { onclick: () => { $("text").value = text; $("text").focus(); } }, text)));
+$("tabs").addEventListener("click", (event) => {
+  const button = event.target.closest("button"); if (!button) return;
+  for (const b of $("tabs").children) b.classList.toggle("active", b === button);
+  for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.id === "pane-" + button.dataset.pane);
+});
+refresh();
+setInterval(refresh, 1500);
+</script>
+</body>
+</html>
