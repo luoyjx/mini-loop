@@ -82,7 +82,7 @@ shell for now.
    seconds; the page also wakes the poller right away. The worker reads the invite and
    the calendar through MCP, finds the conflict, and drafts a decline that suggests a
    later time. The draft appears as an approval card.
-2. Click **经理来信**. The worker recalls who the manager is, drafts a reply and creates
+2. Click **经理来信**. The worker searches its memory for who the manager is, drafts a reply and creates
    a task to check within an hour that the reply went out.
 3. Click **Newsletter**. The rule fast path ignores it before any model call.
 4. Click **可疑邮件**. The sender is a stranger writing to you, so the mail is an
@@ -323,67 +323,69 @@ preferences (the first three `feedback` memories). Every worker prompt shows it
 under **用户画像**, marked as reference data rather than instructions. The daemon
 rebuilds the lines that need no calendar at start and after the nightly turn.
 
-Recall itself is the existing lexical `memory.Store.Search`: a query is split at
-non-letters, and each term must occur as a substring. `TestLexicalMemoryRecallEvaluation`
-measures it on ten assistant-style memories with recall@3:
+### Memory search
 
-| Queries | Found |
+Workers search memory with `memory_search`. The router creates every session with
+the assistant's tools plus `remember` and `memory_search`; the built-in `recall` is
+no longer offered, because its substring search misses a question asked in other
+words. A session restored from an earlier version keeps its old catalogue.
+
+`MemorySearch` builds its index per query from the owner's memories and ranks them
+with three legs:
+
+| Leg | What it matches |
 |---|---|
-| Topic words (经理, newsletter, 周三, 爬山, 账单, 放学, English, clinic) | 8 of 8 |
-| Space-separated keywords (周三 开会, 出差 座位, 早上 邮件, Alice 回复) | 4 of 4 |
-| Paraphrases (我老板是谁, boss, 哪天不能开会, 周三下午有空吗, 牙医, 坐飞机的习惯, invoice, 接孩子) | 0 of 8 |
+| 关键词 | BM25 over name, description and body. Runs of Han, kana or Hangul are split into overlapping two-character tokens, other letters and digits into lowercase words; single letters and a few English function words are dropped. |
+| 别名 | BM25 over the memory's search aliases, when they were written for its current text. |
+| 子串 | The existing `memory.Store.Search`: the query split at non-letters, each term counted as a substring. |
 
-Semantic retrieval would close the paraphrase gap, but it needs an embedding model
-or library, which is a new dependency that needs approval. Until then workers
-search by topic word.
+Reciprocal rank fusion (k=60) merges the three rankings; on a tie, more legs win,
+then the better single rank. Each hit names the legs that found it. The Markdown
+memory files stay the authority; nothing is written back to them.
 
-## Attention and control
+**Aliases** come from the nightly consolidation. After removing duplicates, it asks
+the model once, without tools, for three to eight synonyms, broader terms and
+other-language wordings of each memory that has none for its current text (at most
+12 a night). `memory_aliases` in `assistant.db` keys them by memory name and a hash
+of the text, so an edited memory stops using its old aliases and a removed memory
+loses its row. A failed request is noted in the ledger and retried the next night;
+search works without aliases. The offline scripted model answers from a small
+synonym table.
 
-The page answers "does anything need me?" first. The list under **需要你处理** is
-derived from `assistant.db` and an in-memory health board, so its count always
-equals its rows.
+**Prefetch**: before each turn the router searches with what the turn's events are
+about (a mail's sender and subject, the user's words, an event's title and
+organizer, a task's title) and puts up to three hits, at most 600 characters, into
+the prompt under **可能相关的记忆**, marked as reference data. Routines prefetch
+nothing.
 
-| Item | Listed while | Actions |
-|---|---|---|
-| Draft to approve | The proposal is pending | 批准发送 / 拒绝 |
-| Question | A worker asked and you have not answered or dismissed it | 回答: back to the asking thread / 知道了 (you can still answer it later) |
-| Failed send | An approved proposal failed for good and was not dismissed | 重试发送: back to the outbox with a fresh attempt budget under the same `proposal-<id>` key / 知道了 |
-| Task handed to you | The task used its six checks and was not dismissed | 再跟进一轮: six more checks, starting now, on the same worker / 知道了 |
-| Failed trigger | It failed in the last 24 hours and was not dismissed | 重新处理: queued again with a fresh attempt budget / 知道了 |
-| Task without progress | The watchdog flagged an active task and the flag was not dismissed | 立即检查 / 取消任务 / 知道了 (a new streak lists it again) |
-| Component problem | The mail poll, calendar watch, outbox transport or worker model call failed three times in a row | None; it clears on the next success |
+On the page, **画像与记忆** names the retrieval mode, lists each memory's aliases
+and has a search box (`GET /api/memory/search?q=`) that shows the legs of each hit.
 
-The header shows how many worker turns run. Your chat is claimed before any
-background trigger, and one slot beyond `-workers` runs only your chat, so a burst
-of mail never makes you wait.
+`TestMemoryRetrievalEvaluation` scores each configuration on a fixed set in
+`testdata/recall_eval.json`: 24 memories and 44 queries in five categories, counting
+hits in the top 3 and MRR@3.
 
-**暂停处理** writes a durable switch. While it is on:
+| Configuration | Topic (8) | Keywords (4) | Questions (10) | Paraphrases (10) | Cross-language (12) | Total | MRR@3 |
+|---|---|---|---|---|---|---|---|
+| Substring (old `recall`) | 8 | 4 | 0 | 0 | 0 | 12 | 0.273 |
+| BM25 | 8 | 4 | 10 | 0 | 0 | 22 | 0.500 |
+| BM25 + substring | 8 | 4 | 10 | 0 | 0 | 22 | 0.500 |
+| All three legs | 8 | 4 | 10 | 8 | 9 | 39 | 0.852 |
 
-- the router claims nothing, the outbox sends nothing, and the scheduler claims no
-  routine, task check or reminder;
-- the poller still records new mail, and the page still records your decisions;
-- turns already running finish.
-
-**恢复处理** wakes every loop. Missed checks and today's missed routines catch up
-as after downtime. An event that started during the pause is not reminded.
-
-Failures are classified before a retry:
-
-- A failed model call and a turn that ran out of rounds come back from the agent
-  session as final text. The router treats both as failed turns and never posts that
-  text to the channel.
-- An MCP refusal, a 4xx model rejection such as bad credentials, and a turn out of
-  rounds fail at once and appear in the list.
-- Outages, overload, rate limits and timeouts retry up to four attempts with
-  backoff.
+The bigrams find every unspaced question; the aliases find most paraphrases and
+cross-language queries. The aliases in the set were written by the author of the
+queries, so that figure is optimistic; a real model's aliases will differ. The five
+misses (不能吃什么, 网断了打给谁, teeth cleaning, peanuts, 牙科诊所) share no word with
+their memory. Local embeddings are the planned next step. Set
+`MINILOOP_ASSISTANT_RECALL_REPORT` to a path to write the scores as JSON.
 
 ## How the six parts map to code
 
 | Part | In this demo | Code |
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
-| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup` (read: local records). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
-| Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window and duplicate memories into a profile shown in every worker prompt. | `seed.go`, `lookup.go`, `nightly.go`, `profile.go` |
+| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
+| Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases and substring, fused by rank), and each prompt carries the memories related to its events. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `lookup.go`, `nightly.go`, `profile.go` |
 | Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
 | Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
@@ -412,7 +414,10 @@ Failures are classified before a retry:
   waking forever.
 - Contacts are local demo data. A known contact still runs untrusted, because the
   mail content is external.
-- Memory stays lexical; see [Memory and profile](#memory-and-profile). The nightly
+- Memory search is lexical with model-written aliases; there are no embeddings yet.
+  The prefetch query can come from an external mail's sender and subject, so mail can
+  influence which memories a worker sees; it cannot make the worker send. See
+  [Memory search](#memory-search). The nightly
   turn runs untrusted like any routine and is asked to remember only what you said
   in the channel. A memory a worker wrote from mail can still reach the profile's
   preference line, which is why the profile is marked as reference data.

@@ -45,9 +45,10 @@ type App struct {
 	Outbox    *Outbox
 	Preparer  *Preparer
 	Manager   *agent.SessionManager
-	// Memory is the owner's memory, shared with the workers' remember and
-	// recall tools.
+	// Memory is the owner's memory, shared with the workers' remember tool;
+	// Search ranks it for memory_search, the per-turn prefetch and the page.
 	Memory     *memory.ScopedStore
+	Search     *MemorySearch
 	Health     *Health
 	ModelLabel string
 
@@ -121,7 +122,10 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
 	router.triage = &Triage{provider: observeProvider(config.Provider), model: config.Model}
 	router.consolidator = NewConsolidator(store, config.Connector, owned, now)
-	catalog, err := NewToolCatalog(store, config.Connector, router, now)
+	router.consolidator.aliaser = &Aliaser{provider: observeProvider(config.Provider), model: config.Model}
+	search := NewMemorySearch(owned, store)
+	router.search = search
+	catalog, err := NewToolCatalog(store, config.Connector, router, search, now)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +168,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	poller.health = health
 	return &App{
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
-		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Memory: owned, Health: health,
+		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Memory: owned, Search: search, Health: health,
 		ModelLabel: label, now: now, states: states, release: release,
 	}, nil
 }

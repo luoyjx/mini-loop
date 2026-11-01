@@ -44,6 +44,8 @@ func (s *Store) seedNightly(ctx context.Context, now time.Time) error {
 type Consolidation struct {
 	Learned       []string
 	Deduped       int
+	Aliased       int
+	AliasNote     string
 	MeetingWindow string
 	Profile       []ProfileEntry
 	Chat          []ChannelMessage
@@ -55,6 +57,7 @@ type Consolidator struct {
 	store     *Store
 	connector *Connector
 	memories  *memory.ScopedStore
+	aliaser   *Aliaser
 	now       clock
 }
 
@@ -85,6 +88,9 @@ func (c *Consolidator) Run(ctx context.Context) (Consolidation, error) {
 	if err != nil {
 		return result, err
 	}
+	if result.Aliased, result.AliasNote, err = c.expandAliases(ctx, records, now); err != nil {
+		return result, err
+	}
 	err = c.store.inTx(ctx, func(tx *sql.Tx) error {
 		result.Learned = nil
 		for _, mail := range sent {
@@ -106,7 +112,10 @@ func (c *Consolidator) Run(ctx context.Context) (Consolidation, error) {
 		if err := writeProfile(ctx, tx, result.Profile, now); err != nil {
 			return err
 		}
-		detail := fmt.Sprintf("夜间整理：从已发送邮件学到联系人 %d 个，去掉重复记忆 %d 条，画像 %d 项；会议时间 %s", len(result.Learned), result.Deduped, len(result.Profile), result.MeetingWindow)
+		detail := fmt.Sprintf("夜间整理：从已发送邮件学到联系人 %d 个，去掉重复记忆 %d 条，补检索别名 %d 条，画像 %d 项；会议时间 %s", len(result.Learned), result.Deduped, result.Aliased, len(result.Profile), result.MeetingWindow)
+		if result.AliasNote != "" {
+			detail += "；" + result.AliasNote
+		}
 		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerMemory, Actor: "daemon（夜间整理）", Detail: detail})
 	})
 	if err != nil {
@@ -258,7 +267,7 @@ func writeConsolidation(b *strings.Builder, done *Consolidation) {
 	if len(done.Learned) > 0 {
 		learned = strings.Join(done.Learned, "、")
 	}
-	fmt.Fprintf(b, "- 从已发送邮件学到的新联系人：%s\n- 去掉重复记忆：%d 条\n- 会议时间：%s\n", learned, done.Deduped, done.MeetingWindow)
+	fmt.Fprintf(b, "- 从已发送邮件学到的新联系人：%s\n- 去掉重复记忆：%d 条\n- 补检索别名：%d 条\n- 会议时间：%s\n", learned, done.Deduped, done.Aliased, done.MeetingWindow)
 	if len(done.Chat) == 0 {
 		b.WriteString("今天你在信道里没有说过话。\n")
 		return

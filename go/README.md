@@ -46,7 +46,10 @@ the agent's stuck detector flags tasks whose checks stop making progress.
 A read-only `lookup` tool follows a piece of work through the demo's records. A
 nightly routine adds recipients of sent mail as contacts, records the meeting
 window, removes duplicate memories and rebuilds a short user profile that every
-worker prompt shows. Memory search stays the existing lexical `memory.Store.Search`.
+worker prompt shows. Workers search memory with `memory_search`, which merges BM25
+(Chinese split into two-character tokens), model-written aliases from the nightly
+run and the existing substring search by rank; each turn's prompt carries the
+memories related to its events.
 
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.

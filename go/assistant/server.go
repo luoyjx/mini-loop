@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/luoyjx/mini-loop/go/memory"
 )
 
 //go:embed web/index.html
@@ -54,6 +56,7 @@ type StateView struct {
 	Contacts      []Contact        `json:"contacts"`
 	Profile       []ProfileEntry   `json:"profile"`
 	Memories      []MemoryView     `json:"memories"`
+	Retrieval     string           `json:"retrieval"`
 	Integration   IntegrationView  `json:"integration"`
 	Workers       WorkersView      `json:"workers"`
 	Channel       []ChannelMessage `json:"channel"`
@@ -135,6 +138,7 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/jobs/{id}/stop", app.handleJobStop)
 	mux.HandleFunc("POST /api/pause", app.handlePause)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
+	mux.HandleFunc("GET /api/memory/search", app.handleMemorySearch)
 	return guard(mux)
 }
 
@@ -209,6 +213,7 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		func() error { view.Profile, err = app.Store.Profile(ctx); return err },
 		func() error { view.Memories, err = app.memoryView(ctx); return err },
 	}
+	view.Retrieval = RetrievalMode
 	for _, step := range steps {
 		if err := step(); err != nil {
 			writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
@@ -405,25 +410,69 @@ func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusAccepted, acceptedResponse{trigger})
 }
 
-// MemoryView is one owner memory as the page lists it.
+// MemoryView is one owner memory as the page lists it, with the search
+// aliases written for its current text. Legs is set on search results.
 type MemoryView struct {
-	Name        string `json:"name"`
-	Type        string `json:"type"`
-	Origin      string `json:"origin"`
-	Description string `json:"description"`
-	Body        string `json:"body"`
+	Name        string   `json:"name"`
+	Type        string   `json:"type"`
+	Origin      string   `json:"origin"`
+	Description string   `json:"description"`
+	Body        string   `json:"body"`
+	Aliases     []string `json:"aliases,omitempty"`
+	Legs        []string `json:"legs,omitempty"`
 }
+
+// RetrievalMode is how memory search ranks, as the page states it.
+const RetrievalMode = "关键词（BM25，中文按两字切词）+ 夜间整理补的别名 + 子串，三路按排名合并（RRF k=60）；语义检索未启用"
 
 func (app *App) memoryView(ctx context.Context) ([]MemoryView, error) {
 	records, err := app.Memory.List(ctx)
 	if err != nil {
 		return nil, err
 	}
+	aliases, err := app.Store.MemoryAliases(ctx)
+	if err != nil {
+		return nil, err
+	}
 	result := make([]MemoryView, 0, len(records))
 	for _, record := range records {
-		result = append(result, MemoryView{Name: record.Name, Type: string(record.Type), Origin: string(record.Origin), Description: record.Description, Body: truncateRunes(strings.TrimSpace(record.Body), 120)})
+		result = append(result, memoryRow(record, aliases))
 	}
 	return result, nil
+}
+
+func memoryRow(record memory.Record, aliases map[string]MemoryAlias) MemoryView {
+	view := MemoryView{Name: record.Name, Type: string(record.Type), Origin: string(record.Origin), Description: record.Description, Body: truncateRunes(strings.TrimSpace(record.Body), 120)}
+	if alias, ok := aliases[record.Name]; ok && alias.Hash == aliasHash(record) {
+		view.Aliases = alias.Aliases
+	}
+	return view
+}
+
+// handleMemorySearch runs the workers' memory search for the page.
+func (app *App) handleMemorySearch(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if len([]rune(query)) > 200 {
+		writeJSON(w, http.StatusBadRequest, errorResponse{"query exceeds 200 characters"})
+		return
+	}
+	hits, err := app.Search.Search(r.Context(), query, maxSearchLimit)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	aliases, err := app.Store.MemoryAliases(r.Context())
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	result := make([]MemoryView, 0, len(hits))
+	for _, hit := range hits {
+		row := memoryRow(hit.Record, aliases)
+		row.Legs = hit.Legs
+		result = append(result, row)
+	}
+	writeJSON(w, http.StatusOK, result)
 }
 
 // handleCandidate hands an observed candidate to a worker or ignores it.

@@ -90,6 +90,12 @@ func (m *ScriptedModel) Complete(ctx context.Context, request protocol.ModelRequ
 			return reply, nil
 		}
 	}
+	if request.Purpose == protocol.PurposeMemoryConsolidation && len(request.Messages) > 0 {
+		if text, ok := messageText(request.Messages[len(request.Messages)-1]); ok && strings.HasPrefix(text, aliasHeaderStart) {
+			reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock(scriptedAliases(text))}, protocol.StopEndTurn
+			return reply, nil
+		}
+	}
 	if request.Purpose != "" && request.Purpose != protocol.PurposeAgentTurn {
 		reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock("（离线脚本模型：此请求只返回占位摘要）")}, protocol.StopEndTurn
 		return reply, nil
@@ -292,13 +298,13 @@ var suspiciousWords = []string{"转发", "forward", "密码", "password", "汇�
 func planEmail(turn scriptedTurn) plan {
 	refs := turn.refs(TriggerEmail)
 	reads := turn.results[ToolMailRead]
-	recalled, haveRecall := turn.last(protocol.ToolRecall)
+	recalled, haveRecall := turn.last(ToolMemorySearch)
 	if len(reads) < len(refs) || !haveRecall {
 		calls := make([]plannedCall, 0, len(refs)+1)
 		for _, ref := range refs {
 			calls = append(calls, plannedCall{ToolMailRead, jsonInput(mailReadInput{ID: ref})})
 		}
-		return plan{calls: append(calls, plannedCall{protocol.ToolRecall, `{"query":"经理"}`})}
+		return plan{calls: append(calls, plannedCall{ToolMemorySearch, `{"query":"经理"}`})}
 	}
 	mails := make([]mailDetail, 0, len(refs))
 	for _, read := range reads[len(reads)-len(refs):] {
@@ -558,10 +564,10 @@ func planInvite(turn scriptedTurn) plan {
 func (m *ScriptedModel) planBrief(turn scriptedTurn) plan {
 	listed, haveCalendar := turn.last(ToolCalendarList)
 	inbox, haveInbox := turn.last(ToolMailList)
-	recalled, haveRecall := turn.last(protocol.ToolRecall)
+	recalled, haveRecall := turn.last(ToolMemorySearch)
 	open, haveTasks := turn.last(ToolTaskList)
 	if !haveCalendar || !haveInbox || !haveRecall || !haveTasks {
-		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":1}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {protocol.ToolRecall, `{"query":"经理"}`}, {ToolTaskList, `{}`}}}
+		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":1}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {ToolMemorySearch, `{"query":"经理"}`}, {ToolTaskList, `{}`}}}
 	}
 	var events []eventView
 	var mails []mailSummary
@@ -692,9 +698,9 @@ func (m *ScriptedModel) planUpcoming(turn scriptedTurn) plan {
 	listed, haveCalendar := turn.last(ToolCalendarList)
 	inbox, haveInbox := turn.last(ToolMailList)
 	open, haveTasks := turn.last(ToolTaskList)
-	recalled, haveRecall := turn.last(protocol.ToolRecall)
+	recalled, haveRecall := turn.last(ToolMemorySearch)
 	if !haveCalendar || !haveInbox || !haveTasks || !haveRecall {
-		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":2}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {ToolTaskList, `{}`}, {protocol.ToolRecall, `{"query":"经理"}`}}}
+		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":2}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {ToolTaskList, `{}`}, {ToolMemorySearch, `{"query":"经理"}`}}}
 	}
 	var events []eventView
 	var mails []mailSummary
@@ -860,12 +866,13 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 		return plan{final: fmt.Sprintf("最近 %d 封：%s", len(lines), strings.Join(lines, "；"))}
 	case containsAny(text, preferenceWords) && !strings.ContainsAny(text, "？?吗") && !strings.Contains(text, "什么"):
 		return plan{final: "收到。这听起来是你的偏好，今晚 23:30 的夜间整理会把它记下来。"}
-	case has("记得", "我的经理", "偏好", "回忆", "recall"):
-		recalled, done := turn.last(protocol.ToolRecall)
+	case has("记得", "是谁", "偏好", "回忆", "recall", "查记忆", "哪天", "几点", "什么时候"):
+		recalled, done := turn.last(ToolMemorySearch)
 		if !done {
-			return plan{calls: []plannedCall{{protocol.ToolRecall, jsonInput(struct {
-				Query string `json:"query"`
-			}{recallQuery(text)})}}}
+			return plan{calls: []plannedCall{{ToolMemorySearch, jsonInput(memorySearchInput{Query: text, Limit: 2})}}}
+		}
+		if strings.HasPrefix(recalled, "（没有") {
+			return plan{final: "我没找到相关的记忆。"}
 		}
 		return plan{final: "我记得：" + truncateRunes(plainMemory(recalled), 160)}
 	}
@@ -923,20 +930,48 @@ func (m *ScriptedModel) planNightly(turn scriptedTurn) plan {
 	return plan{quiet: true, final: fmt.Sprintf("夜间整理完成：从今天的对话里记下 %d 条偏好。", len(preferences))}
 }
 
-// recallQuery picks a topical keyword: memory search counts substrings, so a
-// whole question rarely matches while its topic word does.
-func recallQuery(text string) string {
-	for _, word := range []string{"经理", "偏好", "会议", "开会", "newsletter"} {
-		if strings.Contains(text, word) {
-			return word
-		}
-	}
-	return text
-}
-
 var memoryTag = regexp.MustCompile(`<[^>]+>`)
 
-// plainMemory drops the recall tool's record framing for a channel reply.
+// plainMemory drops memory_search's record framing for a channel reply.
 func plainMemory(text string) string {
 	return strings.Join(strings.Fields(memoryTag.ReplaceAllString(text, " ")), " ")
+}
+
+// scriptedAliasWords stands in for the model's knowledge of synonyms when the
+// nightly consolidation asks for search aliases: a memory mentioning a key
+// gets its aliases.
+var scriptedAliasWords = []struct {
+	keys    []string
+	aliases []string
+}{
+	{[]string{"经理"}, []string{"老板", "上司", "领导", "boss", "manager"}},
+	{[]string{"账单", "扣款"}, []string{"invoice", "bill", "费用", "付款"}},
+	{[]string{"放学"}, []string{"接孩子", "school pickup", "孩子"}},
+	{[]string{"dental", "牙"}, []string{"牙医", "看牙", "dentist"}},
+	{[]string{"出差", "早班机"}, []string{"坐飞机", "航班", "flight", "business trip"}},
+	{[]string{"开会", "会议", "邀约", "排会"}, []string{"meeting", "日程", "schedule"}},
+	{[]string{"newsletter"}, []string{"订阅邮件", "简报"}},
+	{[]string{"爬山"}, []string{"徒步", "hiking", "户外"}},
+	{[]string{"english", "英文"}, []string{"英文", "英语", "语言"}},
+	{[]string{"早上", "上午"}, []string{"morning", "早晨"}},
+}
+
+var aliasNamePattern = regexp.MustCompile(`(?m)^- 名称：(.+)\n  说明：(.*)\n  内容：(.*)$`)
+
+// scriptedAliases answers the alias request from scriptedAliasWords.
+func scriptedAliases(text string) string {
+	answer := map[string][]string{}
+	for _, match := range aliasNamePattern.FindAllStringSubmatch(text, -1) {
+		content := strings.ToLower(match[2] + " " + match[3])
+		aliases := []string{}
+		for _, entry := range scriptedAliasWords {
+			if containsAny(content, entry.keys) {
+				aliases = append(aliases, entry.aliases...)
+			}
+		}
+		if len(aliases) > 0 {
+			answer[match[1]] = aliases
+		}
+	}
+	return jsonInput(answer)
 }

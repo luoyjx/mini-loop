@@ -22908,3 +22908,52 @@ existing `Bind`, `List`, `Write`, `Search`, `WithLifecycle` and `ReplaceAll`.
 - consolidation that merges near-duplicates or rewrites memory text;
 - learning contacts from senders;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: memory search with BM25, aliases and prefetch (2026-11-02)
+
+Code baseline: `28b0dc5` plus changes to `go/assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory` and `go/agent` are unchanged; the
+demo uses `ScopedStore.List` and `Search`, the existing `ToolSelection` and the
+`memory_consolidation` request purpose. No dependency was added.
+
+**Go evidence:**
+
+- `MemorySearch` ranks the owner's memories per query with three legs and merges
+  them by reciprocal rank fusion (k=60):
+  - BM25 over name, description and body, with Han, kana and Hangul split into
+    overlapping two-character tokens;
+  - BM25 over aliases whose hash matches the memory's current text;
+  - `memory.ScopedStore.Search`.
+- `memory_search` is a read-risk typed extension. Sessions the router creates use
+  `SelectTools` with the assistant's tools, `remember` and `memory_search`, so new
+  workers no longer get the built-in `recall`.
+- The router prefetches up to three hits for each turn from the events' sender and
+  subject, the user's words, an event's title and organizer or a task's title.
+- `Consolidator.Run` calls `Aliaser.Expand` (one tool-less model call, at most 12
+  memories a night) and writes `memory_aliases` keyed by name and an FNV-64 hash of
+  name and body, dropping the rows of removed memories. A failed call is noted in
+  the ledger row and retried the next night.
+- The page lists aliases and the retrieval mode; `GET /api/memory/search` returns
+  hits with their legs.
+- Tests cover:
+  - bigram tokenization, BM25 ranking and rank fusion;
+  - alias parsing bounds;
+  - stale aliases that stop counting after an edit;
+  - the substring leg finding part of a word;
+  - a chat question that finds nothing before the nightly run and the manager after
+    it, through the channel, the page API and the state view;
+  - workers' tool lists without `recall`;
+  - the prefetch block in a mail prompt;
+  - a failed alias request retried the next night;
+  - `TestMemoryRetrievalEvaluation` on 24 memories and 44 queries, hits in the top
+    3: substring 12, BM25 22, BM25 + substring 22, all three legs 39.
+
+**Not claimed:**
+
+- embeddings or semantic retrieval (planned next, with a local model);
+- aliases from a real model: the evaluation's aliases were written by the author of
+  the queries, so the three-leg figure is optimistic;
+- SQLite FTS5, entity resolution or time-bounded facts;
+- a real channel, real MCP servers or a Python counterpart.

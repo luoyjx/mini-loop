@@ -1064,7 +1064,7 @@
         300,
         76
       ],
-      "tag": "attention / candidates / profile / pause / cards"
+      "tag": "attention / candidates / memory search / pause / cards"
     },
     {
       "id": "paStore",
@@ -1079,7 +1079,7 @@
         340,
         76
       ],
-      "tag": "questions / jobs / contacts / profile / ledger"
+      "tag": "questions / jobs / profile / aliases / ledger"
     },
     {
       "id": "paRouter",
@@ -1184,7 +1184,7 @@
         360,
         76
       ],
-      "tag": "no send tool / lookup reads local refs"
+      "tag": "no send tool / lookup / memory_search"
     },
     {
       "id": "paConnector",
@@ -1259,7 +1259,22 @@
         360,
         76
       ],
-      "tag": "contacts / meeting window / dedupe / profile"
+      "tag": "contacts / meetings / dedupe / aliases / profile"
+    },
+    {
+      "id": "paSearch",
+      "type": "backend",
+      "label": "Memory search",
+      "sublabel": "BM25 bigrams + aliases + substring",
+      "pos": [
+        2050,
+        5650
+      ],
+      "size": [
+        300,
+        76
+      ],
+      "tag": "memory_search / prefetch top 3 / RRF k=60"
     }
   ],
   "boundaries": [
@@ -1383,7 +1398,8 @@
         "paMock",
         "paHealth",
         "paPreparer",
-        "paConsolidator"
+        "paConsolidator",
+        "paSearch"
       ],
       "pad": 50
     }
@@ -2678,6 +2694,14 @@
       "label": "sent / calendar",
       "fromSide": "left",
       "toSide": "right"
+    },
+    {
+      "id": "paAliases",
+      "from": "paConsolidator",
+      "to": "paSearch",
+      "label": "aliases",
+      "fromSide": "right",
+      "toSide": "left"
     }
   ],
   "cards": [
@@ -2944,13 +2968,13 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline 75ba6b4 plus the 2026-11-01 long-term-memory iteration (roadmap P6): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory is unchanged. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
+        "Review baseline 28b0dc5 plus the 2026-11-02 memory-retrieval iteration (D7): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory and go/agent are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
         "Batches and reports: the router claims a thread's due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.",
         "Admission and preparation: rules grade mail by contact and address. A known contact writing to the user is explicit; a known contact copying the user or a stranger writing to the user is an inferred candidate that passes one tool-less triage call (handle / observe / ignore); a stranger copying the user is archived. Observe mode, the default, records even a handle verdict on the candidates tab until the user hands it over or ignores it; auto mode runs the worker; a failed triage records. prepare_start queues a durable job that the Preparer runs one at a time in an untrusted session limited to read tools; the result returns as a job.done trigger on the starting thread. Jobs can be stopped, are requeued after restart and wait while paused.",
         "Watchdog: each task check is snapshotted, and every scheduler tick runs the agent stuck detector over the snapshots. Three checks with the same check and note, or six that alternate, flag the task once in the ledger, the channel and the attention list (no_progress); a check that makes progress clears the flag. Router decision counters and the 300-event acceptance stream report are process-local.",
-        "Memory and profile: the read-only lookup tool reads one assistant.db record by ref (trigger-, task-, proposal-, question-, job-, thread:, session:) and names the refs one hop away. The 23:30 nightly routine first adds recipients of sent mail as contacts (never senders), reads the meeting window from the calendar, removes duplicate memories (explicit and feedback kept) and rebuilds the profile; the worker then remembers the preferences the user stated in that day's chat. The profile (manager, frequent contacts, meeting window, preferences) is reference data in every worker prompt. Lexical memory search finds topic words but not paraphrases; semantic retrieval would need an approved dependency.",
+        "Memory and profile: the read-only lookup tool reads one assistant.db record by ref (trigger-, task-, proposal-, question-, job-, thread:, session:) and names the refs one hop away. The 23:30 nightly routine first adds recipients of sent mail as contacts (never senders), reads the meeting window from the calendar, removes duplicate memories (explicit and feedback kept) and rebuilds the profile; the worker then remembers the preferences the user stated in that day's chat. The profile (manager, frequent contacts, meeting window, preferences) is reference data in every worker prompt. Workers search memory with memory_search: BM25 over the memory text with Chinese split into two-character tokens, BM25 over model-written aliases (one tool-less call in the nightly run for new or changed memories, keyed by name and text) and the go/memory substring search, merged by reciprocal rank fusion (k=60); new sessions no longer get the built-in recall, and each turn's prompt carries up to three memories related to its events. On a fixed 24-memory, 44-query set, hits in the top 3 rise from 12 (substring) to 22 (BM25) and 39 (all legs, with author-written aliases). No embeddings yet.",
         "Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
         "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."

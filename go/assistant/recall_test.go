@@ -15,13 +15,20 @@ import (
 
 // promptRecorder keeps the trigger prompts a worker turn was given.
 type promptRecorder struct {
-	next agent.Provider
-	mu   sync.Mutex
-	seen []string
+	next  agent.Provider
+	mu    sync.Mutex
+	seen  []string
+	tools []protocol.ToolName
 }
 
 func (m *promptRecorder) Complete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
 	if request.Purpose == "" || request.Purpose == protocol.PurposeAgentTurn {
+		m.mu.Lock()
+		m.tools = m.tools[:0]
+		for _, tool := range request.Tools {
+			m.tools = append(m.tools, tool.Name)
+		}
+		m.mu.Unlock()
 		for _, message := range request.Messages {
 			if text, ok := messageText(message); ok && strings.HasPrefix(text, "[trigger ") {
 				m.mu.Lock()
@@ -31,6 +38,13 @@ func (m *promptRecorder) Complete(ctx context.Context, request protocol.ModelReq
 		}
 	}
 	return m.next.Complete(ctx, request)
+}
+
+// lastTools lists the tools of the newest worker turn request.
+func (m *promptRecorder) lastTools() []protocol.ToolName {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return append([]protocol.ToolName(nil), m.tools...)
 }
 
 func (m *promptRecorder) last(fragment string) string {
@@ -209,84 +223,5 @@ func TestNightlyConsolidationBuildsTheProfile(t *testing.T) {
 	settle(t, app.Store)
 	if prompt := recorder.last("今天日程"); !strings.Contains(prompt, "用户画像") || !strings.Contains(prompt, "会议时间：通常在") || !strings.Contains(prompt, "经理：Alice") {
 		t.Fatalf("worker prompts carry the profile:\n%s", prompt)
-	}
-}
-
-// recallCase is one query of the retrieval evaluation and the memory it
-// should find.
-type recallCase struct{ query, want string }
-
-// TestLexicalMemoryRecallEvaluation measures the existing lexical
-// memory.Store.Search on the assistant's kind of memories. Topic words are
-// found; paraphrases are not, because a query is split only at non-letters and
-// each term must occur as a substring. Semantic retrieval would need an
-// embedding model or library, a new dependency that needs approval, so the
-// demo keeps lexical search and the worker searches by topic word.
-func TestLexicalMemoryRecallEvaluation(t *testing.T) {
-	ctx := context.Background()
-	store, err := memory.NewStore(ctx, t.TempDir(), nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	owned, err := memory.Bind(store, memory.OwnerID(Owner))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, fact := range []memory.Input{
-		{Name: "manager", Type: memory.User, Description: "我的经理", Body: "我的经理是 Alice（alice@acme.example），她的来信需要当天回复。"},
-		{Name: "meeting-preference", Type: memory.Feedback, Description: "开会偏好", Body: "日程冲突的邀约婉拒并建议改期；newsletter 不用提醒。"},
-		{Name: "wednesday", Type: memory.Feedback, Description: "周三安排", Body: "周三下午不开会。"},
-		{Name: "hiking", Type: memory.User, Description: "周末活动", Body: "周末常和 Bob 去爬山。"},
-		{Name: "cloud-bill", Type: memory.Reference, Description: "云服务账单", Body: "云服务账单每月 15 日自动扣款，金额超过上月一成要提醒。"},
-		{Name: "morning", Type: memory.Feedback, Description: "上午习惯", Body: "早上第一件事是处理邮件，十点前不排会。"},
-		{Name: "pickup", Type: memory.User, Description: "家里的事", Body: "女儿周五下午三点放学，需要去接。"},
-		{Name: "travel", Type: memory.Feedback, Description: "出差偏好", Body: "出差优先选靠窗座位和早班机。"},
-		{Name: "language", Type: memory.Feedback, Description: "Reply language", Body: "Prefers replies in English when the sender writes in English."},
-		{Name: "dentist", Type: memory.Reference, Description: "Dental checkup", Body: "Dental checkup every six months at Smile Clinic."},
-	} {
-		if _, err := owned.Write(ctx, fact); err != nil {
-			t.Fatal(err)
-		}
-	}
-	hits := func(cases []recallCase) (int, []string) {
-		found, missed := 0, []string{}
-		for _, c := range cases {
-			records, err := owned.Search(ctx, c.query, 3)
-			if err != nil {
-				t.Fatal(err)
-			}
-			hit := false
-			for _, record := range records {
-				hit = hit || record.Name == c.want
-			}
-			if hit {
-				found++
-			} else {
-				missed = append(missed, c.query)
-			}
-		}
-		return found, missed
-	}
-	topics := []recallCase{
-		{"经理", "manager"}, {"newsletter", "meeting-preference"}, {"周三", "wednesday"}, {"爬山", "hiking"},
-		{"账单", "cloud-bill"}, {"放学", "pickup"}, {"English", "language"}, {"clinic", "dentist"},
-	}
-	split := []recallCase{
-		{"周三 开会", "wednesday"}, {"出差 座位", "travel"}, {"早上 邮件", "morning"}, {"Alice 回复", "manager"},
-	}
-	paraphrases := []recallCase{
-		{"我老板是谁", "manager"}, {"boss", "manager"}, {"哪天不能开会", "wednesday"}, {"周三下午有空吗", "wednesday"},
-		{"牙医", "dentist"}, {"坐飞机的习惯", "travel"}, {"invoice", "cloud-bill"}, {"接孩子", "pickup"},
-	}
-	topicHits, topicMissed := hits(topics)
-	splitHits, splitMissed := hits(split)
-	paraphraseHits, paraphraseMissed := hits(paraphrases)
-	t.Logf("lexical recall@3: topic words %d/%d (missed %v); split keywords %d/%d (missed %v); paraphrases %d/%d (missed %v)",
-		topicHits, len(topics), topicMissed, splitHits, len(split), splitMissed, paraphraseHits, len(paraphrases), paraphraseMissed)
-	if topicHits != len(topics) || splitHits != len(split) {
-		t.Fatalf("topic words and split keywords should all be found: %v %v", topicMissed, splitMissed)
-	}
-	if paraphraseHits != 0 {
-		t.Fatalf("lexical search was expected to miss every paraphrase; update the evaluation record if it improved: found %d", paraphraseHits)
 	}
 }

@@ -1184,41 +1184,50 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-01**, `75ba6b4` plus the
-long-term-memory iteration of the opt-in Go personal-assistant demo. It implements
-roadmap P6. `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition
-with no Python counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents
-lanes keep their defaults. The `go/memory` package is unchanged.
+Current architecture review baseline: **2026-11-02**, `28b0dc5` plus the
+memory-retrieval iteration of the opt-in Go personal-assistant demo (D7, the first
+of three retrieval steps). `go/assistant` and `go/cmd/miniloop-assistant` remain a
+Go addition with no Python counterpart. `cmd/miniloop`, the Python runtime and both
+Deep Agents lanes keep their defaults. The `go/memory` and `go/agent` packages are
+unchanged; no dependency was added.
 
-- **Chain recall**: the read-only `lookup` tool reads one record of
-  `assistant.db` by its ref (`trigger-`, `task-`, `proposal-`, `question-`, `job-`,
-  `thread:` or `session:`). It returns a summary and the refs one hop away, so a
-  worker can follow a piece of work instead of searching for it.
-- **Nightly consolidation**: a seeded "夜间整理" routine runs at 23:30. Before the
-  worker turn, the daemon:
-  - adds recipients of sent mail to the contact table (never senders);
-  - reads the meeting window from the calendar;
-  - removes memories whose body repeats another's, preferring explicit and
-    `feedback` memories;
-  - rebuilds the profile.
+- **Memory search**: `memory_search` ranks the owner's memories with three legs and
+  merges their ranks by reciprocal rank fusion (k=60):
+  - BM25 over name, description and body, with Chinese split into overlapping
+    two-character tokens, so an unspaced question shares words with a memory;
+  - BM25 over search aliases;
+  - the existing `go/memory` substring search.
 
-  The worker then reads the user's chat from that day and remembers the stated
-  preferences with `remember`.
-- **Profile**: `assistant.db` holds a profile with four lines: manager, frequent
-  contacts, meeting window and preferences. Every worker prompt shows it as
-  reference data. The daemon rebuilds the lines that need no MCP call at start and
-  after the nightly turn.
-- **Retrieval evaluation**: a test measures the existing lexical memory search.
-  Topic words and space-separated keywords are found, and paraphrases are not.
-  Semantic retrieval would need a new dependency, which needs approval, so none was
-  added.
+  Everything it builds is derived and rebuilt per query; the Markdown memory files
+  stay the authority.
+- **Aliases**: the nightly consolidation asks the model once, without tools, for
+  synonyms and other-language wordings of each new or changed memory (at most 12 a
+  night). `assistant.db` keeps them keyed by the memory's name and text, so an edited
+  memory loses its old aliases. A failed request is reported in the ledger and
+  retried the next night.
+- **Workers**: sessions the router creates get the assistant's tools plus
+  `remember` and `memory_search`; the built-in `recall` is no longer offered to new
+  sessions. Each turn's prompt carries up to three memories related to its events
+  (sender and subject, the user's words, an event's title), marked as reference data.
+  Workers restored from an earlier version keep their old catalogue.
+- **Page**: the memory section names the retrieval mode, shows each memory's
+  aliases and has a search box with the legs that found each hit.
+- **Evaluation**: a fixed set of 24 memories and 44 queries in
+  `go/assistant/testdata` scores each configuration by hits in the top 3. Substring
+  search finds 12, BM25 22 and all three legs 39. The aliases in that set were written
+  by the author of the queries, so the last figure is optimistic. The five remaining
+  misses share no word with their memory; local embeddings are the next step.
 - **Unchanged**: workers still cannot send. Effects still go only through approved
   proposals and the outbox, and the channel, mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-01**, `a3bcbe5` plus the
-admission-and-preparation iteration (P5). Rules graded mail by contact and address,
+Previous architecture review baseline: **2026-11-01**, `75ba6b4` plus the
+long-term-memory iteration (P6). `lookup` followed refs across local records, a
+nightly "夜间整理" routine learned contacts from sent mail, read the meeting window,
+removed duplicate memories and rebuilt a four-line profile carried by every worker
+prompt, and a test measured the lexical memory search. Before that, `a3bcbe5` added
+the admission-and-preparation iteration (P5). Rules graded mail by contact and address,
 and inferred candidates passed a tool-less triage call, only recorded by default.
 `prepare_start` queued read-only background jobs whose results returned as
 `job.done`, and a watchdog flagged tasks whose checks stopped making progress.
@@ -1482,13 +1491,14 @@ flowchart LR
         TSWorkflow --> TSActivity --> TSModel
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories"]
-        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs per hit"]
+        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text"]
         PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
         PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
-        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>no send tool · replaces Bash / file catalogue"]
-        PAConsolidator["Nightly consolidation · before the 夜间整理 turn<br/>recipients of sent mail → contacts · meeting window from the calendar<br/>duplicate memories removed · profile rebuilt · idempotent"]
+        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>memory_search: ranked owner memories · replaces built-in recall for new sessions<br/>no send tool · replaces Bash / file catalogue"]
+        PAConsolidator["Nightly consolidation · before the 夜间整理 turn<br/>recipients of sent mail → contacts · meeting window from the calendar<br/>duplicate memories removed · profile rebuilt · idempotent<br/>search aliases for new or changed memories · one model call, no tools · failure retried next night"]
+        PASearch["Memory search · derived, rebuilt per query<br/>BM25 with Chinese bigrams · BM25 over aliases · go/memory substring<br/>reciprocal rank fusion k=60 · Markdown memory stays the authority<br/>memory_search tool · per-turn prefetch of up to 3 related memories"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
@@ -1509,7 +1519,10 @@ flowchart LR
         PAPreparer -->|finish job + job.done trigger| PAStore
         PARouter -->|nightly routine: consolidate first| PAConsolidator
         PAConsolidator -->|sent mail · calendar_list| PAConnector
-        PAConsolidator -->|contacts · profile · ledger| PAStore
+        PAConsolidator -->|contacts · profile · aliases · ledger| PAStore
+        PATools -->|memory_search| PASearch
+        PARouter -->|prefetch related memories| PASearch
+        PASearch -->|aliases| PAStore
         PAChannel -->|human approve or deny| PAStore
         PAStore -->|approved proposals| PAOutbox
         PAOutbox -->|mail_send / calendar_respond| PAConnector
@@ -1525,6 +1538,7 @@ flowchart LR
     PARouter -->|untrusted trigger turn / explicit-human chat turn| GoManager
     PAPreparer -->|untrusted session · read tools only| GoManager
     PARouter -->|triage request · no tools| PAModel
+    PAConsolidator -->|alias request · no tools| PAModel
     GoGate -->|typed extension dispatch| PATools
     GoGate -. result observer to ledger .-> PARouter
     GoSession -->|model requests| PAModel
@@ -1595,7 +1609,7 @@ surface. It is meant to run on the owner's own Mac.
 
 - **Processes and files**: the daemon owns `assistant.db` (triggers, mail cursor,
   tasks, outbox, channel, ledger, pause switch, contacts, preparation jobs, task-check
-  snapshots, profile), `memory/` and `agent.db` (session transcripts, action journal,
+  snapshots, profile, memory aliases), `memory/` and `agent.db` (session transcripts, action journal,
   leases). The simulated mail and calendar service is a separate child process with
   its own `world.db`. The daemon never opens that file and reaches it only through
   MCP `tools/call`.
@@ -1621,6 +1635,13 @@ surface. It is meant to run on the owner's own Mac.
   stranger cannot become known by writing. It rewrites the owner's `memory/` only
   when duplicates exist. The profile in worker prompts is marked as reference data,
   not instructions.
+- **Memory search**: `memory_search`, the per-turn prefetch and the page's search
+  box only read. The index is rebuilt per query from the owner's memory and the
+  alias rows; nothing is written back to `memory/`. A prefetch query can come from
+  an external mail's sender and subject, so mail can influence which of the owner's
+  memories a worker sees, but the worker still cannot send without approval. Alias
+  requests carry memory text to the configured model only; with the offline model
+  nothing leaves the process.
 - **Preparation and watchdog**: a background preparation job is a durable row run
   by one Preparer goroutine in a read-only, untrusted session. Its result returns as
   a `job.done` trigger, so the starting thread decides what the user hears. The
@@ -3948,7 +3969,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases and substring, fused by rank) with a per-turn prefetch, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |
