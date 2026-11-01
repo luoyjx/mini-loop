@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
@@ -33,14 +34,35 @@ func newClock() *fixedClock {
 	return &fixedClock{now: time.Date(2026, 11, 2, 6, 30, 0, 0, time.Local)}
 }
 
+// startApp runs a daemon whose connector reaches the World through go/mcp's
+// in-process client: the same tool names, JSON arguments and result text as
+// the stdio child, without a process boundary.
 func startApp(t *testing.T, dir string, clock *fixedClock) (*App, func()) {
 	t.Helper()
-	app, err := NewApp(context.Background(), Config{DataDir: dir, Provider: &ScriptedModel{Now: clock.Now}, Model: ScriptedModelID, Now: clock.Now, Workers: 2, SchedulerTick: time.Hour, LeaseTTL: 2 * time.Second})
+	return startAppWith(t, dir, clock, nil)
+}
+
+func startAppWith(t *testing.T, dir string, clock *fixedClock, wrap func(mcpCaller) mcpCaller) (*App, func()) {
+	t.Helper()
+	ctx := context.Background()
+	world, err := OpenWorld(ctx, filepath.Join(dir, "mock-mcp", "world.db"), clock.Now)
 	if err != nil {
 		t.Fatal(err)
 	}
-	ctx, cancel := context.WithCancel(context.Background())
-	app.Start(ctx)
+	client, err := NewInProcessMock(world)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var caller mcpCaller = client
+	if wrap != nil {
+		caller = wrap(caller)
+	}
+	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: &ScriptedModel{Now: clock.Now}, Model: ScriptedModelID, Now: clock.Now, Workers: 2, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second})
+	if err != nil {
+		t.Fatal(errors.Join(err, world.Close()))
+	}
+	runCtx, cancel := context.WithCancel(ctx)
+	app.Start(runCtx)
 	stopped := false
 	stop := func() {
 		if stopped {
@@ -50,7 +72,7 @@ func startApp(t *testing.T, dir string, clock *fixedClock) (*App, func()) {
 		cancel()
 		shutdown, done := context.WithTimeout(context.Background(), 10*time.Second)
 		defer done()
-		if err := app.Close(shutdown); err != nil {
+		if err := errors.Join(app.Close(shutdown), world.Close()); err != nil {
 			t.Error(err)
 		}
 	}
@@ -91,14 +113,49 @@ func triggerByID(t *testing.T, triggers []Trigger, id int64) Trigger {
 	return Trigger{}
 }
 
-func deliver(t *testing.T, app *App, preset Preset, now time.Time) int64 {
+// deliver drops a preset into the external inbox through the simulator tool,
+// polls once like the daemon would and returns the resulting trigger ID.
+func deliver(t *testing.T, app *App, preset Preset) int64 {
 	t.Helper()
-	id, err := app.Store.Deliver(context.Background(), preset, now)
+	ctx := context.Background()
+	mail, err := app.Connector.DeliverPreset(ctx, preset)
 	if err != nil {
 		t.Fatal(err)
 	}
-	app.Router.Wake()
-	return id
+	if _, err := app.Poller.PollOnce(ctx); err != nil {
+		t.Fatal(err)
+	}
+	triggers, err := app.Store.Triggers(ctx, 100)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, trigger := range triggers {
+		if trigger.Ref == mail.ID {
+			return trigger.ID
+		}
+	}
+	t.Fatalf("mail %s produced no trigger", mail.ID)
+	return 0
+}
+
+// waitProposal waits until the outbox moves a proposal to want.
+func waitProposal(t *testing.T, app *App, id int64, want ProposalStatus) Proposal {
+	t.Helper()
+	app.Outbox.Wake()
+	deadline := time.Now().Add(10 * time.Second)
+	for time.Now().Before(deadline) {
+		p, ok, err := app.Store.Proposal(context.Background(), id)
+		if err != nil || !ok {
+			t.Fatal(ok, err)
+		}
+		if p.Status == want {
+			return p
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	p, _, _ := app.Store.Proposal(context.Background(), id)
+	t.Fatalf("proposal #%d is %s (%s), want %s", id, p.Status, p.LastError, want)
+	return Proposal{}
 }
 
 func TestRulesKeepBulkMailAwayFromTheModel(t *testing.T) {
@@ -127,11 +184,10 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	clock := newClock()
 	app, _ := startApp(t, t.TempDir(), clock)
 	ctx := context.Background()
-	now := clock.Now()
-	managerID := deliver(t, app, PresetManager, now)
-	inviteID := deliver(t, app, PresetInviteConflict, now.Add(time.Millisecond))
-	newsletterID := deliver(t, app, PresetNewsletter, now.Add(2*time.Millisecond))
-	phishingID := deliver(t, app, PresetPhishing, now.Add(3*time.Millisecond))
+	managerID := deliver(t, app, PresetManager)
+	inviteID := deliver(t, app, PresetInviteConflict)
+	newsletterID := deliver(t, app, PresetNewsletter)
+	phishingID := deliver(t, app, PresetPhishing)
 	triggers := settle(t, app.Store)
 
 	if got := triggerByID(t, triggers, newsletterID).Status; got != TriggerIgnored {
@@ -140,7 +196,7 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	if got := triggerByID(t, triggers, phishingID); got.Status != TriggerDone || got.SessionID == "" {
 		t.Fatalf("phishing trigger %+v", got)
 	}
-	sent, err := app.Store.ListMail(ctx, FolderSent, 10)
+	sent, err := app.Connector.ListMail(ctx, FolderSent, 10)
 	if err != nil || len(sent) != 0 {
 		t.Fatalf("nothing may be sent before approval: %v %v", sent, err)
 	}
@@ -172,7 +228,7 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	}
 
 	decided, err := app.Store.DecideProposal(ctx, reply[0].ID, true, "test", clock.Now())
-	if err != nil || decided.Status != ProposalSent {
+	if err != nil || decided.Status != ProposalApproved {
 		t.Fatalf("approve: %+v %v", decided, err)
 	}
 	if _, err := app.Store.DecideProposal(ctx, reply[0].ID, true, "test", clock.Now()); !errors.Is(err, ErrProposalDecided) {
@@ -181,11 +237,14 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	if _, err := app.Store.DecideProposal(ctx, invite[0].ID, false, "test", clock.Now()); err != nil {
 		t.Fatal(err)
 	}
-	sent, _ = app.Store.ListMail(ctx, FolderSent, 10)
+	if done := waitProposal(t, app, reply[0].ID, ProposalSent); done.Receipt == "" || done.Attempts != 1 {
+		t.Fatalf("sent proposal should carry the MCP receipt: %+v", done)
+	}
+	sent, _ = app.Connector.ListMail(ctx, FolderSent, 10)
 	if len(sent) != 1 || sent[0].To != ManagerAddress {
 		t.Fatalf("exactly the approved mail is sent: %+v", sent)
 	}
-	event, _, _ := app.Store.Event(ctx, invite[0].EventID)
+	event, _, _ := app.Connector.Event(ctx, invite[0].EventID)
 	if event.Status != EventInvited {
 		t.Fatalf("a denied decline leaves the invite untouched, got %s", event.Status)
 	}
@@ -208,7 +267,7 @@ func TestQuietWorkersStayOffTheChannel(t *testing.T) {
 	clock := newClock()
 	app, _ := startApp(t, t.TempDir(), clock)
 	before, _ := app.Store.Channel(context.Background(), 100)
-	id := deliver(t, app, PresetFriend, clock.Now())
+	id := deliver(t, app, PresetFriend)
 	if got := triggerByID(t, settle(t, app.Store), id).Status; got != TriggerQuiet {
 		t.Fatalf("friend chatter status %s, want quiet", got)
 	}
@@ -223,17 +282,16 @@ func TestRoutineSlotFiresOnceAndCatchesUpAfterDowntime(t *testing.T) {
 	dir := t.TempDir()
 	app, stop := startApp(t, dir, clock)
 	ctx := context.Background()
-	if fired := app.Scheduler.Due(ctx, false); fired != 0 {
+	if fired := app.Scheduler.Due(ctx); fired != 0 {
 		t.Fatalf("06:30 is before the 07:00 brief, fired %d", fired)
 	}
 	stop()
 	// The daemon was down at 07:00; the next start catches up once.
 	clock.Set(time.Date(2026, 11, 2, 9, 15, 0, 0, time.Local))
 	app, _ = startApp(t, dir, clock)
-	if fired := app.Scheduler.Due(ctx, true); fired != 1 {
-		t.Fatalf("missed slot should catch up once, fired %d", fired)
-	}
-	if fired := app.Scheduler.Due(ctx, false); fired != 0 {
+	// The scheduler loop's first pass races this call; either one claims it.
+	app.Scheduler.Due(ctx)
+	if fired := app.Scheduler.Due(ctx); fired != 0 {
 		t.Fatalf("a claimed slot must not fire again, fired %d", fired)
 	}
 	triggers := settle(t, app.Store)
@@ -246,11 +304,30 @@ func TestRoutineSlotFiresOnceAndCatchesUpAfterDowntime(t *testing.T) {
 	}
 }
 
+// A laptop asleep at 07:00 resumes with tickers that never fired; the first
+// tick after wake claims the slot once and labels it a catch-up.
+func TestRoutineCatchesUpAfterSleepWithoutRestart(t *testing.T) {
+	clock := newClock()
+	app, _ := startApp(t, t.TempDir(), clock)
+	ctx := context.Background()
+	if fired := app.Scheduler.Due(ctx); fired != 0 {
+		t.Fatalf("fired %d before 07:00", fired)
+	}
+	clock.Set(time.Date(2026, 11, 2, 9, 40, 0, 0, time.Local))
+	app.Scheduler.Due(ctx)
+	if fired := app.Scheduler.Due(ctx); fired != 0 {
+		t.Fatalf("the woken slot must fire once, fired %d more", fired)
+	}
+	if triggers := settle(t, app.Store); len(triggers) != 1 || !strings.Contains(triggers[0].Summary, "补跑") {
+		t.Fatalf("catch-up trigger %+v", triggers)
+	}
+}
+
 func TestRestartRoutesFollowUpToRestoredWorker(t *testing.T) {
 	clock := newClock()
 	dir := t.TempDir()
 	app, stop := startApp(t, dir, clock)
-	first := deliver(t, app, PresetManagerFollow, clock.Now())
+	first := deliver(t, app, PresetManagerFollow)
 	worker := triggerByID(t, settle(t, app.Store), first).SessionID
 	if worker == "" {
 		t.Fatal("first follow-up has no worker")
@@ -258,7 +335,7 @@ func TestRestartRoutesFollowUpToRestoredWorker(t *testing.T) {
 	stop()
 
 	app, _ = startApp(t, dir, clock)
-	second := deliver(t, app, PresetManagerFollow, clock.Now().Add(time.Second))
+	second := deliver(t, app, PresetManagerFollow)
 	if got := triggerByID(t, settle(t, app.Store), second); got.SessionID != worker || got.Status != TriggerDone {
 		t.Fatalf("follow-up after restart went to %q (%s), want subscribed worker %q", got.SessionID, got.Status, worker)
 	}
@@ -280,8 +357,17 @@ func TestInterruptedTriggersRequeueAndProposalsDedupe(t *testing.T) {
 	}
 	defer store.Close()
 	now := newClock().Now()
-	if _, err := store.Deliver(ctx, PresetManager, now); err != nil {
+	mail, _, err := presetMail(PresetManager, 7, now)
+	if err != nil {
 		t.Fatal(err)
+	}
+	inbound := []InboundMail{{Seq: 7, Mail: mail}}
+	if created, err := store.IngestMail(ctx, inbound, 7, now); err != nil || created != 1 {
+		t.Fatal(created, err)
+	}
+	// A crash before the cursor commit re-polls the same page: no new trigger.
+	if created, err := store.IngestMail(ctx, inbound, 7, now); err != nil || created != 0 {
+		t.Fatalf("re-polled mail must not enqueue again: %d %v", created, err)
 	}
 	claimed, ok, err := store.ClaimTrigger(ctx, now)
 	if err != nil || !ok {

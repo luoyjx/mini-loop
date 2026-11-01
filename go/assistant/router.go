@@ -41,12 +41,13 @@ const ChatSystem = `你是个人助理 mini-loop assistant，正在即时通讯�
 // resolves the subscribed worker session for a thread, runs that worker and
 // is the only component that writes worker results to the channel.
 type Router struct {
-	store   *Store
-	rules   Rules
-	now     clock
-	log     io.Writer
-	workers int
-	limit   time.Duration
+	store     *Store
+	connector *Connector
+	rules     Rules
+	now       clock
+	log       io.Writer
+	workers   int
+	limit     time.Duration
 
 	manager *agent.SessionManager
 	wake    chan struct{}
@@ -57,6 +58,7 @@ type Router struct {
 
 type RouterConfig struct {
 	Store     *Store
+	Connector *Connector
 	Rules     Rules
 	Now       clock
 	Log       io.Writer
@@ -77,7 +79,7 @@ func NewRouter(config RouterConfig) *Router {
 	if config.TurnLimit <= 0 {
 		config.TurnLimit = defaultTurnLimit
 	}
-	return &Router{store: config.Store, rules: config.Rules, now: config.Now, log: config.Log, workers: config.Workers, limit: config.TurnLimit, wake: make(chan struct{}, 1), bindings: map[agent.SessionID]turnBinding{}}
+	return &Router{store: config.Store, connector: config.Connector, rules: config.Rules, now: config.Now, log: config.Log, workers: config.Workers, limit: config.TurnLimit, wake: make(chan struct{}, 1), bindings: map[agent.SessionID]turnBinding{}}
 }
 
 // Attach installs the manager after it was built with this router's tools.
@@ -177,7 +179,9 @@ func (r *Router) dispatch(ctx context.Context, trigger Trigger) {
 		}
 	}
 	if trigger.Kind == TriggerEmail || trigger.Kind == TriggerInvite {
-		found, ok, err := r.store.Mail(ctx, trigger.Ref)
+		// The trigger carries IDs only; the message is read through MCP, and
+		// a connector outage retries the trigger with backoff.
+		found, ok, err := r.connector.ReadMail(ctx, trigger.Ref)
 		if err != nil {
 			r.retry(ctx, trigger, err)
 			return

@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with HTTP, orchestration and Temporal access boundaries; opt-in Go personal-assistant demo",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with HTTP, orchestration and Temporal access boundaries; opt-in Go personal-assistant demo with a simulated MCP child",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      5450
+      5850
     ],
     "views": [
       {
@@ -1057,26 +1057,26 @@
       "label": "Simulated channel page",
       "sublabel": "cmd/miniloop-assistant / loopback only",
       "pos": [
-        60,
+        70,
         4900
       ],
       "size": [
-        310,
+        300,
         76
       ],
-      "tag": "chat / presets / approval cards / ledger"
+      "tag": "chat / simulator / approval cards"
     },
     {
       "id": "paStore",
       "type": "database",
       "label": "assistant.db (SQLite)",
-      "sublabel": "mail / calendar / triggers / outbox",
+      "sublabel": "triggers / mail cursor / outbox",
       "pos": [
-        550,
+        530,
         4900
       ],
       "size": [
-        360,
+        340,
         76
       ],
       "tag": "subscriptions / channel / ledger"
@@ -1087,14 +1087,14 @@
       "label": "Assistant Router",
       "sublabel": "rule fast path / thread subscriptions",
       "pos": [
-        1070,
+        1030,
         4900
       ],
       "size": [
-        400,
+        340,
         76
       ],
-      "tag": "only writer of worker results to the channel"
+      "tag": "sole channel writer"
     },
     {
       "id": "paWorkers",
@@ -1102,29 +1102,14 @@
       "label": "Worker sessions",
       "sublabel": "Go SessionManager / ToolGate / agent.db",
       "pos": [
-        1630,
+        1530,
         4900
-      ],
-      "size": [
-        400,
-        76
-      ],
-      "tag": "untrusted triggers / human chat turns"
-    },
-    {
-      "id": "paScheduler",
-      "type": "messagebus",
-      "label": "Routine scheduler",
-      "sublabel": "slot claim + trigger in one transaction",
-      "pos": [
-        550,
-        5150
       ],
       "size": [
         360,
         76
       ],
-      "tag": "same-day catch-up once"
+      "tag": "untrusted triggers / human chat turns"
     },
     {
       "id": "paModel",
@@ -1132,29 +1117,104 @@
       "label": "Scripted offline model",
       "sublabel": "default / -model anthropic opt-in",
       "pos": [
-        1070,
+        2050,
+        4900
+      ],
+      "size": [
+        300,
+        76
+      ],
+      "tag": "no credentials needed"
+    },
+    {
+      "id": "paScheduler",
+      "type": "messagebus",
+      "label": "Routine scheduler",
+      "sublabel": "slot claim + trigger in one transaction",
+      "pos": [
+        70,
         5150
       ],
       "size": [
-        400,
+        300,
         76
       ],
-      "tag": "no credentials needed for the demo"
+      "tag": "catch-up after downtime or sleep"
+    },
+    {
+      "id": "paPoller",
+      "type": "messagebus",
+      "label": "Mail poller",
+      "sublabel": "mail_poll cursor / dedupe by mail ID",
+      "pos": [
+        530,
+        5150
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "first run starts at head"
+    },
+    {
+      "id": "paOutbox",
+      "type": "security",
+      "label": "Outbox",
+      "sublabel": "sole effect caller / key proposal-id",
+      "pos": [
+        1030,
+        5150
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "refusal fails / transport retries"
     },
     {
       "id": "paTools",
       "type": "security",
-      "label": "Connector tools",
-      "sublabel": "mail / calendar reads / propose_* drafts",
+      "label": "Agent tools",
+      "sublabel": "MCP reads (read risk) / propose_* drafts",
       "pos": [
-        1630,
+        1530,
         5150
       ],
       "size": [
-        400,
+        360,
         76
       ],
       "tag": "no send tool / no Bash or file tools"
+    },
+    {
+      "id": "paConnector",
+      "type": "backend",
+      "label": "MCP connector",
+      "sublabel": "go/mcp stdio client / contract check",
+      "pos": [
+        1030,
+        5400
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "credential env withheld from child"
+    },
+    {
+      "id": "paMock",
+      "type": "external",
+      "label": "mock-mcp child process",
+      "sublabel": "simulated mail / calendar MCP server",
+      "pos": [
+        1030,
+        5650
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "world.db / idempotent effects / sim_*"
     }
   ],
   "boundaries": [
@@ -1263,15 +1323,19 @@
     },
     {
       "kind": "region",
-      "label": "go/assistant · opt-in personal-assistant demo (Go addition) / default-off",
+      "label": "go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac",
       "wraps": [
         "paChannel",
         "paStore",
         "paRouter",
         "paWorkers",
-        "paScheduler",
         "paModel",
-        "paTools"
+        "paScheduler",
+        "paPoller",
+        "paOutbox",
+        "paTools",
+        "paConnector",
+        "paMock"
       ],
       "pad": 50
     }
@@ -2403,18 +2467,26 @@
       "variant": "dashed"
     },
     {
-      "id": "paDeliver",
+      "id": "paChat",
       "from": "paChannel",
       "to": "paStore",
-      "label": "deliver / chat / approve",
-      "variant": "emphasis"
+      "label": "chat / approve",
+      "variant": "emphasis",
+      "labelAt": [
+        394,
+        4990
+      ]
     },
     {
       "id": "paClaim",
       "from": "paStore",
       "to": "paRouter",
       "label": "claim trigger",
-      "variant": "emphasis"
+      "variant": "emphasis",
+      "labelAt": [
+        894,
+        4990
+      ]
     },
     {
       "id": "paTurn",
@@ -2423,10 +2495,13 @@
       "variant": "emphasis"
     },
     {
-      "id": "paSlot",
-      "from": "paScheduler",
-      "to": "paStore",
-      "label": "slot + trigger"
+      "id": "paModelRequest",
+      "from": "paModel",
+      "to": "paWorkers",
+      "label": "text / tool_use",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "right"
     },
     {
       "id": "paGate",
@@ -2434,17 +2509,77 @@
       "to": "paTools",
       "label": "gated dispatch",
       "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
       "labelAt": [
-        1830,
-        5063
+        1710,
+        4990
       ]
     },
     {
-      "id": "paModelRequest",
-      "from": "paModel",
-      "to": "paWorkers",
-      "label": "text / tool_use",
-      "variant": "dashed"
+      "id": "paSlot",
+      "from": "paScheduler",
+      "to": "paStore",
+      "label": "slot + trigger",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "paIngest",
+      "from": "paPoller",
+      "to": "paStore",
+      "label": "trigger + cursor",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "paPoll",
+      "from": "paPoller",
+      "to": "paConnector",
+      "label": "mail_poll",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "paApproved",
+      "from": "paStore",
+      "to": "paOutbox",
+      "label": "approved",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "paEffect",
+      "from": "paOutbox",
+      "to": "paConnector",
+      "label": "send / respond + key",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        1200,
+        5240
+      ]
+    },
+    {
+      "id": "paReads",
+      "from": "paTools",
+      "to": "paConnector",
+      "label": "reads",
+      "fromSide": "bottom",
+      "toSide": "right"
+    },
+    {
+      "id": "paStdio",
+      "from": "paConnector",
+      "to": "paMock",
+      "label": "stdio JSON-RPC",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        1200,
+        5490
+      ]
     }
   ],
   "cards": [
@@ -2711,9 +2846,10 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline c65073a plus 2026-11-01 demo: go/assistant and cmd/miniloop-assistant are a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the demo binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (mock world, trigger queue, subscriptions, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Interrupted triggers requeue on start; subscribed workers restore lazily.",
-        "Approval gate: workers can only append pending proposals; a human decision on the channel moves pending to sent/denied and applies the mock effect in one transaction. Mail and calendar are simulated; there are no real connectors or push channels."
+        "Review baseline b1a0a72 plus 2026-11-01 local-deployment iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
+        "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. MCP data is simulated.",
+        "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine catch-up also covers a Mac that slept through the slot."
       ]
     }
   ]

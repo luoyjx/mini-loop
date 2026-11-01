@@ -41,6 +41,8 @@ section.card { background: var(--panel); border: 1px solid var(--line); border-r
 .msg.user .meta { color: inherit; opacity: .75; }
 .proposal { align-self: stretch; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 10px; padding: 10px 12px; background: var(--panel); }
 .proposal.sent { border-left-color: var(--ok); }
+.proposal.approved { border-left-color: var(--accent); }
+.proposal.failed { border-left-color: var(--bad); }
 .proposal.denied { border-left-color: var(--muted); opacity: .8; }
 .proposal .title { font-weight: 650; }
 .proposal .to { font-size: 12px; color: var(--muted); }
@@ -56,7 +58,10 @@ button:disabled { opacity: .5; cursor: default; }
 .chip.sent, .chip.done, .chip.confirmed { background: var(--ok-soft); color: var(--ok); }
 .chip.denied, .chip.ignored, .chip.quiet, .chip.declined { background: var(--bubble); color: var(--muted); }
 .chip.failed { background: var(--bad-soft); color: var(--bad); }
-.chip.running, .chip.invited { background: var(--accent-soft); color: var(--accent); }
+.chip.running, .chip.invited, .chip.approved { background: var(--accent-soft); color: var(--accent); }
+.badge.mcp { background: var(--ok-soft); color: var(--ok); }
+.badge.mcp.down { background: var(--bad-soft); color: var(--bad); }
+.banner { margin: 0 0 12px; padding: 8px 10px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; word-break: break-word; }
 form.compose { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); }
 form.compose input { flex: 1; }
 input, textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; width: 100%; }
@@ -95,8 +100,9 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 <header>
   <h1>mini-loop 个人助理</h1>
   <span class="badge" id="model">model …</span>
+  <span class="badge mcp" id="mcp" title="邮件和日历只经过这个 MCP server">MCP …</span>
   <div class="legend" title="图中 6 个组件在 demo 里的位置">
-    <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟邮件/日历</span><span>记忆 · recall/remember</span>
+    <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟 MCP 邮件/日历</span><span>记忆 · recall/remember</span>
     <span>Routine · 晨报 + 事件触发</span><span>审批闸 · 提案卡片</span><span>审计 · 账本</span>
   </div>
 </header>
@@ -119,7 +125,9 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       <button data-pane="ledger">审计账本</button>
     </nav>
     <div class="pane active" id="pane-world">
-      <h3>投递一个事件（相当于邮件 webhook）</h3>
+      <div class="banner" id="integration-error" hidden></div>
+      <h3>外部世界投递一封来信</h3>
+      <p class="hint">这些按钮调用模拟 MCP server 的 sim_* 工具，把邮件放进外部收件箱；助理靠 mail_poll 轮询发现它，和真实邮箱一样。</p>
       <div class="grid" id="presets"></div>
       <h3>自定义来信</h3>
       <form id="custom">
@@ -130,9 +138,11 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       </form>
       <h3>Routines</h3>
       <div id="routines"></div>
-      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，待批准的提案和账本都还在；错过今天 07:00 的晨报会补跑一次。</p>
+      <h3>MCP 工具</h3>
+      <div id="tools" class="hint"></div>
+      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。</p>
     </div>
-    <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准过的提案）</h3><div id="sent"></div></div>
+    <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准、发件箱经 MCP 发出的提案）</h3><div id="sent"></div></div>
     <div class="pane" id="pane-calendar"><div id="calendar"></div></div>
     <div class="pane" id="pane-triggers"><div id="triggers"></div></div>
     <div class="pane" id="pane-ledger"><p class="hint">每一行都能追溯到触发器、worker session、闸门 action_id 和批准人。</p><div id="ledger"></div></div>
@@ -158,7 +168,7 @@ const time = (s) => new Date(s).toLocaleTimeString("zh-CN", { hour: "2-digit", m
 const dateTime = (s) => new Date(s).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
 const short = (s) => (s ? String(s).slice(0, 10) : "");
 const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
-const statusLabel = { pending: "待批准", sent: "已发出", denied: "已拒绝", failed: "失败" };
+const statusLabel = { pending: "待批准", approved: "已批准 · 发件箱执行中", sent: "已发出", denied: "已拒绝", failed: "发送失败" };
 
 function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
@@ -187,12 +197,16 @@ function proposalCard(p) {
         el("button", { class: "primary", onclick: () => decide(p.id, "approve") }, "批准发送"),
         el("button", { onclick: () => decide(p.id, "deny") }, "拒绝"))
     : el("div", { class: "actions" }, el("span", { class: "chip " + p.status }, statusLabel[p.status] || p.status),
-        p.decided_by ? el("span", { class: "hint" }, "由 " + p.decided_by + " 于 " + time(p.decided_at)) : null);
+        p.decided_by ? el("span", { class: "hint" }, "由 " + p.decided_by + " 于 " + time(p.decided_at)) : null,
+        p.receipt ? el("span", { class: "mono" }, "回执 " + p.receipt) : null,
+        p.attempts > 1 ? el("span", { class: "hint" }, "第 " + p.attempts + " 次成功") : null);
+  const failure = p.last_error && p.status !== "sent" ? el("div", { class: "reason" }, "最近一次失败：" + p.last_error) : null;
   return el("div", { class: "proposal " + p.status },
     el("div", { class: "title" }, "提案 #" + p.id + " · " + (kindLabel[p.kind] || p.kind) + "：" + p.subject),
     el("div", { class: "to" }, "收件人 " + p.to + (p.response ? " · " + (p.response === "accept" ? "接受" : "婉拒") : "")),
     el("pre", {}, p.body),
     p.reason ? el("div", { class: "reason" }, "理由：" + p.reason) : null,
+    failure,
     actions);
 }
 
@@ -218,6 +232,14 @@ function mailList(items) {
 
 function render() {
   $("model").textContent = "model · " + state.model;
+  const integration = state.integration;
+  $("mcp").textContent = "MCP · " + integration.server + "（" + integration.transport + "）" + (integration.error ? " · 不可用" : "");
+  $("mcp").classList.toggle("down", !!integration.error);
+  $("integration-error").hidden = !integration.error;
+  $("integration-error").textContent = integration.error ? "MCP 连接异常：" + integration.error : "";
+  $("tools").replaceChildren(
+    el("div", {}, "worker 工具背后调用（读）：" + integration.agent_tools.join("、")),
+    el("div", {}, "仅守护进程调用：" + integration.daemon_only.join("、")));
   renderChannel();
   $("presets").replaceChildren(...state.presets.map((p) =>
     el("button", { onclick: () => post("/api/simulate", { preset: p.id }).then(() => toast("已投递：" + p.label)).catch((e) => toast(e.message)) }, p.label)));
@@ -248,7 +270,7 @@ function render() {
 }
 
 async function decide(id, decision) {
-  try { await post("/api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，正在发出" : "已拒绝"); refresh(); }
+  try { await post("/api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，发件箱正在经 MCP 发出" : "已拒绝"); refresh(); }
   catch (e) { toast(e.message); }
 }
 

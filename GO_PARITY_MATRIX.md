@@ -13613,3 +13613,62 @@ fixture or exported contract changes, and `export_go_contracts.py` inputs are un
 - durable resume of `ApprovalBroker` asks;
 - multi-process trigger claims beyond the single SQLite connection;
 - a Python counterpart.
+
+## Go-only slice — assistant demo: simulated MCP, polling, outbox, local Mac deployment (2026-11-01)
+
+Code baseline: `b1a0a72` plus changes to `go/assistant` and `go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. No `go/mcp`, `go/agent` or other package outside
+the demo changes.
+
+**Go evidence:**
+
+- Mail and calendar moved out of the daemon store into `World` (`world.db`). The
+  `miniloop-assistant mock-mcp` subcommand serves it as a newline-delimited JSON-RPC
+  MCP server: `initialize`, `ping`, `tools/list` and `tools/call` with nine typed
+  tools.
+- The daemon reaches the server only through the existing `mcp.StdioClient`,
+  spawning its own executable. Tests use `mcp.InProcessClient`, which crosses the
+  same JSON argument and result boundary. Credential-shaped environment variables
+  are withheld from the child through `secrets.FromEnvironment`.
+- The connector verifies seven required tools at startup. It maps server
+  refusals to `ToolError`, which is not retried, and transport failures to
+  retryable errors.
+- The daemon wraps the MCP read tools as typed extension tools with
+  operator-declared `read` risk. `mail_poll`, `mail_send` and `calendar_respond`
+  never enter a model catalogue. The core registry rule that pins registered MCP
+  tools to `external` is unchanged and unused here.
+- Ingress: the poller enqueues triggers and advances the cursor in one
+  transaction, deduped by mail ID. A first run starts at the service head.
+- Effects: approval moves a proposal to `approved`. The single outbox executes it
+  with the key `proposal-<id>` and records the receipt, or a failed attempt with
+  backoff. Approved proposals resume after a restart. Old data directories gain
+  the new outbox columns in place.
+- Deployment: the default data directory is under `os.UserConfigDir()`.
+  `launchd-plist` prints a per-user LaunchAgent with `KeepAlive` on crash only. It
+  refuses `go run` binaries, credentialed models and non-loopback binds. Routine
+  catch-up no longer depends on startup, so a slot missed while the Mac slept
+  fires once after wake.
+- Tests cover:
+  - the mock server as a real stdio child, using the test binary through
+    `TestMain`;
+  - protocol error codes;
+  - first-run head and single ingest;
+  - poll failure surfacing and recovery;
+  - one effect after a lost response;
+  - resume across restart;
+  - no retry on refusal;
+  - sleep catch-up;
+  - the daemon spawning and verifying its child;
+  - plist well-formedness, with `plutil -lint` on macOS, and its refusals.
+
+**Not claimed:**
+
+- real MCP servers;
+- MCP HTTP or OAuth transport;
+- a real channel or authentication;
+- Keychain-backed credentials under launchd;
+- backups;
+- multi-daemon leases on one data directory;
+- a Python counterpart.

@@ -15,10 +15,13 @@ import (
 )
 
 // Config wires one assistant daemon. DataDir holds three durable parts:
-// assistant.db (world, triggers, outbox, channel, ledger), agent.db (session
-// transcripts, action journal, approvals) and memory/ (owner facts).
+// assistant.db (triggers, mail cursor, outbox, channel, ledger), agent.db
+// (session transcripts, action journal, leases) and memory/ (owner facts).
+// Mail and calendar live behind Connector; NewApp takes ownership of it and
+// closes it on failure or in Close.
 type Config struct {
 	DataDir       string
+	Connector     *Connector
 	Provider      agent.Provider
 	Model         string
 	ModelLabel    string
@@ -27,13 +30,17 @@ type Config struct {
 	Workers       int
 	TurnLimit     time.Duration
 	SchedulerTick time.Duration
+	PollInterval  time.Duration
 	LeaseTTL      time.Duration
 }
 
 type App struct {
 	Store      *Store
+	Connector  *Connector
 	Router     *Router
 	Scheduler  *Scheduler
+	Poller     *Poller
+	Outbox     *Outbox
 	Manager    *agent.SessionManager
 	ModelLabel string
 
@@ -43,6 +50,17 @@ type App struct {
 }
 
 func NewApp(ctx context.Context, config Config) (app *App, err error) {
+	if config.Connector == nil {
+		return nil, errors.New("assistant requires a mail/calendar connector")
+	}
+	closers := []func() error{config.Connector.Close}
+	defer func() {
+		if err != nil {
+			for i := len(closers) - 1; i >= 0; i-- {
+				err = errors.Join(err, closers[i]())
+			}
+		}
+	}()
 	if config.DataDir == "" || config.Provider == nil {
 		return nil, errors.New("assistant requires a data directory and a model provider")
 	}
@@ -57,16 +75,9 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("open assistant store: %w", err)
 	}
-	closers := []func() error{store.Close}
-	defer func() {
-		if err != nil {
-			for i := len(closers) - 1; i >= 0; i-- {
-				err = errors.Join(err, closers[i]())
-			}
-		}
-	}()
+	closers = append(closers, store.Close)
 	if err = store.Seed(ctx, now()); err != nil {
-		return nil, fmt.Errorf("seed demo world: %w", err)
+		return nil, fmt.Errorf("seed assistant: %w", err)
 	}
 	states, err := sqlitestate.Open(ctx, filepath.Join(config.DataDir, "agent.db"))
 	if err != nil {
@@ -80,8 +91,8 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if err = SeedMemory(ctx, memories); err != nil {
 		return nil, fmt.Errorf("seed memory: %w", err)
 	}
-	router := NewRouter(RouterConfig{Store: store, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
-	catalog, err := NewToolCatalog(store, router, now)
+	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
+	catalog, err := NewToolCatalog(store, config.Connector, router, now)
 	if err != nil {
 		return nil, err
 	}
@@ -108,19 +119,31 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if label == "" {
 		label = config.Model
 	}
-	return &App{Store: store, Router: router, Scheduler: NewScheduler(store, router, now, config.SchedulerTick, config.Log), Manager: manager, ModelLabel: label, now: now, states: states}, nil
+	return &App{
+		Store: store, Connector: config.Connector, Router: router,
+		Scheduler: NewScheduler(store, router, now, config.SchedulerTick, config.Log),
+		Poller:    NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log),
+		Outbox:    NewOutbox(store, config.Connector, now, config.Log),
+		Manager:   manager, ModelLabel: label, now: now, states: states,
+	}, nil
 }
 
-// Start runs the dispatcher and the scheduler until ctx ends.
+// Start runs the dispatcher, scheduler, mail poller and outbox until ctx ends.
+// The first poll runs before Start returns, so a first-time daemon pins its
+// mail cursor to the service's head before anything else can deliver.
 func (app *App) Start(ctx context.Context) {
-	app.wg.Add(2)
-	go func() { defer app.wg.Done(); app.Router.Run(ctx) }()
-	go func() { defer app.wg.Done(); app.Scheduler.Run(ctx) }()
+	_, _ = app.Poller.PollOnce(ctx)
+	loops := []func(context.Context){app.Router.Run, app.Scheduler.Run, app.Poller.Run, app.Outbox.Run}
+	app.wg.Add(len(loops))
+	for _, loop := range loops {
+		go func() { defer app.wg.Done(); loop(ctx) }()
+	}
 }
 
 // Close waits for the loops (their ctx must already be cancelled), stops the
-// manager and closes both stores. Interrupted triggers stay queued.
+// manager, closes both stores and stops the connector. Interrupted triggers
+// stay queued and approved proposals stay approved for the next process.
 func (app *App) Close(ctx context.Context) error {
 	app.wg.Wait()
-	return errors.Join(app.Manager.Stop(ctx), app.states.Close(), app.Store.Close())
+	return errors.Join(app.Manager.Stop(ctx), app.states.Close(), app.Store.Close(), app.Connector.Close())
 }

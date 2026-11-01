@@ -12,8 +12,10 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-// Connector tool names. Reads are RiskRead; proposals are RiskWrite because
-// they only append a draft to the local outbox. No tool can send.
+// Agent tool names. The reads wrap the MCP connector's read tools with
+// operator-declared RiskRead; proposals are RiskWrite because they only
+// append a draft to the local outbox. No agent tool can send: mail_send and
+// calendar_respond are reachable only from the outbox after a human approval.
 const (
 	ToolMailList       protocol.ToolName = "mail_list"
 	ToolMailRead       protocol.ToolName = "mail_read"
@@ -180,7 +182,7 @@ func encode(value any) (string, error) {
 // ---- handlers ----
 
 type mailListTool struct {
-	store *Store
+	connector *Connector
 }
 
 func (tool mailListTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolAuthority, input mailListInput) (string, error) {
@@ -191,7 +193,7 @@ func (tool mailListTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolA
 	if limit == 0 {
 		limit = 15
 	}
-	mails, err := tool.store.ListMail(ctx, folder, limit)
+	mails, err := tool.connector.ListMail(ctx, folder, limit)
 	if err != nil {
 		return "", err
 	}
@@ -203,11 +205,11 @@ func (tool mailListTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolA
 }
 
 type mailReadTool struct {
-	store *Store
+	connector *Connector
 }
 
 func (tool mailReadTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolAuthority, input mailReadInput) (string, error) {
-	mail, ok, err := tool.store.Mail(ctx, input.ID)
+	mail, ok, err := tool.connector.ReadMail(ctx, input.ID)
 	if err != nil {
 		return "", err
 	}
@@ -218,8 +220,8 @@ func (tool mailReadTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolA
 }
 
 type calendarListTool struct {
-	store *Store
-	now   clock
+	connector *Connector
+	now       clock
 }
 
 func (tool calendarListTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolAuthority, input calendarListInput) (string, error) {
@@ -229,7 +231,7 @@ func (tool calendarListTool) ExecuteExtensionTool(ctx context.Context, _ agent.T
 	}
 	now := tool.now()
 	start := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
-	events, err := tool.store.Events(ctx, start, start.AddDate(0, 0, days))
+	events, err := tool.connector.Events(ctx, start, start.AddDate(0, 0, days))
 	if err != nil {
 		return "", err
 	}
@@ -259,9 +261,10 @@ func (tool proposeEmailTool) ExecuteExtensionTool(ctx context.Context, authority
 }
 
 type proposeInviteTool struct {
-	store    *Store
-	bindings bindingSource
-	now      clock
+	store     *Store
+	connector *Connector
+	bindings  bindingSource
+	now       clock
 }
 
 func (tool proposeInviteTool) ExecuteExtensionTool(ctx context.Context, authority agent.ToolAuthority, input proposeInviteInput) (string, error) {
@@ -269,7 +272,7 @@ func (tool proposeInviteTool) ExecuteExtensionTool(ctx context.Context, authorit
 	if !ok {
 		return "", errors.New("no active trigger for this session")
 	}
-	event, found, err := tool.store.Event(ctx, input.EventID)
+	event, found, err := tool.connector.Event(ctx, input.EventID)
 	if err != nil {
 		return "", err
 	}
@@ -321,7 +324,7 @@ var toolSpecs = []toolSpec{
 
 // NewToolCatalog builds the assistant's only tools. Supplying a catalogue to
 // the manager replaces the built-in Bash/file tools, so workers have no shell.
-func NewToolCatalog(store *Store, bindings bindingSource, now clock) (*agent.ToolCatalog, error) {
+func NewToolCatalog(store *Store, connector *Connector, bindings bindingSource, now clock) (*agent.ToolCatalog, error) {
 	definitions := make([]agent.ToolDefinition, 0, len(toolSpecs))
 	for _, spec := range toolSpecs {
 		schema, err := protocol.ExtensionToolSchema(spec.name, spec.description, []byte(spec.schema))
@@ -333,15 +336,15 @@ func NewToolCatalog(store *Store, bindings bindingSource, now clock) (*agent.Too
 		draft := agent.ToolTraits{Risk: agent.RiskWrite}
 		switch spec.name {
 		case ToolMailList:
-			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[mailListInput]{}, mailListTool{store})
+			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[mailListInput]{}, mailListTool{connector})
 		case ToolMailRead:
-			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[mailReadInput]{}, mailReadTool{store})
+			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[mailReadInput]{}, mailReadTool{connector})
 		case ToolCalendarList:
-			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[calendarListInput]{}, calendarListTool{store, now})
+			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[calendarListInput]{}, calendarListTool{connector, now})
 		case ToolProposeEmail:
 			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[proposeEmailInput]{}, proposeEmailTool{store, bindings, now})
 		case ToolProposeInvite:
-			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[proposeInviteInput]{}, proposeInviteTool{store, bindings, now})
+			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[proposeInviteInput]{}, proposeInviteTool{store, connector, bindings, now})
 		default:
 			err = fmt.Errorf("unknown tool %s", spec.name)
 		}

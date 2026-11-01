@@ -11,12 +11,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/agent"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Store is the assistant's durable state: the mock world (mail, calendar),
-// the trigger queue, thread subscriptions, the proposal outbox, the channel
-// log and the ledger. It is separate from the agent session store so the
+// Store is the daemon's durable state: the trigger queue with its mail-poll
+// cursor, thread subscriptions, the proposal outbox, the channel log and the
+// ledger. Mail and calendar are not here: they belong to the external service
+// behind the MCP connector. It is separate from the agent session store so the
 // demo never edits that schema. One pinned connection serializes writers.
 type Store struct {
 	db *sql.DB
@@ -24,15 +26,6 @@ type Store struct {
 
 const schema = `
 CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY, value TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS mail(
-	id TEXT PRIMARY KEY, thread TEXT NOT NULL, folder TEXT NOT NULL,
-	sender TEXT NOT NULL, sender_name TEXT NOT NULL, recipient TEXT NOT NULL,
-	subject TEXT NOT NULL, body TEXT NOT NULL, category TEXT NOT NULL,
-	event_id TEXT NOT NULL DEFAULT '', received_at INTEGER NOT NULL);
-CREATE TABLE IF NOT EXISTS calendar(
-	id TEXT PRIMARY KEY, title TEXT NOT NULL, start_at INTEGER NOT NULL,
-	end_at INTEGER NOT NULL, status TEXT NOT NULL, organizer TEXT NOT NULL,
-	thread TEXT NOT NULL DEFAULT '');
 CREATE TABLE IF NOT EXISTS triggers(
 	id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL, thread TEXT NOT NULL,
 	ref TEXT NOT NULL, summary TEXT NOT NULL, status TEXT NOT NULL,
@@ -48,7 +41,9 @@ CREATE TABLE IF NOT EXISTS proposals(
 	recipient TEXT NOT NULL, subject TEXT NOT NULL, body TEXT NOT NULL,
 	event_id TEXT NOT NULL DEFAULT '', response TEXT NOT NULL DEFAULT '',
 	reason TEXT NOT NULL, status TEXT NOT NULL, decided_by TEXT NOT NULL DEFAULT '',
-	dedupe TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL, decided_at INTEGER);
+	dedupe TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL, decided_at INTEGER,
+	attempts INTEGER NOT NULL DEFAULT 0, not_before INTEGER NOT NULL DEFAULT 0,
+	receipt TEXT NOT NULL DEFAULT '', last_error TEXT NOT NULL DEFAULT '');
 CREATE TABLE IF NOT EXISTS channel(
 	id INTEGER PRIMARY KEY AUTOINCREMENT, role TEXT NOT NULL, text TEXT NOT NULL,
 	proposal_id INTEGER, trigger_id INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
@@ -63,9 +58,43 @@ CREATE TABLE IF NOT EXISTS routines(
 CREATE TABLE IF NOT EXISTS routine_runs(
 	routine_id TEXT NOT NULL, slot TEXT NOT NULL, trigger_id INTEGER NOT NULL,
 	catchup INTEGER NOT NULL, created_at INTEGER NOT NULL, PRIMARY KEY(routine_id, slot));
+CREATE TABLE IF NOT EXISTS ingested(
+	mail_id TEXT PRIMARY KEY, seq INTEGER NOT NULL, trigger_id INTEGER NOT NULL,
+	created_at INTEGER NOT NULL);
 `
 
+// addedColumns upgrades a data directory written by the first demo, whose
+// proposals table predates the outbox. Its old mail and calendar tables are
+// left in place and unused.
+var addedColumns = []struct{ table, column, definition string }{
+	{"proposals", "attempts", "INTEGER NOT NULL DEFAULT 0"},
+	{"proposals", "not_before", "INTEGER NOT NULL DEFAULT 0"},
+	{"proposals", "receipt", "TEXT NOT NULL DEFAULT ''"},
+	{"proposals", "last_error", "TEXT NOT NULL DEFAULT ''"},
+}
+
 func OpenStore(ctx context.Context, path string) (*Store, error) {
+	db, err := openSQLite(ctx, path, schema)
+	if err != nil {
+		return nil, err
+	}
+	for _, added := range addedColumns {
+		var present int
+		if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM pragma_table_info(?) WHERE name=?`, added.table, added.column).Scan(&present); err != nil {
+			return nil, errors.Join(err, db.Close())
+		}
+		if present == 0 {
+			if _, err := db.ExecContext(ctx, `ALTER TABLE `+added.table+` ADD COLUMN `+added.column+` `+added.definition); err != nil {
+				return nil, errors.Join(err, db.Close())
+			}
+		}
+	}
+	return &Store{db: db}, nil
+}
+
+// openSQLite opens one database file on a single pinned connection in WAL mode
+// and applies its schema. The daemon store and the mock World both use it.
+func openSQLite(ctx context.Context, path, ddl string) (*sql.DB, error) {
 	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
 		return nil, err
 	}
@@ -82,12 +111,12 @@ func OpenStore(ctx context.Context, path string) (*Store, error) {
 		return nil, err
 	}
 	db.SetMaxOpenConns(1)
-	for _, statement := range []string{"PRAGMA journal_mode=WAL", "PRAGMA synchronous=NORMAL", "PRAGMA busy_timeout=5000", schema} {
+	for _, statement := range []string{"PRAGMA journal_mode=WAL", "PRAGMA synchronous=NORMAL", "PRAGMA busy_timeout=5000", ddl} {
 		if _, err := db.ExecContext(ctx, statement); err != nil {
 			return nil, errors.Join(err, db.Close())
 		}
 	}
-	return &Store{db: db}, nil
+	return db, nil
 }
 
 func (s *Store) Close() error { return s.db.Close() }
@@ -132,100 +161,6 @@ func (s *Store) setMeta(ctx context.Context, q queryer, key, value string) error
 	return err
 }
 
-// ---- mail ----
-
-func insertMail(ctx context.Context, q queryer, mail Email) error {
-	_, err := q.ExecContext(ctx, `INSERT INTO mail(id,thread,folder,sender,sender_name,recipient,subject,body,category,event_id,received_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
-		mail.ID, string(mail.Thread), string(mail.Folder), mail.From, mail.FromName, mail.To, mail.Subject, mail.Body, string(mail.Category), mail.EventID, millis(mail.ReceivedAt))
-	return err
-}
-
-const mailColumns = `id,thread,folder,sender,sender_name,recipient,subject,body,category,event_id,received_at`
-
-func scanMail(row interface{ Scan(...any) error }) (Email, error) {
-	var mail Email
-	var thread, folder, category string
-	var received int64
-	if err := row.Scan(&mail.ID, &thread, &folder, &mail.From, &mail.FromName, &mail.To, &mail.Subject, &mail.Body, &category, &mail.EventID, &received); err != nil {
-		return Email{}, err
-	}
-	mail.Thread, mail.Folder, mail.Category, mail.ReceivedAt = ThreadID(thread), MailFolder(folder), MailCategory(category), fromMillis(received)
-	return mail, nil
-}
-
-func (s *Store) Mail(ctx context.Context, id string) (Email, bool, error) {
-	mail, err := scanMail(s.db.QueryRowContext(ctx, `SELECT `+mailColumns+` FROM mail WHERE id=?`, id))
-	if errors.Is(err, sql.ErrNoRows) {
-		return Email{}, false, nil
-	}
-	return mail, err == nil, err
-}
-
-func (s *Store) ListMail(ctx context.Context, folder MailFolder, limit int) ([]Email, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT `+mailColumns+` FROM mail WHERE folder=? ORDER BY received_at DESC LIMIT ?`, string(folder), limit)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	result := []Email{}
-	for rows.Next() {
-		mail, err := scanMail(rows)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, mail)
-	}
-	return result, rows.Err()
-}
-
-// ---- calendar ----
-
-func insertEvent(ctx context.Context, q queryer, event CalendarEvent) error {
-	_, err := q.ExecContext(ctx, `INSERT INTO calendar(id,title,start_at,end_at,status,organizer,thread) VALUES(?,?,?,?,?,?,?)`,
-		event.ID, event.Title, millis(event.Start), millis(event.End), string(event.Status), event.Organizer, string(event.Thread))
-	return err
-}
-
-const eventColumns = `id,title,start_at,end_at,status,organizer,thread`
-
-func scanEvent(row interface{ Scan(...any) error }) (CalendarEvent, error) {
-	var event CalendarEvent
-	var start, end int64
-	var status, thread string
-	if err := row.Scan(&event.ID, &event.Title, &start, &end, &status, &event.Organizer, &thread); err != nil {
-		return CalendarEvent{}, err
-	}
-	event.Start, event.End, event.Status, event.Thread = fromMillis(start), fromMillis(end), EventStatus(status), ThreadID(thread)
-	return event, nil
-}
-
-func (s *Store) Event(ctx context.Context, id string) (CalendarEvent, bool, error) {
-	event, err := scanEvent(s.db.QueryRowContext(ctx, `SELECT `+eventColumns+` FROM calendar WHERE id=?`, id))
-	if errors.Is(err, sql.ErrNoRows) {
-		return CalendarEvent{}, false, nil
-	}
-	return event, err == nil, err
-}
-
-// Events lists events overlapping [from, to), declined ones included so the
-// page can show the outcome of an approved decline.
-func (s *Store) Events(ctx context.Context, from, to time.Time) ([]CalendarEvent, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT `+eventColumns+` FROM calendar WHERE end_at>? AND start_at<? ORDER BY start_at`, millis(from), millis(to))
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	result := []CalendarEvent{}
-	for rows.Next() {
-		event, err := scanEvent(rows)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, event)
-	}
-	return result, rows.Err()
-}
-
 // ---- triggers ----
 
 func enqueueTrigger(ctx context.Context, q queryer, trigger Trigger, now time.Time) (int64, error) {
@@ -238,8 +173,21 @@ func enqueueTrigger(ctx context.Context, q queryer, trigger Trigger, now time.Ti
 	if err != nil {
 		return 0, err
 	}
-	err = appendLedger(ctx, q, LedgerEntry{At: now, Kind: LedgerTrigger, Actor: "environment", TriggerID: id, Thread: trigger.Thread, Detail: string(trigger.Kind) + "：" + truncateRunes(trigger.Summary, 80)})
+	err = appendLedger(ctx, q, LedgerEntry{At: now, Kind: LedgerTrigger, Actor: triggerSource(trigger.Kind), TriggerID: id, Thread: trigger.Thread, Detail: string(trigger.Kind) + "：" + truncateRunes(trigger.Summary, 80)})
 	return id, err
+}
+
+func triggerSource(kind TriggerKind) string {
+	switch kind {
+	case TriggerEmail, TriggerInvite:
+		return "poller（MCP mail_poll）"
+	case TriggerChat:
+		return "me（信道）"
+	case TriggerRoutine:
+		return "scheduler"
+	default:
+		return "environment"
+	}
 }
 
 const triggerColumns = `id,kind,thread,ref,summary,status,decision,session_id,attempts,created_at,updated_at`
@@ -346,14 +294,14 @@ func (s *Store) Subscribe(ctx context.Context, thread ThreadID, session string, 
 
 // ---- proposals ----
 
-const proposalColumns = `id,kind,trigger_id,thread,session_id,action_id,recipient,subject,body,event_id,response,reason,status,decided_by,created_at,decided_at`
+const proposalColumns = `id,kind,trigger_id,thread,session_id,action_id,recipient,subject,body,event_id,response,reason,status,decided_by,created_at,decided_at,attempts,receipt,last_error`
 
 func scanProposal(row interface{ Scan(...any) error }) (Proposal, error) {
 	var p Proposal
 	var kind, thread, response, status string
 	var created int64
 	var decided sql.NullInt64
-	if err := row.Scan(&p.ID, &kind, &p.TriggerID, &thread, &p.SessionID, &p.ActionID, &p.To, &p.Subject, &p.Body, &p.EventID, &response, &p.Reason, &status, &p.DecidedBy, &created, &decided); err != nil {
+	if err := row.Scan(&p.ID, &kind, &p.TriggerID, &thread, &p.SessionID, &p.ActionID, &p.To, &p.Subject, &p.Body, &p.EventID, &response, &p.Reason, &status, &p.DecidedBy, &created, &decided, &p.Attempts, &p.Receipt, &p.LastError); err != nil {
 		return Proposal{}, err
 	}
 	p.Kind, p.Thread, p.Response, p.Status, p.CreatedAt = ProposalKind(kind), ThreadID(thread), InviteResponse(response), ProposalStatus(status), fromMillis(created)
@@ -441,9 +389,10 @@ func (s *Store) ProposalsForTrigger(ctx context.Context, trigger int64) ([]Propo
 
 var ErrProposalDecided = errors.New("proposal is no longer pending")
 
-// DecideProposal is the only path that releases an external effect. The status
-// transition and the mock-world effect commit in one transaction, so a
-// proposal is sent at most once even under concurrent clicks or a crash.
+// DecideProposal is the human side of the approval gate and the only way out
+// of pending. Approval only moves the proposal to approved; the outbox then
+// executes it through the connector. A compare-and-set on pending means
+// concurrent clicks release a proposal at most once.
 func (s *Store) DecideProposal(ctx context.Context, id int64, approve bool, actor string, now time.Time) (Proposal, error) {
 	var decided Proposal
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
@@ -454,24 +403,15 @@ func (s *Store) DecideProposal(ctx context.Context, id int64, approve bool, acto
 		if p.Status != ProposalPending {
 			return ErrProposalDecided
 		}
-		status := ProposalDenied
+		status, verb := ProposalDenied, "拒绝"
 		if approve {
-			status = ProposalSent
+			status, verb = ProposalApproved, "批准"
 		}
 		if _, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, decided_by=?, decided_at=? WHERE id=? AND status=?`, string(status), actor, millis(now), id, string(ProposalPending)); err != nil {
 			return err
 		}
-		verb := "拒绝"
-		if approve {
-			verb = "批准"
-		}
 		if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerDecision, Actor: actor, TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Detail: fmt.Sprintf("%s提案 #%d", verb, p.ID)}); err != nil {
 			return err
-		}
-		if approve {
-			if err := applyProposal(ctx, tx, p, now); err != nil {
-				return err
-			}
 		}
 		p.Status, p.DecidedBy, p.DecidedAt = status, actor, &now
 		decided = p
@@ -480,23 +420,76 @@ func (s *Store) DecideProposal(ctx context.Context, id int64, approve bool, acto
 	return decided, err
 }
 
-func applyProposal(ctx context.Context, tx *sql.Tx, p Proposal, now time.Time) error {
-	detail := fmt.Sprintf("已发送邮件给 %s：%s", p.To, p.Subject)
-	if p.Kind == ProposalRespondInvite {
-		status := EventConfirmed
-		if p.Response == InviteDecline {
-			status = EventDeclined
-		}
-		if _, err := tx.ExecContext(ctx, `UPDATE calendar SET status=? WHERE id=?`, string(status), p.EventID); err != nil {
+// IdempotencyKey is the connector key for one proposal's effect. Every retry,
+// including one after a crash, reuses it.
+func IdempotencyKey(id int64) string { return fmt.Sprintf("proposal-%d", id) }
+
+// NextApproved returns the oldest approved proposal that is due. Only the
+// single outbox loop calls it, so it needs no lease.
+func (s *Store) NextApproved(ctx context.Context, now time.Time) (Proposal, bool, error) {
+	p, err := scanProposal(s.db.QueryRowContext(ctx, `SELECT `+proposalColumns+` FROM proposals WHERE status=? AND not_before<=? ORDER BY id LIMIT 1`, string(ProposalApproved), millis(now)))
+	if errors.Is(err, sql.ErrNoRows) {
+		return Proposal{}, false, nil
+	}
+	return p, err == nil, err
+}
+
+// CompleteProposal records a confirmed external effect: approved → sent, the
+// effect ledger row with the connector receipt, and one channel line.
+func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt EffectReceipt, actor string, now time.Time) error {
+	return s.inTx(ctx, func(tx *sql.Tx) error {
+		result, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, receipt=?, last_error='' WHERE id=? AND status=?`, string(ProposalSent), receipt.Receipt, p.ID, string(ProposalApproved))
+		if err != nil {
 			return err
 		}
-		detail = fmt.Sprintf("已回复邀约 %s：%s，并通知 %s", p.EventID, p.Response, p.To)
-	}
-	mail := Email{ID: fmt.Sprintf("sent-%d", p.ID), Thread: p.Thread, Folder: FolderSent, From: "me@acme.example", FromName: "我", To: p.To, Subject: p.Subject, Body: p.Body, Category: CategoryPerson, ReceivedAt: now}
-	if err := insertMail(ctx, tx, mail); err != nil {
+		if affected, err := result.RowsAffected(); err != nil || affected == 0 {
+			return errors.Join(err, ErrProposalDecided)
+		}
+		detail := fmt.Sprintf("%s（回执 %s，幂等键 %s", receipt.Detail, receipt.Receipt, IdempotencyKey(p.ID))
+		if receipt.Duplicate {
+			detail += "，重放命中已执行的效果"
+		}
+		if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerEffect, Actor: actor, TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Tool: effectTool(p.Kind), Risk: string(agent.RiskExternal), Detail: detail + "）"}); err != nil {
+			return err
+		}
+		_, err = postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已经 MCP 发出提案 #%d：%s → %s", p.ID, p.Subject, p.To), TriggerID: p.TriggerID}, now)
 		return err
+	})
+}
+
+// FailProposalAttempt records one failed execution. A retryable failure keeps
+// the proposal approved until next; a final one marks it failed and tells the
+// user. Nothing was sent, or the next retry's idempotency key absorbs it.
+func (s *Store) FailProposalAttempt(ctx context.Context, p Proposal, cause error, final bool, next time.Time, actor string, now time.Time) error {
+	return s.inTx(ctx, func(tx *sql.Tx) error {
+		status := ProposalApproved
+		if final {
+			status = ProposalFailed
+		}
+		message := truncateRunes(cause.Error(), 300)
+		if _, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, not_before=?, last_error=? WHERE id=? AND status=?`, string(status), millis(next), message, p.ID, string(ProposalApproved)); err != nil {
+			return err
+		}
+		detail := fmt.Sprintf("提案 #%d 第 %d 次执行失败：%s", p.ID, p.Attempts+1, message)
+		if !final {
+			detail += fmt.Sprintf("；%s 重试", next.Format("15:04:05"))
+		}
+		if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerEffectErr, Actor: actor, TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Tool: effectTool(p.Kind), Risk: string(agent.RiskExternal), Detail: detail}); err != nil {
+			return err
+		}
+		if !final {
+			return nil
+		}
+		_, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("提案 #%d 没能发出：%s", p.ID, truncateRunes(message, 120)), TriggerID: p.TriggerID}, now)
+		return err
+	})
+}
+
+func effectTool(kind ProposalKind) string {
+	if kind == ProposalRespondInvite {
+		return MCPCalendarRespond
 	}
-	return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerEffect, Actor: "daemon（经人工批准）", TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Risk: "external", Detail: detail})
+	return MCPMailSend
 }
 
 // ---- channel ----
@@ -675,30 +668,67 @@ func boolInt(v bool) int {
 	return 0
 }
 
-// ---- world mutations used by the simulated channel ----
+// ---- mail ingest ----
 
-// DeliverMail stores an inbound message (and its invite) and enqueues the
-// trigger in one transaction, as a webhook ingress would.
-func (s *Store) DeliverMail(ctx context.Context, mail Email, invite *CalendarEvent, now time.Time) (int64, error) {
-	var id int64
-	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		if invite != nil {
-			if err := insertEvent(ctx, tx, *invite); err != nil {
-				return err
-			}
-		}
-		if err := insertMail(ctx, tx, mail); err != nil {
+const mailCursorKey = "mail_cursor"
+
+// MailCursor is the last mail_poll seq this daemon ingested; ok=false means
+// the daemon has never polled and should start from the service's head.
+func (s *Store) MailCursor(ctx context.Context) (int64, bool, error) {
+	value, ok, err := s.metaValue(ctx, mailCursorKey)
+	if err != nil || !ok {
+		return 0, false, err
+	}
+	var cursor int64
+	_, err = fmt.Sscan(value, &cursor)
+	return cursor, err == nil, err
+}
+
+// StartMailCursor records where a first-time daemon starts watching.
+func (s *Store) StartMailCursor(ctx context.Context, head int64, now time.Time) error {
+	return s.inTx(ctx, func(tx *sql.Tx) error {
+		if err := s.setMeta(ctx, tx, mailCursorKey, fmt.Sprint(head)); err != nil {
 			return err
 		}
-		kind := TriggerEmail
-		if mail.Category == CategoryInvite {
-			kind = TriggerInvite
+		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerTrigger, Actor: "poller（MCP mail_poll）", Detail: fmt.Sprintf("首次连接：从收件箱 seq=%d 之后开始监听，之前的邮件不触发", head)})
+	})
+}
+
+// IngestMail turns one polled page into triggers and advances the cursor in
+// the same transaction. A re-polled message is skipped by its mail ID, so a
+// crash between the poll and this commit cannot enqueue it twice.
+func (s *Store) IngestMail(ctx context.Context, batch []InboundMail, cursor int64, now time.Time) (int, error) {
+	ingested := 0
+	err := s.inTx(ctx, func(tx *sql.Tx) error {
+		for _, inbound := range batch {
+			mail := inbound.Mail
+			result, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO ingested(mail_id,seq,trigger_id,created_at) VALUES(?,?,0,?)`, mail.ID, inbound.Seq, millis(now))
+			if err != nil {
+				return err
+			}
+			if affected, err := result.RowsAffected(); err != nil || affected == 0 {
+				if err != nil {
+					return err
+				}
+				continue
+			}
+			kind := TriggerEmail
+			if mail.Category == CategoryInvite {
+				kind = TriggerInvite
+			}
+			id, err := enqueueTrigger(ctx, tx, Trigger{Kind: kind, Thread: mail.Thread, Ref: mail.ID, Summary: fmt.Sprintf("%s <%s>：%s", mail.FromName, mail.From, mail.Subject)}, now)
+			if err != nil {
+				return err
+			}
+			if _, err := tx.ExecContext(ctx, `UPDATE ingested SET trigger_id=? WHERE mail_id=?`, id, mail.ID); err != nil {
+				return err
+			}
+			ingested++
 		}
-		var err error
-		id, err = enqueueTrigger(ctx, tx, Trigger{Kind: kind, Thread: mail.Thread, Ref: mail.ID, Summary: fmt.Sprintf("%s <%s>：%s", mail.FromName, mail.From, mail.Subject)}, now)
+		_, err := tx.ExecContext(ctx, `INSERT INTO meta(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE CAST(meta.value AS INTEGER) < CAST(excluded.value AS INTEGER)`, mailCursorKey, fmt.Sprint(cursor))
 		return err
 	})
-	return id, err
+	return ingested, err
 }
 
 // ChatFromUser records the user's channel message and enqueues it.

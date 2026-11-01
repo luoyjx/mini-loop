@@ -1,0 +1,45 @@
+Iteration 2026-11-01 (go/assistant simulated MCP + polling + outbox + launchd). The image is the result of three chained codex-imagegen edit passes. Exact prompts in order:
+
+=== Pass 1: edit --image docs/mini-loop-layered-architecture.png (previous base) -> draft v1 ===
+Edit the supplied complete mini-loop layered architecture diagram. This is a repository architecture update dated 2026-11-01. Preserve everything above the very bottom band exactly: the title, Chinese typography style, dark navy background, cyan/violet borders, every L1-L5 main architecture layer, the entire right boundary column with its six numbered items, the deepagents-server band, the Temporal experiment band and the Task container band including its orange 2026-10-17 badge. Do not change any text outside the bottom band.
+
+Redraw ONLY the very bottom band, the one titled '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭'. Keep the same visual style (rounded cyan/violet border, dark navy fill, white Chinese labels, small line icons). You may make this band slightly taller; if needed compress the upper bands a little, but keep all their content. New band title, exact text: '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 部署在本机 Mac'.
+
+Inside the band draw one left-to-right flow of five boxes connected by arrows, with these exact labels:
+1. '模拟信道网页' with small line '聊天 · 模拟外部来信 · 审批卡片'
+2. 'assistant.db' with small line '触发器队列 · 邮件游标 · 发件箱 · 账本'
+3. 'Router + Worker 会话' with small line 'Go SessionManager · ToolGate · agent.db'
+4. 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'
+5. 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'
+
+Below the flow add one thin strip of three short items separated by dots, exact text: '轮询 mail_poll 发现新邮件' · '批准后发件箱经 MCP 发出 · 幂等键 proposal-id' · 'launchd 常驻 · 崩溃拉起 · 睡眠后补跑'.
+
+Add a small orange highlight badge at the top right of this band, exact text: '2026-11-01：模拟 MCP + 轮询 + 发件箱 + launchd'. Give the boxes 'MCP 连接器' and 'mock-mcp 子进程' a subtle orange outline glow to highlight them as this iteration's change.
+
+Do not claim real email, calendar, Telegram or push integrations, authentication, cloud deployment or a Python counterpart. Do not redesign other layers or invent services, databases or metrics. Output the entire edited diagram with all original content intact and readable labels, not a crop. This image serves as both the updated canonical raster base and this iteration's highlighted delivery diagram.
+
+=== Pass 2: edit --image previous base (image 1) --image v1 (image 2) -> draft v2 ===
+Two images are supplied. Image 1 is the previous mini-loop layered architecture diagram. Image 2 is the edited version whose very bottom band ('独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 部署在本机 Mac', with five boxes, an orange '2026-11-01：模拟 MCP + 轮询 + 发件箱 + launchd' badge and orange-highlighted 'MCP 连接器' and 'mock-mcp 子进程' boxes) is correct and must be kept exactly.
+
+Use image 2 as the base. Restore only what image 2 lost from the band directly above the bottom band, the '独立 Task 容器 · task_server.launch api | worker · 显式启用' band: in image 1 that band ends with two thin text strips below its boxes (the strip beginning '每 8 次续期边界分段' and the strip beginning '无状任务 Memory'). Put those two strips back at the bottom of the Task container band, copying their text and style from image 1 as faithfully as possible.
+
+Also make sure the thin strip at the bottom of the bottom band is fully visible and not cut off by the canvas edge, exact text: '轮询 mail_poll 发现新邮件' · '批准后发件箱经 MCP 发出 · 幂等键 proposal-id' · 'launchd 常驻 · 崩溃拉起 · 睡眠后补跑'. To make room, compress the bands slightly; do not remove any content.
+
+Do not change any other text, layer, badge or the right boundary column. Output the entire diagram, not a crop.
+
+=== Pass 3: edit --image v2 (image 1) --image v1 (image 2) -> final image ===
+Two images are supplied. Image 1 is the mini-loop layered architecture diagram to edit. Image 2 is an earlier draft whose very bottom band has the correct wording.
+
+Use image 1 as the base and keep everything above its very bottom band exactly as it is, including the '独立 Task 容器' band with its two thin text strips, all badges and the right boundary column.
+
+Fix only the text inside image 1's very bottom band so it matches image 2's bottom band, keeping image 1's layout, orange badge and the orange highlight on the last two boxes:
+- Band title, exact text: '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 部署在本机 Mac'
+- Box 1: '模拟信道网页' with small line '聊天 · 模拟外部来信 · 审批卡片'
+- Box 2: 'assistant.db' with small line '触发器队列 · 邮件游标 · 发件箱 · 账本'
+- Box 3: 'Router + Worker 会话' with small line 'Go SessionManager · ToolGate · agent.db'
+- Box 4: 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'
+- Box 5: 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'
+- Bottom strip, fully visible inside the canvas: '轮询 mail_poll 发现新邮件' · '批准后发件箱经 MCP 发出 · 幂等键 proposal-id' · 'launchd 常驻 · 崩溃拉起 · 睡眠后补跑'
+- Badge, exact text: '2026-11-01：模拟 MCP + 轮询 + 发件箱 + launchd'
+
+Render the Chinese characters crisply and legibly. Do not change anything else. Output the entire diagram, not a crop.

@@ -5,10 +5,21 @@
 `go/assistant` and `go/cmd/miniloop-assistant` are a **Go addition** with no
 Python contract. They run a loopback-only demo of a proactive personal agent.
 It has a SQLite trigger queue, a routine scheduler, thread-subscribed worker
-sessions, typed mock mail and calendar connectors, a proposal outbox that only
-a human can release, and an append-only ledger. The channel is a simulated web
-page. The demo wires the existing `SessionManager`, `ToolGate`, `memory` and
-`sqlitestate` packages. It is the first non-test importer of `sqlitestate`.
+sessions, a proposal outbox that only a human can release, and an append-only
+ledger. The channel is a simulated web page.
+
+Mail and calendar live in a simulated MCP server, the `mock-mcp` subcommand, which
+runs as a child process with its own `world.db`. The daemon reaches it only through
+the existing `go/mcp` stdio client:
+
+- a poller discovers new mail through a cursor;
+- worker tools wrap the MCP reads;
+- a single outbox executes approved proposals with one idempotency key per proposal.
+
+`launchd-plist` prints a macOS LaunchAgent for running the daemon on the owner's Mac.
+
+The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
+`mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.
 See [the demo README](assistant/README.md) and the
 [roadmap](../docs/PROACTIVE_AGENT_ROADMAP.md).

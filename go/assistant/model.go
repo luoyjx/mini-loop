@@ -1,11 +1,12 @@
 // Package assistant is a Go-only, opt-in demo of a proactive personal agent.
 //
 // It layers the six personal-agent parts on top of the existing Go session
-// manager: a long-running daemon with SQLite state (own computer), mock mail
-// and calendar connectors (integrations), owner-scoped memory, durable
-// routines and event triggers, a proposal outbox that only a human can release
-// (approval gates), and an append-only ledger (audit log). The channel is a
-// simulated local web page. Nothing here changes the defaults of cmd/miniloop.
+// manager: a long-running local daemon with SQLite state (own computer), mail
+// and calendar reached only through a simulated MCP server in a child process
+// (integrations), owner-scoped memory, durable routines and polled event
+// triggers, a proposal outbox that only a human can release (approval gates),
+// and an append-only ledger (audit log). The channel is a simulated local web
+// page. Nothing here changes the defaults of cmd/miniloop.
 package assistant
 
 import (
@@ -112,11 +113,14 @@ const (
 
 type ProposalStatus string
 
+// A proposal moves pending → approved (human decision, local) → sent or
+// failed (the outbox executed it through the connector), or pending → denied.
 const (
-	ProposalPending ProposalStatus = "pending"
-	ProposalSent    ProposalStatus = "sent"
-	ProposalDenied  ProposalStatus = "denied"
-	ProposalFailed  ProposalStatus = "failed"
+	ProposalPending  ProposalStatus = "pending"
+	ProposalApproved ProposalStatus = "approved"
+	ProposalSent     ProposalStatus = "sent"
+	ProposalDenied   ProposalStatus = "denied"
+	ProposalFailed   ProposalStatus = "failed"
 )
 
 type InviteResponse string
@@ -127,7 +131,8 @@ const (
 )
 
 // Proposal is a drafted external action. Creating one is a local write; only
-// a human decision on the channel releases its effect.
+// a human decision on the channel releases it to the outbox, which executes
+// it through the connector under the idempotency key "proposal-<id>".
 type Proposal struct {
 	ID        int64          `json:"id"`
 	Kind      ProposalKind   `json:"kind"`
@@ -145,6 +150,9 @@ type Proposal struct {
 	DecidedBy string         `json:"decided_by,omitempty"`
 	CreatedAt time.Time      `json:"created_at"`
 	DecidedAt *time.Time     `json:"decided_at,omitempty"`
+	Attempts  int            `json:"attempts,omitempty"`
+	Receipt   string         `json:"receipt,omitempty"`
+	LastError string         `json:"last_error,omitempty"`
 }
 
 type ChannelRole string
@@ -174,6 +182,7 @@ const (
 	LedgerProposal  LedgerKind = "proposal"
 	LedgerDecision  LedgerKind = "decision"
 	LedgerEffect    LedgerKind = "effect"
+	LedgerEffectErr LedgerKind = "effect_error"
 	LedgerChannel   LedgerKind = "channel"
 	LedgerRoutine   LedgerKind = "routine"
 	LedgerRecovery  LedgerKind = "recovery"
@@ -198,8 +207,8 @@ type LedgerEntry struct {
 
 type RoutineID string
 
-// Routine fires once per local day at Hour:Minute. A missed slot is caught up
-// once on start when the daemon was down at that time.
+// Routine fires once per local day at Hour:Minute. A slot missed earlier the
+// same day (daemon down or the Mac asleep) is caught up once.
 type Routine struct {
 	ID       RoutineID `json:"id"`
 	Name     string    `json:"name"`

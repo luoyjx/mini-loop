@@ -19,19 +19,30 @@ var indexHTML []byte
 
 const maxBody = 64 << 10
 
+// IntegrationView tells the page which MCP server backs mail and calendar
+// and whether it currently answers.
+type IntegrationView struct {
+	Server     string   `json:"server"`
+	Transport  string   `json:"transport"`
+	AgentTools []string `json:"agent_tools"`
+	DaemonOnly []string `json:"daemon_only"`
+	Error      string   `json:"error,omitempty"`
+}
+
 // StateView is everything the simulated channel page renders.
 type StateView struct {
-	Model     string           `json:"model"`
-	Now       time.Time        `json:"now"`
-	Channel   []ChannelMessage `json:"channel"`
-	Proposals []Proposal       `json:"proposals"`
-	Inbox     []Email          `json:"inbox"`
-	Sent      []Email          `json:"sent"`
-	Calendar  []CalendarEvent  `json:"calendar"`
-	Ledger    []LedgerEntry    `json:"ledger"`
-	Triggers  []Trigger        `json:"triggers"`
-	Routines  []Routine        `json:"routines"`
-	Presets   []PresetInfo     `json:"presets"`
+	Model       string           `json:"model"`
+	Now         time.Time        `json:"now"`
+	Integration IntegrationView  `json:"integration"`
+	Channel     []ChannelMessage `json:"channel"`
+	Proposals   []Proposal       `json:"proposals"`
+	Inbox       []Email          `json:"inbox"`
+	Sent        []Email          `json:"sent"`
+	Calendar    []CalendarEvent  `json:"calendar"`
+	Ledger      []LedgerEntry    `json:"ledger"`
+	Triggers    []Trigger        `json:"triggers"`
+	Routines    []Routine        `json:"routines"`
+	Presets     []PresetInfo     `json:"presets"`
 }
 
 type chatRequest struct {
@@ -44,6 +55,10 @@ type simulateRequest struct {
 
 type acceptedResponse struct {
 	TriggerID int64 `json:"trigger_id"`
+}
+
+type deliveredResponse struct {
+	MailID string `json:"mail_id"`
 }
 
 type errorResponse struct {
@@ -115,15 +130,15 @@ func decode[T any](r *http.Request) (T, error) {
 func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	now := app.now()
-	view := StateView{Model: app.ModelLabel, Now: now, Presets: Presets}
+	view := StateView{Model: app.ModelLabel, Now: now, Presets: Presets, Integration: IntegrationView{
+		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
+		AgentTools: []string{MCPMailList, MCPMailRead, MCPCalendarList, MCPCalendarGet},
+		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + "（模拟器）"},
+	}}
 	var err error
-	day := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	steps := []func() error{
 		func() error { view.Channel, err = app.Store.Channel(ctx, 200); return err },
 		func() error { view.Proposals, err = app.Store.Proposals(ctx, 50); return err },
-		func() error { view.Inbox, err = app.Store.ListMail(ctx, FolderInbox, 50); return err },
-		func() error { view.Sent, err = app.Store.ListMail(ctx, FolderSent, 50); return err },
-		func() error { view.Calendar, err = app.Store.Events(ctx, day, day.AddDate(0, 0, 7)); return err },
 		func() error { view.Ledger, err = app.Store.Ledger(ctx, 150); return err },
 		func() error { view.Triggers, err = app.Store.Triggers(ctx, 50); return err },
 		func() error { view.Routines, err = app.Store.Routines(ctx); return err },
@@ -133,6 +148,24 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 			writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
 			return
 		}
+	}
+	// The mailbox and calendar panes are read through MCP like everything
+	// else; a connector outage degrades them instead of failing the page.
+	view.Inbox, view.Sent, view.Calendar = []Email{}, []Email{}, []CalendarEvent{}
+	day := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	remote := []func() error{
+		func() error { view.Inbox, err = app.Connector.ListMail(ctx, FolderInbox, 50); return err },
+		func() error { view.Sent, err = app.Connector.ListMail(ctx, FolderSent, 50); return err },
+		func() error { view.Calendar, err = app.Connector.Events(ctx, day, day.AddDate(0, 0, 7)); return err },
+	}
+	for _, step := range remote {
+		if err := step(); err != nil {
+			view.Integration.Error = err.Error()
+			break
+		}
+	}
+	if view.Integration.Error == "" {
+		view.Integration.Error = app.Poller.LastError()
 	}
 	writeJSON(w, http.StatusOK, view)
 }
@@ -154,8 +187,8 @@ func (app *App) handleSimulate(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
 		return
 	}
-	id, err := app.Store.Deliver(r.Context(), request.Preset, app.now())
-	app.accepted(w, id, err)
+	delivered, err := app.Connector.DeliverPreset(r.Context(), request.Preset)
+	app.delivered(w, delivered, err)
 }
 
 func (app *App) handleCustom(w http.ResponseWriter, r *http.Request) {
@@ -164,8 +197,20 @@ func (app *App) handleCustom(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
 		return
 	}
-	id, err := app.Store.DeliverCustom(r.Context(), request, app.now())
-	app.accepted(w, id, err)
+	delivered, err := app.Connector.DeliverCustom(r.Context(), request)
+	app.delivered(w, delivered, err)
+}
+
+// delivered answers a simulator call. The mail is now in the external inbox;
+// the daemon finds it on the poll this wake-up triggers, not through this
+// request.
+func (app *App) delivered(w http.ResponseWriter, mail DeliveredMail, err error) {
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	app.Poller.Wake()
+	writeJSON(w, http.StatusAccepted, deliveredResponse{mail.ID})
 }
 
 func (app *App) handleRoutine(w http.ResponseWriter, r *http.Request) {
@@ -183,7 +228,8 @@ func (app *App) accepted(w http.ResponseWriter, id int64, err error) {
 }
 
 // handleDecision is the approval gate's human side: only this endpoint can
-// move a proposal out of pending, and approval applies the effect atomically.
+// move a proposal out of pending. Approval hands it to the outbox, which
+// executes it through MCP and reports the outcome on the channel.
 func (app *App) handleDecision(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
 	decision := r.PathValue("decision")
@@ -202,10 +248,10 @@ func (app *App) handleDecision(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
 		return
 	}
-	text := fmt.Sprintf("已取消提案 #%d，什么都没有发出。", proposal.ID)
 	if approve {
-		text = fmt.Sprintf("已按你的批准发出提案 #%d：%s → %s", proposal.ID, proposal.Subject, proposal.To)
+		app.Outbox.Wake()
+	} else {
+		_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已取消提案 #%d，什么都没有发出。", proposal.ID), TriggerID: proposal.TriggerID}, now)
 	}
-	_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: text, TriggerID: proposal.TriggerID}, now)
 	writeJSON(w, http.StatusOK, proposal)
 }

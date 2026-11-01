@@ -11,9 +11,10 @@ const slotLayout = "2006-01-02"
 
 // Scheduler turns routines into triggers. Each (routine, local day) slot is
 // claimed in SQLite together with its trigger, so a slot fires once across
-// ticks, restarts and concurrent daemons. Misfire policy: on start, a slot
-// whose time already passed today and was never claimed runs once as a
-// catch-up; earlier days are not back-filled.
+// ticks, restarts and concurrent daemons. Misfire policy: a slot whose time
+// already passed today and was never claimed runs once as a catch-up, whether
+// the daemon was stopped or the Mac was asleep; earlier days are not
+// back-filled.
 type Scheduler struct {
 	store  *Store
 	router *Router
@@ -36,7 +37,7 @@ func NewScheduler(store *Store, router *Router, now clock, tick time.Duration, l
 }
 
 func (s *Scheduler) Run(ctx context.Context) {
-	s.Due(ctx, true)
+	s.Due(ctx)
 	ticker := time.NewTicker(s.tick)
 	defer ticker.Stop()
 	for {
@@ -44,15 +45,15 @@ func (s *Scheduler) Run(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			s.Due(ctx, false)
+			s.Due(ctx)
 		}
 	}
 }
 
-// Due claims every routine whose slot time has passed today. startup marks a
-// claim made on the first pass as a catch-up when it is more than one tick
-// late.
-func (s *Scheduler) Due(ctx context.Context, startup bool) int {
+// Due claims every routine whose slot time has passed today. A claim more
+// than two ticks late is labelled a catch-up: the daemon was down or the
+// machine slept through the slot (tickers do not fire during sleep).
+func (s *Scheduler) Due(ctx context.Context) int {
 	routines, err := s.store.Routines(ctx)
 	if err != nil {
 		fmt.Fprintf(s.log, "assistant: routines: %v\n", err)
@@ -68,7 +69,7 @@ func (s *Scheduler) Due(ctx context.Context, startup bool) int {
 		if now.Before(at) {
 			continue
 		}
-		catchup := startup && now.Sub(at) > s.tick
+		catchup := now.Sub(at) > 2*s.tick
 		if _, claimed, err := s.store.ClaimRoutineSlot(ctx, routine, now.Format(slotLayout), catchup, now); err != nil {
 			fmt.Fprintf(s.log, "assistant: claim routine %s: %v\n", routine.ID, err)
 		} else if claimed {
