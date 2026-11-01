@@ -49,18 +49,24 @@ func startAppWith(t *testing.T, dir string, clock *fixedClock, wrap func(mcpCall
 	return launchApp(t, dir, clock, appOptions{wrap: wrap})
 }
 
-// appOptions overrides the test daemon's MCP caller, model or worker count.
+// appOptions overrides the test daemon's MCP caller, model, worker count or,
+// when clock is nil, its time source.
 type appOptions struct {
 	wrap     func(mcpCaller) mcpCaller
 	provider agent.Provider
 	workers  int
+	now      func() time.Time
 }
 
 func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) (*App, func()) {
 	t.Helper()
 	ctx := context.Background()
 	wrap := options.wrap
-	var provider agent.Provider = &ScriptedModel{Now: clock.Now}
+	now := options.now
+	if clock != nil {
+		now = clock.Now
+	}
+	var provider agent.Provider = &ScriptedModel{Now: now}
 	if options.provider != nil {
 		provider = options.provider
 	}
@@ -68,7 +74,7 @@ func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) 
 	if workers == 0 {
 		workers = 2
 	}
-	world, err := OpenWorld(ctx, filepath.Join(dir, "mock-mcp", "world.db"), clock.Now)
+	world, err := OpenWorld(ctx, filepath.Join(dir, "mock-mcp", "world.db"), now)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -80,7 +86,7 @@ func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) 
 	if wrap != nil {
 		caller = wrap(caller)
 	}
-	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: provider, Model: ScriptedModelID, Now: clock.Now, Workers: workers, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second})
+	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: provider, Model: ScriptedModelID, Now: now, Workers: workers, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second})
 	if err != nil {
 		t.Fatal(errors.Join(err, world.Close()))
 	}
@@ -187,18 +193,23 @@ func TestRulesKeepBulkMailAwayFromTheModel(t *testing.T) {
 		name    string
 		trigger Trigger
 		mail    *Email
+		known   bool
 		want    Verdict
+		grade   Grade
 	}{
-		{"newsletter", Trigger{Kind: TriggerEmail}, &Email{From: "a@b.example", Category: CategoryNewsletter}, VerdictIgnore},
-		{"noreply sender", Trigger{Kind: TriggerEmail}, &Email{From: "NoReply@shop.example", Category: CategoryPerson}, VerdictIgnore},
-		{"person", Trigger{Kind: TriggerEmail}, &Email{From: "bob@friends.example", Category: CategoryPerson}, VerdictCandidate},
-		{"missing mail", Trigger{Kind: TriggerEmail}, nil, VerdictIgnore},
-		{"invite", Trigger{Kind: TriggerInvite}, nil, VerdictCandidate},
-		{"chat", Trigger{Kind: TriggerChat}, nil, VerdictCandidate},
+		{"newsletter", Trigger{Kind: TriggerEmail}, &Email{From: "a@b.example", To: OwnerAddress, Category: CategoryNewsletter}, true, VerdictIgnore, ""},
+		{"noreply sender", Trigger{Kind: TriggerEmail}, &Email{From: "NoReply@shop.example", To: OwnerAddress, Category: CategoryPerson}, true, VerdictIgnore, ""},
+		{"known, addressed", Trigger{Kind: TriggerEmail}, &Email{From: "bob@friends.example", To: OwnerAddress, Category: CategoryPerson}, true, VerdictCandidate, GradeExplicit},
+		{"known, copied", Trigger{Kind: TriggerEmail}, &Email{From: ManagerAddress, To: TeamAddress, Cc: "Me@Acme.example", Category: CategoryPerson}, true, VerdictCandidate, GradeInferred},
+		{"stranger, addressed", Trigger{Kind: TriggerEmail}, &Email{From: "x@y.example", To: "other@acme.example, " + OwnerAddress, Category: CategoryPerson}, false, VerdictCandidate, GradeInferred},
+		{"stranger, copied", Trigger{Kind: TriggerEmail}, &Email{From: "x@y.example", To: TeamAddress, Cc: OwnerAddress, Category: CategoryPerson}, false, VerdictIgnore, ""},
+		{"missing mail", Trigger{Kind: TriggerEmail}, nil, true, VerdictIgnore, ""},
+		{"invite", Trigger{Kind: TriggerInvite}, nil, false, VerdictCandidate, GradeExplicit},
+		{"chat", Trigger{Kind: TriggerChat}, nil, false, VerdictCandidate, GradeExplicit},
 	}
 	for _, c := range cases {
-		if got := rules.Classify(c.trigger, c.mail).Verdict; got != c.want {
-			t.Errorf("%s: verdict %s, want %s", c.name, got, c.want)
+		if got := rules.Classify(c.trigger, c.mail, c.known); got.Verdict != c.want || got.Grade != c.grade {
+			t.Errorf("%s: verdict %s grade %q, want %s %q", c.name, got.Verdict, got.Grade, c.want, c.grade)
 		}
 	}
 }
@@ -207,6 +218,11 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	clock := newClock()
 	app, _ := startApp(t, t.TempDir(), clock)
 	ctx := context.Background()
+	// The phishing sender is a stranger, so its mail is an inferred
+	// candidate; auto mode lets the triage hand it to a worker.
+	if err := app.Store.SetCandidateMode(ctx, CandidateAuto, "test", clock.Now()); err != nil {
+		t.Fatal(err)
+	}
 	managerID := deliver(t, app, PresetManager)
 	inviteID := deliver(t, app, PresetInviteConflict)
 	newsletterID := deliver(t, app, PresetNewsletter)
@@ -266,6 +282,9 @@ func TestProactiveFlowDraftsButNeverSendsWithoutApproval(t *testing.T) {
 	sent, _ = app.Connector.ListMail(ctx, FolderSent, 10)
 	if len(sent) != 1 || sent[0].To != ManagerAddress {
 		t.Fatalf("exactly the approved mail is sent: %+v", sent)
+	}
+	if contacts, _ := app.Store.Contacts(ctx, 20); len(contacts) == 0 || contacts[0].Address != ManagerAddress || contacts[0].Interactions != 1 || contacts[0].LastAt == nil {
+		t.Fatalf("the send counts as an interaction with the manager: %+v", contacts)
 	}
 	event, _, _ := app.Connector.Event(ctx, invite[0].EventID)
 	if event.Status != EventInvited {

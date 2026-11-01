@@ -29,6 +29,8 @@ const (
 	ToolTaskComplete   protocol.ToolName = "task_complete"
 	ToolTaskList       protocol.ToolName = "task_list"
 	ToolReport         protocol.ToolName = "report"
+	ToolPrepareStart   protocol.ToolName = "prepare_start"
+	ToolPrepareStop    protocol.ToolName = "prepare_stop"
 	maxListedMail                        = 30
 	maxPreviewRunes                      = 80
 	maxDraftRunes                        = 4000
@@ -180,6 +182,25 @@ type taskListInput struct{}
 
 func (taskListInput) Validate() error { return nil }
 
+type prepareStartInput struct {
+	Goal string `json:"goal"`
+}
+
+func (input prepareStartInput) Validate() error {
+	return validText("goal", input.Goal, maxJobGoal, true)
+}
+
+type prepareStopInput struct {
+	JobID int64 `json:"job_id"`
+}
+
+func (input prepareStopInput) Validate() error {
+	if input.JobID <= 0 {
+		return errors.New("job_id is required")
+	}
+	return nil
+}
+
 // jsonCodec decodes the model observation into one named input type.
 type jsonCodec[T agent.ExtensionInput] struct{}
 
@@ -220,6 +241,7 @@ type mailDetail struct {
 	From       string       `json:"from"`
 	FromName   string       `json:"from_name"`
 	To         string       `json:"to"`
+	Cc         string       `json:"cc,omitempty"`
 	Subject    string       `json:"subject"`
 	Category   MailCategory `json:"category"`
 	EventID    string       `json:"event_id,omitempty"`
@@ -301,7 +323,7 @@ func (tool mailReadTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolA
 	if !ok {
 		return "", fmt.Errorf("mail %q not found", input.ID)
 	}
-	return encode(mailDetail{ID: mail.ID, Thread: mail.Thread, From: mail.From, FromName: mail.FromName, To: mail.To, Subject: mail.Subject, Category: mail.Category, EventID: mail.EventID, ReceivedAt: mail.ReceivedAt.Format(time.RFC3339), Notice: untrustedNotice, Body: mail.Body})
+	return encode(mailDetail{ID: mail.ID, Thread: mail.Thread, From: mail.From, FromName: mail.FromName, To: mail.To, Cc: mail.Cc, Subject: mail.Subject, Category: mail.Category, EventID: mail.EventID, ReceivedAt: mail.ReceivedAt.Format(time.RFC3339), Notice: untrustedNotice, Body: mail.Body})
 }
 
 type calendarListTool struct {
@@ -475,6 +497,67 @@ func (tool taskListTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolA
 	return encode(result)
 }
 
+// toolHost is what the tools need from the router: the session's current
+// trigger, the turn's report, and the preparation runner.
+type toolHost interface {
+	reportSink
+	wakeJobs()
+	stopJob(int64)
+}
+
+// Preparation tools. prepare_start queues speculative work in the background:
+// a read-only session gathers material and its result comes back to this
+// thread as a job.done trigger. prepare_stop cancels a job on this thread.
+type prepareStartTool struct {
+	store *Store
+	host  toolHost
+	now   clock
+}
+
+func (tool prepareStartTool) ExecuteExtensionTool(ctx context.Context, authority agent.ToolAuthority, input prepareStartInput) (string, error) {
+	bound, ok := tool.host.binding(authority.SessionID)
+	if !ok {
+		return "", errors.New("no active trigger for this session")
+	}
+	job, created, err := tool.store.CreateJob(ctx, Job{Thread: bound.Thread, SessionID: string(authority.SessionID), TriggerID: bound.TriggerID, Goal: strings.TrimSpace(input.Goal)}, tool.now())
+	if err != nil {
+		return "", err
+	}
+	if !created {
+		return fmt.Sprintf("准备任务 #%d 已存在（状态 %s），没有重复创建。", job.ID, job.Status), nil
+	}
+	tool.host.wakeJobs()
+	return fmt.Sprintf("已开始准备任务 #%d：只读会话在后台收集材料，完成后结果会以 job.done 回到这个 thread。", job.ID), nil
+}
+
+type prepareStopTool struct {
+	store *Store
+	host  toolHost
+	now   clock
+}
+
+func (tool prepareStopTool) ExecuteExtensionTool(ctx context.Context, authority agent.ToolAuthority, input prepareStopInput) (string, error) {
+	bound, ok := tool.host.binding(authority.SessionID)
+	if !ok {
+		return "", errors.New("no active trigger for this session")
+	}
+	job, found, err := tool.store.Job(ctx, input.JobID)
+	if err != nil {
+		return "", err
+	}
+	if !found {
+		return "", fmt.Errorf("job #%d not found", input.JobID)
+	}
+	if job.Thread != bound.Thread && authority.RunContext.Authority() != agent.AuthorityExplicitHuman {
+		return "", fmt.Errorf("job #%d belongs to thread %s; this turn may only stop jobs on thread %s", job.ID, job.Thread, bound.Thread)
+	}
+	if _, err := tool.store.CancelJob(ctx, job.ID, "worker", tool.now()); err != nil {
+		return "", err
+	}
+	tool.host.stopJob(job.ID)
+	return fmt.Sprintf("准备任务 #%d 已取消。", job.ID), nil
+}
+
 func proposalReceipt(p Proposal, created bool) string {
 	if !created {
 		return fmt.Sprintf("提案 #%d 已存在（状态 %s），没有重复创建。", p.ID, p.Status)
@@ -511,11 +594,15 @@ var toolSpecs = []toolSpec{
 		`{"type":"object","properties":{}}`},
 	{ToolReport, "汇报本回合的结果，回合结束前调用一次。notify：把结论发到信道（不超过 100 字）；ask：向用户提一个只有用户能回答的具体问题，回答会回到这个 thread；quiet：不打扰用户，reason 只写进账本。由 router 在回合结束后执行，worker 自己不能写信道。",
 		`{"type":"object","properties":{"outcome":{"type":"string","enum":["notify","ask","quiet"]},"message":{"type":"string","maxLength":400,"description":"notify 的结论；ask 时可选的一句背景"},"question":{"type":"string","maxLength":200,"description":"ask 的问题，只问一个"},"reason":{"type":"string","maxLength":200,"description":"quiet 的原因，只写进账本"}},"required":["outcome"]}`},
+	{ToolPrepareStart, "在后台提前准备材料（例如收到账单先核对金额、收到待办先收集相关邮件和日程）：一个只有只读工具的会话去做，完成后结果以 job.done 回到这个 thread，由你决定要不要告诉用户。",
+		`{"type":"object","properties":{"goal":{"type":"string","maxLength":200,"description":"要准备什么，例如：核对 11 月账单，和以前的同类账单比金额"}},"required":["goal"]}`},
+	{ToolPrepareStop, "取消这个 thread 上还没完成的准备任务。",
+		`{"type":"object","properties":{"job_id":{"type":"integer"}},"required":["job_id"]}`},
 }
 
 // NewToolCatalog builds the assistant's only tools. Supplying a catalogue to
 // the manager replaces the built-in Bash/file tools, so workers have no shell.
-func NewToolCatalog(store *Store, connector *Connector, bindings reportSink, now clock) (*agent.ToolCatalog, error) {
+func NewToolCatalog(store *Store, connector *Connector, bindings toolHost, now clock) (*agent.ToolCatalog, error) {
 	definitions := make([]agent.ToolDefinition, 0, len(toolSpecs))
 	tasks := taskTool{store, bindings, now}
 	for _, spec := range toolSpecs {
@@ -547,6 +634,10 @@ func NewToolCatalog(store *Store, connector *Connector, bindings reportSink, now
 			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[taskListInput]{}, taskListTool{tasks})
 		case ToolReport:
 			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[reportInput]{}, reportTool{bindings})
+		case ToolPrepareStart:
+			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[prepareStartInput]{}, prepareStartTool{store, bindings, now})
+		case ToolPrepareStop:
+			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[prepareStopInput]{}, prepareStopTool{store, bindings, now})
 		default:
 			err = fmt.Errorf("unknown tool %s", spec.name)
 		}
@@ -563,7 +654,7 @@ func ToolRisk(name protocol.ToolName) string {
 	switch name {
 	case ToolMailList, ToolMailRead, ToolCalendarList, ToolTaskList, protocol.ToolRecall:
 		return string(agent.RiskRead)
-	case ToolProposeEmail, ToolProposeInvite, ToolTaskCreate, ToolTaskSchedule, ToolTaskComplete, ToolReport, protocol.ToolRemember:
+	case ToolProposeEmail, ToolProposeInvite, ToolTaskCreate, ToolTaskSchedule, ToolTaskComplete, ToolReport, ToolPrepareStart, ToolPrepareStop, protocol.ToolRemember:
 		return string(agent.RiskWrite)
 	default:
 		return string(agent.RiskUnclassified)

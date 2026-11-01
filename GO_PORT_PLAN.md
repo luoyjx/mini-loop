@@ -22805,3 +22805,60 @@ fixture or exported contract changes. No package outside the demo changes; the
 - an LLM router, admission grading, speculative preparation or a Watchdog;
 - long-term memory beyond the existing `remember` and `recall` tools;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: admission grading, triage, background preparation, watchdog (2026-11-01)
+
+Code baseline: `a3bcbe5` plus changes to `go/assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. No package outside the demo changes. The
+watchdog calls the existing public `agent.NewStuckDetector`, and the preparation
+session uses the existing `agent.SelectTools`.
+
+**Go evidence:**
+
+- `Rules.Classify(trigger, mail, known)` grades mail. A known contact writing to the
+  user is explicit, a known contact copying the user or a stranger writing to the
+  user is inferred, and a stranger copying the user is ignored. The `contacts`
+  table is seeded once under its own meta key. `CompleteProposal` records an
+  interaction with each recipient it sends to. `world.db` gains a `cc` column.
+- `Triage.Grade` is one `PurposeDecision` model call without tools for inferred
+  candidates. `handle` runs the worker only in auto mode; observe mode, the default
+  stored in meta `candidate_mode`, settles the trigger as `observed`.
+  `observe`, `ignore` and a failed triage also settle it without a worker turn.
+  `Store.DecideCandidate` hands an observed trigger over as admitted, so the router
+  skips the triage, or ignores it.
+- `prepare_start` and `prepare_stop` are local write tools. `Store.CreateJob`
+  deduplicates per trigger and goal and caps open jobs at five. The `Preparer` runs
+  one job at a time in a fresh session with `agent.SelectTools` of four read tools,
+  untrusted, for at most two minutes. `Store.FinishJob` enqueues a `job.done`
+  trigger on the starting thread in the same transaction; a cancelled job wakes
+  nobody. `RequeueJobs` runs at start, and the Preparer claims nothing while paused.
+- After each successful `task.wakeup` turn the router snapshots the task into
+  `task_checks`. `Store.Watchdog` runs after each scheduler tick and feeds the
+  snapshots to the stuck detector (three repeats or six alternations). A flag is
+  raised once per streak, with a ledger row, a channel line and the `no_progress`
+  attention kind; it clears on progress.
+- `RouterStats` counts turns, batches, merges, rule and triage decisions in memory.
+- Tests cover:
+  - grading of known and stranger senders, addressed and copied;
+  - observe mode, hand-over and ignore over HTTP, conflicts and unknown candidates,
+    switching to auto, and the state view;
+  - a failed triage recording the candidate;
+  - a bill starting a read-only preparation job whose `job.done` result reaches
+    the channel;
+  - stopping, deduplicating, capping and requeueing jobs across a restart;
+  - the watchdog flagging once per streak, dismissal, clearing on progress and
+    closed tasks;
+  - seeded and learned contacts;
+  - a 300-event synthetic stream reporting latency, router decisions and the quiet
+    rate.
+
+**Not claimed:**
+
+- triage quality with a real model; the scripted triage is keyword rules;
+- background preparation through `go/background` shell jobs, or preparation that
+  drafts;
+- durable router counters;
+- long-term memory beyond the existing `remember` and `recall` tools;
+- a real channel, real MCP servers or a Python counterpart.

@@ -83,6 +83,12 @@ func (m *ScriptedModel) Complete(ctx context.Context, request protocol.ModelRequ
 	}
 	n := m.calls.Add(1)
 	reply := protocol.ModelReply{ID: fmt.Sprintf("msg_scripted_%d", n), Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: ScriptedModelID}
+	if request.Purpose == protocol.PurposeDecision && len(request.Messages) > 0 {
+		if text, ok := messageText(request.Messages[len(request.Messages)-1]); ok && strings.HasPrefix(text, triageHeaderStart) {
+			reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock(scriptedTriage(text))}, protocol.StopEndTurn
+			return reply, nil
+		}
+	}
 	if request.Purpose != "" && request.Purpose != protocol.PurposeAgentTurn {
 		reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock("（离线脚本模型：此请求只返回占位摘要）")}, protocol.StopEndTurn
 		return reply, nil
@@ -199,10 +205,38 @@ func (m *ScriptedModel) now() time.Time {
 
 func (m *ScriptedModel) plan(turn scriptedTurn) plan {
 	next := m.planKind(turn)
-	if turn.kind == TriggerChat || len(next.calls) > 0 {
+	if turn.kind == TriggerChat || turn.kind == jobPromptKind || len(next.calls) > 0 {
 		return next
 	}
 	return reportPlan(turn, next)
+}
+
+var promoWords = []string{"合作", "推广", "优惠", "促销", "广告", "unsubscribe"}
+
+// scriptedTriage grades an inferred candidate: suspicious instructions are
+// worth a warning, promotion is ignored, a copy from a known contact and
+// anything else unclear is recorded.
+func scriptedTriage(text string) string {
+	lower := strings.ToLower(text)
+	answer := triageAnswer{Verdict: TriageObserve, Reason: "可能相关但不急，先记录"}
+	switch {
+	case containsAny(lower, suspiciousWords):
+		answer = triageAnswer{Verdict: TriageHandle, Reason: "含可疑指令，值得提醒用户"}
+	case containsAny(lower, promoWords):
+		answer = triageAnswer{Verdict: TriageIgnore, Reason: "推广或合作邀约，与用户无关"}
+	case strings.Contains(text, "抄送你"):
+		answer = triageAnswer{Verdict: TriageObserve, Reason: "用户只在抄送里，先记录"}
+	}
+	return jsonInput(answer)
+}
+
+func containsAny(text string, words []string) bool {
+	for _, word := range words {
+		if strings.Contains(text, strings.ToLower(word)) {
+			return true
+		}
+	}
+	return false
 }
 
 // reportPlan turns a background turn's conclusion into one report call, then
@@ -237,6 +271,10 @@ func (m *ScriptedModel) planKind(turn scriptedTurn) plan {
 		return m.planUpcoming(turn)
 	case TriggerAnswer:
 		return planAnswer(turn)
+	case jobPromptKind:
+		return planPrepare(turn)
+	case TriggerJobDone:
+		return planJobDone(turn)
 	}
 	return plan{final: "（离线脚本模型不认识这个触发器）"}
 }
@@ -273,11 +311,22 @@ func planEmail(turn scriptedTurn) plan {
 	}
 	manager := strings.Contains(strings.ToLower(recalled), strings.ToLower(mail.From))
 	content := strings.ToLower(mail.Subject + " " + mail.Body)
+	if !addressed(mail.To, OwnerAddress) {
+		return plan{quiet: true, final: fmt.Sprintf("你只在抄送里（%s：%s），不打扰，记入晨报。", mail.FromName, mail.Subject)}
+	}
 	if !manager {
 		for _, word := range suspiciousWords {
 			if strings.Contains(content, strings.ToLower(word)) {
 				return plan{final: fmt.Sprintf("⚠️ 可疑邮件：%s <%s> 要求「%s」，含「%s」类指令。我没有执行，也没起草回复，建议忽略或上报。", mail.FromName, mail.From, mail.Subject, word)}
 			}
+		}
+		if strings.Contains(mail.Subject, "账单") {
+			// Speculative preparation: check the bill in the background
+			// and stay quiet until the result is in.
+			if started, done := turn.last(ToolPrepareStart); done {
+				return plan{quiet: true, final: fmt.Sprintf("收到账单「%s」，%s，核对完再汇报。", mail.Subject, jobSentence(started))}
+			}
+			return plan{calls: []plannedCall{{ToolPrepareStart, jsonInput(prepareStartInput{Goal: truncateRunes("核对账单「"+mail.Subject+"」：和以前的同类账单比金额", maxJobGoal)})}}}
 		}
 		if strings.Contains(mail.Body, "还是") && strings.ContainsAny(mail.Body, "？?") {
 			return plan{final: fmt.Sprintf("%s 来信「%s」，要你拿主意。", mail.FromName, mail.Subject), ask: fmt.Sprintf("%s 问：%s 你怎么定？", mail.FromName, truncateRunes(mail.Body, 80))}
@@ -321,7 +370,79 @@ func planEmail(turn scriptedTurn) plan {
 	return plan{calls: calls}
 }
 
-var answerPattern = regexp.MustCompile(`(?m)^回答：(.*)$`)
+var (
+	answerPattern   = regexp.MustCompile(`(?m)^回答：(.*)$`)
+	amountPattern   = regexp.MustCompile(`[¥￥]\s*([\d,]+(?:\.\d+)?)`)
+	jobNumber       = regexp.MustCompile(`准备任务 #(\d+)`)
+	preparedPattern = regexp.MustCompile(`(?s)<prepared>\n(.*?)\n</prepared>`)
+)
+
+func jobSentence(receipt string) string {
+	if match := jobNumber.FindStringSubmatch(receipt); match != nil {
+		return "已在后台核对（准备任务 #" + match[1] + "）"
+	}
+	return "已在后台核对"
+}
+
+func amount(text string) (float64, bool) {
+	match := amountPattern.FindStringSubmatch(text)
+	if match == nil {
+		return 0, false
+	}
+	var value float64
+	_, err := fmt.Sscan(strings.ReplaceAll(match[1], ",", ""), &value)
+	return value, err == nil
+}
+
+// planPrepare is a preparation session: it compares the newest bill in the
+// inbox with the one before it.
+func planPrepare(turn scriptedTurn) plan {
+	inbox, haveInbox := turn.last(ToolMailList)
+	if !haveInbox {
+		return plan{calls: []plannedCall{{ToolMailList, `{"folder":"inbox","limit":30}`}}}
+	}
+	var mails []mailSummary
+	_ = json.Unmarshal([]byte(inbox), &mails)
+	type bill struct {
+		mail  mailSummary
+		value float64
+	}
+	bills := []bill{}
+	for _, mail := range mails {
+		if value, ok := amount(mail.Subject); ok && strings.Contains(mail.Subject, "账单") {
+			bills = append(bills, bill{mail, value})
+		}
+	}
+	switch len(bills) {
+	case 0:
+		return plan{final: "收件箱里没有找到带金额的账单。"}
+	case 1:
+		return plan{final: fmt.Sprintf("只找到本期「%s」（%s），没有可对比的上一期。", bills[0].mail.Subject, bills[0].mail.ID)}
+	}
+	current, previous := bills[0], bills[1]
+	diff := current.value - previous.value
+	trend := "多"
+	if diff < 0 {
+		trend = "少"
+	}
+	return plan{final: fmt.Sprintf("本期「%s」（%s）；上一期「%s」（%s）；比上一期%s ¥%.0f（%+.1f%%）。", current.mail.Subject, current.mail.ID, previous.mail.Subject, previous.mail.ID, trend, abs(diff), diff/previous.value*100)}
+}
+
+func abs(value float64) float64 {
+	if value < 0 {
+		return -value
+	}
+	return value
+}
+
+// planJobDone passes a preparation result on to the user.
+func planJobDone(turn scriptedTurn) plan {
+	prepared := "准备任务没有产出。"
+	if match := preparedPattern.FindStringSubmatch(turn.text); match != nil {
+		prepared = strings.TrimSpace(match[1])
+	}
+	return plan{final: "后台核对完成：" + prepared}
+}
 
 // planAnswer drafts a reply to the thread's newest inbox mail with the user's
 // answer.
@@ -552,7 +673,7 @@ func (m *ScriptedModel) planTaskWakeup(turn scriptedTurn) plan {
 		call = plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: id, InMinutes: 30, Note: "回复发送失败，等用户处理"})}
 		final = fmt.Sprintf("⚠️ 任务 #%d：回复没能发出，30 分钟后我再看一次。", id)
 	default:
-		call = plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: id, InMinutes: 30, Note: fmt.Sprintf("第 %d 次检查：回复还没发出", task.Checks)})}
+		call = plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: id, InMinutes: 30, Note: "回复还没发出，草稿等用户批准"})}
 		final = fmt.Sprintf("⏳ 任务 #%d「%s」还没完成：回复还没发出，草稿在信道里等你批准。30 分钟后再看。", id, task.Title)
 	}
 	if _, done := turn.last(call.name); done {

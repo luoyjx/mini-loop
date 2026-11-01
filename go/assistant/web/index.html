@@ -45,6 +45,14 @@ main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px
 .chip.problem, .chip.send_failed, .chip.trigger_failed { background: var(--bad-soft); color: var(--bad); }
 .chip.approval, .chip.task_handoff { background: var(--warn-soft); color: var(--warn); }
 .chip.question { background: var(--accent-soft); color: var(--accent); }
+.chip.no_progress, .chip.observed { background: var(--warn-soft); color: var(--warn); }
+.chip.queued { background: var(--accent-soft); color: var(--accent); }
+.mode { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mode button { border: none; border-radius: 0; padding: 5px 12px; }
+.mode button.on { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.stats { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
+.stats span { font-size: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; color: var(--muted); }
+.stats b { color: var(--ink); font-weight: 600; }
 .need form.answer { display: flex; gap: 6px; }
 .need form.answer input { width: 12em; padding: 3px 8px; font-size: 12px; }
 section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; min-height: 0; min-width: 0; }
@@ -71,7 +79,7 @@ button { font: inherit; border: 1px solid var(--line); background: var(--panel);
 button:hover { border-color: var(--accent); }
 button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .5; cursor: default; }
-.chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+.chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
 .chip.pending { background: var(--warn-soft); color: var(--warn); }
 .chip.sent, .chip.done, .chip.confirmed { background: var(--ok-soft); color: var(--ok); }
 .chip.denied, .chip.ignored, .chip.quiet, .chip.declined { background: var(--bubble); color: var(--muted); }
@@ -152,6 +160,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
     <nav class="tabs" id="tabs">
       <button data-pane="world" class="active">外部世界</button>
       <button data-pane="tasks" id="tasks-tab">任务</button>
+      <button data-pane="candidates" id="candidates-tab">候选</button>
       <button data-pane="mail">邮箱</button>
       <button data-pane="calendar">日历</button>
       <button data-pane="triggers">触发器</button>
@@ -167,18 +176,29 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
         <div class="row"><input name="from" placeholder="发件地址，如 dave@acme.example" required><input name="from_name" placeholder="发件人名字"></div>
         <input name="subject" placeholder="主题" required style="margin-bottom:8px">
         <textarea name="body" placeholder="正文"></textarea>
-        <div class="actions"><label class="hint"><input type="checkbox" name="bulk" style="width:auto"> 批量邮件（newsletter）</label><button class="primary" type="submit" style="margin-left:auto">投递</button></div>
+        <div class="actions"><label class="hint"><input type="checkbox" name="bulk" style="width:auto"> 批量邮件（newsletter）</label><label class="hint"><input type="checkbox" name="cc" style="width:auto"> 我在抄送里</label><button class="primary" type="submit" style="margin-left:auto">投递</button></div>
       </form>
       <h3>外部世界改动日历</h3>
       <p class="hint">调用 sim_add_event 在日历里加一个已确认的会。scheduler 每轮经 MCP calendar_list 查看，开始前 15 分钟内提醒一次。</p>
       <div class="grid"><button id="book-event">日历：12 分钟后有会（客户方案电话会）</button></div>
       <h3>Routines</h3>
       <div id="routines"></div>
+      <h3>联系人</h3>
+      <p class="hint">准入分级读这张表：已知联系人直接写给你是明确请求；已知联系人抄送你、或陌生人直接写给你是推断候选，先过分诊；陌生人抄送你只归档。你批准发出的邮件会把收件人记成联系人。</p>
+      <div id="contacts"></div>
       <h3>MCP 工具</h3>
       <div id="tools" class="hint"></div>
-      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。「暂停处理」也会在重启后保持，直到你恢复；同一个数据目录只能有一个守护进程。</p>
+      <p class="hint">关掉进程再启动：未完成的触发器和后台准备任务会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。「暂停处理」也会在重启后保持，直到你恢复；同一个数据目录只能有一个守护进程。</p>
     </div>
-    <div class="pane" id="pane-tasks"><p class="hint">worker 用 task_create 建任务并约定检查时间；到点后 scheduler 把同一 thread 的 worker 叫醒核对进展。每个任务最多自动检查 6 次，之后交给你。</p><div id="tasks"></div></div>
+    <div class="pane" id="pane-tasks"><p class="hint">worker 用 task_create 建任务并约定检查时间；到点后 scheduler 把同一 thread 的 worker 叫醒核对进展。每个任务最多自动检查 6 次，之后交给你；连续 3 次检查要核对的内容和进展都没变，看门狗会提前把它列进「需要你处理」。</p><div id="tasks"></div>
+      <h3>后台准备任务</h3>
+      <p class="hint">worker 用 prepare_start 在后台开一个只读会话提前准备材料（一次跑一个，最多排 5 个），结果以 job.done 回到原来的 thread，由那里的 worker 决定要不要告诉你。</p>
+      <div id="jobs"></div></div>
+    <div class="pane" id="pane-candidates">
+      <p class="hint">规则先分级：明确请求直接派工；推断候选（已知联系人抄送你、陌生人直接写给你）先过一次不带工具的分诊模型。观察模式下分诊建议处理的也只记录在这里，由你交给 worker 或忽略；自动模式下直接派工。分诊失败时一律只记录。</p>
+      <div class="actions"><span class="hint">推断候选</span><div class="mode" id="mode"></div></div>
+      <div class="stats" id="stats"></div>
+      <div id="candidates"></div></div>
     <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准、发件箱经 MCP 发出的提案）</h3><div id="sent"></div></div>
     <div class="pane" id="pane-calendar"><div id="calendar"></div></div>
     <div class="pane" id="pane-triggers"><p class="hint">同一 thread 在 worker 忙时积压的事件会合并成一回合处理，「决定」一栏写着并入了哪个触发器。</p><div id="triggers"></div></div>
@@ -207,7 +227,9 @@ const short = (s) => (s ? String(s).slice(0, 10) : "");
 const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
 const statusLabel = { pending: "待批准", approved: "已批准 · 发件箱执行中", sent: "已发出", denied: "已拒绝", failed: "发送失败" };
 const taskLabel = { active: "进行中", done: "已完成", cancelled: "已取消", stalled: "转交给你" };
-const needLabel = { approval: "待批准", question: "等你回答", send_failed: "没发出去", task_handoff: "转交给你", trigger_failed: "处理失败", problem: "系统问题" };
+const needLabel = { approval: "待批准", question: "等你回答", send_failed: "没发出去", task_handoff: "转交给你", trigger_failed: "处理失败", no_progress: "可能卡住", problem: "系统问题" };
+const jobLabel = { queued: "排队中", running: "准备中", done: "已完成", failed: "失败", cancelled: "已取消" };
+const statLabel = [["turns", "worker 回合"], ["batched_turns", "合并回合"], ["merged_triggers", "被合并"], ["rules_ignored", "规则忽略"], ["explicit", "明确请求"], ["triaged", "分诊"], ["triage_handle", "建议处理"], ["triage_observe", "只记录"], ["triage_ignore", "分诊忽略"], ["triage_failed", "分诊失败"], ["observed", "进候选"]];
 
 function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
@@ -299,6 +321,9 @@ function needActions(item) {
       el("button", { class: "primary", onclick: () => taskAction(id, "resume") }, "再跟进一轮"), dismiss];
     case "trigger_failed": return [
       el("button", { class: "primary", onclick: () => act("/api/triggers/" + id + "/retry", "已重新排队") }, "重新处理"), dismiss];
+    case "no_progress": return [
+      el("button", { class: "primary", onclick: () => taskAction(id, "wake") }, "立即检查"),
+      el("button", { onclick: () => taskAction(id, "cancel") }, "取消任务"), dismiss];
     default: return [];
   }
 }
@@ -345,7 +370,7 @@ function mailList(items) {
   if (!items.length) return el("div", { class: "empty" }, "空");
   return items.map((m) => el("div", { class: "list-item" },
     el("div", {}, el("b", {}, m.subject), " ", m.category !== "person" ? el("span", { class: "chip quiet" }, m.category) : null),
-    el("div", { class: "sub" }, (m.folder === "sent" ? "→ " + m.to : m.from_name + " <" + m.from + ">") + " · " + dateTime(m.received_at) + " · thread " + m.thread),
+    el("div", { class: "sub" }, (m.folder === "sent" ? "→ " + m.to : m.from_name + " <" + m.from + ">" + (m.cc ? " · 抄送 " + m.cc : "")) + " · " + dateTime(m.received_at) + " · thread " + m.thread),
     el("div", { class: "sub" }, m.body.slice(0, 120))));
 }
 
@@ -359,6 +384,7 @@ function render() {
   const activeTasks = state.tasks.filter((task) => task.status === "active").length;
   $("tasks-tab").textContent = activeTasks ? "任务（" + activeTasks + "）" : "任务";
   $("tasks").replaceChildren(...(state.tasks.length ? state.tasks.map(taskCard) : [el("div", { class: "empty" }, "还没有任务。试试：经理来信，或在信道里说「1 分钟后提醒我 喝水」。")]));
+  renderAdmission();
   $("integration-error").hidden = !integration.error;
   $("integration-error").textContent = integration.error ? "MCP 连接异常：" + integration.error : "";
   $("tools").replaceChildren(
@@ -393,6 +419,42 @@ function render() {
       el("td", {}, e.detail))))));
 }
 
+function jobCard(job) {
+  const open = job.status === "queued" || job.status === "running";
+  return el("div", { class: "task " + (job.status === "done" ? "done" : open ? "active" : "cancelled") },
+    el("div", {}, el("span", { class: "title" }, "准备 #" + job.id + " · " + job.goal), " ", el("span", { class: "chip " + job.status }, jobLabel[job.status] || job.status)),
+    job.result ? el("div", { class: "sub" }, "结果：" + job.result) : null,
+    el("div", { class: "sub" }, "thread " + job.thread + " · 由触发器 #" + job.trigger_id + " 的 worker " + short(job.session_id) + " 发起 · " + dateTime(job.created_at)),
+    open ? el("div", { class: "actions" }, el("button", { onclick: () => act("/api/jobs/" + job.id + "/stop", "已停止准备任务") }, "停止")) : null);
+}
+
+// renderAdmission draws the candidate mode, router counters, observed
+// candidates, preparation jobs and contacts.
+function renderAdmission() {
+  const candidates = state.candidates || [], mode = state.candidate_mode;
+  $("candidates-tab").textContent = candidates.length ? "候选（" + candidates.length + "）" : "候选";
+  $("mode").replaceChildren(...[["observe", "观察"], ["auto", "自动"]].map(([value, label]) =>
+    el("button", { class: mode === value ? "on" : "", "aria-pressed": mode === value ? "true" : "false",
+      onclick: () => mode === value ? null : post("/api/candidates/mode", { mode: value }).then(() => { toast("推断候选：" + label + "模式"); refresh(); }).catch((e) => toast(e.message)) }, label)));
+  const stats = state.router || {};
+  $("stats").replaceChildren(el("span", {}, "本次启动以来"), ...statLabel.map(([key, label]) => el("span", {}, label + " ", el("b", {}, stats[key] || 0))));
+  $("candidates").replaceChildren(...(candidates.length ? candidates.map((t) => el("div", { class: "list-item" },
+    el("div", {}, el("b", {}, t.summary.slice(0, 80)), " ", el("span", { class: "chip observed" }, "触发器 #" + t.id)),
+    el("div", { class: "sub" }, t.decision + " · " + dateTime(t.updated_at) + " · thread " + t.thread),
+    el("div", { class: "actions" },
+      el("button", { class: "primary", onclick: () => act("/api/candidates/" + t.id + "/handle", "已交给 worker（跳过分诊）") }, "交给 worker"),
+      el("button", { onclick: () => act("/api/candidates/" + t.id + "/ignore", "已忽略") }, "忽略"))))
+    : [el("div", { class: "empty" }, "没有候选。试试：经理群发（你在抄送里），或 IT 钓鱼邮件。")]));
+  const jobs = state.jobs || [];
+  $("jobs").replaceChildren(...(jobs.length ? jobs.map(jobCard) : [el("div", { class: "empty" }, "还没有后台准备任务。试试：供应商账单。")]));
+  const contacts = state.contacts || [];
+  $("contacts").replaceChildren(contacts.length ? el("table", {},
+    el("thead", {}, el("tr", {}, ["地址", "名字", "关系", "来源", "往来"].map((h) => el("th", {}, h)))),
+    el("tbody", {}, contacts.map((c) => el("tr", {},
+      el("td", { class: "mono" }, c.address), el("td", {}, c.name), el("td", {}, c.relation),
+      el("td", {}, c.source === "seed" ? "预置" : "发件箱学到"), el("td", {}, c.interactions + (c.last_at ? " · " + dateTime(c.last_at) : "")))))) : el("div", { class: "empty" }, "没有联系人"));
+}
+
 async function taskAction(id, action) {
   const done = { wake: "已安排立即检查", cancel: "已取消任务", resume: "已恢复跟进，马上检查" }[action];
   try { await post("/api/tasks/" + id + "/" + action); toast(done); refresh(); }
@@ -415,7 +477,7 @@ $("custom").addEventListener("submit", async (event) => {
   event.preventDefault();
   const form = new FormData(event.target);
   try {
-    await post("/api/simulate/custom", { from: form.get("from"), from_name: form.get("from_name"), subject: form.get("subject"), body: form.get("body"), bulk: form.get("bulk") === "on" });
+    await post("/api/simulate/custom", { from: form.get("from"), from_name: form.get("from_name"), subject: form.get("subject"), body: form.get("body"), bulk: form.get("bulk") === "on", cc: form.get("cc") === "on" });
     event.target.reset(); toast("已投递自定义来信"); refresh();
   } catch (e) { toast(e.message); }
 });

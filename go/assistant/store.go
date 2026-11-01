@@ -18,9 +18,11 @@ import (
 )
 
 // Store is the daemon's durable state: the trigger queue with its mail-poll
-// cursor, thread subscriptions, durable tasks and event reminders, the
+// cursor, thread subscriptions, durable tasks with their check history and
+// watchdog flags, event reminders, preparation jobs, known contacts, the
 // proposal outbox, workers' open questions, the channel log, the ledger, the
-// user's pause switch and the attention items the user dismissed. Mail and calendar are not here: they
+// user's pause switch and candidate mode, and the attention items the user
+// dismissed. Mail and calendar are not here: they
 // belong to the external service behind the MCP connector. It is separate from
 // the agent session store so the demo never edits that schema. One pinned
 // connection serializes writers.
@@ -83,22 +85,56 @@ CREATE TABLE IF NOT EXISTS reminders(
 	created_at INTEGER NOT NULL, PRIMARY KEY(event_id, start_at));
 CREATE TABLE IF NOT EXISTS dismissals(
 	ref TEXT PRIMARY KEY, actor TEXT NOT NULL, at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS contacts(
+	address TEXT PRIMARY KEY, name TEXT NOT NULL, relation TEXT NOT NULL, source TEXT NOT NULL,
+	interactions INTEGER NOT NULL DEFAULT 0, last_at INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS jobs(
+	id INTEGER PRIMARY KEY AUTOINCREMENT, thread TEXT NOT NULL, session_id TEXT NOT NULL,
+	trigger_id INTEGER NOT NULL, goal TEXT NOT NULL, status TEXT NOT NULL, result TEXT NOT NULL DEFAULT '',
+	dedupe TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL, started_at INTEGER NOT NULL DEFAULT 0,
+	finished_at INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS task_checks(
+	id INTEGER PRIMARY KEY AUTOINCREMENT, task_id INTEGER NOT NULL, trigger_id INTEGER NOT NULL,
+	check_note TEXT NOT NULL, note TEXT NOT NULL, status TEXT NOT NULL, at INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS task_checks_task ON task_checks(task_id, id);
+CREATE TABLE IF NOT EXISTS watchdog(
+	task_id INTEGER PRIMARY KEY, pattern TEXT NOT NULL, detail TEXT NOT NULL, at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS questions(
 	id INTEGER PRIMARY KEY AUTOINCREMENT, trigger_id INTEGER NOT NULL UNIQUE, thread TEXT NOT NULL,
 	session_id TEXT NOT NULL, text TEXT NOT NULL, status TEXT NOT NULL, answer TEXT NOT NULL DEFAULT '',
 	created_at INTEGER NOT NULL, answered_at INTEGER NOT NULL DEFAULT 0);
 `
 
+type addedColumn struct{ table, column, definition string }
+
 // addedColumns upgrades older data directories: the first demo's proposals
-// table predates the outbox, and settled_at (when a proposal was sent or
-// finally failed) arrived with the attention list. The first demo's old mail
-// and calendar tables are left in place and unused.
-var addedColumns = []struct{ table, column, definition string }{
+// table predates the outbox, settled_at (when a proposal was sent or finally
+// failed) arrived with the attention list, and admitted (a candidate the user
+// handed to a worker) with admission grading. The first demo's old mail and
+// calendar tables are left in place and unused.
+var addedColumns = []addedColumn{
 	{"proposals", "attempts", "INTEGER NOT NULL DEFAULT 0"},
 	{"proposals", "not_before", "INTEGER NOT NULL DEFAULT 0"},
 	{"proposals", "receipt", "TEXT NOT NULL DEFAULT ''"},
 	{"proposals", "last_error", "TEXT NOT NULL DEFAULT ''"},
 	{"proposals", "settled_at", "INTEGER NOT NULL DEFAULT 0"},
+	{"triggers", "admitted", "INTEGER NOT NULL DEFAULT 0"},
+}
+
+// addColumns adds each missing column in place.
+func addColumns(ctx context.Context, db *sql.DB, columns []addedColumn) error {
+	for _, added := range columns {
+		var present int
+		if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM pragma_table_info(?) WHERE name=?`, added.table, added.column).Scan(&present); err != nil {
+			return err
+		}
+		if present == 0 {
+			if _, err := db.ExecContext(ctx, `ALTER TABLE `+added.table+` ADD COLUMN `+added.column+` `+added.definition); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func OpenStore(ctx context.Context, path string) (*Store, error) {
@@ -106,16 +142,8 @@ func OpenStore(ctx context.Context, path string) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
-	for _, added := range addedColumns {
-		var present int
-		if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM pragma_table_info(?) WHERE name=?`, added.table, added.column).Scan(&present); err != nil {
-			return nil, errors.Join(err, db.Close())
-		}
-		if present == 0 {
-			if _, err := db.ExecContext(ctx, `ALTER TABLE `+added.table+` ADD COLUMN `+added.column+` `+added.definition); err != nil {
-				return nil, errors.Join(err, db.Close())
-			}
-		}
+	if err := addColumns(ctx, db, addedColumns); err != nil {
+		return nil, errors.Join(err, db.Close())
 	}
 	store := &Store{db: db}
 	since, _, err := store.metaValue(ctx, pausedKey)
@@ -231,18 +259,20 @@ func triggerSource(kind TriggerKind) string {
 		return "scheduler（日程临近，MCP calendar_list）"
 	case TriggerAnswer:
 		return "me（回答提问）"
+	case TriggerJobDone:
+		return "preparer（后台准备）"
 	default:
 		return "environment"
 	}
 }
 
-const triggerColumns = `id,kind,thread,ref,summary,status,decision,session_id,attempts,created_at,updated_at`
+const triggerColumns = `id,kind,thread,ref,summary,status,decision,session_id,attempts,admitted,created_at,updated_at`
 
 func scanTrigger(row interface{ Scan(...any) error }) (Trigger, error) {
 	var trigger Trigger
 	var kind, thread, status string
 	var created, updated int64
-	if err := row.Scan(&trigger.ID, &kind, &thread, &trigger.Ref, &trigger.Summary, &status, &trigger.Decision, &trigger.SessionID, &trigger.Attempts, &created, &updated); err != nil {
+	if err := row.Scan(&trigger.ID, &kind, &thread, &trigger.Ref, &trigger.Summary, &status, &trigger.Decision, &trigger.SessionID, &trigger.Attempts, &trigger.Admitted, &created, &updated); err != nil {
 		return Trigger{}, err
 	}
 	trigger.Kind, trigger.Thread, trigger.Status = TriggerKind(kind), ThreadID(thread), TriggerStatus(status)
@@ -544,6 +574,10 @@ func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt Effect
 			return err
 		}
 		if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已经 MCP 发出提案 #%d：%s → %s", p.ID, p.Subject, p.To), TriggerID: p.TriggerID}, now); err != nil {
+			return err
+		}
+		// Someone the user wrote to is a contact from now on.
+		if err := noteContact(ctx, tx, p.To, "", "sent", now); err != nil {
 			return err
 		}
 		return bringForward(ctx, tx, p.Thread, fmt.Sprintf("提案 #%d 已经发出（回执 %s）", p.ID, receipt.Receipt), actor, now)

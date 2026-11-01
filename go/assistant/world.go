@@ -33,8 +33,16 @@ CREATE TABLE IF NOT EXISTS effects(
 	created_at INTEGER NOT NULL);
 `
 
-// OwnerAddress is the simulated mailbox the assistant works for.
-const OwnerAddress = "me@acme.example"
+// OwnerAddress is the simulated mailbox the assistant works for; TeamAddress
+// is a list it receives copies through.
+const (
+	OwnerAddress = "me@acme.example"
+	TeamAddress  = "team@acme.example"
+)
+
+// worldAddedColumns upgrades an older world.db: cc arrived with admission
+// grading.
+var worldAddedColumns = []addedColumn{{"mail", "cc", "TEXT NOT NULL DEFAULT ''"}}
 
 const maxPollPage = 100
 
@@ -46,6 +54,9 @@ func OpenWorld(ctx context.Context, path string, now clock) (*World, error) {
 	db, err := openSQLite(ctx, path, worldSchema)
 	if err != nil {
 		return nil, err
+	}
+	if err := addColumns(ctx, db, worldAddedColumns); err != nil {
+		return nil, errors.Join(err, db.Close())
 	}
 	world := &World{db: db, now: now}
 	if err := world.seed(ctx); err != nil {
@@ -78,6 +89,7 @@ func (w *World) seed(ctx context.Context) error {
 			{ID: "m-seed-1", Thread: "t-q4-plan", From: ManagerAddress, FromName: "Alice", Subject: "Q4 规划材料周五前给我", Body: "周五例会前把 Q4 规划初稿发我，重点写人力和预算。", Category: CategoryPerson, ReceivedAt: now.Add(-3 * time.Hour)},
 			{ID: "m-seed-2", Thread: "t-weekly-ai", From: "newsletter@ai-weekly.example", FromName: "AI 周报", Subject: "本周 AI 周报 #128", Body: "本周要闻：……", Category: CategoryNewsletter, ReceivedAt: now.Add(-5 * time.Hour)},
 			{ID: "m-seed-3", Thread: "t-hiking", From: "bob@friends.example", FromName: "Bob", Subject: "周末爬山？", Body: "周六早上去爬山吗？", Category: CategoryPerson, ReceivedAt: now.Add(-20 * time.Hour)},
+			{ID: "m-seed-4", Thread: "t-bill-10", From: VendorAddress, FromName: "云主机账单", Subject: "10 月云服务账单 ¥1,080", Body: "您 10 月的云服务费用为 ¥1,080，已自动扣款。", Category: CategoryPerson, ReceivedAt: now.AddDate(0, 0, -30)},
 		}
 		for _, mail := range mails {
 			mail.Folder, mail.To = FolderInbox, OwnerAddress
@@ -102,18 +114,18 @@ func (w *World) seed(ctx context.Context) error {
 // ---- mail ----
 
 func insertMail(ctx context.Context, q queryer, mail Email) error {
-	_, err := q.ExecContext(ctx, `INSERT INTO mail(id,thread,folder,sender,sender_name,recipient,subject,body,category,event_id,received_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
-		mail.ID, string(mail.Thread), string(mail.Folder), mail.From, mail.FromName, mail.To, mail.Subject, mail.Body, string(mail.Category), mail.EventID, millis(mail.ReceivedAt))
+	_, err := q.ExecContext(ctx, `INSERT INTO mail(id,thread,folder,sender,sender_name,recipient,cc,subject,body,category,event_id,received_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
+		mail.ID, string(mail.Thread), string(mail.Folder), mail.From, mail.FromName, mail.To, mail.Cc, mail.Subject, mail.Body, string(mail.Category), mail.EventID, millis(mail.ReceivedAt))
 	return err
 }
 
-const mailColumns = `id,thread,folder,sender,sender_name,recipient,subject,body,category,event_id,received_at`
+const mailColumns = `id,thread,folder,sender,sender_name,recipient,cc,subject,body,category,event_id,received_at`
 
 func scanMail(row interface{ Scan(...any) error }, extra ...any) (Email, error) {
 	var mail Email
 	var thread, folder, category string
 	var received int64
-	targets := append([]any{&mail.ID, &thread, &folder, &mail.From, &mail.FromName, &mail.To, &mail.Subject, &mail.Body, &category, &mail.EventID, &received}, extra...)
+	targets := append([]any{&mail.ID, &thread, &folder, &mail.From, &mail.FromName, &mail.To, &mail.Cc, &mail.Subject, &mail.Body, &category, &mail.EventID, &received}, extra...)
 	if err := row.Scan(targets...); err != nil {
 		return Email{}, err
 	}
@@ -417,6 +429,9 @@ func (w *World) DeliverCustom(ctx context.Context, custom CustomMail) (Delivered
 			return err
 		}
 		mail := Email{ID: fmt.Sprintf("m-%d", next), Thread: ThreadID(fmt.Sprintf("t-%d", next)), Folder: FolderInbox, From: from, FromName: truncateRunes(name, 40), To: OwnerAddress, Subject: truncateRunes(custom.Subject, 120), Body: truncateRunes(custom.Body, maxDraftRunes), Category: category, ReceivedAt: w.now()}
+		if custom.Cc {
+			mail.To, mail.Cc = TeamAddress, OwnerAddress
+		}
 		delivered = DeliveredMail{ID: mail.ID, Thread: mail.Thread}
 		return insertMail(ctx, tx, mail)
 	})

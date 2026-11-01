@@ -25,6 +25,9 @@ const slotLayout = "2006-01-02"
 //     calendar_list, when it starts within the lead time. An event that
 //     already started while the daemon was down or asleep is not reminded.
 //
+// After the time sources each tick runs the watchdog (Store.Watchdog), which
+// flags active tasks whose recorded checks stopped making progress.
+//
 // While the user has paused processing a tick claims nothing; the first tick
 // after resuming catches up as after downtime, and an event that started
 // during the pause is not reminded.
@@ -86,12 +89,17 @@ func (s *Scheduler) Run(ctx context.Context) {
 	}
 }
 
-// Tick runs every time source once and returns how many triggers it queued.
+// Tick runs every time source once and returns how many triggers it queued,
+// then lets the watchdog look at task progress.
 func (s *Scheduler) Tick(ctx context.Context) int {
 	if _, paused := s.store.Paused(); paused {
 		return 0
 	}
-	return s.Due(ctx) + s.DueTasks(ctx) + s.Upcoming(ctx)
+	queued := s.Due(ctx) + s.DueTasks(ctx) + s.Upcoming(ctx)
+	if _, err := s.store.Watchdog(ctx, s.now()); err != nil && ctx.Err() == nil {
+		fmt.Fprintf(s.log, "assistant: watchdog: %v\n", err)
+	}
+	return queued
 }
 
 // Due claims every routine whose slot time has passed today. A claim more

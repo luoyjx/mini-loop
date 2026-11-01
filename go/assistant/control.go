@@ -97,6 +97,9 @@ const (
 	AttentionSendFailed AttentionKind = "send_failed"
 	// AttentionTaskHandoff: a task used up its automatic checks.
 	AttentionTaskHandoff AttentionKind = "task_handoff"
+	// AttentionNoProgress: the watchdog found an active task whose checks
+	// stopped making progress.
+	AttentionNoProgress AttentionKind = "no_progress"
 	// AttentionTriggerFailed: an event could not be processed (last 24 hours).
 	AttentionTriggerFailed AttentionKind = "trigger_failed"
 	// AttentionProblem: a background component failed three times in a row.
@@ -133,7 +136,9 @@ var proposalKindLabel = map[ProposalKind]string{ProposalSendEmail: "发邮件", 
 // Attention lists what waits for the user, in kind order and oldest first
 // within a kind: drafts to approve, workers' open questions, approved
 // proposals that finally failed, tasks handed back after their last automatic
-// check, and triggers that failed in the last 24 hours. A dismissed item leaves the list; retrying or
+// check, active tasks the watchdog flagged, and triggers that failed in the
+// last 24 hours. Observed candidates are not listed: they wait in their own
+// list without asking for attention. A dismissed item leaves the list; retrying or
 // resuming its object clears the dismissal. App adds component problems.
 func (s *Store) Attention(ctx context.Context, now time.Time) ([]AttentionItem, error) {
 	items := []AttentionItem{}
@@ -200,6 +205,16 @@ func (s *Store) Attention(ctx context.Context, now time.Time) ([]AttentionItem, 
 				})
 		},
 		func() error {
+			return collect(`SELECT t.id,t.title,w.detail,w.at FROM watchdog w JOIN tasks t ON t.id=w.task_id WHERE t.status=?
+				AND NOT EXISTS (SELECT 1 FROM dismissals d WHERE d.ref='progress-'||t.id) ORDER BY w.at,t.id`,
+				[]any{string(TaskActive)}, func(rows *sql.Rows) (AttentionItem, error) {
+					var id, at int64
+					var title, detail string
+					err := rows.Scan(&id, &title, &detail, &at)
+					return AttentionItem{Kind: AttentionNoProgress, Ref: ProgressRef(id), Title: fmt.Sprintf("任务 #%d 没有进展：%s", id, title), Detail: "看门狗：" + detail + "；可以立即检查、取消，或先放着", Since: fromMillis(at)}, err
+				})
+		},
+		func() error {
 			return collect(`SELECT id,summary,decision,updated_at FROM triggers t WHERE status=? AND updated_at>=?
 				AND NOT EXISTS (SELECT 1 FROM dismissals d WHERE d.ref='trigger-'||t.id) ORDER BY id`,
 				[]any{string(TriggerFailed), millis(now.Add(-failedTriggerWindow))}, func(rows *sql.Rows) (AttentionItem, error) {
@@ -249,6 +264,8 @@ func (s *Store) Dismiss(ctx context.Context, ref, actor string, now time.Time) e
 		query, want = `SELECT status,id,thread FROM triggers WHERE id=?`, string(TriggerFailed)
 	case "question":
 		query, want = `SELECT status,trigger_id,thread FROM questions WHERE id=?`, string(QuestionOpen)
+	case "progress":
+		query, want = `SELECT t.status,t.last_trigger,t.thread FROM watchdog w JOIN tasks t ON t.id=w.task_id WHERE w.task_id=?`, string(TaskActive)
 	default:
 		return ErrUnknownRef
 	}
@@ -334,4 +351,53 @@ func (s *Store) ReprocessTrigger(ctx context.Context, id int64, actor string, no
 		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerControl, Actor: actor, TriggerID: id, Thread: trigger.Thread, Detail: fmt.Sprintf("重新处理触发器 #%d", id)})
 	})
 	return queued, err
+}
+
+// Candidates lists observed triggers, newest first: inferred candidates the
+// triage recorded without a worker turn.
+func (s *Store) Candidates(ctx context.Context, limit int) ([]Trigger, error) {
+	rows, err := s.db.QueryContext(ctx, `SELECT `+triggerColumns+` FROM triggers WHERE status=? ORDER BY id DESC LIMIT ?`, string(TriggerObserved), limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	result := []Trigger{}
+	for rows.Next() {
+		trigger, err := scanTrigger(rows)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, trigger)
+	}
+	return result, rows.Err()
+}
+
+// DecideCandidate settles an observed trigger for the user: handle queues it
+// again as admitted, so the router skips the triage and runs the worker;
+// otherwise it is ignored.
+func (s *Store) DecideCandidate(ctx context.Context, id int64, handle bool, actor string, now time.Time) (Trigger, error) {
+	var decided Trigger
+	err := s.inTx(ctx, func(tx *sql.Tx) error {
+		trigger, err := scanTrigger(tx.QueryRowContext(ctx, `SELECT `+triggerColumns+` FROM triggers WHERE id=?`, id))
+		if errors.Is(err, sql.ErrNoRows) {
+			return ErrUnknownRef
+		}
+		if err != nil {
+			return err
+		}
+		if trigger.Status != TriggerObserved {
+			return fmt.Errorf("trigger #%d is %s: %w", id, trigger.Status, ErrNotActionable)
+		}
+		status, decision, detail := TriggerIgnored, "用户忽略这个候选", fmt.Sprintf("忽略候选触发器 #%d", id)
+		if handle {
+			status, decision, detail = TriggerPending, "用户把候选交给 worker", fmt.Sprintf("把候选触发器 #%d 交给 worker", id)
+		}
+		if _, err := tx.ExecContext(ctx, `UPDATE triggers SET status=?, admitted=?, attempts=0, not_before=?, decision=?, updated_at=? WHERE id=? AND status=?`, string(status), boolInt(handle), millis(now), decision, millis(now), id, string(TriggerObserved)); err != nil {
+			return err
+		}
+		trigger.Status, trigger.Admitted, trigger.Attempts, trigger.Decision, trigger.UpdatedAt = status, handle, 0, decision, now
+		decided = trigger
+		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerControl, Actor: actor, TriggerID: id, Thread: trigger.Thread, Detail: detail})
+	})
+	return decided, err
 }

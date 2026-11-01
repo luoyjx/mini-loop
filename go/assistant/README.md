@@ -11,6 +11,10 @@ switch pauses everything, and your own messages never wait behind background wor
 Events that queue up on one thread while its worker is busy are handled together
 in one turn. A worker ends each turn with a structured report: tell you something,
 stay quiet, or ask you one question whose answer goes back to the same worker.
+Mail is graded by sender and address before any model call. An unclear mail passes
+a short triage and by default waits for you under **候选** instead of starting
+work. Workers can prepare material in a background read-only session, and a
+watchdog flags tasks whose checks stop making progress.
 The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
@@ -79,7 +83,10 @@ shell for now.
 2. Click **经理来信**. The worker recalls who the manager is, drafts a reply and creates
    a task to check within an hour that the reply went out.
 3. Click **Newsletter**. The rule fast path ignores it before any model call.
-4. Click **可疑邮件**. The mail asks for forwarding and a password. The worker flags it
+4. Click **可疑邮件**. The sender is a stranger writing to you, so the mail is an
+   inferred candidate and passes the triage first. The triage would hand it to a
+   worker, but the default observe mode only records it under **候选**. Click
+   **交给 worker** there: the worker flags the request for forwarding and a password
    and creates no proposal.
 5. Click **经理追问** twice. Both follow-ups reach the same subscribed worker session.
    The first one creates a follow-up task. The second sees that task in its prompt and
@@ -107,25 +114,35 @@ shell for now.
    meeting. The scheduler sees it through `calendar_list` and sends one reminder,
    because the meeting starts within 15 minutes. The reminder names the organizer's
    recent mail and related tasks.
-11. Leave a task unanswered. Its worker checks again on its own schedule. After six
-   checks the task moves to **转交给你** and appears under **需要你处理**, where
-   **再跟进一轮** gives it six more checks. **立即检查** and **取消** on a task card act
-   right away.
+11. Leave a task unanswered. Its worker checks again on its own schedule. When three
+   checks in a row record the same check and note, the watchdog lists the task as
+   **可能卡住** under **需要你处理** (**立即检查**, **取消任务** or **知道了**). After
+   six checks the task moves to **转交给你**, where **再跟进一轮** gives it six more
+   checks. **立即检查** and **取消** on a task card act right away.
 12. Click **暂停处理** in the header. Deliver a mail and send a chat message: both are
     recorded but not processed, nothing is sent, and no check or reminder fires.
     Running turns finish. Click **恢复处理** and the backlog catches up. The pause also
     holds across a restart.
-13. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
-    that finally failed (**重试发送** or **知道了**), tasks handed back to you,
+13. Click **经理群发，你在抄送里**. Alice is a known contact but writes to the team
+    and copies you, so the triage records the mail under **候选**. Click
+    **陌生人：合作推广**: the triage ignores the promotion. Click
+    **供应商账单（后台核对）**: the vendor is a known contact, so the worker runs,
+    starts a background job with `prepare_start` and stays quiet. The Preparer
+    compares the bill with last month's in a read-only session, and the result
+    returns to the bill's thread, where the worker posts the comparison. The job is
+    listed under **任务 → 后台准备任务**, with **停止** while it runs. Switch
+    **推断候选** to **自动** to let the triage hand candidates to workers directly.
+14. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
+    that finally failed (**重试发送** or **知道了**), tasks handed back to you or flagged by the watchdog,
     triggers that failed in the last 24 hours (**重新处理** or **知道了**), and
     components such as the mail poll that failed three times in a row. The list
     disappears when nothing waits for you.
-14. Stop the process with Ctrl-C, or kill it, then start it again with the same
+15. Stop the process with Ctrl-C, or kill it, then start it again with the same
     `-data`. The following still hold:
     - Pending cards, the channel, the task board and the ledger remain.
     - A task check missed while the daemon was down, or the Mac asleep, runs on the
       first scheduler tick.
-    - Interrupted triggers are requeued.
+    - Interrupted triggers and preparation jobs are requeued.
     - Approved proposals that were not sent yet are sent once.
     - The next follow-up restores the subscribed worker from `agent.db`.
     - A 07:00 brief missed earlier the same day runs once. This also applies after the
@@ -136,7 +153,7 @@ shell for now.
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -200,6 +217,66 @@ and the ledger notes the missing report. The answer turn runs untrusted like any
 other event on that thread: your words are quoted as yours, but the thread's
 transcript carries external mail.
 
+## Admission and preparation
+
+The rules grade every mail before a model sees it:
+
+| Mail | Grade | What happens |
+|---|---|---|
+| Bulk: newsletter category or a bulk sender such as `noreply` | Ignored | Archived, counted in the brief |
+| A known contact writes to you | Explicit request | Straight to the thread's worker |
+| A known contact copies you, or a stranger writes to you | Inferred candidate | The triage decides |
+| A stranger copies you | Ignored | Archived |
+
+Every other trigger kind (chat, routine, invite, task check, reminder, answer,
+`job.done`) is explicit. The contact table starts with four demo contacts (the
+manager, a colleague, a friend and the cloud vendor). Each approved send counts an
+interaction with its recipient, and an unknown recipient becomes a contact.
+
+The triage is one model call without tools. It reads the sender, recipients,
+subject and a preview inside `<external>` and answers `handle`, `observe` or
+`ignore` with a reason. What happens to `handle` depends on the candidate mode:
+
+- **观察** (observe, the default) records the trigger as `observed`. It is listed
+  under **候选**, where **交给 worker** queues it again as admitted, so the router
+  skips the triage, and **忽略** settles it.
+- **自动** (auto) runs the worker right away.
+
+`observe` and `ignore` settle the trigger without a worker turn in both modes. A
+failed or unreadable triage records the trigger, so a model outage turns an unclear
+mail into neither work nor silence. The mode is stored in `assistant.db`. The
+counters under **候选** (worker turns, merged triggers, rule and triage decisions)
+are kept in memory and start from zero after a restart.
+
+A worker can prepare material in the background with `prepare_start`:
+
+- The job is a row in `assistant.db`, deduplicated per trigger and goal, with at
+  most five queued or running.
+- The Preparer runs one job at a time in a fresh session whose catalogue holds only
+  `mail_list`, `mail_read`, `calendar_list` and `task_list`. The session runs
+  untrusted for at most two minutes.
+- The result returns to the starting thread as a `job.done` trigger, so that
+  thread's worker decides what you hear. **停止** on the page, or `prepare_stop`
+  from a worker on the same thread, cancels the job. A cancelled job wakes nobody.
+- Jobs left running by a crash are queued again on start, and the Preparer claims
+  nothing while processing is paused.
+
+The watchdog judges whether a task's checks make progress. After every check the
+router snapshots the task's check and note. On each scheduler tick the agent's stuck
+detector reads the last snapshots. Three in a row with the same check and note, or
+six alternating between two states, flag the task once: a ledger row, a channel
+line and **可能卡住** under **需要你处理**. A later check that changes the note
+clears the flag; a new streak raises it again, even after **知道了**.
+
+`TestSyntheticEventStreamAcceptance` sends 300 events through the daemon with the
+offline model, using personal mail, bursts, invites, bulk, suspicious, cc'd and
+stranger mail, bills and chat. It reports latency, router decisions and the quiet
+rate: the share of events that reached you neither as a message nor as an attention
+item. Set `MINILOOP_ASSISTANT_STREAM_REPORT=<path>` to keep the JSON. One run on the
+development Mac took 112 worker turns for 300 events, with a quiet rate of 0.54,
+p50 0.51 s and p95 1.01 s. These numbers come from the scripted model, not a real
+one.
+
 ## Attention and control
 
 The page answers "does anything need me?" first. The list under **需要你处理** is
@@ -213,6 +290,7 @@ equals its rows.
 | Failed send | An approved proposal failed for good and was not dismissed | 重试发送: back to the outbox with a fresh attempt budget under the same `proposal-<id>` key / 知道了 |
 | Task handed to you | The task used its six checks and was not dismissed | 再跟进一轮: six more checks, starting now, on the same worker / 知道了 |
 | Failed trigger | It failed in the last 24 hours and was not dismissed | 重新处理: queued again with a fresh attempt budget / 知道了 |
+| Task without progress | The watchdog flagged an active task and the flag was not dismissed | 立即检查 / 取消任务 / 知道了 (a new streak lists it again) |
 | Component problem | The mail poll, calendar watch, outbox transport or worker model call failed three times in a row | None; it clears on the next success |
 
 The header shows how many worker turns run. Your chat is claimed before any
@@ -244,11 +322,11 @@ Failures are classified before a retry:
 | Part | In this demo | Code |
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
-| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
+| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. | `seed.go` |
-| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `router.go`, `routines.go`, `tasks.go`, `control.go` |
+| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
-| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals and answers. Report rows record each worker's report and its final text. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
+| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
 
 ## Boundaries
 
@@ -260,11 +338,20 @@ Failures are classified before a retry:
   reach. The core rule that pins registered MCP tools to `external` is unchanged.
 - Trigger runs use untrusted authority. Chat typed on the page uses explicit-human
   authority, because the page is loopback-only.
-- The router is deterministic code. The semantic slow path is the worker's own
-  judgement, and a worker reports `quiet` to stay off the channel. There is no LLM
-  router, no speculative background work beyond invite drafting, and no Watchdog.
-  The fallback check and the six-check budget keep a task from being forgotten or
-  waking forever; they do not judge whether a check made progress.
+- The rule fast path is deterministic code. The triage is a model call only for
+  inferred candidates; explicit requests never wait for it. The offline scripted
+  model answers the triage with keyword rules, so its verdicts only demonstrate the
+  path. A worker still reports `quiet` to stay off the channel.
+- Background preparation uses durable rows and one daemon goroutine, not the
+  `go/background` shell jobs, because workers have no shell. Jobs use the worker
+  model and run one at a time. Their sessions see only read tools and cannot draft,
+  so preparation never reaches an approval card on its own.
+- The watchdog compares only what checks recorded (the check and the note); it does
+  not inspect the mailbox. It flags and suggests; it never cancels a task. The
+  fallback check and the six-check budget still keep a task from being forgotten or
+  waking forever.
+- Contacts are local demo data. A known contact still runs untrusted, because the
+  mail content is external.
 - Task checks are ordinary untrusted triggers. A task cannot grant a worker any
   ability it does not already have, and a task check can only draft.
 - A re-run after a crash may repeat model calls. Proposal dedupe keys and card checks

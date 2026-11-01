@@ -41,6 +41,9 @@ const (
 	// TriggerAnswer carries the user's answer to a worker's question back to
 	// the question's thread; Ref is "question-<id>".
 	TriggerAnswer TriggerKind = "user.answer"
+	// TriggerJobDone brings a preparation job's result back to the thread
+	// that started it; Ref is "job-<id>".
+	TriggerJobDone TriggerKind = "job.done"
 )
 
 type TriggerStatus string
@@ -52,12 +55,17 @@ const (
 	TriggerDone    TriggerStatus = "done"
 	TriggerQuiet   TriggerStatus = "quiet"
 	TriggerFailed  TriggerStatus = "failed"
+	// TriggerObserved is an inferred candidate recorded without a worker
+	// turn: the triage said observe, or it would handle the mail but
+	// candidates are in observe mode. The user can hand it to a worker.
+	TriggerObserved TriggerStatus = "observed"
 )
 
 // Trigger is one environment event. Ref names the mail, invite or routine slot
 // it came from; the worker reads that object through connector tools. Pending
 // triggers of one thread that queue up while its worker is busy are claimed
-// together and handled in one turn; the oldest leads the batch.
+// together and handled in one turn; the oldest leads the batch. Admitted marks
+// an inferred candidate the user handed to a worker, which skips the triage.
 type Trigger struct {
 	ID        int64         `json:"id"`
 	Kind      TriggerKind   `json:"kind"`
@@ -68,6 +76,7 @@ type Trigger struct {
 	Decision  string        `json:"decision"`
 	SessionID string        `json:"session_id"`
 	Attempts  int           `json:"attempts"`
+	Admitted  bool          `json:"admitted,omitempty"`
 	CreatedAt time.Time     `json:"created_at"`
 	UpdatedAt time.Time     `json:"updated_at"`
 }
@@ -94,6 +103,7 @@ type Email struct {
 	From       string       `json:"from"`
 	FromName   string       `json:"from_name"`
 	To         string       `json:"to"`
+	Cc         string       `json:"cc,omitempty"`
 	Subject    string       `json:"subject"`
 	Body       string       `json:"body"`
 	Category   MailCategory `json:"category"`
@@ -207,6 +217,12 @@ const (
 	LedgerControl LedgerKind = "control"
 	// LedgerReport records a worker's structured report.
 	LedgerReport LedgerKind = "report"
+	// LedgerTriage records the semantic slow path's verdict.
+	LedgerTriage LedgerKind = "triage"
+	// LedgerJob records preparation jobs.
+	LedgerJob LedgerKind = "job"
+	// LedgerWatchdog records tasks whose checks stopped making progress.
+	LedgerWatchdog LedgerKind = "watchdog"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the

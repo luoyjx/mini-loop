@@ -4700,6 +4700,7 @@
         <path data-edge-from="paScheduler" data-edge-to="paConnector" data-edge-label="calendar_list" data-edge-key="99" data-edge-id="paUpcoming" data-composition-points="227,5226;227,5250;1006,5250;1006,5445;1030,5445" d="M 227 5226 L 227 5242 Q 227 5250 235 5250 L 998 5250 Q 1006 5250 1006 5258 L 1006 5437 Q 1006 5445 1014 5445 L 1030 5445" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paScheduler" data-edge-to="paHealth" data-edge-key="100" data-edge-id="paFailures" data-composition-points="213,5226;213,5250;236,5250;236,5376;220,5376;220,5400" d="M 213 5226 L 213 5242 Q 213 5250 221 5250 L 228 5250 Q 236 5250 236 5258 L 236 5368 Q 236 5376 228 5376 L 228 5376 Q 220 5376 220 5384 L 220 5400" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="paHealth" data-edge-to="paChannel" data-edge-label="problems" data-edge-key="101" data-edge-id="paProblems" data-composition-points="70,5438;46,5438;46,4938;70,4938" d="M 70 5438 L 54 5438 Q 46 5438 46 5430 L 46 4946 Q 46 4938 54 4938 L 70 4938" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="paPreparer" data-edge-to="paWorkers" data-edge-label="read-only session" data-edge-key="102" data-edge-id="paPrepare" data-composition-points="1890,5438;1914,5438;1914,4938;1890,4938" d="M 1890 5438 L 1906 5438 Q 1914 5438 1914 5430 L 1914 4946 Q 1914 4938 1906 4938 L 1890 4938" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5508,8 +5509,8 @@
         <text data-detail="fine" x="1270" y="3818" class="t-backend" font-size="7" text-anchor="middle">same-process API or Worker / external Temporal</text>
         </g>
 
-        <g id="node-paChannel" data-node-id="paChannel" data-node-label="Simulated channel page" tabindex="0" role="button" aria-label="Focus Simulated channel page, cmd/miniloop-assistant / loopback only, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="cmd/miniloop-assistant / loopback only" data-node-tag="attention / answers / pause / chat / cards" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Simulated channel page · cmd/miniloop-assistant / loopback only · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · attention / answers / pause / chat / cards</title>
+        <g id="node-paChannel" data-node-id="paChannel" data-node-label="Simulated channel page" tabindex="0" role="button" aria-label="Focus Simulated channel page, cmd/miniloop-assistant / loopback only, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="cmd/miniloop-assistant / loopback only" data-node-tag="attention / candidates / jobs / pause / cards" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Simulated channel page · cmd/miniloop-assistant / loopback only · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · attention / candidates / jobs / pause / cards</title>
           <rect x="70" y="4900" width="300" height="76" rx="6" class="c-mask"/>
           <rect x="70" y="4900" width="300" height="76" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(76 4906) scale(0.6875)">
@@ -5520,11 +5521,11 @@
           </g>
           <text data-detail-anchor x="220" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Simulated channel page</text>
         <text data-detail="context" x="220" y="4952" class="t-muted" font-size="9" text-anchor="middle">cmd/miniloop-assistant / loopback only</text>
-        <text data-detail="fine" x="220" y="4968" class="t-frontend" font-size="7" text-anchor="middle">attention / answers / pause / chat / cards</text>
+        <text data-detail="fine" x="220" y="4968" class="t-frontend" font-size="7" text-anchor="middle">attention / candidates / jobs / pause / cards</text>
         </g>
 
-        <g id="node-paStore" data-node-id="paStore" data-node-label="assistant.db (SQLite)" tabindex="0" role="button" aria-label="Focus assistant.db (SQLite), triggers / mail cursor / tasks / outbox, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="database" data-node-sublabel="triggers / mail cursor / tasks / outbox" data-node-tag="questions / pause / dismissals / channel / ledger" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>assistant.db (SQLite) · triggers / mail cursor / tasks / outbox · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · questions / pause / dismissals / channel / ledger</title>
+        <g id="node-paStore" data-node-id="paStore" data-node-label="assistant.db (SQLite)" tabindex="0" role="button" aria-label="Focus assistant.db (SQLite), triggers / mail cursor / tasks / outbox, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="database" data-node-sublabel="triggers / mail cursor / tasks / outbox" data-node-tag="questions / jobs / contacts / checks / ledger" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>assistant.db (SQLite) · triggers / mail cursor / tasks / outbox · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · questions / jobs / contacts / checks / ledger</title>
           <rect x="530" y="4900" width="340" height="76" rx="6" class="c-mask"/>
           <rect x="530" y="4900" width="340" height="76" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(536 4906) scale(0.6875)">
@@ -5533,23 +5534,23 @@
           </g>
           <text data-detail-anchor x="700" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">assistant.db (SQLite)</text>
         <text data-detail="context" x="700" y="4952" class="t-muted" font-size="9" text-anchor="middle">triggers / mail cursor / tasks / outbox</text>
-        <text data-detail="fine" x="700" y="4968" class="t-database" font-size="7" text-anchor="middle">questions / pause / dismissals / channel / ledger</text>
+        <text data-detail="fine" x="700" y="4968" class="t-database" font-size="7" text-anchor="middle">questions / jobs / contacts / checks / ledger</text>
         </g>
 
-        <g id="node-paRouter" data-node-id="paRouter" data-node-label="Assistant Router" tabindex="0" role="button" aria-label="Focus Assistant Router, per-thread batch, one turn / chat first, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="per-thread batch, one turn / chat first" data-node-tag="acts on report: notify / ask / quiet" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Assistant Router · per-thread batch, one turn / chat first · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · acts on report: notify / ask / quiet</title>
+        <g id="node-paRouter" data-node-id="paRouter" data-node-label="Assistant Router" tabindex="0" role="button" aria-label="Focus Assistant Router, grade + triage / per-thread batch, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="grade + triage / per-thread batch" data-node-tag="observe or auto / report: notify / ask / quiet" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Assistant Router · grade + triage / per-thread batch · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · observe or auto / report: notify / ask / quiet</title>
           <rect x="1030" y="4900" width="340" height="76" rx="6" class="c-mask"/>
           <rect x="1030" y="4900" width="340" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1036 4906) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1200" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Assistant Router</text>
-        <text data-detail="context" x="1200" y="4952" class="t-muted" font-size="9" text-anchor="middle">per-thread batch, one turn / chat first</text>
-        <text data-detail="fine" x="1200" y="4968" class="t-backend" font-size="7" text-anchor="middle">acts on report: notify / ask / quiet</text>
+        <text data-detail="context" x="1200" y="4952" class="t-muted" font-size="9" text-anchor="middle">grade + triage / per-thread batch</text>
+        <text data-detail="fine" x="1200" y="4968" class="t-backend" font-size="7" text-anchor="middle">observe or auto / report: notify / ask / quiet</text>
         </g>
 
-        <g id="node-paWorkers" data-node-id="paWorkers" data-node-label="Worker sessions" tabindex="0" role="button" aria-label="Focus Worker sessions, Go SessionManager / ToolGate / agent.db, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Go SessionManager / ToolGate / agent.db" data-node-tag="untrusted triggers / human chat turns" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Worker sessions · Go SessionManager / ToolGate / agent.db · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · untrusted triggers / human chat turns</title>
+        <g id="node-paWorkers" data-node-id="paWorkers" data-node-label="Worker sessions" tabindex="0" role="button" aria-label="Focus Worker sessions, Go SessionManager / ToolGate / agent.db, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Go SessionManager / ToolGate / agent.db" data-node-tag="untrusted triggers / human chat / prep jobs" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Worker sessions · Go SessionManager / ToolGate / agent.db · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · untrusted triggers / human chat / prep jobs</title>
           <rect x="1530" y="4900" width="360" height="76" rx="6" class="c-mask"/>
           <rect x="1530" y="4900" width="360" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1536 4906) scale(0.6875)">
@@ -5557,7 +5558,7 @@
           </g>
           <text data-detail-anchor x="1710" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Worker sessions</text>
         <text data-detail="context" x="1710" y="4952" class="t-muted" font-size="9" text-anchor="middle">Go SessionManager / ToolGate / agent.db</text>
-        <text data-detail="fine" x="1710" y="4968" class="t-backend" font-size="7" text-anchor="middle">untrusted triggers / human chat turns</text>
+        <text data-detail="fine" x="1710" y="4968" class="t-backend" font-size="7" text-anchor="middle">untrusted triggers / human chat / prep jobs</text>
         </g>
 
         <g id="node-paModel" data-node-id="paModel" data-node-label="Scripted offline model" tabindex="0" role="button" aria-label="Focus Scripted offline model, default / -model anthropic opt-in, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="external" data-node-sublabel="default / -model anthropic opt-in" data-node-tag="no credentials needed" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
@@ -5573,8 +5574,8 @@
         <text data-detail="fine" x="2200" y="4968" class="t-external" font-size="7" text-anchor="middle">no credentials needed</text>
         </g>
 
-        <g id="node-paScheduler" data-node-id="paScheduler" data-node-label="Scheduler" tabindex="0" role="button" aria-label="Focus Scheduler, routines / task checks / event reminders, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="routines / task checks / event reminders" data-node-tag="one transaction / catch-up / holds while paused" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Scheduler · routines / task checks / event reminders · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · one transaction / catch-up / holds while paused</title>
+        <g id="node-paScheduler" data-node-id="paScheduler" data-node-label="Scheduler" tabindex="0" role="button" aria-label="Focus Scheduler, routines / task checks / event reminders, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="routines / task checks / event reminders" data-node-tag="one transaction / catch-up / watchdog" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Scheduler · routines / task checks / event reminders · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · one transaction / catch-up / watchdog</title>
           <rect x="70" y="5150" width="300" height="76" rx="6" class="c-mask"/>
           <rect x="70" y="5150" width="300" height="76" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(76 5156) scale(0.6875)">
@@ -5585,7 +5586,7 @@
           </g>
           <text data-detail-anchor x="220" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Scheduler</text>
         <text data-detail="context" x="220" y="5202" class="t-muted" font-size="9" text-anchor="middle">routines / task checks / event reminders</text>
-        <text data-detail="fine" x="220" y="5218" class="t-messagebus" font-size="7" text-anchor="middle">one transaction / catch-up / holds while paused</text>
+        <text data-detail="fine" x="220" y="5218" class="t-messagebus" font-size="7" text-anchor="middle">one transaction / catch-up / watchdog</text>
         </g>
 
         <g id="node-paPoller" data-node-id="paPoller" data-node-label="Mail poller" tabindex="0" role="button" aria-label="Focus Mail poller, mail_poll cursor / dedupe by mail ID, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="mail_poll cursor / dedupe by mail ID" data-node-tag="first run starts at head" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
@@ -5616,8 +5617,8 @@
         <text data-detail="fine" x="1200" y="5218" class="t-security" font-size="7" text-anchor="middle">refusal fails / retries / user retry / holds on pause</text>
         </g>
 
-        <g id="node-paTools" data-node-id="paTools" data-node-label="Agent tools" tabindex="0" role="button" aria-label="Focus Agent tools, MCP reads / propose_* / task_* / report, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="MCP reads / propose_* / task_* / report" data-node-tag="no send tool / tasks on own thread only" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Agent tools · MCP reads / propose_* / task_* / report · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · no send tool / tasks on own thread only</title>
+        <g id="node-paTools" data-node-id="paTools" data-node-label="Agent tools" tabindex="0" role="button" aria-label="Focus Agent tools, reads / propose_* / task_* / prepare_* / report, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="reads / propose_* / task_* / prepare_* / report" data-node-tag="no send tool / tasks on own thread only" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Agent tools · reads / propose_* / task_* / prepare_* / report · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · no send tool / tasks on own thread only</title>
           <rect x="1530" y="5150" width="360" height="76" rx="6" class="c-mask"/>
           <rect x="1530" y="5150" width="360" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1536 5156) scale(0.6875)">
@@ -5625,7 +5626,7 @@
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-detail-anchor x="1710" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Agent tools</text>
-        <text data-detail="context" x="1710" y="5202" class="t-muted" font-size="9" text-anchor="middle">MCP reads / propose_* / task_* / report</text>
+        <text data-detail="context" x="1710" y="5202" class="t-muted" font-size="9" text-anchor="middle">reads / propose_* / task_* / prepare_* / report</text>
         <text data-detail="fine" x="1710" y="5218" class="t-security" font-size="7" text-anchor="middle">no send tool / tasks on own thread only</text>
         </g>
 
@@ -5667,6 +5668,18 @@
           <text data-detail-anchor x="220" y="5436" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Health board</text>
         <text data-detail="context" x="220" y="5452" class="t-muted" font-size="9" text-anchor="middle">in memory / three failures in a row</text>
         <text data-detail="fine" x="220" y="5468" class="t-messagebus" font-size="7" text-anchor="middle">poller / calendar / outbox / worker</text>
+        </g>
+
+        <g id="node-paPreparer" data-node-id="paPreparer" data-node-label="Preparer" tabindex="0" role="button" aria-label="Focus Preparer, one job at a time / read tools only, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="one job at a time / read tools only" data-node-tag="durable jobs / job.done to its thread" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Preparer · one job at a time / read tools only · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · durable jobs / job.done to its thread</title>
+          <rect x="1530" y="5400" width="360" height="76" rx="6" class="c-mask"/>
+          <rect x="1530" y="5400" width="360" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1536 5406) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1710" y="5436" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Preparer</text>
+        <text data-detail="context" x="1710" y="5452" class="t-muted" font-size="9" text-anchor="middle">one job at a time / read tools only</text>
+        <text data-detail="fine" x="1710" y="5468" class="t-backend" font-size="7" text-anchor="middle">durable jobs / job.done to its thread</text>
         </g>
 
         <!-- Connection labels -->
@@ -5911,8 +5924,8 @@
         </g>
 
         <g data-detail="context" data-edge-from="paModel" data-edge-to="paWorkers" data-edge-label="text / tool_use" data-edge-key="90" data-edge-id="paModelRequest">
-          <rect x="1929" y="4918" width="82" height="14" rx="3" class="c-mask"/>
-          <text x="1970" y="4928" class="t-messagebus" font-size="8" text-anchor="middle">text / tool_use</text>
+          <rect x="1985" y="4980" width="82" height="14" rx="3" class="c-mask"/>
+          <text x="2026" y="4990" class="t-messagebus" font-size="8" text-anchor="middle">text / tool_use</text>
         </g>
         <g data-detail="context" data-edge-from="paWorkers" data-edge-to="paTools" data-edge-label="gated dispatch" data-edge-key="91" data-edge-id="paGate">
           <rect x="1671.4" y="4980" width="77.2" height="14" rx="3" class="c-mask"/>
@@ -5954,6 +5967,10 @@
         <g data-detail="context" data-edge-from="paHealth" data-edge-to="paChannel" data-edge-label="problems" data-edge-key="101" data-edge-id="paProblems">
           <rect x="21.8" y="5168" width="48.4" height="14" rx="3" class="c-mask"/>
           <text x="46" y="5178" class="t-messagebus" font-size="8" text-anchor="middle">problems</text>
+        </g>
+        <g data-detail="context" data-edge-from="paPreparer" data-edge-to="paWorkers" data-edge-label="read-only session" data-edge-key="102" data-edge-id="paPrepare">
+          <rect x="1868.2" y="5300" width="91.6" height="14" rx="3" class="c-mask"/>
+          <text x="1914" y="5310" class="t-messagebus" font-size="8" text-anchor="middle">read-only session</text>
         </g>
 
         <!-- Legend -->
@@ -6460,10 +6477,12 @@
           <h3>Opt-in Go personal-assistant demo</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 14edecb plus the 2026-11-01 batch-and-report iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
-          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call.</li>
+          <li>&bull; Review baseline a3bcbe5 plus the 2026-11-01 admission-and-preparation iteration (roadmap P5): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
+          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call.</li>
           <li>&bull; Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread&#39;s subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.</li>
           <li>&bull; Batches and reports: the router claims a thread&#39;s due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.</li>
+          <li>&bull; Admission and preparation: rules grade mail by contact and address. A known contact writing to the user is explicit; a known contact copying the user or a stranger writing to the user is an inferred candidate that passes one tool-less triage call (handle / observe / ignore); a stranger copying the user is archived. Observe mode, the default, records even a handle verdict on the candidates tab until the user hands it over or ignores it; auto mode runs the worker; a failed triage records. prepare_start queues a durable job that the Preparer runs one at a time in an untrusted session limited to read tools; the result returns as a job.done trigger on the starting thread. Jobs can be stopped, are requeued after restart and wait while paused.</li>
+          <li>&bull; Watchdog: each task check is snapshotted, and every scheduler tick runs the agent stuck detector over the snapshots. Three checks with the same check and note, or six that alternate, flag the task once in the ledger, the channel and the attention list (no_progress); a check that makes progress clears the flag. Router decision counters and the 300-event acceptance stream report are process-local.</li>
           <li>&bull; Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.</li>
           <li>&bull; Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-&lt;id&gt;, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.</li>
           <li>&bull; Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep.</li>

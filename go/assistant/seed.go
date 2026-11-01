@@ -12,6 +12,7 @@ import (
 const (
 	ManagerAddress   = "alice@acme.example"
 	ColleagueAddress = "dave@acme.example"
+	VendorAddress    = "billing@cloudhost.example"
 	seedKey          = "seeded"
 )
 
@@ -23,9 +24,13 @@ func dayAt(now time.Time, offset, hour, minute int) time.Time {
 	return time.Date(now.Year(), now.Month(), now.Day()+offset, hour, minute, 0, 0, now.Location())
 }
 
-// Seed installs the daemon's routine and welcome message once. The simulated
-// mailbox and calendar are seeded by the mock MCP server's own World.
+// Seed installs the daemon's routine and welcome message once, and the known
+// contacts once under their own key. The simulated mailbox and calendar are
+// seeded by the mock MCP server's own World.
 func (s *Store) Seed(ctx context.Context, now time.Time) error {
+	if err := s.seedContacts(ctx, now); err != nil {
+		return err
+	}
 	if _, done, err := s.metaValue(ctx, seedKey); err != nil || done {
 		return err
 	}
@@ -72,6 +77,9 @@ const (
 	PresetFriend         Preset = "friend"
 	PresetManagerBurst   Preset = "manager_burst"
 	PresetQuestion       Preset = "question"
+	PresetCc             Preset = "cc"
+	PresetStranger       Preset = "stranger"
+	PresetBill           Preset = "bill"
 )
 
 type PresetInfo struct {
@@ -89,15 +97,20 @@ var Presets = []PresetInfo{
 	{PresetFriend, "朋友闲聊"},
 	{PresetManagerBurst, "经理连发两封（合并成一回合）"},
 	{PresetQuestion, "同事来问：评审定哪天（会问你）"},
+	{PresetCc, "经理群发，你在抄送里"},
+	{PresetStranger, "陌生人：合作推广"},
+	{PresetBill, "供应商账单（后台核对）"},
 }
 
-// CustomMail is a user-composed inbound message from the page.
+// CustomMail is a user-composed inbound message from the page. Cc puts the
+// user in copy of a mail to a team address instead of addressing them.
 type CustomMail struct {
 	From     string `json:"from"`
 	FromName string `json:"from_name"`
 	Subject  string `json:"subject"`
 	Body     string `json:"body"`
 	Bulk     bool   `json:"bulk"`
+	Cc       bool   `json:"cc"`
 }
 
 // presetMail builds the simulated inbound messages of one preset, oldest
@@ -145,6 +158,15 @@ func presetMail(preset Preset, seq int64, now time.Time) ([]Email, *CalendarEven
 	case PresetQuestion:
 		mail.Thread, mail.From, mail.FromName = thread, ColleagueAddress, "Dave"
 		mail.Subject, mail.Body = "设计评审定哪天？", "下周的设计评审，你看定在周二下午还是周三上午？我好订会议室。"
+	case PresetCc:
+		mail.Thread, mail.From, mail.FromName, mail.To, mail.Cc = thread, ManagerAddress, "Alice", TeamAddress, OwnerAddress
+		mail.Subject, mail.Body = "本周项目周报", "各位：本周进度见附件，周五前把各自的风险项补进表格。"
+	case PresetStranger:
+		mail.Thread, mail.From, mail.FromName = thread, "growth@leadgen-partners.example", "Leadgen Partners"
+		mail.Subject, mail.Body = "合作推广：帮你的产品带来 10 倍流量", "您好，我们提供精准推广合作，首月优惠 5 折，方便约个电话吗？"
+	case PresetBill:
+		mail.Thread, mail.From, mail.FromName = thread, VendorAddress, "云主机账单"
+		mail.Subject, mail.Body = "11 月云服务账单 ¥1,280", "您 11 月的云服务费用为 ¥1,280，将于 11 月 15 日自动扣款。"
 	default:
 		return nil, nil, fmt.Errorf("unknown preset %q", preset)
 	}

@@ -134,7 +134,7 @@ func TestPollerStartsAtHeadAndIngestsEachMailOnce(t *testing.T) {
 	app, _ := startAppWith(t, t.TempDir(), clock, func(c mcpCaller) mcpCaller { flaky = &flakyCaller{mcpCaller: c}; return flaky })
 	ctx := context.Background()
 	inbox, err := app.Connector.ListMail(ctx, FolderInbox, 10)
-	if err != nil || len(inbox) != 3 {
+	if err != nil || len(inbox) != 4 {
 		t.Fatalf("seeded inbox %d %v", len(inbox), err)
 	}
 	if triggers, _ := app.Store.Triggers(ctx, 10); len(triggers) != 0 {
@@ -266,7 +266,7 @@ func TestMockMCPServerOverStdio(t *testing.T) {
 		t.Fatalf("verify: %d %v", tools, err)
 	}
 	head, err := connector.Poll(ctx, 0, 0)
-	if err != nil || head.Head != 3 || len(head.Mail) != 0 {
+	if err != nil || head.Head != 4 || len(head.Mail) != 0 {
 		t.Fatalf("head %+v %v", head, err)
 	}
 	delivered, err := connector.DeliverPreset(ctx, PresetInviteConflict)

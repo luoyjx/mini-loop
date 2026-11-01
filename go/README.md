@@ -37,6 +37,12 @@ batch and handled in one turn. A worker ends each turn with the `report` tool:
 `quiet` writes only the ledger. The user's answer returns to the asking thread as
 an untrusted `user.answer` trigger.
 
+Mail is graded by sender and address before any model call. Inferred candidates
+pass one tool-less triage call and, in the default observe mode, wait on the page
+for the user. Workers can queue background preparation that runs in a read-only
+session and returns to their thread as a `job.done` trigger. A watchdog built on
+the agent's stuck detector flags tasks whose checks stop making progress.
+
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.

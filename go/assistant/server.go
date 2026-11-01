@@ -39,23 +39,30 @@ type WorkersView struct {
 
 // StateView is everything the simulated channel page renders. Attention
 // comes first on the page; Paused is set while the user paused processing.
+// Candidates are observed inferred candidates; Router counts decisions since
+// the process started.
 type StateView struct {
-	Model       string           `json:"model"`
-	Now         time.Time        `json:"now"`
-	Paused      *time.Time       `json:"paused,omitempty"`
-	Attention   []AttentionItem  `json:"attention"`
-	Integration IntegrationView  `json:"integration"`
-	Workers     WorkersView      `json:"workers"`
-	Channel     []ChannelMessage `json:"channel"`
-	Proposals   []Proposal       `json:"proposals"`
-	Tasks       []Task           `json:"tasks"`
-	Inbox       []Email          `json:"inbox"`
-	Sent        []Email          `json:"sent"`
-	Calendar    []CalendarEvent  `json:"calendar"`
-	Ledger      []LedgerEntry    `json:"ledger"`
-	Triggers    []Trigger        `json:"triggers"`
-	Routines    []Routine        `json:"routines"`
-	Presets     []PresetInfo     `json:"presets"`
+	Model         string           `json:"model"`
+	Now           time.Time        `json:"now"`
+	Paused        *time.Time       `json:"paused,omitempty"`
+	Attention     []AttentionItem  `json:"attention"`
+	CandidateMode CandidateMode    `json:"candidate_mode"`
+	Candidates    []Trigger        `json:"candidates"`
+	Router        RouterStats      `json:"router"`
+	Jobs          []Job            `json:"jobs"`
+	Contacts      []Contact        `json:"contacts"`
+	Integration   IntegrationView  `json:"integration"`
+	Workers       WorkersView      `json:"workers"`
+	Channel       []ChannelMessage `json:"channel"`
+	Proposals     []Proposal       `json:"proposals"`
+	Tasks         []Task           `json:"tasks"`
+	Inbox         []Email          `json:"inbox"`
+	Sent          []Email          `json:"sent"`
+	Calendar      []CalendarEvent  `json:"calendar"`
+	Ledger        []LedgerEntry    `json:"ledger"`
+	Triggers      []Trigger        `json:"triggers"`
+	Routines      []Routine        `json:"routines"`
+	Presets       []PresetInfo     `json:"presets"`
 }
 
 type chatRequest struct {
@@ -68,6 +75,10 @@ type simulateRequest struct {
 
 type answerRequest struct {
 	Text string `json:"text"`
+}
+
+type modeRequest struct {
+	Mode CandidateMode `json:"mode"`
 }
 
 type pauseRequest struct {
@@ -116,6 +127,9 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/triggers/{id}/retry", app.handleTriggerRetry)
 	mux.HandleFunc("POST /api/attention/{ref}/dismiss", app.handleDismiss)
 	mux.HandleFunc("POST /api/questions/{id}/answer", app.handleAnswer)
+	mux.HandleFunc("POST /api/candidates/{id}/{decision}", app.handleCandidate)
+	mux.HandleFunc("POST /api/candidates/mode", app.handleCandidateMode)
+	mux.HandleFunc("POST /api/jobs/{id}/stop", app.handleJobStop)
 	mux.HandleFunc("POST /api/pause", app.handlePause)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
 	return guard(mux)
@@ -171,7 +185,7 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
 		AgentTools: []string{MCPMailList, MCPMailRead, MCPCalendarList, MCPCalendarGet},
 		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPCalendarList + "（scheduler：日程临近）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + " / " + MCPSimAddEvent + "（模拟器）"},
-	}, Workers: WorkersView{Capacity: app.Router.Capacity(), Reserved: app.Router.Reserved()}}
+	}, Workers: WorkersView{Capacity: app.Router.Capacity(), Reserved: app.Router.Reserved()}, Router: app.Router.Stats()}
 	if since, paused := app.Store.Paused(); paused {
 		view.Paused = &since
 	}
@@ -185,6 +199,10 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		func() error { view.Ledger, err = app.Store.Ledger(ctx, 150); return err },
 		func() error { view.Triggers, err = app.Store.Triggers(ctx, 50); return err },
 		func() error { view.Routines, err = app.Store.Routines(ctx); return err },
+		func() error { view.CandidateMode, err = app.Store.CandidateMode(ctx); return err },
+		func() error { view.Candidates, err = app.Store.Candidates(ctx, 30); return err },
+		func() error { view.Jobs, err = app.Store.Jobs(ctx, 20); return err },
+		func() error { view.Contacts, err = app.Store.Contacts(ctx, 20); return err },
 	}
 	for _, step := range steps {
 		if err := step(); err != nil {
@@ -380,6 +398,59 @@ func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
 	}
 	app.Router.Wake()
 	writeJSON(w, http.StatusAccepted, acceptedResponse{trigger})
+}
+
+// handleCandidate hands an observed candidate to a worker or ignores it.
+func (app *App) handleCandidate(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+	decision := r.PathValue("decision")
+	if err != nil || (decision != "handle" && decision != "ignore") {
+		writeJSON(w, http.StatusNotFound, errorResponse{"unknown candidate decision"})
+		return
+	}
+	if _, err := decode[struct{}](r); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	trigger, err := app.Store.DecideCandidate(r.Context(), id, decision == "handle", "me（信道）", app.now())
+	if !writeActionError(w, err) {
+		return
+	}
+	app.Router.Wake()
+	writeJSON(w, http.StatusOK, trigger)
+}
+
+// handleCandidateMode switches inferred candidates between observe and auto.
+func (app *App) handleCandidateMode(w http.ResponseWriter, r *http.Request) {
+	request, err := decode[modeRequest](r)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	if err := app.Store.SetCandidateMode(r.Context(), request.Mode, "me（信道）", app.now()); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	writeJSON(w, http.StatusOK, request)
+}
+
+// handleJobStop cancels a queued or running preparation job.
+func (app *App) handleJobStop(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+	if err != nil {
+		writeJSON(w, http.StatusNotFound, errorResponse{"unknown job"})
+		return
+	}
+	if _, err := decode[struct{}](r); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	job, err := app.Store.CancelJob(r.Context(), id, "me（信道）", app.now())
+	if !writeActionError(w, err) {
+		return
+	}
+	app.Preparer.Stop(id)
+	writeJSON(w, http.StatusOK, job)
 }
 
 // handlePause pauses or resumes all processing.

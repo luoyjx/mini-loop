@@ -43,6 +43,7 @@ type App struct {
 	Scheduler  *Scheduler
 	Poller     *Poller
 	Outbox     *Outbox
+	Preparer   *Preparer
 	Manager    *agent.SessionManager
 	Health     *Health
 	ModelLabel string
@@ -108,6 +109,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 		return nil, fmt.Errorf("seed memory: %w", err)
 	}
 	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
+	router.triage = &Triage{provider: observeProvider(config.Provider), model: config.Model}
 	catalog, err := NewToolCatalog(store, config.Connector, router, now)
 	if err != nil {
 		return nil, err
@@ -131,6 +133,11 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if _, err = store.RequeueInterrupted(ctx, now()); err != nil {
 		return nil, errors.Join(err, manager.Stop(ctx))
 	}
+	if err = store.RequeueJobs(ctx); err != nil {
+		return nil, errors.Join(err, manager.Stop(ctx))
+	}
+	preparer := NewPreparer(store, router, manager, now, config.Log)
+	router.preparer = preparer
 	label := config.ModelLabel
 	if label == "" {
 		label = config.Model
@@ -146,18 +153,19 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	poller.health = health
 	return &App{
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
-		Poller: poller, Outbox: outbox, Manager: manager, Health: health,
+		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Health: health,
 		ModelLabel: label, now: now, states: states, release: release,
 	}, nil
 }
 
 // Start runs the dispatcher, scheduler (routines, task checks, event
-// reminders), mail poller and outbox until ctx ends.
+// reminders, watchdog), mail poller, outbox and preparation runner until ctx
+// ends.
 // The first poll runs before Start returns, so a first-time daemon pins its
 // mail cursor to the service's head before anything else can deliver.
 func (app *App) Start(ctx context.Context) {
 	_, _ = app.Poller.PollOnce(ctx)
-	loops := []func(context.Context){app.Router.Run, app.Scheduler.Run, app.Poller.Run, app.Outbox.Run}
+	loops := []func(context.Context){app.Router.Run, app.Scheduler.Run, app.Poller.Run, app.Outbox.Run, app.Preparer.Run}
 	app.wg.Add(len(loops))
 	for _, loop := range loops {
 		go func() { defer app.wg.Done(); loop(ctx) }()
@@ -183,6 +191,7 @@ func (app *App) SetPaused(ctx context.Context, paused bool) (bool, error) {
 	app.Router.Wake()
 	app.Outbox.Wake()
 	app.Scheduler.Wake()
+	app.Preparer.Wake()
 	return true, nil
 }
 
