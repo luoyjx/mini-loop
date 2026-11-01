@@ -18,6 +18,13 @@ the existing `go/mcp` stdio client:
 
 `launchd-plist` prints a macOS LaunchAgent for running the daemon on the owner's Mac.
 
+Workers follow work to completion through durable tasks. A worker creates a task
+with a first check time. The scheduler wakes the same thread's worker when the
+check is due, or earlier when a proposal on that thread is sent, fails or is
+denied. The worker then completes the task or schedules the next check. Each task
+has a fallback check and a six-check budget. The scheduler also reminds once per
+confirmed event that starts within 15 minutes, reading the calendar through MCP.
+
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.

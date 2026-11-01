@@ -1064,13 +1064,13 @@
         300,
         76
       ],
-      "tag": "chat / simulator / approval cards"
+      "tag": "chat / simulator / cards / task board"
     },
     {
       "id": "paStore",
       "type": "database",
       "label": "assistant.db (SQLite)",
-      "sublabel": "triggers / mail cursor / outbox",
+      "sublabel": "triggers / mail cursor / tasks / outbox",
       "pos": [
         530,
         4900
@@ -1079,7 +1079,7 @@
         340,
         76
       ],
-      "tag": "subscriptions / channel / ledger"
+      "tag": "reminders / subscriptions / channel / ledger"
     },
     {
       "id": "paRouter",
@@ -1094,7 +1094,7 @@
         340,
         76
       ],
-      "tag": "sole channel writer"
+      "tag": "parallel across threads / sole channel writer"
     },
     {
       "id": "paWorkers",
@@ -1129,8 +1129,8 @@
     {
       "id": "paScheduler",
       "type": "messagebus",
-      "label": "Routine scheduler",
-      "sublabel": "slot claim + trigger in one transaction",
+      "label": "Scheduler",
+      "sublabel": "routines / task checks / event reminders",
       "pos": [
         70,
         5150
@@ -1139,7 +1139,7 @@
         300,
         76
       ],
-      "tag": "catch-up after downtime or sleep"
+      "tag": "claim + trigger in one transaction / catch-up"
     },
     {
       "id": "paPoller",
@@ -1169,13 +1169,13 @@
         340,
         76
       ],
-      "tag": "refusal fails / transport retries"
+      "tag": "refusal fails / retries / outcome wakes tasks"
     },
     {
       "id": "paTools",
       "type": "security",
       "label": "Agent tools",
-      "sublabel": "MCP reads (read risk) / propose_* drafts",
+      "sublabel": "MCP reads / propose_* drafts / task_*",
       "pos": [
         1530,
         5150
@@ -1184,7 +1184,7 @@
         360,
         76
       ],
-      "tag": "no send tool / no Bash or file tools"
+      "tag": "no send tool / tasks on own thread only"
     },
     {
       "id": "paConnector",
@@ -2520,7 +2520,7 @@
       "id": "paSlot",
       "from": "paScheduler",
       "to": "paStore",
-      "label": "slot + trigger",
+      "label": "slot / task check / reminder",
       "fromSide": "right",
       "toSide": "left"
     },
@@ -2580,6 +2580,14 @@
         1200,
         5490
       ]
+    },
+    {
+      "id": "paUpcoming",
+      "from": "paScheduler",
+      "to": "paConnector",
+      "label": "calendar_list",
+      "fromSide": "bottom",
+      "toSide": "left"
     }
   ],
   "cards": [
@@ -2846,10 +2854,11 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline b1a0a72 plus 2026-11-01 local-deployment iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
-        "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. MCP data is simulated.",
-        "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine catch-up also covers a Mac that slept through the slot."
+        "Review baseline 2103c07 plus the 2026-11-01 durable-task iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
+        "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
+        "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
+        "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."
       ]
     }
   ]

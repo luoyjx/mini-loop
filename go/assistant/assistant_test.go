@@ -10,6 +10,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/luoyjx/mini-loop/go/agent"
 )
 
 // fixedClock is a settable clock shared by the app and the scripted model.
@@ -44,7 +46,28 @@ func startApp(t *testing.T, dir string, clock *fixedClock) (*App, func()) {
 
 func startAppWith(t *testing.T, dir string, clock *fixedClock, wrap func(mcpCaller) mcpCaller) (*App, func()) {
 	t.Helper()
+	return launchApp(t, dir, clock, appOptions{wrap: wrap})
+}
+
+// appOptions overrides the test daemon's MCP caller, model or worker count.
+type appOptions struct {
+	wrap     func(mcpCaller) mcpCaller
+	provider agent.Provider
+	workers  int
+}
+
+func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) (*App, func()) {
+	t.Helper()
 	ctx := context.Background()
+	wrap := options.wrap
+	var provider agent.Provider = &ScriptedModel{Now: clock.Now}
+	if options.provider != nil {
+		provider = options.provider
+	}
+	workers := options.workers
+	if workers == 0 {
+		workers = 2
+	}
 	world, err := OpenWorld(ctx, filepath.Join(dir, "mock-mcp", "world.db"), clock.Now)
 	if err != nil {
 		t.Fatal(err)
@@ -57,7 +80,7 @@ func startAppWith(t *testing.T, dir string, clock *fixedClock, wrap func(mcpCall
 	if wrap != nil {
 		caller = wrap(caller)
 	}
-	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: &ScriptedModel{Now: clock.Now}, Model: ScriptedModelID, Now: clock.Now, Workers: 2, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second})
+	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: provider, Model: ScriptedModelID, Now: clock.Now, Workers: workers, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second})
 	if err != nil {
 		t.Fatal(errors.Join(err, world.Close()))
 	}
@@ -346,6 +369,11 @@ func TestRestartRoutesFollowUpToRestoredWorker(t *testing.T) {
 	}
 	if !restored {
 		t.Fatal("route should record that the worker was restored from durable state")
+	}
+	// The second follow-up saw the thread's task in its prompt and extended it.
+	tasks, _ := app.Store.ActiveTasks(context.Background(), "t-q4-plan")
+	if len(tasks) != 1 || !strings.Contains(tasks[0].Note, "又来信") || tasks[0].SessionID != worker {
+		t.Fatalf("one follow-up task per thread, extended by the restored worker: %+v", tasks)
 	}
 }
 

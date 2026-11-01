@@ -108,7 +108,7 @@ func TestRunServesUntilCancelled(t *testing.T) {
 	if code := <-done; code != 0 {
 		t.Fatalf("code=%d stderr=%q", code, stderr.String())
 	}
-	if out := stderr.String(); !strings.Contains(out, "scripted") || !strings.Contains(out, "mcp=mock-mailcal over stdio, 9 tools") {
+	if out := stderr.String(); !strings.Contains(out, "scripted") || !strings.Contains(out, "mcp=mock-mailcal over stdio, 10 tools") {
 		t.Fatalf("startup line should name the offline model and the MCP child: %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(data, worldDirName, "world.db")); err != nil {

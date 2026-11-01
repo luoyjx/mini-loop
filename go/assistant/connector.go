@@ -151,7 +151,7 @@ func (c *Connector) RespondInvite(ctx context.Context, reply InviteReply) (Effec
 	return call[EffectReceipt](ctx, c, MCPCalendarRespond, reply)
 }
 
-// DeliverPreset and DeliverCustom drive the simulated outside world. Only the
+// DeliverPreset, DeliverCustom and AddEvent drive the simulated outside world. Only the
 // demo page uses them; a real connector would have no such tools.
 func (c *Connector) DeliverPreset(ctx context.Context, preset Preset) (DeliveredMail, error) {
 	return call[DeliveredMail](ctx, c, MCPSimDeliver, mcpPresetArgs{Preset: preset})
@@ -159,6 +159,10 @@ func (c *Connector) DeliverPreset(ctx context.Context, preset Preset) (Delivered
 
 func (c *Connector) DeliverCustom(ctx context.Context, custom CustomMail) (DeliveredMail, error) {
 	return call[DeliveredMail](ctx, c, MCPSimDeliverCustom, custom)
+}
+
+func (c *Connector) AddEvent(ctx context.Context, sim SimEvent) (CalendarEvent, error) {
+	return call[CalendarEvent](ctx, c, MCPSimAddEvent, sim)
 }
 
 // retryable reports whether an effect failure may succeed on a later attempt.

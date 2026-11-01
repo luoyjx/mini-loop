@@ -58,7 +58,15 @@ button:disabled { opacity: .5; cursor: default; }
 .chip.sent, .chip.done, .chip.confirmed { background: var(--ok-soft); color: var(--ok); }
 .chip.denied, .chip.ignored, .chip.quiet, .chip.declined { background: var(--bubble); color: var(--muted); }
 .chip.failed { background: var(--bad-soft); color: var(--bad); }
-.chip.running, .chip.invited, .chip.approved { background: var(--accent-soft); color: var(--accent); }
+.chip.running, .chip.invited, .chip.approved, .chip.active { background: var(--accent-soft); color: var(--accent); }
+.chip.cancelled { background: var(--bubble); color: var(--muted); }
+.chip.stalled { background: var(--warn-soft); color: var(--warn); }
+.task { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+.task.done { border-left-color: var(--ok); }
+.task.cancelled { border-left-color: var(--muted); opacity: .75; }
+.task.stalled { border-left-color: var(--warn); }
+.task .title { font-weight: 650; }
+.task .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .badge.mcp { background: var(--ok-soft); color: var(--ok); }
 .badge.mcp.down { background: var(--bad-soft); color: var(--bad); }
 .banner { margin: 0 0 12px; padding: 8px 10px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; word-break: break-word; }
@@ -101,9 +109,10 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   <h1>mini-loop 个人助理</h1>
   <span class="badge" id="model">model …</span>
   <span class="badge mcp" id="mcp" title="邮件和日历只经过这个 MCP server">MCP …</span>
+  <span class="badge" id="workers" title="不同 thread 的事件并行处理，同一 thread 按顺序处理">worker …</span>
   <div class="legend" title="图中 6 个组件在 demo 里的位置">
     <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟 MCP 邮件/日历</span><span>记忆 · recall/remember</span>
-    <span>Routine · 晨报 + 事件触发</span><span>审批闸 · 提案卡片</span><span>审计 · 账本</span>
+    <span>Routine · 晨报 / 任务检查 / 日程提醒</span><span>审批闸 · 提案卡片</span><span>审计 · 账本</span>
   </div>
 </header>
 <main>
@@ -119,6 +128,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   <section class="card" aria-label="外部世界与账本">
     <nav class="tabs" id="tabs">
       <button data-pane="world" class="active">外部世界</button>
+      <button data-pane="tasks" id="tasks-tab">任务</button>
       <button data-pane="mail">邮箱</button>
       <button data-pane="calendar">日历</button>
       <button data-pane="triggers">触发器</button>
@@ -136,12 +146,16 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
         <textarea name="body" placeholder="正文"></textarea>
         <div class="actions"><label class="hint"><input type="checkbox" name="bulk" style="width:auto"> 批量邮件（newsletter）</label><button class="primary" type="submit" style="margin-left:auto">投递</button></div>
       </form>
+      <h3>外部世界改动日历</h3>
+      <p class="hint">调用 sim_add_event 在日历里加一个已确认的会。scheduler 每轮经 MCP calendar_list 查看，开始前 15 分钟内提醒一次。</p>
+      <div class="grid"><button id="book-event">日历：12 分钟后有会（客户方案电话会）</button></div>
       <h3>Routines</h3>
       <div id="routines"></div>
       <h3>MCP 工具</h3>
       <div id="tools" class="hint"></div>
-      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。</p>
+      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。</p>
     </div>
+    <div class="pane" id="pane-tasks"><p class="hint">worker 用 task_create 建任务并约定检查时间；到点后 scheduler 把同一 thread 的 worker 叫醒核对进展。每个任务最多自动检查 6 次，之后交给你。</p><div id="tasks"></div></div>
     <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准、发件箱经 MCP 发出的提案）</h3><div id="sent"></div></div>
     <div class="pane" id="pane-calendar"><div id="calendar"></div></div>
     <div class="pane" id="pane-triggers"><div id="triggers"></div></div>
@@ -169,6 +183,7 @@ const dateTime = (s) => new Date(s).toLocaleString("zh-CN", { month: "2-digit", 
 const short = (s) => (s ? String(s).slice(0, 10) : "");
 const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
 const statusLabel = { pending: "待批准", approved: "已批准 · 发件箱执行中", sent: "已发出", denied: "已拒绝", failed: "发送失败" };
+const taskLabel = { active: "进行中", done: "已完成", cancelled: "已取消", stalled: "转交给你" };
 
 function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
@@ -222,6 +237,21 @@ function renderChannel() {
   if (nearBottom) box.scrollTop = box.scrollHeight;
 }
 
+function taskCard(task) {
+  const active = task.status === "active";
+  return el("div", { class: "task " + task.status },
+    el("div", {}, el("span", { class: "title" }, "任务 #" + task.id + " · " + task.title), " ",
+      el("span", { class: "chip " + task.status }, taskLabel[task.status] || task.status)),
+    el("div", { class: "sub" }, "要核对：" + task.check),
+    task.note ? el("div", { class: "sub" }, "进展：" + task.note) : null,
+    task.result ? el("div", { class: "sub" }, "结果：" + task.result + (task.closed_by ? "（" + task.closed_by + "）" : "")) : null,
+    el("div", { class: "sub" }, (active && task.wake_at ? "下次检查 " + dateTime(task.wake_at) + "（" + task.wake_reason + "） · " : "") +
+      "已检查 " + task.checks + "/" + task.max_checks + " 次 · thread " + task.thread + " · worker " + short(task.session_id)),
+    active ? el("div", { class: "actions" },
+      el("button", { onclick: () => taskAction(task.id, "wake") }, "立即检查"),
+      el("button", { onclick: () => taskAction(task.id, "cancel") }, "取消")) : null);
+}
+
 function mailList(items) {
   if (!items.length) return el("div", { class: "empty" }, "空");
   return items.map((m) => el("div", { class: "list-item" },
@@ -235,6 +265,10 @@ function render() {
   const integration = state.integration;
   $("mcp").textContent = "MCP · " + integration.server + "（" + integration.transport + "）" + (integration.error ? " · 不可用" : "");
   $("mcp").classList.toggle("down", !!integration.error);
+  $("workers").textContent = "worker " + state.workers.running + "/" + state.workers.capacity + " 运行中";
+  const activeTasks = state.tasks.filter((task) => task.status === "active").length;
+  $("tasks-tab").textContent = activeTasks ? "任务（" + activeTasks + "）" : "任务";
+  $("tasks").replaceChildren(...(state.tasks.length ? state.tasks.map(taskCard) : [el("div", { class: "empty" }, "还没有任务。试试：经理来信，或在信道里说「1 分钟后提醒我 喝水」。")]));
   $("integration-error").hidden = !integration.error;
   $("integration-error").textContent = integration.error ? "MCP 连接异常：" + integration.error : "";
   $("tools").replaceChildren(
@@ -269,6 +303,11 @@ function render() {
       el("td", {}, e.detail))))));
 }
 
+async function taskAction(id, action) {
+  try { await post("/api/tasks/" + id + "/" + action); toast(action === "wake" ? "已安排立即检查" : "已取消任务"); refresh(); }
+  catch (e) { toast(e.message); }
+}
+
 async function decide(id, decision) {
   try { await post("/api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，发件箱正在经 MCP 发出" : "已拒绝"); refresh(); }
   catch (e) { toast(e.message); }
@@ -289,7 +328,9 @@ $("custom").addEventListener("submit", async (event) => {
     event.target.reset(); toast("已投递自定义来信"); refresh();
   } catch (e) { toast(e.message); }
 });
-$("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "我的经理是谁", "记住 周三下午不开会"].map((text) =>
+$("book-event").addEventListener("click", () =>
+  post("/api/simulate/event", {}).then((r) => toast("已加日程，" + time(r.start).slice(0, 5) + " 开始")).catch((e) => toast(e.message)));
+$("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "1 分钟后提醒我 喝水", "进行中的任务", "我的经理是谁", "记住 周三下午不开会"].map((text) =>
   el("button", { onclick: () => { $("text").value = text; $("text").focus(); } }, text)));
 $("tabs").addEventListener("click", (event) => {
   const button = event.target.closest("button"); if (!button) return;

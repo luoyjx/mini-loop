@@ -29,13 +29,21 @@ type IntegrationView struct {
 	Error      string   `json:"error,omitempty"`
 }
 
+// WorkersView shows how many worker turns may run at once and how many do.
+type WorkersView struct {
+	Capacity int `json:"capacity"`
+	Running  int `json:"running"`
+}
+
 // StateView is everything the simulated channel page renders.
 type StateView struct {
 	Model       string           `json:"model"`
 	Now         time.Time        `json:"now"`
 	Integration IntegrationView  `json:"integration"`
+	Workers     WorkersView      `json:"workers"`
 	Channel     []ChannelMessage `json:"channel"`
 	Proposals   []Proposal       `json:"proposals"`
+	Tasks       []Task           `json:"tasks"`
 	Inbox       []Email          `json:"inbox"`
 	Sent        []Email          `json:"sent"`
 	Calendar    []CalendarEvent  `json:"calendar"`
@@ -61,6 +69,11 @@ type deliveredResponse struct {
 	MailID string `json:"mail_id"`
 }
 
+type bookedResponse struct {
+	EventID string    `json:"event_id"`
+	Start   time.Time `json:"start"`
+}
+
 type errorResponse struct {
 	Error string `json:"error"`
 }
@@ -79,7 +92,9 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/chat", app.handleChat)
 	mux.HandleFunc("POST /api/simulate", app.handleSimulate)
 	mux.HandleFunc("POST /api/simulate/custom", app.handleCustom)
+	mux.HandleFunc("POST /api/simulate/event", app.handleEvent)
 	mux.HandleFunc("POST /api/proposals/{id}/{decision}", app.handleDecision)
+	mux.HandleFunc("POST /api/tasks/{id}/{action}", app.handleTask)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
 	return guard(mux)
 }
@@ -133,12 +148,14 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 	view := StateView{Model: app.ModelLabel, Now: now, Presets: Presets, Integration: IntegrationView{
 		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
 		AgentTools: []string{MCPMailList, MCPMailRead, MCPCalendarList, MCPCalendarGet},
-		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + "（模拟器）"},
-	}}
+		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPCalendarList + "（scheduler：日程临近）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + " / " + MCPSimAddEvent + "（模拟器）"},
+	}, Workers: WorkersView{Capacity: app.Router.Capacity()}}
 	var err error
 	steps := []func() error{
 		func() error { view.Channel, err = app.Store.Channel(ctx, 200); return err },
 		func() error { view.Proposals, err = app.Store.Proposals(ctx, 50); return err },
+		func() error { view.Tasks, err = app.Store.Tasks(ctx, 40); return err },
+		func() error { view.Workers.Running, err = app.Store.CountTriggers(ctx, TriggerRunning); return err },
 		func() error { view.Ledger, err = app.Store.Ledger(ctx, 150); return err },
 		func() error { view.Triggers, err = app.Store.Triggers(ctx, 50); return err },
 		func() error { view.Routines, err = app.Store.Routines(ctx); return err },
@@ -213,6 +230,59 @@ func (app *App) delivered(w http.ResponseWriter, mail DeliveredMail, err error) 
 	writeJSON(w, http.StatusAccepted, deliveredResponse{mail.ID})
 }
 
+// handleEvent books a meeting that starts soon in the simulated calendar.
+// The scheduler finds it through calendar_list on the tick this wakes.
+func (app *App) handleEvent(w http.ResponseWriter, r *http.Request) {
+	request, err := decode[SimEvent](r)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	event, err := app.Connector.AddEvent(r.Context(), request)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	app.Scheduler.Wake()
+	writeJSON(w, http.StatusAccepted, bookedResponse{event.ID, event.Start})
+}
+
+// handleTask lets the user check a task now or cancel it. Workers complete
+// tasks; only the user cancels them.
+func (app *App) handleTask(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+	action := r.PathValue("action")
+	if err != nil || (action != "wake" && action != "cancel") {
+		writeJSON(w, http.StatusNotFound, errorResponse{"unknown task action"})
+		return
+	}
+	if _, err := decode[struct{}](r); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	now := app.now()
+	var task Task
+	if action == "wake" {
+		task, err = app.Store.WakeTask(r.Context(), id, "用户点了立即检查", "me（信道）", now)
+	} else {
+		task, err = app.Store.CloseTask(r.Context(), id, TaskCancelled, "用户取消", "me（信道）", now)
+	}
+	switch {
+	case errors.Is(err, ErrTaskClosed):
+		writeJSON(w, http.StatusConflict, errorResponse{err.Error()})
+		return
+	case err != nil:
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	if action == "wake" {
+		app.Scheduler.Wake()
+	} else {
+		_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已取消任务 #%d「%s」，不再自动检查。", task.ID, task.Title), TriggerID: task.LastTrigger}, now)
+	}
+	writeJSON(w, http.StatusOK, task)
+}
+
 func (app *App) handleRoutine(w http.ResponseWriter, r *http.Request) {
 	id, err := app.Scheduler.RunNow(r.Context(), RoutineID(r.PathValue("id")))
 	app.accepted(w, id, err)
@@ -252,6 +322,8 @@ func (app *App) handleDecision(w http.ResponseWriter, r *http.Request) {
 		app.Outbox.Wake()
 	} else {
 		_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已取消提案 #%d，什么都没有发出。", proposal.ID), TriggerID: proposal.TriggerID}, now)
+		// A denial brings the thread's tasks forward.
+		app.Scheduler.Wake()
 	}
 	writeJSON(w, http.StatusOK, proposal)
 }

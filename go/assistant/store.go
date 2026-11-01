@@ -16,8 +16,8 @@ import (
 )
 
 // Store is the daemon's durable state: the trigger queue with its mail-poll
-// cursor, thread subscriptions, the proposal outbox, the channel log and the
-// ledger. Mail and calendar are not here: they belong to the external service
+// cursor, thread subscriptions, durable tasks and event reminders, the
+// proposal outbox, the channel log and the ledger. Mail and calendar are not here: they belong to the external service
 // behind the MCP connector. It is separate from the agent session store so the
 // demo never edits that schema. One pinned connection serializes writers.
 type Store struct {
@@ -61,6 +61,18 @@ CREATE TABLE IF NOT EXISTS routine_runs(
 CREATE TABLE IF NOT EXISTS ingested(
 	mail_id TEXT PRIMARY KEY, seq INTEGER NOT NULL, trigger_id INTEGER NOT NULL,
 	created_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS tasks(
+	id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, thread TEXT NOT NULL,
+	session_id TEXT NOT NULL, trigger_id INTEGER NOT NULL, status TEXT NOT NULL,
+	check_note TEXT NOT NULL, note TEXT NOT NULL DEFAULT '', result TEXT NOT NULL DEFAULT '',
+	wake_at INTEGER NOT NULL DEFAULT 0, wake_reason TEXT NOT NULL DEFAULT '',
+	checks INTEGER NOT NULL DEFAULT 0, max_checks INTEGER NOT NULL,
+	last_trigger INTEGER NOT NULL DEFAULT 0, closed_by TEXT NOT NULL DEFAULT '',
+	dedupe TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS tasks_due ON tasks(status, wake_at);
+CREATE TABLE IF NOT EXISTS reminders(
+	event_id TEXT NOT NULL, start_at INTEGER NOT NULL, trigger_id INTEGER NOT NULL,
+	created_at INTEGER NOT NULL, PRIMARY KEY(event_id, start_at));
 `
 
 // addedColumns upgrades a data directory written by the first demo, whose
@@ -185,6 +197,10 @@ func triggerSource(kind TriggerKind) string {
 		return "me（信道）"
 	case TriggerRoutine:
 		return "scheduler"
+	case TriggerTaskWakeup:
+		return "scheduler（任务检查）"
+	case TriggerUpcoming:
+		return "scheduler（日程临近，MCP calendar_list）"
 	default:
 		return "environment"
 	}
@@ -413,6 +429,11 @@ func (s *Store) DecideProposal(ctx context.Context, id int64, approve bool, acto
 		if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerDecision, Actor: actor, TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Detail: fmt.Sprintf("%s提案 #%d", verb, p.ID)}); err != nil {
 			return err
 		}
+		if !approve {
+			if err := bringForward(ctx, tx, p.Thread, fmt.Sprintf("提案 #%d 被用户拒绝", p.ID), actor, now); err != nil {
+				return err
+			}
+		}
 		p.Status, p.DecidedBy, p.DecidedAt = status, actor, &now
 		decided = p
 		return nil
@@ -435,7 +456,9 @@ func (s *Store) NextApproved(ctx context.Context, now time.Time) (Proposal, bool
 }
 
 // CompleteProposal records a confirmed external effect: approved → sent, the
-// effect ledger row with the connector receipt, and one channel line.
+// effect ledger row with the connector receipt, and one channel line. Active
+// tasks on the proposal's thread are checked next; a final failure or a
+// denial does the same.
 func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt EffectReceipt, actor string, now time.Time) error {
 	return s.inTx(ctx, func(tx *sql.Tx) error {
 		result, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, receipt=?, last_error='' WHERE id=? AND status=?`, string(ProposalSent), receipt.Receipt, p.ID, string(ProposalApproved))
@@ -452,8 +475,10 @@ func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt Effect
 		if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerEffect, Actor: actor, TriggerID: p.TriggerID, Thread: p.Thread, SessionID: p.SessionID, ActionID: p.ActionID, Tool: effectTool(p.Kind), Risk: string(agent.RiskExternal), Detail: detail + "）"}); err != nil {
 			return err
 		}
-		_, err = postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已经 MCP 发出提案 #%d：%s → %s", p.ID, p.Subject, p.To), TriggerID: p.TriggerID}, now)
-		return err
+		if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已经 MCP 发出提案 #%d：%s → %s", p.ID, p.Subject, p.To), TriggerID: p.TriggerID}, now); err != nil {
+			return err
+		}
+		return bringForward(ctx, tx, p.Thread, fmt.Sprintf("提案 #%d 已经发出（回执 %s）", p.ID, receipt.Receipt), actor, now)
 	})
 }
 
@@ -480,8 +505,10 @@ func (s *Store) FailProposalAttempt(ctx context.Context, p Proposal, cause error
 		if !final {
 			return nil
 		}
-		_, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("提案 #%d 没能发出：%s", p.ID, truncateRunes(message, 120)), TriggerID: p.TriggerID}, now)
-		return err
+		if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("提案 #%d 没能发出：%s", p.ID, truncateRunes(message, 120)), TriggerID: p.TriggerID}, now); err != nil {
+			return err
+		}
+		return bringForward(ctx, tx, p.Thread, fmt.Sprintf("提案 #%d 发送失败", p.ID), actor, now)
 	})
 }
 

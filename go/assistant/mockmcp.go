@@ -31,6 +31,7 @@ const (
 	MCPCalendarRespond  = "calendar_respond"
 	MCPSimDeliver       = "sim_deliver"
 	MCPSimDeliverCustom = "sim_deliver_custom"
+	MCPSimAddEvent      = "sim_add_event"
 )
 
 const mcpProtocolVersion = "2024-11-05"
@@ -161,6 +162,8 @@ var mockTools = []mockTool{
 		handle(func(ctx context.Context, w *World, a CustomMail) (DeliveredMail, error) {
 			return w.DeliverCustom(ctx, a)
 		})},
+	{MCPSimAddEvent, "Simulator: book a confirmed meeting that starts soon.", `{"type":"object","properties":{"title":{"type":"string"},"in_minutes":{"type":"integer","minimum":1,"maximum":1440},"minutes":{"type":"integer","minimum":5,"maximum":480}}}`, false, false,
+		handle(func(ctx context.Context, w *World, a SimEvent) (CalendarEvent, error) { return w.AddEvent(ctx, a) })},
 }
 
 // callText runs one tool and renders its MCP text content: the result JSON,

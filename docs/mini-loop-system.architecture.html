@@ -4690,13 +4690,14 @@
         <path data-edge-from="paRouter" data-edge-to="paWorkers" data-edge-key="89" data-edge-id="paTurn" data-composition-points="1370,4938;1530,4938" d="M 1370 4938 L 1530 4938" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="paModel" data-edge-to="paWorkers" data-edge-label="text / tool_use" data-edge-key="90" data-edge-id="paModelRequest" data-composition-points="2050,4938;1890,4938" d="M 2050 4938 L 1890 4938" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="paWorkers" data-edge-to="paTools" data-edge-label="gated dispatch" data-edge-key="91" data-edge-id="paGate" data-composition-points="1710,4976;1710,5150" d="M 1710 4976 L 1710 5150" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="paScheduler" data-edge-to="paStore" data-edge-label="slot + trigger" data-edge-key="92" data-edge-id="paSlot" data-composition-points="370,5188;450,5188;450,4938;530,4938" d="M 370 5188 L 442 5188 Q 450 5188 450 5180 L 450 4946 Q 450 4938 458 4938 L 530 4938" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paScheduler" data-edge-to="paStore" data-edge-label="slot / task check / reminder" data-edge-key="92" data-edge-id="paSlot" data-composition-points="370,5188;450,5188;450,4938;530,4938" d="M 370 5188 L 442 5188 Q 450 5188 450 5180 L 450 4946 Q 450 4938 458 4938 L 530 4938" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paPoller" data-edge-to="paStore" data-edge-label="trigger + cursor" data-edge-key="93" data-edge-id="paIngest" data-composition-points="700,5150;700,4976" d="M 700 5150 L 700 4976" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="paPoller" data-edge-to="paConnector" data-edge-label="mail_poll" data-edge-key="94" data-edge-id="paPoll" data-composition-points="700,5226;700,5250;1006,5250;1006,5438;1030,5438" d="M 700 5226 L 700 5242 Q 700 5250 708 5250 L 998 5250 Q 1006 5250 1006 5258 L 1006 5430 Q 1006 5438 1014 5438 L 1030 5438" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paPoller" data-edge-to="paConnector" data-edge-label="mail_poll" data-edge-key="94" data-edge-id="paPoll" data-composition-points="700,5226;700,5250;1006,5250;1006,5431;1030,5431" d="M 700 5226 L 700 5242 Q 700 5250 708 5250 L 998 5250 Q 1006 5250 1006 5258 L 1006 5423 Q 1006 5431 1014 5431 L 1030 5431" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paStore" data-edge-to="paOutbox" data-edge-label="approved" data-edge-key="95" data-edge-id="paApproved" data-composition-points="870,4938;950,4938;950,5188;1030,5188" d="M 870 4938 L 942 4938 Q 950 4938 950 4946 L 950 5180 Q 950 5188 958 5188 L 1030 5188" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paOutbox" data-edge-to="paConnector" data-edge-label="send / respond + key" data-edge-key="96" data-edge-id="paEffect" data-composition-points="1200,5226;1200,5400" d="M 1200 5226 L 1200 5400" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="paTools" data-edge-to="paConnector" data-edge-label="reads" data-edge-key="97" data-edge-id="paReads" data-composition-points="1710,5226;1710,5250;1394,5250;1394,5438;1370,5438" d="M 1710 5226 L 1710 5242 Q 1710 5250 1702 5250 L 1402 5250 Q 1394 5250 1394 5258 L 1394 5430 Q 1394 5438 1386 5438 L 1370 5438" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paConnector" data-edge-to="paMock" data-edge-label="stdio JSON-RPC" data-edge-key="98" data-edge-id="paStdio" data-composition-points="1200,5476;1200,5650" d="M 1200 5476 L 1200 5650" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paScheduler" data-edge-to="paConnector" data-edge-label="calendar_list" data-edge-key="99" data-edge-id="paUpcoming" data-composition-points="220,5226;220,5250;1006,5250;1006,5445;1030,5445" d="M 220 5226 L 220 5242 Q 220 5250 228 5250 L 998 5250 Q 1006 5250 1006 5258 L 1006 5437 Q 1006 5445 1014 5445 L 1030 5445" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5505,8 +5506,8 @@
         <text data-detail="fine" x="1270" y="3818" class="t-backend" font-size="7" text-anchor="middle">same-process API or Worker / external Temporal</text>
         </g>
 
-        <g id="node-paChannel" data-node-id="paChannel" data-node-label="Simulated channel page" tabindex="0" role="button" aria-label="Focus Simulated channel page, cmd/miniloop-assistant / loopback only, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="cmd/miniloop-assistant / loopback only" data-node-tag="chat / simulator / approval cards" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Simulated channel page · cmd/miniloop-assistant / loopback only · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · chat / simulator / approval cards</title>
+        <g id="node-paChannel" data-node-id="paChannel" data-node-label="Simulated channel page" tabindex="0" role="button" aria-label="Focus Simulated channel page, cmd/miniloop-assistant / loopback only, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="cmd/miniloop-assistant / loopback only" data-node-tag="chat / simulator / cards / task board" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Simulated channel page · cmd/miniloop-assistant / loopback only · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · chat / simulator / cards / task board</title>
           <rect x="70" y="4900" width="300" height="76" rx="6" class="c-mask"/>
           <rect x="70" y="4900" width="300" height="76" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(76 4906) scale(0.6875)">
@@ -5517,11 +5518,11 @@
           </g>
           <text data-detail-anchor x="220" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Simulated channel page</text>
         <text data-detail="context" x="220" y="4952" class="t-muted" font-size="9" text-anchor="middle">cmd/miniloop-assistant / loopback only</text>
-        <text data-detail="fine" x="220" y="4968" class="t-frontend" font-size="7" text-anchor="middle">chat / simulator / approval cards</text>
+        <text data-detail="fine" x="220" y="4968" class="t-frontend" font-size="7" text-anchor="middle">chat / simulator / cards / task board</text>
         </g>
 
-        <g id="node-paStore" data-node-id="paStore" data-node-label="assistant.db (SQLite)" tabindex="0" role="button" aria-label="Focus assistant.db (SQLite), triggers / mail cursor / outbox, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="database" data-node-sublabel="triggers / mail cursor / outbox" data-node-tag="subscriptions / channel / ledger" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>assistant.db (SQLite) · triggers / mail cursor / outbox · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · subscriptions / channel / ledger</title>
+        <g id="node-paStore" data-node-id="paStore" data-node-label="assistant.db (SQLite)" tabindex="0" role="button" aria-label="Focus assistant.db (SQLite), triggers / mail cursor / tasks / outbox, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="database" data-node-sublabel="triggers / mail cursor / tasks / outbox" data-node-tag="reminders / subscriptions / channel / ledger" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>assistant.db (SQLite) · triggers / mail cursor / tasks / outbox · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · reminders / subscriptions / channel / ledger</title>
           <rect x="530" y="4900" width="340" height="76" rx="6" class="c-mask"/>
           <rect x="530" y="4900" width="340" height="76" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(536 4906) scale(0.6875)">
@@ -5529,12 +5530,12 @@
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-detail-anchor x="700" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">assistant.db (SQLite)</text>
-        <text data-detail="context" x="700" y="4952" class="t-muted" font-size="9" text-anchor="middle">triggers / mail cursor / outbox</text>
-        <text data-detail="fine" x="700" y="4968" class="t-database" font-size="7" text-anchor="middle">subscriptions / channel / ledger</text>
+        <text data-detail="context" x="700" y="4952" class="t-muted" font-size="9" text-anchor="middle">triggers / mail cursor / tasks / outbox</text>
+        <text data-detail="fine" x="700" y="4968" class="t-database" font-size="7" text-anchor="middle">reminders / subscriptions / channel / ledger</text>
         </g>
 
-        <g id="node-paRouter" data-node-id="paRouter" data-node-label="Assistant Router" tabindex="0" role="button" aria-label="Focus Assistant Router, rule fast path / thread subscriptions, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="rule fast path / thread subscriptions" data-node-tag="sole channel writer" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Assistant Router · rule fast path / thread subscriptions · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · sole channel writer</title>
+        <g id="node-paRouter" data-node-id="paRouter" data-node-label="Assistant Router" tabindex="0" role="button" aria-label="Focus Assistant Router, rule fast path / thread subscriptions, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="rule fast path / thread subscriptions" data-node-tag="parallel across threads / sole channel writer" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Assistant Router · rule fast path / thread subscriptions · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · parallel across threads / sole channel writer</title>
           <rect x="1030" y="4900" width="340" height="76" rx="6" class="c-mask"/>
           <rect x="1030" y="4900" width="340" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1036 4906) scale(0.6875)">
@@ -5542,7 +5543,7 @@
           </g>
           <text data-detail-anchor x="1200" y="4936" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Assistant Router</text>
         <text data-detail="context" x="1200" y="4952" class="t-muted" font-size="9" text-anchor="middle">rule fast path / thread subscriptions</text>
-        <text data-detail="fine" x="1200" y="4968" class="t-backend" font-size="7" text-anchor="middle">sole channel writer</text>
+        <text data-detail="fine" x="1200" y="4968" class="t-backend" font-size="7" text-anchor="middle">parallel across threads / sole channel writer</text>
         </g>
 
         <g id="node-paWorkers" data-node-id="paWorkers" data-node-label="Worker sessions" tabindex="0" role="button" aria-label="Focus Worker sessions, Go SessionManager / ToolGate / agent.db, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Go SessionManager / ToolGate / agent.db" data-node-tag="untrusted triggers / human chat turns" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
@@ -5570,8 +5571,8 @@
         <text data-detail="fine" x="2200" y="4968" class="t-external" font-size="7" text-anchor="middle">no credentials needed</text>
         </g>
 
-        <g id="node-paScheduler" data-node-id="paScheduler" data-node-label="Routine scheduler" tabindex="0" role="button" aria-label="Focus Routine scheduler, slot claim + trigger in one transaction, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="slot claim + trigger in one transaction" data-node-tag="catch-up after downtime or sleep" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Routine scheduler · slot claim + trigger in one transaction · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · catch-up after downtime or sleep</title>
+        <g id="node-paScheduler" data-node-id="paScheduler" data-node-label="Scheduler" tabindex="0" role="button" aria-label="Focus Scheduler, routines / task checks / event reminders, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="routines / task checks / event reminders" data-node-tag="claim + trigger in one transaction / catch-up" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Scheduler · routines / task checks / event reminders · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · claim + trigger in one transaction / catch-up</title>
           <rect x="70" y="5150" width="300" height="76" rx="6" class="c-mask"/>
           <rect x="70" y="5150" width="300" height="76" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(76 5156) scale(0.6875)">
@@ -5580,9 +5581,9 @@
             <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
-          <text data-detail-anchor x="220" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Routine scheduler</text>
-        <text data-detail="context" x="220" y="5202" class="t-muted" font-size="9" text-anchor="middle">slot claim + trigger in one transaction</text>
-        <text data-detail="fine" x="220" y="5218" class="t-messagebus" font-size="7" text-anchor="middle">catch-up after downtime or sleep</text>
+          <text data-detail-anchor x="220" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Scheduler</text>
+        <text data-detail="context" x="220" y="5202" class="t-muted" font-size="9" text-anchor="middle">routines / task checks / event reminders</text>
+        <text data-detail="fine" x="220" y="5218" class="t-messagebus" font-size="7" text-anchor="middle">claim + trigger in one transaction / catch-up</text>
         </g>
 
         <g id="node-paPoller" data-node-id="paPoller" data-node-label="Mail poller" tabindex="0" role="button" aria-label="Focus Mail poller, mail_poll cursor / dedupe by mail ID, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="mail_poll cursor / dedupe by mail ID" data-node-tag="first run starts at head" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
@@ -5600,8 +5601,8 @@
         <text data-detail="fine" x="700" y="5218" class="t-messagebus" font-size="7" text-anchor="middle">first run starts at head</text>
         </g>
 
-        <g id="node-paOutbox" data-node-id="paOutbox" data-node-label="Outbox" tabindex="0" role="button" aria-label="Focus Outbox, sole effect caller / key proposal-id, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="sole effect caller / key proposal-id" data-node-tag="refusal fails / transport retries" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Outbox · sole effect caller / key proposal-id · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · refusal fails / transport retries</title>
+        <g id="node-paOutbox" data-node-id="paOutbox" data-node-label="Outbox" tabindex="0" role="button" aria-label="Focus Outbox, sole effect caller / key proposal-id, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="sole effect caller / key proposal-id" data-node-tag="refusal fails / retries / outcome wakes tasks" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Outbox · sole effect caller / key proposal-id · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · refusal fails / retries / outcome wakes tasks</title>
           <rect x="1030" y="5150" width="340" height="76" rx="6" class="c-mask"/>
           <rect x="1030" y="5150" width="340" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1036 5156) scale(0.6875)">
@@ -5610,11 +5611,11 @@
           </g>
           <text data-detail-anchor x="1200" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Outbox</text>
         <text data-detail="context" x="1200" y="5202" class="t-muted" font-size="9" text-anchor="middle">sole effect caller / key proposal-id</text>
-        <text data-detail="fine" x="1200" y="5218" class="t-security" font-size="7" text-anchor="middle">refusal fails / transport retries</text>
+        <text data-detail="fine" x="1200" y="5218" class="t-security" font-size="7" text-anchor="middle">refusal fails / retries / outcome wakes tasks</text>
         </g>
 
-        <g id="node-paTools" data-node-id="paTools" data-node-label="Agent tools" tabindex="0" role="button" aria-label="Focus Agent tools, MCP reads (read risk) / propose_* drafts, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="MCP reads (read risk) / propose_* drafts" data-node-tag="no send tool / no Bash or file tools" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
-          <title>Agent tools · MCP reads (read risk) / propose_* drafts · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · no send tool / no Bash or file tools</title>
+        <g id="node-paTools" data-node-id="paTools" data-node-label="Agent tools" tabindex="0" role="button" aria-label="Focus Agent tools, MCP reads / propose_* drafts / task_*, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="security" data-node-sublabel="MCP reads / propose_* drafts / task_*" data-node-tag="no send tool / tasks on own thread only" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Agent tools · MCP reads / propose_* drafts / task_* · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · no send tool / tasks on own thread only</title>
           <rect x="1530" y="5150" width="360" height="76" rx="6" class="c-mask"/>
           <rect x="1530" y="5150" width="360" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1536 5156) scale(0.6875)">
@@ -5622,8 +5623,8 @@
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-detail-anchor x="1710" y="5186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Agent tools</text>
-        <text data-detail="context" x="1710" y="5202" class="t-muted" font-size="9" text-anchor="middle">MCP reads (read risk) / propose_* drafts</text>
-        <text data-detail="fine" x="1710" y="5218" class="t-security" font-size="7" text-anchor="middle">no send tool / no Bash or file tools</text>
+        <text data-detail="context" x="1710" y="5202" class="t-muted" font-size="9" text-anchor="middle">MCP reads / propose_* drafts / task_*</text>
+        <text data-detail="fine" x="1710" y="5218" class="t-security" font-size="7" text-anchor="middle">no send tool / tasks on own thread only</text>
         </g>
 
         <g id="node-paConnector" data-node-id="paConnector" data-node-label="MCP connector" tabindex="0" role="button" aria-label="Focus MCP connector, go/mcp stdio client / contract check, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="go/mcp stdio client / contract check" data-node-tag="credential env withheld from child" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
@@ -5900,9 +5901,9 @@
           <rect x="1671.4" y="4980" width="77.2" height="14" rx="3" class="c-mask"/>
           <text x="1710" y="4990" class="t-security" font-size="8" text-anchor="middle">gated dispatch</text>
         </g>
-        <g data-detail="context" data-edge-from="paScheduler" data-edge-to="paStore" data-edge-label="slot + trigger" data-edge-key="92" data-edge-id="paSlot">
-          <rect x="411.4" y="5043" width="77.2" height="14" rx="3" class="c-mask"/>
-          <text x="450" y="5053" class="t-muted" font-size="8" text-anchor="middle">slot + trigger</text>
+        <g data-detail="context" data-edge-from="paScheduler" data-edge-to="paStore" data-edge-label="slot / task check / reminder" data-edge-key="92" data-edge-id="paSlot">
+          <rect x="377.8" y="5043" width="144.4" height="14" rx="3" class="c-mask"/>
+          <text x="450" y="5053" class="t-muted" font-size="8" text-anchor="middle">slot / task check / reminder</text>
         </g>
         <g data-detail="context" data-edge-from="paPoller" data-edge-to="paStore" data-edge-label="trigger + cursor" data-edge-key="93" data-edge-id="paIngest">
           <rect x="656.6" y="5130" width="86.8" height="14" rx="3" class="c-mask"/>
@@ -5927,6 +5928,10 @@
         <g data-detail="context" data-edge-from="paConnector" data-edge-to="paMock" data-edge-label="stdio JSON-RPC" data-edge-key="98" data-edge-id="paStdio">
           <rect x="1161.4" y="5480" width="77.2" height="14" rx="3" class="c-mask"/>
           <text x="1200" y="5490" class="t-muted" font-size="8" text-anchor="middle">stdio JSON-RPC</text>
+        </g>
+        <g data-detail="context" data-edge-from="paScheduler" data-edge-to="paConnector" data-edge-label="calendar_list" data-edge-key="99" data-edge-id="paUpcoming">
+          <rect x="576.8" y="5230" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="613" y="5240" class="t-muted" font-size="8" text-anchor="middle">calendar_list</text>
         </g>
 
         <!-- Legend -->
@@ -6433,10 +6438,11 @@
           <h3>Opt-in Go personal-assistant demo</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline b1a0a72 plus 2026-11-01 local-deployment iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
-          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call.</li>
-          <li>&bull; Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-&lt;id&gt;, so retries and restarts never double-send. MCP data is simulated.</li>
-          <li>&bull; Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine catch-up also covers a Mac that slept through the slot.</li>
+          <li>&bull; Review baseline 2103c07 plus the 2026-11-01 durable-task iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
+          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call.</li>
+          <li>&bull; Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread&#39;s subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.</li>
+          <li>&bull; Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-&lt;id&gt;, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.</li>
+          <li>&bull; Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep.</li>
         </ul>
       </div>
     </div>

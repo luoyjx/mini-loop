@@ -27,10 +27,14 @@ var headerPattern = regexp.MustCompile(`\[trigger id=(\d+) kind=(\S+) thread=(\S
 
 type scriptedTurn struct {
 	kind    TriggerKind
+	thread  ThreadID
 	ref     string
 	text    string
+	open    []int64
 	results map[protocol.ToolName][]string
 }
+
+var openTaskPattern = regexp.MustCompile(`(?m)^- 任务 #(\d+) `)
 
 type plannedCall struct {
 	name  protocol.ToolName
@@ -108,8 +112,14 @@ func readTurn(messages []protocol.Message) (scriptedTurn, bool) {
 		if match == nil {
 			continue
 		}
-		turn.kind, turn.ref = TriggerKind(text[match[4]:match[5]]), text[match[8]:match[9]]
+		turn.kind, turn.thread, turn.ref = TriggerKind(text[match[4]:match[5]]), ThreadID(text[match[6]:match[7]]), text[match[8]:match[9]]
 		turn.text = strings.TrimSpace(text[match[1]:])
+		for _, open := range openTaskPattern.FindAllStringSubmatch(turn.text, -1) {
+			var id int64
+			if _, err := fmt.Sscan(open[1], &id); err == nil {
+				turn.open = append(turn.open, id)
+			}
+		}
 		start = i
 		break
 	}
@@ -163,6 +173,10 @@ func (m *ScriptedModel) plan(turn scriptedTurn) plan {
 		return m.planBrief(turn)
 	case TriggerChat:
 		return m.planChat(turn)
+	case TriggerTaskWakeup:
+		return m.planTaskWakeup(turn)
+	case TriggerUpcoming:
+		return m.planUpcoming(turn)
 	}
 	return plan{final: "（离线脚本模型不认识这个触发器）"}
 }
@@ -189,15 +203,47 @@ func planEmail(turn scriptedTurn) plan {
 		}
 		return plan{final: fmt.Sprintf("%s 普通来信（%s：%s），不打扰用户，记入晨报。", QuietMarker, mail.FromName, mail.Subject)}
 	}
-	if receipt, done := turn.last(ToolProposeEmail); done {
-		return plan{final: fmt.Sprintf("%s（你的经理）来信：「%s」。我起草了回复，%s", mail.FromName, mail.Subject, proposalNumber(receipt))}
+	// The manager expects a same-day answer: draft the reply and track it as
+	// a task (or extend the thread's existing task) until it goes out.
+	drafted, haveDraft := turn.last(ToolProposeEmail)
+	tracked, haveTask := turn.last(ToolTaskCreate)
+	if !haveTask {
+		tracked, haveTask = turn.last(ToolTaskSchedule)
 	}
-	subject := mail.Subject
-	if !strings.HasPrefix(strings.ToLower(subject), "re:") {
-		subject = "Re: " + subject
+	if haveDraft && haveTask {
+		return plan{final: fmt.Sprintf("%s（你的经理）来信：「%s」。我起草了回复，%s%s", mail.FromName, mail.Subject, proposalNumber(drafted), taskSentence(tracked))}
 	}
-	body := fmt.Sprintf("%s 你好，\n\n收到，关于「%s」我今天下班前给你答复。\n\n（由助理起草，经我确认后发出）", mail.FromName, mail.Subject)
-	return plan{calls: []plannedCall{{ToolProposeEmail, jsonInput(proposeEmailInput{To: mail.From, Subject: subject, Body: body, Reason: "经理来信，需要当天回复"})}}}
+	var calls []plannedCall
+	if !haveDraft {
+		subject := mail.Subject
+		if !strings.HasPrefix(strings.ToLower(subject), "re:") {
+			subject = "Re: " + subject
+		}
+		body := fmt.Sprintf("%s 你好，\n\n收到，关于「%s」我今天下班前给你答复。\n\n（由助理起草，经我确认后发出）", mail.FromName, mail.Subject)
+		calls = append(calls, plannedCall{ToolProposeEmail, jsonInput(proposeEmailInput{To: mail.From, Subject: subject, Body: body, Reason: "经理来信，需要当天回复"})})
+	}
+	if !haveTask {
+		if len(turn.open) > 0 {
+			calls = append(calls, plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: turn.open[0], InMinutes: 60, Note: truncateRunes(mail.FromName+" 又来信："+mail.Subject+"；新的回复草稿待批准", maxTaskText-1)})})
+		} else {
+			calls = append(calls, plannedCall{ToolTaskCreate, jsonInput(taskCreateInput{Title: truncateRunes("跟进：回复 "+mail.FromName+"「"+mail.Subject+"」", maxTaskTitle-1), Check: "已发送邮件里有没有这个 thread 发给 " + mail.From + " 的回复", InMinutes: 60, Note: "回复草稿已起草，等用户批准"})})
+		}
+	}
+	return plan{calls: calls}
+}
+
+var taskNumberPattern = regexp.MustCompile(`任务 #(\d+)`)
+
+func taskSentence(receipt string) string {
+	match := taskNumberPattern.FindStringSubmatch(receipt)
+	switch {
+	case match == nil:
+		return ""
+	case strings.HasPrefix(receipt, "已创建") || strings.Contains(receipt, "已存在"):
+		return "建了任务 #" + match[1] + " 跟进，1 小时后检查回复有没有发出。"
+	default:
+		return "任务 #" + match[1] + " 继续跟进，1 小时后再查。"
+	}
 }
 
 func proposalNumber(receipt string) string {
@@ -263,13 +309,16 @@ func (m *ScriptedModel) planBrief(turn scriptedTurn) plan {
 	listed, haveCalendar := turn.last(ToolCalendarList)
 	inbox, haveInbox := turn.last(ToolMailList)
 	recalled, haveRecall := turn.last(protocol.ToolRecall)
-	if !haveCalendar || !haveInbox || !haveRecall {
-		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":1}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {protocol.ToolRecall, `{"query":"经理"}`}}}
+	open, haveTasks := turn.last(ToolTaskList)
+	if !haveCalendar || !haveInbox || !haveRecall || !haveTasks {
+		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":1}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {protocol.ToolRecall, `{"query":"经理"}`}, {ToolTaskList, `{}`}}}
 	}
 	var events []eventView
 	var mails []mailSummary
+	var tasks []taskView
 	_ = json.Unmarshal([]byte(listed), &events)
 	_ = json.Unmarshal([]byte(inbox), &mails)
+	_ = json.Unmarshal([]byte(open), &tasks)
 	now := m.now()
 	var b strings.Builder
 	b.WriteString("早上好！")
@@ -314,12 +363,161 @@ func (m *ScriptedModel) planBrief(turn scriptedTurn) plan {
 	if bulk > 0 {
 		fmt.Fprintf(&b, "，newsletter %d 封已静默归档", bulk)
 	}
+	if len(tasks) > 0 {
+		fmt.Fprintf(&b, "；进行中任务 %d 个", len(tasks))
+	}
 	b.WriteString("。")
 	return plan{final: b.String()}
 }
 
+var taskReasonPattern = regexp.MustCompile(`任务到点检查：([^\n]*)`)
+
+// planTaskWakeup checks a task by its own convention: a reminder fires once;
+// a reply follow-up is done when the sent folder holds mail on the task's
+// thread since the task began, closed when the user denied the draft, and
+// otherwise checked again in 30 minutes.
+func (m *ScriptedModel) planTaskWakeup(turn scriptedTurn) plan {
+	listed, haveList := turn.last(ToolTaskList)
+	sent, haveSent := turn.last(ToolMailList)
+	if !haveList || !haveSent {
+		return plan{calls: []plannedCall{{ToolTaskList, `{}`}, {ToolMailList, `{"folder":"sent","limit":30}`}}}
+	}
+	id, _ := taskID(turn.ref)
+	var tasks []taskView
+	var mails []mailSummary
+	_ = json.Unmarshal([]byte(listed), &tasks)
+	_ = json.Unmarshal([]byte(sent), &mails)
+	var task *taskView
+	for i := range tasks {
+		if tasks[i].ID == id {
+			task = &tasks[i]
+		}
+	}
+	if task == nil {
+		return plan{final: fmt.Sprintf("%s 任务 #%d 已不在进行中。", QuietMarker, id)}
+	}
+	reason := ""
+	if match := taskReasonPattern.FindStringSubmatch(turn.text); match != nil {
+		reason = match[1]
+	}
+	created, _ := time.Parse(time.RFC3339, task.CreatedAt)
+	var reply *mailSummary
+	for i := range mails {
+		received, _ := time.Parse(time.RFC3339, mails[i].ReceivedAt)
+		if mails[i].Thread == turn.thread && !received.Before(created) {
+			reply = &mails[i]
+			break
+		}
+	}
+	var call plannedCall
+	var final string
+	switch {
+	case strings.HasPrefix(task.Title, "提醒"):
+		what := strings.TrimLeft(strings.TrimPrefix(task.Title, "提醒"), "：: ")
+		ago := int(m.now().Sub(created).Round(time.Minute) / time.Minute)
+		call = plannedCall{ToolTaskComplete, jsonInput(taskCompleteInput{TaskID: id, Result: "已在信道提醒用户"})}
+		final = fmt.Sprintf("⏰ 提醒：%s（任务 #%d，你 %d 分钟前让我提醒的）", what, id, ago)
+	case reply != nil:
+		call = plannedCall{ToolTaskComplete, jsonInput(taskCompleteInput{TaskID: id, Result: fmt.Sprintf("回复「%s」已发出（%s）", reply.Subject, reply.ID)})}
+		final = fmt.Sprintf("✅ 任务 #%d 完成：回复「%s」已经发出，这件事不用再跟了。", id, reply.Subject)
+	case strings.Contains(reason, "拒绝"):
+		call = plannedCall{ToolTaskComplete, jsonInput(taskCompleteInput{TaskID: id, Result: "用户拒绝了回复草稿，不再跟进"})}
+		final = fmt.Sprintf("任务 #%d 关闭：你拒绝了回复草稿，我不再跟进。要换个说法回复的话跟我说。", id)
+	case strings.Contains(reason, "发送失败"):
+		call = plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: id, InMinutes: 30, Note: "回复发送失败，等用户处理"})}
+		final = fmt.Sprintf("⚠️ 任务 #%d：回复没能发出，30 分钟后我再看一次。", id)
+	default:
+		call = plannedCall{ToolTaskSchedule, jsonInput(taskScheduleInput{TaskID: id, InMinutes: 30, Note: fmt.Sprintf("第 %d 次检查：回复还没发出", task.Checks)})}
+		final = fmt.Sprintf("⏳ 任务 #%d「%s」还没完成：回复还没发出，草稿在信道里等你批准。30 分钟后再看。", id, task.Title)
+	}
+	if _, done := turn.last(call.name); done {
+		return plan{final: final}
+	}
+	return plan{calls: []plannedCall{call}}
+}
+
+// planUpcoming prepares a short heads-up: time, organizer, the organizer's
+// recent mail and active tasks that concern this event.
+func (m *ScriptedModel) planUpcoming(turn scriptedTurn) plan {
+	listed, haveCalendar := turn.last(ToolCalendarList)
+	inbox, haveInbox := turn.last(ToolMailList)
+	open, haveTasks := turn.last(ToolTaskList)
+	recalled, haveRecall := turn.last(protocol.ToolRecall)
+	if !haveCalendar || !haveInbox || !haveTasks || !haveRecall {
+		return plan{calls: []plannedCall{{ToolCalendarList, `{"days":2}`}, {ToolMailList, `{"folder":"inbox","limit":30}`}, {ToolTaskList, `{}`}, {protocol.ToolRecall, `{"query":"经理"}`}}}
+	}
+	var events []eventView
+	var mails []mailSummary
+	var tasks []taskView
+	_ = json.Unmarshal([]byte(listed), &events)
+	_ = json.Unmarshal([]byte(inbox), &mails)
+	_ = json.Unmarshal([]byte(open), &tasks)
+	var event *eventView
+	for i := range events {
+		if events[i].ID == turn.ref {
+			event = &events[i]
+		}
+	}
+	if event == nil {
+		return plan{final: QuietMarker + " 日程已不在日历里。"}
+	}
+	start, _ := time.Parse(time.RFC3339, event.Start)
+	minutes := int(start.Sub(m.now()).Round(time.Minute) / time.Minute)
+	var b strings.Builder
+	fmt.Fprintf(&b, "⏰ %d 分钟后（%s）：%s。", minutes, start.Local().Format("15:04"), event.Title)
+	name, subjects := "", []string{}
+	if !strings.EqualFold(event.Organizer, OwnerAddress) {
+		for _, mail := range mails {
+			if strings.EqualFold(mail.From, event.Organizer) {
+				name = mail.FromName
+				if len(subjects) < 2 {
+					subjects = append(subjects, "「"+mail.Subject+"」")
+				}
+			}
+		}
+		who := firstNonEmpty(name, event.Organizer)
+		if strings.Contains(strings.ToLower(recalled), strings.ToLower(event.Organizer)) {
+			who += "（你的经理）"
+		}
+		b.WriteString("组织者 " + who)
+		if len(subjects) > 0 {
+			b.WriteString("；最近来信 " + strings.Join(subjects, "、"))
+		}
+		b.WriteString("。")
+	}
+	related := []string{}
+	for _, task := range tasks {
+		if task.Thread == turn.thread || (name != "" && strings.Contains(task.Title, name)) {
+			related = append(related, fmt.Sprintf("#%d %s", task.ID, task.Title))
+		}
+	}
+	if len(related) > 0 {
+		b.WriteString("相关的进行中任务：" + strings.Join(related, "；") + "。")
+	}
+	return plan{final: b.String()}
+}
+
+var reminderPattern = regexp.MustCompile(`(\d+)\s*(分钟|小时)(以?后)?`)
+
+// parseReminder reads "30 分钟后提醒我 X" in any order; 30 minutes by default.
+func parseReminder(text string) (int, string) {
+	minutes := 30
+	if match := reminderPattern.FindStringSubmatch(text); match != nil {
+		if _, err := fmt.Sscan(match[1], &minutes); err == nil && match[2] == "小时" {
+			minutes *= 60
+		}
+		text = strings.Replace(text, match[0], " ", 1)
+	}
+	what := strings.Trim(strings.Replace(text, "提醒我", " ", 1), " ，,。：:")
+	return minutes, strings.Join(strings.Fields(what), " ")
+}
+
 func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
-	text := strings.TrimSpace(strings.TrimPrefix(turn.text, "用户在信道里说："))
+	text := turn.text
+	if _, said, found := strings.Cut(text, "用户在信道里说："); found {
+		text = said
+	}
+	text = strings.TrimSpace(text)
 	lower := strings.ToLower(text)
 	has := func(words ...string) bool {
 		for _, word := range words {
@@ -345,6 +543,34 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 			Description string `json:"description"`
 			Type        string `json:"type"`
 		}{name, fact, truncateRunes(fact, 40), "user"})}}}
+	case strings.Contains(text, "提醒我"):
+		if receipt, done := turn.last(ToolTaskCreate); done {
+			return plan{final: "好的，" + strings.TrimPrefix(receipt, "已")}
+		}
+		minutes, what := parseReminder(text)
+		if what == "" {
+			return plan{final: "要我提醒什么？例如：30 分钟后提醒我 给 Bob 回电话"}
+		}
+		if minutes < 1 || minutes > int(maxTaskDelay/time.Minute) {
+			return plan{final: "提醒时间要在 1 分钟到 7 天之间。"}
+		}
+		return plan{calls: []plannedCall{{ToolTaskCreate, jsonInput(taskCreateInput{Title: truncateRunes("提醒："+what, maxTaskTitle-1), Check: truncateRunes("到点在信道提醒用户："+what, maxTaskText-1), InMinutes: minutes})}}}
+	case has("任务", "待办", "跟进"):
+		listed, done := turn.last(ToolTaskList)
+		if !done {
+			return plan{calls: []plannedCall{{ToolTaskList, `{}`}}}
+		}
+		var tasks []taskView
+		_ = json.Unmarshal([]byte(listed), &tasks)
+		if len(tasks) == 0 {
+			return plan{final: "现在没有进行中的任务。"}
+		}
+		lines := []string{}
+		for _, task := range tasks {
+			next, _ := time.Parse(time.RFC3339, task.NextCheck)
+			lines = append(lines, fmt.Sprintf("#%d %s（下次检查 %s，已查 %d/%d 次）", task.ID, task.Title, next.Local().Format("15:04"), task.Checks, task.MaxChecks))
+		}
+		return plan{final: fmt.Sprintf("进行中的任务 %d 个：%s", len(tasks), strings.Join(lines, "；"))}
 	case has("晨报", "简报", "brief"):
 		return m.planBrief(turn)
 	case has("日程", "会议", "calendar"):
@@ -384,7 +610,7 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 		}
 		return plan{final: "我记得：" + truncateRunes(plainMemory(recalled), 160)}
 	}
-	return plan{final: "我是离线脚本模型，只听得懂：记住 …／今天日程／收件箱／晨报／我的经理是谁。设置 ANTHROPIC_API_KEY 并加 -model anthropic 可换成真实模型。"}
+	return plan{final: "我是离线脚本模型，只听得懂：记住 …／N 分钟后提醒我 …／进行中的任务／今天日程／收件箱／晨报／我的经理是谁。设置 ANTHROPIC_API_KEY 并加 -model anthropic 可换成真实模型。"}
 }
 
 // recallQuery picks a topical keyword: memory search counts substrings, so a

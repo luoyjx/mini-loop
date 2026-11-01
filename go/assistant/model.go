@@ -5,8 +5,11 @@
 // and calendar reached only through a simulated MCP server in a child process
 // (integrations), owner-scoped memory, durable routines and polled event
 // triggers, a proposal outbox that only a human can release (approval gates),
-// and an append-only ledger (audit log). The channel is a simulated local web
-// page. Nothing here changes the defaults of cmd/miniloop.
+// and an append-only ledger (audit log). Durable tasks let a worker follow one
+// piece of work across many events: it schedules its own checks and the
+// scheduler wakes it until the task is done, cancelled or out of budget. The
+// channel is a simulated local web page. Nothing here changes the defaults of
+// cmd/miniloop.
 package assistant
 
 import (
@@ -28,6 +31,11 @@ const (
 	TriggerInvite  TriggerKind = "calendar.invite"
 	TriggerChat    TriggerKind = "chat.message"
 	TriggerRoutine TriggerKind = "routine.fired"
+	// TriggerTaskWakeup is a task's scheduled check; Ref is "task-<id>".
+	TriggerTaskWakeup TriggerKind = "task.wakeup"
+	// TriggerUpcoming fires once per confirmed event shortly before it starts;
+	// Ref is the event ID.
+	TriggerUpcoming TriggerKind = "calendar.upcoming"
 )
 
 type TriggerStatus string
@@ -187,6 +195,7 @@ const (
 	LedgerRoutine   LedgerKind = "routine"
 	LedgerRecovery  LedgerKind = "recovery"
 	LedgerWorkerErr LedgerKind = "worker_error"
+	LedgerTask      LedgerKind = "task"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the
@@ -217,4 +226,42 @@ type Routine struct {
 	Prompt   string    `json:"prompt"`
 	Enabled  bool      `json:"enabled"`
 	LastSlot string    `json:"last_slot"`
+}
+
+type TaskStatus string
+
+// A task moves active → done (a worker reports completion), cancelled (the
+// user) or stalled (its check budget ran out and the user takes over).
+const (
+	TaskActive    TaskStatus = "active"
+	TaskDone      TaskStatus = "done"
+	TaskCancelled TaskStatus = "cancelled"
+	TaskStalled   TaskStatus = "stalled"
+)
+
+// Task is follow-up work that outlives one trigger. A worker creates it on
+// its thread with a first check time; at that time the scheduler enqueues a
+// task.wakeup trigger on the same thread, so the subscribed worker resumes
+// with its context, and the worker either completes the task or schedules the
+// next check. Claiming a check also sets a fallback check, so an active task
+// always has a next check even when a turn crashes or forgets to schedule one,
+// and MaxChecks bounds how often it can wake before the user takes over.
+type Task struct {
+	ID          int64      `json:"id"`
+	Title       string     `json:"title"`
+	Thread      ThreadID   `json:"thread"`
+	SessionID   string     `json:"session_id"`
+	TriggerID   int64      `json:"trigger_id"`
+	Status      TaskStatus `json:"status"`
+	Check       string     `json:"check"`
+	Note        string     `json:"note"`
+	Result      string     `json:"result,omitempty"`
+	WakeAt      *time.Time `json:"wake_at,omitempty"`
+	WakeReason  string     `json:"wake_reason"`
+	Checks      int        `json:"checks"`
+	MaxChecks   int        `json:"max_checks"`
+	LastTrigger int64      `json:"last_trigger,omitempty"`
+	ClosedBy    string     `json:"closed_by,omitempty"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 }

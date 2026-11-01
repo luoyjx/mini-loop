@@ -417,3 +417,40 @@ func (w *World) DeliverCustom(ctx context.Context, custom CustomMail) (Delivered
 	})
 	return delivered, err
 }
+
+// SimEvent is a confirmed meeting the simulator puts on the calendar, as if a
+// colleague had booked it. Zero fields take the demo defaults.
+type SimEvent struct {
+	Title     string `json:"title"`
+	InMinutes int    `json:"in_minutes"`
+	Minutes   int    `json:"minutes"`
+}
+
+// AddEvent books a confirmed event that starts InMinutes from now. The daemon
+// learns about it only through calendar_list.
+func (w *World) AddEvent(ctx context.Context, sim SimEvent) (CalendarEvent, error) {
+	title := strings.TrimSpace(sim.Title)
+	if title == "" {
+		title = "客户方案电话会"
+	}
+	if sim.InMinutes == 0 {
+		sim.InMinutes = 12
+	}
+	if sim.Minutes == 0 {
+		sim.Minutes = 30
+	}
+	if sim.InMinutes < 1 || sim.InMinutes > 24*60 || sim.Minutes < 5 || sim.Minutes > 8*60 {
+		return CalendarEvent{}, errors.New("in_minutes must be 1-1440 and minutes 5-480")
+	}
+	var event CalendarEvent
+	err := w.inTx(ctx, func(tx *sql.Tx) error {
+		var next int64
+		if err := tx.QueryRowContext(ctx, `SELECT COUNT(*)+1 FROM calendar`).Scan(&next); err != nil {
+			return err
+		}
+		start := w.now().Truncate(time.Minute).Add(time.Duration(sim.InMinutes) * time.Minute)
+		event = CalendarEvent{ID: fmt.Sprintf("e-cal-%d", next), Title: truncateRunes(title, 60), Start: start, End: start.Add(time.Duration(sim.Minutes) * time.Minute), Status: EventConfirmed, Organizer: ManagerAddress}
+		return insertEvent(ctx, tx, event)
+	})
+	return event, err
+}

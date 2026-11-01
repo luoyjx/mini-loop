@@ -1184,33 +1184,44 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-01**, `b1a0a72` plus the
-local-deployment and simulated-MCP iteration of the opt-in Go personal-assistant demo.
+Current architecture review baseline: **2026-11-01**, `2103c07` plus the
+durable-task iteration of the opt-in Go personal-assistant demo.
 `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with no Python
 counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents lanes keep their
 defaults.
 
-- **Integration**: mail and calendar moved out of the daemon. They now live in a
-  simulated MCP server, the `miniloop-assistant mock-mcp` subcommand, which runs as a
-  child process with its own `world.db`. The daemon reaches it only through the
-  existing `go/mcp` stdio client and checks seven required tools at startup.
-- **Ingress**: new mail is discovered by polling a `mail_poll` cursor. The poller
-  enqueues a trigger and advances the cursor in one transaction, deduped by mail ID.
-- **Effects**: approval moves a proposal to `approved`. A single outbox then executes
-  it through `mail_send` or `calendar_respond` with the key `proposal-<id>`. The
-  daemon wraps MCP reads as typed `read` tools, and the poll and effect tools never
-  enter a model catalogue.
-- **Deployment**: the default data directory is the per-user application-support
-  directory, and `launchd-plist` prints a macOS LaunchAgent.
-- **Unchanged**: the channel is still a simulated, loopback-only page without
-  authentication, and all mail and calendar data is mock data.
+- **Tasks**: `assistant.db` gains a `tasks` table. Workers create, reschedule,
+  complete and list tasks through four typed tools. The three write tools change
+  only local state. A task is bound to the thread and worker session that created
+  it.
+- **Wakeups**: the scheduler claims due task checks. Each claim counts the check,
+  enqueues a `task.wakeup` trigger on the task's thread and sets a fallback check, all
+  in one transaction. The trigger routes to the thread's subscribed worker, so the
+  original worker resumes with its context.
+- **Event links**: an outbox send, a final send failure or a denial on the same
+  thread brings the task's check forward.
+- **Bounds**: a task wakes at most six times before it is handed to the user. At
+  most 20 tasks are active. A turn driven by external mail may change only the tasks
+  on its own thread.
+- **Time triggers**: the scheduler reads the calendar through MCP `calendar_list` and
+  enqueues one `calendar.upcoming` trigger per confirmed event starting within 15
+  minutes. The simulated server adds `sim_add_event`.
+- **Concurrency**: different threads already ran on parallel workers and one thread
+  ran in order. This is now tested, and the page shows running workers and a task
+  board.
+- **Unchanged**: workers still cannot send, effects still go only through approved
+  proposals and the outbox, and the channel, mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-01**, `c65073a` plus the first opt-in
-Go personal-assistant demo: one loopback daemon whose SQLite file held mock mail and
-calendar data next to triggers, outbox, channel and ledger. Approval applied the mock
-effect in the decision transaction.
+Previous architecture review baseline: **2026-11-01**, `b1a0a72` plus the
+local-deployment and simulated-MCP iteration. Mail and calendar moved into the
+`miniloop-assistant mock-mcp` child process with its own `world.db`, reached through
+the `go/mcp` stdio client. New mail was discovered by a `mail_poll` cursor. Approved
+proposals were executed by a single outbox with the key `proposal-<id>`. The daemon
+gained a per-user data directory and a LaunchAgent generator. Before that, the first
+demo (`c65073a`) kept mock mail and calendar in the daemon's own SQLite file and
+applied the mock effect in the decision transaction.
 
 Earlier architecture review baseline: **2026-10-17**, `2b85676` plus the
 single Task runtime cleanup. API, Worker and Temporal deployment roles are unchanged;
@@ -1455,11 +1466,11 @@ flowchart LR
         TSWorkflow --> TSActivity --> TSModel
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>chat · simulator presets · approval cards · ledger view"]
-        PAStore["assistant.db · SQLite<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>proposal outbox · channel log · append-only ledger"]
-        PAScheduler["Routine scheduler<br/>daily slot claim + trigger in one transaction<br/>same-day catch-up once after downtime or sleep"]
-        PARouter["Assistant Router<br/>rule fast path · per-thread serial claims<br/>subscribed worker reuse / lazy restore · sole channel writer"]
-        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts<br/>no send tool · replaces Bash / file catalogue"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>chat · simulator presets · approval cards · task board · ledger view"]
+        PAStore["assistant.db · SQLite<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · channel log · append-only ledger"]
+        PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime or sleep"]
+        PARouter["Assistant Router<br/>rule fast path · parallel workers across threads · per-thread serial claims<br/>subscribed worker reuse / lazy restore · sole channel writer"]
+        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>no send tool · replaces Bash / file catalogue"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
         PAPoller["Mail poller<br/>mail_poll cursor · ingest + cursor in one transaction<br/>first run starts at head"]
@@ -1467,15 +1478,17 @@ flowchart LR
         PAMock["mock-mcp child process · simulated MCP server<br/>world.db mail / calendar · idempotent effects<br/>sim_* tools stand in for the outside world"]
         PAChannel -->|chat| PAStore
         PAChannel -. simulator delivery .-> PAConnector
-        PAScheduler -->|claim slot + enqueue| PAStore
+        PAScheduler -->|claim slot / due task / reminder + enqueue| PAStore
+        PAScheduler -->|calendar_list upcoming events| PAConnector
         PAPoller -->|mail_poll| PAConnector
         PAPoller -->|enqueue trigger + advance cursor| PAStore
         PAStore -->|claim trigger| PARouter
         PATools -->|reads| PAConnector
-        PATools -->|append pending proposal| PAStore
+        PATools -->|append pending proposal / create or schedule task| PAStore
         PAChannel -->|human approve or deny| PAStore
         PAStore -->|approved proposals| PAOutbox
         PAOutbox -->|mail_send / calendar_respond| PAConnector
+        PAOutbox -. outcome brings thread tasks forward .-> PAScheduler
         PAConnector -->|stdio JSON-RPC tools/call| PAMock
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel
@@ -3878,7 +3891,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

@@ -15,7 +15,7 @@ import (
 )
 
 // Config wires one assistant daemon. DataDir holds three durable parts:
-// assistant.db (triggers, mail cursor, outbox, channel, ledger), agent.db
+// assistant.db (triggers, mail cursor, tasks, outbox, channel, ledger), agent.db
 // (session transcripts, action journal, leases) and memory/ (owner facts).
 // Mail and calendar live behind Connector; NewApp takes ownership of it and
 // closes it on failure or in Close.
@@ -31,6 +31,7 @@ type Config struct {
 	TurnLimit     time.Duration
 	SchedulerTick time.Duration
 	PollInterval  time.Duration
+	RemindLead    time.Duration
 	LeaseTTL      time.Duration
 }
 
@@ -119,16 +120,19 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if label == "" {
 		label = config.Model
 	}
+	scheduler := NewScheduler(store, config.Connector, router, now, config.SchedulerTick, config.RemindLead, config.Log)
+	outbox := NewOutbox(store, config.Connector, now, config.Log)
+	outbox.settled = scheduler.Wake
 	return &App{
-		Store: store, Connector: config.Connector, Router: router,
-		Scheduler: NewScheduler(store, router, now, config.SchedulerTick, config.Log),
-		Poller:    NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log),
-		Outbox:    NewOutbox(store, config.Connector, now, config.Log),
-		Manager:   manager, ModelLabel: label, now: now, states: states,
+		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
+		Poller:  NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log),
+		Outbox:  outbox,
+		Manager: manager, ModelLabel: label, now: now, states: states,
 	}, nil
 }
 
-// Start runs the dispatcher, scheduler, mail poller and outbox until ctx ends.
+// Start runs the dispatcher, scheduler (routines, task checks, event
+// reminders), mail poller and outbox until ctx ends.
 // The first poll runs before Start returns, so a first-time daemon pins its
 // mail cursor to the service's head before anything else can deliver.
 func (app *App) Start(ctx context.Context) {

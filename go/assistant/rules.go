@@ -36,6 +36,10 @@ func (rules Rules) Classify(trigger Trigger, mail *Email) RuleDecision {
 		return RuleDecision{VerdictCandidate, "定时 routine"}
 	case TriggerInvite:
 		return RuleDecision{VerdictCandidate, "会议邀约：后台提前核对日程并起草回复"}
+	case TriggerTaskWakeup:
+		return RuleDecision{VerdictCandidate, "任务到了检查时间"}
+	case TriggerUpcoming:
+		return RuleDecision{VerdictCandidate, "日程临近：提前准备提醒"}
 	}
 	if mail == nil {
 		return RuleDecision{VerdictIgnore, "触发器引用的邮件不存在"}

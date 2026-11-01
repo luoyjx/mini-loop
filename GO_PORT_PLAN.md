@@ -22663,3 +22663,50 @@ the demo changes.
 - backups;
 - multi-daemon leases on one data directory;
 - a Python counterpart.
+
+## Go-only slice — assistant demo: durable tasks, self-scheduled checks, upcoming-event reminders (2026-11-01)
+
+Code baseline: `2103c07` plus changes to `go/assistant` and `go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. No package outside the demo changes.
+
+**Go evidence:**
+
+- `assistant.db` gains `tasks` and `reminders` tables through `CREATE TABLE IF NOT
+  EXISTS`, so a data directory from the previous iteration upgrades in place.
+- Four typed extension tools reach the task board: `task_create`, `task_schedule`
+  and `task_complete` with `write` risk, and `task_list` with `read` risk. Task
+  creation is idempotent per origin trigger and title. A turn without
+  explicit-human run authority may change only tasks on its own thread.
+- `Store.ClaimDueTasks` claims due checks. In one transaction it counts the check,
+  enqueues a `task.wakeup` trigger on the task's thread and sets a 30-minute
+  fallback check.
+  - A task whose previous wakeup is still queued or running is skipped.
+  - A task that used its six checks is closed as stalled, and the channel is told.
+  - A check more than two ticks late is labelled a catch-up.
+- `CompleteProposal`, a final `FailProposalAttempt` and a denial bring active tasks
+  on the proposal's thread forward in the same transaction. The outbox then wakes
+  the scheduler.
+- The scheduler reads the next 15 minutes through MCP `calendar_list`. It enqueues
+  one `calendar.upcoming` trigger per confirmed event and start time; an event that
+  already started is skipped. The mock server adds the simulator tool
+  `sim_add_event`, for ten tools.
+- Every worker prompt carries the current time and the thread's other active tasks.
+- Tests cover:
+  - a reply followed until it is sent, by the same subscribed worker;
+  - repeated checks until the budget runs out, then hand-over;
+  - a chat reminder fired at its time;
+  - one reminder per upcoming event;
+  - store-level claim, fallback, de-duplication, catch-up and the active-task cap;
+  - thread-scoped task access;
+  - parallel turns across threads up to the worker capacity, and serial turns on
+    one thread;
+  - the task and simulator HTTP endpoints.
+
+**Not claimed:**
+
+- a Watchdog that judges whether a check made progress;
+- task dependencies or subtasks;
+- model-chosen or user-configured check budgets;
+- a real channel, real MCP servers or a Python counterpart.

@@ -26,6 +26,9 @@ type Outbox struct {
 	log       io.Writer
 	wake      chan struct{}
 	backoff   func(attempt int) time.Duration
+	// settled runs after an outcome is recorded: a sent or failed proposal
+	// may have brought a task's check forward.
+	settled func()
 }
 
 func NewOutbox(store *Store, connector *Connector, now clock, log io.Writer) *Outbox {
@@ -93,6 +96,9 @@ func (o *Outbox) Step(ctx context.Context) bool {
 	if err != nil {
 		fmt.Fprintf(o.log, "assistant: outbox record #%d: %v\n", p.ID, err)
 		return false
+	}
+	if o.settled != nil {
+		o.settled()
 	}
 	return true
 }
