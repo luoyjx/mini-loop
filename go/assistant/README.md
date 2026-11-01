@@ -8,6 +8,9 @@ work to completion: they create durable tasks, schedule their own checks, and th
 daemon wakes them until each task is done. The page tries to take as little of
 your attention as possible. One list at the top shows only what waits for you, one
 switch pauses everything, and your own messages never wait behind background work.
+Events that queue up on one thread while its worker is busy are handled together
+in one turn. A worker ends each turn with a structured report: tell you something,
+stay quiet, or ask you one question whose answer goes back to the same worker.
 The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
@@ -80,8 +83,15 @@ shell for now.
    and creates no proposal.
 5. Click **经理追问** twice. Both follow-ups reach the same subscribed worker session.
    The first one creates a follow-up task. The second sees that task in its prompt and
-   reschedules it instead of creating another.
-6. Approve or deny the cards:
+   reschedules it instead of creating another. Two quick clicks run as one batch.
+6. Click **经理连发两封**. Two mails land on one thread in the same poll. The router
+   claims both as one batch, and the worker drafts one reply that covers both and
+   posts one message. In **触发器**, the second trigger reads **并入触发器 #…**.
+7. Click **同事来问**. Dave asks you to pick a day, which only you can decide, so the
+   worker reports `ask`. The question appears in the channel and under
+   **需要你处理**. Type an answer there and click **回答**: the answer goes back to
+   the same thread's worker, which drafts the reply with your choice.
+8. Approve or deny the cards:
    - An approval moves the card to **已批准 · 发件箱执行中**. The outbox then calls
      `mail_send` or `calendar_respond` with the key `proposal-<id>`, and the card
      shows the receipt.
@@ -91,26 +101,26 @@ shell for now.
      worker wakes, finds the reply in the sent folder and closes the task (**任务**
      tab). A denial also brings the check forward, and the worker closes the task as
      declined.
-7. Type **1 分钟后提醒我 喝水** in the channel. The chat worker creates a reminder task,
+9. Type **1 分钟后提醒我 喝水** in the channel. The chat worker creates a reminder task,
    and a minute later the scheduler wakes it to post the reminder.
-8. Click **日历：12 分钟后有会**. The simulator tool `sim_add_event` books a confirmed
+10. Click **日历：12 分钟后有会**. The simulator tool `sim_add_event` books a confirmed
    meeting. The scheduler sees it through `calendar_list` and sends one reminder,
    because the meeting starts within 15 minutes. The reminder names the organizer's
    recent mail and related tasks.
-9. Leave a task unanswered. Its worker checks again on its own schedule. After six
+11. Leave a task unanswered. Its worker checks again on its own schedule. After six
    checks the task moves to **转交给你** and appears under **需要你处理**, where
    **再跟进一轮** gives it six more checks. **立即检查** and **取消** on a task card act
    right away.
-10. Click **暂停处理** in the header. Deliver a mail and send a chat message: both are
+12. Click **暂停处理** in the header. Deliver a mail and send a chat message: both are
     recorded but not processed, nothing is sent, and no check or reminder fires.
     Running turns finish. Click **恢复处理** and the backlog catches up. The pause also
     holds across a restart.
-11. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
+13. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
     that finally failed (**重试发送** or **知道了**), tasks handed back to you,
     triggers that failed in the last 24 hours (**重新处理** or **知道了**), and
     components such as the mail poll that failed three times in a row. The list
     disappears when nothing waits for you.
-12. Stop the process with Ctrl-C, or kill it, then start it again with the same
+14. Stop the process with Ctrl-C, or kill it, then start it again with the same
     `-data`. The following still hold:
     - Pending cards, the channel, the task board and the ledger remain.
     - A task check missed while the daemon was down, or the Mac asleep, runs on the
@@ -126,7 +136,7 @@ shell for now.
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, channel, ledger, pause switch, dismissed attention items. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -161,6 +171,35 @@ tasks on its own thread; a turn the user starts in the channel may change any ta
 The scheduler also reminds once per confirmed event that starts within 15 minutes,
 keyed by event ID and start time. An event that already started is not reminded.
 
+## Batches and reports
+
+The router claims one thread at a time. With the oldest due trigger it also claims
+the thread's other due pending triggers of the same trust class, up to eight, and
+the worker handles them in one turn and reports once.
+
+- The user's chat runs with explicit human authority and every other kind
+  untrusted, so a batch never mixes chat with other kinds. A routine slot always
+  runs alone.
+- Triggers the fast path filters out, such as a closed task's check, settle on
+  their own.
+- Drafts, tasks and questions are stamped with the oldest trigger in the batch, so
+  a re-run after a crash converges on the same rows.
+- If the turn fails, the whole batch is retried or failed together.
+
+A worker says what its turn means for you with the `report` tool, instead of a
+marker in its text:
+
+| Outcome | The router |
+|---|---|
+| `notify` | Posts the message, at most 400 characters, with any new approval cards |
+| `ask` | Posts one question and keeps it under **需要你处理**. Your answer becomes a `user.answer` trigger on the same thread |
+| `quiet` | Posts nothing and writes the reason to the ledger. Cards for new drafts are still posted, because they need your decision |
+
+A turn that ends without a report is delivered as `notify` with its final text,
+and the ledger notes the missing report. The answer turn runs untrusted like any
+other event on that thread: your words are quoted as yours, but the thread's
+transcript carries external mail.
+
 ## Attention and control
 
 The page answers "does anything need me?" first. The list under **需要你处理** is
@@ -170,6 +209,7 @@ equals its rows.
 | Item | Listed while | Actions |
 |---|---|---|
 | Draft to approve | The proposal is pending | 批准发送 / 拒绝 |
+| Question | A worker asked and you have not answered or dismissed it | 回答: back to the asking thread / 知道了 (you can still answer it later) |
 | Failed send | An approved proposal failed for good and was not dismissed | 重试发送: back to the outbox with a fresh attempt budget under the same `proposal-<id>` key / 知道了 |
 | Task handed to you | The task used its six checks and was not dismissed | 再跟进一轮: six more checks, starting now, on the same worker / 知道了 |
 | Failed trigger | It failed in the last 24 hours and was not dismissed | 重新处理: queued again with a fresh attempt budget / 知道了 |
@@ -204,11 +244,11 @@ Failures are classified before a retry:
 | Part | In this demo | Code |
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
-| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
+| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. | `seed.go` |
-| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `router.go`, `routines.go`, `tasks.go`, `control.go` |
+| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `router.go`, `routines.go`, `tasks.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
-| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries and dismissals. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
+| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals and answers. Report rows record each worker's report and its final text. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
 
 ## Boundaries
 
@@ -221,8 +261,8 @@ Failures are classified before a retry:
 - Trigger runs use untrusted authority. Chat typed on the page uses explicit-human
   authority, because the page is loopback-only.
 - The router is deterministic code. The semantic slow path is the worker's own
-  judgement, and a worker can answer `[QUIET]` to stay off the channel. There is no
-  LLM router, no speculative background work beyond invite drafting, and no Watchdog.
+  judgement, and a worker reports `quiet` to stay off the channel. There is no LLM
+  router, no speculative background work beyond invite drafting, and no Watchdog.
   The fallback check and the six-check budget keep a task from being forgotten or
   waking forever; they do not judge whether a check made progress.
 - Task checks are ordinary untrusted triggers. A task cannot grant a worker any

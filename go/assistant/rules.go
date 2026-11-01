@@ -4,7 +4,7 @@ import "strings"
 
 // Verdict is the fast-path (deterministic) filter outcome. Only Candidate
 // reaches a model; the semantic slow path then runs inside the worker turn,
-// which may still answer [QUIET].
+// which may still report quiet.
 type Verdict string
 
 const (
@@ -40,6 +40,8 @@ func (rules Rules) Classify(trigger Trigger, mail *Email) RuleDecision {
 		return RuleDecision{VerdictCandidate, "任务到了检查时间"}
 	case TriggerUpcoming:
 		return RuleDecision{VerdictCandidate, "日程临近：提前准备提醒"}
+	case TriggerAnswer:
+		return RuleDecision{VerdictCandidate, "用户回答了 worker 的提问"}
 	}
 	if mail == nil {
 		return RuleDecision{VerdictIgnore, "触发器引用的邮件不存在"}

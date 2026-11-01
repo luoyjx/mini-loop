@@ -15,7 +15,8 @@ import (
 // ScriptedModel is a deterministic offline stand-in for an LLM so the demo
 // runs without credentials. It only chooses tool calls and wording from the
 // prompt header and the tool results already in the transcript; every effect
-// still goes through the session's real tool gate.
+// still goes through the session's real tool gate. A background turn ends
+// with a report call, as the worker contract asks.
 type ScriptedModel struct {
 	calls atomic.Uint64
 	Now   func() time.Time
@@ -31,19 +32,49 @@ type scriptedTurn struct {
 	ref     string
 	text    string
 	open    []int64
+	events  []scriptedEvent
 	results map[protocol.ToolName][]string
 }
 
-var openTaskPattern = regexp.MustCompile(`(?m)^- 任务 #(\d+) `)
+// scriptedEvent is one event of a batched prompt.
+type scriptedEvent struct {
+	kind TriggerKind
+	ref  string
+}
+
+var (
+	openTaskPattern = regexp.MustCompile(`(?m)^- 任务 #(\d+) `)
+	eventPattern    = regexp.MustCompile(`\[event id=\d+ kind=(\S+) ref=(\S*)\]`)
+)
+
+// refs lists the refs of one kind in the batch, oldest first; a single-event
+// turn has only its own.
+func (turn scriptedTurn) refs(kind TriggerKind) []string {
+	if len(turn.events) == 0 {
+		return []string{turn.ref}
+	}
+	refs := []string{}
+	for _, event := range turn.events {
+		if event.kind == kind {
+			refs = append(refs, event.ref)
+		}
+	}
+	return refs
+}
 
 type plannedCall struct {
 	name  protocol.ToolName
 	input string
 }
 
+// plan is the next step: tool calls, or the final text. A background turn's
+// final text becomes its report: notify by default, quiet when quiet is set,
+// ask with the question when ask is set.
 type plan struct {
 	calls []plannedCall
 	final string
+	quiet bool
+	ask   string
 }
 
 func (m *ScriptedModel) Complete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
@@ -120,6 +151,9 @@ func readTurn(messages []protocol.Message) (scriptedTurn, bool) {
 				turn.open = append(turn.open, id)
 			}
 		}
+		for _, event := range eventPattern.FindAllStringSubmatch(turn.text, -1) {
+			turn.events = append(turn.events, scriptedEvent{kind: TriggerKind(event[1]), ref: event[2]})
+		}
 		start = i
 		break
 	}
@@ -164,6 +198,30 @@ func (m *ScriptedModel) now() time.Time {
 }
 
 func (m *ScriptedModel) plan(turn scriptedTurn) plan {
+	next := m.planKind(turn)
+	if turn.kind == TriggerChat || len(next.calls) > 0 {
+		return next
+	}
+	return reportPlan(turn, next)
+}
+
+// reportPlan turns a background turn's conclusion into one report call, then
+// ends the turn; the final text then only reaches the ledger.
+func reportPlan(turn scriptedTurn, next plan) plan {
+	if _, done := turn.last(ToolReport); done {
+		return plan{final: next.final}
+	}
+	input := reportInput{Outcome: ReportNotify, Message: truncateRunes(next.final, maxReportMessage)}
+	switch {
+	case next.ask != "":
+		input = reportInput{Outcome: ReportAsk, Message: truncateRunes(next.final, maxReportMessage), Question: truncateRunes(next.ask, maxReportQuestion)}
+	case next.quiet:
+		input = reportInput{Outcome: ReportQuiet, Reason: truncateRunes(next.final, maxReportReason)}
+	}
+	return plan{calls: []plannedCall{{ToolReport, jsonInput(input)}}}
+}
+
+func (m *ScriptedModel) planKind(turn scriptedTurn) plan {
 	switch turn.kind {
 	case TriggerEmail:
 		return planEmail(turn)
@@ -177,21 +235,41 @@ func (m *ScriptedModel) plan(turn scriptedTurn) plan {
 		return m.planTaskWakeup(turn)
 	case TriggerUpcoming:
 		return m.planUpcoming(turn)
+	case TriggerAnswer:
+		return planAnswer(turn)
 	}
 	return plan{final: "（离线脚本模型不认识这个触发器）"}
 }
 
 var suspiciousWords = []string{"转发", "forward", "密码", "password", "汇款", "礼品卡", "gift card", "验证码"}
 
+// planEmail reads every mail of the batch and answers the newest: a manager's
+// mail gets one reply draft and a follow-up task, a suspicious mail a warning,
+// a colleague's either-or question goes to the user, and anything else stays
+// quiet.
 func planEmail(turn scriptedTurn) plan {
-	read, haveMail := turn.last(ToolMailRead)
+	refs := turn.refs(TriggerEmail)
+	reads := turn.results[ToolMailRead]
 	recalled, haveRecall := turn.last(protocol.ToolRecall)
-	if !haveMail || !haveRecall {
-		return plan{calls: []plannedCall{{ToolMailRead, jsonInput(mailReadInput{ID: turn.ref})}, {protocol.ToolRecall, `{"query":"经理"}`}}}
+	if len(reads) < len(refs) || !haveRecall {
+		calls := make([]plannedCall, 0, len(refs)+1)
+		for _, ref := range refs {
+			calls = append(calls, plannedCall{ToolMailRead, jsonInput(mailReadInput{ID: ref})})
+		}
+		return plan{calls: append(calls, plannedCall{protocol.ToolRecall, `{"query":"经理"}`})}
 	}
-	var mail mailDetail
-	if err := json.Unmarshal([]byte(read), &mail); err != nil {
-		return plan{final: "读取邮件失败：" + truncateRunes(read, 80)}
+	mails := make([]mailDetail, 0, len(refs))
+	for _, read := range reads[len(reads)-len(refs):] {
+		var mail mailDetail
+		if err := json.Unmarshal([]byte(read), &mail); err != nil {
+			return plan{final: "读取邮件失败：" + truncateRunes(read, 80)}
+		}
+		mails = append(mails, mail)
+	}
+	mail := mails[len(mails)-1]
+	subjects := make([]string, 0, len(mails))
+	for _, each := range mails {
+		subjects = append(subjects, "「"+each.Subject+"」")
 	}
 	manager := strings.Contains(strings.ToLower(recalled), strings.ToLower(mail.From))
 	content := strings.ToLower(mail.Subject + " " + mail.Body)
@@ -201,16 +279,23 @@ func planEmail(turn scriptedTurn) plan {
 				return plan{final: fmt.Sprintf("⚠️ 可疑邮件：%s <%s> 要求「%s」，含「%s」类指令。我没有执行，也没起草回复，建议忽略或上报。", mail.FromName, mail.From, mail.Subject, word)}
 			}
 		}
-		return plan{final: fmt.Sprintf("%s 普通来信（%s：%s），不打扰用户，记入晨报。", QuietMarker, mail.FromName, mail.Subject)}
+		if strings.Contains(mail.Body, "还是") && strings.ContainsAny(mail.Body, "？?") {
+			return plan{final: fmt.Sprintf("%s 来信「%s」，要你拿主意。", mail.FromName, mail.Subject), ask: fmt.Sprintf("%s 问：%s 你怎么定？", mail.FromName, truncateRunes(mail.Body, 80))}
+		}
+		return plan{quiet: true, final: fmt.Sprintf("普通来信（%s：%s），不打扰用户，记入晨报。", mail.FromName, strings.Join(subjects, ""))}
 	}
-	// The manager expects a same-day answer: draft the reply and track it as
-	// a task (or extend the thread's existing task) until it goes out.
+	// The manager expects a same-day answer: draft one reply to the newest
+	// mail and track it as a task (or extend the thread's existing task)
+	// until it goes out.
 	drafted, haveDraft := turn.last(ToolProposeEmail)
 	tracked, haveTask := turn.last(ToolTaskCreate)
 	if !haveTask {
 		tracked, haveTask = turn.last(ToolTaskSchedule)
 	}
 	if haveDraft && haveTask {
+		if len(mails) > 1 {
+			return plan{final: fmt.Sprintf("%s（你的经理）连发 %d 封：%s。我合并起草了一封回复，%s%s", mail.FromName, len(mails), strings.Join(subjects, ""), proposalNumber(drafted), taskSentence(tracked))}
+		}
 		return plan{final: fmt.Sprintf("%s（你的经理）来信：「%s」。我起草了回复，%s%s", mail.FromName, mail.Subject, proposalNumber(drafted), taskSentence(tracked))}
 	}
 	var calls []plannedCall
@@ -219,7 +304,11 @@ func planEmail(turn scriptedTurn) plan {
 		if !strings.HasPrefix(strings.ToLower(subject), "re:") {
 			subject = "Re: " + subject
 		}
-		body := fmt.Sprintf("%s 你好，\n\n收到，关于「%s」我今天下班前给你答复。\n\n（由助理起草，经我确认后发出）", mail.FromName, mail.Subject)
+		about := "「" + mail.Subject + "」"
+		if len(mails) > 1 {
+			about = strings.Join(subjects, "和")
+		}
+		body := fmt.Sprintf("%s 你好，\n\n收到，关于%s我今天下班前给你答复。\n\n（由助理起草，经我确认后发出）", mail.FromName, about)
 		calls = append(calls, plannedCall{ToolProposeEmail, jsonInput(proposeEmailInput{To: mail.From, Subject: subject, Body: body, Reason: "经理来信，需要当天回复"})})
 	}
 	if !haveTask {
@@ -230,6 +319,42 @@ func planEmail(turn scriptedTurn) plan {
 		}
 	}
 	return plan{calls: calls}
+}
+
+var answerPattern = regexp.MustCompile(`(?m)^回答：(.*)$`)
+
+// planAnswer drafts a reply to the thread's newest inbox mail with the user's
+// answer.
+func planAnswer(turn scriptedTurn) plan {
+	inbox, haveInbox := turn.last(ToolMailList)
+	if !haveInbox {
+		return plan{calls: []plannedCall{{ToolMailList, `{"folder":"inbox","limit":30}`}}}
+	}
+	answer := ""
+	if match := answerPattern.FindStringSubmatch(turn.text); match != nil {
+		answer = strings.TrimSpace(match[1])
+	}
+	var mails []mailSummary
+	_ = json.Unmarshal([]byte(inbox), &mails)
+	var original *mailSummary
+	for i := range mails {
+		if mails[i].Thread == turn.thread {
+			original = &mails[i]
+			break
+		}
+	}
+	if original == nil {
+		return plan{final: "收到你的回答「" + answer + "」。这个 thread 没有可回复的邮件，我先记下。"}
+	}
+	if drafted, done := turn.last(ToolProposeEmail); done {
+		return plan{final: fmt.Sprintf("按你的回答「%s」起草了给 %s 的回复，%s", answer, original.FromName, proposalNumber(drafted))}
+	}
+	subject := original.Subject
+	if !strings.HasPrefix(strings.ToLower(subject), "re:") {
+		subject = "Re: " + subject
+	}
+	body := fmt.Sprintf("%s 你好，\n\n关于「%s」：%s。\n\n（由助理起草，经我确认后发出）", original.FromName, original.Subject, answer)
+	return plan{calls: []plannedCall{{ToolProposeEmail, jsonInput(proposeEmailInput{To: original.From, Subject: subject, Body: body, Reason: "按你对提问的回答起草"})}}}
 }
 
 var taskNumberPattern = regexp.MustCompile(`任务 #(\d+)`)
@@ -394,7 +519,7 @@ func (m *ScriptedModel) planTaskWakeup(turn scriptedTurn) plan {
 		}
 	}
 	if task == nil {
-		return plan{final: fmt.Sprintf("%s 任务 #%d 已不在进行中。", QuietMarker, id)}
+		return plan{quiet: true, final: fmt.Sprintf("任务 #%d 已不在进行中。", id)}
 	}
 	reason := ""
 	if match := taskReasonPattern.FindStringSubmatch(turn.text); match != nil {
@@ -459,7 +584,7 @@ func (m *ScriptedModel) planUpcoming(turn scriptedTurn) plan {
 		}
 	}
 	if event == nil {
-		return plan{final: QuietMarker + " 日程已不在日历里。"}
+		return plan{quiet: true, final: "日程已不在日历里。"}
 	}
 	start, _ := time.Parse(time.RFC3339, event.Start)
 	minutes := int(start.Sub(m.now()).Round(time.Minute) / time.Minute)
@@ -513,9 +638,10 @@ func parseReminder(text string) (int, string) {
 }
 
 func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
+	// A batch of chat messages is answered by its newest message.
 	text := turn.text
-	if _, said, found := strings.Cut(text, "用户在信道里说："); found {
-		text = said
+	if at := strings.LastIndex(text, "用户在信道里说："); at >= 0 {
+		text = text[at+len("用户在信道里说："):]
 	}
 	text = strings.TrimSpace(text)
 	lower := strings.ToLower(text)

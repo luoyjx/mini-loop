@@ -66,6 +66,10 @@ type simulateRequest struct {
 	Preset Preset `json:"preset"`
 }
 
+type answerRequest struct {
+	Text string `json:"text"`
+}
+
 type pauseRequest struct {
 	Paused bool `json:"paused"`
 }
@@ -111,6 +115,7 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/tasks/{id}/{action}", app.handleTask)
 	mux.HandleFunc("POST /api/triggers/{id}/retry", app.handleTriggerRetry)
 	mux.HandleFunc("POST /api/attention/{ref}/dismiss", app.handleDismiss)
+	mux.HandleFunc("POST /api/questions/{id}/answer", app.handleAnswer)
 	mux.HandleFunc("POST /api/pause", app.handlePause)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
 	return guard(mux)
@@ -353,6 +358,28 @@ func (app *App) handleDismiss(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, struct{}{})
+}
+
+// handleAnswer takes the user's answer to a worker's question and hands it
+// back to the question's thread as a user.answer trigger.
+func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+	if err != nil {
+		writeJSON(w, http.StatusNotFound, errorResponse{"unknown question"})
+		return
+	}
+	request, err := decode[answerRequest](r)
+	text := strings.TrimSpace(request.Text)
+	if err != nil || text == "" || len([]rune(text)) > MaxChatRunes {
+		writeJSON(w, http.StatusBadRequest, errorResponse{fmt.Sprintf("text must be 1-%d characters", MaxChatRunes)})
+		return
+	}
+	_, trigger, err := app.Store.AnswerQuestion(r.Context(), id, text, "me（信道）", app.now())
+	if !writeActionError(w, err) {
+		return
+	}
+	app.Router.Wake()
+	writeJSON(w, http.StatusAccepted, acceptedResponse{trigger})
 }
 
 // handlePause pauses or resumes all processing.

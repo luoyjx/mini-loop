@@ -44,6 +44,9 @@ main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px
 .need .actions button { font-size: 12px; padding: 3px 10px; }
 .chip.problem, .chip.send_failed, .chip.trigger_failed { background: var(--bad-soft); color: var(--bad); }
 .chip.approval, .chip.task_handoff { background: var(--warn-soft); color: var(--warn); }
+.chip.question { background: var(--accent-soft); color: var(--accent); }
+.need form.answer { display: flex; gap: 6px; }
+.need form.answer input { width: 12em; padding: 3px 8px; font-size: 12px; }
 section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; min-height: 0; min-width: 0; }
 .card > h2 { font-size: 13px; margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 650; display: flex; align-items: center; gap: 8px; }
 .card > h2 small { color: var(--muted); font-weight: 400; }
@@ -178,7 +181,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
     <div class="pane" id="pane-tasks"><p class="hint">worker 用 task_create 建任务并约定检查时间；到点后 scheduler 把同一 thread 的 worker 叫醒核对进展。每个任务最多自动检查 6 次，之后交给你。</p><div id="tasks"></div></div>
     <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准、发件箱经 MCP 发出的提案）</h3><div id="sent"></div></div>
     <div class="pane" id="pane-calendar"><div id="calendar"></div></div>
-    <div class="pane" id="pane-triggers"><div id="triggers"></div></div>
+    <div class="pane" id="pane-triggers"><p class="hint">同一 thread 在 worker 忙时积压的事件会合并成一回合处理，「决定」一栏写着并入了哪个触发器。</p><div id="triggers"></div></div>
     <div class="pane" id="pane-ledger"><p class="hint">每一行都能追溯到触发器、worker session、闸门 action_id 和批准人。</p><div id="ledger"></div></div>
   </section>
 </main>
@@ -204,7 +207,7 @@ const short = (s) => (s ? String(s).slice(0, 10) : "");
 const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
 const statusLabel = { pending: "待批准", approved: "已批准 · 发件箱执行中", sent: "已发出", denied: "已拒绝", failed: "发送失败" };
 const taskLabel = { active: "进行中", done: "已完成", cancelled: "已取消", stalled: "转交给你" };
-const needLabel = { approval: "待批准", send_failed: "没发出去", task_handoff: "转交给你", trigger_failed: "处理失败", problem: "系统问题" };
+const needLabel = { approval: "待批准", question: "等你回答", send_failed: "没发出去", task_handoff: "转交给你", trigger_failed: "处理失败", problem: "系统问题" };
 
 function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
@@ -286,6 +289,10 @@ function needActions(item) {
     case "approval": return [
       el("button", { class: "primary", onclick: () => decide(id, "approve") }, "批准发送"),
       el("button", { onclick: () => decide(id, "deny") }, "拒绝")];
+    case "question": return [
+      el("form", { class: "answer", onsubmit: (event) => answer(event, id) },
+        el("input", { name: "text", required: true, maxlength: "2000", placeholder: "你的回答", "aria-label": "回答", "data-q": id }),
+        el("button", { class: "primary", type: "submit" }, "回答")), dismiss];
     case "send_failed": return [
       el("button", { class: "primary", onclick: () => act("/api/proposals/" + id + "/retry", "已交回发件箱重试（同一幂等键）") }, "重试发送"), dismiss];
     case "task_handoff": return [
@@ -297,6 +304,13 @@ function needActions(item) {
 }
 function renderAttention() {
   const box = $("attention"), items = state.attention || [];
+  // The list re-renders on every refresh: keep a half-typed answer and its focus.
+  const drafts = {};
+  let focused = null;
+  for (const input of box.querySelectorAll("form.answer input")) {
+    drafts[input.dataset.q] = input.value;
+    if (document.activeElement === input) focused = input.dataset.q;
+  }
   const paused = state.paused ? el("div", { class: "paused-note" },
     "已于 " + time(state.paused) + " 暂停：邮件照常收录，但不派工、不发信、不跑定时检查。",
     el("button", { class: "primary", onclick: () => setPaused(false) }, "恢复处理")) : null;
@@ -307,8 +321,20 @@ function renderAttention() {
       el("span", { class: "chip " + item.kind }, needLabel[item.kind] || item.kind),
       el("div", { class: "what" }, el("b", {}, item.title), el("div", { class: "sub" }, item.detail + " · " + dateTime(item.since))),
       el("div", { class: "actions" }, needActions(item)))));
+  for (const input of box.querySelectorAll("form.answer input")) {
+    if (drafts[input.dataset.q]) input.value = drafts[input.dataset.q];
+    if (focused === input.dataset.q) input.focus();
+  }
   $("pause").textContent = state.paused ? "恢复处理" : "暂停处理";
   $("pause").classList.toggle("paused", !!state.paused);
+}
+// answer sends the user's reply to a worker's question back to its thread.
+async function answer(event, id) {
+  event.preventDefault();
+  const text = new FormData(event.target).get("text").trim();
+  if (!text) return;
+  try { await post("/api/questions/" + id + "/answer", { text }); toast("已交回这个 thread 的 worker"); refresh(); }
+  catch (e) { toast(e.message); }
 }
 async function setPaused(paused) {
   try { await post("/api/pause", { paused }); toast(paused ? "已暂停处理" : "已恢复处理，正在补上积压"); refresh(); }

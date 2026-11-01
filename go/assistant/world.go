@@ -367,8 +367,8 @@ type DeliveredMail struct {
 	Thread ThreadID `json:"thread"`
 }
 
-// Deliver puts a preset message (and its invite) into the inbox. The daemon
-// learns about it only on its next mail_poll.
+// Deliver puts a preset's messages (and its invite) into the inbox and names
+// the newest. The daemon learns about them only on its next mail_poll.
 func (w *World) Deliver(ctx context.Context, preset Preset) (DeliveredMail, error) {
 	var delivered DeliveredMail
 	err := w.inTx(ctx, func(tx *sql.Tx) error {
@@ -377,7 +377,7 @@ func (w *World) Deliver(ctx context.Context, preset Preset) (DeliveredMail, erro
 			return err
 		}
 		now := w.now()
-		mail, invite, err := presetMail(preset, next, now)
+		mails, invite, err := presetMail(preset, next, now)
 		if err != nil {
 			return err
 		}
@@ -386,8 +386,13 @@ func (w *World) Deliver(ctx context.Context, preset Preset) (DeliveredMail, erro
 				return err
 			}
 		}
-		delivered = DeliveredMail{ID: mail.ID, Thread: mail.Thread}
-		return insertMail(ctx, tx, mail)
+		for _, mail := range mails {
+			if err := insertMail(ctx, tx, mail); err != nil {
+				return err
+			}
+			delivered = DeliveredMail{ID: mail.ID, Thread: mail.Thread}
+		}
+		return nil
 	})
 	return delivered, err
 }

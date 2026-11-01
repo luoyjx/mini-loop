@@ -22761,3 +22761,47 @@ only reads the agent's existing public session events and the provider's existin
 - detection of a stuck-detector halt, which the agent exposes no accessor for;
 - a lock on platforms other than macOS and Linux;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: per-thread batches, structured reports, questions for the user (2026-11-01)
+
+Code baseline: `14edecb` plus changes to `go/assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. No package outside the demo changes; the
+`report` tool is one more typed extension tool in the demo's own catalogue.
+
+**Go evidence:**
+
+- `Store.ClaimBatch` replaces `ClaimTrigger`. With the oldest due trigger of a
+  thread that has nothing running, it claims the thread's other due pending
+  triggers of the same trust class, up to eight. Chat never batches with other
+  kinds, routine slots run alone, and chat is still claimed first.
+- `Router.dispatch` reads and filters every trigger of the batch first, settles the
+  filtered ones on their own and runs one worker turn for the rest. The prompt lists
+  each event under an `[event …]` header. Drafts, tasks and questions are stamped
+  with the oldest trigger. Retry and failure apply to the whole batch with its
+  highest attempt count.
+- The `report` tool records `notify`, `ask` or `quiet` for the session's turn. The
+  router acts on it after the turn: it posts the message, records an open question
+  with the turn's messages in one transaction (`Store.AskQuestion`, idempotent per
+  lead trigger), or settles the batch quiet. A turn without a report is delivered as
+  `notify` with a ledger note. The `[QUIET]` marker is removed.
+- `Store.AnswerQuestion` moves an open question to answered, posts the user's line
+  and enqueues a `user.answer` trigger on the question's thread. The answer turn
+  runs untrusted. Open questions are an attention kind and can be dismissed.
+- Tests cover:
+  - trust-class and thread boundaries of batch claims;
+  - two queued mails handled in one turn with one draft, one task and one report;
+  - a question asked, answered over HTTP and turned into a reply draft by the same
+    worker, answered once only;
+  - dismissing and later answering a question;
+  - a turn without a report delivered as `notify`;
+  - a quiet report kept off the channel;
+  - `report` input validation.
+
+**Not claimed:**
+
+- the offline scripted model answering more than the newest message of a chat batch;
+- an LLM router, admission grading, speculative preparation or a Watchdog;
+- long-term memory beyond the existing `remember` and `recall` tools;
+- a real channel, real MCP servers or a Python counterpart.

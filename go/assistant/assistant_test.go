@@ -385,11 +385,11 @@ func TestInterruptedTriggersRequeueAndProposalsDedupe(t *testing.T) {
 	}
 	defer store.Close()
 	now := newClock().Now()
-	mail, _, err := presetMail(PresetManager, 7, now)
+	mails, _, err := presetMail(PresetManager, 7, now)
 	if err != nil {
 		t.Fatal(err)
 	}
-	inbound := []InboundMail{{Seq: 7, Mail: mail}}
+	inbound := []InboundMail{{Seq: 7, Mail: mails[0]}}
 	if created, err := store.IngestMail(ctx, inbound, 7, now); err != nil || created != 1 {
 		t.Fatal(created, err)
 	}
@@ -397,17 +397,18 @@ func TestInterruptedTriggersRequeueAndProposalsDedupe(t *testing.T) {
 	if created, err := store.IngestMail(ctx, inbound, 7, now); err != nil || created != 0 {
 		t.Fatalf("re-polled mail must not enqueue again: %d %v", created, err)
 	}
-	claimed, ok, err := store.ClaimTrigger(ctx, now, false)
-	if err != nil || !ok {
-		t.Fatal(ok, err)
+	batch, err := store.ClaimBatch(ctx, now, false)
+	if err != nil || len(batch) != 1 {
+		t.Fatal(batch, err)
 	}
-	if _, again, _ := store.ClaimTrigger(ctx, now, false); again {
+	claimed := batch[0]
+	if again, _ := store.ClaimBatch(ctx, now, false); len(again) != 0 {
 		t.Fatal("a running trigger must not be claimed twice")
 	}
 	if count, err := store.RequeueInterrupted(ctx, now); err != nil || count != 1 {
 		t.Fatalf("requeue %d %v", count, err)
 	}
-	if reclaimed, ok, _ := store.ClaimTrigger(ctx, now, false); !ok || reclaimed.ID != claimed.ID || reclaimed.Attempts != 2 {
+	if reclaimed, _ := store.ClaimBatch(ctx, now, false); len(reclaimed) != 1 || reclaimed[0].ID != claimed.ID || reclaimed[0].Attempts != 2 {
 		t.Fatalf("reclaimed %+v", reclaimed)
 	}
 	draft := Proposal{Kind: ProposalSendEmail, TriggerID: claimed.ID, Thread: claimed.Thread, SessionID: "s", ActionID: "a", To: ManagerAddress, Subject: "Re", Body: "ok"}

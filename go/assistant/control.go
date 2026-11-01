@@ -91,6 +91,8 @@ type AttentionKind string
 const (
 	// AttentionApproval: a draft waits for approve or deny.
 	AttentionApproval AttentionKind = "approval"
+	// AttentionQuestion: a worker asked the user one question.
+	AttentionQuestion AttentionKind = "question"
 	// AttentionSendFailed: an approved proposal finally failed to go out.
 	AttentionSendFailed AttentionKind = "send_failed"
 	// AttentionTaskHandoff: a task used up its automatic checks.
@@ -102,8 +104,8 @@ const (
 )
 
 // AttentionItem is one thing that waits for the user. Ref names its object
-// ("proposal-3", "task-2", "trigger-9", "health-outbox"), so the page offers
-// that object's actions.
+// ("proposal-3", "question-4", "task-2", "trigger-9", "health-outbox"), so
+// the page offers that object's actions.
 type AttentionItem struct {
 	Kind   AttentionKind `json:"kind"`
 	Ref    string        `json:"ref"`
@@ -129,9 +131,9 @@ func splitRef(ref string) (string, int64, bool) {
 var proposalKindLabel = map[ProposalKind]string{ProposalSendEmail: "发邮件", ProposalRespondInvite: "回复邀约"}
 
 // Attention lists what waits for the user, in kind order and oldest first
-// within a kind: drafts to approve, approved proposals that finally failed,
-// tasks handed back after their last automatic check, and triggers that
-// failed in the last 24 hours. A dismissed item leaves the list; retrying or
+// within a kind: drafts to approve, workers' open questions, approved
+// proposals that finally failed, tasks handed back after their last automatic
+// check, and triggers that failed in the last 24 hours. A dismissed item leaves the list; retrying or
 // resuming its object clears the dismissal. App adds component problems.
 func (s *Store) Attention(ctx context.Context, now time.Time) ([]AttentionItem, error) {
 	items := []AttentionItem{}
@@ -162,6 +164,16 @@ func (s *Store) Attention(ctx context.Context, now time.Time) ([]AttentionItem, 
 						detail += "；" + truncateRunes(reason, 80)
 					}
 					return AttentionItem{Kind: AttentionApproval, Ref: ProposalRef(id), Title: fmt.Sprintf("提案 #%d 待批准：%s", id, subject), Detail: detail, Since: fromMillis(created)}, err
+				})
+		},
+		func() error {
+			return collect(`SELECT id,trigger_id,thread,text,created_at FROM questions q WHERE status=?
+				AND NOT EXISTS (SELECT 1 FROM dismissals d WHERE d.ref='question-'||q.id) ORDER BY id`,
+				[]any{string(QuestionOpen)}, func(rows *sql.Rows) (AttentionItem, error) {
+					var id, trigger, created int64
+					var thread, text string
+					err := rows.Scan(&id, &trigger, &thread, &text, &created)
+					return AttentionItem{Kind: AttentionQuestion, Ref: QuestionRef(id), Title: "助理问你：" + text, Detail: fmt.Sprintf("来自触发器 #%d · thread %s；回答会交回这个 thread 的 worker", trigger, thread), Since: fromMillis(created)}, err
 				})
 		},
 		func() error {
@@ -217,10 +229,11 @@ func HealthItems(problems []HealthProblem) []AttentionItem {
 	return items
 }
 
-// Dismiss takes a failed proposal, a handed-back task or a failed trigger off
-// the attention list without acting on it. Pending drafts and component
-// problems cannot be dismissed: a draft needs a decision, and a problem clears
-// itself once the component works again.
+// Dismiss takes a failed proposal, an open question, a handed-back task or a
+// failed trigger off the attention list without acting on it; a dismissed
+// question can still be answered. Pending drafts and component problems
+// cannot be dismissed: a draft needs a decision, and a problem clears itself
+// once the component works again.
 func (s *Store) Dismiss(ctx context.Context, ref, actor string, now time.Time) error {
 	kind, id, ok := splitRef(ref)
 	if !ok {
@@ -234,6 +247,8 @@ func (s *Store) Dismiss(ctx context.Context, ref, actor string, now time.Time) e
 		query, want = `SELECT status,last_trigger,thread FROM tasks WHERE id=?`, string(TaskStalled)
 	case "trigger":
 		query, want = `SELECT status,id,thread FROM triggers WHERE id=?`, string(TriggerFailed)
+	case "question":
+		query, want = `SELECT status,trigger_id,thread FROM questions WHERE id=?`, string(QuestionOpen)
 	default:
 		return ErrUnknownRef
 	}

@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	ManagerAddress = "alice@acme.example"
-	seedKey        = "seeded"
+	ManagerAddress   = "alice@acme.example"
+	ColleagueAddress = "dave@acme.example"
+	seedKey          = "seeded"
 )
 
 // MorningBrief is the demo's daily routine.
@@ -69,6 +70,8 @@ const (
 	PresetNewsletter     Preset = "newsletter"
 	PresetPhishing       Preset = "phishing"
 	PresetFriend         Preset = "friend"
+	PresetManagerBurst   Preset = "manager_burst"
+	PresetQuestion       Preset = "question"
 )
 
 type PresetInfo struct {
@@ -84,6 +87,8 @@ var Presets = []PresetInfo{
 	{PresetNewsletter, "Newsletter"},
 	{PresetPhishing, "可疑邮件：要求转发"},
 	{PresetFriend, "朋友闲聊"},
+	{PresetManagerBurst, "经理连发两封（合并成一回合）"},
+	{PresetQuestion, "同事来问：评审定哪天（会问你）"},
 }
 
 // CustomMail is a user-composed inbound message from the page.
@@ -95,9 +100,10 @@ type CustomMail struct {
 	Bulk     bool   `json:"bulk"`
 }
 
-// presetMail builds one simulated inbound message (and its invite). seq makes
-// the IDs unique within the World.
-func presetMail(preset Preset, seq int64, now time.Time) (Email, *CalendarEvent, error) {
+// presetMail builds the simulated inbound messages of one preset, oldest
+// first, and its invite. seq is the first free mail seq and makes the IDs
+// unique within the World; a burst takes one seq per message.
+func presetMail(preset Preset, seq int64, now time.Time) ([]Email, *CalendarEvent, error) {
 	thread := ThreadID(fmt.Sprintf("t-%d", seq))
 	mail := Email{ID: fmt.Sprintf("m-%d", seq), Folder: FolderInbox, To: OwnerAddress, Category: CategoryPerson, ReceivedAt: now}
 	var invite *CalendarEvent
@@ -129,8 +135,18 @@ func presetMail(preset Preset, seq int64, now time.Time) (Email, *CalendarEvent,
 	case PresetFriend:
 		mail.Thread, mail.From, mail.FromName = "t-hiking", "bob@friends.example", "Bob"
 		mail.Subject, mail.Body = "Re: 周末爬山？", "周六 8 点地铁站见？"
+	case PresetManagerBurst:
+		mail.Thread, mail.From, mail.FromName = thread, ManagerAddress, "Alice"
+		mail.Subject, mail.Body = "客户方案今晚要", "客户明早要看方案，今晚整理好发我。"
+		second := mail
+		second.ID, second.ReceivedAt = fmt.Sprintf("m-%d", seq+1), now.Add(time.Second)
+		second.Subject, second.Body = "补充：报价单也带上", "刚想起来，报价单也一起附上，用新的折扣口径。"
+		return []Email{mail, second}, nil, nil
+	case PresetQuestion:
+		mail.Thread, mail.From, mail.FromName = thread, ColleagueAddress, "Dave"
+		mail.Subject, mail.Body = "设计评审定哪天？", "下周的设计评审，你看定在周二下午还是周三上午？我好订会议室。"
 	default:
-		return Email{}, nil, fmt.Errorf("unknown preset %q", preset)
+		return nil, nil, fmt.Errorf("unknown preset %q", preset)
 	}
-	return mail, invite, nil
+	return []Email{mail}, invite, nil
 }

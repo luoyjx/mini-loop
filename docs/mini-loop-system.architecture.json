@@ -1064,7 +1064,7 @@
         300,
         76
       ],
-      "tag": "attention list / pause / chat / cards / tasks"
+      "tag": "attention / answers / pause / chat / cards"
     },
     {
       "id": "paStore",
@@ -1079,13 +1079,13 @@
         340,
         76
       ],
-      "tag": "pause switch / dismissals / channel / ledger"
+      "tag": "questions / pause / dismissals / channel / ledger"
     },
     {
       "id": "paRouter",
       "type": "backend",
       "label": "Assistant Router",
-      "sublabel": "rule fast path / chat first + reserved slot",
+      "sublabel": "per-thread batch, one turn / chat first",
       "pos": [
         1030,
         4900
@@ -1094,7 +1094,7 @@
         340,
         76
       ],
-      "tag": "no claims while paused / model failure = failed turn"
+      "tag": "acts on report: notify / ask / quiet"
     },
     {
       "id": "paWorkers",
@@ -1175,7 +1175,7 @@
       "id": "paTools",
       "type": "security",
       "label": "Agent tools",
-      "sublabel": "MCP reads / propose_* drafts / task_*",
+      "sublabel": "MCP reads / propose_* / task_* / report",
       "pos": [
         1530,
         5150
@@ -2497,7 +2497,7 @@
       "id": "paClaim",
       "from": "paStore",
       "to": "paRouter",
-      "label": "claim trigger",
+      "label": "claim thread batch",
       "variant": "emphasis",
       "labelAt": [
         894,
@@ -2887,9 +2887,10 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline f8bdd34 plus the 2026-11-01 attention-and-control iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, channel, ledger, pause switch, dismissals), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
+        "Review baseline 14edecb plus the 2026-11-01 batch-and-report iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
+        "Batches and reports: the router claims a thread's due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.",
         "Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
         "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."

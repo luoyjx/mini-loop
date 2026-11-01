@@ -13,10 +13,11 @@ import (
 )
 
 // Agent tool names. The reads wrap the MCP connector's read tools with
-// operator-declared RiskRead; proposals and task changes are RiskWrite
-// because they only touch local state (a draft in the outbox, a row on the
-// task board). No agent tool can send: mail_send and calendar_respond are
-// reachable only from the outbox after a human approval.
+// operator-declared RiskRead; proposals, task changes and the turn's report
+// are RiskWrite because they only touch local state (a draft in the outbox, a
+// row on the task board, the result the router acts on). No agent tool can
+// send: mail_send and calendar_respond are reachable only from the outbox
+// after a human approval, and only the router writes to the channel.
 const (
 	ToolMailList       protocol.ToolName = "mail_list"
 	ToolMailRead       protocol.ToolName = "mail_read"
@@ -27,6 +28,7 @@ const (
 	ToolTaskSchedule   protocol.ToolName = "task_schedule"
 	ToolTaskComplete   protocol.ToolName = "task_complete"
 	ToolTaskList       protocol.ToolName = "task_list"
+	ToolReport         protocol.ToolName = "report"
 	maxListedMail                        = 30
 	maxPreviewRunes                      = 80
 	maxDraftRunes                        = 4000
@@ -507,11 +509,13 @@ var toolSpecs = []toolSpec{
 		`{"type":"object","properties":{"task_id":{"type":"integer"},"result":{"type":"string"}},"required":["task_id","result"]}`},
 	{ToolTaskList, "列出所有进行中的任务：标题、所属 thread、要核对的内容、下次检查时间和已检查次数。",
 		`{"type":"object","properties":{}}`},
+	{ToolReport, "汇报本回合的结果，回合结束前调用一次。notify：把结论发到信道（不超过 100 字）；ask：向用户提一个只有用户能回答的具体问题，回答会回到这个 thread；quiet：不打扰用户，reason 只写进账本。由 router 在回合结束后执行，worker 自己不能写信道。",
+		`{"type":"object","properties":{"outcome":{"type":"string","enum":["notify","ask","quiet"]},"message":{"type":"string","maxLength":400,"description":"notify 的结论；ask 时可选的一句背景"},"question":{"type":"string","maxLength":200,"description":"ask 的问题，只问一个"},"reason":{"type":"string","maxLength":200,"description":"quiet 的原因，只写进账本"}},"required":["outcome"]}`},
 }
 
 // NewToolCatalog builds the assistant's only tools. Supplying a catalogue to
 // the manager replaces the built-in Bash/file tools, so workers have no shell.
-func NewToolCatalog(store *Store, connector *Connector, bindings bindingSource, now clock) (*agent.ToolCatalog, error) {
+func NewToolCatalog(store *Store, connector *Connector, bindings reportSink, now clock) (*agent.ToolCatalog, error) {
 	definitions := make([]agent.ToolDefinition, 0, len(toolSpecs))
 	tasks := taskTool{store, bindings, now}
 	for _, spec := range toolSpecs {
@@ -541,6 +545,8 @@ func NewToolCatalog(store *Store, connector *Connector, bindings bindingSource, 
 			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[taskCompleteInput]{}, taskCompleteTool{tasks})
 		case ToolTaskList:
 			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[taskListInput]{}, taskListTool{tasks})
+		case ToolReport:
+			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[reportInput]{}, reportTool{bindings})
 		default:
 			err = fmt.Errorf("unknown tool %s", spec.name)
 		}
@@ -557,7 +563,7 @@ func ToolRisk(name protocol.ToolName) string {
 	switch name {
 	case ToolMailList, ToolMailRead, ToolCalendarList, ToolTaskList, protocol.ToolRecall:
 		return string(agent.RiskRead)
-	case ToolProposeEmail, ToolProposeInvite, ToolTaskCreate, ToolTaskSchedule, ToolTaskComplete, protocol.ToolRemember:
+	case ToolProposeEmail, ToolProposeInvite, ToolTaskCreate, ToolTaskSchedule, ToolTaskComplete, ToolReport, protocol.ToolRemember:
 		return string(agent.RiskWrite)
 	default:
 		return string(agent.RiskUnclassified)

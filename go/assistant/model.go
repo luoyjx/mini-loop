@@ -38,6 +38,9 @@ const (
 	// TriggerUpcoming fires once per confirmed event shortly before it starts;
 	// Ref is the event ID.
 	TriggerUpcoming TriggerKind = "calendar.upcoming"
+	// TriggerAnswer carries the user's answer to a worker's question back to
+	// the question's thread; Ref is "question-<id>".
+	TriggerAnswer TriggerKind = "user.answer"
 )
 
 type TriggerStatus string
@@ -52,7 +55,9 @@ const (
 )
 
 // Trigger is one environment event. Ref names the mail, invite or routine slot
-// it came from; the worker reads that object through connector tools.
+// it came from; the worker reads that object through connector tools. Pending
+// triggers of one thread that queue up while its worker is busy are claimed
+// together and handled in one turn; the oldest leads the batch.
 type Trigger struct {
 	ID        int64         `json:"id"`
 	Kind      TriggerKind   `json:"kind"`
@@ -200,6 +205,8 @@ const (
 	LedgerTask      LedgerKind = "task"
 	// LedgerControl records the user's pause switch and attention actions.
 	LedgerControl LedgerKind = "control"
+	// LedgerReport records a worker's structured report.
+	LedgerReport LedgerKind = "report"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the
@@ -268,4 +275,50 @@ type Task struct {
 	ClosedBy    string     `json:"closed_by,omitempty"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
+}
+
+// ReportOutcome is what a worker's turn means for the user. The worker says it
+// with the report tool instead of a marker in free text.
+type ReportOutcome string
+
+const (
+	// ReportNotify posts the message to the channel.
+	ReportNotify ReportOutcome = "notify"
+	// ReportAsk posts one concrete question only the user can answer; it waits
+	// on the attention list and the answer goes back to the same thread.
+	ReportAsk ReportOutcome = "ask"
+	// ReportQuiet keeps the user undisturbed; the reason goes to the ledger.
+	ReportQuiet ReportOutcome = "quiet"
+)
+
+// Report is one worker turn's structured result. The router, the only writer
+// to the channel, acts on it after the turn.
+type Report struct {
+	Outcome  ReportOutcome `json:"outcome"`
+	Message  string        `json:"message,omitempty"`
+	Question string        `json:"question,omitempty"`
+	Reason   string        `json:"reason,omitempty"`
+}
+
+type QuestionStatus string
+
+// A question moves open → answered (the user replied) and stays answered.
+const (
+	QuestionOpen     QuestionStatus = "open"
+	QuestionAnswered QuestionStatus = "answered"
+)
+
+// Question is a worker's question that waits for the user. The answer becomes
+// a user.answer trigger on the question's thread, so the worker that asked
+// continues with its context.
+type Question struct {
+	ID         int64          `json:"id"`
+	TriggerID  int64          `json:"trigger_id"`
+	Thread     ThreadID       `json:"thread"`
+	SessionID  string         `json:"session_id"`
+	Text       string         `json:"text"`
+	Status     QuestionStatus `json:"status"`
+	Answer     string         `json:"answer,omitempty"`
+	CreatedAt  time.Time      `json:"created_at"`
+	AnsweredAt *time.Time     `json:"answered_at,omitempty"`
 }

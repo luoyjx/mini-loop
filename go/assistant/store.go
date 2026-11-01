@@ -19,8 +19,8 @@ import (
 
 // Store is the daemon's durable state: the trigger queue with its mail-poll
 // cursor, thread subscriptions, durable tasks and event reminders, the
-// proposal outbox, the channel log, the ledger, the user's pause switch and
-// the attention items the user dismissed. Mail and calendar are not here: they
+// proposal outbox, workers' open questions, the channel log, the ledger, the
+// user's pause switch and the attention items the user dismissed. Mail and calendar are not here: they
 // belong to the external service behind the MCP connector. It is separate from
 // the agent session store so the demo never edits that schema. One pinned
 // connection serializes writers.
@@ -83,6 +83,10 @@ CREATE TABLE IF NOT EXISTS reminders(
 	created_at INTEGER NOT NULL, PRIMARY KEY(event_id, start_at));
 CREATE TABLE IF NOT EXISTS dismissals(
 	ref TEXT PRIMARY KEY, actor TEXT NOT NULL, at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS questions(
+	id INTEGER PRIMARY KEY AUTOINCREMENT, trigger_id INTEGER NOT NULL UNIQUE, thread TEXT NOT NULL,
+	session_id TEXT NOT NULL, text TEXT NOT NULL, status TEXT NOT NULL, answer TEXT NOT NULL DEFAULT '',
+	created_at INTEGER NOT NULL, answered_at INTEGER NOT NULL DEFAULT 0);
 `
 
 // addedColumns upgrades older data directories: the first demo's proposals
@@ -225,6 +229,8 @@ func triggerSource(kind TriggerKind) string {
 		return "scheduler（任务检查）"
 	case TriggerUpcoming:
 		return "scheduler（日程临近，MCP calendar_list）"
+	case TriggerAnswer:
+		return "me（回答提问）"
 	default:
 		return "environment"
 	}
@@ -244,19 +250,26 @@ func scanTrigger(row interface{ Scan(...any) error }) (Trigger, error) {
 	return trigger, nil
 }
 
-// ClaimTrigger takes the oldest due pending trigger whose thread has no
-// running trigger, so one thread is processed in order while different
-// threads run in parallel. The user's chat messages go first; chatOnly
-// claims nothing else, for the slot kept free for the user.
-func (s *Store) ClaimTrigger(ctx context.Context, now time.Time, chatOnly bool) (Trigger, bool, error) {
-	var claimed Trigger
-	found := false
+// maxBatch bounds how many queued triggers of one thread one turn handles.
+const maxBatch = 8
+
+// ClaimBatch takes the oldest due pending trigger whose thread has no running
+// trigger, so one thread is processed in order while different threads run
+// in parallel, together with the thread's other due pending triggers of the
+// same trust class, oldest first: events that queued up while the thread's
+// worker was busy are handled in one turn. The user's chat runs with explicit
+// human authority and every other kind untrusted, so a batch never mixes chat
+// with other kinds; a routine slot always runs alone. The user's chat
+// messages go first; chatOnly claims nothing else, for the slot kept free for
+// the user. The lead trigger comes first in the batch.
+func (s *Store) ClaimBatch(ctx context.Context, now time.Time, chatOnly bool) ([]Trigger, error) {
+	var batch []Trigger
 	only := ""
 	if chatOnly {
 		only = string(TriggerChat)
 	}
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		trigger, err := scanTrigger(tx.QueryRowContext(ctx, `SELECT `+triggerColumns+` FROM triggers t WHERE status=? AND not_before<=? AND (?='' OR kind=?)
+		lead, err := scanTrigger(tx.QueryRowContext(ctx, `SELECT `+triggerColumns+` FROM triggers t WHERE status=? AND not_before<=? AND (?='' OR kind=?)
 			AND NOT EXISTS (SELECT 1 FROM triggers r WHERE r.thread=t.thread AND r.status=?)
 			ORDER BY CASE kind WHEN ? THEN 0 ELSE 1 END, id LIMIT 1`,
 			string(TriggerPending), millis(now), only, only, string(TriggerRunning), string(TriggerChat)))
@@ -266,14 +279,39 @@ func (s *Store) ClaimTrigger(ctx context.Context, now time.Time, chatOnly bool) 
 		if err != nil {
 			return err
 		}
-		if _, err := tx.ExecContext(ctx, `UPDATE triggers SET status=?, attempts=attempts+1, updated_at=? WHERE id=?`, string(TriggerRunning), millis(now), trigger.ID); err != nil {
-			return err
+		batch = []Trigger{lead}
+		if lead.Kind != TriggerRoutine {
+			rows, err := tx.QueryContext(ctx, `SELECT `+triggerColumns+` FROM triggers WHERE status=? AND not_before<=? AND thread=? AND id<>?
+				AND (kind=?)=(?=?) AND kind<>? ORDER BY id LIMIT ?`,
+				string(TriggerPending), millis(now), string(lead.Thread), lead.ID, string(TriggerChat), string(lead.Kind), string(TriggerChat), string(TriggerRoutine), maxBatch-1)
+			if err != nil {
+				return err
+			}
+			for rows.Next() {
+				follower, err := scanTrigger(rows)
+				if err != nil {
+					rows.Close()
+					return err
+				}
+				batch = append(batch, follower)
+			}
+			rows.Close()
+			if err := rows.Err(); err != nil {
+				return err
+			}
 		}
-		trigger.Status, trigger.Attempts = TriggerRunning, trigger.Attempts+1
-		claimed, found = trigger, true
+		for i := range batch {
+			if _, err := tx.ExecContext(ctx, `UPDATE triggers SET status=?, attempts=attempts+1, updated_at=? WHERE id=?`, string(TriggerRunning), millis(now), batch[i].ID); err != nil {
+				return err
+			}
+			batch[i].Status, batch[i].Attempts = TriggerRunning, batch[i].Attempts+1
+		}
 		return nil
 	})
-	return claimed, found, err
+	if err != nil {
+		return nil, err
+	}
+	return batch, nil
 }
 
 func (s *Store) FinishTrigger(ctx context.Context, id int64, status TriggerStatus, decision, session string, now time.Time) error {

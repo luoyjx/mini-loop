@@ -1184,44 +1184,43 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-01**, `f8bdd34` plus the
-attention-and-control iteration of the opt-in Go personal-assistant demo. It borrows
-from DeepSeek's `dsh-superagent` research prototype the aim of taking as little of
-the user's attention as possible. `go/assistant` and `go/cmd/miniloop-assistant`
-remain a Go addition with no Python counterpart. `cmd/miniloop`, the Python runtime
-and both Deep Agents lanes keep their defaults.
+Current architecture review baseline: **2026-11-01**, `14edecb` plus the
+batch-and-report iteration of the opt-in Go personal-assistant demo. It takes two
+more ideas from DeepSeek's `dsh-superagent` research prototype. `go/assistant` and
+`go/cmd/miniloop-assistant` remain a Go addition with no Python counterpart.
+`cmd/miniloop`, the Python runtime and both Deep Agents lanes keep their defaults.
 
-- **Attention list**: one derived list of what waits for the user: drafts to
-  approve, approved proposals that finally failed, tasks handed back after their
-  last automatic check, triggers that failed in the last 24 hours, and background
-  components that failed three times in a row. Each item offers its action, such
-  as retry, resume or dismiss. The page hides the list when it is empty.
-- **Pause**: one switch in `assistant.db` stops dispatch, sending and the
-  scheduler. Mail is still recorded. Turns already running finish, the pause
-  survives restarts, and resuming catches up as after downtime.
-- **User first**: chat triggers are claimed first, and one slot beyond the
-  configured worker count runs only the user's chat.
-- **Failures**: the agent session reports a failed model call, and a turn that ran
-  out of rounds, as final text. The router now treats both as failed turns instead
-  of posting them to the channel. MCP refusals, 4xx model rejections and round
-  exhaustion fail at once; other failures retry with backoff.
-- **One daemon**: `daemon.lock` in the data directory refuses a second daemon on
-  the same directory.
-- **Unchanged**: workers still cannot send, effects still go only through approved
+- **One turn per batch**: the router claims a thread's due pending triggers
+  together, oldest first, and runs the thread's worker once for the batch. A batch
+  never mixes the user's chat, which runs with explicit human authority, with
+  untrusted kinds, and a routine slot always runs alone. Triggers the fast path
+  filters out settle on their own. Drafts, tasks and questions are stamped with the
+  oldest trigger, so a re-run after a crash converges.
+- **Structured report**: a worker ends a background turn with the `report` tool:
+  `notify` posts a message, `ask` posts one question, and `quiet` writes only a
+  ledger reason. The `[QUIET]` text marker is gone. The router, still the only
+  channel writer, acts on the report after the turn. A turn without a report is
+  delivered as `notify`, with a ledger note.
+- **Questions**: a question waits on the attention list. The user's answer becomes
+  a `user.answer` trigger on the asking thread, so the same worker continues with
+  its context. That turn still runs untrusted, because the thread's transcript
+  carries external content.
+- **Unchanged**: workers still cannot send. Effects still go only through approved
   proposals and the outbox, and the channel, mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-01**, `2103c07` plus the
-durable-task iteration. Workers created tasks bound to their thread and session,
-with self-scheduled checks. The scheduler woke the subscribed worker in one
-transaction per check, with a fallback check and a six-check budget. An outbox
-outcome or a denial on the thread brought the check forward, and confirmed events
-starting within 15 minutes were reminded once through MCP `calendar_list`. Before
-that, `b1a0a72` moved mail and calendar into the `mock-mcp` child process with a
-`mail_poll` cursor, a single outbox keyed by `proposal-<id>`, and a LaunchAgent
-generator. The first demo (`c65073a`) kept mock mail and calendar in the daemon's own
-SQLite file.
+Previous architecture review baseline: **2026-11-01**, `f8bdd34` plus the
+attention-and-control iteration. One derived attention list showed what waited for
+the user, and a durable pause switch held dispatch, sending and the scheduler
+while mail was still recorded. Chat was claimed first, with one reserved chat slot.
+A failed model call or round exhaustion became a failed turn instead of a channel
+message, and `daemon.lock` kept one daemon per data directory. Before that,
+`2103c07` added durable tasks with self-scheduled checks, a fallback check, a
+six-check budget and upcoming-event reminders. `b1a0a72` moved mail and calendar
+into the `mock-mcp` child process with a `mail_poll` cursor, a single outbox keyed
+by `proposal-<id>`, and a LaunchAgent generator. The first demo (`c65073a`) kept
+mock mail and calendar in the daemon's own SQLite file.
 
 Earlier architecture review baseline: **2026-10-17**, `2b85676` plus the
 single Task runtime cleanup. API, Worker and Temporal deployment roles are unchanged;
@@ -1466,25 +1465,25 @@ flowchart LR
         TSWorkflow --> TSActivity --> TSModel
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · pause switch · chat · approval cards · task board · ledger view"]
-        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · channel log · append-only ledger<br/>pause switch · dismissed attention items"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view"]
+        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items"]
         PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused"]
-        PARouter["Assistant Router<br/>rule fast path · parallel workers across threads · per-thread serial claims<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse · sole channel writer"]
+        PARouter["Assistant Router<br/>rule fast path · parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
-        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>no send tool · replaces Bash / file catalogue"]
+        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>no send tool · replaces Bash / file catalogue"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
         PAPoller["Mail poller<br/>mail_poll cursor · ingest + cursor in one transaction<br/>first run starts at head"]
         PAOutbox["Outbox · sole effect caller<br/>approved → sent / failed · key proposal-id<br/>refusal fails · transport retries · resumes after restart or resume · user retry"]
         PAMock["mock-mcp child process · simulated MCP server<br/>world.db mail / calendar · idempotent effects<br/>sim_* tools stand in for the outside world"]
-        PAChannel -->|chat · pause / resume · retry / resume / dismiss| PAStore
+        PAChannel -->|chat · answer · pause / resume · retry / resume / dismiss| PAStore
         PAStore -->|attention items| PAChannel
         PAChannel -. simulator delivery .-> PAConnector
         PAScheduler -->|claim slot / due task / reminder + enqueue| PAStore
         PAScheduler -->|calendar_list upcoming events| PAConnector
         PAPoller -->|mail_poll| PAConnector
         PAPoller -->|enqueue trigger + advance cursor| PAStore
-        PAStore -->|claim trigger| PARouter
+        PAStore -->|claim one thread's batch| PARouter
         PATools -->|reads| PAConnector
         PATools -->|append pending proposal / create or schedule task| PAStore
         PAChannel -->|human approve or deny| PAStore
@@ -1573,13 +1572,17 @@ surface. It is meant to run on the owner's own Mac.
   leases). The simulated mail and calendar service is a separate child process with
   its own `world.db`. The daemon never opens that file and reaches it only through
   MCP `tools/call`.
-- **Triggers**: triggers are claimed serially per thread, so a claim never runs while
-  another trigger of the same thread is running. The user's chat is claimed first and
-  has one reserved slot. Rules ignore bulk mail before any model call, and a worker
-  may answer `[QUIET]` to stay off the channel. A failed model call is a failed turn,
-  never a channel message.
+- **Triggers**: triggers are claimed per thread, so a claim never runs while another
+  trigger of the same thread is running; the due triggers of one trust class that
+  queued up meanwhile are claimed together and handled in one turn. The user's chat
+  is claimed first and has one reserved slot. Rules ignore bulk mail before any model
+  call. A worker says what its turn means for the user with the `report` tool
+  (`notify`, `ask` or `quiet`), and only the router writes to the channel. A failed
+  model call is a failed turn, never a channel message.
 - **Attention and pause**: the page's attention list is derived from `assistant.db`
-  plus an in-memory health board, so a count always equals its list. The pause switch
+  plus an in-memory health board, so a count always equals its list. A worker's
+  question waits there; the answer returns to the asking thread as an untrusted
+  `user.answer` trigger. The pause switch
   is durable and holds dispatch, sending and the scheduler, but not mail intake.
   `daemon.lock` keeps one daemon per data directory; it is an advisory `flock` and
   is not taken on platforms other than macOS and Linux.
@@ -3905,7 +3908,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

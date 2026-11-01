@@ -31,6 +31,12 @@ the user's chat is claimed first on a reserved worker slot. A failed model call 
 a failed turn, not a channel message. `daemon.lock` keeps one daemon per data
 directory.
 
+Events that queue up on one thread while its worker is busy are claimed as one
+batch and handled in one turn. A worker ends each turn with the `report` tool:
+`notify` posts a message, `ask` puts one question on the attention list, and
+`quiet` writes only the ledger. The user's answer returns to the asking thread as
+an untrusted `user.answer` trigger.
+
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.

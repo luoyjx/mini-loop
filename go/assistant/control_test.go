@@ -208,15 +208,15 @@ func TestChatIsClaimedFirstAndTheReservedSlotTakesOnlyChat(t *testing.T) {
 	if _, err := enqueueTrigger(ctx, store.db, Trigger{Kind: TriggerEmail, Thread: "t-a", Ref: "m1", Summary: "mail"}, now); err != nil {
 		t.Fatal(err)
 	}
-	if _, ok, _ := store.ClaimTrigger(ctx, now, true); ok {
+	if batch, _ := store.ClaimBatch(ctx, now, true); len(batch) != 0 {
 		t.Fatal("the reserved slot claimed mail")
 	}
 	chat, err := store.ChatFromUser(ctx, "hi", now)
 	if err != nil {
 		t.Fatal(err)
 	}
-	claimed, ok, err := store.ClaimTrigger(ctx, now, false)
-	if err != nil || !ok || claimed.ID != chat {
+	claimed, err := store.ClaimBatch(ctx, now, false)
+	if err != nil || len(claimed) != 1 || claimed[0].ID != chat {
 		t.Fatalf("chat must go first, claimed %+v %v", claimed, err)
 	}
 }
