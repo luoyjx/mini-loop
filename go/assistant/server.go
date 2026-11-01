@@ -1,6 +1,7 @@
 package assistant
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 	"errors"
@@ -51,6 +52,8 @@ type StateView struct {
 	Router        RouterStats      `json:"router"`
 	Jobs          []Job            `json:"jobs"`
 	Contacts      []Contact        `json:"contacts"`
+	Profile       []ProfileEntry   `json:"profile"`
+	Memories      []MemoryView     `json:"memories"`
 	Integration   IntegrationView  `json:"integration"`
 	Workers       WorkersView      `json:"workers"`
 	Channel       []ChannelMessage `json:"channel"`
@@ -203,6 +206,8 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		func() error { view.Candidates, err = app.Store.Candidates(ctx, 30); return err },
 		func() error { view.Jobs, err = app.Store.Jobs(ctx, 20); return err },
 		func() error { view.Contacts, err = app.Store.Contacts(ctx, 20); return err },
+		func() error { view.Profile, err = app.Store.Profile(ctx); return err },
+		func() error { view.Memories, err = app.memoryView(ctx); return err },
 	}
 	for _, step := range steps {
 		if err := step(); err != nil {
@@ -398,6 +403,27 @@ func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
 	}
 	app.Router.Wake()
 	writeJSON(w, http.StatusAccepted, acceptedResponse{trigger})
+}
+
+// MemoryView is one owner memory as the page lists it.
+type MemoryView struct {
+	Name        string `json:"name"`
+	Type        string `json:"type"`
+	Origin      string `json:"origin"`
+	Description string `json:"description"`
+	Body        string `json:"body"`
+}
+
+func (app *App) memoryView(ctx context.Context) ([]MemoryView, error) {
+	records, err := app.Memory.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]MemoryView, 0, len(records))
+	for _, record := range records {
+		result = append(result, MemoryView{Name: record.Name, Type: string(record.Type), Origin: string(record.Origin), Description: record.Description, Body: truncateRunes(strings.TrimSpace(record.Body), 120)})
+	}
+	return result, nil
 }
 
 // handleCandidate hands an observed candidate to a worker or ignores it.

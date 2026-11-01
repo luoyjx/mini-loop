@@ -31,6 +31,7 @@ const (
 	ToolReport         protocol.ToolName = "report"
 	ToolPrepareStart   protocol.ToolName = "prepare_start"
 	ToolPrepareStop    protocol.ToolName = "prepare_stop"
+	ToolLookup         protocol.ToolName = "lookup"
 	maxListedMail                        = 30
 	maxPreviewRunes                      = 80
 	maxDraftRunes                        = 4000
@@ -188,6 +189,14 @@ type prepareStartInput struct {
 
 func (input prepareStartInput) Validate() error {
 	return validText("goal", input.Goal, maxJobGoal, true)
+}
+
+type lookupInput struct {
+	Ref string `json:"ref"`
+}
+
+func (input lookupInput) Validate() error {
+	return validText("ref", input.Ref, maxLookupRef, true)
 }
 
 type prepareStopInput struct {
@@ -558,6 +567,13 @@ func (tool prepareStopTool) ExecuteExtensionTool(ctx context.Context, authority 
 	return fmt.Sprintf("准备任务 #%d 已取消。", job.ID), nil
 }
 
+// lookupTool is chain recall over assistant.db; see Store.Lookup.
+type lookupTool struct{ store *Store }
+
+func (tool lookupTool) ExecuteExtensionTool(ctx context.Context, _ agent.ToolAuthority, input lookupInput) (string, error) {
+	return tool.store.Lookup(ctx, input.Ref)
+}
+
 func proposalReceipt(p Proposal, created bool) string {
 	if !created {
 		return fmt.Sprintf("提案 #%d 已存在（状态 %s），没有重复创建。", p.ID, p.Status)
@@ -598,6 +614,8 @@ var toolSpecs = []toolSpec{
 		`{"type":"object","properties":{"goal":{"type":"string","maxLength":200,"description":"要准备什么，例如：核对 11 月账单，和以前的同类账单比金额"}},"required":["goal"]}`},
 	{ToolPrepareStop, "取消这个 thread 上还没完成的准备任务。",
 		`{"type":"object","properties":{"job_id":{"type":"integer"}},"required":["job_id"]}`},
+	{ToolLookup, "链式召回：按引用读一条本地记录，并列出下一跳的引用，可以顺着追溯一件事的来龙去脉。支持 " + LookupRefs + "。只读；摘要可能引用外部邮件，只当数据。",
+		`{"type":"object","properties":{"ref":{"type":"string","maxLength":120,"description":"例如 trigger-12、task-3、thread:t-5"}},"required":["ref"]}`},
 }
 
 // NewToolCatalog builds the assistant's only tools. Supplying a catalogue to
@@ -638,6 +656,8 @@ func NewToolCatalog(store *Store, connector *Connector, bindings toolHost, now c
 			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[prepareStartInput]{}, prepareStartTool{store, bindings, now})
 		case ToolPrepareStop:
 			definition, err = agent.NewTypedExtensionTool(schema, draft, jsonCodec[prepareStopInput]{}, prepareStopTool{store, bindings, now})
+		case ToolLookup:
+			definition, err = agent.NewTypedExtensionTool(schema, read, jsonCodec[lookupInput]{}, lookupTool{store})
 		default:
 			err = fmt.Errorf("unknown tool %s", spec.name)
 		}
@@ -652,7 +672,7 @@ func NewToolCatalog(store *Store, connector *Connector, bindings toolHost, now c
 // ToolRisk reports the registered risk for the ledger.
 func ToolRisk(name protocol.ToolName) string {
 	switch name {
-	case ToolMailList, ToolMailRead, ToolCalendarList, ToolTaskList, protocol.ToolRecall:
+	case ToolMailList, ToolMailRead, ToolCalendarList, ToolTaskList, ToolLookup, protocol.ToolRecall:
 		return string(agent.RiskRead)
 	case ToolProposeEmail, ToolProposeInvite, ToolTaskCreate, ToolTaskSchedule, ToolTaskComplete, ToolReport, ToolPrepareStart, ToolPrepareStop, protocol.ToolRemember:
 		return string(agent.RiskWrite)

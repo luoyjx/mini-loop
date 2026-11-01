@@ -37,14 +37,17 @@ type Config struct {
 }
 
 type App struct {
-	Store      *Store
-	Connector  *Connector
-	Router     *Router
-	Scheduler  *Scheduler
-	Poller     *Poller
-	Outbox     *Outbox
-	Preparer   *Preparer
-	Manager    *agent.SessionManager
+	Store     *Store
+	Connector *Connector
+	Router    *Router
+	Scheduler *Scheduler
+	Poller    *Poller
+	Outbox    *Outbox
+	Preparer  *Preparer
+	Manager   *agent.SessionManager
+	// Memory is the owner's memory, shared with the workers' remember and
+	// recall tools.
+	Memory     *memory.ScopedStore
 	Health     *Health
 	ModelLabel string
 
@@ -108,8 +111,16 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if err = SeedMemory(ctx, memories); err != nil {
 		return nil, fmt.Errorf("seed memory: %w", err)
 	}
+	owned, err := memory.Bind(memories, memory.OwnerID(Owner))
+	if err != nil {
+		return nil, err
+	}
+	if err = refreshProfile(ctx, store, owned, now()); err != nil {
+		return nil, fmt.Errorf("profile: %w", err)
+	}
 	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
 	router.triage = &Triage{provider: observeProvider(config.Provider), model: config.Model}
+	router.consolidator = NewConsolidator(store, config.Connector, owned, now)
 	catalog, err := NewToolCatalog(store, config.Connector, router, now)
 	if err != nil {
 		return nil, err
@@ -153,7 +164,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	poller.health = health
 	return &App{
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
-		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Health: health,
+		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Memory: owned, Health: health,
 		ModelLabel: label, now: now, states: states, release: release,
 	}, nil
 }

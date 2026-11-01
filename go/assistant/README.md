@@ -14,7 +14,9 @@ stay quiet, or ask you one question whose answer goes back to the same worker.
 Mail is graded by sender and address before any model call. An unclear mail passes
 a short triage and by default waits for you under **候选** instead of starting
 work. Workers can prepare material in a background read-only session, and a
-watchdog flags tasks whose checks stop making progress.
+watchdog flags tasks whose checks stop making progress. Workers can trace a piece of
+work through its records, and a nightly routine consolidates memory into a short
+profile that every worker sees.
 The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
@@ -132,12 +134,19 @@ shell for now.
     returns to the bill's thread, where the worker posts the comparison. The job is
     listed under **任务 → 后台准备任务**, with **停止** while it runs. Switch
     **推断候选** to **自动** to let the triage hand candidates to workers directly.
-14. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
+14. Type **以后周五下午尽量不安排会** in the channel: the assistant notes it as a
+    preference for tonight. Type **追溯 trigger-1**: the worker answers with the
+    `lookup` tool, listing the trigger and the refs one hop away. Under
+    **Routines**, click **立即运行** next to **夜间整理**. The daemon consolidates
+    contacts, the meeting window and duplicate memories, and the worker remembers
+    your preference. The result shows under **画像与记忆**, and later worker prompts
+    carry the profile.
+15. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
     that finally failed (**重试发送** or **知道了**), tasks handed back to you or flagged by the watchdog,
     triggers that failed in the last 24 hours (**重新处理** or **知道了**), and
     components such as the mail poll that failed three times in a row. The list
     disappears when nothing waits for you.
-15. Stop the process with Ctrl-C, or kill it, then start it again with the same
+16. Stop the process with Ctrl-C, or kill it, then start it again with the same
     `-data`. The following still hold:
     - Pending cards, the channel, the task board and the ledger remain.
     - A task check missed while the daemon was down, or the Mac asleep, runs on the
@@ -153,7 +162,7 @@ shell for now.
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -277,6 +286,57 @@ development Mac took 112 worker turns for 300 events, with a quiet rate of 0.54,
 p50 0.51 s and p95 1.01 s. These numbers come from the scripted model, not a real
 one.
 
+## Memory and profile
+
+`lookup` is chain recall over `assistant.db`. Given one ref, it returns a short
+summary and the refs one hop away:
+
+| Ref | Summary | Next hops |
+|---|---|---|
+| `trigger-<id>` | Kind, status, thread, summary, decision | Its thread and worker session; the drafts, tasks, questions and jobs it started; the task, question or job it refers to |
+| `task-<id>`, `proposal-<id>`, `question-<id>`, `job-<id>` | The record's own fields | Its trigger, thread and worker session |
+| `thread:<thread>` | The thread's newest triggers and its subscribed worker | Those triggers, the worker and what the thread started |
+| `session:<worker>` | The triggers the worker handled | Those triggers, their threads and what the worker started |
+
+It only reads, and its summaries may quote external mail. In the channel,
+**追溯 trigger-3** (or any ref) asks the worker to look one up.
+
+**夜间整理** is a routine seeded at 23:30, under its own key so older data
+directories gain it. Like the brief, a slot missed earlier the same day runs once
+as a catch-up. Before the worker turn the daemon:
+
+- adds the recipients of the last 30 sent mails as contacts. Senders are never
+  added, so a stranger cannot become a known contact by writing twice;
+- reads the confirmed meetings of the next seven days and records the window they
+  fall in;
+- removes memories whose body repeats another's, ignoring case, spaces and
+  punctuation. It keeps an explicit memory first, then a `feedback` memory, and
+  rewrites `memory/` only when something repeats;
+- rebuilds the profile and writes one ledger row.
+
+The worker turn then sees that summary and the lines you typed in the channel that
+day. It remembers the preferences you stated with `remember` and reports quiet.
+Every step is idempotent, so a manual run or a re-run after a crash converges.
+
+The profile has four lines: manager, frequent contacts, meeting window and
+preferences (the first three `feedback` memories). Every worker prompt shows it
+under **用户画像**, marked as reference data rather than instructions. The daemon
+rebuilds the lines that need no calendar at start and after the nightly turn.
+
+Recall itself is the existing lexical `memory.Store.Search`: a query is split at
+non-letters, and each term must occur as a substring. `TestLexicalMemoryRecallEvaluation`
+measures it on ten assistant-style memories with recall@3:
+
+| Queries | Found |
+|---|---|
+| Topic words (经理, newsletter, 周三, 爬山, 账单, 放学, English, clinic) | 8 of 8 |
+| Space-separated keywords (周三 开会, 出差 座位, 早上 邮件, Alice 回复) | 4 of 4 |
+| Paraphrases (我老板是谁, boss, 哪天不能开会, 周三下午有空吗, 牙医, 坐飞机的习惯, invoice, 接孩子) | 0 of 8 |
+
+Semantic retrieval would close the paraphrase gap, but it needs an embedding model
+or library, which is a new dependency that needs approval. Until then workers
+search by topic word.
+
 ## Attention and control
 
 The page answers "does anything need me?" first. The list under **需要你处理** is
@@ -322,8 +382,8 @@ Failures are classified before a retry:
 | Part | In this demo | Code |
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
-| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
-| Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. | `seed.go` |
+| Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup` (read: local records). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
+| Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window and duplicate memories into a profile shown in every worker prompt. | `seed.go`, `lookup.go`, `nightly.go`, `profile.go` |
 | Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
 | Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
@@ -352,6 +412,10 @@ Failures are classified before a retry:
   waking forever.
 - Contacts are local demo data. A known contact still runs untrusted, because the
   mail content is external.
+- Memory stays lexical; see [Memory and profile](#memory-and-profile). The nightly
+  turn runs untrusted like any routine and is asked to remember only what you said
+  in the channel. A memory a worker wrote from mail can still reach the profile's
+  preference line, which is why the profile is marked as reference data.
 - Task checks are ordinary untrusted triggers. A task cannot grant a worker any
   ability it does not already have, and a task check can only draft.
 - A re-run after a crash may repeat model calls. Proposal dedupe keys and card checks

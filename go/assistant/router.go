@@ -64,6 +64,8 @@ type Router struct {
 	triage *Triage
 	// preparer runs the preparation jobs workers start (nil runs none).
 	preparer *Preparer
+	// consolidator runs the nightly routine's deterministic part (nil skips it).
+	consolidator *Consolidator
 
 	statsMu sync.Mutex
 	stats   RouterStats
@@ -310,6 +312,10 @@ func (r *Router) dispatch(ctx context.Context, batch []Trigger) {
 		return
 	}
 	input.open = open
+	if input.profile, err = r.store.Profile(ctx); err != nil {
+		r.retry(ctx, kept, err)
+		return
+	}
 	session, route, err := r.sessionFor(ctx, lead)
 	if err != nil {
 		r.retry(ctx, kept, err)
@@ -365,6 +371,15 @@ func (r *Router) dispatch(ctx context.Context, batch []Trigger) {
 		}
 	}
 	r.deliver(ctx, kept, string(id), strings.TrimSpace(text), report, reported)
+	// The nightly turn may have remembered preferences: refresh the profile
+	// lines that come from memory and contacts.
+	for _, event := range input.events {
+		if event.consolidation != nil && r.consolidator != nil {
+			if err := refreshProfile(ctx, r.store, r.consolidator.memories, r.now()); err != nil {
+				fmt.Fprintf(r.log, "assistant: refresh profile: %v\n", err)
+			}
+		}
+	}
 }
 
 // settlement is how a trigger ends without a worker turn: ignored by the
@@ -465,6 +480,15 @@ func (r *Router) read(ctx context.Context, trigger Trigger) (promptEvent, string
 		}
 		if ok {
 			event.instruction = routine.Prompt
+		}
+		// The nightly routine's deterministic consolidation runs before
+		// the worker turn; an MCP outage retries the trigger.
+		if routine.ID == NightlyRoutine.ID && r.consolidator != nil {
+			done, err := r.consolidator.Run(ctx)
+			if err != nil {
+				return event, "", err
+			}
+			event.consolidation = &done
 		}
 	case TriggerEmail, TriggerInvite:
 		// The trigger carries IDs only; the message is read through MCP, and
@@ -853,21 +877,23 @@ func EventHeader(trigger Trigger) string {
 // list) and the thread's active tasks, so a follow-up event sees the work
 // already in flight.
 type promptInput struct {
-	now    time.Time
-	events []promptEvent
-	open   []Task
+	now     time.Time
+	events  []promptEvent
+	open    []Task
+	profile []ProfileEntry
 }
 
 // promptEvent is one trigger of the batch and what it refers to.
 type promptEvent struct {
-	trigger     Trigger
-	rule        string
-	mail        *Email
-	event       *CalendarEvent
-	task        *Task
-	question    *Question
-	job         *Job
-	instruction string
+	trigger       Trigger
+	rule          string
+	mail          *Email
+	event         *CalendarEvent
+	task          *Task
+	question      *Question
+	job           *Job
+	consolidation *Consolidation
+	instruction   string
 }
 
 var weekdays = [...]string{"日", "一", "二", "三", "四", "五", "六"}
@@ -884,6 +910,7 @@ func prompt(in promptInput) string {
 	b.WriteString(TriggerHeader(in.events[0].trigger))
 	b.WriteString("\n")
 	fmt.Fprintf(&b, "现在：%s（周%s）\n", in.now.Format("2006-01-02 15:04"), weekdays[in.now.Weekday()])
+	b.WriteString(profileText(in.profile))
 	if len(in.open) > 0 {
 		b.WriteString("这个 thread 上进行中的任务（更新用 task_schedule，完成用 task_complete）：\n")
 		for _, task := range in.open {
@@ -915,6 +942,9 @@ func writeEvent(b *strings.Builder, in promptEvent, now time.Time) {
 		b.WriteString("定时 routine 到点：")
 		b.WriteString(trigger.Summary)
 		b.WriteString("\n")
+		if in.consolidation != nil {
+			writeConsolidation(b, in.consolidation)
+		}
 		b.WriteString(in.instruction)
 		b.WriteString("\n最后用 report 汇报。\n")
 	case TriggerTaskWakeup:

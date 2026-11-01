@@ -223,6 +223,8 @@ const (
 	LedgerJob LedgerKind = "job"
 	// LedgerWatchdog records tasks whose checks stopped making progress.
 	LedgerWatchdog LedgerKind = "watchdog"
+	// LedgerMemory records the nightly consolidation.
+	LedgerMemory LedgerKind = "memory"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the

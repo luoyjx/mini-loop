@@ -1184,43 +1184,45 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-01**, `a3bcbe5` plus the
-admission-and-preparation iteration of the opt-in Go personal-assistant demo. It
-implements roadmap P5. `go/assistant` and `go/cmd/miniloop-assistant` remain a Go
-addition with no Python counterpart. `cmd/miniloop`, the Python runtime and both
-Deep Agents lanes keep their defaults.
+Current architecture review baseline: **2026-11-01**, `75ba6b4` plus the
+long-term-memory iteration of the opt-in Go personal-assistant demo. It implements
+roadmap P6. `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition
+with no Python counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents
+lanes keep their defaults. The `go/memory` package is unchanged.
 
-- **Admission grading**: the rule fast path now grades mail. A known contact
-  writing to the user is an explicit request and goes straight to a worker. A known
-  contact copying the user, or a stranger writing to the user, is an inferred
-  candidate. A stranger copying the user is archived. Contacts live in
-  `assistant.db`: four are seeded, and each approved send counts an interaction with
-  its recipient and adds unknown recipients as contacts.
-- **Triage**: an inferred candidate gets one model call without tools
-  (`handle` / `observe` / `ignore`). In the default observe mode, a `handle`
-  verdict is only recorded. The page's candidates tab lets the user hand the
-  trigger to a worker, which skips the triage, or ignore it. Auto mode runs the
-  worker directly. A failed triage records the candidate.
-- **Background preparation**: `prepare_start` queues a durable job. The Preparer
-  runs one job at a time in a fresh session limited to the mail, calendar and task
-  read tools; that session runs untrusted. The result returns to the starting thread
-  as a `job.done` trigger. Jobs can be stopped by the user or the worker, are
-  requeued after a restart, and are not claimed while paused. This uses durable rows
-  and a daemon goroutine instead of `go/background`, because workers have no shell.
-- **Watchdog**: each task check is snapshotted. On every scheduler tick the agent's
-  stuck detector reads the snapshots and flags a task after three checks with the
-  same check and note, or six that alternate. The flag reaches the ledger, the
-  channel and the attention list (`no_progress`), and clears once a check makes
-  progress.
-- **Acceptance stream**: a 300-event synthetic stream through the daemon with the
-  offline model records latency, router decisions and the quiet rate. The router's
-  decision counters are in memory and reset when the process restarts.
+- **Chain recall**: the read-only `lookup` tool reads one record of
+  `assistant.db` by its ref (`trigger-`, `task-`, `proposal-`, `question-`, `job-`,
+  `thread:` or `session:`). It returns a summary and the refs one hop away, so a
+  worker can follow a piece of work instead of searching for it.
+- **Nightly consolidation**: a seeded "夜间整理" routine runs at 23:30. Before the
+  worker turn, the daemon:
+  - adds recipients of sent mail to the contact table (never senders);
+  - reads the meeting window from the calendar;
+  - removes memories whose body repeats another's, preferring explicit and
+    `feedback` memories;
+  - rebuilds the profile.
+
+  The worker then reads the user's chat from that day and remembers the stated
+  preferences with `remember`.
+- **Profile**: `assistant.db` holds a profile with four lines: manager, frequent
+  contacts, meeting window and preferences. Every worker prompt shows it as
+  reference data. The daemon rebuilds the lines that need no MCP call at start and
+  after the nightly turn.
+- **Retrieval evaluation**: a test measures the existing lexical memory search.
+  Topic words and space-separated keywords are found, and paraphrases are not.
+  Semantic retrieval would need a new dependency, which needs approval, so none was
+  added.
 - **Unchanged**: workers still cannot send. Effects still go only through approved
   proposals and the outbox, and the channel, mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-01**, `14edecb` plus the
+Previous architecture review baseline: **2026-11-01**, `a3bcbe5` plus the
+admission-and-preparation iteration (P5). Rules graded mail by contact and address,
+and inferred candidates passed a tool-less triage call, only recorded by default.
+`prepare_start` queued read-only background jobs whose results returned as
+`job.done`, and a watchdog flagged tasks whose checks stopped making progress.
+Before that, `14edecb` added the
 batch-and-report iteration. The router claimed a thread's due triggers of one trust
 class together and ran the worker once per batch. Workers ended background turns
 with the `report` tool (`notify` / `ask` / `quiet`) instead of the `[QUIET]` marker,
@@ -1480,12 +1482,13 @@ flowchart LR
         TSWorkflow --> TSActivity --> TSModel
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts"]
-        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags"]
-        PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories"]
+        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile"]
+        PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
         PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
-        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>no send tool · replaces Bash / file catalogue"]
+        PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>no send tool · replaces Bash / file catalogue"]
+        PAConsolidator["Nightly consolidation · before the 夜间整理 turn<br/>recipients of sent mail → contacts · meeting window from the calendar<br/>duplicate memories removed · profile rebuilt · idempotent"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
@@ -1504,6 +1507,9 @@ flowchart LR
         PATools -->|append pending proposal / create or schedule task / queue job| PAStore
         PAStore -->|claim queued job| PAPreparer
         PAPreparer -->|finish job + job.done trigger| PAStore
+        PARouter -->|nightly routine: consolidate first| PAConsolidator
+        PAConsolidator -->|sent mail · calendar_list| PAConnector
+        PAConsolidator -->|contacts · profile · ledger| PAStore
         PAChannel -->|human approve or deny| PAStore
         PAStore -->|approved proposals| PAOutbox
         PAOutbox -->|mail_send / calendar_respond| PAConnector
@@ -1589,7 +1595,7 @@ surface. It is meant to run on the owner's own Mac.
 
 - **Processes and files**: the daemon owns `assistant.db` (triggers, mail cursor,
   tasks, outbox, channel, ledger, pause switch, contacts, preparation jobs, task-check
-  snapshots) and `agent.db` (session transcripts, action journal,
+  snapshots, profile), `memory/` and `agent.db` (session transcripts, action journal,
   leases). The simulated mail and calendar service is a separate child process with
   its own `world.db`. The daemon never opens that file and reaches it only through
   MCP `tools/call`.
@@ -1610,6 +1616,11 @@ surface. It is meant to run on the owner's own Mac.
   is durable and holds dispatch, sending and the scheduler, but not mail intake.
   `daemon.lock` keeps one daemon per data directory; it is an advisory `flock` and
   is not taken on platforms other than macOS and Linux.
+- **Memory and profile**: `lookup` reads `assistant.db` only. The nightly
+  consolidation adds recipients of sent mail as contacts but never senders, so a
+  stranger cannot become known by writing. It rewrites the owner's `memory/` only
+  when duplicates exist. The profile in worker prompts is marked as reference data,
+  not instructions.
 - **Preparation and watchdog**: a background preparation job is a durable row run
   by one Preparer goroutine in a read-only, untrusted session. Its result returns as
   a `job.done` trigger, so the starting thread decides what the user hears. The
@@ -3937,7 +3948,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

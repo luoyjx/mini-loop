@@ -22862,3 +22862,49 @@ session uses the existing `agent.SelectTools`.
 - durable router counters;
 - long-term memory beyond the existing `remember` and `recall` tools;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: chain recall, nightly consolidation, user profile (2026-11-01)
+
+Code baseline: `75ba6b4` plus changes to `go/assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory` is unchanged; the demo uses its
+existing `Bind`, `List`, `Write`, `Search`, `WithLifecycle` and `ReplaceAll`.
+
+**Go evidence:**
+
+- `Store.Lookup` resolves `trigger-`, `task-`, `proposal-`, `question-`, `job-`,
+  `thread:` and `session:` refs. It returns a summary and the refs one hop away,
+  never the ref itself, and reports an unknown or malformed ref as `ErrUnknownRef`.
+  The `lookup` tool is a read-risk typed extension.
+- `NightlyRoutine` is seeded under meta `nightly_seeded`. Before its worker turn,
+  `Consolidator.Run` does the following:
+  - reads the last 30 sent mails and adds missing recipients as contacts (source
+    夜间整理);
+  - reads seven days of the calendar and records the confirmed-meeting window;
+  - removes memories with a repeated normalized body through `ReplaceAll`, keeping
+    explicit, then `feedback` memories, and rewriting only when something repeats;
+  - writes the four-line profile and a ledger row in one transaction;
+  - attaches the day's user chat to the prompt.
+
+  The scripted model remembers preference lines under text-derived names, so a
+  re-run overwrites them.
+- `profile` holds manager, frequent contacts, meeting window and preferences.
+  `refreshProfile` rebuilds the lines that need no MCP call at start and after the
+  nightly turn, and every worker prompt carries `profileText`.
+- Tests cover:
+  - lookups across trigger, task, proposal, thread and session;
+  - rejected refs and the lookup tool from chat;
+  - a nightly run that learns a recipient, removes three duplicates while keeping
+    the explicit `feedback` memory, records the meeting window and remembers one
+    preference;
+  - a converging re-run and the profile in a later worker prompt;
+  - a lexical recall@3 evaluation: topic words 8/8, split keywords 4/4,
+    paraphrases 0/8.
+
+**Not claimed:**
+
+- semantic retrieval, which needs an approved dependency;
+- consolidation that merges near-duplicates or rewrites memory text;
+- learning contacts from senders;
+- a real channel, real MCP servers or a Python counterpart.

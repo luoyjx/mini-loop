@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"regexp"
 	"strings"
 	"sync/atomic"
@@ -262,6 +263,9 @@ func (m *ScriptedModel) planKind(turn scriptedTurn) plan {
 	case TriggerInvite:
 		return planInvite(turn)
 	case TriggerRoutine:
+		if turn.ref == string(NightlyRoutine.ID) {
+			return m.planNightly(turn)
+		}
 		return m.planBrief(turn)
 	case TriggerChat:
 		return m.planChat(turn)
@@ -790,6 +794,12 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 			Description string `json:"description"`
 			Type        string `json:"type"`
 		}{name, fact, truncateRunes(fact, 40), "user"})}}}
+	case lookupPattern.MatchString(text) && has("追溯", "查一下", "lookup"):
+		looked, done := turn.last(ToolLookup)
+		if !done {
+			return plan{calls: []plannedCall{{ToolLookup, jsonInput(lookupInput{Ref: lookupPattern.FindString(text)})}}}
+		}
+		return plan{final: truncateRunes(looked, 400)}
 	case strings.Contains(text, "提醒我"):
 		if receipt, done := turn.last(ToolTaskCreate); done {
 			return plan{final: "好的，" + strings.TrimPrefix(receipt, "已")}
@@ -848,6 +858,8 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 			lines = append(lines, mail.FromName+"："+mail.Subject)
 		}
 		return plan{final: fmt.Sprintf("最近 %d 封：%s", len(lines), strings.Join(lines, "；"))}
+	case containsAny(text, preferenceWords) && !strings.ContainsAny(text, "？?吗") && !strings.Contains(text, "什么"):
+		return plan{final: "收到。这听起来是你的偏好，今晚 23:30 的夜间整理会把它记下来。"}
 	case has("记得", "我的经理", "偏好", "回忆", "recall"):
 		recalled, done := turn.last(protocol.ToolRecall)
 		if !done {
@@ -858,6 +870,57 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 		return plan{final: "我记得：" + truncateRunes(plainMemory(recalled), 160)}
 	}
 	return plan{final: "我是离线脚本模型，只听得懂：记住 …／N 分钟后提醒我 …／进行中的任务／今天日程／收件箱／晨报／我的经理是谁。设置 ANTHROPIC_API_KEY 并加 -model anthropic 可换成真实模型。"}
+}
+
+// lookupPattern finds a lookup ref in a chat message.
+var lookupPattern = regexp.MustCompile(`(trigger|task|proposal|question|job)-\d+|(thread|session):[\w:.-]+`)
+
+// chatBlock captures the nightly prompt's <chat> block of the user's lines.
+var chatBlock = regexp.MustCompile(`(?s)<chat>\n(.*?)</chat>`)
+
+// preferenceWords mark a chat line as a stated preference or habit.
+var preferenceWords = []string{"喜欢", "以后", "不要", "偏好", "习惯", "希望", "尽量"}
+
+// chatPreferences picks the lines of today's chat that state a preference.
+// Lines starting with 记住 were remembered when they were said.
+func chatPreferences(text string) []string {
+	match := chatBlock.FindStringSubmatch(text)
+	if match == nil {
+		return nil
+	}
+	result := []string{}
+	for _, line := range strings.Split(match[1], "\n") {
+		line = strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), "-"))
+		if fields := strings.SplitN(line, " ", 2); len(fields) == 2 {
+			line = strings.TrimSpace(fields[1])
+		}
+		if line == "" || strings.HasPrefix(line, "记住") || !containsAny(line, preferenceWords) {
+			continue
+		}
+		result = append(result, line)
+	}
+	return result
+}
+
+// planNightly remembers the preferences the user stated today, under names
+// derived from their text, so a re-run overwrites instead of duplicating.
+func (m *ScriptedModel) planNightly(turn scriptedTurn) plan {
+	preferences := chatPreferences(turn.text)
+	if _, done := turn.last(protocol.ToolRemember); !done && len(preferences) > 0 {
+		calls := make([]plannedCall, 0, len(preferences))
+		for _, preference := range preferences {
+			hash := fnv.New32a()
+			_, _ = hash.Write([]byte(preference))
+			calls = append(calls, plannedCall{protocol.ToolRemember, jsonInput(struct {
+				Name        string `json:"name"`
+				Content     string `json:"content"`
+				Description string `json:"description"`
+				Type        string `json:"type"`
+			}{fmt.Sprintf("preference-%08x", hash.Sum32()), preference, truncateRunes(preference, 40), "feedback"})})
+		}
+		return plan{calls: calls}
+	}
+	return plan{quiet: true, final: fmt.Sprintf("夜间整理完成：从今天的对话里记下 %d 条偏好。", len(preferences))}
 }
 
 // recallQuery picks a topical keyword: memory search counts substrings, so a

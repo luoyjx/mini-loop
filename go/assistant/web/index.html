@@ -116,6 +116,7 @@ h3:first-child { margin-top: 0; }
 table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { color: var(--muted); font-weight: 600; position: sticky; top: -14px; background: var(--panel); }
+td.nowrap, th.nowrap { white-space: nowrap; }
 td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 .list-item { padding: 8px 0; border-bottom: 1px solid var(--line); }
 .list-item .sub { color: var(--muted); font-size: 12px; }
@@ -186,6 +187,10 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       <h3>联系人</h3>
       <p class="hint">准入分级读这张表：已知联系人直接写给你是明确请求；已知联系人抄送你、或陌生人直接写给你是推断候选，先过分诊；陌生人抄送你只归档。你批准发出的邮件会把收件人记成联系人。</p>
       <div id="contacts"></div>
+      <h3>画像与记忆</h3>
+      <p class="hint">每晚 23:30 的「夜间整理」先由守护进程从已发送邮件学联系人、从日历算会议时间、去掉重复的记忆，再让 worker 把你当天在信道里说过的偏好记下来。画像会写进每个 worker 的提示里，只当参考。worker 还可以用 lookup 顺着 trigger / task / thread 等引用追溯一件事，试试在信道里说「追溯 trigger-1」。</p>
+      <div id="profile"></div>
+      <div id="memories"></div>
       <h3>MCP 工具</h3>
       <div id="tools" class="hint"></div>
       <p class="hint">关掉进程再启动：未完成的触发器和后台准备任务会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。「暂停处理」也会在重启后保持，直到你恢复；同一个数据目录只能有一个守护进程。</p>
@@ -385,6 +390,7 @@ function render() {
   $("tasks-tab").textContent = activeTasks ? "任务（" + activeTasks + "）" : "任务";
   $("tasks").replaceChildren(...(state.tasks.length ? state.tasks.map(taskCard) : [el("div", { class: "empty" }, "还没有任务。试试：经理来信，或在信道里说「1 分钟后提醒我 喝水」。")]));
   renderAdmission();
+  renderMemory();
   $("integration-error").hidden = !integration.error;
   $("integration-error").textContent = integration.error ? "MCP 连接异常：" + integration.error : "";
   $("tools").replaceChildren(
@@ -455,6 +461,19 @@ function renderAdmission() {
       el("td", {}, c.source === "seed" ? "预置" : "发件箱学到"), el("td", {}, c.interactions + (c.last_at ? " · " + dateTime(c.last_at) : "")))))) : el("div", { class: "empty" }, "没有联系人"));
 }
 
+const originLabel = { explicit: "你说的", auto_extracted: "自动提取", consolidated: "整理后", imported: "导入" };
+// renderMemory draws the profile and the owner's memories.
+function renderMemory() {
+  const profile = state.profile || [], memories = state.memories || [];
+  $("profile").replaceChildren(profile.length ? el("table", {},
+    el("thead", {}, el("tr", {}, ["画像", "内容", "来源"].map((h) => el("th", { class: "nowrap" }, h)))),
+    el("tbody", {}, profile.map((p) => el("tr", {}, el("td", { class: "nowrap" }, p.label), el("td", {}, p.value),
+      el("td", { class: "hint" }, p.source, el("div", { class: "mono" }, dateTime(p.updated_at))))))) : el("div", { class: "empty" }, "还没有画像"));
+  $("memories").replaceChildren(...(memories.length ? memories.map((m) => el("div", { class: "list-item" },
+    el("div", {}, el("b", {}, m.description || m.name), " ", el("span", { class: "chip quiet" }, m.type), " ", el("span", { class: "hint" }, originLabel[m.origin] || m.origin)),
+    el("div", { class: "sub" }, m.body))) : [el("div", { class: "empty" }, "还没有记忆")]));
+}
+
 async function taskAction(id, action) {
   const done = { wake: "已安排立即检查", cancel: "已取消任务", resume: "已恢复跟进，马上检查" }[action];
   try { await post("/api/tasks/" + id + "/" + action); toast(done); refresh(); }
@@ -484,7 +503,7 @@ $("custom").addEventListener("submit", async (event) => {
 $("pause").addEventListener("click", () => setPaused(!state || !state.paused));
 $("book-event").addEventListener("click", () =>
   post("/api/simulate/event", {}).then((r) => toast("已加日程，" + time(r.start).slice(0, 5) + " 开始")).catch((e) => toast(e.message)));
-$("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "1 分钟后提醒我 喝水", "进行中的任务", "我的经理是谁", "记住 周三下午不开会"].map((text) =>
+$("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "1 分钟后提醒我 喝水", "进行中的任务", "我的经理是谁", "记住 周三下午不开会", "以后周五下午尽量不安排会", "追溯 trigger-1"].map((text) =>
   el("button", { onclick: () => { $("text").value = text; $("text").focus(); } }, text)));
 $("tabs").addEventListener("click", (event) => {
   const button = event.target.closest("button"); if (!button) return;

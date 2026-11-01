@@ -25,10 +25,14 @@ func dayAt(now time.Time, offset, hour, minute int) time.Time {
 }
 
 // Seed installs the daemon's routine and welcome message once, and the known
-// contacts once under their own key. The simulated mailbox and calendar are
-// seeded by the mock MCP server's own World.
+// contacts and the nightly routine once each under their own key, so older
+// data directories gain them. The simulated mailbox and calendar are seeded by
+// the mock MCP server's own World.
 func (s *Store) Seed(ctx context.Context, now time.Time) error {
 	if err := s.seedContacts(ctx, now); err != nil {
+		return err
+	}
+	if err := s.seedNightly(ctx, now); err != nil {
 		return err
 	}
 	if _, done, err := s.metaValue(ctx, seedKey); err != nil || done {

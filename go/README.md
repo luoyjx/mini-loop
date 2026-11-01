@@ -43,6 +43,11 @@ for the user. Workers can queue background preparation that runs in a read-only
 session and returns to their thread as a `job.done` trigger. A watchdog built on
 the agent's stuck detector flags tasks whose checks stop making progress.
 
+A read-only `lookup` tool follows a piece of work through the demo's records. A
+nightly routine adds recipients of sent mail as contacts, records the meeting
+window, removes duplicate memories and rebuilds a short user profile that every
+worker prompt shows. Memory search stays the existing lexical `memory.Store.Search`.
+
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.
