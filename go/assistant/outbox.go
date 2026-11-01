@@ -18,7 +18,8 @@ const (
 // idempotency key for every attempt, so a retry after a timeout or a crash
 // between the remote effect and the local "sent" commit converges on exactly
 // one external effect. Server refusals fail at once; transport failures back
-// off and retry, and approved proposals resume after a restart.
+// off and retry, and approved proposals resume after a restart or after the
+// user resumes processing.
 type Outbox struct {
 	store     *Store
 	connector *Connector
@@ -29,6 +30,9 @@ type Outbox struct {
 	// settled runs after an outcome is recorded: a sent or failed proposal
 	// may have brought a task's check forward.
 	settled func()
+	// health counts transport failures in a row; a refusal proves the server
+	// answers (nil records nothing).
+	health *Health
 }
 
 func NewOutbox(store *Store, connector *Connector, now clock, log io.Writer) *Outbox {
@@ -66,8 +70,12 @@ func (o *Outbox) Run(ctx context.Context) {
 }
 
 // Step executes at most one due approved proposal and reports whether it did.
+// It sends nothing while the user has paused processing.
 func (o *Outbox) Step(ctx context.Context) bool {
 	if ctx.Err() != nil {
+		return false
+	}
+	if _, paused := o.store.Paused(); paused {
 		return false
 	}
 	p, ok, err := o.store.NextApproved(ctx, o.now())
@@ -87,6 +95,11 @@ func (o *Outbox) Step(ctx context.Context) bool {
 		return false
 	}
 	now := o.now()
+	if err != nil && retryable(err) {
+		o.health.Record(HealthOutbox, err, now)
+	} else {
+		o.health.Record(HealthOutbox, nil, now)
+	}
 	if err == nil {
 		err = o.store.CompleteProposal(ctx, p, receipt, outboxActor, now)
 	} else {

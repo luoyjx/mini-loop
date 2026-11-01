@@ -15,10 +15,11 @@ import (
 )
 
 // Config wires one assistant daemon. DataDir holds three durable parts:
-// assistant.db (triggers, mail cursor, tasks, outbox, channel, ledger), agent.db
-// (session transcripts, action journal, leases) and memory/ (owner facts).
-// Mail and calendar live behind Connector; NewApp takes ownership of it and
-// closes it on failure or in Close.
+// assistant.db (triggers, mail cursor, tasks, outbox, channel, ledger, pause
+// switch, dismissals), agent.db (session transcripts, action journal, leases)
+// and memory/ (owner facts), plus daemon.lock, which one daemon holds while it
+// runs. Mail and calendar live behind Connector; NewApp takes ownership of it
+// and closes it on failure or in Close.
 type Config struct {
 	DataDir       string
 	Connector     *Connector
@@ -43,12 +44,21 @@ type App struct {
 	Poller     *Poller
 	Outbox     *Outbox
 	Manager    *agent.SessionManager
+	Health     *Health
 	ModelLabel string
 
-	now    clock
-	states *sqlitestate.Store
-	wg     sync.WaitGroup
+	now     clock
+	states  *sqlitestate.Store
+	release func() error
+	wg      sync.WaitGroup
 }
+
+// lockFile is the data directory's single-daemon lock.
+const lockFile = "daemon.lock"
+
+// ErrDataDirBusy refuses a second daemon on a data directory another daemon
+// holds.
+var ErrDataDirBusy = errors.New("data directory is in use by another assistant daemon")
 
 func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if config.Connector == nil {
@@ -72,6 +82,11 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if config.LeaseTTL == 0 {
 		config.LeaseTTL = 15 * time.Second
 	}
+	release, err := lockDataDir(config.DataDir)
+	if err != nil {
+		return nil, err
+	}
+	closers = append(closers, release)
 	store, err := OpenStore(ctx, filepath.Join(config.DataDir, "assistant.db"))
 	if err != nil {
 		return nil, fmt.Errorf("open assistant store: %w", err)
@@ -104,7 +119,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 		StateLeaseTTL: config.LeaseTTL,
 		Defaults:      agent.SessionDefaults{Model: config.Model, PermissionMode: agent.ModeInteractive, MaxRounds: 12, System: &system},
 		Services: agent.ManagerServices{
-			Provider: config.Provider, Tools: catalog, StateStore: states,
+			Provider: observeProvider(config.Provider), Tools: catalog, StateStore: states,
 			Memory: memories, MemoryTools: true, MemoryAuto: &memoryAuto,
 			Hooks: agent.GateHooks{Observers: []agent.ResultObserver{router}},
 		},
@@ -120,14 +135,19 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if label == "" {
 		label = config.Model
 	}
+	health := NewHealth()
+	router.health = health
 	scheduler := NewScheduler(store, config.Connector, router, now, config.SchedulerTick, config.RemindLead, config.Log)
+	scheduler.health = health
 	outbox := NewOutbox(store, config.Connector, now, config.Log)
 	outbox.settled = scheduler.Wake
+	outbox.health = health
+	poller := NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log)
+	poller.health = health
 	return &App{
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
-		Poller:  NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log),
-		Outbox:  outbox,
-		Manager: manager, ModelLabel: label, now: now, states: states,
+		Poller: poller, Outbox: outbox, Manager: manager, Health: health,
+		ModelLabel: label, now: now, states: states, release: release,
 	}, nil
 }
 
@@ -145,9 +165,33 @@ func (app *App) Start(ctx context.Context) {
 }
 
 // Close waits for the loops (their ctx must already be cancelled), stops the
-// manager, closes both stores and stops the connector. Interrupted triggers
-// stay queued and approved proposals stay approved for the next process.
+// manager, closes both stores, stops the connector and releases the data
+// directory. Interrupted triggers stay queued and approved proposals stay
+// approved for the next process.
 func (app *App) Close(ctx context.Context) error {
 	app.wg.Wait()
-	return errors.Join(app.Manager.Stop(ctx), app.states.Close(), app.Store.Close(), app.Connector.Close())
+	return errors.Join(app.Manager.Stop(ctx), app.states.Close(), app.Store.Close(), app.Connector.Close(), app.release())
+}
+
+// SetPaused pauses or resumes all processing for the user. Resuming wakes
+// every loop so the backlog, due checks and today's missed routines catch up.
+func (app *App) SetPaused(ctx context.Context, paused bool) (bool, error) {
+	changed, err := app.Store.SetPaused(ctx, paused, "me（信道）", app.now())
+	if err != nil || !changed || paused {
+		return changed, err
+	}
+	app.Router.Wake()
+	app.Outbox.Wake()
+	app.Scheduler.Wake()
+	return true, nil
+}
+
+// Attention is everything that waits for the user: the store's items, then
+// components that keep failing.
+func (app *App) Attention(ctx context.Context) ([]AttentionItem, error) {
+	items, err := app.Store.Attention(ctx, app.now())
+	if err != nil {
+		return nil, err
+	}
+	return append(items, HealthItems(app.Health.Problems())...), nil
 }

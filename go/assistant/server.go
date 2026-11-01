@@ -29,16 +29,21 @@ type IntegrationView struct {
 	Error      string   `json:"error,omitempty"`
 }
 
-// WorkersView shows how many worker turns may run at once and how many do.
+// WorkersView shows how many background turns may run at once, how many
+// more slots are kept for the user's chat, and how many turns run now.
 type WorkersView struct {
 	Capacity int `json:"capacity"`
+	Reserved int `json:"reserved"`
 	Running  int `json:"running"`
 }
 
-// StateView is everything the simulated channel page renders.
+// StateView is everything the simulated channel page renders. Attention
+// comes first on the page; Paused is set while the user paused processing.
 type StateView struct {
 	Model       string           `json:"model"`
 	Now         time.Time        `json:"now"`
+	Paused      *time.Time       `json:"paused,omitempty"`
+	Attention   []AttentionItem  `json:"attention"`
 	Integration IntegrationView  `json:"integration"`
 	Workers     WorkersView      `json:"workers"`
 	Channel     []ChannelMessage `json:"channel"`
@@ -59,6 +64,15 @@ type chatRequest struct {
 
 type simulateRequest struct {
 	Preset Preset `json:"preset"`
+}
+
+type pauseRequest struct {
+	Paused bool `json:"paused"`
+}
+
+type pauseResponse struct {
+	Paused  bool `json:"paused"`
+	Changed bool `json:"changed"`
 }
 
 type acceptedResponse struct {
@@ -95,6 +109,9 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/simulate/event", app.handleEvent)
 	mux.HandleFunc("POST /api/proposals/{id}/{decision}", app.handleDecision)
 	mux.HandleFunc("POST /api/tasks/{id}/{action}", app.handleTask)
+	mux.HandleFunc("POST /api/triggers/{id}/retry", app.handleTriggerRetry)
+	mux.HandleFunc("POST /api/attention/{ref}/dismiss", app.handleDismiss)
+	mux.HandleFunc("POST /api/pause", app.handlePause)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
 	return guard(mux)
 }
@@ -149,9 +166,13 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
 		AgentTools: []string{MCPMailList, MCPMailRead, MCPCalendarList, MCPCalendarGet},
 		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPCalendarList + "（scheduler：日程临近）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + " / " + MCPSimAddEvent + "（模拟器）"},
-	}, Workers: WorkersView{Capacity: app.Router.Capacity()}}
+	}, Workers: WorkersView{Capacity: app.Router.Capacity(), Reserved: app.Router.Reserved()}}
+	if since, paused := app.Store.Paused(); paused {
+		view.Paused = &since
+	}
 	var err error
 	steps := []func() error{
+		func() error { view.Attention, err = app.Attention(ctx); return err },
 		func() error { view.Channel, err = app.Store.Channel(ctx, 200); return err },
 		func() error { view.Proposals, err = app.Store.Proposals(ctx, 50); return err },
 		func() error { view.Tasks, err = app.Store.Tasks(ctx, 40); return err },
@@ -247,12 +268,13 @@ func (app *App) handleEvent(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusAccepted, bookedResponse{event.ID, event.Start})
 }
 
-// handleTask lets the user check a task now or cancel it. Workers complete
-// tasks; only the user cancels them.
+// handleTask lets the user check a task now, cancel it, or resume one that
+// was handed back after its last automatic check. Workers complete tasks;
+// only the user cancels or resumes them.
 func (app *App) handleTask(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
 	action := r.PathValue("action")
-	if err != nil || (action != "wake" && action != "cancel") {
+	if err != nil || (action != "wake" && action != "cancel" && action != "resume") {
 		writeJSON(w, http.StatusNotFound, errorResponse{"unknown task action"})
 		return
 	}
@@ -262,25 +284,90 @@ func (app *App) handleTask(w http.ResponseWriter, r *http.Request) {
 	}
 	now := app.now()
 	var task Task
-	if action == "wake" {
+	switch action {
+	case "wake":
 		task, err = app.Store.WakeTask(r.Context(), id, "用户点了立即检查", "me（信道）", now)
-	} else {
+	case "resume":
+		task, err = app.Store.ResumeTask(r.Context(), id, "me（信道）", now)
+	default:
 		task, err = app.Store.CloseTask(r.Context(), id, TaskCancelled, "用户取消", "me（信道）", now)
 	}
-	switch {
-	case errors.Is(err, ErrTaskClosed):
-		writeJSON(w, http.StatusConflict, errorResponse{err.Error()})
-		return
-	case err != nil:
-		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+	if !writeActionError(w, err) {
 		return
 	}
-	if action == "wake" {
+	switch action {
+	case "wake":
 		app.Scheduler.Wake()
-	} else {
+	case "resume":
+		_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("继续跟进任务 #%d「%s」，再自动检查最多 %d 次。", task.ID, task.Title, task.MaxChecks), TriggerID: task.LastTrigger}, now)
+		app.Scheduler.Wake()
+	default:
 		_, _ = app.Store.Post(r.Context(), ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("已取消任务 #%d「%s」，不再自动检查。", task.ID, task.Title), TriggerID: task.LastTrigger}, now)
 	}
 	writeJSON(w, http.StatusOK, task)
+}
+
+// writeActionError answers a failed page action and reports whether err was
+// nil: a state conflict is 409, an unknown item 404, anything else 400.
+func writeActionError(w http.ResponseWriter, err error) bool {
+	switch {
+	case err == nil:
+		return true
+	case errors.Is(err, ErrTaskClosed), errors.Is(err, ErrProposalDecided), errors.Is(err, ErrNotActionable), errors.Is(err, ErrTooManyTasks):
+		writeJSON(w, http.StatusConflict, errorResponse{err.Error()})
+	case errors.Is(err, ErrUnknownRef):
+		writeJSON(w, http.StatusNotFound, errorResponse{err.Error()})
+	default:
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+	}
+	return false
+}
+
+// handleTriggerRetry queues a failed trigger again.
+func (app *App) handleTriggerRetry(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+	if err != nil {
+		writeJSON(w, http.StatusNotFound, errorResponse{"unknown trigger"})
+		return
+	}
+	if _, err := decode[struct{}](r); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	trigger, err := app.Store.ReprocessTrigger(r.Context(), id, "me（信道）", app.now())
+	if !writeActionError(w, err) {
+		return
+	}
+	app.Router.Wake()
+	writeJSON(w, http.StatusOK, trigger)
+}
+
+// handleDismiss takes a failed proposal, a handed-back task or a failed
+// trigger off the attention list without acting on it.
+func (app *App) handleDismiss(w http.ResponseWriter, r *http.Request) {
+	if _, err := decode[struct{}](r); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	if !writeActionError(w, app.Store.Dismiss(r.Context(), r.PathValue("ref"), "me（信道）", app.now())) {
+		return
+	}
+	writeJSON(w, http.StatusOK, struct{}{})
+}
+
+// handlePause pauses or resumes all processing.
+func (app *App) handlePause(w http.ResponseWriter, r *http.Request) {
+	request, err := decode[pauseRequest](r)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+		return
+	}
+	changed, err := app.SetPaused(r.Context(), request.Paused)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	writeJSON(w, http.StatusOK, pauseResponse{Paused: request.Paused, Changed: changed})
 }
 
 func (app *App) handleRoutine(w http.ResponseWriter, r *http.Request) {
@@ -299,23 +386,28 @@ func (app *App) accepted(w http.ResponseWriter, id int64, err error) {
 
 // handleDecision is the approval gate's human side: only this endpoint can
 // move a proposal out of pending. Approval hands it to the outbox, which
-// executes it through MCP and reports the outcome on the channel.
+// executes it through MCP and reports the outcome on the channel. Retry hands
+// a finally failed proposal back to the outbox under the same idempotency key.
 func (app *App) handleDecision(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
 	decision := r.PathValue("decision")
-	if err != nil || (decision != "approve" && decision != "deny") {
+	if err != nil || (decision != "approve" && decision != "deny" && decision != "retry") {
 		writeJSON(w, http.StatusNotFound, errorResponse{"unknown proposal decision"})
 		return
 	}
-	approve := decision == "approve"
 	now := app.now()
-	proposal, err := app.Store.DecideProposal(r.Context(), id, approve, "me（信道）", now)
-	switch {
-	case errors.Is(err, ErrProposalDecided):
-		writeJSON(w, http.StatusConflict, errorResponse{err.Error()})
+	if decision == "retry" {
+		proposal, err := app.Store.RetryProposal(r.Context(), id, "me（信道）", now)
+		if !writeActionError(w, err) {
+			return
+		}
+		app.Outbox.Wake()
+		writeJSON(w, http.StatusOK, proposal)
 		return
-	case err != nil:
-		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
+	}
+	approve := decision == "approve"
+	proposal, err := app.Store.DecideProposal(r.Context(), id, approve, "me（信道）", now)
+	if !writeActionError(w, err) {
 		return
 	}
 	if approve {

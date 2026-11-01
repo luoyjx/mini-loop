@@ -25,6 +25,12 @@ denied. The worker then completes the task or schedules the next check. Each tas
 has a fallback check and a six-check budget. The scheduler also reminds once per
 confirmed event that starts within 15 minutes, reading the calendar through MCP.
 
+The page asks for as little attention as possible. One list shows only what waits
+for the user, one durable switch pauses dispatch, sending and the scheduler, and
+the user's chat is claimed first on a reserved worker slot. A failed model call is
+a failed turn, not a channel message. `daemon.lock` keeps one daemon per data
+directory.
+
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.
 No other package or default changes: `cmd/miniloop` still opens no SQLite file.

@@ -13719,3 +13719,54 @@ fixture or exported contract changes. No package outside the demo changes.
 - task dependencies or subtasks;
 - model-chosen or user-configured check budgets;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: attention list, pause switch, user-first slots, failure classification (2026-11-01)
+
+Code baseline: `f8bdd34` plus changes to `go/assistant` and `go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. No package outside the demo changes; the demo
+only reads the agent's existing public session events and the provider's existing
+`RecoveryFailure` classification.
+
+**Go evidence:**
+
+- `Store.Attention` derives what waits for the user: pending proposals, finally
+  failed proposals, stalled tasks and triggers failed in the last 24 hours.
+  `App.Attention` adds components from an in-memory `Health` board that failed
+  three times in a row: mail poll, calendar watch, outbox transport and worker
+  model calls. A `dismissals` table hides items the user acknowledged.
+  `RetryProposal`, `ReprocessTrigger` and `ResumeTask` reset the object's attempt
+  or check budget and clear its dismissal.
+- `Store.SetPaused` persists a pause switch in `meta` with a ledger row and a
+  channel line. The router, the outbox and the scheduler claim nothing while it is
+  on; the poller still ingests mail. The switch survives restarts.
+- `Store.ClaimTrigger` orders chat first and can claim chat only. The router keeps
+  one slot beyond `-workers` that only claims chat.
+- The agent session returns a failed model call, and round exhaustion, as final
+  text. The router reads the turn's `RunError` events and treats both as failed
+  turns. It keeps the provider's typed error through a wrapping provider that
+  preserves streaming. MCP refusals, 4xx model rejections and round exhaustion are
+  not retried.
+- `NewApp` takes an advisory `flock` on `<data>/daemon.lock` on macOS and Linux and
+  refuses a second daemon with `ErrDataDirBusy`. `proposals.settled_at` is added in
+  place for older data directories.
+- Tests cover:
+  - the refused second daemon and the lock released on `Close`;
+  - pause across a restart and catch-up on resume;
+  - user chat on the reserved slot while every background slot is busy;
+  - chat-first claims;
+  - every attention kind with dismiss, retry and resume;
+  - permanent versus retryable failures;
+  - a 500 model failure retried without a channel message;
+  - round exhaustion failing once;
+  - the new HTTP endpoints.
+
+**Not claimed:**
+
+- merging a thread's queued triggers into one turn;
+- structured worker reports in place of the `[QUIET]` prefix;
+- observe-mode auto-approval;
+- detection of a stuck-detector halt, which the agent exposes no accessor for;
+- a lock on platforms other than macOS and Linux;
+- a real channel, real MCP servers or a Python counterpart.

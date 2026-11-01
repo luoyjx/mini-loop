@@ -24,6 +24,10 @@ const slotLayout = "2006-01-02"
 //   - event reminders: one per confirmed event, read through MCP
 //     calendar_list, when it starts within the lead time. An event that
 //     already started while the daemon was down or asleep is not reminded.
+//
+// While the user has paused processing a tick claims nothing; the first tick
+// after resuming catches up as after downtime, and an event that started
+// during the pause is not reminded.
 type Scheduler struct {
 	store     *Store
 	connector *Connector
@@ -33,6 +37,8 @@ type Scheduler struct {
 	lead      time.Duration
 	log       io.Writer
 	wake      chan struct{}
+	// health counts calendar reads that fail in a row (nil records nothing).
+	health *Health
 
 	mu       sync.Mutex
 	calendar string
@@ -82,6 +88,9 @@ func (s *Scheduler) Run(ctx context.Context) {
 
 // Tick runs every time source once and returns how many triggers it queued.
 func (s *Scheduler) Tick(ctx context.Context) int {
+	if _, paused := s.store.Paused(); paused {
+		return 0
+	}
 	return s.Due(ctx) + s.DueTasks(ctx) + s.Upcoming(ctx)
 }
 
@@ -159,6 +168,9 @@ func (s *Scheduler) DueTasks(ctx context.Context) int {
 func (s *Scheduler) Upcoming(ctx context.Context) int {
 	now := s.now()
 	events, err := s.connector.Events(ctx, now, now.Add(s.lead))
+	if ctx.Err() == nil {
+		s.health.Record(HealthCalendar, err, now)
+	}
 	s.record(err)
 	if err != nil {
 		return 0

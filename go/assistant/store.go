@@ -8,7 +8,9 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/agent"
@@ -17,11 +19,17 @@ import (
 
 // Store is the daemon's durable state: the trigger queue with its mail-poll
 // cursor, thread subscriptions, durable tasks and event reminders, the
-// proposal outbox, the channel log and the ledger. Mail and calendar are not here: they belong to the external service
-// behind the MCP connector. It is separate from the agent session store so the
-// demo never edits that schema. One pinned connection serializes writers.
+// proposal outbox, the channel log, the ledger, the user's pause switch and
+// the attention items the user dismissed. Mail and calendar are not here: they
+// belong to the external service behind the MCP connector. It is separate from
+// the agent session store so the demo never edits that schema. One pinned
+// connection serializes writers.
 type Store struct {
 	db *sql.DB
+	// paused caches the persisted pause switch (meta "paused_since", in Unix
+	// milliseconds; 0 while running). The data-directory lock makes this
+	// process its only writer.
+	paused atomic.Int64
 }
 
 const schema = `
@@ -73,16 +81,20 @@ CREATE INDEX IF NOT EXISTS tasks_due ON tasks(status, wake_at);
 CREATE TABLE IF NOT EXISTS reminders(
 	event_id TEXT NOT NULL, start_at INTEGER NOT NULL, trigger_id INTEGER NOT NULL,
 	created_at INTEGER NOT NULL, PRIMARY KEY(event_id, start_at));
+CREATE TABLE IF NOT EXISTS dismissals(
+	ref TEXT PRIMARY KEY, actor TEXT NOT NULL, at INTEGER NOT NULL);
 `
 
-// addedColumns upgrades a data directory written by the first demo, whose
-// proposals table predates the outbox. Its old mail and calendar tables are
-// left in place and unused.
+// addedColumns upgrades older data directories: the first demo's proposals
+// table predates the outbox, and settled_at (when a proposal was sent or
+// finally failed) arrived with the attention list. The first demo's old mail
+// and calendar tables are left in place and unused.
 var addedColumns = []struct{ table, column, definition string }{
 	{"proposals", "attempts", "INTEGER NOT NULL DEFAULT 0"},
 	{"proposals", "not_before", "INTEGER NOT NULL DEFAULT 0"},
 	{"proposals", "receipt", "TEXT NOT NULL DEFAULT ''"},
 	{"proposals", "last_error", "TEXT NOT NULL DEFAULT ''"},
+	{"proposals", "settled_at", "INTEGER NOT NULL DEFAULT 0"},
 }
 
 func OpenStore(ctx context.Context, path string) (*Store, error) {
@@ -101,7 +113,19 @@ func OpenStore(ctx context.Context, path string) (*Store, error) {
 			}
 		}
 	}
-	return &Store{db: db}, nil
+	store := &Store{db: db}
+	since, _, err := store.metaValue(ctx, pausedKey)
+	if err != nil {
+		return nil, errors.Join(err, db.Close())
+	}
+	if since != "" {
+		at, err := strconv.ParseInt(since, 10, 64)
+		if err != nil {
+			return nil, errors.Join(fmt.Errorf("meta %s: %w", pausedKey, err), db.Close())
+		}
+		store.paused.Store(at)
+	}
+	return store, nil
 }
 
 // openSQLite opens one database file on a single pinned connection in WAL mode
@@ -222,14 +246,20 @@ func scanTrigger(row interface{ Scan(...any) error }) (Trigger, error) {
 
 // ClaimTrigger takes the oldest due pending trigger whose thread has no
 // running trigger, so one thread is processed in order while different
-// threads run in parallel.
-func (s *Store) ClaimTrigger(ctx context.Context, now time.Time) (Trigger, bool, error) {
+// threads run in parallel. The user's chat messages go first; chatOnly
+// claims nothing else, for the slot kept free for the user.
+func (s *Store) ClaimTrigger(ctx context.Context, now time.Time, chatOnly bool) (Trigger, bool, error) {
 	var claimed Trigger
 	found := false
+	only := ""
+	if chatOnly {
+		only = string(TriggerChat)
+	}
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		trigger, err := scanTrigger(tx.QueryRowContext(ctx, `SELECT `+triggerColumns+` FROM triggers t WHERE status=? AND not_before<=?
-			AND NOT EXISTS (SELECT 1 FROM triggers r WHERE r.thread=t.thread AND r.status=?) ORDER BY id LIMIT 1`,
-			string(TriggerPending), millis(now), string(TriggerRunning)))
+		trigger, err := scanTrigger(tx.QueryRowContext(ctx, `SELECT `+triggerColumns+` FROM triggers t WHERE status=? AND not_before<=? AND (?='' OR kind=?)
+			AND NOT EXISTS (SELECT 1 FROM triggers r WHERE r.thread=t.thread AND r.status=?)
+			ORDER BY CASE kind WHEN ? THEN 0 ELSE 1 END, id LIMIT 1`,
+			string(TriggerPending), millis(now), only, only, string(TriggerRunning), string(TriggerChat)))
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil
 		}
@@ -461,7 +491,7 @@ func (s *Store) NextApproved(ctx context.Context, now time.Time) (Proposal, bool
 // denial does the same.
 func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt EffectReceipt, actor string, now time.Time) error {
 	return s.inTx(ctx, func(tx *sql.Tx) error {
-		result, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, receipt=?, last_error='' WHERE id=? AND status=?`, string(ProposalSent), receipt.Receipt, p.ID, string(ProposalApproved))
+		result, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, receipt=?, last_error='', settled_at=? WHERE id=? AND status=?`, string(ProposalSent), receipt.Receipt, millis(now), p.ID, string(ProposalApproved))
 		if err != nil {
 			return err
 		}
@@ -487,12 +517,12 @@ func (s *Store) CompleteProposal(ctx context.Context, p Proposal, receipt Effect
 // user. Nothing was sent, or the next retry's idempotency key absorbs it.
 func (s *Store) FailProposalAttempt(ctx context.Context, p Proposal, cause error, final bool, next time.Time, actor string, now time.Time) error {
 	return s.inTx(ctx, func(tx *sql.Tx) error {
-		status := ProposalApproved
+		status, settled := ProposalApproved, int64(0)
 		if final {
-			status = ProposalFailed
+			status, settled = ProposalFailed, millis(now)
 		}
 		message := truncateRunes(cause.Error(), 300)
-		if _, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, not_before=?, last_error=? WHERE id=? AND status=?`, string(status), millis(next), message, p.ID, string(ProposalApproved)); err != nil {
+		if _, err := tx.ExecContext(ctx, `UPDATE proposals SET status=?, attempts=attempts+1, not_before=?, last_error=?, settled_at=? WHERE id=? AND status=?`, string(status), millis(next), message, settled, p.ID, string(ProposalApproved)); err != nil {
 			return err
 		}
 		detail := fmt.Sprintf("提案 #%d 第 %d 次执行失败：%s", p.ID, p.Attempts+1, message)

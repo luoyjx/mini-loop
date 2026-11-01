@@ -97,7 +97,7 @@ func bindDaemonFlags(flags *flag.FlagSet, env environment) daemonFlags {
 		data:    flags.String("data", defaultDataDir(env), "durable data directory (assistant.db, agent.db, memory/, mock-mcp/world.db)"),
 		model:   flags.String("model", "scripted", "scripted (offline, no credentials) or anthropic (reads ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN / ANTHROPIC_BASE_URL)"),
 		modelID: flags.String("model-id", "", "model ID for -model anthropic (default MODEL_ID or "+agent.DefaultModel+")"),
-		workers: flags.Int("workers", 4, "maximum concurrent worker turns"),
+		workers: flags.Int("workers", 4, "maximum concurrent background worker turns (one more slot is kept for your chat)"),
 	}
 }
 

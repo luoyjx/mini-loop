@@ -5,7 +5,10 @@ Go runtime can grow into a proactive personal agent that runs on your own Mac. T
 channel is a simulated local web page. Mail and calendar come from a simulated MCP
 server that the daemon starts as a child process. Workers can follow a piece of
 work to completion: they create durable tasks, schedule their own checks, and the
-daemon wakes them until each task is done. The demo has no Python counterpart
+daemon wakes them until each task is done. The page tries to take as little of
+your attention as possible. One list at the top shows only what waits for you, one
+switch pauses everything, and your own messages never wait behind background work.
+The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
 
@@ -95,9 +98,19 @@ shell for now.
    because the meeting starts within 15 minutes. The reminder names the organizer's
    recent mail and related tasks.
 9. Leave a task unanswered. Its worker checks again on its own schedule. After six
-   checks the task moves to **转交给你**. **立即检查** and **取消** on a task card act
+   checks the task moves to **转交给你** and appears under **需要你处理**, where
+   **再跟进一轮** gives it six more checks. **立即检查** and **取消** on a task card act
    right away.
-10. Stop the process with Ctrl-C, or kill it, then start it again with the same
+10. Click **暂停处理** in the header. Deliver a mail and send a chat message: both are
+    recorded but not processed, nothing is sent, and no check or reminder fires.
+    Running turns finish. Click **恢复处理** and the backlog catches up. The pause also
+    holds across a restart.
+11. Watch **需要你处理** at the top. It lists drafts to approve, approved proposals
+    that finally failed (**重试发送** or **知道了**), tasks handed back to you,
+    triggers that failed in the last 24 hours (**重新处理** or **知道了**), and
+    components such as the mail poll that failed three times in a row. The list
+    disappears when nothing waits for you.
+12. Stop the process with Ctrl-C, or kill it, then start it again with the same
     `-data`. The following still hold:
     - Pending cards, the channel, the task board and the ledger remain.
     - A task check missed while the daemon was down, or the Mac asleep, runs on the
@@ -107,12 +120,13 @@ shell for now.
     - The next follow-up restores the subscribed worker from `agent.db`.
     - A 07:00 brief missed earlier the same day runs once. This also applies after the
       Mac wakes from sleep.
+    - A second daemon on the same `-data` refuses to start while the first runs.
 
 ## Processes and data
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, channel, ledger. `agent.db`: transcripts, action journal, leases. `memory/` | The page over loopback HTTP; the child over stdio JSON-RPC |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, channel, ledger, pause switch, dismissed attention items. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -147,6 +161,44 @@ tasks on its own thread; a turn the user starts in the channel may change any ta
 The scheduler also reminds once per confirmed event that starts within 15 minutes,
 keyed by event ID and start time. An event that already started is not reminded.
 
+## Attention and control
+
+The page answers "does anything need me?" first. The list under **需要你处理** is
+derived from `assistant.db` and an in-memory health board, so its count always
+equals its rows.
+
+| Item | Listed while | Actions |
+|---|---|---|
+| Draft to approve | The proposal is pending | 批准发送 / 拒绝 |
+| Failed send | An approved proposal failed for good and was not dismissed | 重试发送: back to the outbox with a fresh attempt budget under the same `proposal-<id>` key / 知道了 |
+| Task handed to you | The task used its six checks and was not dismissed | 再跟进一轮: six more checks, starting now, on the same worker / 知道了 |
+| Failed trigger | It failed in the last 24 hours and was not dismissed | 重新处理: queued again with a fresh attempt budget / 知道了 |
+| Component problem | The mail poll, calendar watch, outbox transport or worker model call failed three times in a row | None; it clears on the next success |
+
+The header shows how many worker turns run. Your chat is claimed before any
+background trigger, and one slot beyond `-workers` runs only your chat, so a burst
+of mail never makes you wait.
+
+**暂停处理** writes a durable switch. While it is on:
+
+- the router claims nothing, the outbox sends nothing, and the scheduler claims no
+  routine, task check or reminder;
+- the poller still records new mail, and the page still records your decisions;
+- turns already running finish.
+
+**恢复处理** wakes every loop. Missed checks and today's missed routines catch up
+as after downtime. An event that started during the pause is not reminded.
+
+Failures are classified before a retry:
+
+- A failed model call and a turn that ran out of rounds come back from the agent
+  session as final text. The router treats both as failed turns and never posts that
+  text to the channel.
+- An MCP refusal, a 4xx model rejection such as bad credentials, and a turn out of
+  rounds fail at once and appear in the list.
+- Outages, overload, rate limits and timeouts retry up to four attempts with
+  backoff.
+
 ## How the six parts map to code
 
 | Part | In this demo | Code |
@@ -154,9 +206,9 @@ keyed by event ID and start time. An event that already started is not reminded.
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` and `recall` tools on an owner-scoped `memory.Store`. Facts are seeded on first start. | `seed.go` |
-| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4); one thread runs in order. | `poller.go`, `rules.go`, `router.go`, `routines.go`, `tasks.go` |
+| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `router.go`, `routines.go`, `tasks.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
-| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation and hand-over. | `store.go`, `tasks.go`, `router.go: OnResult` |
+| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries and dismissals. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
 
 ## Boundaries
 
@@ -178,7 +230,13 @@ keyed by event ID and start time. An event that already started is not reminded.
 - A re-run after a crash may repeat model calls. Proposal dedupe keys and card checks
   keep it from duplicating drafts or channel cards. Outbox idempotency keys keep it
   from duplicating sends.
-- Run only one daemon per data directory; there is no cross-process lease yet.
+- One daemon per data directory: `daemon.lock` is an advisory `flock`, released by
+  the kernel when the process exits. It is taken on macOS and Linux only. The mock
+  MCP child starts before the lock is checked, so a refused second daemon briefly
+  opens the same `world.db`.
+- The health board lives in memory; after a restart a component must fail three
+  times again before it is listed. A stuck-detector halt still reaches the channel as
+  its stop text, because the agent exposes no public accessor for that event.
 - Proposals left pending from a first-demo data directory may name mail or events that
   the new mock world does not have. Approving one fails with the server's refusal.
 - The process-local `ApprovalBroker` is not used for these effects. Its 300s timeout

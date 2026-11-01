@@ -5,11 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
 // QuietMarker starts a worker reply that should not reach the channel.
@@ -20,6 +22,9 @@ const (
 	defaultTurnLimit = 3 * time.Minute
 	maxAttempts      = 4
 	maxChannelRunes  = 400
+	// reservedSlots run only the user's chat, so new background work never
+	// makes the user wait behind it.
+	reservedSlots = 1
 )
 
 // WorkerSystem frames every background worker. It is also the contract the
@@ -53,6 +58,8 @@ type Router struct {
 
 	manager *agent.SessionManager
 	wake    chan struct{}
+	// health counts worker turns that fail in a row (nil records nothing).
+	health *Health
 
 	mu       sync.Mutex
 	bindings map[agent.SessionID]turnBinding
@@ -84,8 +91,10 @@ func NewRouter(config RouterConfig) *Router {
 	return &Router{store: config.Store, connector: config.Connector, rules: config.Rules, now: config.Now, log: config.Log, workers: config.Workers, limit: config.TurnLimit, wake: make(chan struct{}, 1), bindings: map[agent.SessionID]turnBinding{}}
 }
 
-// Capacity is the number of worker turns that may run at once.
+// Capacity is the number of background worker turns that may run at once;
+// Reserved more may run the user's chat when those are busy.
 func (r *Router) Capacity() int { return r.workers }
+func (r *Router) Reserved() int { return reservedSlots }
 
 // Attach installs the manager after it was built with this router's tools.
 func (r *Router) Attach(manager *agent.SessionManager) { r.manager = manager }
@@ -130,25 +139,33 @@ func (r *Router) OnResult(ctx context.Context, authority agent.ToolAuthority, ca
 	return r.store.Append(context.WithoutCancel(ctx), LedgerEntry{At: r.now(), Kind: LedgerTool, Actor: "worker", TriggerID: bound.TriggerID, Thread: bound.Thread, SessionID: string(authority.SessionID), ActionID: string(outcome.ActionID), Tool: string(call.Name()), Risk: ToolRisk(call.Name()), Detail: fmt.Sprintf("%s（%s，mode=%s）", call.Name(), state, authority.Mode)})
 }
 
-// Run claims triggers until ctx ends, with at most r.workers concurrent turns.
+// Run claims triggers until ctx ends. At most r.workers turns run at once,
+// plus one on a reserved slot that only the user's chat may use; chat is also
+// claimed first. While the user has paused processing it claims nothing, and
+// turns already running finish.
 func (r *Router) Run(ctx context.Context) {
 	if r.manager == nil {
 		panic("assistant router used before Attach")
 	}
-	slots := make(chan struct{}, r.workers)
+	background := make(chan struct{}, r.workers)
+	reserved := make(chan struct{}, reservedSlots)
 	var wg sync.WaitGroup
 	defer wg.Wait()
 	poll := time.NewTicker(time.Second)
 	defer poll.Stop()
 	for {
-		select {
-		case <-ctx.Done():
+		slot, chatOnly, ok := acquireSlot(ctx, background, reserved)
+		if !ok {
 			return
-		case slots <- struct{}{}:
 		}
-		trigger, ok, err := r.store.ClaimTrigger(ctx, r.now())
-		if err != nil || !ok {
-			<-slots
+		var trigger Trigger
+		claimed := false
+		var err error
+		if _, paused := r.store.Paused(); !paused {
+			trigger, claimed, err = r.store.ClaimTrigger(ctx, r.now(), chatOnly)
+		}
+		if err != nil || !claimed {
+			<-slot
 			if err != nil && ctx.Err() == nil {
 				fmt.Fprintf(r.log, "assistant: claim trigger: %v\n", err)
 			}
@@ -163,10 +180,28 @@ func (r *Router) Run(ctx context.Context) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			defer func() { <-slots }()
+			defer func() { <-slot }()
 			r.dispatch(ctx, trigger)
 			r.Wake()
 		}()
+	}
+}
+
+// acquireSlot takes a background slot, or the reserved one when every
+// background slot is busy; a reserved slot may only claim chat.
+func acquireSlot(ctx context.Context, background, reserved chan struct{}) (chan struct{}, bool, bool) {
+	select {
+	case background <- struct{}{}:
+		return background, false, true
+	default:
+	}
+	select {
+	case <-ctx.Done():
+		return nil, false, false
+	case background <- struct{}{}:
+		return background, false, true
+	case reserved <- struct{}{}:
+		return reserved, true, true
 	}
 }
 
@@ -246,10 +281,23 @@ func (r *Router) dispatch(ctx context.Context, trigger Trigger) {
 		return
 	}
 	r.bind(id, turnBinding{TriggerID: trigger.ID, Thread: trigger.Thread})
-	turn, cancel := context.WithTimeout(ctx, r.limit)
+	failures := &turnFailures{}
+	turn, cancel := context.WithTimeout(context.WithValue(ctx, turnFailuresKey{}, failures), r.limit)
+	before := lastSequence(session.Events())
 	text, err := session.RunWithContext(turn, prompt(input), run)
 	cancel()
 	r.unbind(id)
+	if err == nil {
+		err = failedTurn(session.Events(), before, failures.get())
+	}
+	if ctx.Err() == nil {
+		var stopped *stoppedTurn
+		if errors.As(err, &stopped) {
+			r.health.Record(HealthWorker, nil, r.now())
+		} else {
+			r.health.Record(HealthWorker, err, r.now())
+		}
+	}
 	if err != nil {
 		r.retry(ctx, trigger, fmt.Errorf("worker %s: %w", id, err))
 		return
@@ -362,13 +410,130 @@ func (r *Router) retry(ctx context.Context, trigger Trigger, cause error) {
 		return
 	}
 	r.ledger(ctx, LedgerEntry{Kind: LedgerWorkerErr, Actor: "router", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: fmt.Sprintf("第 %d 次执行失败：%v", trigger.Attempts, cause)})
-	if trigger.Attempts < maxAttempts && !errors.Is(cause, context.Canceled) {
+	if trigger.Attempts < maxAttempts && !errors.Is(cause, context.Canceled) && !permanent(cause) {
 		backoff := time.Duration(trigger.Attempts*trigger.Attempts) * 5 * time.Second
 		_ = r.store.RetryTrigger(ctx, trigger.ID, now.Add(backoff), fmt.Sprintf("将在 %s 后重试：%v", backoff, cause), now)
 		return
 	}
 	r.finish(ctx, trigger, TriggerFailed, cause.Error(), trigger.SessionID)
 	_, _ = r.store.Post(ctx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("触发器 #%d 处理失败：%s", trigger.ID, truncateRunes(cause.Error(), 160)), TriggerID: trigger.ID}, now)
+}
+
+// permanent reports a failure that running the same turn again cannot fix:
+// the MCP server refused a call, the turn ran out of rounds, or the model
+// provider rejected the request itself with a 4xx status (credentials,
+// permission, an invalid request). Outages, overload, rate limits, timeouts
+// and local storage errors stay retryable with backoff.
+func permanent(err error) bool {
+	var refused *ToolError
+	var stopped *stoppedTurn
+	if errors.As(err, &refused) || errors.As(err, &stopped) {
+		return true
+	}
+	var model interface{ RecoveryFailure() protocol.ModelFailure }
+	if !errors.As(err, &model) {
+		return false
+	}
+	failure := model.RecoveryFailure()
+	switch failure.Status {
+	case http.StatusRequestTimeout, http.StatusConflict, http.StatusTooManyRequests:
+		return false
+	}
+	return failure.Kind == protocol.ModelFailureStatus && failure.Status >= 400 && failure.Status < 500
+}
+
+// The agent session reports a model call that failed after its own retries,
+// and a turn that ran out of rounds, as final text with a nil error, so that
+// an interactive user sees it. A background worker's report must not carry
+// it to the channel as if the worker had answered: failedTurn turns both back
+// into errors from the events the turn appended.
+
+// turnFailures keeps the last error the provider returned during one turn,
+// so a rejected request can be told apart from an outage.
+type turnFailures struct {
+	mu   sync.Mutex
+	last error
+}
+
+type turnFailuresKey struct{}
+
+func (f *turnFailures) get() error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return f.last
+}
+
+func noteFailure(ctx context.Context, err error) {
+	if failures, ok := ctx.Value(turnFailuresKey{}).(*turnFailures); ok && err != nil {
+		failures.mu.Lock()
+		failures.last = err
+		failures.mu.Unlock()
+	}
+}
+
+// observeProvider wraps the daemon's model provider so each worker turn keeps
+// its provider errors; a streaming provider stays streaming.
+func observeProvider(inner agent.Provider) agent.Provider {
+	observed := observedProvider{inner}
+	if streaming, ok := inner.(agent.StreamingProvider); ok {
+		return observedStreaming{observed, streaming}
+	}
+	return observed
+}
+
+type observedProvider struct{ inner agent.Provider }
+
+func (p observedProvider) Complete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	reply, err := p.inner.Complete(ctx, request)
+	noteFailure(ctx, err)
+	return reply, err
+}
+
+type observedStreaming struct {
+	observedProvider
+	streaming agent.StreamingProvider
+}
+
+func (p observedStreaming) CompleteStream(ctx context.Context, request protocol.ModelRequest, emit func(protocol.StreamDelta) error) (protocol.ModelReply, error) {
+	reply, err := p.streaming.CompleteStream(ctx, request, emit)
+	noteFailure(ctx, err)
+	return reply, err
+}
+
+// stoppedTurn is a turn that ran out of rounds; running it again would stop
+// the same way.
+type stoppedTurn struct{ detail string }
+
+func (e *stoppedTurn) Error() string { return e.detail }
+
+func lastSequence(records []agent.SessionEventRecord) agent.EventSequence {
+	var last agent.EventSequence
+	for _, record := range records {
+		last = max(last, record.Sequence)
+	}
+	return last
+}
+
+// failedTurn finds a failure the session reported as final text among the
+// events after the given sequence. A model failure keeps the provider's typed
+// error when the turn observed one.
+func failedTurn(records []agent.SessionEventRecord, after agent.EventSequence, provider error) error {
+	for _, record := range records {
+		event, ok := record.Event.RunError()
+		if record.Sequence <= after || !ok {
+			continue
+		}
+		switch event.Kind() {
+		case agent.ErrorProvider:
+			if provider != nil {
+				return fmt.Errorf("model call failed: %w", provider)
+			}
+			return fmt.Errorf("model call failed: %s", event.Error())
+		case agent.ErrorRoundExhaustion:
+			return &stoppedTurn{event.Error()}
+		}
+	}
+	return nil
 }
 
 func (r *Router) finish(ctx context.Context, trigger Trigger, status TriggerStatus, decision, session string) {

@@ -17,7 +17,8 @@ const (
 // turns each new message into one trigger. Ingest and cursor advance commit
 // together, and a re-polled message is skipped by mail ID, so a crash at any
 // point neither loses nor duplicates a trigger. A first-time daemon starts at
-// the service's head instead of replaying old mail.
+// the service's head instead of replaying old mail. Polling goes on while the
+// user has paused processing: new mail is recorded and waits.
 type Poller struct {
 	store     *Store
 	connector *Connector
@@ -28,7 +29,8 @@ type Poller struct {
 	wake      chan struct{}
 
 	mu      sync.Mutex // serializes PollOnce
-	health  sync.Mutex
+	health  *Health    // counts polls that fail in a row (nil records nothing)
+	last    sync.Mutex
 	lastErr string
 }
 
@@ -117,14 +119,15 @@ func (p *Poller) drain(ctx context.Context) (int, error) {
 // record keeps the last poll error for the page and logs only changes, so a
 // stopped connector does not flood the launchd log every two seconds.
 func (p *Poller) record(err error) {
+	p.health.Record(HealthMailPoll, err, p.now())
 	message := ""
 	if err != nil {
 		message = err.Error()
 	}
-	p.health.Lock()
+	p.last.Lock()
 	changed := message != p.lastErr
 	p.lastErr = message
-	p.health.Unlock()
+	p.last.Unlock()
 	if !changed {
 		return
 	}
@@ -137,7 +140,7 @@ func (p *Poller) record(err error) {
 
 // LastError is the most recent poll failure, or "" when polling is healthy.
 func (p *Poller) LastError() string {
-	p.health.Lock()
-	defer p.health.Unlock()
+	p.last.Lock()
+	defer p.last.Unlock()
 	return p.lastErr
 }

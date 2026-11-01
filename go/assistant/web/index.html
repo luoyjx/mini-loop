@@ -22,14 +22,29 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
-body { background: var(--bg); color: var(--ink); font: 14px/1.55 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.55 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif; display: flex; flex-direction: column; }
 header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
 header h1 { font-size: 16px; margin: 0; font-weight: 650; }
 .badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 .legend { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
 .legend span { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
-main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px; padding: 16px 20px; height: calc(100% - 57px); }
-section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; min-height: 0; }
+main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px; padding: 16px 20px; flex: 1; min-height: 0; }
+#pause.paused { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); font-weight: 600; }
+#attention { margin: 12px 20px 0; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 12px; background: var(--panel); padding: 10px 14px; max-height: 38vh; overflow-y: auto; }
+#attention h2 { font-size: 13px; margin: 0 0 6px; font-weight: 650; }
+#attention h2 small { color: var(--muted); font-weight: 400; }
+.paused-note { margin: 0 0 8px; padding: 8px 10px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: 12.5px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.paused-note button { margin-left: auto; }
+.need { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; }
+.need + .need { border-top: 1px solid var(--line); }
+.need .what { flex: 1; min-width: 0; }
+.need .what b { font-weight: 600; }
+.need .sub { font-size: 12px; color: var(--muted); word-break: break-word; }
+.need .actions { margin-top: 0; flex-wrap: wrap; justify-content: flex-end; }
+.need .actions button { font-size: 12px; padding: 3px 10px; }
+.chip.problem, .chip.send_failed, .chip.trigger_failed { background: var(--bad-soft); color: var(--bad); }
+.chip.approval, .chip.task_handoff { background: var(--warn-soft); color: var(--warn); }
+section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; min-height: 0; min-width: 0; }
 .card > h2 { font-size: 13px; margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 650; display: flex; align-items: center; gap: 8px; }
 .card > h2 small { color: var(--muted); font-weight: 400; }
 #messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -97,7 +112,10 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; }
 .toast.show { opacity: .92; }
 @media (max-width: 860px) {
-  main { grid-template-columns: 1fr; height: auto; padding: 12px 16px; }
+  body { display: block; }
+  main { grid-template-columns: minmax(0, 1fr); height: auto; padding: 12px 16px; }
+  #attention { margin: 12px 16px 0; max-height: none; }
+  .need { flex-direction: column; }
   section.card { min-height: 70vh; }
   .legend { display: none; }
   header { padding: 10px 16px; }
@@ -109,12 +127,14 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   <h1>mini-loop 个人助理</h1>
   <span class="badge" id="model">model …</span>
   <span class="badge mcp" id="mcp" title="邮件和日历只经过这个 MCP server">MCP …</span>
-  <span class="badge" id="workers" title="不同 thread 的事件并行处理，同一 thread 按顺序处理">worker …</span>
+  <span class="badge" id="workers" title="不同 thread 的事件并行处理，同一 thread 按顺序处理；另留一个槽位只跑你发的消息">worker …</span>
+  <button id="pause" title="暂停后邮件照常收录，但不派工、不发信、不跑定时检查">暂停处理</button>
   <div class="legend" title="图中 6 个组件在 demo 里的位置">
     <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟 MCP 邮件/日历</span><span>记忆 · recall/remember</span>
     <span>Routine · 晨报 / 任务检查 / 日程提醒</span><span>审批闸 · 提案卡片</span><span>审计 · 账本</span>
   </div>
 </header>
+<section id="attention" aria-label="需要你处理" hidden></section>
 <main>
   <section class="card" aria-label="模拟信道">
     <h2>模拟 IM 信道 <small>助理只通过 Router 在这里说话</small></h2>
@@ -153,7 +173,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       <div id="routines"></div>
       <h3>MCP 工具</h3>
       <div id="tools" class="hint"></div>
-      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。</p>
+      <p class="hint">关掉进程再启动：未完成的触发器会重新排队，已批准但还没发出的提案会继续发（同一幂等键，不会重复发）；任务和它的下次检查时间都在 SQLite 里，错过的检查会在启动或唤醒后补上；错过今天 07:00 的晨报会补跑一次，睡眠唤醒后也一样。「暂停处理」也会在重启后保持，直到你恢复；同一个数据目录只能有一个守护进程。</p>
     </div>
     <div class="pane" id="pane-tasks"><p class="hint">worker 用 task_create 建任务并约定检查时间；到点后 scheduler 把同一 thread 的 worker 叫醒核对进展。每个任务最多自动检查 6 次，之后交给你。</p><div id="tasks"></div></div>
     <div class="pane" id="pane-mail"><h3>收件箱</h3><div id="inbox"></div><h3>已发送（只有你批准、发件箱经 MCP 发出的提案）</h3><div id="sent"></div></div>
@@ -184,6 +204,7 @@ const short = (s) => (s ? String(s).slice(0, 10) : "");
 const kindLabel = { send_email: "发邮件", respond_invite: "回复邀约" };
 const statusLabel = { pending: "待批准", approved: "已批准 · 发件箱执行中", sent: "已发出", denied: "已拒绝", failed: "发送失败" };
 const taskLabel = { active: "进行中", done: "已完成", cancelled: "已取消", stalled: "转交给你" };
+const needLabel = { approval: "待批准", send_failed: "没发出去", task_handoff: "转交给你", trigger_failed: "处理失败", problem: "系统问题" };
 
 function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
@@ -249,7 +270,49 @@ function taskCard(task) {
       "已检查 " + task.checks + "/" + task.max_checks + " 次 · thread " + task.thread + " · worker " + short(task.session_id)),
     active ? el("div", { class: "actions" },
       el("button", { onclick: () => taskAction(task.id, "wake") }, "立即检查"),
-      el("button", { onclick: () => taskAction(task.id, "cancel") }, "取消")) : null);
+      el("button", { onclick: () => taskAction(task.id, "cancel") }, "取消")) : null,
+    task.status === "stalled" ? el("div", { class: "actions" },
+      el("button", { onclick: () => taskAction(task.id, "resume") }, "再跟进一轮")) : null);
+}
+
+// act runs one attention action and refreshes; the ref names its object.
+async function act(path, done) {
+  try { await post(path); toast(done); refresh(); } catch (e) { toast(e.message); }
+}
+function needActions(item) {
+  const id = item.ref.slice(item.ref.indexOf("-") + 1);
+  const dismiss = el("button", { onclick: () => act("/api/attention/" + item.ref + "/dismiss", "已移出待处理") }, "知道了");
+  switch (item.kind) {
+    case "approval": return [
+      el("button", { class: "primary", onclick: () => decide(id, "approve") }, "批准发送"),
+      el("button", { onclick: () => decide(id, "deny") }, "拒绝")];
+    case "send_failed": return [
+      el("button", { class: "primary", onclick: () => act("/api/proposals/" + id + "/retry", "已交回发件箱重试（同一幂等键）") }, "重试发送"), dismiss];
+    case "task_handoff": return [
+      el("button", { class: "primary", onclick: () => taskAction(id, "resume") }, "再跟进一轮"), dismiss];
+    case "trigger_failed": return [
+      el("button", { class: "primary", onclick: () => act("/api/triggers/" + id + "/retry", "已重新排队") }, "重新处理"), dismiss];
+    default: return [];
+  }
+}
+function renderAttention() {
+  const box = $("attention"), items = state.attention || [];
+  const paused = state.paused ? el("div", { class: "paused-note" },
+    "已于 " + time(state.paused) + " 暂停：邮件照常收录，但不派工、不发信、不跑定时检查。",
+    el("button", { class: "primary", onclick: () => setPaused(false) }, "恢复处理")) : null;
+  box.hidden = !paused && !items.length;
+  const heading = items.length ? el("h2", {}, "需要你处理（" + items.length + "）", " ", el("small", {}, "没有待办时这里不显示")) : null;
+  box.replaceChildren(...[heading, paused].filter(Boolean),
+    ...items.map((item) => el("div", { class: "need" },
+      el("span", { class: "chip " + item.kind }, needLabel[item.kind] || item.kind),
+      el("div", { class: "what" }, el("b", {}, item.title), el("div", { class: "sub" }, item.detail + " · " + dateTime(item.since))),
+      el("div", { class: "actions" }, needActions(item)))));
+  $("pause").textContent = state.paused ? "恢复处理" : "暂停处理";
+  $("pause").classList.toggle("paused", !!state.paused);
+}
+async function setPaused(paused) {
+  try { await post("/api/pause", { paused }); toast(paused ? "已暂停处理" : "已恢复处理，正在补上积压"); refresh(); }
+  catch (e) { toast(e.message); }
 }
 
 function mailList(items) {
@@ -265,7 +328,8 @@ function render() {
   const integration = state.integration;
   $("mcp").textContent = "MCP · " + integration.server + "（" + integration.transport + "）" + (integration.error ? " · 不可用" : "");
   $("mcp").classList.toggle("down", !!integration.error);
-  $("workers").textContent = "worker " + state.workers.running + "/" + state.workers.capacity + " 运行中";
+  $("workers").textContent = "worker " + state.workers.running + "/" + state.workers.capacity + " 运行中" + (state.workers.reserved ? " · 另留 " + state.workers.reserved + " 个给你" : "");
+  renderAttention();
   const activeTasks = state.tasks.filter((task) => task.status === "active").length;
   $("tasks-tab").textContent = activeTasks ? "任务（" + activeTasks + "）" : "任务";
   $("tasks").replaceChildren(...(state.tasks.length ? state.tasks.map(taskCard) : [el("div", { class: "empty" }, "还没有任务。试试：经理来信，或在信道里说「1 分钟后提醒我 喝水」。")]));
@@ -304,7 +368,8 @@ function render() {
 }
 
 async function taskAction(id, action) {
-  try { await post("/api/tasks/" + id + "/" + action); toast(action === "wake" ? "已安排立即检查" : "已取消任务"); refresh(); }
+  const done = { wake: "已安排立即检查", cancel: "已取消任务", resume: "已恢复跟进，马上检查" }[action];
+  try { await post("/api/tasks/" + id + "/" + action); toast(done); refresh(); }
   catch (e) { toast(e.message); }
 }
 
@@ -328,6 +393,7 @@ $("custom").addEventListener("submit", async (event) => {
     event.target.reset(); toast("已投递自定义来信"); refresh();
   } catch (e) { toast(e.message); }
 });
+$("pause").addEventListener("click", () => setPaused(!state || !state.paused));
 $("book-event").addEventListener("click", () =>
   post("/api/simulate/event", {}).then((r) => toast("已加日程，" + time(r.start).slice(0, 5) + " 开始")).catch((e) => toast(e.message)));
 $("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "1 分钟后提醒我 喝水", "进行中的任务", "我的经理是谁", "记住 周三下午不开会"].map((text) =>

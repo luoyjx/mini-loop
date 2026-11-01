@@ -8,8 +8,10 @@
 // and an append-only ledger (audit log). Durable tasks let a worker follow one
 // piece of work across many events: it schedules its own checks and the
 // scheduler wakes it until the task is done, cancelled or out of budget. The
-// channel is a simulated local web page. Nothing here changes the defaults of
-// cmd/miniloop.
+// user stays in charge with little attention: one list shows what waits for
+// them, one switch pauses all processing, and their own messages run first on
+// a worker slot kept for them. The channel is a simulated local web page.
+// Nothing here changes the defaults of cmd/miniloop.
 package assistant
 
 import (
@@ -196,6 +198,8 @@ const (
 	LedgerRecovery  LedgerKind = "recovery"
 	LedgerWorkerErr LedgerKind = "worker_error"
 	LedgerTask      LedgerKind = "task"
+	// LedgerControl records the user's pause switch and attention actions.
+	LedgerControl LedgerKind = "control"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the

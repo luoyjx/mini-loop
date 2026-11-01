@@ -87,6 +87,18 @@ func activeTask(ctx context.Context, tx *sql.Tx, id int64) (Task, error) {
 	return task, nil
 }
 
+// roomForTask refuses a new or resumed task once maxActiveTasks are active.
+func roomForTask(ctx context.Context, tx *sql.Tx) error {
+	var active int
+	if err := tx.QueryRowContext(ctx, `SELECT COUNT(*) FROM tasks WHERE status=?`, string(TaskActive)).Scan(&active); err != nil {
+		return err
+	}
+	if active >= maxActiveTasks {
+		return ErrTooManyTasks
+	}
+	return nil
+}
+
 func taskLedger(task Task, actor, detail string, now time.Time) LedgerEntry {
 	return LedgerEntry{At: now, Kind: LedgerTask, Actor: actor, TriggerID: task.LastTrigger, Thread: task.Thread, SessionID: task.SessionID, Detail: fmt.Sprintf("任务 #%d %s", task.ID, detail)}
 }
@@ -106,12 +118,8 @@ func (s *Store) CreateTask(ctx context.Context, task Task, wakeAt time.Time, act
 		if !errors.Is(err, sql.ErrNoRows) {
 			return err
 		}
-		var active int
-		if err := tx.QueryRowContext(ctx, `SELECT COUNT(*) FROM tasks WHERE status=?`, string(TaskActive)).Scan(&active); err != nil {
+		if err := roomForTask(ctx, tx); err != nil {
 			return err
-		}
-		if active >= maxActiveTasks {
-			return ErrTooManyTasks
 		}
 		inserted, err := tx.ExecContext(ctx, `INSERT INTO tasks(title,thread,session_id,trigger_id,status,check_note,note,wake_at,wake_reason,max_checks,last_trigger,dedupe,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			task.Title, string(task.Thread), task.SessionID, task.TriggerID, string(TaskActive), task.Check, task.Note, millis(wakeAt), "worker 约定的首次检查", defaultMaxChecks, task.TriggerID, dedupe, millis(now), millis(now))
@@ -196,6 +204,39 @@ func (s *Store) WakeTask(ctx context.Context, id int64, reason, actor string, no
 		task.WakeAt, task.WakeReason, task.UpdatedAt = &now, reason, now
 		result = task
 		return appendLedger(ctx, tx, taskLedger(task, actor, "提前检查："+reason, now))
+	})
+	return result, err
+}
+
+// ResumeTask gives a task that ran out of automatic checks a fresh budget and
+// checks it now. It keeps its thread and worker session, so the same worker
+// picks it up, and an earlier dismissal no longer applies.
+func (s *Store) ResumeTask(ctx context.Context, id int64, actor string, now time.Time) (Task, error) {
+	var result Task
+	err := s.inTx(ctx, func(tx *sql.Tx) error {
+		task, err := scanTask(tx.QueryRowContext(ctx, `SELECT `+taskColumns+` FROM tasks WHERE id=?`, id))
+		if errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("task #%d not found", id)
+		}
+		if err != nil {
+			return err
+		}
+		if task.Status != TaskStalled {
+			return fmt.Errorf("task #%d is %s: %w", id, task.Status, ErrNotActionable)
+		}
+		if err := roomForTask(ctx, tx); err != nil {
+			return err
+		}
+		reason := "用户要求继续跟进"
+		if _, err := tx.ExecContext(ctx, `UPDATE tasks SET status=?, checks=0, result='', closed_by='', wake_at=?, wake_reason=?, updated_at=? WHERE id=? AND status=?`, string(TaskActive), millis(now), reason, millis(now), id, string(TaskStalled)); err != nil {
+			return err
+		}
+		if err := undismiss(ctx, tx, TaskRef(id)); err != nil {
+			return err
+		}
+		task.Status, task.Checks, task.Result, task.ClosedBy, task.WakeAt, task.WakeReason, task.UpdatedAt = TaskActive, 0, "", "", &now, reason, now
+		result = task
+		return appendLedger(ctx, tx, taskLedger(task, actor, fmt.Sprintf("恢复跟进：再自动检查最多 %d 次", task.MaxChecks), now))
 	})
 	return result, err
 }

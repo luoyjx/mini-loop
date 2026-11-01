@@ -397,17 +397,17 @@ func TestInterruptedTriggersRequeueAndProposalsDedupe(t *testing.T) {
 	if created, err := store.IngestMail(ctx, inbound, 7, now); err != nil || created != 0 {
 		t.Fatalf("re-polled mail must not enqueue again: %d %v", created, err)
 	}
-	claimed, ok, err := store.ClaimTrigger(ctx, now)
+	claimed, ok, err := store.ClaimTrigger(ctx, now, false)
 	if err != nil || !ok {
 		t.Fatal(ok, err)
 	}
-	if _, again, _ := store.ClaimTrigger(ctx, now); again {
+	if _, again, _ := store.ClaimTrigger(ctx, now, false); again {
 		t.Fatal("a running trigger must not be claimed twice")
 	}
 	if count, err := store.RequeueInterrupted(ctx, now); err != nil || count != 1 {
 		t.Fatalf("requeue %d %v", count, err)
 	}
-	if reclaimed, ok, _ := store.ClaimTrigger(ctx, now); !ok || reclaimed.ID != claimed.ID || reclaimed.Attempts != 2 {
+	if reclaimed, ok, _ := store.ClaimTrigger(ctx, now, false); !ok || reclaimed.ID != claimed.ID || reclaimed.Attempts != 2 {
 		t.Fatalf("reclaimed %+v", reclaimed)
 	}
 	draft := Proposal{Kind: ProposalSendEmail, TriggerID: claimed.ID, Thread: claimed.Thread, SessionID: "s", ActionID: "a", To: ManagerAddress, Subject: "Re", Body: "ok"}

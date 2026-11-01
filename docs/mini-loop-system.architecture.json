@@ -1064,7 +1064,7 @@
         300,
         76
       ],
-      "tag": "chat / simulator / cards / task board"
+      "tag": "attention list / pause / chat / cards / tasks"
     },
     {
       "id": "paStore",
@@ -1079,13 +1079,13 @@
         340,
         76
       ],
-      "tag": "reminders / subscriptions / channel / ledger"
+      "tag": "pause switch / dismissals / channel / ledger"
     },
     {
       "id": "paRouter",
       "type": "backend",
       "label": "Assistant Router",
-      "sublabel": "rule fast path / thread subscriptions",
+      "sublabel": "rule fast path / chat first + reserved slot",
       "pos": [
         1030,
         4900
@@ -1094,7 +1094,7 @@
         340,
         76
       ],
-      "tag": "parallel across threads / sole channel writer"
+      "tag": "no claims while paused / model failure = failed turn"
     },
     {
       "id": "paWorkers",
@@ -1139,7 +1139,7 @@
         300,
         76
       ],
-      "tag": "claim + trigger in one transaction / catch-up"
+      "tag": "one transaction / catch-up / holds while paused"
     },
     {
       "id": "paPoller",
@@ -1169,7 +1169,7 @@
         340,
         76
       ],
-      "tag": "refusal fails / retries / outcome wakes tasks"
+      "tag": "refusal fails / retries / user retry / holds on pause"
     },
     {
       "id": "paTools",
@@ -1215,6 +1215,21 @@
         76
       ],
       "tag": "world.db / idempotent effects / sim_*"
+    },
+    {
+      "id": "paHealth",
+      "type": "messagebus",
+      "label": "Health board",
+      "sublabel": "in memory / three failures in a row",
+      "pos": [
+        70,
+        5400
+      ],
+      "size": [
+        300,
+        76
+      ],
+      "tag": "poller / calendar / outbox / worker"
     }
   ],
   "boundaries": [
@@ -1335,7 +1350,8 @@
         "paOutbox",
         "paTools",
         "paConnector",
-        "paMock"
+        "paMock",
+        "paHealth"
       ],
       "pad": 50
     }
@@ -2588,6 +2604,23 @@
       "label": "calendar_list",
       "fromSide": "bottom",
       "toSide": "left"
+    },
+    {
+      "id": "paFailures",
+      "from": "paScheduler",
+      "to": "paHealth",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "paProblems",
+      "from": "paHealth",
+      "to": "paChannel",
+      "label": "problems",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left"
     }
   ],
   "cards": [
@@ -2854,9 +2887,10 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline 2103c07 plus the 2026-11-01 durable-task iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, channel, ledger), agent.db (sqlitestate transcripts, action journal, leases) and memory/. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
+        "Review baseline f8bdd34 plus the 2026-11-01 attention-and-control iteration: go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, channel, ledger, pause switch, dismissals), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
+        "Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
         "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."
       ]
