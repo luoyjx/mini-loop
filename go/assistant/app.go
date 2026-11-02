@@ -125,6 +125,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	router.triage = &Triage{provider: observeProvider(config.Provider), model: config.Model}
 	router.consolidator = NewConsolidator(store, config.Connector, owned, now)
 	router.consolidator.aliaser = &Aliaser{provider: observeProvider(config.Provider), model: config.Model}
+	router.consolidator.extractor = &FactExtractor{provider: observeProvider(config.Provider), model: config.Model}
 	search := NewMemorySearch(owned, store)
 	if config.Embedder != nil {
 		search.vectors = NewVectorIndex(store, config.Embedder, now)

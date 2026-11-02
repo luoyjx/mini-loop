@@ -1,0 +1,45 @@
+{
+  "about": "Time-sensitive question evaluation. Four contacts (the 经理 relation and work domains give facts without a model) and eight things the user said in the channel over two months, each also remembered as a memory. Each query asks for a fact whose current value is known; stale lists the values it replaced. A memory-only answer takes the top memory; a fact answer takes the first fact listed for the question. The chat lines are in the phrasings the scripted extraction rules cover, written by the same author, so the fact figures are optimistic; a real model's extraction is unmeasured.",
+  "contacts": [
+    {"address": "alice@acme.example", "name": "Alice", "relation": "经理"},
+    {"address": "dave@acme.example", "name": "Dave", "relation": "同事"},
+    {"address": "grace@umbrella.example", "name": "Grace", "relation": "同事"},
+    {"address": "bob@friends.example", "name": "Bob", "relation": "朋友"}
+  ],
+  "chat": [
+    {"day": 10, "text": "记住 Carol 是产品负责人"},
+    {"day": 20, "text": "记住 Erin 在 Initech 工作"},
+    {"day": 25, "text": "记住 Frank 是设计师"},
+    {"day": 30, "text": "记住 Grace 跳槽去了 Hooli"},
+    {"day": 40, "text": "记住 我的经理换成 Carol 了"},
+    {"day": 45, "text": "记住 Dave 跳槽去了 Globex"},
+    {"day": 50, "text": "记住 Carol 现在是产品总监"},
+    {"day": 55, "text": "记住 Grace 加入了 Initech"}
+  ],
+  "memories": [
+    {"name": "manager", "body": "我的经理是 Alice（alice@acme.example），她的来信需要当天回复。"},
+    {"name": "dave", "body": "Dave 在 Acme 工作，负责数据平台。"},
+    {"name": "grace", "body": "Grace 在 Umbrella 工作。"},
+    {"name": "carol-role", "body": "Carol 是产品负责人。"},
+    {"name": "erin", "body": "Erin 在 Initech 工作。"},
+    {"name": "frank", "body": "Frank 是设计师。"},
+    {"name": "grace-hooli", "body": "Grace 跳槽去了 Hooli。"},
+    {"name": "manager-change", "body": "我的经理换成 Carol 了。"},
+    {"name": "dave-globex", "body": "Dave 跳槽去了 Globex。"},
+    {"name": "carol-director", "body": "Carol 现在是产品总监。"},
+    {"name": "grace-initech", "body": "Grace 加入了 Initech。"}
+  ],
+  "queries": [
+    {"query": "我的经理是谁", "current": "Carol", "stale": ["Alice"]},
+    {"query": "我老板现在是谁", "current": "Carol", "stale": ["Alice"]},
+    {"query": "who is my manager", "current": "Carol", "stale": ["Alice"]},
+    {"query": "Dave 在哪家公司", "current": "Globex", "stale": ["Acme"]},
+    {"query": "Dave 现在在哪工作", "current": "Globex", "stale": ["Acme"]},
+    {"query": "Carol 是什么职位", "current": "产品总监", "stale": ["产品负责人"]},
+    {"query": "what is Carol's role", "current": "产品总监", "stale": ["产品负责人"]},
+    {"query": "Grace 在哪上班", "current": "Initech", "stale": ["Umbrella", "Hooli"]},
+    {"query": "Erin 在哪工作", "current": "Initech", "stale": []},
+    {"query": "Frank 的职位", "current": "设计师", "stale": []},
+    {"query": "Bob 在哪工作", "current": "", "stale": []}
+  ]
+}

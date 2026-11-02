@@ -51,7 +51,11 @@ worker prompt shows. Workers search memory with `memory_search`, which merges BM
 run and the existing substring search by rank; each turn's prompt carries the
 memories related to its events. `-embed ollama` (default off) adds a fourth,
 semantic leg through a local Ollama embedding server over `net/http`, with vectors
-kept in `assistant.db` and a lexical fallback when the server is down.
+kept in `assistant.db` and a lexical fallback when the server is down. Time-bounded
+facts about people (manager, employer, role) come from the contact table, the inbox,
+the calendar and a nightly extraction from the user's chat; a new value closes the
+old one, `memory_search` lists the current facts first and marks memories that
+state a replaced value.
 
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.

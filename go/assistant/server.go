@@ -55,6 +55,7 @@ type StateView struct {
 	Jobs          []Job            `json:"jobs"`
 	Contacts      []Contact        `json:"contacts"`
 	Profile       []ProfileEntry   `json:"profile"`
+	Facts         []Fact           `json:"facts"`
 	Memories      []MemoryView     `json:"memories"`
 	Retrieval     string           `json:"retrieval"`
 	Vectors       *VectorStatus    `json:"vectors,omitempty"`
@@ -212,6 +213,7 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		func() error { view.Jobs, err = app.Store.Jobs(ctx, 20); return err },
 		func() error { view.Contacts, err = app.Store.Contacts(ctx, 20); return err },
 		func() error { view.Profile, err = app.Store.Profile(ctx); return err },
+		func() error { view.Facts, err = app.Store.Facts(ctx); return err },
 		func() error { view.Memories, err = app.memoryView(ctx); return err },
 	}
 	view.Retrieval = app.Search.Mode()
@@ -416,8 +418,9 @@ func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
 }
 
 // MemoryView is one owner memory as the page lists it, with the search
-// aliases written for its current text. Legs, and Similarity when the dense
-// leg found it, are set on search results.
+// aliases written for its current text. Legs, Similarity when the dense leg
+// found it, and Outdated when it states a replaced fact, are set on search
+// results.
 type MemoryView struct {
 	Name        string   `json:"name"`
 	Type        string   `json:"type"`
@@ -427,6 +430,14 @@ type MemoryView struct {
 	Aliases     []string `json:"aliases,omitempty"`
 	Legs        []string `json:"legs,omitempty"`
 	Similarity  float64  `json:"similarity,omitempty"`
+	Outdated    string   `json:"outdated,omitempty"`
+}
+
+// MemorySearchView is the page's search result: the facts the question is
+// about, then the ranked memories.
+type MemorySearchView struct {
+	Facts []Fact       `json:"facts"`
+	Hits  []MemoryView `json:"hits"`
 }
 
 func (app *App) memoryView(ctx context.Context) ([]MemoryView, error) {
@@ -470,11 +481,19 @@ func (app *App) handleMemorySearch(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
 		return
 	}
-	result := make([]MemoryView, 0, len(hits))
+	facts, err := app.Search.Facts(r.Context(), query)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	result := MemorySearchView{Facts: facts, Hits: make([]MemoryView, 0, len(hits))}
+	if result.Facts == nil {
+		result.Facts = []Fact{}
+	}
 	for _, hit := range hits {
 		row := memoryRow(hit.Record, aliases)
-		row.Legs, row.Similarity = hit.Legs, hit.Dense
-		result = append(result, row)
+		row.Legs, row.Similarity, row.Outdated = hit.Legs, hit.Dense, hit.Outdated
+		result.Hits = append(result.Hits, row)
 	}
 	writeJSON(w, http.StatusOK, result)
 }

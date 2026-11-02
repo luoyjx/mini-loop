@@ -73,19 +73,21 @@ func writeProfile(ctx context.Context, q queryer, entries []ProfileEntry, now ti
 	return nil
 }
 
-// profileFromContacts and profileFromMemory build the profile lines that need
-// no MCP call; the meeting window comes from the calendar at night.
-func profileFromContacts(contacts []Contact) []ProfileEntry {
-	manager := "联系人表里没有标为经理的人"
+// profileManager, profileFromContacts and profileFromMemory build the profile
+// lines that need no MCP call; the meeting window comes from the calendar at
+// night. A contact marked 经理 who is no longer the manager in the fact table
+// shows as 前经理.
+func profileFromContacts(contacts []Contact, manager *Fact) ProfileEntry {
 	frequent := []string{}
 	for _, contact := range contacts {
-		if contact.Relation == "经理" && manager == "联系人表里没有标为经理的人" {
-			manager = fmt.Sprintf("%s <%s>", firstNonEmpty(contact.Name, contact.Address), contact.Address)
-		}
 		if contact.Interactions > 0 && len(frequent) < profileContacts {
 			label := firstNonEmpty(contact.Name, contact.Address)
-			if contact.Relation != "" {
-				label += "（" + contact.Relation + "）"
+			relation := contact.Relation
+			if relation == "经理" && manager != nil && !strings.EqualFold(manager.Address, normalAddress(contact.Address)) && !strings.EqualFold(manager.Object, contact.Name) {
+				relation = "前经理"
+			}
+			if relation != "" {
+				label += "（" + relation + "）"
 			}
 			frequent = append(frequent, fmt.Sprintf("%s 往来 %d 次", label, contact.Interactions))
 		}
@@ -94,10 +96,7 @@ func profileFromContacts(contacts []Contact) []ProfileEntry {
 	if len(frequent) > 0 {
 		contactLine = strings.Join(frequent, "、")
 	}
-	return []ProfileEntry{
-		{Key: ProfileManager, Label: "经理", Value: manager, Source: "联系人表"},
-		{Key: ProfileContacts, Label: "常联系", Value: contactLine, Source: "联系人表（发件箱计数）"},
-	}
+	return ProfileEntry{Key: ProfileContacts, Label: "常联系", Value: contactLine, Source: "联系人表（发件箱计数）"}
 }
 
 func profileFromMemory(records []memory.Record) ProfileEntry {
@@ -127,17 +126,25 @@ func profileText(entries []ProfileEntry) string {
 	return b.String()
 }
 
-// refreshProfile rebuilds the lines that need no MCP call; the meeting
-// window is kept.
+// refreshProfile records the contact table's facts and rebuilds the lines
+// that need no MCP call; the meeting window is kept.
 func refreshProfile(ctx context.Context, store *Store, memories *memory.ScopedStore, now time.Time) error {
-	contacts, err := store.Contacts(ctx, 50)
-	if err != nil {
-		return err
-	}
 	records, err := memories.List(ctx)
 	if err != nil {
 		return err
 	}
-	entries := append(profileFromContacts(contacts), profileFromMemory(records))
-	return store.inTx(ctx, func(tx *sql.Tx) error { return writeProfile(ctx, tx, entries, now) })
+	return store.inTx(ctx, func(tx *sql.Tx) error {
+		contacts, err := contactsIn(ctx, tx)
+		if err != nil {
+			return err
+		}
+		if _, err := syncContactFacts(ctx, tx, contacts, now); err != nil {
+			return err
+		}
+		facts, err := factsIn(ctx, tx)
+		if err != nil {
+			return err
+		}
+		return writeProfile(ctx, tx, []ProfileEntry{profileManager(facts), profileFromContacts(contacts, currentManager(facts)), profileFromMemory(records)}, now)
+	})
 }

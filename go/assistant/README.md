@@ -177,7 +177,7 @@ shell for now.
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -327,16 +327,82 @@ as a catch-up. Before the worker turn the daemon:
 - removes memories whose body repeats another's, ignoring case, spaces and
   punctuation. It keeps an explicit memory first, then a `feedback` memory, and
   rewrites `memory/` only when something repeats;
+- records facts (see [Facts](#facts)): from the contact table, the inbox and the
+  calendar, and those the model extracts from what you said in the channel;
 - rebuilds the profile and writes one ledger row.
 
 The worker turn then sees that summary and the lines you typed in the channel that
 day. It remembers the preferences you stated with `remember` and reports quiet.
 Every step is idempotent, so a manual run or a re-run after a crash converges.
 
-The profile has four lines: manager, frequent contacts, meeting window and
-preferences (the first three `feedback` memories). Every worker prompt shows it
-under **用户画像**, marked as reference data rather than instructions. The daemon
-rebuilds the lines that need no calendar at start and after the nightly turn.
+The profile has four lines:
+
+- manager: a view of the current manager fact and the one before it;
+- frequent contacts: a contact marked 经理 who is no longer the manager shows as
+  前经理;
+- meeting window;
+- preferences: the first three `feedback` memories.
+
+Every worker prompt shows it under **用户画像**, marked as reference data rather
+than instructions. The daemon rebuilds the lines that need no calendar at start
+and after the nightly turn.
+
+### Facts
+
+`facts.go` keeps time-bounded statements about people in three `assistant.db`
+tables:
+
+- `entities`: people and organizations;
+- `entity_aliases`: lowercase names, addresses and domains. The first entity to
+  claim an alias keeps it, so two people with one name share an entity;
+- `facts`: subject, predicate, object entity or value, `valid_from`, `valid_to`,
+  `superseded_by`, source and evidence.
+
+| Predicate | Values | Comes from |
+|---|---|---|
+| `manager` (经理) | one at a time, the user's own | the contact marked 经理; what you said |
+| `works_at` (公司) | one at a time | a contact's work domain (acme.example is Acme, also known as acme; friends, family and free-mail domains excluded); what you said |
+| `role` (职位) | one at a time | what you said |
+| `wrote` (来信), `organizes` (会议) | the latest five per person | inbox mail and calendar events of known contacts |
+
+Strangers never become entities, so a mail cannot create or change a fact.
+
+**Extraction.** The nightly run sends the lines you typed since the last run (at
+most 40, numbered, with their time) to the model in one call without tools. The
+answer must use the fixed format `序号 | 主语 | 谓词 | 宾语` for `manager`,
+`works_at` and `role`. Lines in another format, with an unknown predicate, an
+out-of-range number or a long name are dropped. A fact starts when you said it,
+and its evidence is the channel message. On success a cursor moves past those
+lines. On failure the ledger notes "事实提取失败，下次整理再试" and the next night
+asks again. The offline scripted model answers from a few fixed phrasings.
+
+**Timeline.** Facts of one subject and predicate form a timeline by start time.
+A new fact ends where the next one starts, and the one before it ends where it
+starts, so a late report of an old value slots in between. Sources rank: what
+you said > the contact table > a domain, the inbox or the calendar. A newer
+value from a weaker source does not replace a stronger current fact. A fact
+already recorded as current, or with the same start, is not written again, so
+re-runs converge.
+
+**Use.**
+
+- `memory_search` lists the facts a question is about before the memories:
+  - facts of the people it names, and facts pointing at them;
+  - your own facts when it asks for one ("我的经理");
+  - only that predicate when it asks for one;
+  - current single-valued facts first, then replaced ones, then interactions, at
+    most six.
+- The 人物 leg ranks memories by how many of the named people (or your current
+  manager, for "我老板") they mention. A mail address names only its own entity.
+- A memory that states a replaced value, a word for its predicate and its
+  subject (unless that is you) carries
+  `outdated="我的经理自 2026-11-02 起是 Carol，不再是 Alice"`.
+- Each turn's prompt carries up to four facts about its events under
+  **相关的人物事实**. The worker rules say a current fact wins over a memory that
+  disagrees.
+- The page lists every fact under **人物与事实**, striking through replaced ones
+  and naming what replaced them. The search box shows the facts above the hits,
+  and a 可能过期 chip on outdated memories.
 
 ### Memory search
 
@@ -346,13 +412,14 @@ no longer offered, because its substring search misses a question asked in other
 words. A session restored from an earlier version keeps its old catalogue.
 
 `MemorySearch` builds its lexical index per query from the owner's memories and
-ranks them with three legs, plus a fourth with `-embed ollama`:
+ranks them with four legs, plus a fifth with `-embed ollama`:
 
 | Leg | What it matches |
 |---|---|
 | 关键词 | BM25 over name, description and body. Runs of Han, kana or Hangul are split into overlapping two-character tokens, other letters and digits into lowercase words; single letters and a few English function words are dropped. |
 | 别名 | BM25 over the memory's search aliases, when they were written for its current text. |
 | 子串 | The existing `memory.Store.Search`: the query split at non-letters, each term counted as a substring. |
+| 人物 | Memories naming the people the question names, or your current manager when it asks for one; see [Facts](#facts). |
 | 语义 | Only with `-embed ollama`: cosine similarity between the query's embedding and each memory's, at least 0.35, top 10. |
 
 Reciprocal rank fusion (k=60) merges the rankings; on a tie, more legs win,
@@ -372,7 +439,7 @@ synonym table.
 about (a mail's sender and subject, the user's words, an event's title and
 organizer, a task's title) and puts up to three hits, at most 600 characters, into
 the prompt under **可能相关的记忆**, marked as reference data. Only hits that the
-keyword or alias leg found, or whose similarity is at least 0.45, qualify; a
+keyword, alias or 人物 leg found, or whose similarity is at least 0.45, qualify; a
 substring match alone does not, because "is" in an unrelated question matched
 "English". Routines prefetch nothing.
 
@@ -432,13 +499,30 @@ memory. Both floors were chosen on this set, which has no separate validation sp
 and only eight negatives, so the figures are optimistic. The regular tests use a
 fake embedder that maps words to concepts.
 
+`TestFactsEvaluation` measures time-sensitive questions on
+`testdata/facts_eval.json`: four contacts, eight things said over two months (each
+also remembered) and eleven questions whose current value is known. With the
+offline model's extraction:
+
+| Answer taken from | Current value | Replaced value |
+|---|---|---|
+| The top memory (keyword, alias and substring legs) | 5 | 5 |
+| The first fact `memory_search` lists | 11 | 0 |
+
+All eight replaced-value memories in the top 3 carry an `outdated` note. One
+question has no answer, and no fact is invented for it. The chat lines use the
+phrasings the extraction rules cover, so the fact figure is optimistic; a real
+model's extraction is unmeasured. Set `MINILOOP_ASSISTANT_FACTS_REPORT` to write
+the scores as JSON. The lexical evaluation above is unchanged: its store holds no
+facts.
+
 ## How the six parts map to code
 
 | Part | In this demo | Code |
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
-| Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the memories related to its events. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `lookup.go`, `nightly.go`, `profile.go` |
+| Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the facts and memories related to its events. Time-bounded facts about people come from the contact table, the inbox, the calendar and a nightly extraction from your chat. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `facts.go`, `lookup.go`, `nightly.go`, `profile.go` |
 | Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
 | Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
@@ -473,7 +557,12 @@ fake embedder that maps words to concepts.
   prefetch query can come from an external mail's sender and subject, so mail can
   influence which memories a worker sees, and with embeddings that text reaches the
   embedding server; it cannot make the worker send. See
-  [Memory search](#memory-search). The nightly
+  [Memory search](#memory-search).
+- Facts come only from the contact table, known contacts' mail and meetings, and
+  what you typed in the channel. A stranger cannot create an entity or change a
+  fact, and the extraction never reads memories a worker wrote. The fact request
+  carries your recent chat to the configured model only. Same-name people share an
+  entity; there is no disambiguation. The nightly
   turn runs untrusted like any routine and is asked to remember only what you said
   in the channel. A memory a worker wrote from mail can still reach the profile's
   preference line, which is why the profile is marked as reference data.

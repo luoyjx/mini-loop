@@ -14016,3 +14016,55 @@ default (`-embed off`).
 - an Ollama process managed by the daemon or launchd;
 - a vector database, entity resolution or time-bounded facts (D9);
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: time-bounded facts about people (2026-11-02)
+
+Code baseline: `4a6b87e` plus changes to `go/assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory` and `go/agent` are unchanged; no
+dependency was added.
+
+**Go evidence:**
+
+- `assistant.db` gains `entities`, `entity_aliases` and `facts`. Each fact has
+  `valid_from`, `valid_to`, `superseded_by`, a source and evidence.
+  - `manager`, `works_at` and `role` hold one value at a time.
+  - `wrote` and `organizes` keep the latest five per person.
+- `assertFact` keeps a timeline per subject and predicate:
+  - a late, older fact slots in between;
+  - a newer value from a weaker source (user > contact table > domain, inbox,
+    calendar) does not replace a stronger current fact;
+  - recorded facts are not rewritten.
+- `syncContactFacts` (at start and nightly) derives entities, work-domain employers
+  and the 经理 contact. `syncMailFacts` (nightly) records known contacts' mail
+  threads and meetings. Strangers never become entities.
+- `FactExtractor` sends the user's chat since a cursor to the model in one
+  tool-less `memory_consolidation` call. `parseFacts` keeps only `序号 | 主语 |
+  谓词 | 宾语` lines with an asked line, an extractable predicate and short names. A
+  failure leaves the cursor for the next night.
+- The profile's manager line is a view of the current fact. `memory_search` lists
+  the facts a question is about first. A fifth leg (人物) ranks memories naming
+  the people asked about. Hits stating a replaced value carry `outdated`. The router
+  prefetches up to four facts. The page lists facts with validity, and
+  `GET /api/memory/search` returns `{facts, hits}`.
+- Tests cover:
+  - word-boundary and address-aware mentions;
+  - the timeline, source precedence and idempotence;
+  - format parsing;
+  - the scripted rules, including a question that must not become a fact;
+  - a nightly run where the manager changes, with the profile, chat answer, search
+    order, outdated note, re-run and the former manager's mail prompt;
+  - a failed extraction retried the next night;
+  - the 前经理 label;
+  - `TestFactsEvaluation` on 11 time-sensitive questions: top memory current 5 and
+    stale 5; first fact current 11 of 11; 8 of 8 stale memories in the top 3
+    marked.
+
+**Not claimed:**
+
+- extraction quality with a real model: the evaluation uses the offline model's
+  rules, written with the questions;
+- disambiguation of same-name people, or facts beyond the five predicates;
+- facts read from memory files (they carry no time and may come from mail);
+- a real channel, real MCP servers or a Python counterpart.

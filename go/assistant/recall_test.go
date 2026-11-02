@@ -133,7 +133,7 @@ func TestNightlyConsolidationBuildsTheProfile(t *testing.T) {
 	if err != nil || len(routines) != 2 {
 		t.Fatalf("the nightly routine is seeded: %+v %v", routines, err)
 	}
-	if profile, _ := app.Store.Profile(ctx); len(profile) != 3 || profile[0].Value != "Alice <"+ManagerAddress+">" {
+	if profile, _ := app.Store.Profile(ctx); len(profile) != 3 || !strings.HasPrefix(profile[0].Value, "Alice <"+ManagerAddress+">（自 ") || profile[0].Source != "事实表（联系人表）" {
 		t.Fatalf("start-up builds the profile lines that need no calendar: %+v", profile)
 	}
 	if _, err := app.Connector.SendMail(ctx, OutgoingMail{Key: "manual-1", Thread: "t-partner", To: "Carol@Partner.example", Subject: "合同", Body: "附件是合同。"}); err != nil {

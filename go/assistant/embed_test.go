@@ -129,7 +129,7 @@ func TestVectorIndexEmbedsLazilyAndKeepsTheIndexCurrent(t *testing.T) {
 	if status := search.vectors.Status(); !status.Available || status.Indexed != 3 || status.Total != 3 || status.Model != "fake-a" {
 		t.Fatalf("status: %+v", status)
 	}
-	if mode := search.Mode(); !strings.Contains(mode, "四路按排名合并") || !strings.Contains(mode, "fake-a") {
+	if mode := search.Mode(); !strings.Contains(mode, "五路按排名合并") || !strings.Contains(mode, "fake-a") {
 		t.Fatalf("mode: %s", mode)
 	}
 
@@ -305,21 +305,19 @@ func TestEmbeddingsFindAMemoryBeforeAnyAlias(t *testing.T) {
 	}
 	app.Router.Wake()
 	settle(t, app.Store)
-	if !channelHas(t, app, "我记得：我的经理是 Alice") {
-		t.Fatal("the dense leg finds the manager without aliases")
+	if found := searchPage(t, app, "我老板是谁"); len(found.Hits) == 0 || found.Hits[0].Name != "manager" || !slices.Contains(found.Hits[0].Legs, LegDense) {
+		t.Fatalf("the dense leg finds the manager without aliases: %+v", found.Hits)
 	}
 	code, body := apiCall(t, app, "GET", "/api/state", "")
 	var state struct {
 		Retrieval string        `json:"retrieval"`
 		Vectors   *VectorStatus `json:"vectors"`
 	}
-	if code != 200 || json.Unmarshal([]byte(body), &state) != nil || state.Vectors == nil || state.Vectors.Model != "fake-concepts" || state.Vectors.Indexed != 2 || !strings.Contains(state.Retrieval, "四路按排名合并") {
+	if code != 200 || json.Unmarshal([]byte(body), &state) != nil || state.Vectors == nil || state.Vectors.Model != "fake-concepts" || state.Vectors.Indexed != 2 || !strings.Contains(state.Retrieval, "五路按排名合并") {
 		t.Fatalf("state: %d %+v", code, state)
 	}
-	code, body = apiCall(t, app, "GET", "/api/memory/search?q=boss", "")
-	var hits []MemoryView
-	if code != 200 || json.Unmarshal([]byte(body), &hits) != nil || len(hits) == 0 || hits[0].Name != "manager" || !slices.Contains(hits[0].Legs, LegDense) || hits[0].Similarity < denseFloor {
-		t.Fatalf("page search shows the similarity: %d %s", code, body)
+	if hits := searchPage(t, app, "boss").Hits; len(hits) == 0 || hits[0].Name != "manager" || !slices.Contains(hits[0].Legs, LegDense) || hits[0].Similarity < denseFloor {
+		t.Fatalf("page search shows the similarity: %+v", hits)
 	}
 }
 

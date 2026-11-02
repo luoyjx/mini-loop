@@ -95,6 +95,10 @@ func (m *ScriptedModel) Complete(ctx context.Context, request protocol.ModelRequ
 			reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock(scriptedAliases(text))}, protocol.StopEndTurn
 			return reply, nil
 		}
+		if text, ok := messageText(request.Messages[len(request.Messages)-1]); ok && strings.HasPrefix(text, factsHeaderStart) {
+			reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock(scriptedFacts(text))}, protocol.StopEndTurn
+			return reply, nil
+		}
 	}
 	if request.Purpose != "" && request.Purpose != protocol.PurposeAgentTurn {
 		reply.Content, reply.StopReason = []protocol.Block{protocol.NewTextBlock("（离线脚本模型：此请求只返回占位摘要）")}, protocol.StopEndTurn
@@ -866,13 +870,16 @@ func (m *ScriptedModel) planChat(turn scriptedTurn) plan {
 		return plan{final: fmt.Sprintf("最近 %d 封：%s", len(lines), strings.Join(lines, "；"))}
 	case containsAny(text, preferenceWords) && !strings.ContainsAny(text, "？?吗") && !strings.Contains(text, "什么"):
 		return plan{final: "收到。这听起来是你的偏好，今晚 23:30 的夜间整理会把它记下来。"}
-	case has("记得", "是谁", "偏好", "回忆", "recall", "查记忆", "哪天", "几点", "什么时候"):
+	case has("记得", "是谁", "偏好", "回忆", "recall", "查记忆", "哪天", "几点", "什么时候", "在哪", "哪家", "职位", "who"):
 		recalled, done := turn.last(ToolMemorySearch)
 		if !done {
 			return plan{calls: []plannedCall{{ToolMemorySearch, jsonInput(memorySearchInput{Query: text, Limit: 2})}}}
 		}
 		if strings.HasPrefix(recalled, "（没有") {
 			return plan{final: "我没找到相关的记忆。"}
+		}
+		if fact := firstFactLine(recalled); fact != "" {
+			return plan{final: "我记得：" + truncateRunes(fact, 160)}
 		}
 		return plan{final: "我记得：" + truncateRunes(plainMemory(recalled), 160)}
 	}
@@ -935,6 +942,61 @@ var memoryTag = regexp.MustCompile(`<[^>]+>`)
 // plainMemory drops memory_search's record framing for a channel reply.
 func plainMemory(text string) string {
 	return strings.Join(strings.Fields(memoryTag.ReplaceAllString(text, " ")), " ")
+}
+
+// firstFactLine is the first fact of a memory_search result, which lists the
+// current facts first; empty when the result has none.
+func firstFactLine(text string) string {
+	if !strings.HasPrefix(text, "<facts") {
+		return ""
+	}
+	for _, line := range strings.Split(text, "\n") {
+		if fact, ok := strings.CutPrefix(line, "· "); ok {
+			return fact
+		}
+	}
+	return ""
+}
+
+// The scripted fact rules stand in for the model when the nightly
+// consolidation asks for facts: a few fixed Chinese and English phrasings of
+// the user's manager, someone's employer and someone's role.
+var (
+	factLinePattern       = regexp.MustCompile(`(?m)^(\d+) \d\d/\d\d \d\d:\d\d (.*)$`)
+	scriptedManagerIs     = regexp.MustCompile(`(?:经理|老板|上司|领导)(?:现在)?(?:换成了|换成|改成了|改成|变成了|变成|是)\s*([A-Z][A-Za-z]+|\p{Han}{2,3})`)
+	scriptedManagerOf     = regexp.MustCompile(`([A-Z][A-Za-z]+)\s*(?:现在)?是我的(?:新)?(?:经理|老板|上司|领导)`)
+	scriptedManagerEn     = regexp.MustCompile(`(?i:my (?:new )?(?:manager|boss) is (?:now )?)([A-Z][a-z]+)`)
+	scriptedWorksAtJoined = regexp.MustCompile(`([A-Z][A-Za-z]+)\s*(?:现在)?(?:跳槽去了|跳槽到|去了|加入了|加入|入职了|入职)\s*([A-Z][A-Za-z0-9&-]+)`)
+	scriptedWorksAtIn     = regexp.MustCompile(`([A-Z][A-Za-z]+)\s*(?:现在)?在\s*([A-Z][A-Za-z0-9&-]+)\s*(?:工作|上班)`)
+	scriptedWorksAtEn     = regexp.MustCompile(`([A-Z][a-z]+) (?:now )?(?:works at|joined|moved to) ([A-Z][A-Za-z0-9&-]+)`)
+	scriptedRole          = regexp.MustCompile(`([A-Z][A-Za-z]+)\s*(?:现在)?(?:是|升任了|升任|升为|担任|改任|调任)\s*([\p{Han}A-Za-z]{0,8}?(?:负责人|总监|经理|主管|工程师|设计师|主任|总裁))`)
+)
+
+// scriptedFacts answers the fact extraction request from the scripted rules.
+func scriptedFacts(text string) string {
+	lines := []string{}
+	for _, match := range factLinePattern.FindAllStringSubmatch(text, -1) {
+		n, said := match[1], match[2]
+		for _, pattern := range []*regexp.Regexp{scriptedManagerIs, scriptedManagerOf, scriptedManagerEn} {
+			if found := pattern.FindStringSubmatch(said); found != nil && !strings.ContainsAny(found[1], "谁哪啥") {
+				lines = append(lines, n+" | 我 | manager | "+found[1])
+				break
+			}
+		}
+		for _, pattern := range []*regexp.Regexp{scriptedWorksAtJoined, scriptedWorksAtIn, scriptedWorksAtEn} {
+			if found := pattern.FindStringSubmatch(said); found != nil {
+				lines = append(lines, n+" | "+found[1]+" | works_at | "+found[2])
+				break
+			}
+		}
+		if found := scriptedRole.FindStringSubmatch(said); found != nil && !strings.HasPrefix(found[2], "我") {
+			lines = append(lines, n+" | "+found[1]+" | role | "+found[2])
+		}
+	}
+	if len(lines) == 0 {
+		return "无"
+	}
+	return strings.Join(lines, "\n")
 }
 
 // scriptedAliasWords stands in for the model's knowledge of synonyms when the

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -285,10 +286,11 @@ func TestMemoryRetrievalEvaluation(t *testing.T) {
 	}
 }
 
-// A question asked in other words finds nothing until the nightly
-// consolidation writes aliases; afterwards the chat, memory_search and the
-// page find the memory. Workers get memory_search instead of recall, and each
-// turn's prompt carries the memories related to its events.
+// Before the nightly consolidation a question in other words reaches the
+// manager memory only through the contact table's fact (the entity leg); the
+// nightly aliases add the alias leg. Workers get memory_search instead of
+// recall, and each turn's prompt carries the facts and memories related to
+// its events.
 func TestAliasesLetAQuestionInOtherWordsFindTheMemory(t *testing.T) {
 	clock := newClock()
 	recorder := &promptRecorder{next: &ScriptedModel{Now: clock.Now}}
@@ -303,8 +305,11 @@ func TestAliasesLetAQuestionInOtherWordsFindTheMemory(t *testing.T) {
 		settle(t, app.Store)
 	}
 	ask("我老板是谁")
-	if !channelHas(t, app, "我没找到相关的记忆") {
-		t.Fatal("before the nightly consolidation the question finds nothing")
+	if !channelHas(t, app, "我记得：我的经理：Alice <"+ManagerAddress+">") {
+		t.Fatal("before the nightly consolidation the contact table's fact answers")
+	}
+	if found := searchPage(t, app, "我老板是谁"); len(found.Hits) == 0 || found.Hits[0].Name != "manager" || !slices.Equal(found.Hits[0].Legs, []string{LegEntity}) || len(found.Facts) != 1 {
+		t.Fatalf("before the nightly run only the entity leg finds the manager memory: %+v", found)
 	}
 	if tools := recorder.lastTools(); !slices.Contains(tools, ToolMemorySearch) || slices.Contains(tools, protocol.ToolRecall) || !slices.Contains(tools, protocol.ToolRemember) {
 		t.Fatalf("workers search with memory_search, not recall: %v", tools)
@@ -329,16 +334,12 @@ func TestAliasesLetAQuestionInOtherWordsFindTheMemory(t *testing.T) {
 		t.Fatalf("aliases: %+v %v", aliases, err)
 	}
 
-	ask("我老板是谁")
-	if !channelHas(t, app, "我记得：我的经理是 Alice") {
-		t.Fatal("after the nightly consolidation the alias finds the manager")
+	for _, query := range []string{"我老板是谁", "boss"} {
+		if found := searchPage(t, app, query); len(found.Hits) == 0 || found.Hits[0].Name != "manager" || !slices.Contains(found.Hits[0].Legs, LegAlias) {
+			t.Fatalf("after the nightly consolidation the alias leg finds the manager for %q: %+v", query, found.Hits)
+		}
 	}
-	code, body := apiCall(t, app, "GET", "/api/memory/search?q=boss", "")
-	var hits []MemoryView
-	if code != 200 || json.Unmarshal([]byte(body), &hits) != nil || len(hits) == 0 || hits[0].Name != "manager" || !slices.Contains(hits[0].Legs, LegAlias) {
-		t.Fatalf("page search: %d %s", code, body)
-	}
-	code, body = apiCall(t, app, "GET", "/api/state", "")
+	code, body := apiCall(t, app, "GET", "/api/state", "")
 	if code != 200 || !strings.Contains(body, `"aliases":["老板"`) || !strings.Contains(body, "语义检索未启用") {
 		t.Fatalf("state lists aliases and the retrieval mode: %d", code)
 	}
@@ -355,9 +356,21 @@ func TestAliasesLetAQuestionInOtherWordsFindTheMemory(t *testing.T) {
 
 	deliver(t, app, PresetManager)
 	settle(t, app.Store)
-	if prompt := recorder.last("新邮件到达"); !strings.Contains(prompt, "可能相关的记忆") || !strings.Contains(prompt, "· manager：我的经理是 Alice") {
-		t.Fatalf("the worker prompt carries the related memories:\n%s", prompt)
+	if prompt := recorder.last("新邮件到达"); !strings.Contains(prompt, "可能相关的记忆") || !strings.Contains(prompt, "· manager：我的经理是 Alice") ||
+		!strings.Contains(prompt, "相关的人物事实") || !strings.Contains(prompt, "· 我的经理：Alice <"+ManagerAddress+">") {
+		t.Fatalf("the worker prompt carries the related facts and memories:\n%s", prompt)
 	}
+}
+
+// searchPage runs the page's memory search.
+func searchPage(t *testing.T, app *App, query string) MemorySearchView {
+	t.Helper()
+	code, body := apiCall(t, app, "GET", "/api/memory/search?q="+url.QueryEscape(query), "")
+	var found MemorySearchView
+	if code != 200 || json.Unmarshal([]byte(body), &found) != nil {
+		t.Fatalf("page search %q: %d %s", query, code, body)
+	}
+	return found
 }
 
 // A failed alias request is reported in the ledger and retried the next
@@ -374,7 +387,7 @@ func TestFailedAliasRequestIsRetriedTheNextNight(t *testing.T) {
 		}
 		settle(t, app.Store)
 	}
-	if !ledgerHas(t, app, LedgerMemory, "补检索别名 0 条，画像") || !ledgerHas(t, app, LedgerMemory, "别名生成失败，下次整理再试") {
+	if !ledgerHas(t, app, LedgerMemory, "补检索别名 0 条，新事实") || !ledgerHas(t, app, LedgerMemory, "别名生成失败，下次整理再试") {
 		t.Fatal("the first night reports the failure")
 	}
 	if !ledgerHas(t, app, LedgerMemory, "补检索别名 2 条") {

@@ -45,7 +45,7 @@ main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 16px
 .chip.problem, .chip.send_failed, .chip.trigger_failed { background: var(--bad-soft); color: var(--bad); }
 .chip.approval, .chip.task_handoff { background: var(--warn-soft); color: var(--warn); }
 .chip.question { background: var(--accent-soft); color: var(--accent); }
-.chip.no_progress, .chip.observed { background: var(--warn-soft); color: var(--warn); }
+.chip.no_progress, .chip.observed, .chip.outdated { background: var(--warn-soft); color: var(--warn); }
 .chip.queued { background: var(--accent-soft); color: var(--accent); }
 .mode { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .mode button { border: none; border-radius: 0; padding: 5px 12px; }
@@ -80,6 +80,9 @@ button:hover { border-color: var(--accent); }
 button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .5; cursor: default; }
 .chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+.scroll-x { overflow-x: auto; max-width: 100%; }
+tr.expired td { color: var(--muted); }
+tr.expired td.fact-object { text-decoration: line-through; }
 .chip.pending { background: var(--warn-soft); color: var(--warn); }
 .chip.sent, .chip.done, .chip.confirmed { background: var(--ok-soft); color: var(--ok); }
 .chip.denied, .chip.ignored, .chip.quiet, .chip.declined { background: var(--bubble); color: var(--muted); }
@@ -190,8 +193,10 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       <h3>画像与记忆</h3>
       <p class="hint">每晚 23:30 的「夜间整理」先由守护进程从已发送邮件学联系人、从日历算会议时间、去掉重复的记忆，再让 worker 把你当天在信道里说过的偏好记下来。画像会写进每个 worker 的提示里，只当参考。worker 还可以用 lookup 顺着 trigger / task / thread 等引用追溯一件事，试试在信道里说「追溯 trigger-1」。</p>
       <div id="profile"></div>
+      <p class="hint"><b>人物与事实</b>：谁是你的经理、谁在哪工作、什么职位，都带有效期：联系人表和邮箱域名不用调模型，你在信道里亲口说的（例如「我的经理换成 Carol 了」）由夜间整理提取，新值出现时旧值自动过期（划线）。你说的话优先于联系人表和邮箱域名。</p>
+      <div id="facts"></div>
       <p class="hint">记忆检索：<span id="retrieval"></span><span id="vectors"></span>。夜间整理会给新的或改过的记忆补几个中英文别名（右边的灰色标签），换个说法也能搜到。worker 用 memory_search 搜索，每个回合还会按事件预取最相关的 3 条放进提示。</p>
-      <form id="memory-search" class="row" style="grid-template-columns:1fr auto"><input name="q" placeholder="试搜记忆，例如：我老板是谁 / invoice / 哪天不能开会" maxlength="200"><button type="submit">搜索</button></form>
+      <form id="memory-search" class="row" style="grid-template-columns:1fr auto"><input name="q" placeholder="试搜记忆，例如：我老板是谁 / Dave 在哪工作 / 哪天不能开会" maxlength="200"><button type="submit">搜索</button></form>
       <div id="memory-hits"></div>
       <div id="memories"></div>
       <h3>MCP 工具</h3>
@@ -472,20 +477,37 @@ function renderMemory() {
     el("thead", {}, el("tr", {}, ["画像", "内容", "来源"].map((h) => el("th", { class: "nowrap" }, h)))),
     el("tbody", {}, profile.map((p) => el("tr", {}, el("td", { class: "nowrap" }, p.label), el("td", {}, p.value),
       el("td", { class: "hint" }, p.source, el("div", { class: "mono" }, dateTime(p.updated_at))))))) : el("div", { class: "empty" }, "还没有画像"));
+  const facts = state.facts || [];
+  $("facts").replaceChildren(facts.length ? factTable(facts) : el("div", { class: "empty" }, "还没有事实"));
   $("retrieval").textContent = state.retrieval || "";
   const v = state.vectors;
   $("vectors").textContent = v ? `；语义索引 ${v.indexed}/${v.total} 条` + (v.checked_at ? `，上次连接 ${dateTime(v.checked_at)}` : "") : "";
   $("memories").replaceChildren(...(memories.length ? memories.map(memoryItem) : [el("div", { class: "empty" }, "还没有记忆")]));
 }
 
+// factTable lists facts; an expired fact is struck through and names what
+// replaced it, and an interaction (a mail, a meeting) shows its date.
+const interactions = ["wrote", "organizes"];
+function factTable(facts) {
+  const day = (t) => (t || "").slice(0, 10);
+  return el("div", { class: "scroll-x" }, el("table", {},
+    el("thead", {}, el("tr", {}, ["谁", "事实", "内容", "有效期", "来源"].map((h) => el("th", { class: "nowrap" }, h)))),
+    el("tbody", {}, facts.map((f) => el("tr", { class: f.valid_to ? "expired" : "" },
+      el("td", { class: "nowrap" }, f.subject), el("td", { class: "nowrap" }, f.label),
+      el("td", { class: "fact-object" }, f.object + (f.address && f.address !== f.object ? " <" + f.address + ">" : "")),
+      el("td", { class: "mono nowrap" }, interactions.includes(f.predicate) ? day(f.valid_from) : f.valid_to ? `${day(f.valid_from)} 至 ${day(f.valid_to)}` + (f.replaced_by ? ` → ${f.replaced_by}` : "") : `自 ${day(f.valid_from)}`),
+      el("td", { class: "hint nowrap" }, f.source))))));
+}
+
 // memoryItem draws one memory with its aliases; a search hit also names the
-// legs that found it and the semantic similarity.
+// legs that found it, the semantic similarity and a replaced fact it states.
 function memoryItem(m) {
   return el("div", { class: "list-item" },
     el("div", {}, el("b", {}, m.description || m.name), " ", el("span", { class: "chip quiet" }, m.type), " ", el("span", { class: "hint" }, originLabel[m.origin] || m.origin),
       ...(m.legs || []).map((leg) => el("span", { class: "chip" }, "命中：" + leg)),
       m.similarity ? el("span", { class: "hint" }, " 相似度 " + m.similarity.toFixed(2)) : ""),
     el("div", { class: "sub" }, m.body),
+    m.outdated ? el("div", { class: "hint" }, el("span", { class: "chip outdated" }, "可能过期"), " " + m.outdated) : "",
     (m.aliases || []).length ? el("div", { class: "hint" }, "别名：", ...m.aliases.map((a) => el("span", { class: "chip quiet" }, a))) : "");
 }
 
@@ -495,10 +517,12 @@ $("memory-search").addEventListener("submit", async (event) => {
   if (!q) { $("memory-hits").replaceChildren(); return; }
   try {
     const response = await fetch("/api/memory/search?q=" + encodeURIComponent(q), { cache: "no-store" });
-    const hits = await response.json();
-    if (!response.ok) throw new Error(hits.error || response.statusText);
-    $("memory-hits").replaceChildren(el("div", { class: "hint" }, "「" + q + "」的结果（按排名合并后的顺序）："),
-      ...(hits.length ? hits.map(memoryItem) : [el("div", { class: "empty" }, "没有匹配的记忆")]));
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || response.statusText);
+    const hits = result.hits || [], facts = result.facts || [];
+    $("memory-hits").replaceChildren(el("div", { class: "hint" }, "「" + q + "」的结果（事实在前，记忆按排名合并后的顺序）："),
+      ...(facts.length ? [factTable(facts)] : []),
+      ...(hits.length ? hits.map(memoryItem) : facts.length ? [] : [el("div", { class: "empty" }, "没有匹配的记忆")]));
   } catch (e) { toast(e.message); }
 });
 

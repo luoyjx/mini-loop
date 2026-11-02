@@ -46,6 +46,8 @@ type Consolidation struct {
 	Deduped       int
 	Aliased       int
 	AliasNote     string
+	Facts         int
+	FactNote      string
 	MeetingWindow string
 	Profile       []ProfileEntry
 	Chat          []ChannelMessage
@@ -58,6 +60,7 @@ type Consolidator struct {
 	connector *Connector
 	memories  *memory.ScopedStore
 	aliaser   *Aliaser
+	extractor *FactExtractor
 	now       clock
 }
 
@@ -91,6 +94,15 @@ func (c *Consolidator) Run(ctx context.Context) (Consolidation, error) {
 	if result.Aliased, result.AliasNote, err = c.expandAliases(ctx, records, now); err != nil {
 		return result, err
 	}
+	inbox, err := c.connector.ListMail(ctx, FolderInbox, nightlyMailLimit)
+	if err != nil {
+		return result, err
+	}
+	chat, extracted, factNote, err := c.extractFacts(ctx)
+	if err != nil {
+		return result, err
+	}
+	result.FactNote = factNote
 	err = c.store.inTx(ctx, func(tx *sql.Tx) error {
 		result.Learned = nil
 		for _, mail := range sent {
@@ -108,13 +120,29 @@ func (c *Consolidator) Run(ctx context.Context) (Consolidation, error) {
 		if err != nil {
 			return err
 		}
-		result.Profile = append(profileFromContacts(contacts), ProfileEntry{Key: ProfileMeetings, Label: "会议时间", Value: result.MeetingWindow, Source: "日历（夜间整理）"}, profileFromMemory(records))
+		written, err := updateFacts(ctx, tx, contacts, inbox, events, chat, extracted, now)
+		if err != nil {
+			return err
+		}
+		result.Facts = written
+		if len(chat) > 0 {
+			if err := c.store.setMeta(ctx, tx, factsCursorKey, fmt.Sprint(chat[len(chat)-1].ID)); err != nil {
+				return err
+			}
+		}
+		facts, err := factsIn(ctx, tx)
+		if err != nil {
+			return err
+		}
+		result.Profile = []ProfileEntry{profileManager(facts), profileFromContacts(contacts, currentManager(facts)), {Key: ProfileMeetings, Label: "会议时间", Value: result.MeetingWindow, Source: "日历（夜间整理）"}, profileFromMemory(records)}
 		if err := writeProfile(ctx, tx, result.Profile, now); err != nil {
 			return err
 		}
-		detail := fmt.Sprintf("夜间整理：从已发送邮件学到联系人 %d 个，去掉重复记忆 %d 条，补检索别名 %d 条，画像 %d 项；会议时间 %s", len(result.Learned), result.Deduped, result.Aliased, len(result.Profile), result.MeetingWindow)
-		if result.AliasNote != "" {
-			detail += "；" + result.AliasNote
+		detail := fmt.Sprintf("夜间整理：从已发送邮件学到联系人 %d 个，去掉重复记忆 %d 条，补检索别名 %d 条，新事实 %d 条，画像 %d 项；会议时间 %s", len(result.Learned), result.Deduped, result.Aliased, result.Facts, len(result.Profile), result.MeetingWindow)
+		for _, note := range []string{result.AliasNote, result.FactNote} {
+			if note != "" {
+				detail += "；" + note
+			}
 		}
 		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerMemory, Actor: "daemon（夜间整理）", Detail: detail})
 	})
@@ -154,6 +182,7 @@ func contactsIn(ctx context.Context, q queryer) ([]Contact, error) {
 		if err := rows.Scan(&c.Address, &c.Name, &c.Relation, &c.Source, &c.Interactions, &last, &created); err != nil {
 			return nil, err
 		}
+		c.CreatedAt = fromMillis(created)
 		result = append(result, c)
 	}
 	return result, rows.Err()
@@ -267,7 +296,7 @@ func writeConsolidation(b *strings.Builder, done *Consolidation) {
 	if len(done.Learned) > 0 {
 		learned = strings.Join(done.Learned, "、")
 	}
-	fmt.Fprintf(b, "- 从已发送邮件学到的新联系人：%s\n- 去掉重复记忆：%d 条\n- 补检索别名：%d 条\n- 会议时间：%s\n", learned, done.Deduped, done.Aliased, done.MeetingWindow)
+	fmt.Fprintf(b, "- 从已发送邮件学到的新联系人：%s\n- 去掉重复记忆：%d 条\n- 补检索别名：%d 条\n- 新事实：%d 条\n- 会议时间：%s\n", learned, done.Deduped, done.Aliased, done.Facts, done.MeetingWindow)
 	if len(done.Chat) == 0 {
 		b.WriteString("今天你在信道里没有说过话。\n")
 		return
