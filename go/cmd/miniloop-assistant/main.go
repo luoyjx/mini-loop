@@ -87,18 +87,33 @@ func defaultDataDir(env environment) string {
 }
 
 type daemonFlags struct {
-	addr, data, model, modelID *string
-	workers                    *int
+	addr, data, model, modelID  *string
+	embed, embedURL, embedModel *string
+	workers                     *int
 }
 
 func bindDaemonFlags(flags *flag.FlagSet, env environment) daemonFlags {
 	return daemonFlags{
-		addr:    flags.String("addr", defaultAddr, "loopback listen address for the simulated channel"),
-		data:    flags.String("data", defaultDataDir(env), "durable data directory (assistant.db, agent.db, memory/, mock-mcp/world.db)"),
-		model:   flags.String("model", "scripted", "scripted (offline, no credentials) or anthropic (reads ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN / ANTHROPIC_BASE_URL)"),
-		modelID: flags.String("model-id", "", "model ID for -model anthropic (default MODEL_ID or "+agent.DefaultModel+")"),
-		workers: flags.Int("workers", 4, "maximum concurrent background worker turns (one more slot is kept for your chat)"),
+		addr:       flags.String("addr", defaultAddr, "loopback listen address for the simulated channel"),
+		data:       flags.String("data", defaultDataDir(env), "durable data directory (assistant.db, agent.db, memory/, mock-mcp/world.db)"),
+		model:      flags.String("model", "scripted", "scripted (offline, no credentials) or anthropic (reads ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN / ANTHROPIC_BASE_URL)"),
+		modelID:    flags.String("model-id", "", "model ID for -model anthropic (default MODEL_ID or "+agent.DefaultModel+")"),
+		workers:    flags.Int("workers", 4, "maximum concurrent background worker turns (one more slot is kept for your chat)"),
+		embed:      flags.String("embed", assistant.EmbedOff, "memory search embeddings: off (lexical legs only) or ollama (a local Ollama server)"),
+		embedURL:   flags.String("embed-url", assistant.DefaultEmbedURL, "Ollama base URL for -embed ollama; memory text is sent there"),
+		embedModel: flags.String("embed-model", assistant.DefaultEmbedModel, "embedding model for -embed ollama"),
 	}
+}
+
+// embedder builds the -embed choice; nil means off.
+func (options daemonFlags) embedder() (assistant.Embedder, error) {
+	switch *options.embed {
+	case assistant.EmbedOff:
+		return nil, nil
+	case assistant.EmbedOllama:
+		return assistant.NewOllamaEmbedder(*options.embedURL, *options.embedModel)
+	}
+	return nil, fmt.Errorf("unknown -embed %q", *options.embed)
 }
 
 func parse(flags *flag.FlagSet, args []string) (int, bool) {
@@ -127,6 +142,9 @@ func runDaemon(ctx context.Context, args []string, env environment, std streams)
 		return fail(err)
 	}
 	config := assistant.Config{DataDir: data, Log: std.err, Workers: *options.workers}
+	if config.Embedder, err = options.embedder(); err != nil {
+		return fail(err)
+	}
 	switch *options.model {
 	case "scripted":
 		config.Provider, config.Model, config.ModelLabel = &assistant.ScriptedModel{}, assistant.ScriptedModelID, "scripted（离线脚本）"
@@ -178,7 +196,11 @@ func runDaemon(ctx context.Context, args []string, env environment, std streams)
 	server := &http.Server{Handler: app.Handler(), ReadHeaderTimeout: 5 * time.Second}
 	served := make(chan error, 1)
 	go func() { served <- server.Serve(listener) }()
-	fmt.Fprintf(std.err, "mini-loop assistant demo on http://%s (model=%s, data=%s, mcp=%s over %s, %d tools)\n", listener.Addr(), app.ModelLabel, data, connector.Server(), connector.Transport(), tools)
+	embed := assistant.EmbedOff
+	if config.Embedder != nil {
+		embed = config.Embedder.Model() + " @ " + config.Embedder.Endpoint()
+	}
+	fmt.Fprintf(std.err, "mini-loop assistant demo on http://%s (model=%s, data=%s, mcp=%s over %s, %d tools, embed=%s)\n", listener.Addr(), app.ModelLabel, data, connector.Server(), connector.Transport(), tools, embed)
 	select {
 	case <-ctx.Done():
 	case err = <-served:
@@ -271,7 +293,15 @@ func runPlist(args []string, env environment, std streams) int {
 		}
 		logFile = filepath.Join(home, "Library", "Logs", "mini-loop-assistant.log")
 	}
+	if _, err := options.embedder(); err != nil {
+		return fail(err)
+	}
 	arguments := []string{program, "-addr", *options.addr, "-data", data, "-workers", fmt.Sprint(*options.workers)}
+	if *options.embed != assistant.EmbedOff {
+		// launchd does not start Ollama; the daemon falls back to the lexical
+		// legs while it is down.
+		arguments = append(arguments, "-embed", *options.embed, "-embed-url", *options.embedURL, "-embed-model", *options.embedModel)
+	}
 	if _, err := std.out.Write(launchAgentPlist(*label, arguments, logFile)); err != nil {
 		return fail(err)
 	}

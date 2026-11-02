@@ -190,7 +190,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
       <h3>画像与记忆</h3>
       <p class="hint">每晚 23:30 的「夜间整理」先由守护进程从已发送邮件学联系人、从日历算会议时间、去掉重复的记忆，再让 worker 把你当天在信道里说过的偏好记下来。画像会写进每个 worker 的提示里，只当参考。worker 还可以用 lookup 顺着 trigger / task / thread 等引用追溯一件事，试试在信道里说「追溯 trigger-1」。</p>
       <div id="profile"></div>
-      <p class="hint">记忆检索：<span id="retrieval"></span>。夜间整理会给新的或改过的记忆补几个中英文别名（右边的灰色标签），换个说法也能搜到。worker 用 memory_search 搜索，每个回合还会按事件预取最相关的 3 条放进提示。</p>
+      <p class="hint">记忆检索：<span id="retrieval"></span><span id="vectors"></span>。夜间整理会给新的或改过的记忆补几个中英文别名（右边的灰色标签），换个说法也能搜到。worker 用 memory_search 搜索，每个回合还会按事件预取最相关的 3 条放进提示。</p>
       <form id="memory-search" class="row" style="grid-template-columns:1fr auto"><input name="q" placeholder="试搜记忆，例如：我老板是谁 / invoice / 哪天不能开会" maxlength="200"><button type="submit">搜索</button></form>
       <div id="memory-hits"></div>
       <div id="memories"></div>
@@ -473,15 +473,18 @@ function renderMemory() {
     el("tbody", {}, profile.map((p) => el("tr", {}, el("td", { class: "nowrap" }, p.label), el("td", {}, p.value),
       el("td", { class: "hint" }, p.source, el("div", { class: "mono" }, dateTime(p.updated_at))))))) : el("div", { class: "empty" }, "还没有画像"));
   $("retrieval").textContent = state.retrieval || "";
+  const v = state.vectors;
+  $("vectors").textContent = v ? `；语义索引 ${v.indexed}/${v.total} 条` + (v.checked_at ? `，上次连接 ${dateTime(v.checked_at)}` : "") : "";
   $("memories").replaceChildren(...(memories.length ? memories.map(memoryItem) : [el("div", { class: "empty" }, "还没有记忆")]));
 }
 
 // memoryItem draws one memory with its aliases; a search hit also names the
-// legs that found it.
+// legs that found it and the semantic similarity.
 function memoryItem(m) {
   return el("div", { class: "list-item" },
     el("div", {}, el("b", {}, m.description || m.name), " ", el("span", { class: "chip quiet" }, m.type), " ", el("span", { class: "hint" }, originLabel[m.origin] || m.origin),
-      ...(m.legs || []).map((leg) => el("span", { class: "chip" }, "命中：" + leg))),
+      ...(m.legs || []).map((leg) => el("span", { class: "chip" }, "命中：" + leg)),
+      m.similarity ? el("span", { class: "hint" }, " 相似度 " + m.similarity.toFixed(2)) : ""),
     el("div", { class: "sub" }, m.body),
     (m.aliases || []).length ? el("div", { class: "hint" }, "别名：", ...m.aliases.map((a) => el("span", { class: "chip quiet" }, a))) : "");
 }

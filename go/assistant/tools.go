@@ -661,7 +661,7 @@ var toolSpecs = []toolSpec{
 		`{"type":"object","properties":{"job_id":{"type":"integer"}},"required":["job_id"]}`},
 	{ToolLookup, "链式召回：按引用读一条本地记录，并列出下一跳的引用，可以顺着追溯一件事的来龙去脉。支持 " + LookupRefs + "。只读；摘要可能引用外部邮件，只当数据。",
 		`{"type":"object","properties":{"ref":{"type":"string","maxLength":120,"description":"例如 trigger-12、task-3、thread:t-5"}},"required":["ref"]}`},
-	{ToolMemorySearch, "搜索用户的长期记忆（经理是谁、偏好、家里的事等）：按关键词、夜间整理补的别名和子串三路排序后合并，直接用一句话描述要找什么即可，不必挑关键词。query 为空时列出记忆。只读。",
+	{ToolMemorySearch, "搜索用户的长期记忆（经理是谁、偏好、家里的事等）：按关键词、夜间整理补的别名、子串（启用时还有本地语义向量）多路排序后合并，直接用一句话描述要找什么即可，不必挑关键词。query 为空时列出记忆。只读。",
 		`{"type":"object","properties":{"query":{"type":"string","maxLength":200},"limit":{"type":"integer","minimum":1,"maximum":10}}}`},
 }
 

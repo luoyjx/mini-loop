@@ -1,13 +1,13 @@
 Edit the supplied complete mini-loop layered architecture diagram. This is a repository architecture update dated 2026-11-02. Keep everything above the very bottom band exactly as it is: the title, the Chinese typography, the dark navy background, the cyan/violet borders, every L1-L5 layer, the right boundary column with its six numbered items, the deepagents-server band, the Temporal experiment band and the Task container band with its orange 2026-10-17 badge. Do not move, resize or reword anything outside the very bottom band.
 
 Inside the very bottom band, titled '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 部署在本机 Mac', keep the band title, the band size and the left-to-right flow of five boxes with their arrows and icons. Change only these texts and highlights:
-- Box 1 stays '模拟信道网页'; its small line becomes exactly '待你处理 · 候选 · 记忆试搜 · 审批卡片'.
-- Box 2 stays 'assistant.db'; its small line becomes exactly '触发器 · 联系人 · 用户画像 · 检索别名'.
-- Box 3 title stays 'Router + Worker + Preparer'; its small line becomes exactly '分诊 · 后台准备 · 夜间整理 · 记忆检索'.
+- Box 1 stays '模拟信道网页' with small line '待你处理 · 候选 · 记忆试搜 · 审批卡片'.
+- Box 2 stays 'assistant.db'; its small line becomes exactly '触发器 · 联系人 · 用户画像 · 别名与向量'.
+- Box 3 title stays 'Router + Worker + Preparer'; its small line becomes exactly '分诊 · 后台准备 · 夜间整理 · 四路检索'.
 - Box 4 stays 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'.
 - Box 5 stays 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'.
-- The thin strip at the bottom of the band becomes three items separated by dots, exact text: 'memory_search：关键词 + 别名 + 子串，按排名合并' · '夜间整理补中英别名' · '每回合预取 3 条相关记忆'. Keep it fully visible inside the canvas.
-- The orange badge at the top right of the band becomes, exact text: '2026-11-02：混合检索 · 夜间别名 · 预取记忆'.
-- Put the subtle orange outline glow on boxes 1, 2 and 3, marking them as this iteration's change; boxes 4 and 5 have no glow.
+- The thin strip at the bottom of the band becomes three items separated by dots, exact text: 'memory_search：关键词 + 别名 + 子串 + 语义向量' · '语义向量走本机 Ollama（-embed，默认关）' · '连不上时退回词面检索'. Keep it fully visible inside the canvas.
+- The orange badge at the top right of the band becomes, exact text: '2026-11-02：本地语义检索 · Ollama 可选'.
+- Put the subtle orange outline glow on boxes 2 and 3 only, marking them as this iteration's change; boxes 1, 4 and 5 have no glow.
 
-Do not claim embeddings, vector search, a vector database, semantic search, a real channel, real email or calendar, authentication, cloud deployment or a Python counterpart. Do not add services, databases or metrics. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.
+Do not claim cloud embeddings, a vector database, a reranker, a real channel, real email or calendar, authentication, cloud deployment or a Python counterpart. Do not add services, databases or metrics. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.

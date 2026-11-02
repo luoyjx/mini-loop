@@ -320,8 +320,16 @@ func (r *Router) dispatch(ctx context.Context, batch []Trigger) {
 	}
 	// An empty query would list memories, not find related ones.
 	if query := prefetchQuery(input.events); r.search != nil && strings.TrimSpace(query) != "" {
-		if input.related, err = r.search.Search(ctx, query, prefetchLimit); err != nil {
+		// Dense-only hits below the prefetch bar are dropped, so search a
+		// little deeper than the prompt keeps.
+		hits, err := r.search.Search(ctx, query, 2*prefetchLimit)
+		if err != nil {
 			fmt.Fprintf(r.log, "assistant: prefetch memories: %v\n", err)
+		}
+		for _, hit := range hits {
+			if hit.prefetchable() && len(input.related) < prefetchLimit {
+				input.related = append(input.related, hit)
+			}
 		}
 	}
 	session, route, err := r.sessionFor(ctx, lead)

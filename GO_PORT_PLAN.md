@@ -22957,3 +22957,53 @@ demo uses `ScopedStore.List` and `Search`, the existing `ToolSelection` and the
   the queries, so the three-leg figure is optimistic;
 - SQLite FTS5, entity resolution or time-bounded facts;
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: local embeddings as a fourth retrieval leg (2026-11-02)
+
+Code baseline: `66fe1f6` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory` and `go/agent` are unchanged. The
+Ollama client uses `net/http`; no dependency was added. Embeddings are off by
+default (`-embed off`).
+
+**Go evidence:**
+
+- `OllamaEmbedder` posts to `/api/embed` and accepts only an http(s) endpoint and
+  a non-empty model. Memories are embedded 16 per call as name, description and
+  body; queries carry the Qwen3 retrieval instruction.
+- `VectorIndex` stores float32 vectors in `memory_vectors`, keyed by name, an
+  FNV-64 hash of name, description and body, and the model:
+  - before a semantic search it embeds stale memories and drops removed ones;
+  - its first load deletes rows of another model;
+  - `Probe` checks the server once after a restart whose vectors were all stored.
+- `MemorySearch` adds the 语义 leg (cosine ≥ 0.35, top 10) to the rank fusion and
+  skips it when the embedder fails. Failures feed the health board as
+  `HealthEmbed`.
+- The prefetch keeps only hits found by the keyword or alias leg, or with
+  similarity ≥ 0.45.
+- `-embed`, `-embed-url` and `-embed-model` configure the daemon. `launchd-plist`
+  validates them and passes them through.
+- The page shows the index count, the last contact and each hit's similarity.
+- Tests cover:
+  - lazy embedding, edits, removals, a restart that loads without embedding, the
+    probe, and a model change;
+  - lexical fallback, health problems after three failures, and recovery;
+  - the prefetch floor;
+  - the `/api/embed` request and response shape, and bad endpoints;
+  - an app whose semantic leg finds the manager before any alias exists;
+  - plist flags and refused values.
+- `TestMemoryRetrievalWithOllama`, opt-in, with `qwen3-embedding:0.6b`, hits in the
+  top 3 of 44:
+  - semantic leg alone 43;
+  - all four legs 44 at the 0.35 floor;
+  - 1 of 8 no-answer questions prefetched.
+
+**Not claimed:**
+
+- floors validated on separate data: both were chosen on the evaluation set;
+- cloud embeddings, a reranker or Jev judgments (all off and not implemented here);
+- an Ollama process managed by the daemon or launchd;
+- a vector database, entity resolution or time-bounded facts (D9);
+- a real channel, real MCP servers or a Python counterpart.

@@ -155,11 +155,36 @@ func TestLaunchdPlistRefusesUnsafeInstalls(t *testing.T) {
 		"go run binary":    {"launchd-plist", "-binary", "/var/folders/x/go-build123/b001/exe/miniloop-assistant"},
 		"model credential": {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-model", "anthropic"},
 		"non-loopback":     {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-addr", "0.0.0.0:8790"},
+		"unknown embed":    {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-embed", "cloud"},
+		"bad embed url":    {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-embed", "ollama", "-embed-url", "localhost:11434"},
 	}
 	for name, args := range cases {
 		var out, stderr bytes.Buffer
 		if code := run(context.Background(), args, testEnvironment(t), streams{strings.NewReader(""), &out, &stderr}); code != 1 || out.Len() != 0 {
 			t.Errorf("%s: code=%d out=%q stderr=%q", name, code, out.String(), stderr.String())
+		}
+	}
+}
+
+// The plist passes the embedding flags through, and leaves them out when
+// embeddings are off.
+func TestLaunchdPlistCarriesTheEmbeddingFlags(t *testing.T) {
+	plist := func(extra ...string) string {
+		t.Helper()
+		var out, stderr bytes.Buffer
+		args := append([]string{"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant"}, extra...)
+		if code := run(context.Background(), args, testEnvironment(t), streams{strings.NewReader(""), &out, &stderr}); code != 0 {
+			t.Fatalf("code=%d stderr=%q", code, stderr.String())
+		}
+		return out.String()
+	}
+	if off := plist(); strings.Contains(off, "-embed") {
+		t.Fatalf("embeddings are off by default:\n%s", off)
+	}
+	on := plist("-embed", "ollama", "-embed-model", "bge-m3")
+	for _, want := range []string{"<string>-embed</string>\n\t\t<string>ollama</string>", "<string>http://127.0.0.1:11434</string>", "<string>bge-m3</string>"} {
+		if !strings.Contains(on, want) {
+			t.Errorf("plist lacks %q:\n%s", want, on)
 		}
 	}
 }

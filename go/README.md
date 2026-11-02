@@ -49,7 +49,9 @@ window, removes duplicate memories and rebuilds a short user profile that every
 worker prompt shows. Workers search memory with `memory_search`, which merges BM25
 (Chinese split into two-character tokens), model-written aliases from the nightly
 run and the existing substring search by rank; each turn's prompt carries the
-memories related to its events.
+memories related to its events. `-embed ollama` (default off) adds a fourth,
+semantic leg through a local Ollama embedding server over `net/http`, with vectors
+kept in `assistant.db` and a lexical fallback when the server is down.
 
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.

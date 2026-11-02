@@ -1184,45 +1184,58 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-02**, `28b0dc5` plus the
-memory-retrieval iteration of the opt-in Go personal-assistant demo (D7, the first
+Current architecture review baseline: **2026-11-02**, `66fe1f6` plus the
+local-embedding iteration of the opt-in Go personal-assistant demo (D8, the second
 of three retrieval steps). `go/assistant` and `go/cmd/miniloop-assistant` remain a
 Go addition with no Python counterpart. `cmd/miniloop`, the Python runtime and both
 Deep Agents lanes keep their defaults. The `go/memory` and `go/agent` packages are
-unchanged; no dependency was added.
+unchanged; no dependency was added (the client uses `net/http`).
 
-- **Memory search**: `memory_search` ranks the owner's memories with three legs and
-  merges their ranks by reciprocal rank fusion (k=60):
-  - BM25 over name, description and body, with Chinese split into overlapping
-    two-character tokens, so an unspaced question shares words with a memory;
-  - BM25 over search aliases;
-  - the existing `go/memory` substring search.
+- **Semantic leg**: `-embed ollama` (default `off`) adds a fourth leg to
+  `memory_search`. A local Ollama server embeds each memory with
+  `qwen3-embedding:0.6b` by default, at `http://127.0.0.1:11434` by default.
+  `assistant.db` keeps the vectors keyed by the memory's name, text and model:
+  - a new or edited memory is embedded before the next semantic search;
+  - a removed memory's vector is dropped;
+  - a model change discards the old vectors.
 
-  Everything it builds is derived and rebuilt per query; the Markdown memory files
-  stay the authority.
-- **Aliases**: the nightly consolidation asks the model once, without tools, for
-  synonyms and other-language wordings of each new or changed memory (at most 12 a
-  night). `assistant.db` keeps them keyed by the memory's name and text, so an edited
-  memory loses its old aliases. A failed request is reported in the ledger and
-  retried the next night.
-- **Workers**: sessions the router creates get the assistant's tools plus
-  `remember` and `memory_search`; the built-in `recall` is no longer offered to new
-  sessions. Each turn's prompt carries up to three memories related to its events
-  (sender and subject, the user's words, an event's title), marked as reference data.
-  Workers restored from an earlier version keep their old catalogue.
-- **Page**: the memory section names the retrieval mode, shows each memory's
-  aliases and has a search box with the legs that found each hit.
-- **Evaluation**: a fixed set of 24 memories and 44 queries in
-  `go/assistant/testdata` scores each configuration by hits in the top 3. Substring
-  search finds 12, BM25 22 and all three legs 39. The aliases in that set were written
-  by the author of the queries, so the last figure is optimistic. The five remaining
-  misses share no word with their memory; local embeddings are the next step.
+  A query ranks the memories whose cosine similarity is at least 0.35, top 10,
+  and the four legs merge by rank as before. Without the flag, search stays lexical
+  and nothing is embedded.
+- **Fallback and health**: when Ollama is unreachable, search continues with the
+  three lexical legs. Three failures in a row put "语义检索（本地嵌入模型）" on the
+  attention list, and the next success clears it. At start the daemon embeds what
+  is missing and probes the server once, so the status is current after a restart.
+  launchd does not start Ollama; `install` only passes the flags through.
+- **Prefetch**: a turn's prompt now takes only memories that the keyword or alias
+  leg found, or whose similarity is at least 0.45. A substring match alone no longer
+  qualifies, because "is" in a question matched "English" in an unrelated memory.
+- **Page**: the memory section names the four legs, the index count and the last
+  contact with Ollama, and shows the similarity of each semantic hit.
+- **Evaluation**: on the same 24 memories and 44 queries, with
+  `qwen3-embedding:0.6b`:
+
+  | Configuration | Top-3 hits |
+  |---|---|
+  | Semantic leg alone | 43 |
+  | All four legs | 44 (MRR 0.977) |
+  | Three lexical legs (D7) | 39 |
+
+  The set gained eight questions with no answer. Six of them return some hit at the
+  0.35 floor, and one is prefetched. Both floors were chosen on this set, so the
+  figures are optimistic. The measurement runs only when
+  `MINILOOP_ASSISTANT_OLLAMA_URL` is set; the regular tests use a fake embedder.
 - **Unchanged**: workers still cannot send. Effects still go only through approved
   proposals and the outbox, and the channel, mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-01**, `75ba6b4` plus the
+Previous architecture review baseline: **2026-11-02**, `28b0dc5` plus the
+memory-retrieval iteration (D7). `memory_search` replaced the built-in recall for
+new worker sessions. It ranked memories by BM25 with Chinese bigrams, BM25 over
+nightly aliases and the substring search, merged by rank. Each turn's prompt carried
+up to three related memories, and a fixed set measured 39 of 44 queries found.
+Before that, `75ba6b4` added the
 long-term-memory iteration (P6). `lookup` followed refs across local records, a
 nightly "夜间整理" routine learned contacts from sent mail, read the meeting window,
 removed duplicate memories and rebuilt a four-line profile carried by every worker
@@ -1491,14 +1504,15 @@ flowchart LR
         TSWorkflow --> TSActivity --> TSModel
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs per hit"]
-        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status"]
+        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text<br/>memory vectors · keyed by memory name + text + model"]
         PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
         PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
         PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>memory_search: ranked owner memories · replaces built-in recall for new sessions<br/>no send tool · replaces Bash / file catalogue"]
         PAConsolidator["Nightly consolidation · before the 夜间整理 turn<br/>recipients of sent mail → contacts · meeting window from the calendar<br/>duplicate memories removed · profile rebuilt · idempotent<br/>search aliases for new or changed memories · one model call, no tools · failure retried next night"]
-        PASearch["Memory search · derived, rebuilt per query<br/>BM25 with Chinese bigrams · BM25 over aliases · go/memory substring<br/>reciprocal rank fusion k=60 · Markdown memory stays the authority<br/>memory_search tool · per-turn prefetch of up to 3 related memories"]
+        PASearch["Memory search · derived, Markdown memory stays the authority<br/>BM25 with Chinese bigrams · BM25 over aliases · go/memory substring<br/>semantic leg with -embed ollama (default off): cosine ≥ 0.35 · lexical fallback<br/>reciprocal rank fusion k=60<br/>memory_search tool · per-turn prefetch of up to 3 related memories"]
+        PAEmbed["Ollama · local embedding server · opt-in<br/>qwen3-embedding:0.6b · loopback by default<br/>started by the owner, not by the daemon or launchd"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
@@ -1522,7 +1536,9 @@ flowchart LR
         PAConsolidator -->|contacts · profile · aliases · ledger| PAStore
         PATools -->|memory_search| PASearch
         PARouter -->|prefetch related memories| PASearch
-        PASearch -->|aliases| PAStore
+        PASearch -->|aliases · vectors| PAStore
+        PASearch -->|POST /api/embed · memory text and query| PAEmbed
+        PASearch -. embedding failures in a row .-> PAHealth
         PAChannel -->|human approve or deny| PAStore
         PAStore -->|approved proposals| PAOutbox
         PAOutbox -->|mail_send / calendar_respond| PAConnector
@@ -1609,10 +1625,11 @@ surface. It is meant to run on the owner's own Mac.
 
 - **Processes and files**: the daemon owns `assistant.db` (triggers, mail cursor,
   tasks, outbox, channel, ledger, pause switch, contacts, preparation jobs, task-check
-  snapshots, profile, memory aliases), `memory/` and `agent.db` (session transcripts, action journal,
-  leases). The simulated mail and calendar service is a separate child process with
-  its own `world.db`. The daemon never opens that file and reaches it only through
-  MCP `tools/call`.
+  snapshots, profile, memory aliases and vectors), `memory/` and `agent.db` (session
+  transcripts, action journal, leases). The simulated mail and calendar service is a
+  separate child process with its own `world.db`. The daemon never opens that file
+  and reaches it only through MCP `tools/call`. With `-embed ollama`, a local Ollama
+  server the owner starts computes embeddings; the daemon does not start or stop it.
 - **Triggers**: triggers are claimed per thread, so a claim never runs while another
   trigger of the same thread is running; the due triggers of one trust class that
   queued up meanwhile are claimed together and handled in one turn. The user's chat
@@ -1636,12 +1653,16 @@ surface. It is meant to run on the owner's own Mac.
   when duplicates exist. The profile in worker prompts is marked as reference data,
   not instructions.
 - **Memory search**: `memory_search`, the per-turn prefetch and the page's search
-  box only read. The index is rebuilt per query from the owner's memory and the
-  alias rows; nothing is written back to `memory/`. A prefetch query can come from
-  an external mail's sender and subject, so mail can influence which of the owner's
-  memories a worker sees, but the worker still cannot send without approval. Alias
-  requests carry memory text to the configured model only; with the offline model
-  nothing leaves the process.
+  box never write to `memory/`. The lexical index is rebuilt per query from the
+  owner's memory and the alias rows. The stored vectors are derived too: they are
+  re-embedded when a memory changes and dropped when it goes. A prefetch query can
+  come from an external mail's sender and subject, so mail can influence which of
+  the owner's memories a worker sees, but the worker still cannot send without
+  approval. Alias requests carry memory text to the configured model only. With
+  `-embed ollama`, memory text and queries, including a mail's sender and subject,
+  go to the `-embed-url` server. It is loopback by default; another host receives
+  the owner's memory over the network. With the offline model and the default
+  `-embed off`, nothing leaves the process.
 - **Preparation and watchdog**: a background preparation job is a durable row run
   by one Preparer goroutine in a read-only, untrusted session. Its result returns as
   a `job.done` trigger, so the starting thread decides what the user hears. The
@@ -3969,7 +3990,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases and substring, fused by rank) with a per-turn prefetch, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

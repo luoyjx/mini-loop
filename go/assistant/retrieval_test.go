@@ -160,6 +160,7 @@ type recallEval struct {
 		Query    string `json:"query"`
 		Want     string `json:"want"`
 	} `json:"queries"`
+	Negatives []string `json:"negatives"`
 }
 
 // recallScore is one configuration's result on the evaluation set.

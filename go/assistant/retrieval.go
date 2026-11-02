@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"math"
+	"slices"
 	"sort"
 	"strings"
 	"unicode"
@@ -37,23 +38,38 @@ const (
 
 // legSet selects the legs of one search; the evaluation compares subsets.
 type legSet struct {
-	keyword, alias, substring bool
+	keyword, alias, substring, dense bool
 }
 
-var allLegs = legSet{keyword: true, alias: true, substring: true}
+var allLegs = legSet{keyword: true, alias: true, substring: true, dense: true}
 
-// MemoryHit is one ranked memory and the legs that found it.
+// MemoryHit is one ranked memory and the legs that found it. Dense is its
+// cosine similarity when the dense leg found it.
 type MemoryHit struct {
 	Record memory.Record
 	Legs   []string
 	Score  float64
+	Dense  float64
+}
+
+// prefetchable reports whether a hit may go into a prompt unasked: the
+// keyword or alias leg found it, or the dense leg is confident. A substring
+// match alone is not enough: a two-letter term such as "is" matches inside
+// unrelated English words.
+func (hit MemoryHit) prefetchable() bool {
+	if slices.Contains(hit.Legs, LegKeyword) || slices.Contains(hit.Legs, LegAlias) {
+		return true
+	}
+	return hit.Dense >= prefetchDenseFloor
 }
 
 // MemorySearch searches the owner's memories. Aliases come from the nightly
-// consolidation and count only while the memory's text is unchanged.
+// consolidation and count only while the memory's text is unchanged; vectors
+// is the optional dense leg (nil when embeddings are off).
 type MemorySearch struct {
 	memories *memory.ScopedStore
 	store    *Store
+	vectors  *VectorIndex
 }
 
 func NewMemorySearch(memories *memory.ScopedStore, store *Store) *MemorySearch {
@@ -107,6 +123,17 @@ func (s *MemorySearch) search(ctx context.Context, query string, limit int, use 
 	if use.alias {
 		legs = append(legs, rankedLeg{LegAlias, newBM25(aliasTexts).rank(terms)})
 	}
+	dense := map[int]float64{}
+	if use.dense && s.vectors != nil && len(records) > 0 {
+		// A failed embedder skips the leg; the status and health board say why.
+		if hits, err := s.vectors.rank(ctx, query, records); err == nil {
+			ranked := make([]int, len(hits))
+			for i, hit := range hits {
+				ranked[i], dense[hit.index] = hit.index, hit.score
+			}
+			legs = append(legs, rankedLeg{LegDense, ranked})
+		}
+	}
 	if use.substring && len(records) > 0 {
 		found, err := s.memories.Search(ctx, query, len(records))
 		if err != nil {
@@ -123,9 +150,26 @@ func (s *MemorySearch) search(ctx context.Context, query string, limit int, use 
 	fused := fuse(legs)
 	hits := make([]MemoryHit, 0, min(limit, len(fused)))
 	for _, hit := range fused[:min(limit, len(fused))] {
-		hits = append(hits, MemoryHit{Record: records[hit.index], Legs: hit.legs, Score: hit.score})
+		hits = append(hits, MemoryHit{Record: records[hit.index], Legs: hit.legs, Score: hit.score, Dense: dense[hit.index]})
 	}
 	return hits, nil
+}
+
+// Mode states how search ranks, as the page and README word it.
+func (s *MemorySearch) Mode() string {
+	const lexical = "关键词（BM25，中文按两字切词）+ 夜间整理补的别名 + 子串"
+	if s.vectors == nil {
+		return lexical + "，三路按排名合并（RRF k=60）；语义检索未启用"
+	}
+	status := s.vectors.Status()
+	model := fmt.Sprintf("%s，经 Ollama %s", status.Model, status.Endpoint)
+	switch {
+	case status.Available:
+		return fmt.Sprintf("%s + 语义向量（%s），四路按排名合并（RRF k=60）", lexical, model)
+	case status.CheckedAt == nil:
+		return fmt.Sprintf("%s + 语义向量（%s，还没连上过），四路按排名合并（RRF k=60）", lexical, model)
+	}
+	return fmt.Sprintf("%s，三路按排名合并（RRF k=60）；语义检索已配置但暂时不可用（%s：%s），恢复后自动并入", lexical, model, status.LastError)
 }
 
 // aliasHash ties aliases to the memory text they were written for.
@@ -309,12 +353,15 @@ func fuse(legs []rankedLeg) []fusedHit {
 }
 
 // memoryHitBlock renders a hit like the recall tool renders a memory, plus
-// the legs that found it.
+// the legs that found it and, for the dense leg, its cosine similarity.
 func memoryHitBlock(hit MemoryHit) string {
 	record := hit.Record
 	matched := ""
 	if len(hit.Legs) > 0 {
 		matched = ` matched="` + attributeEscape.Replace(strings.Join(hit.Legs, "+")) + `"`
+	}
+	if hit.Dense > 0 {
+		matched += fmt.Sprintf(` similarity="%.2f"`, hit.Dense)
 	}
 	return fmt.Sprintf("<memory name=\"%s\" type=\"%s\" origin=\"%s\"%s>\n%s\n</memory>", attributeEscape.Replace(record.Name), attributeEscape.Replace(string(record.Type)), attributeEscape.Replace(string(record.Origin)), matched, strings.TrimSpace(record.Body))
 }

@@ -1,5 +1,5 @@
 {
-  "about": "Memory retrieval evaluation set. 24 assistant-style memories (Chinese and English) and 44 queries, each with the one memory it must find in the top 3. The aliases are what the nightly alias request asks a model for (synonyms, broader terms and the other language), written per memory by the same author as the queries, so alias results are optimistic; a real model's aliases will differ. The set is fixed across iterations so each retrieval change is measured on the same questions.",
+  "about": "Memory retrieval evaluation set. 24 assistant-style memories (Chinese and English) and 44 queries, each with the one memory it must find in the top 3; negatives have no answer and measure false positives. The aliases are what the nightly alias request asks a model for (synonyms, broader terms and the other language), written per memory by the same author as the queries, so alias results are optimistic; a real model's aliases will differ. The set is fixed across iterations so each retrieval change is measured on the same questions.",
   "memories": [
     {"name": "manager", "type": "user", "description": "我的经理", "body": "我的经理是 Alice（alice@acme.example），她的来信需要当天回复。", "aliases": ["老板", "上司", "领导", "boss", "supervisor"]},
     {"name": "meeting-preference", "type": "feedback", "description": "开会偏好", "body": "日程冲突的邀约婉拒并建议改期；newsletter 不用提醒。", "aliases": ["会议邀请", "时间冲突", "meeting invite", "reschedule", "订阅邮件"]},
@@ -75,5 +75,6 @@
     {"category": "cross-language", "query": "green tea", "want": "coffee"},
     {"category": "cross-language", "query": "回信用什么语言", "want": "language"},
     {"category": "cross-language", "query": "牙科诊所", "want": "dentist"}
-  ]
+  ],
+  "negatives": ["比特币价格", "最喜欢的电影是哪部", "公司年会在哪里办", "what is my blood type", "家里的猫叫什么", "favorite band", "明天天气怎么样", "股票账户密码是多少"]
 }

@@ -18,6 +18,7 @@ const (
 	HealthCalendar HealthComponent = "calendar_watch"
 	HealthOutbox   HealthComponent = "outbox"
 	HealthWorker   HealthComponent = "worker"
+	HealthEmbed    HealthComponent = "embedding"
 )
 
 var healthLabels = map[HealthComponent]string{
@@ -25,6 +26,7 @@ var healthLabels = map[HealthComponent]string{
 	HealthCalendar: "日程查看（MCP calendar_list）",
 	HealthOutbox:   "发件箱（MCP 发送）",
 	HealthWorker:   "worker 模型调用",
+	HealthEmbed:    "语义检索（本地嵌入模型）",
 }
 
 // HealthProblem is a component that failed at least healthThreshold times in

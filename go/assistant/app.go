@@ -34,6 +34,8 @@ type Config struct {
 	PollInterval  time.Duration
 	RemindLead    time.Duration
 	LeaseTTL      time.Duration
+	// Embedder adds the dense retrieval leg; nil keeps memory search lexical.
+	Embedder Embedder
 }
 
 type App struct {
@@ -124,6 +126,9 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	router.consolidator = NewConsolidator(store, config.Connector, owned, now)
 	router.consolidator.aliaser = &Aliaser{provider: observeProvider(config.Provider), model: config.Model}
 	search := NewMemorySearch(owned, store)
+	if config.Embedder != nil {
+		search.vectors = NewVectorIndex(store, config.Embedder, now)
+	}
 	router.search = search
 	catalog, err := NewToolCatalog(store, config.Connector, router, search, now)
 	if err != nil {
@@ -159,6 +164,9 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	}
 	health := NewHealth()
 	router.health = health
+	if search.vectors != nil {
+		search.vectors.health = health
+	}
 	scheduler := NewScheduler(store, config.Connector, router, now, config.SchedulerTick, config.RemindLead, config.Log)
 	scheduler.health = health
 	outbox := NewOutbox(store, config.Connector, now, config.Log)
@@ -181,9 +189,28 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 func (app *App) Start(ctx context.Context) {
 	_, _ = app.Poller.PollOnce(ctx)
 	loops := []func(context.Context){app.Router.Run, app.Scheduler.Run, app.Poller.Run, app.Outbox.Run, app.Preparer.Run}
+	if app.Search.vectors != nil {
+		loops = append(loops, app.warmVectors)
+	}
 	app.wg.Add(len(loops))
 	for _, loop := range loops {
 		go func() { defer app.wg.Done(); loop(ctx) }()
+	}
+}
+
+// warmVectors embeds the memories once at start, so the first search does
+// not wait for the whole index, and probes the embedder when every vector
+// was already stored. A failure only shows in the status.
+func (app *App) warmVectors(ctx context.Context) {
+	records, err := app.Memory.List(ctx)
+	if err == nil {
+		err = app.Search.vectors.Sync(ctx, records)
+	}
+	if err == nil {
+		err = app.Search.vectors.Probe(ctx)
+	}
+	if err != nil && ctx.Err() == nil {
+		fmt.Fprintf(app.Router.log, "assistant: embed memories: %v\n", err)
 	}
 }
 

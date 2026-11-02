@@ -57,6 +57,7 @@ type StateView struct {
 	Profile       []ProfileEntry   `json:"profile"`
 	Memories      []MemoryView     `json:"memories"`
 	Retrieval     string           `json:"retrieval"`
+	Vectors       *VectorStatus    `json:"vectors,omitempty"`
 	Integration   IntegrationView  `json:"integration"`
 	Workers       WorkersView      `json:"workers"`
 	Channel       []ChannelMessage `json:"channel"`
@@ -213,7 +214,11 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		func() error { view.Profile, err = app.Store.Profile(ctx); return err },
 		func() error { view.Memories, err = app.memoryView(ctx); return err },
 	}
-	view.Retrieval = RetrievalMode
+	view.Retrieval = app.Search.Mode()
+	if app.Search.vectors != nil {
+		status := app.Search.vectors.Status()
+		view.Vectors = &status
+	}
 	for _, step := range steps {
 		if err := step(); err != nil {
 			writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
@@ -411,7 +416,8 @@ func (app *App) handleAnswer(w http.ResponseWriter, r *http.Request) {
 }
 
 // MemoryView is one owner memory as the page lists it, with the search
-// aliases written for its current text. Legs is set on search results.
+// aliases written for its current text. Legs, and Similarity when the dense
+// leg found it, are set on search results.
 type MemoryView struct {
 	Name        string   `json:"name"`
 	Type        string   `json:"type"`
@@ -420,10 +426,8 @@ type MemoryView struct {
 	Body        string   `json:"body"`
 	Aliases     []string `json:"aliases,omitempty"`
 	Legs        []string `json:"legs,omitempty"`
+	Similarity  float64  `json:"similarity,omitempty"`
 }
-
-// RetrievalMode is how memory search ranks, as the page states it.
-const RetrievalMode = "关键词（BM25，中文按两字切词）+ 夜间整理补的别名 + 子串，三路按排名合并（RRF k=60）；语义检索未启用"
 
 func (app *App) memoryView(ctx context.Context) ([]MemoryView, error) {
 	records, err := app.Memory.List(ctx)
@@ -469,7 +473,7 @@ func (app *App) handleMemorySearch(w http.ResponseWriter, r *http.Request) {
 	result := make([]MemoryView, 0, len(hits))
 	for _, hit := range hits {
 		row := memoryRow(hit.Record, aliases)
-		row.Legs = hit.Legs
+		row.Legs, row.Similarity = hit.Legs, hit.Dense
 		result = append(result, row)
 	}
 	writeJSON(w, http.StatusOK, result)

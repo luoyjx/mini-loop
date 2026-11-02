@@ -28,6 +28,7 @@ cd go
 go run ./cmd/miniloop-assistant              # http://127.0.0.1:8790, offline scripted model
 go run ./cmd/miniloop-assistant -data /tmp/pa -addr 127.0.0.1:8791
 ANTHROPIC_API_KEY=... go run ./cmd/miniloop-assistant -model anthropic -model-id <model>
+go run ./cmd/miniloop-assistant -embed ollama     # adds local semantic memory search
 ```
 
 The listener must be a loopback address because the page has no authentication.
@@ -43,6 +44,19 @@ from the trigger header and earlier tool results. Every call still crosses the r
 `ToolGate`. `-model anthropic` uses the Go provider client with
 `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_BASE_URL`. These variables are
 withheld from the MCP child.
+
+`-embed off` is the default. `-embed ollama` adds a semantic leg to memory search
+through a local [Ollama](https://ollama.com) server, which you start yourself:
+
+```sh
+brew install ollama
+ollama serve &                        # or the Ollama app
+ollama pull qwen3-embedding:0.6b      # about 640 MB, Apache-2.0
+```
+
+`-embed-url` (default `http://127.0.0.1:11434`) and `-embed-model` (default
+`qwen3-embedding:0.6b`) choose the server and model. See
+[Memory search](#memory-search).
 
 ## Keep it running on your Mac
 
@@ -69,8 +83,9 @@ launchctl bootout gui/$(id -u)/dev.mini-loop.assistant             # stop and un
 rm ~/Library/LaunchAgents/dev.mini-loop.assistant.plist            # uninstall
 ```
 
-`launchd-plist` accepts the daemon's `-addr`, `-data` and `-workers` flags, plus
-`-label`, `-binary` and `-log`. It refuses three things: a `go run` binary, a
+`launchd-plist` accepts the daemon's `-addr`, `-data`, `-workers` and `-embed*`
+flags, plus `-label`, `-binary` and `-log`. launchd does not start Ollama; with
+`-embed ollama`, keep the Ollama app or server running, or search stays lexical. It refuses three things: a `go run` binary, a
 non-loopback address, and `-model anthropic`. A plist is no place for an API key, and
 a Keychain-backed credential source is a later roadmap step. Run the real model from a
 shell for now.
@@ -162,7 +177,7 @@ shell for now.
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -330,16 +345,17 @@ the assistant's tools plus `remember` and `memory_search`; the built-in `recall`
 no longer offered, because its substring search misses a question asked in other
 words. A session restored from an earlier version keeps its old catalogue.
 
-`MemorySearch` builds its index per query from the owner's memories and ranks them
-with three legs:
+`MemorySearch` builds its lexical index per query from the owner's memories and
+ranks them with three legs, plus a fourth with `-embed ollama`:
 
 | Leg | What it matches |
 |---|---|
 | 关键词 | BM25 over name, description and body. Runs of Han, kana or Hangul are split into overlapping two-character tokens, other letters and digits into lowercase words; single letters and a few English function words are dropped. |
 | 别名 | BM25 over the memory's search aliases, when they were written for its current text. |
 | 子串 | The existing `memory.Store.Search`: the query split at non-letters, each term counted as a substring. |
+| 语义 | Only with `-embed ollama`: cosine similarity between the query's embedding and each memory's, at least 0.35, top 10. |
 
-Reciprocal rank fusion (k=60) merges the three rankings; on a tie, more legs win,
+Reciprocal rank fusion (k=60) merges the rankings; on a tie, more legs win,
 then the better single rank. Each hit names the legs that found it. The Markdown
 memory files stay the authority; nothing is written back to them.
 
@@ -355,15 +371,35 @@ synonym table.
 **Prefetch**: before each turn the router searches with what the turn's events are
 about (a mail's sender and subject, the user's words, an event's title and
 organizer, a task's title) and puts up to three hits, at most 600 characters, into
-the prompt under **可能相关的记忆**, marked as reference data. Routines prefetch
-nothing.
+the prompt under **可能相关的记忆**, marked as reference data. Only hits that the
+keyword or alias leg found, or whose similarity is at least 0.45, qualify; a
+substring match alone does not, because "is" in an unrelated question matched
+"English". Routines prefetch nothing.
 
-On the page, **画像与记忆** names the retrieval mode, lists each memory's aliases
-and has a search box (`GET /api/memory/search?q=`) that shows the legs of each hit.
+**Embeddings** (`embed.go`): `OllamaEmbedder` posts to Ollama's `/api/embed` with the
+standard library. Memories are sent 16 per call as name, description and body, cut
+to 1000 characters; queries carry the retrieval instruction Qwen3 embedding models
+expect. `VectorIndex` keeps the vectors in memory and in `memory_vectors`
+(`assistant.db`), keyed by memory name, a hash of its text, and the model:
 
-`TestMemoryRetrievalEvaluation` scores each configuration on a fixed set in
-`testdata/recall_eval.json`: 24 memories and 44 queries in five categories, counting
-hits in the top 3 and MRR@3.
+- before each semantic search, new or changed memories are embedded and removed
+  ones dropped;
+- the first load deletes vectors of another model;
+- at start the daemon syncs once and probes the server, so the status is true after
+  a restart even when every vector was stored.
+
+When a call fails, the semantic leg is skipped and the other three answer. The
+health board counts the failure, and three in a row list **语义检索（本地嵌入模型）**
+under 需要你处理 until a call succeeds.
+
+On the page, **画像与记忆** names the retrieval mode and, with embeddings, the index
+count and the last contact with Ollama. It lists each memory's aliases and has a
+search box (`GET /api/memory/search?q=`) that shows the legs of each hit and the
+similarity of semantic hits.
+
+`TestMemoryRetrievalEvaluation` scores each lexical configuration on a fixed set in
+`testdata/recall_eval.json`: 24 memories, 44 queries in five categories and eight
+questions with no answer, counting hits in the top 3 and MRR@3.
 
 | Configuration | Topic (8) | Keywords (4) | Questions (10) | Paraphrases (10) | Cross-language (12) | Total | MRR@3 |
 |---|---|---|---|---|---|---|---|
@@ -376,8 +412,25 @@ The bigrams find every unspaced question; the aliases find most paraphrases and
 cross-language queries. The aliases in the set were written by the author of the
 queries, so that figure is optimistic; a real model's aliases will differ. The five
 misses (不能吃什么, 网断了打给谁, teeth cleaning, peanuts, 牙科诊所) share no word with
-their memory. Local embeddings are the planned next step. Set
-`MINILOOP_ASSISTANT_RECALL_REPORT` to a path to write the scores as JSON.
+their memory. Set `MINILOOP_ASSISTANT_RECALL_REPORT` to a path to write the scores as
+JSON.
+
+`TestMemoryRetrievalWithOllama` measures the semantic leg with a real model. It runs
+only when `MINILOOP_ASSISTANT_OLLAMA_URL` is set (`MINILOOP_ASSISTANT_OLLAMA_MODEL`
+overrides the model, `MINILOOP_ASSISTANT_OLLAMA_REPORT` writes JSON). It sweeps
+three floors. With `qwen3-embedding:0.6b`:
+
+| Floor | Semantic only | Keyword + semantic | Four legs, no aliases | Four legs | Negatives with hits | Negatives prefetched |
+|---|---|---|---|---|---|---|
+| 0.35 (default) | 43 (MRR 0.955) | 43 | 43 | 44 (MRR 0.977) | 6/8 | 1/8 |
+| 0.40 | 40 | 40 | 40 | 44 | 3/8 | 1/8 |
+| 0.45 | 37 | 38 | 38 | 42 | 2/8 | 1/8 |
+
+At 0.35 the semantic leg alone misses only "out of office", which the aliases find.
+The prefetched negative is 家里的猫叫什么, whose bigram 家里 matches the school-pickup
+memory. Both floors were chosen on this set, which has no separate validation split
+and only eight negatives, so the figures are optimistic. The regular tests use a
+fake embedder that maps words to concepts.
 
 ## How the six parts map to code
 
@@ -385,7 +438,7 @@ their memory. Local embeddings are the planned next step. Set
 |---|---|---|
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
-| Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases and substring, fused by rank), and each prompt carries the memories related to its events. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `lookup.go`, `nightly.go`, `profile.go` |
+| Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the memories related to its events. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `lookup.go`, `nightly.go`, `profile.go` |
 | Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
 | Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
@@ -414,9 +467,12 @@ their memory. Local embeddings are the planned next step. Set
   waking forever.
 - Contacts are local demo data. A known contact still runs untrusted, because the
   mail content is external.
-- Memory search is lexical with model-written aliases; there are no embeddings yet.
-  The prefetch query can come from an external mail's sender and subject, so mail can
-  influence which memories a worker sees; it cannot make the worker send. See
+- Memory search is lexical with model-written aliases unless `-embed ollama` adds
+  local embeddings. With it, memory text and queries go to `-embed-url`; the default
+  is loopback, and another host receives the owner's memory over the network. The
+  prefetch query can come from an external mail's sender and subject, so mail can
+  influence which memories a worker sees, and with embeddings that text reaches the
+  embedding server; it cannot make the worker send. See
   [Memory search](#memory-search). The nightly
   turn runs untrusted like any routine and is asked to remember only what you said
   in the channel. A memory a worker wrote from mail can still reach the profile's
