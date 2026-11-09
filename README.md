@@ -271,6 +271,13 @@ separate:
 
 ## Architecture
 
+Documentation-only architecture review: **2026-11-09**, baseline `f7b80e2`.
+The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
+defines staged acceptance for the independent services. The canonical runtime
+map and current feature defaults remain unchanged; its proposed work is not an
+implemented capability. The [iteration illustration](docs/audits/agent-server-production-plan-2026-11-09.png)
+marks only the scope of that plan.
+
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
@@ -4129,6 +4136,7 @@ Check the Python contract snapshot before extending the Go port:
 |---|---|
 | How do I inject or replace a runtime seam? | [Extending mini-loop](./EXTENDING.md) |
 | How do I run the independent Deep Agents server? | [Deep Agents server guide](deepagents-server/README.md) |
+| What is the execution plan for productionizing the Agent Server? | [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md) |
 | Which external architecture informed that module? | [Managed Deep Agents / Agent Server reference design](docs/MANAGED_DEEP_AGENTS_AGENT_SERVER_DESIGN.md) |
 | Why does a guard or invariant exist? | [Hardening notes](docs/HARDENING_NOTES.md) |
 | What is durable, inspectable, or exported? | [Agent trajectories](docs/TRAJECTORIES.md) |

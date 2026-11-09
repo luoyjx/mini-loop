@@ -1,0 +1,13 @@
+Use case: precise-object-edit
+Asset type: repository architecture review illustration
+Input image: docs/mini-loop-layered-architecture.png, the current complete mini-loop architecture base diagram.
+Primary request: create a NONDESTRUCTIVE iteration illustration for the Agent Server productionization EXECUTION PLAN dated 2026-11-09. This iteration changes documentation only. It adds NO runtime components and establishes NO production guarantees.
+Preserve the complete existing diagram, its layers, all boxes, arrows, runtime boundaries, and the Go personal assistant band. Do not remove or rename existing components. Keep its dark navy background and cyan/violet typography. Do not claim any planned capability is implemented.
+Add a thin amber outline around only the existing independent deepagents-server band and the existing Task container band. Do not highlight the Temporal experiment band or the Go personal assistant band. These outlines indicate the subject of the plan, not code changes.
+Extend the canvas slightly at the bottom with a clearly separated, readable amber-accented annotation panel. Do not crop or cover the existing diagram. Use these exact texts in that new panel:
+"2026-11-09 Agent Server 生产化执行计划"
+"仅文档计划，尚未实现；现有运行拓扑不变"
+"P0 范围与指标 → P1 可观测与真实模型 → P2 恢复与发布 → P3 配额与容量"
+"按业务需要：P4 Sandbox 与审批 → P5 托管产品能力"
+"生产 HA、容量与长时运行仍待目标环境验收"
+Constraints: the annotation is a roadmap legend outside the architecture, never a deployed service. Do not draw architecture connections to the legend. No new database, scheduler, cluster, quota service or sandbox box. Preserve existing status labels and all original architecture bands. Make new Chinese text crisp and legible. Return the entire edited image with the new footer, not a crop. Opaque background.
