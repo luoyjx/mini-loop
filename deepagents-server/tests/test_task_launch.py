@@ -12,7 +12,8 @@ from mini_loop_deepagents.task_server import api, launch, worker
 
 @pytest.fixture(autouse=True)
 def isolate_secrets(monkeypatch):
-    for name in ("MINILOOP_DEEPAGENTS_TOKENS", "MINILOOP_TASK_SERVER_CURSOR_SECRET", "OPENAI_API_KEY"):
+    for name in ("MINILOOP_DEEPAGENTS_TOKENS", "MINILOOP_TASK_SERVER_CURSOR_SECRET",
+                 "OPENAI_API_KEY", "LANGSMITH_API_KEY"):
         monkeypatch.delenv(name, raising=False)
         monkeypatch.delenv(name + "_FILE", raising=False)
 
@@ -46,6 +47,7 @@ def test_worker_reads_actual_openai_environment_name_without_expanding_unrelated
 @pytest.mark.parametrize("role,variable", [
     ("api", "MINILOOP_DEEPAGENTS_TOKENS"), ("api", "MINILOOP_TASK_SERVER_CURSOR_SECRET"),
     ("worker", "OPENAI_API_KEY"),
+    ("api", "LANGSMITH_API_KEY"), ("worker", "LANGSMITH_API_KEY"),
 ])
 @pytest.mark.parametrize("inline", ["", "inline-secret"])
 def test_inline_and_file_conflicts_fail_without_reading_or_revealing_values(role, variable, inline):
@@ -59,6 +61,8 @@ def test_inline_and_file_conflicts_fail_without_reading_or_revealing_values(role
     ("api", "MINILOOP_DEEPAGENTS_TOKENS", 64 * 1024),
     ("api", "MINILOOP_TASK_SERVER_CURSOR_SECRET", 4 * 1024),
     ("worker", "OPENAI_API_KEY", 16 * 1024),
+    ("api", "LANGSMITH_API_KEY", 16 * 1024),
+    ("worker", "LANGSMITH_API_KEY", 16 * 1024),
 ])
 def test_role_file_size_limits_are_enforced_before_setting_environment(tmp_path, role, variable, limit):
     path = tmp_path / "private-path"
@@ -96,6 +100,15 @@ def test_worker_loader_preserves_inline_behavior_without_a_file():
     env = {"OPENAI_API_KEY": "existing-inline-value"}
     launch.load_role_secrets("worker", env)
     assert env == {"OPENAI_API_KEY": "existing-inline-value"}
+
+
+@pytest.mark.parametrize("role", ["api", "worker"])
+def test_trace_key_file_is_available_only_to_the_selected_task_role(tmp_path, role):
+    key = tmp_path / "trace-key"
+    key.write_bytes(b"synthetic-langsmith-key\n")
+    env = {"LANGSMITH_API_KEY_FILE": str(key)}
+    launch.load_role_secrets(role, env)
+    assert env["LANGSMITH_API_KEY"] == "synthetic-langsmith-key"
 
 
 def test_entrypoint_calls_api_main_in_same_process_with_exact_arguments_and_restores_argv(monkeypatch, tmp_path):

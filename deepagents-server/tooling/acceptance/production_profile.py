@@ -201,13 +201,13 @@ def validate_profile(value: Any) -> dict[str, Any]:
             raise ProfileError("durably acknowledged state targets must retain zero RPO")
 
     retention = _object(profile["retention_contract"], "retention_contract", {
-        "workflow_history_days", "result_days", "event_days", "virtual_artifact_days",
+        "workflow_history_days", "result_days", "event_days", "virtual_artifact_days", "trace_days",
         "idempotency_scope", "same_key_after_expiry", "unknown_start_result",
         "cancel_acknowledgement", "deletion_completion_hours",
     })
-    for key in ("workflow_history_days", "result_days", "event_days", "virtual_artifact_days"):
+    for key in ("workflow_history_days", "result_days", "event_days", "virtual_artifact_days", "trace_days"):
         if _integer(retention[key], f"retention_contract.{key}", 1, 3650) != 30:
-            raise ProfileError("history, result, event and artifact retention must remain aligned at 30 days")
+            raise ProfileError("history, result, event, artifact and trace retention must remain aligned at 30 days")
     _integer(retention["deletion_completion_hours"], "retention_contract.deletion_completion_hours", 1, 168)
     for key in ("idempotency_scope", "same_key_after_expiry", "unknown_start_result", "cancel_acknowledgement"):
         _string(retention[key], f"retention_contract.{key}")

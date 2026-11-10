@@ -34,6 +34,19 @@ class Model:
         return "provider-result"
 
 
+class UsageModel(Model):
+    async def ainvoke(self, messages, *, config=None):
+        self.calls.append(("ainvoke", messages, config))
+        return SimpleNamespace(usage_metadata={
+            "input_tokens": 11, "output_tokens": 7, "total_tokens": 18,
+        })
+
+
+class FailingModel(Model):
+    async def ainvoke(self, messages, *, config=None):
+        raise RuntimeError("private provider error with credential")
+
+
 def test_deployment_identity_accepts_only_an_immutable_image_and_current_wire_contract():
     identity = observability.DeploymentIdentity.from_env({observability.IMAGE_REF_ENV: IMAGE})
     assert identity.image_digest == "sha256:" + "d" * 64
@@ -76,6 +89,48 @@ async def test_model_activity_attempts_join_task_runs_owner_image_and_protocol_w
         assert record["protocol_version"] == "task-v2" and record["snapshot_schema"] == 2
         assert len(record["worker_identity_sha256"]) == 64
         assert "private prompt" not in repr(record)
+    assert records[-1]["usage_status"] == "unknown"
+    assert records[-1]["input_tokens"] == records[-1]["output_tokens"] == "unknown"
+
+
+@pytest.mark.asyncio
+async def test_completed_attempt_records_only_valid_provider_usage_and_never_invents_zero(monkeypatch):
+    records = []
+    info = SimpleNamespace(
+        workflow_id=TASK_ID, workflow_run_id=CURRENT_RUN, activity_id="usage-1",
+        activity_type="deepagents.invoke_model", attempt=3,
+    )
+    monkeypatch.setattr(observability, "_current_activity_info", lambda: info)
+    wrapped = observability.observe_model_provider(
+        lambda name: UsageModel(), deployment=observability.DeploymentIdentity.unavailable(),
+        worker_identity="worker", sink=records.append,
+    )("openai:task-server")
+    await wrapped.ainvoke(["private content"], config={})
+    assert records[-1]["usage_status"] == "complete"
+    assert {field: records[-1][field] for field in ("input_tokens", "output_tokens", "total_tokens")} == {
+        "input_tokens": 11, "output_tokens": 7, "total_tokens": 18,
+    }
+    assert "private content" not in repr(records[-1])
+
+
+@pytest.mark.asyncio
+async def test_failed_retry_attempt_records_unknown_usage_without_error_text(monkeypatch):
+    records = []
+    info = SimpleNamespace(
+        workflow_id=TASK_ID, workflow_run_id=CURRENT_RUN, activity_id="retry-2",
+        activity_type="deepagents.invoke_model", attempt=2,
+    )
+    monkeypatch.setattr(observability, "_current_activity_info", lambda: info)
+    wrapped = observability.observe_model_provider(
+        lambda name: FailingModel(), deployment=observability.DeploymentIdentity.unavailable(),
+        worker_identity="worker", sink=records.append,
+    )("openai:task-server")
+    with pytest.raises(RuntimeError, match="private provider error"):
+        await wrapped.ainvoke(["private content"], config={})
+    assert records[-1]["outcome"] == "failed" and records[-1]["attempt"] == 2
+    assert records[-1]["usage_status"] == "unknown"
+    assert records[-1]["total_tokens"] == "unknown"
+    assert "credential" not in repr(records[-1]) and "private content" not in repr(records[-1])
 
 
 @pytest.mark.asyncio

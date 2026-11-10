@@ -1,10 +1,44 @@
 # Deep Agents Server delivery — 2026-11-10
 
-当前生产化迭代以 `74ed76e` 为审阅基线，P1.1 交付见下节。2026-10-17 的单 runtime
+当前生产化迭代以 `d6761a4` 为审阅基线，P1.3 交付见下节。2026-10-17 的单 runtime
 迭代以 `2b85676` 为基线：按用户明确的未生产使用前提，移除早期 Task V1，
 收敛为唯一 `runtime.py:TaskWorkflow`；不新增依赖。下文的历史
 验收保留各自源码、镜像、run_id 和资源范围，不由本轮清理追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
+
+## P1.3 Trace 与用量
+
+- API 与 Worker 只在显式启用时创建 Temporal `LangSmithPlugin`，通过两端 Client plugin
+  传播 Workflow / Activity / retry trace 上下文；library 默认关闭且不读取环境中的偶然配置。
+- 专用 LangSmith client 在 enqueue 前删除输入、输出、serialized/runtime、event、attachment，
+  异常统一为 `redacted`；metadata 只保留 Task / Run / Activity 关联、固定 graph/model 标签、
+  部署身份与 provider 数值用量。
+- provider 未返回 usage 时记录 `unknown`，不伪造为 0；terminal observation 区分
+  `complete`、`partial` 与 `unknown`。Temporal History 仍是状态、结果和恢复权威。
+- production task Compose 为两个角色显式启用 tracing，要求固定 project、HTTPS:443 endpoint、
+  file-backed API key 与 30 天保留声明。30 天远端 TTL 是部署合同，本轮未冒充客户端可强制执行。
+
+字段、脱敏、失败降级与远端验收边界见 [TASK_TRACING](docs/TASK_TRACING.md)。README Mermaid、
+边界说明与架构 JSON/HTML 已同步；Archify 在当前环境不可用，因此 HTML 采用一次性 JSON 驱动
+同步，静态解析得到 83 components / 110 connections、无重复 ID。Work 浏览器被环境禁用，未声称完成浏览器
+交互验收。内置 imagegen 更新 canonical 底图并生成[本轮图](../docs/audits/agent-server-production-p1-3-2026-11-10.png)，
+[精确提示词](../docs/audits/agent-server-production-p1-3-2026-11-10.prompt.txt)与
+[视觉检查](../docs/audits/agent-server-production-p1-3-2026-11-10.md)一并保留。
+
+| 本轮 Gate | 结果 | 边界 |
+| --- | --- | --- |
+| P1.3 聚焦回归 | **181 passed in 0.79s** | tracing 整包/实际 HTTP payload 清洗、用量、连接、启动、部署与生产 profile |
+| 独立模块 pytest | **655 passed in 3.75s** | 最大 RSS 195.2 MiB；串行执行 |
+| 根 Python pytest | **2256 passed / 28 skipped / 104 warnings**，73.03 秒 | 最大 RSS 353.1 MiB；保留既有 skipped/warnings |
+| Python invariants | **77 modules checked** | 原 `python/mini_loop` 范围 |
+| Root guard mutation harness | **383 / 383 load-bearing** | 全量 baseline 均通过，突变测试调用均失败并被捕获 |
+| 依赖锁 | **通过** | `uv lock --check --offline`，105 packages；未新增依赖 |
+| 架构静态一致性 | **通过** | JSON 可解析；HTML 83 components / 110 connections；无重复 ID |
+| Diff / outline | **通过** | README、合同与新增模块已 outline；最终空白检查见提交前门禁 |
+
+本轮没有启动 Temporal、容器或真实 provider，也没有向远端 LangSmith 写入数据；因此没有验证
+真实 parent/subagent/summary/retry waterfall、远端项目隔离、写入失败表现或 30 天自动删除证据。
+这些生产凭据与远端 TTL/删除证明属于 P1.4 预发布验收，不由本地单元测试追认。
 
 ## P1.1 请求、Task、Run 与模型 Activity 关联
 

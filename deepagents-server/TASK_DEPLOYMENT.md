@@ -97,8 +97,8 @@ cp .env.task.example .env.task
 
 | 容器角色 | 独有的 Secret 挂载 | 共同的连接配置 |
 | --- | --- | --- |
-| API | token→owner JSON、cursor 签名 secret、API 客户端证书/私钥 | Temporal CA、服务名、地址、namespace、队列 |
-| Worker | OpenAI API key、Worker 客户端证书/私钥 | 同上；不需要 HTTP Bearer 或 cursor secret |
+| API | token→owner JSON、cursor 签名 secret、API 客户端证书/私钥 | Temporal CA、服务名、地址、namespace、队列；LangSmith trace key/project |
+| Worker | OpenAI API key、Worker 客户端证书/私钥 | 同上；LangSmith trace key/project；不需要 HTTP Bearer 或 cursor secret |
 
 所有 API 副本必须使用相同 token→owner 映射和 cursor secret。已有 token 不应改绑
 owner。cursor secret 轮换会使旧事件游标失效。模型配置和密钥只进入 Worker；API
@@ -107,7 +107,8 @@ owner。cursor secret 轮换会使旧事件游标失效。模型配置和密钥�
 `launch.py` 只为当前角色加载 allowlist 的 `*_FILE`：API 的
 `MINILOOP_DEEPAGENTS_TOKENS_FILE`（64 KiB）和
 `MINILOOP_TASK_SERVER_CURSOR_SECRET_FILE`（4 KiB），Worker 的
-`OPENAI_API_KEY_FILE`（16 KiB）。同名 inline 环境值与文件同时存在会拒绝启动；
+`OPENAI_API_KEY_FILE`（16 KiB），以及两个角色的 `LANGSMITH_API_KEY_FILE`
+（16 KiB）。同名 inline 环境值与文件同时存在会拒绝启动；
 文件必须可读、非空、普通文件或指向普通文件的 Secret symlink。标量允许一个末尾
 LF/CRLF，禁止空白、多行及非 ASCII 可见字符；token JSON 仍由实际 API 解析和校验。
 加载整体校验通过后才更新进程环境，随后在同进程调用实际 CLI，不用 shell/子进程。
@@ -152,6 +153,13 @@ API 只向容器网络 expose 8123，没有固定 host port、`container_name` �
 `MINILOOP_TASK_METRICS_BIND=0.0.0.0:9464` 只由两个生产 CLI 读取；library 默认不监听。
 端点无认证，不得经 ingress 发布。指标合同、查询样例与低基数隐私边界见
 [TASK_METRICS.md](docs/TASK_METRICS.md)。Prometheus 部署与保留不在此 Compose profile 内。
+
+生产 profile 显式开启 Temporal SDK 的 LangSmith 插件，两个角色使用同一专用 project，
+以跨 API、Workflow 与 Activity 传播 trace context。所有 inputs/outputs 在上传前清空，
+异常正文固定脱敏，metadata 仅保留安全关联、节点和用量字段。profile 要求 30 天保留
+声明；它不能远程设置 TTL，上线门禁仍须核对 project 实际策略和删除证据。trace 写入
+不是任务权威或成功条件。完整合同和 waterfall 检查见
+[Task trace 与模型用量](docs/TASK_TRACING.md)。
 
 Worker 没有网络依赖 liveness probe；短暂断链交由 SDK 重连，避免通过反复重启放大
 网络故障。launcher 为 Worker 默认生成 `hostname:pid` identity，显式 `--identity`

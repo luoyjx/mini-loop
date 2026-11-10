@@ -151,7 +151,8 @@ async def test_default_factory_ignores_ambient_security_environment_and_is_eager
     monkeypatch.setattr(connection.Client, "connect", connect)
     assert await connection.connect_temporal("localhost:7233", namespace="selected-ns", identity="worker-a") is result
     assert captured == [(("localhost:7233",), {"namespace": "selected-ns", "identity": "worker-a",
-                        "lazy": False, "tls": False, "api_key": None, "runtime": None})]
+                        "lazy": False, "tls": False, "api_key": None, "runtime": None,
+                        "plugins": []})]
     assert connection.STARTUP_TIMEOUT_SECONDS == 10
 
 
@@ -185,6 +186,22 @@ async def test_factory_forwards_the_explicit_metrics_runtime(monkeypatch):
     monkeypatch.setattr(connection.Client, "connect", connect)
     await connection.connect_temporal("127.0.0.1:7233", runtime=metrics_runtime)
     assert captured[0]["runtime"] is metrics_runtime
+
+
+@pytest.mark.asyncio
+async def test_factory_forwards_only_explicit_temporal_plugins(monkeypatch):
+    from temporalio.plugin import SimplePlugin
+
+    captured = []
+    plugin = SimplePlugin("test.trace")
+
+    async def connect(*args, **kwargs):
+        captured.append(kwargs)
+        return object()
+
+    monkeypatch.setattr(connection.Client, "connect", connect)
+    await connection.connect_temporal("127.0.0.1:7233", plugins=(plugin,))
+    assert captured[0]["plugins"] == [plugin]
 
 
 @pytest.mark.asyncio

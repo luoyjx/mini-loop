@@ -28,7 +28,9 @@ Workflow 只从已认证 owner、已核对 memo 和 SDK execution info 构造 Ac
   TaskID、首/当前 Run、History `selected_run_id`、任务状态或 `result_ready`。
 - `task.model_activity`：TaskID、当前 Run、Activity ID/type、attempt、outcome、
   Worker identity SHA-256；完整 Workflow metadata 可验证时再加入 owner 与首 Run，
-  并将 `correlation_status` 设为 `complete`，否则明确为 `unavailable`。
+  并将 `correlation_status` 设为 `complete`，否则明确为 `unavailable`。终态记录还包含
+  provider 标准 usage 的 input/output/total token；缺失值写 `unknown` 而不是 0，
+  `usage_status` 为 complete、partial 或 unknown。
 
 outcome 只取 `started`、`completed` 或 `failed`。失败记录不包含异常文本。
 sink 失败是 best effort，不会改变 HTTP 或 provider 的返回、异常与取消语义。
@@ -53,4 +55,5 @@ token、模型输入/输出、工具 payload、provider credential 或异常正�
 
 默认 sink 直接向 stderr 写一行、限制 4096 bytes，并独立于应用 log level。部署方可
 采集这些行，但当前没有持久日志后端、查询 API、保留承诺或跨进程交付保证；接受/拒绝、
-排队、重试、CAN 与状态规模的机器可读聚合属于 P1.2，trace 与用量属于 P1.3。
+排队、重试、CAN 与状态规模的机器可读聚合属于 P1.2。P1.3 的 trace、上传前脱敏、
+用量和保留边界见 [Task trace 与模型用量合同](TASK_TRACING.md)。

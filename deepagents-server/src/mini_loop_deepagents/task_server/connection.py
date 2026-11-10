@@ -8,7 +8,7 @@ Files are read once; rotate credentials by constructing a new Client.
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 import ipaddress
 import os
@@ -16,7 +16,7 @@ import re
 import stat
 from urllib.parse import urlsplit
 
-from temporalio.client import Client
+from temporalio.client import Client, Plugin
 from temporalio.runtime import Runtime
 from temporalio.service import TLSConfig
 
@@ -167,6 +167,7 @@ async def connect_temporal(
     identity: str | None = None,
     connection: TemporalConnectionSettings | None = None,
     runtime: Runtime | None = None,
+    plugins: Sequence[Plugin] = (),
 ) -> Client:
     """Eager verified connection with one startup budget and safe failures.
 
@@ -177,10 +178,13 @@ async def connect_temporal(
     settings = connection if connection is not None else TemporalConnectionSettings()
     if not isinstance(settings, TemporalConnectionSettings):
         raise TemporalConfigurationError("temporal_connection_settings_invalid") from None
+    if not isinstance(plugins, (tuple, list)) or any(not isinstance(plugin, Plugin) for plugin in plugins):
+        raise TemporalConfigurationError("temporal_plugins_invalid") from None
     try:
         async with asyncio.timeout(STARTUP_TIMEOUT_SECONDS):
             return await Client.connect(address, namespace=namespace, identity=identity, lazy=False,
-                                        tls=settings.tls_config(), api_key=settings.api_key, runtime=runtime)
+                                        tls=settings.tls_config(), api_key=settings.api_key, runtime=runtime,
+                                        plugins=list(plugins))
     except asyncio.CancelledError:
         raise
     except TimeoutError:

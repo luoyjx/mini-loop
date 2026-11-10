@@ -48,6 +48,7 @@ def test_profile_fixes_the_load_duration_retention_and_resource_contracts():
     assert [row["target_seconds"] for row in profile["duration_cases"]] == [300, 1800, 7200, 86400]
     assert {profile["retention_contract"][key] for key in (
         "workflow_history_days", "result_days", "event_days", "virtual_artifact_days",
+        "trace_days",
     )} == {30}
     assert profile["resource_budget"]["owned_process_tree_rss_mib"] == 6144
     assert profile["resource_budget"]["minimum_host_available_percent"] == 25

@@ -189,6 +189,10 @@ def test_profile_separates_roles_and_external_authority():
         assert service["environment"]["MINILOOP_TASK_TEMPORAL_TLS"] == "true"
         assert service["environment"]["MINILOOP_TASK_IMAGE_REF"] == "${MINILOOP_TASK_IMAGE:?Set the immutable Task application image}"
         assert service["environment"]["MINILOOP_TASK_METRICS_BIND"] == "0.0.0.0:9464"
+        assert service["environment"]["LANGSMITH_TRACING"] == "true"
+        assert service["environment"]["MINILOOP_TASK_TRACE_RETENTION_DAYS"] == "30"
+        assert service["environment"]["LANGSMITH_API_KEY_FILE"] == "/run/secrets/langsmith_key"
+        assert "langsmith_key" in service["secrets"]
         assert "9464" in service["expose"]
         assert all(not key.endswith("API_KEY") for key in service["environment"])
         assert "LANGGRAPH_CLOUD_LICENSE_KEY" not in service["environment"]

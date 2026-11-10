@@ -17,8 +17,12 @@ _ROLE_FILES = {
     "api": (
         ("MINILOOP_DEEPAGENTS_TOKENS", 64 * 1024, False),
         ("MINILOOP_TASK_SERVER_CURSOR_SECRET", 4 * 1024, True),
+        ("LANGSMITH_API_KEY", 16 * 1024, True),
     ),
-    "worker": (("OPENAI_API_KEY", 16 * 1024, True),),
+    "worker": (
+        ("OPENAI_API_KEY", 16 * 1024, True),
+        ("LANGSMITH_API_KEY", 16 * 1024, True),
+    ),
 }
 
 

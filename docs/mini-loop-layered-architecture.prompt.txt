@@ -1,13 +1,5 @@
-Edit the supplied complete mini-loop layered architecture diagram. This is a repository architecture update dated 2026-11-02. Keep everything above the very bottom band exactly as it is: the title, the Chinese typography, the dark navy background, the cyan/violet borders, every L1-L5 layer, the right boundary column with its six numbered items, the deepagents-server band, the Temporal experiment band and the Task container band with its orange 2026-10-17 badge. Do not move, resize or reword anything outside the very bottom band.
-
-Inside the very bottom band, titled '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 部署在本机 Mac', keep the band title, the band size and the left-to-right flow of five boxes with their arrows and icons. Change only these texts and highlights:
-- Box 1 stays '模拟信道网页'; its small line becomes exactly '待你处理 · 候选 · 人物事实 · 审批卡片'.
-- Box 2 stays 'assistant.db'; its small line becomes exactly '触发器 · 联系人 · 别名向量 · 人物事实'.
-- Box 3 title stays 'Router + Worker + Preparer'; its small line becomes exactly '分诊 · 后台准备 · 夜间整理 · 五路检索'. The first word is 分诊 (triage); render it exactly as 分诊.
-- Box 4 stays 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'.
-- Box 5 stays 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'.
-- The thin strip at the bottom of the band becomes three items separated by dots, exact text: '人物事实带有效期，新值让旧值过期' · '夜间从你说的话里提取事实' · 'memory_search：事实在前，过期记忆有标注'. Keep it fully visible inside the canvas.
-- The orange badge at the top right of the band becomes, exact text: '2026-11-02：带有效期的人物事实'.
-- Put the subtle orange outline glow on boxes 1, 2 and 3, marking them as this iteration's change; boxes 4 and 5 have no glow.
-
-Do not claim a graph database, a vector database, cloud embeddings, a reranker, a real channel, real email or calendar, authentication, cloud deployment or a Python counterpart. Do not add services, databases or metrics. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.
+Use case: infographic-diagram
+Asset type: canonical repository architecture raster base
+Input images: Image 1 is the edit target, the complete mini-loop layered architecture diagram.
+Primary request: update only the independent Task container lane to add the newly implemented external diagnostic trace boundary.
+Constraints: Preserve the complete canvas, aspect ratio, title, dark navy cyberpunk blueprint style, all L1-L5 layers, the right-side six-item boundary explanation, the Deep Agents Server lane, the Temporal experiment lane, the Go personal-assistant lane, all existing arrows and the orange 2026-10-17 badge. Change nothing outside the lane titled “独立 Task 容器 · task_server.launch api | worker · 默认启用”. Inside that Task lane, retain the existing client, Task API, Temporal History, TaskWorkflow/Worker, model Activity and ChatOpenAI meanings. Reflow only the right portion of that lane enough to add one compact external box connected by thin dotted cyan lines from Task API and model Activity. The new box must contain exactly these readable lines: “LangSmith trace” and “脱敏 · usage / unknown” and “30 天策略 · 非任务权威”. Keep Temporal History visually dominant as the task and result authority. Keep all other Task labels as legible as possible. Do not add a database cylinder, scheduler, queue, dashboard, metric store, second executor, credentials, prompt content, tool payload, or any other component. No watermark. Output the entire edited diagram, not a crop. This output becomes the updated canonical raster base.

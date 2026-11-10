@@ -17,6 +17,9 @@ from .connection import TemporalConfigurationError, TemporalConnectionSettings, 
 from .http import AccessBoundary, MAX_BODY_BYTES, create_app, error_response
 from .observability import DeploymentIdentity
 from .telemetry import TaskMetricsConfigurationError, TaskMetricsSettings, create_metrics_runtime
+from .tracing import (
+    TaskTracingConfigurationError, TaskTracingSettings, create_trace_plugins,
+)
 
 __all__ = ["AccessBoundary", "MAX_BODY_BYTES", "create_app", "error_response", "main"]
 
@@ -36,7 +39,10 @@ def main() -> None:
         connection = TemporalConnectionSettings.from_env()
         deployment = DeploymentIdentity.from_env()
         metrics_settings = TaskMetricsSettings.from_env()
-    except (TemporalConfigurationError, TaskMetricsConfigurationError) as error:
+        tracing_settings = TaskTracingSettings.from_env()
+        trace_plugins = create_trace_plugins("api", deployment, tracing_settings)
+    except (TemporalConfigurationError, TaskMetricsConfigurationError,
+            TaskTracingConfigurationError) as error:
         parser.error(str(error))
     except ValueError as error:
         parser.error(str(error))
@@ -59,7 +65,7 @@ def main() -> None:
     async def lifespan(app: Starlette):
         try:
             client = await connect_temporal(args.temporal_address, namespace=args.namespace, connection=connection,
-                                            runtime=temporal_runtime)
+                                            runtime=temporal_runtime, plugins=trace_plugins)
             app.state.task_service = TaskService(client, task_queue=args.task_queue, cursor_secret=secret)
             yield
         finally:

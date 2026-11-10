@@ -123,6 +123,7 @@
     "result_days": 30,
     "event_days": 30,
     "virtual_artifact_days": 30,
+    "trace_days": 30,
     "idempotency_scope": "temporal-history-retention-not-permanent-business-ledger",
     "same_key_after_expiry": "new-execution-allowed-only-after-authoritative-absence",
     "unknown_start_result": "return-stable-task-id-and-reconcile-before-retry",

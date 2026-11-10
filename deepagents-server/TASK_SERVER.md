@@ -133,6 +133,7 @@ export MINILOOP_DEEPAGENTS_TOKENS="$(.venv/bin/python -c \
 export MINILOOP_DEEPAGENTS_MODEL=openai:gpt-4.1-mini
 export MINILOOP_DEEPAGENTS_MAX_TOKENS=4096
 export MINILOOP_DEEPAGENTS_TIMEOUT_SECONDS=60
+# 本地默认不上传 trace；生产 profile 的强制脱敏配置见 docs/TASK_TRACING.md。
 export LANGSMITH_TRACING=false
 .venv/bin/python -m mini_loop_deepagents.task_server.worker \
   --address 127.0.0.1:7233 --namespace default \
@@ -329,7 +330,8 @@ identity、镜像 digest 与协议版本。CAN 后首 Run 保持而当前 Run �
 
 默认记录写 stderr，best effort 且 process-local；不会记录 message、Idempotency-Key、
 token、model/tool 内容或异常文本，sink 失败也不会改写 API/provider 结果。当前没有
-日志持久化、查询 API 或 trace 后端，不能把这些记录表述为 P1.3 trace 完成。
+日志持久化或查询 API。P1.3 另以显式 LangSmith plugin 提供脱敏 trace；二者都不是
+Temporal 状态权威，字段、用量与保留边界见 [trace 合同](docs/TASK_TRACING.md)。
 
 P1.2 另由 API 与 Worker 的进程内 SDK exporter 提供低基数 Prometheus 指标：接受/拒绝、
 状态读取、取消、模型 Activity 排队/attempt/inflight、父模型边界、CAN 和 checkpoint

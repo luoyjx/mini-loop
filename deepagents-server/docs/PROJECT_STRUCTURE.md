@@ -22,6 +22,7 @@ deepagents-server/
 │   │   ├── service.py               submit/get/result/cancel/events 编排
 │   │   ├── observability.py         content-free 请求/Activity 关联记录
 │   │   ├── metrics.py / telemetry.py 低基数指标 facade / CLI exporter 装配
+│   │   ├── tracing.py               脱敏 LangSmith/Temporal plugin 装配
 │   │   ├── backend/                 Temporal SDK 访问及其协议适配
 │   │   │   ├── runs.py              owner 校验、Run 查找与执行链校验
 │   │   │   ├── history.py           History 读取、事件页与 Run 导航
@@ -100,6 +101,7 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 | 模型部署设置 | `config.py`、`task_server/worker.py` | 凭据留在 Worker；固定 alias 不由 HTTP 输入覆盖 |
 | 请求/Activity 关联字段 | `task_server/observability.py`；wire identity 同步 `protocol.py` | 不记录 message/key/credential/model I/O；sink 失败不改业务结果 |
 | 基础指标或 exporter | `task_server/metrics.py`、`telemetry.py`；调用点位于 `http.py`、`runtime.py`、`worker.py` | 仅低基数枚举标签；library 默认不监听；指标失败不改业务结果或 History |
+| Trace 与 provider usage | `task_server/tracing.py`、`observability.py`；CLI 显式装到 Temporal Client | 上传前清空 input/output/error；usage 缺失为 unknown；远端 trace 不替代 Temporal |
 | Workflow / 工具执行行为 | `runtime.py`、`checkpoint.py`、`summarization.py` | 当前只维护一份实现；变更须核对当前持久格式与 replay，不为未部署的迭代累积兼容版本 |
 | Worker 退出行为 | `lifecycle.py` 与 `worker.py` | library `serve` 不接管宿主信号；CLI 才拥有强退责任 |
 | 新故障验收场景 | `tooling/acceptance/scenarios/`；共用设施放 `support/` | 离线模型与故障注入留在 `fixtures/`，不进入生产输入或 wheel |

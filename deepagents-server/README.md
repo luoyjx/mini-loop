@@ -184,7 +184,7 @@ exactly-once；未来添加外部工具时必须有业务幂等键。SSE 也不�
 | `MINILOOP_DEEPAGENTS_MAX_TOKENS` | `4096`；范围 1–32768 |
 | `MINILOOP_DEEPAGENTS_TIMEOUT_SECONDS` | `60`；范围 1–300 秒，必须有限 |
 | `OPENAI_API_KEY` | 由 provider SDK 读取，不接受来自 Run context 的 key |
-| `LANGSMITH_TRACING` | 示例为 `false`；启用前评估 trace 中的输入/工具内容 |
+| `LANGSMITH_TRACING` | library 默认关闭；Task 生产 profile 显式为 `true` 并使用强制脱敏 Client |
 
 `graph.agent(runtime)` 是无副作用 factory，inspection 时也能调用；不依赖
 `execution_runtime.context`。构造不写库，不 provision 资源，不自行配置服务端
@@ -247,6 +247,11 @@ API `/healthz` 只检查进程；`/readyz` 通过有界 DescribeNamespace 检查
 并合并并发探针、缓存一秒；这不证明 Start 授权、可用 Worker 槽或生产 HA。
 已有标准 Agent Server 的 Dockerfile/Compose 保留独立入口；部署、镜像构建和容器故障
 验收的实际范围记录在部署说明及 [DELIVERY](DELIVERY.md) 中。
+
+Task API 与 Worker 的 Temporal Client 还安装同一显式 LangSmith plugin，把 Workflow、
+父/子/摘要模型节点和 Activity retry 串成脱敏 trace。输入、输出与异常正文不上传；
+缺失 token usage 记为 unknown。该诊断副本的 pilot 保留策略为 30 天且不替代 Temporal，
+完整合同见 [Task tracing](docs/TASK_TRACING.md)。
 
 此前组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
 后的恢复。对应结果是历史基线，镜像和实验范围见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。

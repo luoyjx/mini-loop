@@ -118,6 +118,22 @@ def _safe_label(value: Any) -> str:
     return value if isinstance(value, str) and _SAFE_LABEL.fullmatch(value) else "unavailable"
 
 
+def _model_usage(result: Any) -> dict[str, str | int]:
+    usage = getattr(result, "usage_metadata", None)
+    usage = usage if isinstance(usage, Mapping) else {}
+    values: dict[str, str | int] = {}
+    known = 0
+    for field in ("input_tokens", "output_tokens", "total_tokens"):
+        value = usage.get(field)
+        if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+            values[field] = value
+            known += 1
+        else:
+            values[field] = "unknown"
+    values["usage_status"] = "complete" if known == 3 else "partial" if known else "unknown"
+    return values
+
+
 def _current_activity_info() -> Any:
     # Keep the HTTP adapter importable without the optional Temporal dependency.
     from temporalio import activity
@@ -176,9 +192,9 @@ class ObservedModel:
             result = await self._delegate.ainvoke(*args, config=config, **kwargs)
         except BaseException:
             self._metrics.activity_finished("failed", attempt=info.attempt)
-            emit_observation(self._sink, {**record, "outcome": "failed"})
+            emit_observation(self._sink, {**record, "outcome": "failed", **_model_usage(None)})
             raise
-        emit_observation(self._sink, {**record, "outcome": "completed"})
+        emit_observation(self._sink, {**record, "outcome": "completed", **_model_usage(result)})
         self._metrics.activity_finished("completed", attempt=info.attempt)
         return result
 

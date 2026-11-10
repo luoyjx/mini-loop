@@ -271,9 +271,9 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-10**, baseline `478ee6a`.
+Architecture review: **2026-11-10**, baseline `d6761a4`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records P1.2 complete. The controlled research/artifact pilot keeps Temporal
+now records P1.3 complete. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
 records one `runtime.py:TaskWorkflow` implementation, one Worker registration,
 the `TaskWorkflowV2` / `task-v2` / snapshot schema 2 wire identity and bounded
@@ -282,10 +282,15 @@ best-effort correlation JSONL for request, Task, first/current Run, Activity att
 owner, image digest and protocol identity. API and Worker now expose separate
 internal Prometheus endpoints for low-cardinality health, admission, progress,
 Activity retry/queue, CAN and state-size metrics. Temporal History remains the sole task
-and result authority; no durable metric or trace service is added. Historical V1/V2 runs remain evidence of their original source baseline,
+and result authority. A dedicated external LangSmith project receives content-free
+Workflow/Activity/model spans and provider-reported usage through the Temporal SDK plugin;
+inputs, outputs, error text, serialized objects, runtime facts, events and attachments are
+removed before SDK enqueue, missing usage is unknown, and
+the declared pilot retention is 30 days. This diagnostic trace is neither durable task
+state nor a second executor. Historical V1/V2 runs remain evidence of their original source baseline,
 not current compatibility. The
-[iteration illustration](docs/audits/agent-server-production-p1-2-2026-11-10.png)
-marks these process-local metric surfaces without inventing a second authority.
+[iteration illustration](docs/audits/agent-server-production-p1-3-2026-11-10.png)
+marks the redacted trace and usage path without inventing a second authority.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
@@ -1280,7 +1285,7 @@ by `proposal-<id>`, and a LaunchAgent generator. The first demo (`c65073a`) kept
 mock mail and calendar in the daemon's own SQLite file.
 
 Earlier Task structure baseline: **2026-10-17**, `2b85676` plus the
-single Task runtime cleanup. The P1.2 review baseline is `478ee6a`. API, Worker and Temporal deployment roles are unchanged;
+single Task runtime cleanup. The P1.3 review baseline is `d6761a4`. API, Worker and Temporal deployment roles are unchanged;
 the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
 `protocol.py` defines stable errors, identities and the operation interface,
@@ -1306,7 +1311,12 @@ not durable state or trace. API readiness checks the configured namespace with a
 liveness does not depend on Temporal. Separate internal `/metrics` endpoints distinguish
 API namespace readiness from Worker polling/draining and report admission, Workflow
 progress, Activity attempts, CAN and bounded state sizes. Metrics are process-local
-observations, not durable truth. The shared TLS settings remain explicit.
+observations, not durable truth. API and Worker Temporal Clients install the SDK's
+LangSmith plugin with a dedicated redacting Client. The external project receives
+Workflow/Activity/model timing plus validated usage metadata; prompt/tool inputs,
+outputs, error text, serialized/runtime/event/attachment fields and owner are excluded
+before enqueue, and absent usage is explicitly unknown.
+Its declared 30-day policy still requires backend TTL verification. The shared TLS settings remain explicit.
 Signal handling explicitly wakes an idle event loop; Worker drain and hard-deadline
 budgets stay unchanged; library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
@@ -1509,14 +1519,15 @@ flowchart LR
     end
     subgraph TaskServer["deepagents-server/task_server · opt-in Task HTTP service"]
         TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
-        TSAPI["Independent Task HTTP API process<br/>http → TaskService → backend · shared protocol<br/>submit · status · result · cancel · retained events<br/>request UUID correlation · internal /metrics · API readiness"]
+        TSAPI["Independent Task HTTP API process<br/>http → TaskService → backend · shared protocol<br/>submit · status · result · cancel · retained events<br/>request UUID correlation · internal /metrics · redacted trace · API readiness"]
         TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
         TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
         TSLaunch["Independent Task image / role launcher<br/>non-root · role-specific secret files<br/>same-process API or Worker · external Temporal"]
         TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>internal /metrics · polling / draining health"]
         TSWorkflow["Single TaskWorkflow · runtime.py<br/>portable native saver journal<br/>boundary / CAN / state-size metrics · no Memory"]
-        TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>queue / attempt / retry / inflight metrics"]
+        TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>queue / attempt / retry / inflight metrics<br/>provider usage or explicit unknown"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
+        TSTrace["External LangSmith project · diagnostic only<br/>redacted Workflow / Activity / model tree<br/>declared 30-day pilot retention · not task authority"]
         TSClient -->|authenticated request| TSAPI
         TSLaunch -. API startup / liveness and readiness .-> TSAPI
         TSLaunch -. Worker startup / 20s container stop budget .-> TSProcess
@@ -1527,6 +1538,8 @@ flowchart LR
         TSHistory -->|SDK polling / replay via optional verified TLS| TSWorkflow
         TSWorkflow -->|bounded native checkpoint / Continue-As-New| TSHistory
         TSWorkflow --> TSActivity --> TSModel
+        TSAPI -. redacted Start context .-> TSTrace
+        TSActivity -. redacted spans + usage .-> TSTrace
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
         PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status"]
@@ -1863,6 +1876,13 @@ Worker capacity or HA. Dependency outages must not be used as liveness failures.
 Both roles expose an unauthenticated internal `:9464/metrics` scrape through Compose;
 it must stay behind trusted network policy. The exporter is process-local and does
 not provide retention, dashboarding, unique-task counts or a second status authority.
+The same production profile installs a redacting LangSmith/Temporal plugin in both
+Clients. A dedicated external trace project can explain parent/subagent/summary and
+Activity retry timing, retaining only safe identifiers and provider usage. Inputs,
+outputs, exception text, serializer/runtime fields, events and attachments are removed
+before enqueue; missing usage is `unknown`.
+The 30-day pilot retention value is a validated deployment declaration, not remote
+TTL enforcement, and trace availability never changes Temporal outcomes.
 The container stop budget is 20 seconds, longer than the existing 15-second Worker
 hard deadline. A local container replacement test cannot establish multi-host
 fault domains or production Temporal/database availability.

@@ -23,7 +23,11 @@ x-temporal: &temporal
   MINILOOP_TASK_TEMPORAL_TLS: "true"
   MINILOOP_TASK_TEMPORAL_CA_CERT_FILE: /run/secrets/temporal_ca
   MINILOOP_TASK_TEMPORAL_SERVER_NAME: "${TASK_TEMPORAL_SERVER_NAME:?Set the verified Temporal server name}"
-  LANGSMITH_TRACING: "false"
+  LANGSMITH_TRACING: "true"
+  LANGSMITH_PROJECT: "${TASK_LANGSMITH_PROJECT:?Set the dedicated Task trace project}"
+  LANGSMITH_ENDPOINT: "${TASK_LANGSMITH_ENDPOINT:-https://api.smith.langchain.com}"
+  LANGSMITH_API_KEY_FILE: /run/secrets/langsmith_key
+  MINILOOP_TASK_TRACE_RETENTION_DAYS: "30"
 
 services:
   task-api:
@@ -47,7 +51,7 @@ services:
       MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_api_cert
       MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_api_key
       MINILOOP_TASK_METRICS_BIND: "0.0.0.0:9464"
-    secrets: [task_tokens, task_cursor, temporal_ca, temporal_api_cert, temporal_api_key]
+    secrets: [task_tokens, task_cursor, langsmith_key, temporal_ca, temporal_api_cert, temporal_api_key]
     # No fixed host port or container_name: replicas can share an ingress.
     expose: ["8123", "9464"]
     healthcheck:
@@ -86,7 +90,7 @@ services:
       MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_worker_cert
       MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_worker_key
       MINILOOP_TASK_METRICS_BIND: "0.0.0.0:9464"
-    secrets: [openai_key, temporal_ca, temporal_worker_cert, temporal_worker_key]
+    secrets: [openai_key, langsmith_key, temporal_ca, temporal_worker_cert, temporal_worker_key]
     expose: ["9464"]
     # launch assigns hostname:pid identity. A transient connection outage is
     # handled by the SDK; no connection-based liveness restart is installed.
@@ -102,6 +106,8 @@ secrets:
     file: "${TASK_CURSOR_FILE:?Set the shared cursor Secret file}"
   openai_key:
     file: "${TASK_OPENAI_KEY_FILE:?Set the model provider Secret file}"
+  langsmith_key:
+    file: "${TASK_LANGSMITH_API_KEY_FILE:?Set the LangSmith trace Secret file}"
   temporal_ca:
     file: "${TASK_TEMPORAL_CA_FILE:?Set the Temporal CA file}"
   temporal_api_cert:

@@ -31,6 +31,9 @@ from mini_loop_deepagents.task_server.metrics import NOOP_TASK_METRICS, TaskMetr
 from mini_loop_deepagents.task_server.telemetry import (
     TaskMetricsConfigurationError, TaskMetricsSettings, create_metrics_runtime,
 )
+from mini_loop_deepagents.task_server.tracing import (
+    TaskTracingConfigurationError, TaskTracingSettings, create_trace_plugins,
+)
 
 
 def make_model_provider(settings: AgentSettings) -> Callable[[str], Any]:
@@ -65,6 +68,7 @@ async def serve(
     deployment: DeploymentIdentity | None = None,
     observation_sink: ObservationSink = default_observation_sink,
     temporal_runtime: Any = None,
+    temporal_plugins: tuple[Any, ...] = (),
     metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> None:
     """Run the production Workflow with an optional trusted test-process provider.
@@ -88,7 +92,8 @@ async def serve(
         return
 
     connecting = asyncio.create_task(connect_temporal(address, namespace=namespace, identity=identity,
-                                                      connection=connection, runtime=temporal_runtime))
+                                                      connection=connection, runtime=temporal_runtime,
+                                                      plugins=temporal_plugins))
     stopping = asyncio.create_task(stop.wait())
     run_task: asyncio.Task | None = None
     worker: Worker | None = None
@@ -190,6 +195,7 @@ def run_process(
     deployment: DeploymentIdentity | None = None,
     observation_sink: ObservationSink = default_observation_sink,
     temporal_runtime: Any = None,
+    temporal_plugins: tuple[Any, ...] = (),
     metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> None:
     """Trusted process entry point shared by the production CLI and fixtures.
@@ -208,7 +214,7 @@ def run_process(
                     model_provider=model_provider, shutdown_grace_seconds=grace, stop_event=stop,
                     connection=connection, deployment=deployment,
                     observation_sink=observation_sink, temporal_runtime=temporal_runtime,
-                    metrics=metrics)
+                    temporal_plugins=temporal_plugins, metrics=metrics)
 
     with ProcessLifecycle(timeout) as lifecycle:
         asyncio.run(run(lifecycle))
@@ -232,14 +238,17 @@ def main() -> None:
         connection = TemporalConnectionSettings.from_env()
         deployment = DeploymentIdentity.from_env()
         metrics_settings = TaskMetricsSettings.from_env()
+        tracing_settings = TaskTracingSettings.from_env()
+        trace_plugins = create_trace_plugins("worker", deployment, tracing_settings)
         temporal_runtime, metrics = create_metrics_runtime("worker", deployment, metrics_settings)
-    except (ValueError, TaskMetricsConfigurationError) as error:
+    except (ValueError, TaskMetricsConfigurationError, TaskTracingConfigurationError) as error:
         parser.error(str(error))
     run_process(args.address, args.task_queue, args.identity,
                 namespace=args.namespace, activity_slots=args.activity_slots, workflow_slots=args.workflow_slots,
                 shutdown_grace_seconds=args.shutdown_grace_seconds,
                 shutdown_timeout_seconds=args.shutdown_timeout_seconds, connection=connection,
-                deployment=deployment, temporal_runtime=temporal_runtime, metrics=metrics)
+                deployment=deployment, temporal_runtime=temporal_runtime,
+                temporal_plugins=trace_plugins, metrics=metrics)
 
 
 if __name__ == "__main__":
