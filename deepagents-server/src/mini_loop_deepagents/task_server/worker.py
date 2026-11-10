@@ -23,6 +23,9 @@ from mini_loop_deepagents.task_server.connection import (
 from mini_loop_deepagents.task_server.lifecycle import (
     ProcessLifecycle, lifecycle_log, validate_shutdown_settings,
 )
+from mini_loop_deepagents.task_server.observability import (
+    DeploymentIdentity, ObservationSink, default_observation_sink, observe_model_provider,
+)
 from mini_loop_deepagents.task_server.runtime import MODEL_ALIAS, TaskWorkflow
 
 
@@ -55,6 +58,8 @@ async def serve(
     shutdown_grace_seconds: float = 2.0,
     stop_event: asyncio.Event | None = None,
     connection: TemporalConnectionSettings | None = None,
+    deployment: DeploymentIdentity | None = None,
+    observation_sink: ObservationSink = default_observation_sink,
 ) -> None:
     """Run the production Workflow with an optional trusted test-process provider.
 
@@ -67,6 +72,7 @@ async def serve(
         raise ValueError("worker slots must be 1–32")
     # Reuse the same strict grace validation without imposing a library deadline.
     validate_shutdown_settings(shutdown_grace_seconds, 360.0)
+    deployment = deployment or DeploymentIdentity.unavailable()
     stop = stop_event if stop_event is not None else asyncio.Event()
     if stop.is_set():
         lifecycle_log("TASK_WORKER_STOPPED phase=startup")
@@ -103,6 +109,10 @@ async def serve(
             return
         if model_provider is None:
             model_provider = make_model_provider(AgentSettings.from_env())
+        model_provider = observe_model_provider(
+            model_provider, deployment=deployment, worker_identity=identity,
+            sink=observation_sink,
+        )
         if stop.is_set():
             lifecycle_log("TASK_WORKER_STOPPED phase=startup")
             return
@@ -164,6 +174,8 @@ def run_process(
     shutdown_grace_seconds: float = 2.0,
     shutdown_timeout_seconds: float = 15.0,
     connection: TemporalConnectionSettings | None = None,
+    deployment: DeploymentIdentity | None = None,
+    observation_sink: ObservationSink = default_observation_sink,
 ) -> None:
     """Trusted process entry point shared by the production CLI and fixtures.
 
@@ -179,7 +191,8 @@ def run_process(
         await serve(address, task_queue, identity, namespace=namespace,
                     activity_slots=activity_slots, workflow_slots=workflow_slots,
                     model_provider=model_provider, shutdown_grace_seconds=grace, stop_event=stop,
-                    connection=connection)
+                    connection=connection, deployment=deployment,
+                    observation_sink=observation_sink)
 
     with ProcessLifecycle(timeout) as lifecycle:
         asyncio.run(run(lifecycle))
@@ -199,12 +212,14 @@ def main() -> None:
     try:
         validate_shutdown_settings(args.shutdown_grace_seconds, args.shutdown_timeout_seconds)
         connection = TemporalConnectionSettings.from_env()
+        deployment = DeploymentIdentity.from_env()
     except ValueError as error:
         parser.error(str(error))
     run_process(args.address, args.task_queue, args.identity,
                 namespace=args.namespace, activity_slots=args.activity_slots, workflow_slots=args.workflow_slots,
                 shutdown_grace_seconds=args.shutdown_grace_seconds,
-                shutdown_timeout_seconds=args.shutdown_timeout_seconds, connection=connection)
+                shutdown_timeout_seconds=args.shutdown_timeout_seconds, connection=connection,
+                deployment=deployment)
 
 
 if __name__ == "__main__":

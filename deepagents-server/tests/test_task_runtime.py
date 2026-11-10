@@ -60,12 +60,13 @@ class FakeAgent:
 
 @pytest.fixture
 def execution(monkeypatch):
-    info = SimpleNamespace(workflow_id="task-stable", first_execution_run_id="first-run", task_queue="queue",
+    info = SimpleNamespace(workflow_id="task-stable", first_execution_run_id="first-run", run_id="current-run", task_queue="queue",
                            execution_timeout=timedelta(hours=24))
     memo = {key: PAYLOAD[key] for key in ("task_id", "owner", "version")}
     memo["request_sha256"] = runtime._request_digest(PAYLOAD, info.task_queue)
     monkeypatch.setattr(runtime.workflow, "info", lambda: info)
     monkeypatch.setattr(runtime.workflow, "memo", lambda: dict(memo))
+    monkeypatch.setattr(runtime.workflow, "patched", lambda patch: patch == runtime.CORRELATION_PATCH)
     monkeypatch.setattr(runtime, "build_agent", lambda workflow_id, saver: FakeAgent(saver))
 
     def continue_as_new(*, args, **options):
@@ -79,9 +80,11 @@ def execution(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_three_continuations_preserve_identity_budget_native_state_and_terminal_result(execution):
+    info, _ = execution
     continuation = None
     identities = []
     for index in range(4):
+        info.run_id = f"current-run-{index}"
         instance = runtime.TaskWorkflow()
         try:
             result = await instance.run(PAYLOAD, continuation)
@@ -89,6 +92,11 @@ async def test_three_continuations_preserve_identity_budget_native_state_and_ter
             assert index < 3
             continuation = carried.continuation
             snapshot = instance.snapshot()
+            assert instance._config["metadata"] == {
+                "task_owner": "alice", "task_id": "task-stable",
+                "first_execution_run_id": "first-run", "current_run_id": f"current-run-{index}",
+                "protocol_version": "task-v2", "snapshot_schema": 2,
+            }
             identities.append(snapshot["identity"])
             assert continuation["can_count"] == index + 1
             assert continuation["total_model_boundaries"] == 8 * (index + 1)
@@ -105,6 +113,15 @@ async def test_three_continuations_preserve_identity_budget_native_state_and_ter
             assert result["next"] == []
             assert result["identity"] == identities[0] == identities[1] == identities[2]
             assert result["identity"]["first_execution_run_id"] == "first-run"
+
+
+@pytest.mark.asyncio
+async def test_pre_correlation_history_keeps_the_old_activity_config_path(execution, monkeypatch):
+    monkeypatch.setattr(runtime.workflow, "patched", lambda patch: False)
+    monkeypatch.setattr(runtime, "build_agent", lambda workflow_id, saver: FakeAgent(saver, target=0))
+    instance = runtime.TaskWorkflow()
+    assert (await instance.run(PAYLOAD))["status"] == "completed"
+    assert "metadata" not in instance._config
 
 
 @pytest.mark.asyncio

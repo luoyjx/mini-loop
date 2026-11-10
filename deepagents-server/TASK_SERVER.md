@@ -318,6 +318,19 @@ Run 时清除旧 cursor，使用该 RunID。当前每次从选定 Run 的 Histor
 64 个服务端页和请求期限；历史过大时可能明确返回不可用，尚无独立事件索引。
 这些事件不是 SSE 或逐 token 日志，不会暴露 Workflow 输入、模型正文或工具 payload。
 
+每个非探针 HTTP 请求另有一个服务端 UUID，返回于 `X-Request-ID`，并写入一条
+`task.api_request` JSON 记录。成功响应可关联 owner、TaskID、首/当前 Run；History
+导航把旧执行明确记为 selected Run，不冒充当前 Run。状态或结果 readiness 也可关联。
+Workflow 将同一组受信任身份随 patch-protected metadata 传给模型 Activity；
+Worker 在 Activity start/complete/fail 时记录 Activity ID/type、attempt、哈希 Worker
+identity、镜像 digest 与协议版本。CAN 后首 Run 保持而当前 Run 改变；重试或 Worker
+替换后 Task/Run 保持而 attempt 或 Worker hash 改变。完整字段、脱敏和旧 History
+兼容规则见 [P1.1 关联合同](docs/TASK_OBSERVABILITY.md)。
+
+默认记录写 stderr，best effort 且 process-local；不会记录 message、Idempotency-Key、
+token、model/tool 内容或异常文本，sink 失败也不会改写 API/provider 结果。当前没有
+日志持久化、查询 API、基础指标或 trace 后端，不能把这些记录表述为 P1.2/P1.3 完成。
+
 ## 容器入口与 API 就绪探测
 
 `06a93d4` 之后新增 `launch api|worker`、固定基础镜像 Dockerfile 与独立 Compose
@@ -343,8 +356,8 @@ Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD
 - Temporal RPC 只向可信 API/Worker 开放。HTTP Bearer 的 owner 检查不等于 Temporal
   ACL；直接访问 Temporal 的管理员可看到 History 中的输入与执行数据。CLI 已接入
   验证 TLS/mTLS 与 API-key metadata，但服务端 ACL 和跨主机生产部署仍需单独验收。
-- API 副本共享 Temporal namespace、task queue、协议版本、token→owner 映射和
-  cursor secret。不要把既有 token 改绑给其他 owner。输入摘要包括队列，滚动发布时
+- API 副本共享 Temporal namespace、task queue、协议版本、token→owner 映射、
+  cursor secret 与同一不可变镜像 digest。不要把既有 token 改绑给其他 owner。输入摘要包括队列，滚动发布时
   随意换队列会使原 key 重试发生 409；当前没有按旧任务自动选择旧队列的路由器。
 - Worker 使用单一当前实现与对应模型配置。`task-v2`/schema 2 是持久协议标签，
   不是镜像 pinning；当前没有 Worker Versioning 部署、构建摘要路由或不兼容 graph

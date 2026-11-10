@@ -14,6 +14,8 @@ from uuid import UUID
 
 TASK_VERSION = "task-v2"
 WORKFLOW_TYPE = "TaskWorkflowV2"
+SNAPSHOT_SCHEMA = 2
+CORRELATION_PATCH = "task-observation-correlation-v1"
 TASK_ID_PATTERN = re.compile(r"task-[a-f0-9]{64}\Z")
 SHA256_PATTERN = re.compile(r"[a-f0-9]{64}\Z")
 STATUSES = {
@@ -76,6 +78,20 @@ def request_digest(task_id: str, owner: str, message: str, version: str, task_qu
     # Digest the immutable submission; continuation state is not a submission.
     payload = {"task_id": task_id, "owner": owner, "message": message, "version": version}
     return hashlib.sha256(canonical_json({"payload": payload, "task_queue": task_queue})).hexdigest()
+
+
+def correlation_metadata(
+    *, owner: str, task_id: str, first_execution_run_id: str, current_run_id: str,
+) -> dict[str, str | int]:
+    """Build the trusted, content-free metadata shipped with model Activities."""
+    return {
+        "task_owner": owner,
+        "task_id": task_id,
+        "first_execution_run_id": first_execution_run_id,
+        "current_run_id": current_run_id,
+        "protocol_version": TASK_VERSION,
+        "snapshot_schema": SNAPSHOT_SCHEMA,
+    }
 
 
 def valid_run_id(value: Any) -> bool:

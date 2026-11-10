@@ -17,6 +17,10 @@ from temporalio import workflow
 from temporalio.common import RetryPolicy
 from temporalio.exceptions import ApplicationError
 
+from mini_loop_deepagents.task_server.protocol import (
+    CORRELATION_PATCH, SNAPSHOT_SCHEMA, TASK_VERSION, correlation_metadata,
+)
+
 with workflow.unsafe.imports_passed_through():
     from langchain.agents.middleware import TodoListMiddleware
     from langchain_core.load import dumpd
@@ -32,8 +36,6 @@ with workflow.unsafe.imports_passed_through():
     )
 
 
-TASK_VERSION = "task-v2"
-SNAPSHOT_SCHEMA = 2
 MODEL_ALIAS = "openai:task-server"
 SEGMENT_MODEL_BOUNDARIES = 8
 MAX_MODEL_BOUNDARIES = 512
@@ -154,6 +156,12 @@ class TaskWorkflow:
                           "workflow_id": info.workflow_id,
                           "first_execution_run_id": info.first_execution_run_id}
         self._config = {"configurable": {"thread_id": info.workflow_id}, "recursion_limit": RECURSION_LIMIT}
+        if workflow.patched(CORRELATION_PATCH):
+            self._config["metadata"] = correlation_metadata(
+                owner=trusted["owner"], task_id=trusted["task_id"],
+                first_execution_run_id=info.first_execution_run_id,
+                current_run_id=info.run_id,
+            )
         try:
             require_envelope_budget({"payload": trusted, "continuation": continuation})
             if continuation is None:

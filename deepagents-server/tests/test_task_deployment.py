@@ -187,6 +187,7 @@ def test_profile_separates_roles_and_external_authority():
         assert service["mem_limit"] and service["cpus"]
         assert not set(service) & {"container_name", "ports", "volumes", "env_file", "depends_on", "build"}
         assert service["environment"]["MINILOOP_TASK_TEMPORAL_TLS"] == "true"
+        assert service["environment"]["MINILOOP_TASK_IMAGE_REF"] == "${MINILOOP_TASK_IMAGE:?Set the immutable Task application image}"
         assert all(not key.endswith("API_KEY") for key in service["environment"])
         assert "LANGGRAPH_CLOUD_LICENSE_KEY" not in service["environment"]
     assert "/readyz" in api["healthcheck"]["test"][-1]

@@ -1,9 +1,49 @@
-# Deep Agents Server delivery — 2026-10-17
+# Deep Agents Server delivery — 2026-11-10
 
-当前迭代以 `2b85676` 为基线。按用户明确的未生产使用前提，移除早期 Task V1，
+当前生产化迭代以 `74ed76e` 为审阅基线，P1.1 交付见下节。2026-10-17 的单 runtime
+迭代以 `2b85676` 为基线：按用户明确的未生产使用前提，移除早期 Task V1，
 收敛为唯一 `runtime.py:TaskWorkflow`；不新增依赖。下文的历史
 验收保留各自源码、镜像、run_id 和资源范围，不由本轮清理追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
+
+## P1.1 请求、Task、Run 与模型 Activity 关联
+
+- API 为每个非探针请求生成 UUID，返回 `X-Request-ID`，并在完成后输出一条
+  `task.api_request` JSONL。只有受信任 service 返回的合法 TaskID、首/当前 Run、
+  状态与 result readiness 才进入关联字段。
+- Workflow 以 `task-observation-correlation-v1` patch 保护新增 metadata 命令；新执行
+  把认证 owner、TaskID、首/当前 Run 与当前 wire identity 传给模型 Activity，旧 History
+  replay 保留原 config。Worker 记录 Activity ID/type、attempt、outcome 和哈希 identity。
+- 生产 CLI 只接受不可变 `repository@sha256:...` 镜像引用，API/Worker 记录同一 digest；
+  library 未显式提供时写 `unavailable`。Compose 不新增服务或存储。
+- 记录明确排除 message、Idempotency-Key、Authorization/Temporal token、模型/工具内容、
+  credential 与异常文本。默认 sink 为 4096-byte stderr JSON line，best effort；失败不改
+  API/provider 结果。Temporal History 仍是 Task、Run、状态和结果权威。
+
+字段、兼容与非目标见 [TASK_OBSERVABILITY](docs/TASK_OBSERVABILITY.md)。README Mermaid、
+边界说明与架构 JSON/HTML 已同步；Archify 在当前环境不可用，因此 HTML 通过一次性
+JSON 驱动同步更新既有生成节点/卡片，未声称 Archify 9/9 或浏览器渲染通过。内置
+imagegen 基于 canonical 底图生成[本轮图](../docs/audits/agent-server-production-p1-1-2026-11-10.png)，
+[精确提示词](../docs/audits/agent-server-production-p1-1-2026-11-10.prompt.txt)与
+[视觉检查](../docs/audits/agent-server-production-p1-1-2026-11-10.md)一并保留；无组件增删，
+底图不替换。
+
+| 本轮 Gate | 结果 | 边界 |
+| --- | --- | --- |
+| P1.1 聚焦回归 | **47 passed in 1.81s** | API、Activity、CAN、Worker restart、历史 selected Run、部署身份及 HTTP 无 Temporal import 边界；最大 RSS 175.5 MiB |
+| 独立模块 pytest | **622 passed in 3.61s** | 正确模块目录运行；最大 RSS 191.1 MiB |
+| 根 Python pytest | **2256 passed / 28 skipped / 105 warnings**，72.67 秒 | 仓库既有回归；最大 RSS 348.4 MiB；含一次既有 subprocess transport unraisable warning |
+| 原生 History replay | **30 / 30 Run**，零模型调用，2.815 秒 | SDK 1.34.0 sandbox；旧 V1 Run 明确排除；最大 RSS 210.6 MiB |
+| Python invariants | **77 modules checked** | 仅原 `python/mini_loop` 范围，不冒充独立模块专用检查 |
+| 依赖锁 | **通过** | `uv lock --check --offline`，105 packages |
+| JSON / diff / outline | **通过** | architecture JSON 可解析；README 与新增合同 outline；最终 diff 检查见提交前门禁 |
+| Root guard mutation harness | **中止，不适用** | 本轮没有修改其覆盖的原 Python guard；误启动后在 foreground-interrupt mutants 等待超时时终止所属进程树，不作为通过项 |
+| Archify / 浏览器渲染 | **环境阻断** | Archify 工具不存在；Work 本地浏览器禁用。静态生成锚点与 imagegen PNG 已检查 |
+
+一次错误的模块测试命令曾从仓库根收集测试，因独立环境无 FastAPI 而出现 15 个 collection
+errors；随后从正确 `deepagents-server/` 目录重跑，最终通过 622 项。失败日志不作为源码失败
+隐藏。未启动 Temporal、容器或真实 provider，没有新增消费、HA、容量、指标或 trace
+结论；P1.2 仍为下一项。
 
 ## 单一 Task runtime 与浅层包结构
 

@@ -19,6 +19,7 @@ x-task: &task
   pids_limit: 128
 
 x-temporal: &temporal
+  MINILOOP_TASK_IMAGE_REF: "${MINILOOP_TASK_IMAGE:?Set the immutable Task application image}"
   MINILOOP_TASK_TEMPORAL_TLS: "true"
   MINILOOP_TASK_TEMPORAL_CA_CERT_FILE: /run/secrets/temporal_ca
   MINILOOP_TASK_TEMPORAL_SERVER_NAME: "${TASK_TEMPORAL_SERVER_NAME:?Set the verified Temporal server name}"

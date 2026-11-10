@@ -6,13 +6,13 @@ mini-loop 的独立 Agent Server 已具备真实 Deep Agents 执行、异步任�
 
 P0 已确定优先推进 Temporal Task 路径的生产化，保留标准 LangGraph Agent Server 作为独立的会话型服务。每个任务只由一个执行后端负责调度和恢复，不建立重复调度同一 graph 的第二套队列。
 
-计划日期：2026-11-09。状态：**执行中：P0 已固定，下一项为 P1.1**。2026-11-10 已将首个受控任务类型、Temporal 唯一主路径、当前负责人和本地离线运行环境写入 [P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)，将负载、时长、状态、RPO/RTO、保留、费用和资源门槛写入 [P0.2 验收配置](../deepagents-server/docs/PRODUCTION_ACCEPTANCE.md)，并以 [P0.3 当前协议](../deepagents-server/docs/CURRENT_TASK_PROTOCOL.md) 固定唯一 Workflow、wire identity 与状态预算。这些决策不启用功能、不发布服务，真实 provider 消费仍需显式批准。具体目标供应商/地域、独立复核人和运营责任仍须在进入试点前定版，不承诺未经估算的日历工期。
+计划日期：2026-11-09。状态：**执行中：P1.1 已完成，下一项为 P1.2**。2026-11-10 已将首个受控任务类型、Temporal 唯一主路径、当前负责人和本地离线运行环境写入 [P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)，将负载、时长、状态、RPO/RTO、保留、费用和资源门槛写入 [P0.2 验收配置](../deepagents-server/docs/PRODUCTION_ACCEPTANCE.md)，并以 [P0.3 当前协议](../deepagents-server/docs/CURRENT_TASK_PROTOCOL.md) 固定唯一 Workflow、wire identity 与状态预算。[P1.1 关联合同](../deepagents-server/docs/TASK_OBSERVABILITY.md)现已贯通 request、Task、首/当前 Run 与模型 Activity attempt，并保持 content-free、best-effort process observation 边界。这不等于已完成 P1.2 指标、P1.3 trace 或真实 provider 验收。具体目标供应商/地域、独立复核人和运营责任仍须在进入试点前定版，不承诺未经估算的日历工期。
 
 ## 当前基线与计划边界
 
 | 项目 | 已有事实 | 后续工作不能据此假定 |
 | --- | --- | --- |
-| 源码基线 | P0.3 审阅仓库 `94dad34`；独立模块当前 runtime 来源提交 `c65073a` | 其他 Python/Go 功能已经进入独立服务 |
+| 源码基线 | P1.1 审阅仓库 `74ed76e`；独立模块当前 runtime 来源提交 `c65073a` | 其他 Python/Go 功能已经进入独立服务 |
 | 固定依赖 | Deep Agents 0.7.25、LangGraph API 0.16.0、Temporal SDK 1.34.0 | 浮动官方文档中的能力全部适用于这些版本 |
 | 标准入口 | Threads/Runs、后台执行、SSE、取消、Checkpoint、owner Store Memory；API/Worker 分离配置 | PostgreSQL/Redis 生产恢复和许可证条件已验收 |
 | Temporal 入口 | Start 确认后返回 202；owner/key 去重；查询、取消、History；分段续跑及 Worker 接管 | 永久幂等、全局配额、通用审批、跨任务 Memory 或工具 exactly-once |
@@ -184,7 +184,8 @@ MDA Compiler、Context Hub 或完整自助门户应在上述能力确有重复�
 - [x] P0.1 固定首个任务类型、主路径、负责人及运行环境。证据：[P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)（2026-11-10；P0 已在 P0.3 对齐后完成）。
 - [x] P0.2 落盘验收配置：负载、时长、状态规模、RPO/RTO、费用和资源预算。证据：[人类可读合同](../deepagents-server/docs/PRODUCTION_ACCEPTANCE.md) · [机器配置](../deepagents-server/docs/PRODUCTION_ACCEPTANCE_PROFILE.json) · [校验器](../deepagents-server/tooling/acceptance/production_profile.py)（2026-11-10；门槛已固定，目标尚未证明）。
 - [x] P0.3 对齐当前协议说明，清理设计文档中的旧 V1 支持表述。证据：[当前 Task 协议](../deepagents-server/docs/CURRENT_TASK_PROTOCOL.md) · [校正后的设计依据](AGENT_SERVER_DURABLE_EXECUTION_DESIGN.md)（2026-11-10；历史运行事实保留，但不属于当前支持矩阵）。
-- [ ] P1.1 先贯通任务与模型 Activity 关联，再接基础指标及脱敏 trace。
+- [x] P1.1 贯通任务与模型 Activity 关联。证据：[字段、脱敏与兼容合同](../deepagents-server/docs/TASK_OBSERVABILITY.md) · `tests/test_task_observability.py` · `tests/test_task_api.py` · `tests/test_task_runtime.py`（2026-11-10；process-local JSONL，不代表 P1.2 指标后端或 P1.3 trace 已完成）。
+- [ ] P1.2 接受/排队/运行/终态、重试、超时、取消、CAN 与状态规模基础指标。
 - [ ] P1.4 建立小规模真实 provider 用例及状态校验，执行一次受预算约束的验收。
 - [ ] P1.5/P1.6 补未知提交结果、重试叠加和取消竞争的故障证据。
 - [ ] P2 为选定后端建立持久环境与恢复手册，完成 Worker 丢失、备份恢复和兼容发布演练。

@@ -75,7 +75,10 @@ docker image inspect mini-loop-task:local --format '{{.Id}}'
 本地 `.Id` 是当前 daemon 上不可变的镜像内容标识，不是可跨主机拉取的 registry
 manifest digest。生产应将经过验收的镜像发布到自己的 registry，再把
 `MINILOOP_TASK_IMAGE` 固定为 registry 的 `name@sha256:...`；Compose 不会代为构建
-或发布镜像。不同 CPU 架构需单独构建并验收相应依赖 wheel，不能由索引摘要推定通过。
+或发布镜像。Compose 同时把这个不可变引用作为 `MINILOOP_TASK_IMAGE_REF` 传给 API
+和 Worker；进程只记录 `@` 后的 digest，用于 P1.1 请求/Activity 关联。CLI 遇到 tag、
+浮动引用或非法 digest 会拒绝启动；显式 library 装配未提供部署身份时诚实记录
+`unavailable`。不同 CPU 架构需单独构建并验收相应依赖 wheel，不能由索引摘要推定通过。
 
 ## 准备外部服务与凭据
 

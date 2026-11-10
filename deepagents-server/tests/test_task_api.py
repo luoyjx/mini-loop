@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from uuid import UUID
 
 import httpx
 import pytest
@@ -9,9 +10,11 @@ import pytest
 pytest.importorskip("temporalio")
 
 from mini_loop_deepagents.task_server.api import MAX_BODY_BYTES, create_app
+from mini_loop_deepagents.task_server.observability import DeploymentIdentity
 
 TOKENS = {"a" * 40: "alice", "b" * 40: "bob"}
 HEADERS = {"Authorization": "Bearer " + "a" * 40, "Idempotency-Key": "request-1"}
+RUN_ID = "11111111-1111-4111-8111-111111111111"
 
 
 class RecordingService:
@@ -23,7 +26,8 @@ class RecordingService:
         self.calls.append(("submit", owner, key, message))
         if self.block is not None:
             await self.block.wait()
-        return {"task_id": "task-" + "c" * 64, "status": "running", "reused": False}
+        return {"task_id": "task-" + "c" * 64, "run_id": RUN_ID,
+                "first_execution_run_id": RUN_ID, "status": "running", "reused": False}
 
     async def get(self, owner, task_id):
         self.calls.append(("get", owner, task_id))
@@ -41,7 +45,8 @@ class RecordingService:
 
     async def events(self, owner, task_id, **kwargs):
         self.calls.append(("events", owner, task_id, kwargs))
-        return {"events": [], "next_cursor": None, "order": "descending"}
+        return {"task_id": task_id, "run_id": RUN_ID, "first_execution_run_id": RUN_ID,
+                "events": [], "next_cursor": None, "order": "descending"}
 
 
 @pytest.fixture
@@ -58,6 +63,45 @@ async def test_admission_only_passes_verified_owner_and_preserves_exact_message(
     assert response.headers["location"] == "/v1/tasks/task-" + "c" * 64
     assert response.headers["cache-control"] == "no-store"
     assert service.calls == [("submit", "alice", "request-1", "  original\n用户任务  ")]
+
+
+@pytest.mark.asyncio
+async def test_server_request_id_joins_api_task_run_owner_image_and_protocol_without_content(service):
+    records = []
+    deployment = DeploymentIdentity(image_digest="sha256:" + "d" * 64)
+    app = create_app(service, tokens=TOKENS, deployment=deployment, observation_sink=records.append)
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.post("/v1/tasks", headers=HEADERS, json={"message": "private-message"})
+    UUID(response.headers["x-request-id"])
+    assert len(records) == 1
+    record = records[0]
+    assert record == {
+        "schema_version": 1, "event": "task.api_request",
+        "image_digest": "sha256:" + "d" * 64,
+        "protocol_version": "task-v2", "snapshot_schema": 2,
+        "request_id": response.headers["x-request-id"], "operation": "submit",
+        "http_status": 202, "owner": "alice", "task_id": "task-" + "c" * 64,
+        "first_execution_run_id": RUN_ID, "current_run_id": RUN_ID,
+        "task_status": "running",
+    }
+    serialized = json.dumps(record)
+    assert "private-message" not in serialized and "request-1" not in serialized
+    assert ("Bearer " + "a" * 40) not in serialized
+
+
+@pytest.mark.asyncio
+async def test_history_observation_names_an_explicit_old_run_as_selected_not_current(service):
+    records = []
+    app = create_app(service, tokens=TOKENS, observation_sink=records.append)
+    task_id = "task-" + "c" * 64
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get(
+            f"/v1/tasks/{task_id}/events?run_id={RUN_ID}",
+            headers={"Authorization": "Bearer " + "a" * 40},
+        )
+    assert response.status_code == 200
+    assert records[0]["selected_run_id"] == RUN_ID
+    assert "current_run_id" not in records[0]
 
 
 @pytest.mark.asyncio
