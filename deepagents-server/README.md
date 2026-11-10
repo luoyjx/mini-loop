@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-生产化工作顺序：[执行计划与阶段验收](../docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)（P0.1/P0.2 已固定，不改变当前功能状态）· [P0.1 试点范围决策](docs/PRODUCTION_PILOT_SCOPE.md) · [P0.2 验收配置](docs/PRODUCTION_ACCEPTANCE.md)。
+生产化工作顺序：[执行计划与阶段验收](../docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)（P0 已固定，不改变当前功能状态）· [P0.1 试点范围决策](docs/PRODUCTION_PILOT_SCOPE.md) · [P0.2 验收配置](docs/PRODUCTION_ACCEPTANCE.md) · [P0.3 当前 Task 协议](docs/CURRENT_TASK_PROTOCOL.md)。
 独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-single-runtime-2026-10-17.png)。
 
 ## 从哪里读代码

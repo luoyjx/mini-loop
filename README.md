@@ -271,16 +271,17 @@ separate:
 
 ## Architecture
 
-Documentation-only architecture review: **2026-11-10**, baseline `c0fff9f`.
+Documentation-only architecture review: **2026-11-10**, baseline `94dad34`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records P0.1 and P0.2 complete. The controlled research/artifact pilot keeps
-Temporal as its only scheduling authority, while the versioned
-[acceptance profile](deepagents-server/docs/PRODUCTION_ACCEPTANCE.md) fixes load,
-duration, state, latency, recovery, retention, cost and resource targets. The
-profile explicitly authorizes neither deployment nor provider spend. The
-canonical runtime map and feature defaults remain unchanged. The
-[iteration illustration](docs/audits/agent-server-production-p0-2-2026-11-10.png)
-marks the measurement contract without claiming a passing run.
+now records P0 complete. The controlled research/artifact pilot keeps Temporal
+as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
+records one `runtime.py:TaskWorkflow` implementation, one Worker registration,
+the `TaskWorkflowV2` / `task-v2` / snapshot schema 2 wire identity and bounded
+continuation state. Historical V1/V2 runs remain evidence of their original
+source baseline, not current compatibility. This documentation correction
+changes no component, authority, control/data flow or feature default. The
+[iteration illustration](docs/audits/agent-server-production-p0-3-2026-11-10.png)
+marks that protocol boundary without adding architecture components.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to

@@ -1,0 +1,12 @@
+Use case: infographic-diagram edit
+Input image: Image 1 is the canonical mini-loop layered architecture base diagram and is the edit target.
+Primary request: create the P0.3 iteration evidence image by highlighting only the existing “独立 Task 容器 · task_server.launch api | worker · 默认启用” lane near the bottom. Add one compact, polished protocol annotation attached to that lane.
+Text (verbatim; render exactly, with no extra protocol claims):
+“P0.3 当前协议”
+“唯一 runtime.py:TaskWorkflow”
+“TaskWorkflowV2 · task-v2 · schema 2”
+“旧 V1：历史证据 / 当前不支持”
+“/v1/tasks ≠ Task V1”
+Style/medium: preserve the existing dark neon technical infographic style, fonts, colors, texture, aspect ratio, and all original architecture content.
+Composition: use a restrained cyan/amber outline or glow around the existing Task lane and a small readable callout in adjacent open space; keep every existing box, arrow, layer, boundary note, and label in its original position.
+Constraints: change only the Task lane emphasis and add the protocol annotation; do not add, remove, rename, or move architecture components; do not alter topology, arrows, ownership, deployment boundaries, or defaults; do not obscure existing labels; do not imply V1 compatibility; no logos, no watermark, no unrelated text.
