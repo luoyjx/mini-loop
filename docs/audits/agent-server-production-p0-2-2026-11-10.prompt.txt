@@ -1,0 +1,9 @@
+Use case: precise-object-edit
+Asset type: mini-loop architecture iteration review illustration
+Input images: Image 1: edit target, the canonical mini-loop layered architecture base diagram
+Primary request: Highlight only the existing independent Temporal Task Server path in the lower architecture lanes and add one compact measurement-contract callout for the P0.2 acceptance profile. Use a restrained cyan-blue glow on the existing Task API -> Temporal History -> Worker -> model Activity flow, plus small metric icons for load, time, recovery, cost, and memory.
+Text (verbatim): "P0.2 验收门槛"; "3 owner · 2 API · 2 Worker"; "5m · 30m · 2h · 24h"; "RPO/RTO · 成本 · 资源"; "目标未证明"
+Composition/framing: Preserve the full original landscape canvas and every existing layer, lane, arrow, boundary note, title, and relative position. Place the new callout near the highlighted lower Task/Temporal lanes without covering existing labels.
+Style/medium: Keep the original dark navy technical infographic style, cyan linework, white typography, red date badges, and neon review-annotation language.
+Constraints: Change only the visual emphasis and add the five exact short labels. Keep the canonical diagram content and topology unchanged. Do not add or remove components, services, arrows, storage, permissions, or runtime paths. Do not imply the targets passed. Keep the standard Agent Server conversation lane visually separate. No logo changes, no watermark, no extra text.
+Avoid: redesigning the diagram; altering existing text; inventing provisioned infrastructure, production HA, approved provider spend, shell, Memory, external-write, approval, sandbox, quota, or capacity capabilities; implying both schedulers execute the same task.

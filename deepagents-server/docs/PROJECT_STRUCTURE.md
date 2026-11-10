@@ -97,6 +97,7 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 | Workflow / 工具执行行为 | `runtime.py`、`checkpoint.py`、`summarization.py` | 当前只维护一份实现；变更须核对当前持久格式与 replay，不为未部署的迭代累积兼容版本 |
 | Worker 退出行为 | `lifecycle.py` 与 `worker.py` | library `serve` 不接管宿主信号；CLI 才拥有强退责任 |
 | 新故障验收场景 | `tooling/acceptance/scenarios/`；共用设施放 `support/` | 离线模型与故障注入留在 `fixtures/`，不进入生产输入或 wheel |
+| 生产验收目标 | `docs/PRODUCTION_ACCEPTANCE_PROFILE.json`、`tooling/acceptance/production_profile.py` | 配置与校验不等于运行通过，不能授权 provider 消费或部署资源 |
 | 打包规则 | `tooling/build_task_bundle.py`、`Dockerfile.task` | wheel 源文件和锁文件一致性；不从测试目录拼装生产包 |
 
 能由现有职责容纳的小变化直接放入对应模块；只有出现独立责任或重复设施时再拆文件。

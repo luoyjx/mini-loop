@@ -7,7 +7,7 @@
 
 标准入口图解：[五层架构与长任务的完整路径](ARCHITECTURE.md)。
 长任务运行约束：[提交、并发、恢复与部署](LONG_TASKS.md)。
-生产化工作顺序：[执行计划与阶段验收](../docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)（P0.1 已固定，不改变当前功能状态）· [P0.1 试点范围决策](docs/PRODUCTION_PILOT_SCOPE.md)。
+生产化工作顺序：[执行计划与阶段验收](../docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)（P0.1/P0.2 已固定，不改变当前功能状态）· [P0.1 试点范围决策](docs/PRODUCTION_PILOT_SCOPE.md) · [P0.2 验收配置](docs/PRODUCTION_ACCEPTANCE.md)。
 独立 Temporal HTTP 服务：[Task Server](TASK_SERVER.md) · [容器部署](TASK_DEPLOYMENT.md) · [需求验收矩阵](docs/TASK_ACCEPTANCE.md) · [本轮分层图与修改标注](../docs/audits/task-server-single-runtime-2026-10-17.png)。
 
 ## 从哪里读代码
@@ -23,6 +23,7 @@
 | Task 执行与恢复 | `task_server/worker.py` → `runtime.py` → `checkpoint.py` / `summarization.py` |
 | 启动与进程退出 | `task_server/launch.py` → `connection.py` / `lifecycle.py` |
 | 构建与故障验收 | `tooling/build_task_bundle.py` → `tooling/acceptance/scenarios/`；公共设施和离线模型在相邻的 `support/`、`fixtures/` |
+| 生产验收目标 | `docs/PRODUCTION_ACCEPTANCE_PROFILE.json` → `tooling/acceptance/production_profile.py`；配置是门槛，不授予执行或消费权限 |
 
 表中标准 Agent Server 的 Python 文件位于 `src/mini_loop_deepagents/`；
 Task 各行省略前缀的文件位于该包的 `task_server/`。

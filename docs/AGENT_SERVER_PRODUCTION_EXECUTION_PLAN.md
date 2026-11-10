@@ -6,7 +6,7 @@ mini-loop 的独立 Agent Server 已具备真实 Deep Agents 执行、异步任�
 
 建议优先推进 Temporal Task 路径的生产化，保留标准 LangGraph Agent Server 作为独立的会话型服务；在 P0 根据首个业务场景确定最终主路径。每个任务只由一个执行后端负责调度和恢复，不建立重复调度同一 graph 的第二套队列。
 
-计划日期：2026-11-09。状态：**执行中：P0.1 已固定，P0.2 起仍未完成**。2026-11-10 已将首个受控任务类型、Temporal 唯一主路径、当前负责人和本地离线运行环境写入 [P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)；该决策不启用功能、不变更依赖、不发布服务。目标部署、独立复核人、运营责任和模型费用预算仍须在 P0 定版，不承诺未经估算的日历工期。
+计划日期：2026-11-09。状态：**执行中：P0.1/P0.2 已固定，P0.3 起仍未完成**。2026-11-10 已将首个受控任务类型、Temporal 唯一主路径、当前负责人和本地离线运行环境写入 [P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)，并将负载、时长、状态、RPO/RTO、保留、费用和资源门槛写入 [P0.2 验收配置](../deepagents-server/docs/PRODUCTION_ACCEPTANCE.md)。这些决策不启用功能、不发布服务，真实 provider 消费仍需显式批准。具体目标供应商/地域、独立复核人和运营责任仍须在 P0 定版，不承诺未经估算的日历工期。
 
 ## 当前基线与计划边界
 
@@ -182,7 +182,7 @@ MDA Compiler、Context Hub 或完整自助门户应在上述能力确有重复�
 以下任务按顺序形成首轮交付；完成计划编写不勾选实现任务。
 
 - [x] P0.1 固定首个任务类型、主路径、负责人及运行环境。证据：[P0.1 试点范围决策](../deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md)（2026-11-10；P0 仍未完成）。
-- [ ] P0.2 落盘验收配置：负载、时长、状态规模、RPO/RTO、费用和资源预算。
+- [x] P0.2 落盘验收配置：负载、时长、状态规模、RPO/RTO、费用和资源预算。证据：[人类可读合同](../deepagents-server/docs/PRODUCTION_ACCEPTANCE.md) · [机器配置](../deepagents-server/docs/PRODUCTION_ACCEPTANCE_PROFILE.json) · [校验器](../deepagents-server/tooling/acceptance/production_profile.py)（2026-11-10；目标尚未证明）。
 - [ ] P0.3 对齐当前协议说明，清理设计文档中的旧 V1 支持表述。
 - [ ] P1.1 先贯通任务与模型 Activity 关联，再接基础指标及脱敏 trace。
 - [ ] P1.4 建立小规模真实 provider 用例及状态校验，执行一次受预算约束的验收。

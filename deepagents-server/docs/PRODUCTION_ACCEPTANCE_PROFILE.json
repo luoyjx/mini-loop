@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "kind": "mini-loop-agent-server-production-acceptance",
+  "status": "fixed-p0-targets-not-yet-proven",
+  "decision_date": "2026-11-10",
+  "scope_ref": "docs/PRODUCTION_PILOT_SCOPE.md",
+  "environment": {
+    "class": "single-region-external-temporal-preproduction",
+    "provisioning_status": "not-provisioned",
+    "data_classification": "synthetic-or-nonsensitive-internal-only",
+    "data_residency": "record-exact-provider-and-region-before-execution",
+    "temporal_storage": "backend-managed-durable-history",
+    "transport": "verified-tls",
+    "authorization": "temporal-namespace-acl-plus-task-bearer-owner",
+    "license_gate": "operator-confirmation-required-before-execution"
+  },
+  "topology": {
+    "owners": 3,
+    "api_replicas": 2,
+    "worker_replicas": 2,
+    "activity_slots_per_worker": 1,
+    "workflow_slots_per_worker": 2,
+    "api_max_inflight_per_replica": 32
+  },
+  "load_cases": [
+    {
+      "name": "idle",
+      "submission_count": 0,
+      "submission_window_seconds": 600,
+      "expected": "all-processes-healthy-and-no-model-calls"
+    },
+    {
+      "name": "full",
+      "submission_count": 2,
+      "submission_window_seconds": 10,
+      "expected": "two-activities-running"
+    },
+    {
+      "name": "queued",
+      "submission_count": 6,
+      "submission_window_seconds": 10,
+      "expected": "two-running-four-durably-queued"
+    },
+    {
+      "name": "burst",
+      "submission_count": 12,
+      "submission_window_seconds": 10,
+      "expected": "all-accepted-and-observable-without-duplicate-execution"
+    }
+  ],
+  "duration_cases": [
+    {
+      "name": "five-minute-live",
+      "target_seconds": 300,
+      "task_count": 2,
+      "provider_mode": "live"
+    },
+    {
+      "name": "thirty-minute-live",
+      "target_seconds": 1800,
+      "task_count": 1,
+      "provider_mode": "live"
+    },
+    {
+      "name": "two-hour-live",
+      "target_seconds": 7200,
+      "task_count": 1,
+      "provider_mode": "live"
+    },
+    {
+      "name": "twenty-four-hour-service-observation",
+      "target_seconds": 86400,
+      "task_count": 0,
+      "provider_mode": "deterministic-fixture"
+    }
+  ],
+  "state_limits": {
+    "request_body_bytes": 16384,
+    "raw_checkpoint_bytes": 16777216,
+    "compressed_checkpoint_bytes": 393216,
+    "continuation_envelope_bytes": 524288,
+    "workflow_execution_seconds": 86400,
+    "parent_model_boundaries": 512,
+    "segment_model_boundaries": 8,
+    "graph_recursion_limit": 128,
+    "dimensions": [
+      "messages",
+      "summaries",
+      "general-purpose-subgraphs",
+      "virtual-text-files",
+      "todos"
+    ],
+    "target_ratios_milli": [500, 900, 1050],
+    "over_limit_outcome": "explicit-terminal-failure-without-unbounded-replay"
+  },
+  "latency_targets_ms": {
+    "percentile": 95,
+    "submit_confirmation": 2000,
+    "status_query": 1000,
+    "cancel_confirmation": 2000,
+    "queued_visibility": 5000,
+    "must_report_separately": [
+      "queue-time",
+      "execution-time",
+      "completion-time"
+    ]
+  },
+  "recovery_targets_seconds": {
+    "worker_loss_task_progress_rto": 120,
+    "backend_reconnect_service_rto": 300,
+    "backend_reconnect_task_progress_rto": 300,
+    "backup_restore_service_rto": 3600,
+    "backup_restore_task_progress_rto": 3600,
+    "acknowledged_task_rpo": 0,
+    "workflow_history_rpo": 0,
+    "terminal_result_rpo": 0,
+    "virtual_artifacts_at_safe_boundary_rpo": 0,
+    "backup_disaster_rpo": 900,
+    "inflight_activity_progress": "may-replay-within-original-attempt-budget"
+  },
+  "retention_contract": {
+    "workflow_history_days": 30,
+    "result_days": 30,
+    "event_days": 30,
+    "virtual_artifact_days": 30,
+    "idempotency_scope": "temporal-history-retention-not-permanent-business-ledger",
+    "same_key_after_expiry": "new-execution-allowed-only-after-authoritative-absence",
+    "unknown_start_result": "return-stable-task-id-and-reconcile-before-retry",
+    "cancel_acknowledgement": "request-accepted-not-terminal-state",
+    "deletion_completion_hours": 24
+  },
+  "provider_budget": {
+    "execution_authorized": false,
+    "operator_approval_required": true,
+    "allowed_models": [
+      "openai:gpt-4.1-mini"
+    ],
+    "max_output_tokens_per_call": 4096,
+    "call_timeout_seconds": 60,
+    "max_provider_calls_per_live_run": 600,
+    "max_total_tokens_per_live_run": 2000000,
+    "max_cost_cents_per_live_run": 1000,
+    "max_cost_cents_per_calendar_month": 5000,
+    "consecutive_provider_failures_stop": 5,
+    "unknown_usage_action": "stop-and-mark-inconclusive-never-count-as-zero"
+  },
+  "resource_budget": {
+    "host_minimum_memory_mib": 16384,
+    "owned_process_tree_rss_mib": 6144,
+    "minimum_host_available_percent": 25,
+    "maximum_cpu_cores": 4,
+    "api_container_memory_mib": 512,
+    "worker_container_memory_mib": 1024,
+    "maximum_evidence_bytes": 1073741824,
+    "heavy_runs_serial": true,
+    "stop_on_budget_or_pressure": true
+  },
+  "evidence_requirements": [
+    "source-commit-and-immutable-image-digest",
+    "resolved-provider-region-and-license",
+    "sanitized-configuration-snapshot",
+    "task-run-activity-attempt-timeline",
+    "latency-and-recovery-raw-measurements",
+    "provider-call-token-cost-and-unknown-usage-records",
+    "owned-rss-host-pressure-and-cleanup-records",
+    "history-trace-and-result-with-credential-scan"
+  ],
+  "open_p0_conditions": [
+    "provision-and-record-exact-temporal-provider-region-and-namespace",
+    "assign-temporal-tls-backup-operations-owner",
+    "assign-independent-m1-reviewer",
+    "approve-live-provider-spend-and-credential-use"
+  ]
+}

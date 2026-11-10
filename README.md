@@ -271,16 +271,16 @@ separate:
 
 ## Architecture
 
-Documentation-only architecture review: **2026-11-10**, baseline `305ead5`.
+Documentation-only architecture review: **2026-11-10**, baseline `c0fff9f`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records P0.1 complete: the first pilot is a controlled, side-effect-free
-research/artifact Task whose only scheduling and recovery authority is Temporal.
-The [scope decision](deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md) keeps the
-standard Agent Server as a separate conversational path and leaves target
-deployment, budgets and production operators open for P0.2. The canonical
-runtime map and feature defaults remain unchanged. The
-[iteration illustration](docs/audits/agent-server-production-p0-1-2026-11-10.png)
-marks this decision without claiming a deployed capability.
+now records P0.1 and P0.2 complete. The controlled research/artifact pilot keeps
+Temporal as its only scheduling authority, while the versioned
+[acceptance profile](deepagents-server/docs/PRODUCTION_ACCEPTANCE.md) fixes load,
+duration, state, latency, recovery, retention, cost and resource targets. The
+profile explicitly authorizes neither deployment nor provider spend. The
+canonical runtime map and feature defaults remain unchanged. The
+[iteration illustration](docs/audits/agent-server-production-p0-2-2026-11-10.png)
+marks the measurement contract without claiming a passing run.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
