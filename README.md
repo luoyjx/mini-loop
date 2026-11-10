@@ -271,12 +271,16 @@ separate:
 
 ## Architecture
 
-Documentation-only architecture review: **2026-11-09**, baseline `f7b80e2`.
+Documentation-only architecture review: **2026-11-10**, baseline `305ead5`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-defines staged acceptance for the independent services. The canonical runtime
-map and current feature defaults remain unchanged; its proposed work is not an
-implemented capability. The [iteration illustration](docs/audits/agent-server-production-plan-2026-11-09.png)
-marks only the scope of that plan.
+now records P0.1 complete: the first pilot is a controlled, side-effect-free
+research/artifact Task whose only scheduling and recovery authority is Temporal.
+The [scope decision](deepagents-server/docs/PRODUCTION_PILOT_SCOPE.md) keeps the
+standard Agent Server as a separate conversational path and leaves target
+deployment, budgets and production operators open for P0.2. The canonical
+runtime map and feature defaults remain unchanged. The
+[iteration illustration](docs/audits/agent-server-production-p0-1-2026-11-10.png)
+marks this decision without claiming a deployed capability.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to

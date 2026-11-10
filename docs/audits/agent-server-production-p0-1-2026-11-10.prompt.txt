@@ -1,0 +1,9 @@
+Use case: precise-object-edit
+Asset type: mini-loop architecture iteration review illustration
+Input images: Image 1: edit target, the canonical mini-loop layered architecture base diagram
+Primary request: Highlight only the existing independent Temporal Task Server path in the lower architecture lanes to show the P0.1 scope decision. Add a restrained cyan-blue spotlight and one compact review callout connected to the existing Task API -> Temporal -> Worker -> model Activity flow.
+Text (verbatim): "P0.1 受控长任务"; "Temporal 唯一调度权威"; "会话路径保持独立"; "目标部署待 P0.2"
+Composition/framing: Preserve the full original landscape canvas and every existing layer, lane, arrow, boundary note, title, and relative position. Place the new callout near the highlighted lower Task/Temporal lanes without covering existing labels.
+Style/medium: Keep the original dark navy technical infographic style, cyan linework, white typography, red date badges, and neon review-annotation language.
+Constraints: Change only the visual emphasis and add the four exact short labels. Keep the canonical diagram content and topology unchanged. Do not add or remove components, services, arrows, storage, permissions, or runtime paths. Do not highlight the standard Agent Server conversation lane as part of the pilot. Make it visually explicit that this is a scope decision, not a deployed production capability. No logo changes, no watermark, no extra text.
+Avoid: redesigning the diagram; altering existing text; inventing production HA, cloud, budget, SLA, shell, Memory, external-write, approval, or sandbox capabilities; implying both schedulers execute the same task.
