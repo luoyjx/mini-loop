@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Independent Python / Go / standard Agent Server paths; one Task runtime with content-free API/Activity correlation and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</p>
+      <p class="subtitle">Independent Python / Go / standard Agent Server paths; one Task runtime with internal API/Worker metrics and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 6100" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; one Task runtime with content-free API/Activity correlation and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</desc>
+        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; one Task runtime with internal API/Worker metrics and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -5414,8 +5414,8 @@
         <text data-detail="context" x="215" y="4302" class="t-muted" font-size="9" text-anchor="middle">Bearer / Idempotency-Key / message</text>
         </g>
 
-        <g id="node-tsApi" data-node-id="tsApi" data-node-label="Independent Bearer Task API" tabindex="0" role="button" aria-label="Focus Independent Bearer Task API, request UUID → Task / first + current Run, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="request UUID → Task / first + current Run" data-node-tag="content-free stderr / Temporal remains authority" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
-          <title>Independent Bearer Task API · request UUID → Task / first + current Run · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · content-free stderr / Temporal remains authority</title>
+        <g id="node-tsApi" data-node-id="tsApi" data-node-label="Independent Bearer Task API" tabindex="0" role="button" aria-label="Focus Independent Bearer Task API, request correlation / internal metrics / readiness, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="request correlation / internal metrics / readiness" data-node-tag="API outcome metrics / Temporal remains authority" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Independent Bearer Task API · request correlation / internal metrics / readiness · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · API outcome metrics / Temporal remains authority</title>
           <rect x="550" y="4250" width="360" height="76" rx="6" class="c-mask"/>
           <rect x="550" y="4250" width="360" height="76" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(556 4256) scale(0.6875)">
@@ -5425,8 +5425,8 @@
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text data-detail-anchor x="730" y="4286" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Independent Bearer Task API</text>
-        <text data-detail="context" x="730" y="4302" class="t-muted" font-size="9" text-anchor="middle">request UUID → Task / first + current Run</text>
-        <text data-detail="fine" x="730" y="4318" class="t-frontend" font-size="7" text-anchor="middle">content-free stderr / Temporal remains authority</text>
+        <text data-detail="context" x="730" y="4302" class="t-muted" font-size="9" text-anchor="middle">request correlation / internal metrics / readiness</text>
+        <text data-detail="fine" x="730" y="4318" class="t-frontend" font-size="7" text-anchor="middle">API outcome metrics / Temporal remains authority</text>
         </g>
 
         <g id="node-tsHistory" data-node-id="tsHistory" data-node-label="Temporal service / retained History" tabindex="0" role="button" aria-label="Focus Temporal service / retained History, stable TaskID / first Run / retained Run chain, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="database" data-node-sublabel="stable TaskID / first Run / retained Run chain" data-node-tag="per-Run cursors / retention-bounded authority" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
@@ -5442,28 +5442,28 @@
         <text data-detail="fine" x="1270" y="4318" class="t-database" font-size="7" text-anchor="middle">per-Run cursors / retention-bounded authority</text>
         </g>
 
-        <g id="node-tsWorker" data-node-id="tsWorker" data-node-label="Single TaskWorkflow" tabindex="0" role="button" aria-label="Focus Single TaskWorkflow, runtime.py / portable native saver journal, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="runtime.py / portable native saver journal" data-node-tag="8 parent boundaries per CAN / 512 total" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
-          <title>Single TaskWorkflow · runtime.py / portable native saver journal · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · 8 parent boundaries per CAN / 512 total</title>
+        <g id="node-tsWorker" data-node-id="tsWorker" data-node-label="Single TaskWorkflow" tabindex="0" role="button" aria-label="Focus Single TaskWorkflow, runtime.py / boundary + CAN + state-size metrics, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="runtime.py / boundary + CAN + state-size metrics" data-node-tag="portable saver / 8 boundaries per CAN / 512 total" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Single TaskWorkflow · runtime.py / boundary + CAN + state-size metrics · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · portable saver / 8 boundaries per CAN / 512 total</title>
           <rect x="1630" y="4250" width="400" height="76" rx="6" class="c-mask"/>
           <rect x="1630" y="4250" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 4256) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1830" y="4286" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Single TaskWorkflow</text>
-        <text data-detail="context" x="1830" y="4302" class="t-muted" font-size="9" text-anchor="middle">runtime.py / portable native saver journal</text>
-        <text data-detail="fine" x="1830" y="4318" class="t-backend" font-size="7" text-anchor="middle">8 parent boundaries per CAN / 512 total</text>
+        <text data-detail="context" x="1830" y="4302" class="t-muted" font-size="9" text-anchor="middle">runtime.py / boundary + CAN + state-size metrics</text>
+        <text data-detail="fine" x="1830" y="4318" class="t-backend" font-size="7" text-anchor="middle">portable saver / 8 boundaries per CAN / 512 total</text>
         </g>
 
-        <g id="node-tsModelActivity" data-node-id="tsModelActivity" data-node-label="Plugin model I/O Activity" tabindex="0" role="button" aria-label="Focus Plugin model I/O Activity, Activity ID / attempt / outcome correlation, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Activity ID / attempt / outcome correlation" data-node-tag="content-free stderr / fixed provider alias" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
-          <title>Plugin model I/O Activity · Activity ID / attempt / outcome correlation · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · content-free stderr / fixed provider alias</title>
+        <g id="node-tsModelActivity" data-node-id="tsModelActivity" data-node-label="Plugin model I/O Activity" tabindex="0" role="button" aria-label="Focus Plugin model I/O Activity, queue / attempt / retry / inflight metrics, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="queue / attempt / retry / inflight metrics" data-node-tag="content-free correlation / fixed provider alias" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Plugin model I/O Activity · queue / attempt / retry / inflight metrics · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · content-free correlation / fixed provider alias</title>
           <rect x="1630" y="4500" width="400" height="76" rx="6" class="c-mask"/>
           <rect x="1630" y="4500" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 4506) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1830" y="4536" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Plugin model I/O Activity</text>
-        <text data-detail="context" x="1830" y="4552" class="t-muted" font-size="9" text-anchor="middle">Activity ID / attempt / outcome correlation</text>
-        <text data-detail="fine" x="1830" y="4568" class="t-backend" font-size="7" text-anchor="middle">content-free stderr / fixed provider alias</text>
+        <text data-detail="context" x="1830" y="4552" class="t-muted" font-size="9" text-anchor="middle">queue / attempt / retry / inflight metrics</text>
+        <text data-detail="fine" x="1830" y="4568" class="t-backend" font-size="7" text-anchor="middle">content-free correlation / fixed provider alias</text>
         </g>
 
         <g id="node-tsModel" data-node-id="tsModel" data-node-label="ChatOpenAI provider" tabindex="0" role="button" aria-label="Focus ChatOpenAI provider, model / credentials from Worker environment, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="external" data-node-sublabel="model / credentials from Worker environment" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
@@ -5478,16 +5478,16 @@
         <text data-detail="context" x="1270" y="4552" class="t-muted" font-size="9" text-anchor="middle">model / credentials from Worker environment</text>
         </g>
 
-        <g id="node-tsProcess" data-node-id="tsProcess" data-node-label="Worker process lifecycle" tabindex="0" role="button" aria-label="Focus Worker process lifecycle, SIGTERM / loop wakeup / SDK shutdown, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SIGTERM / loop wakeup / SDK shutdown" data-node-tag="CLI only / grace and hard deadline" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
-          <title>Worker process lifecycle · SIGTERM / loop wakeup / SDK shutdown · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · CLI only / grace and hard deadline</title>
+        <g id="node-tsProcess" data-node-id="tsProcess" data-node-label="Worker process lifecycle" tabindex="0" role="button" aria-label="Focus Worker process lifecycle, SDK shutdown / internal metrics endpoint, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SDK shutdown / internal metrics endpoint" data-node-tag="polling + draining health / grace + hard deadline" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
+          <title>Worker process lifecycle · SDK shutdown / internal metrics endpoint · Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype · polling + draining health / grace + hard deadline</title>
           <rect x="1630" y="3950" width="400" height="76" rx="6" class="c-mask"/>
           <rect x="1630" y="3950" width="400" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1636 3956) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1830" y="3986" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Worker process lifecycle</text>
-        <text data-detail="context" x="1830" y="4002" class="t-muted" font-size="9" text-anchor="middle">SIGTERM / loop wakeup / SDK shutdown</text>
-        <text data-detail="fine" x="1830" y="4018" class="t-backend" font-size="7" text-anchor="middle">CLI only / grace and hard deadline</text>
+        <text data-detail="context" x="1830" y="4002" class="t-muted" font-size="9" text-anchor="middle">SDK shutdown / internal metrics endpoint</text>
+        <text data-detail="fine" x="1830" y="4018" class="t-backend" font-size="7" text-anchor="middle">polling + draining health / grace + hard deadline</text>
         </g>
 
         <g id="node-tsConnection" data-node-id="tsConnection" data-node-label="Shared Temporal client settings" tabindex="0" role="button" aria-label="Focus Shared Temporal client settings, CLI environment / explicit library object, Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CLI environment / explicit library object" data-node-tag="TLS / CA / mTLS pair / server name / API key" data-node-context="Opt-in Temporal Task HTTP service / independent from Agent Server and offline prototype">
@@ -6530,7 +6530,7 @@
           <h3>Opt-in Temporal Task HTTP service</h3>
         </div>
         <ul>
-          <li>&bull; P1.1 review baseline 74ed76e: API requests receive a response UUID and content-free process observation joined to verified Task/first/current Run data. Patch-protected Workflow metadata lets model Activities record owner, Task/Run, Activity ID/attempt/outcome, hashed Worker identity, immutable image digest and task-v2/schema2 identity. Records are best-effort stderr, not durable state, metrics or trace; message, idempotency key, credentials, model/tool content and exception text are excluded. Temporal remains the task and result authority.</li>
+          <li>&bull; P1.2 review baseline 478ee6a: API and Worker each expose a native SDK Prometheus endpoint inside the trusted container network. Low-cardinality metrics cover process/role health, API admission outcomes, status and cancellation observations, Workflow progress, model Activity queue/attempt/retry/inflight, Continue-As-New and bounded state sizes. Metrics are process-local and restart-reset; they contain no owner, Task/Run/request/Activity identity, content, key, exception text or credential. P1.1 content-free stderr retains per-task correlation. No persistent metric service, dashboard, trace backend or second task authority is installed; Temporal History remains authoritative.</li>
           <li>&bull; Single-runtime review baseline 2b85676 plus 2026-10-17 cleanup: pre-production Task V1 implementation and registration are removed. runtime.py:TaskWorkflow is the sole current Workflow; the current serialized TaskWorkflowV2/task-v2/schema2 identity remains. Obsolete V1 Tasks are refused, not migrated. Default Task queue is mini-loop-task. HTTP, service and backend are in-process responsibilities; API, Worker and external Temporal remain the deployment roles.</li>
           <li>&bull; Shared Workflow determinism now lives in temporal_support/determinism.py; production Task Workflows no longer import the historical temporal_prototype implementation. Repository-only tooling/acceptance separates scenarios, reusable support and offline fixtures; tooling/build_task_bundle.py owns the package audit and sanitized build context. scripts remains a thin compatibility layer. tooling and fixtures are excluded from the application wheel. This source organization does not add a service, storage layer or runtime dependency.</li>
           <li>&bull; Historical cold-restart acceptance used the 08b4333 application image. Run c0a4afaaf20c48e5b65fc51b7e9a7580 completed six Tasks across three owners after all old API/Worker/Temporal/observer processes were absent for an observed 3.189-second interval. Two Tasks had reached parent step 24 after three CANs; four were natively SCHEDULED without model execution. Each completed 37 parent tool steps, four CANs/five Runs, two general-purpose subagents and two native summaries. Thirty Histories had zero WorkflowTaskFailed; two interrupted Activities retried with matching identity, request hash and full state. This receipt remains tied to its original build, not proof of the refactored source. It is a single-host plaintext CLI/SQLite and deterministic-model test, not live-provider, native TLS, production HA or capacity evidence.</li>

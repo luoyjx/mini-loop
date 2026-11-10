@@ -58,6 +58,28 @@ class FakeAgent:
         return SimpleNamespace(values=values, next=pending, tasks=(task,) if pending else (), interrupts=())
 
 
+class MetricInstrument:
+    def __init__(self, name, records):
+        self.name, self.records = name, records
+
+    def add(self, value, attributes=None):
+        self.records.append((self.name, "add", value, dict(attributes or {})))
+
+    def record(self, value, attributes=None):
+        self.records.append((self.name, "record", value, dict(attributes or {})))
+
+
+class MetricMeter:
+    def __init__(self, records):
+        self.records = records
+
+    def create_counter(self, name, **kwargs):
+        return MetricInstrument(name, self.records)
+
+    def create_histogram(self, name, **kwargs):
+        return MetricInstrument(name, self.records)
+
+
 @pytest.fixture
 def execution(monkeypatch):
     info = SimpleNamespace(workflow_id="task-stable", first_execution_run_id="first-run", run_id="current-run", task_queue="queue",
@@ -113,6 +135,21 @@ async def test_three_continuations_preserve_identity_budget_native_state_and_ter
             assert result["next"] == []
             assert result["identity"] == identities[0] == identities[1] == identities[2]
             assert result["identity"]["first_execution_run_id"] == "first-run"
+
+
+@pytest.mark.asyncio
+async def test_workflow_metrics_cover_progress_continue_as_new_and_bounded_state(execution, monkeypatch):
+    records = []
+    monkeypatch.setattr(runtime.workflow, "metric_meter", lambda: MetricMeter(records))
+    monkeypatch.setattr(runtime, "build_agent", lambda workflow_id, saver: FakeAgent(saver, target=9))
+    with pytest.raises(Continued):
+        await runtime.TaskWorkflow().run(PAYLOAD)
+    assert ("mini_loop_task_workflow_runs", "add", 1, {"outcome": "started"}) in records
+    assert len([item for item in records if item[:2] == ("mini_loop_task_model_boundaries", "add")]) == 8
+    assert ("mini_loop_task_continue_as_new", "add", 1, {"outcome": "continued"}) in records
+    sizes = [item for item in records if item[:2] == ("mini_loop_task_checkpoint_size", "record")]
+    assert {item[3]["kind"] for item in sizes} == {"raw", "compressed", "envelope"}
+    assert all(type(item[2]) is int and item[2] > 0 for item in sizes)
 
 
 @pytest.mark.asyncio

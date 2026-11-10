@@ -16,6 +16,7 @@ from mini_loop_deepagents.config import load_tokens
 from .connection import TemporalConfigurationError, TemporalConnectionSettings, connect_temporal
 from .http import AccessBoundary, MAX_BODY_BYTES, create_app, error_response
 from .observability import DeploymentIdentity
+from .telemetry import TaskMetricsConfigurationError, TaskMetricsSettings, create_metrics_runtime
 
 __all__ = ["AccessBoundary", "MAX_BODY_BYTES", "create_app", "error_response", "main"]
 
@@ -34,7 +35,8 @@ def main() -> None:
     try:
         connection = TemporalConnectionSettings.from_env()
         deployment = DeploymentIdentity.from_env()
-    except TemporalConfigurationError as error:
+        metrics_settings = TaskMetricsSettings.from_env()
+    except (TemporalConfigurationError, TaskMetricsConfigurationError) as error:
         parser.error(str(error))
     except ValueError as error:
         parser.error(str(error))
@@ -48,15 +50,24 @@ def main() -> None:
             raise ValueError()
     except ValueError:
         parser.error("--address must be HOST:PORT")
+    try:
+        temporal_runtime, metrics = create_metrics_runtime("api", deployment, metrics_settings)
+    except TaskMetricsConfigurationError as error:
+        parser.error(str(error))
 
     @asynccontextmanager
     async def lifespan(app: Starlette):
-        client = await connect_temporal(args.temporal_address, namespace=args.namespace, connection=connection)
-        app.state.task_service = TaskService(client, task_queue=args.task_queue, cursor_secret=secret)
-        yield
+        try:
+            client = await connect_temporal(args.temporal_address, namespace=args.namespace, connection=connection,
+                                            runtime=temporal_runtime)
+            app.state.task_service = TaskService(client, task_queue=args.task_queue, cursor_secret=secret)
+            yield
+        finally:
+            metrics.api_ready(False)
+            metrics.process_up(False)
 
     app = create_app(None, tokens=tokens, max_inflight=args.max_inflight, lifespan=lifespan,
-                     deployment=deployment)
+                     deployment=deployment, metrics=metrics)
     uvicorn.run(app, host=host.strip("[]"), port=port, access_log=False, log_level="warning",
                 limit_concurrency=args.max_inflight + 8, timeout_keep_alive=5, timeout_graceful_shutdown=10)
 

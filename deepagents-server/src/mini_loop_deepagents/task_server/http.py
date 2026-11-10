@@ -26,6 +26,7 @@ from .observability import (
     DeploymentIdentity, ObservationSink, base_observation,
     default_observation_sink, emit_observation,
 )
+from .metrics import NOOP_TASK_METRICS, TaskMetrics
 from .protocol import STATUSES, TASK_ID_PATTERN, TaskOperations, TaskServiceError, valid_run_id
 
 LOG = logging.getLogger(__name__)
@@ -47,6 +48,7 @@ class AccessBoundary:
     def __init__(
         self, app: Any, *, tokens: Mapping[str, str], max_inflight: int, timeout: float,
         deployment: DeploymentIdentity, observation_sink: ObservationSink,
+        metrics: TaskMetrics,
     ):
         self.app = app
         self.tokens = load_tokens({"MINILOOP_DEEPAGENTS_TOKENS": json.dumps(dict(tokens))})
@@ -56,6 +58,7 @@ class AccessBoundary:
             raise ValueError("request timeout must be 1–120 seconds")
         self.max_inflight, self.timeout, self.active = max_inflight, timeout, 0
         self.deployment, self.observation_sink = deployment, observation_sink
+        self.metrics = metrics
 
     def _observe(self, state: dict[str, Any], owner: str | None, status_code: int) -> None:
         record = base_observation("task.api_request", self.deployment)
@@ -70,6 +73,21 @@ class AccessBoundary:
         if isinstance(correlation, dict):
             record.update(correlation)
         emit_observation(self.observation_sink, record)
+        operation = state.get("task_operation", "unknown")
+        result = ("success" if status_code < 400 else "rejected" if status_code < 500
+                  else "timeout" if state.get("task_timed_out") else "error")
+        self.metrics.api_request(operation, result)
+        if operation == "submit":
+            outcome = state.get("task_submission_outcome")
+            self.metrics.submission(outcome if outcome in {"accepted", "reused"} else
+                                    "rejected" if status_code < 500 else "unknown")
+        if operation == "cancel":
+            outcome = state.get("task_cancel_outcome")
+            self.metrics.cancel(outcome if outcome in {"accepted", "noop"} else
+                                "rejected" if status_code < 500 else "error")
+        correlation = state.get("task_correlation")
+        if isinstance(correlation, dict) and isinstance(correlation.get("task_status"), str):
+            self.metrics.status(correlation["task_status"])
 
     async def __call__(self, scope: dict, receive: Any, send: Any) -> None:
         if scope["type"] != "http":
@@ -127,6 +145,7 @@ class AccessBoundary:
             if started:
                 raise
             # A remote write may already have committed; never claim no task exists.
+            state["task_timed_out"] = True
             await error_response("request_timeout", 503, outcome="unknown")(scope, receive, guarded_send)
         except Exception as error:
             if started:
@@ -186,12 +205,13 @@ def create_app(
     request_timeout: float = 20.0, lifespan: Any = None,
     deployment: DeploymentIdentity | None = None,
     observation_sink: ObservationSink = default_observation_sink,
+    metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> Starlette:
     """Compose the public API; injecting a service is a trusted embedding seam."""
     # Validate deployment configuration eagerly, before binding a listening socket.
     deployment = deployment or DeploymentIdentity.unavailable()
     validated = AccessBoundary(None, tokens=tokens, max_inflight=max_inflight, timeout=request_timeout,
-                               deployment=deployment, observation_sink=observation_sink)
+                               deployment=deployment, observation_sink=observation_sink, metrics=metrics)
 
     def operations(request: Request) -> TaskOperations:
         return request.app.state.task_service
@@ -204,6 +224,7 @@ def create_app(
             available = await request.app.state.task_service.readiness() is True
         except Exception:
             available = False
+        metrics.api_ready(available)
         return JSONResponse({"status": "ready" if available else "not_ready"},
                             status_code=200 if available else 503, headers={"Cache-Control": "no-store"})
 
@@ -211,6 +232,7 @@ def create_app(
         request.state.task_operation = "submit"
         key, message = await _submission(request)
         result = await operations(request).submit(request.state.task_owner, key, message)
+        request.state.task_submission_outcome = "reused" if result.get("reused") is True else "accepted"
         _correlate(request, result)
         return JSONResponse(result, status_code=202, headers={"Location": "/v1/tasks/" + result["task_id"]})
 
@@ -230,6 +252,7 @@ def create_app(
         # Cancellation is a durable Temporal request, not proof the task stopped.
         request.state.task_operation = "cancel"
         value = await operations(request).cancel(request.state.task_owner, request.path_params["task_id"])
+        request.state.task_cancel_outcome = "accepted" if value.get("cancel_requested") is True else "noop"
         _correlate(request, value)
         return JSONResponse(value, status_code=202)
 
@@ -289,7 +312,7 @@ def create_app(
         Route("/v1/tasks/{task_id}/events", events, methods=["GET"]),
     ], middleware=[Middleware(AccessBoundary, tokens=validated.tokens, max_inflight=max_inflight,
                               timeout=request_timeout, deployment=deployment,
-                              observation_sink=observation_sink)],
+                              observation_sink=observation_sink, metrics=metrics)],
         exception_handlers={HTTPException: http_error, TaskServiceError: service_error}, lifespan=lifespan)
     app.state.task_service = service
     return app

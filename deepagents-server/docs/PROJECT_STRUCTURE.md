@@ -21,6 +21,7 @@ deepagents-server/
 │   │   ├── protocol.py              错误、稳定标识、摘要与操作接口
 │   │   ├── service.py               submit/get/result/cancel/events 编排
 │   │   ├── observability.py         content-free 请求/Activity 关联记录
+│   │   ├── metrics.py / telemetry.py 低基数指标 facade / CLI exporter 装配
 │   │   ├── backend/                 Temporal SDK 访问及其协议适配
 │   │   │   ├── runs.py              owner 校验、Run 查找与执行链校验
 │   │   │   ├── history.py           History 读取、事件页与 Run 导航
@@ -78,7 +79,8 @@ HTTP、协议、编排、Workflow、连接与生命周期文件直接放在 `tas
    `readiness.py` 单独管理探活的超时、并发合并和短缓存。
 4. Temporal 服务持久接受 Workflow 后，API 才能返回 202。Worker 独立轮询并执行
    `runtime.py:TaskWorkflow`；HTTP 连接的生命期不拥有任务执行。API 响应与模型
-   Activity 分别由 `observability.py` 输出 best-effort 关联记录，Temporal 仍是状态权威。
+   Activity 分别由 `observability.py` 输出 best-effort 关联记录；`metrics.py` 将 API、
+   Workflow 和 Activity 的低基数观测写入 CLI 装配的 SDK exporter。Temporal 仍是状态权威。
 
 依赖方向是 `api → http → protocol` 与 `api → service → backend`。
 HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定义，既不导入 HTTP 层，
@@ -97,6 +99,7 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 | Temporal 连接或探活 | `connection.py`、`backend/readiness.py` | CLI 环境读取与 library 显式配置分开；不降低 TLS 验证 |
 | 模型部署设置 | `config.py`、`task_server/worker.py` | 凭据留在 Worker；固定 alias 不由 HTTP 输入覆盖 |
 | 请求/Activity 关联字段 | `task_server/observability.py`；wire identity 同步 `protocol.py` | 不记录 message/key/credential/model I/O；sink 失败不改业务结果 |
+| 基础指标或 exporter | `task_server/metrics.py`、`telemetry.py`；调用点位于 `http.py`、`runtime.py`、`worker.py` | 仅低基数枚举标签；library 默认不监听；指标失败不改业务结果或 History |
 | Workflow / 工具执行行为 | `runtime.py`、`checkpoint.py`、`summarization.py` | 当前只维护一份实现；变更须核对当前持久格式与 replay，不为未部署的迭代累积兼容版本 |
 | Worker 退出行为 | `lifecycle.py` 与 `worker.py` | library `serve` 不接管宿主信号；CLI 才拥有强退责任 |
 | 新故障验收场景 | `tooling/acceptance/scenarios/`；共用设施放 `support/` | 离线模型与故障注入留在 `fixtures/`，不进入生产输入或 wheel |

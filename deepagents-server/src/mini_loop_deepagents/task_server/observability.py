@@ -16,6 +16,7 @@ import re
 from typing import Any
 
 from .protocol import SNAPSHOT_SCHEMA, TASK_ID_PATTERN, TASK_VERSION, valid_run_id
+from .metrics import NOOP_TASK_METRICS, TaskMetrics
 
 OBSERVATION_SCHEMA = 1
 IMAGE_REF_ENV = "MINILOOP_TASK_IMAGE_REF"
@@ -129,16 +130,19 @@ class ObservedModel:
     def __init__(
         self, delegate: Any, *, deployment: DeploymentIdentity, worker_identity: str,
         sink: ObservationSink,
+        metrics: TaskMetrics = NOOP_TASK_METRICS,
     ) -> None:
         self._delegate = delegate
         self._deployment = deployment
         self._worker_identity = worker_identity
         self._worker_identity_sha256 = hashlib.sha256(worker_identity.encode("utf-8", errors="replace")).hexdigest()
         self._sink = sink
+        self._metrics = metrics
 
     def _wrap(self, delegate: Any) -> ObservedModel:
         return ObservedModel(delegate, deployment=self._deployment,
-                             worker_identity=self._worker_identity, sink=self._sink)
+                             worker_identity=self._worker_identity, sink=self._sink,
+                             metrics=self._metrics)
 
     def bind_tools(self, *args: Any, **kwargs: Any) -> ObservedModel:
         return self._wrap(self._delegate.bind_tools(*args, **kwargs))
@@ -148,6 +152,12 @@ class ObservedModel:
 
     async def ainvoke(self, *args: Any, config: Any = None, **kwargs: Any) -> Any:
         info = _current_activity_info()
+        scheduled = getattr(info, "current_attempt_scheduled_time", None)
+        started = getattr(info, "started_time", None)
+        queue_latency_ms = None
+        if scheduled is not None and started is not None:
+            queue_latency_ms = max(0, int((started - scheduled).total_seconds() * 1000))
+        self._metrics.activity_started(attempt=info.attempt, queue_latency_ms=queue_latency_ms)
         correlation = _activity_correlation(config, info)
         record = base_observation("task.model_activity", self._deployment)
         record.update({
@@ -165,18 +175,21 @@ class ObservedModel:
         try:
             result = await self._delegate.ainvoke(*args, config=config, **kwargs)
         except BaseException:
+            self._metrics.activity_finished("failed", attempt=info.attempt)
             emit_observation(self._sink, {**record, "outcome": "failed"})
             raise
         emit_observation(self._sink, {**record, "outcome": "completed"})
+        self._metrics.activity_finished("completed", attempt=info.attempt)
         return result
 
 
 def observe_model_provider(
     provider: Callable[[str], Any], *, deployment: DeploymentIdentity,
     worker_identity: str, sink: ObservationSink = default_observation_sink,
+    metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> Callable[[str], Any]:
     """Wrap the trusted worker-side provider selected by DeepAgentsPlugin."""
     def observed(name: str) -> Any:
         return ObservedModel(provider(name), deployment=deployment,
-                             worker_identity=worker_identity, sink=sink)
+                             worker_identity=worker_identity, sink=sink, metrics=metrics)
     return observed

@@ -329,7 +329,14 @@ identity、镜像 digest 与协议版本。CAN 后首 Run 保持而当前 Run �
 
 默认记录写 stderr，best effort 且 process-local；不会记录 message、Idempotency-Key、
 token、model/tool 内容或异常文本，sink 失败也不会改写 API/provider 结果。当前没有
-日志持久化、查询 API、基础指标或 trace 后端，不能把这些记录表述为 P1.2/P1.3 完成。
+日志持久化、查询 API 或 trace 后端，不能把这些记录表述为 P1.3 trace 完成。
+
+P1.2 另由 API 与 Worker 的进程内 SDK exporter 提供低基数 Prometheus 指标：接受/拒绝、
+状态读取、取消、模型 Activity 排队/attempt/inflight、父模型边界、CAN 和 checkpoint
+状态大小均可机器查询；API namespace readiness 与 Worker polling/draining 分开报告。
+这些累计值重启归零，重复查询会重复增加 status observation，也不会按 TaskID 聚合。
+完整名称、PromQL、隐私和“活着但不前进”边界见
+[Task 基础指标合同](docs/TASK_METRICS.md)。Temporal History 仍是唯一任务状态权威。
 
 ## 容器入口与 API 就绪探测
 
@@ -347,7 +354,8 @@ Workflow Start 权限、Worker 槽、真实模型或端到端执行可用。HEAD
 
 镜像使用 UID/GID 10001，Compose 只读 root、64 MiB `/tmp`、20 秒 stop grace，
 超过 Worker 默认 15 秒硬退出期限。Secret 宿主权限必须允许此身份读取。API 只在
-容器网络 expose 8123，需要已有 ingress；Compose healthcheck 状态不会自行触发
+容器网络 expose 8123，需要已有 ingress；两个角色另在内部网络 expose 无认证的
+9464 `/metrics`，只能由受信任 scraper 访问。Compose healthcheck 状态不会自行触发
 重启，`restart: unless-stopped` 是另一项进程退出策略。完整命令和发布边界见
 [部署说明](TASK_DEPLOYMENT.md)。
 

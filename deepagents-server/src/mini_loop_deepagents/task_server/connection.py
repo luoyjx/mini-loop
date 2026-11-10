@@ -17,6 +17,7 @@ import stat
 from urllib.parse import urlsplit
 
 from temporalio.client import Client
+from temporalio.runtime import Runtime
 from temporalio.service import TLSConfig
 
 PREFIX = "MINILOOP_TASK_TEMPORAL_"
@@ -165,6 +166,7 @@ async def connect_temporal(
     namespace: str = "default",
     identity: str | None = None,
     connection: TemporalConnectionSettings | None = None,
+    runtime: Runtime | None = None,
 ) -> Client:
     """Eager verified connection with one startup budget and safe failures.
 
@@ -178,7 +180,7 @@ async def connect_temporal(
     try:
         async with asyncio.timeout(STARTUP_TIMEOUT_SECONDS):
             return await Client.connect(address, namespace=namespace, identity=identity, lazy=False,
-                                        tls=settings.tls_config(), api_key=settings.api_key)
+                                        tls=settings.tls_config(), api_key=settings.api_key, runtime=runtime)
     except asyncio.CancelledError:
         raise
     except TimeoutError:

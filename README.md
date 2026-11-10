@@ -271,20 +271,21 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-10**, baseline `74ed76e`.
+Architecture review: **2026-11-10**, baseline `478ee6a`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records P1.1 complete. The controlled research/artifact pilot keeps Temporal
+now records P1.2 complete. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
 records one `runtime.py:TaskWorkflow` implementation, one Worker registration,
 the `TaskWorkflowV2` / `task-v2` / snapshot schema 2 wire identity and bounded
 continuation state. API and model Activity processes now emit content-free,
 best-effort correlation JSONL for request, Task, first/current Run, Activity attempt,
-owner, image digest and protocol identity. Temporal History remains the sole task
-and result authority; no durable observation backend, metric or trace service is
-added. Historical V1/V2 runs remain evidence of their original source baseline,
+owner, image digest and protocol identity. API and Worker now expose separate
+internal Prometheus endpoints for low-cardinality health, admission, progress,
+Activity retry/queue, CAN and state-size metrics. Temporal History remains the sole task
+and result authority; no durable metric or trace service is added. Historical V1/V2 runs remain evidence of their original source baseline,
 not current compatibility. The
-[iteration illustration](docs/audits/agent-server-production-p1-1-2026-11-10.png)
-marks this process-local observation path without inventing a second authority.
+[iteration illustration](docs/audits/agent-server-production-p1-2-2026-11-10.png)
+marks these process-local metric surfaces without inventing a second authority.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
@@ -1279,7 +1280,7 @@ by `proposal-<id>`, and a LaunchAgent generator. The first demo (`c65073a`) kept
 mock mail and calendar in the daemon's own SQLite file.
 
 Earlier Task structure baseline: **2026-10-17**, `2b85676` plus the
-single Task runtime cleanup. The P1.1 review baseline is `74ed76e`. API, Worker and Temporal deployment roles are unchanged;
+single Task runtime cleanup. The P1.2 review baseline is `478ee6a`. API, Worker and Temporal deployment roles are unchanged;
 the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
 `protocol.py` defines stable errors, identities and the operation interface,
@@ -1301,8 +1302,11 @@ API assigns a response request UUID and emits a content-free record after each
 non-probe request. Patch-protected Workflow metadata lets the model Activity record
 Task/first/current Run, owner, Activity ID/attempt and outcome; both roles add the
 same immutable image digest and protocol identity. Records are best-effort stderr,
-not durable state, metrics or trace. API readiness checks the configured namespace with a bounded, coalesced RPC;
-liveness does not depend on Temporal. The shared TLS settings remain explicit.
+not durable state or trace. API readiness checks the configured namespace with a bounded, coalesced RPC;
+liveness does not depend on Temporal. Separate internal `/metrics` endpoints distinguish
+API namespace readiness from Worker polling/draining and report admission, Workflow
+progress, Activity attempts, CAN and bounded state sizes. Metrics are process-local
+observations, not durable truth. The shared TLS settings remain explicit.
 Signal handling explicitly wakes an idle event loop; Worker drain and hard-deadline
 budgets stay unchanged; library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
@@ -1505,13 +1509,13 @@ flowchart LR
     end
     subgraph TaskServer["deepagents-server/task_server · opt-in Task HTTP service"]
         TSClient["Task clients<br/>Bearer + Idempotency-Key + message"]
-        TSAPI["Independent Task HTTP API process<br/>http → TaskService → backend · shared protocol<br/>submit · status · result · cancel · retained events<br/>request UUID → Task / first + current Run · content-free stderr"]
+        TSAPI["Independent Task HTTP API process<br/>http → TaskService → backend · shared protocol<br/>submit · status · result · cancel · retained events<br/>request UUID correlation · internal /metrics · API readiness"]
         TSHistory["Independent Temporal service / retained History<br/>stable TaskID / first Run · immutable request memo<br/>retained Run chain / signed per-Run event cursors"]
         TSConnection["Shared Temporal client settings<br/>CLI environment / explicit library object<br/>verified TLS · CA · mTLS pair · server name · API key"]
         TSLaunch["Independent Task image / role launcher<br/>non-root · role-specific secret files<br/>same-process API or Worker · external Temporal"]
-        TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>grace + hard deadline · library serve stays caller-owned"]
-        TSWorkflow["Single TaskWorkflow · runtime.py<br/>Deep Agents · portable native saver journal<br/>CAN every 8 safe parent model boundaries · no Memory"]
-        TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>Activity ID / attempt / outcome → content-free stderr"]
+        TSProcess["Worker process CLI lifecycle<br/>SIGTERM / SIGINT → SDK shutdown<br/>internal /metrics · polling / draining health"]
+        TSWorkflow["Single TaskWorkflow · runtime.py<br/>portable native saver journal<br/>boundary / CAN / state-size metrics · no Memory"]
+        TSActivity["DeepAgentsPlugin model I/O Activity<br/>fixed openai:task-server deployment alias<br/>queue / attempt / retry / inflight metrics"]
         TSModel["ChatOpenAI provider<br/>model + credentials from Worker environment<br/>no public fixture selector"]
         TSClient -->|authenticated request| TSAPI
         TSLaunch -. API startup / liveness and readiness .-> TSAPI
@@ -1856,6 +1860,9 @@ remain a separate profile. API `/healthz` is process liveness; `/readyz` uses a
 one-second namespace RPC and one-second result cache, coalescing concurrent probes.
 Readiness requires DescribeNamespace permission and does not prove Start permission,
 Worker capacity or HA. Dependency outages must not be used as liveness failures.
+Both roles expose an unauthenticated internal `:9464/metrics` scrape through Compose;
+it must stay behind trusted network policy. The exporter is process-local and does
+not provide retention, dashboarding, unique-task counts or a second status authority.
 The container stop budget is 20 seconds, longer than the existing 15-second Worker
 hard deadline. A local container replacement test cannot establish multi-host
 fault domains or production Temporal/database availability.

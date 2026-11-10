@@ -1,0 +1,12 @@
+Edit the provided mini-loop layered architecture diagram as a restrained technical-architecture iteration highlight. Preserve the entire existing image, layout, aspect ratio, Chinese/English labels, colors, all five L1–L5 layers, the Deep Agents Server lane, Temporal prototype lane, Go assistant lane, and every existing box and arrow. Do not redraw or remove architecture parts.
+
+In the bottom “独立 Task 容器 · task_server.launch api | worker · 默认启用” lane only, add crisp cyan and amber metric highlights around the existing Task API box and the existing Task Worker / TaskWorkflow / model Activity area. Keep the existing Temporal History box visually dominant as the execution and result authority. Use thin dotted cyan scrape indicators from Task API and Task Worker to a compact internal metrics callout, without adding a new service, database, dashboard, or storage cylinder.
+
+Add one compact callout above the Task lane with exactly these readable lines:
+“P1.2 基础指标”
+“API / Worker · internal :9464/metrics”
+“accept · reject · status · cancel”
+“queue · attempt · retry · inflight”
+“boundary · CAN · state size”
+
+Add a small label near it: “process-local · 重启归零 · Temporal History 仍是权威”. Add a second tiny privacy label: “无 owner / TaskID / RunID / content / credential”. Use the existing cyberpunk blueprint style, bright cyan outlines with a small amber accent, high contrast white text, and clean typography. Avoid covering existing labels, especially the red 2026-10-17 badge. No extra icons, logos, claims, dates, components, storage, dashboards, or trace backends.

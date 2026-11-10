@@ -8,6 +8,7 @@ TaskWorkflowV2/task-v2 serialized protocol; there is no V1 execution path.
 
 from __future__ import annotations
 
+import base64
 from datetime import timedelta
 import hashlib
 import json
@@ -32,6 +33,7 @@ with workflow.unsafe.imports_passed_through():
         CheckpointLimitError,
         InvalidCheckpointError,
         PortableSaver,
+        envelope_size,
         require_envelope_budget,
     )
 
@@ -90,6 +92,34 @@ def _request_digest(payload: dict[str, str], task_queue: str) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
+def _workflow_metrics() -> dict[str, Any]:
+    """Create replay-safe SDK instruments; exporter faults are observational."""
+    try:
+        meter = workflow.metric_meter()
+        return {
+            "runs": meter.create_counter("mini_loop_task_workflow_runs"),
+            "boundaries": meter.create_counter("mini_loop_task_model_boundaries"),
+            "continuations": meter.create_counter("mini_loop_task_continue_as_new"),
+            "checkpoint_size": meter.create_histogram("mini_loop_task_checkpoint_size", unit="byte"),
+        }
+    except Exception:
+        return {}
+
+
+def _metric_add(metrics: dict[str, Any], name: str, attributes: dict[str, str]) -> None:
+    try:
+        metrics[name].add(1, attributes)
+    except Exception:
+        return
+
+
+def _metric_record(metrics: dict[str, Any], name: str, value: int, attributes: dict[str, str]) -> None:
+    try:
+        metrics[name].record(value, attributes)
+    except Exception:
+        return
+
+
 @workflow.defn(name="TaskWorkflowV2")
 class TaskWorkflow:
     def __init__(self) -> None:
@@ -143,6 +173,7 @@ class TaskWorkflow:
 
     @workflow.run
     async def run(self, payload: dict[str, Any], continuation: dict[str, Any] | None = None) -> dict[str, Any]:
+        metrics = _workflow_metrics()
         trusted = validate_payload(payload)
         info = workflow.info()
         memo = dict(workflow.memo())
@@ -170,6 +201,7 @@ class TaskWorkflow:
                 self._restore(continuation)
             self._agent = build_agent(info.workflow_id, self._saver)
             self._status = "running"
+            _metric_add(metrics, "runs", {"outcome": "started"})
             if continuation is None:
                 await self._agent.ainvoke(
                     {"messages": [HumanMessage(content=trusted["message"], id=f"{info.workflow_id}:user-input")]},
@@ -179,18 +211,28 @@ class TaskWorkflow:
                 native = self._native_snapshot()
                 if not native.next:
                     self._status = "completed"
+                    _metric_add(metrics, "runs", {"outcome": "completed"})
                     return self.snapshot()
                 self._require_model_boundary(native)
                 if self._total_model_boundaries >= MAX_MODEL_BOUNDARIES:
+                    _metric_add(metrics, "runs", {"outcome": "step_limit"})
                     raise ApplicationError("Task exceeded its total model boundary budget",
                                            type="task_step_limit", non_retryable=True)
                 if self._segment_model_boundaries >= SEGMENT_MODEL_BOUNDARIES:
                     self._status = "continuing"
+                    checkpoint = self._saver.export()
                     next_continuation = {"schema_version": SNAPSHOT_SCHEMA, "identity": dict(self._identity),
                                          "can_count": self._can_count + 1,
                                          "total_model_boundaries": self._total_model_boundaries,
-                                         "checkpoint": self._saver.export()}
-                    require_envelope_budget({"payload": trusted, "continuation": next_continuation})
+                                         "checkpoint": checkpoint}
+                    envelope = {"payload": trusted, "continuation": next_continuation}
+                    require_envelope_budget(envelope)
+                    _metric_record(metrics, "checkpoint_size", checkpoint["raw_bytes"], {"kind": "raw"})
+                    _metric_record(metrics, "checkpoint_size",
+                                   len(base64.b64decode(checkpoint["data"], validate=True)),
+                                   {"kind": "compressed"})
+                    _metric_record(metrics, "checkpoint_size", envelope_size(envelope), {"kind": "envelope"})
+                    _metric_add(metrics, "continuations", {"outcome": "continued"})
                     # Preserve the original Workflow-ID execution chain, memo,
                     # task queue and native total execution timeout. CAN cannot
                     # reset the 24-hour budget; no new Start is issued here.
@@ -198,9 +240,13 @@ class TaskWorkflow:
                 await self._agent.ainvoke(None, config=self._config, interrupt_before=["model"])
                 self._segment_model_boundaries += 1
                 self._total_model_boundaries += 1
+                _metric_add(metrics, "boundaries", {"outcome": "completed"})
         except GraphRecursionError:
+            _metric_add(metrics, "runs", {"outcome": "step_limit"})
             raise ApplicationError("Task exceeded a graph invocation step limit", type="task_step_limit", non_retryable=True) from None
         except CheckpointLimitError:
+            _metric_add(metrics, "runs", {"outcome": "checkpoint_limit"})
             raise ApplicationError("Task checkpoint size budget exceeded", type="task_checkpoint_limit", non_retryable=True) from None
         except InvalidCheckpointError:
+            _metric_add(metrics, "runs", {"outcome": "checkpoint_invalid"})
             raise ApplicationError("Invalid Task checkpoint continuation", type="task_checkpoint_invalid", non_retryable=True) from None

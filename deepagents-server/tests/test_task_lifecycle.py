@@ -253,6 +253,18 @@ class ControlledWorker:
         self.finish.set()
 
 
+class RecordingMetrics:
+    def __init__(self):
+        self.process = []
+        self.worker = []
+
+    def process_up(self, value):
+        self.process.append(value)
+
+    def worker_state(self, *, polling, draining):
+        self.worker.append((polling, draining))
+
+
 @pytest.fixture
 def compose_worker(monkeypatch):
     captures = []
@@ -276,9 +288,11 @@ def compose_worker(monkeypatch):
 async def test_library_stop_drains_the_single_registered_workflow_without_cancelling_worker(compose_worker, capsys):
     instance = ControlledWorker()
     captures = compose_worker(instance)
+    metrics = RecordingMetrics()
     stop = asyncio.Event()
     task = asyncio.create_task(worker.serve("address", "queue", "identity",
-        model_provider=lambda _: None, stop_event=stop, shutdown_grace_seconds=3))
+        model_provider=lambda _: None, stop_event=stop, shutdown_grace_seconds=3,
+        metrics=metrics))
     await instance.started.wait()
     # Let serve observe successful validation and publish readiness.
     await asyncio.sleep(0.02)
@@ -288,6 +302,8 @@ async def test_library_stop_drains_the_single_registered_workflow_without_cancel
     assert captures[0]["graceful_shutdown_timeout"] == timedelta(seconds=3)
     assert captures[0]["workflows"] == [worker.TaskWorkflow]
     assert "TASK_WORKER_READY identity=identity" in capsys.readouterr().out
+    assert metrics.process == [True, False]
+    assert metrics.worker == [(False, False), (True, False), (False, True), (False, False)]
 
 
 @pytest.mark.asyncio

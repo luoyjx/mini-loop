@@ -151,7 +151,7 @@ async def test_default_factory_ignores_ambient_security_environment_and_is_eager
     monkeypatch.setattr(connection.Client, "connect", connect)
     assert await connection.connect_temporal("localhost:7233", namespace="selected-ns", identity="worker-a") is result
     assert captured == [(("localhost:7233",), {"namespace": "selected-ns", "identity": "worker-a",
-                        "lazy": False, "tls": False, "api_key": None})]
+                        "lazy": False, "tls": False, "api_key": None, "runtime": None})]
     assert connection.STARTUP_TIMEOUT_SECONDS == 10
 
 
@@ -171,6 +171,20 @@ async def test_tls_and_api_key_use_sdk_transport_fields_without_rpc_metadata_ove
     assert isinstance(value["tls"], TLSConfig) and value["tls"].domain == "temporal.internal"
     assert value["tls"].verification_server_name is None
     assert "rpc_metadata" not in value
+
+
+@pytest.mark.asyncio
+async def test_factory_forwards_the_explicit_metrics_runtime(monkeypatch):
+    captured = []
+    metrics_runtime = object()
+
+    async def connect(*args, **kwargs):
+        captured.append(kwargs)
+        return object()
+
+    monkeypatch.setattr(connection.Client, "connect", connect)
+    await connection.connect_temporal("127.0.0.1:7233", runtime=metrics_runtime)
+    assert captured[0]["runtime"] is metrics_runtime
 
 
 @pytest.mark.asyncio

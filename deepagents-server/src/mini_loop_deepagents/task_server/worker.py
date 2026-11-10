@@ -27,6 +27,10 @@ from mini_loop_deepagents.task_server.observability import (
     DeploymentIdentity, ObservationSink, default_observation_sink, observe_model_provider,
 )
 from mini_loop_deepagents.task_server.runtime import MODEL_ALIAS, TaskWorkflow
+from mini_loop_deepagents.task_server.metrics import NOOP_TASK_METRICS, TaskMetrics
+from mini_loop_deepagents.task_server.telemetry import (
+    TaskMetricsConfigurationError, TaskMetricsSettings, create_metrics_runtime,
+)
 
 
 def make_model_provider(settings: AgentSettings) -> Callable[[str], Any]:
@@ -60,6 +64,8 @@ async def serve(
     connection: TemporalConnectionSettings | None = None,
     deployment: DeploymentIdentity | None = None,
     observation_sink: ObservationSink = default_observation_sink,
+    temporal_runtime: Any = None,
+    metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> None:
     """Run the production Workflow with an optional trusted test-process provider.
 
@@ -73,13 +79,16 @@ async def serve(
     # Reuse the same strict grace validation without imposing a library deadline.
     validate_shutdown_settings(shutdown_grace_seconds, 360.0)
     deployment = deployment or DeploymentIdentity.unavailable()
+    metrics.process_up(True)
+    metrics.worker_state(polling=False, draining=False)
     stop = stop_event if stop_event is not None else asyncio.Event()
     if stop.is_set():
+        metrics.process_up(False)
         lifecycle_log("TASK_WORKER_STOPPED phase=startup")
         return
 
     connecting = asyncio.create_task(connect_temporal(address, namespace=namespace, identity=identity,
-                                                      connection=connection))
+                                                      connection=connection, runtime=temporal_runtime))
     stopping = asyncio.create_task(stop.wait())
     run_task: asyncio.Task | None = None
     worker: Worker | None = None
@@ -87,6 +96,7 @@ async def serve(
     async def drain() -> None:
         assert worker is not None and run_task is not None
         lifecycle_log("TASK_WORKER_DRAINING")
+        metrics.worker_state(polling=False, draining=True)
         shutdown = asyncio.create_task(worker.shutdown())
         try:
             # A startup/fatal error must win over shutdown's completion event,
@@ -111,7 +121,7 @@ async def serve(
             model_provider = make_model_provider(AgentSettings.from_env())
         model_provider = observe_model_provider(
             model_provider, deployment=deployment, worker_identity=identity,
-            sink=observation_sink,
+            sink=observation_sink, metrics=metrics,
         )
         if stop.is_set():
             lifecycle_log("TASK_WORKER_STOPPED phase=startup")
@@ -142,6 +152,7 @@ async def serve(
             return
         if not stop.is_set():
             print(f"TASK_WORKER_READY identity={identity}", flush=True)
+            metrics.worker_state(polling=True, draining=False)
             await asyncio.wait((run_task, stopping), return_when=asyncio.FIRST_COMPLETED)
         if run_task.done():
             await run_task
@@ -156,6 +167,8 @@ async def serve(
             await asyncio.shield(drain())
         raise
     finally:
+        metrics.worker_state(polling=False, draining=False)
+        metrics.process_up(False)
         stopping.cancel()
         if not connecting.done():
             connecting.cancel()
@@ -176,6 +189,8 @@ def run_process(
     connection: TemporalConnectionSettings | None = None,
     deployment: DeploymentIdentity | None = None,
     observation_sink: ObservationSink = default_observation_sink,
+    temporal_runtime: Any = None,
+    metrics: TaskMetrics = NOOP_TASK_METRICS,
 ) -> None:
     """Trusted process entry point shared by the production CLI and fixtures.
 
@@ -192,7 +207,8 @@ def run_process(
                     activity_slots=activity_slots, workflow_slots=workflow_slots,
                     model_provider=model_provider, shutdown_grace_seconds=grace, stop_event=stop,
                     connection=connection, deployment=deployment,
-                    observation_sink=observation_sink)
+                    observation_sink=observation_sink, temporal_runtime=temporal_runtime,
+                    metrics=metrics)
 
     with ProcessLifecycle(timeout) as lifecycle:
         asyncio.run(run(lifecycle))
@@ -211,15 +227,19 @@ def main() -> None:
     args = parser.parse_args()
     try:
         validate_shutdown_settings(args.shutdown_grace_seconds, args.shutdown_timeout_seconds)
+        if not 1 <= args.activity_slots <= 32 or not 1 <= args.workflow_slots <= 32:
+            raise ValueError("worker slots must be 1–32")
         connection = TemporalConnectionSettings.from_env()
         deployment = DeploymentIdentity.from_env()
-    except ValueError as error:
+        metrics_settings = TaskMetricsSettings.from_env()
+        temporal_runtime, metrics = create_metrics_runtime("worker", deployment, metrics_settings)
+    except (ValueError, TaskMetricsConfigurationError) as error:
         parser.error(str(error))
     run_process(args.address, args.task_queue, args.identity,
                 namespace=args.namespace, activity_slots=args.activity_slots, workflow_slots=args.workflow_slots,
                 shutdown_grace_seconds=args.shutdown_grace_seconds,
                 shutdown_timeout_seconds=args.shutdown_timeout_seconds, connection=connection,
-                deployment=deployment)
+                deployment=deployment, temporal_runtime=temporal_runtime, metrics=metrics)
 
 
 if __name__ == "__main__":

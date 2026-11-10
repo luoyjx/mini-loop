@@ -46,9 +46,10 @@ services:
       MINILOOP_TASK_SERVER_CURSOR_SECRET_FILE: /run/secrets/task_cursor
       MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_api_cert
       MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_api_key
+      MINILOOP_TASK_METRICS_BIND: "0.0.0.0:9464"
     secrets: [task_tokens, task_cursor, temporal_ca, temporal_api_cert, temporal_api_key]
     # No fixed host port or container_name: replicas can share an ingress.
-    expose: ["8123"]
+    expose: ["8123", "9464"]
     healthcheck:
       # Readiness only. Compose does not restart a merely unhealthy container.
       test: [CMD, /opt/venv/bin/python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8123/readyz', timeout=2).close()"]
@@ -84,7 +85,9 @@ services:
       MINILOOP_DEEPAGENTS_TIMEOUT_SECONDS: "${TASK_MODEL_TIMEOUT_SECONDS:-60}"
       MINILOOP_TASK_TEMPORAL_CLIENT_CERT_FILE: /run/secrets/temporal_worker_cert
       MINILOOP_TASK_TEMPORAL_CLIENT_KEY_FILE: /run/secrets/temporal_worker_key
+      MINILOOP_TASK_METRICS_BIND: "0.0.0.0:9464"
     secrets: [openai_key, temporal_ca, temporal_worker_cert, temporal_worker_key]
+    expose: ["9464"]
     # launch assigns hostname:pid identity. A transient connection outage is
     # handled by the SDK; no connection-based liveness restart is installed.
     cpus: 1

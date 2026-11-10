@@ -147,10 +147,16 @@ API 只向容器网络 expose 8123，没有固定 host port、`container_name` �
 | readiness 预算 | 单次 RPC 1 秒；进程内 singleflight；成功/失败均缓存 1 秒；请求取消不取消共享 RPC | 集群全局探测预算或完全即时的故障切流 |
 | Compose API healthcheck | 每 10 秒调用 readyz，单次 timeout 3 秒，3 次失败，start period 20 秒 | unhealthy 会自动重启或负载均衡会自动摘除 |
 | `restart: unless-stopped` | daemon 的进程退出重启策略 | 把 readiness 不健康转换成容器重启 |
+| API/Worker `:9464/metrics` | 各进程的 Prometheus scrape；role 标签区分 API 与 Worker；Compose 仅 expose 到内部网络 | 端点有认证、指标持久化、唯一 Task 计数或 Temporal 状态权威 |
+
+`MINILOOP_TASK_METRICS_BIND=0.0.0.0:9464` 只由两个生产 CLI 读取；library 默认不监听。
+端点无认证，不得经 ingress 发布。指标合同、查询样例与低基数隐私边界见
+[TASK_METRICS.md](docs/TASK_METRICS.md)。Prometheus 部署与保留不在此 Compose profile 内。
 
 Worker 没有网络依赖 liveness probe；短暂断链交由 SDK 重连，避免通过反复重启放大
 网络故障。launcher 为 Worker 默认生成 `hostname:pid` identity，显式 `--identity`
-仍由实际 parser 接收。日志 READY 只证明 SDK Worker 已启动，不保证任务成功。
+仍由实际 parser 接收。日志 READY 与 `mini_loop_task_worker_polling=1` 只证明 SDK Worker
+已启动轮询，不保证任务成功。
 
 两个角色均启用 init、只读 root、64 MiB `/tmp` tmpfs、drop ALL capabilities、
 no-new-privileges 和 128 PID 限额。API 默认 0.5 CPU/512 MiB，Worker 1 CPU/1 GiB。
