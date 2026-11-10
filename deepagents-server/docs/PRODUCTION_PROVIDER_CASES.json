@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "mini-loop-task-live-provider-cases",
+  "status": "fixed-p1.4-cases",
+  "cases": [
+    {
+      "id": "planning-files-subagents-summary-can-v1",
+      "model": "openai:gpt-4.1-mini",
+      "message": "This is a machine-checked acceptance task using only synthetic content. Follow every instruction exactly. First call write_todos with these five todo contents in this order: plan acceptance; delegate child analyses; write deterministic artifacts; verify persisted artifacts; finish acceptance. On every assistant turn that uses tools, call exactly one tool; never batch tool calls. Call the task tool twice, sequentially, with subagent_type general-purpose. The first child must write exactly P1_4_CHILD_A_OK to /acceptance/child-a.txt and return exactly P1_4_CHILD_A_DONE. The second child must write exactly P1_4_CHILD_B_OK to /acceptance/child-b.txt and return exactly P1_4_CHILD_B_DONE. Then write exactly P1_4_PARENT_OK to /acceptance/parent.txt. Next create sixteen files sequentially with one write_file call per turn: /acceptance/progress-01.txt through /acceptance/progress-16.txt. Each file content must be exactly its two-digit number, for example 01 for progress-01.txt and 16 for progress-16.txt. Then read /acceptance/child-a.txt and /acceptance/child-b.txt with separate read_file calls. Finally call write_todos once more with the same five todo contents, all status completed, and return a concise completion message. Do not use shell, Memory, external systems, extra file paths or additional todo items. Do not stop before all exact files and completed todos exist.",
+      "expected": {
+        "minimum_can_count": 2,
+        "minimum_model_boundaries": 20,
+        "require_summary": true,
+        "required_completed_todos": [
+          "plan acceptance",
+          "delegate child analyses",
+          "write deterministic artifacts",
+          "verify persisted artifacts",
+          "finish acceptance"
+        ],
+        "expected_trace_tool_runs": {
+          "task": 2,
+          "write_file": 19,
+          "read_file": 2,
+          "write_todos": 2
+        },
+        "required_files": {
+          "/acceptance/child-a.txt": "P1_4_CHILD_A_OK",
+          "/acceptance/child-b.txt": "P1_4_CHILD_B_OK",
+          "/acceptance/parent.txt": "P1_4_PARENT_OK",
+          "/acceptance/progress-01.txt": "01",
+          "/acceptance/progress-02.txt": "02",
+          "/acceptance/progress-03.txt": "03",
+          "/acceptance/progress-04.txt": "04",
+          "/acceptance/progress-05.txt": "05",
+          "/acceptance/progress-06.txt": "06",
+          "/acceptance/progress-07.txt": "07",
+          "/acceptance/progress-08.txt": "08",
+          "/acceptance/progress-09.txt": "09",
+          "/acceptance/progress-10.txt": "10",
+          "/acceptance/progress-11.txt": "11",
+          "/acceptance/progress-12.txt": "12",
+          "/acceptance/progress-13.txt": "13",
+          "/acceptance/progress-14.txt": "14",
+          "/acceptance/progress-15.txt": "15",
+          "/acceptance/progress-16.txt": "16"
+        }
+      }
+    }
+  ]
+}

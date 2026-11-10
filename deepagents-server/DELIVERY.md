@@ -1,10 +1,45 @@
 # Deep Agents Server delivery — 2026-11-10
 
-当前生产化迭代以 `d6761a4` 为审阅基线，P1.3 交付见下节。2026-10-17 的单 runtime
+当前生产化迭代以 `72f2306` 为审阅基线，P1.4 交付见下节。2026-10-17 的单 runtime
 迭代以 `2b85676` 为基线：按用户明确的未生产使用前提，移除早期 Task V1，
 收敛为唯一 `runtime.py:TaskWorkflow`；不新增依赖。下文的历史
 验收保留各自源码、镜像、run_id 和资源范围，不由本轮清理追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
+
+## P1.4 真实 provider 验收门禁（未执行）
+
+- 新增唯一固定合成用例和仓库外短期 approval 合同；真实执行必须同时满足显式环境确认、
+  mode 0600 approval、clean HEAD 与不可变镜像绑定，示例 approval 故意不可执行。
+- 验收器经现有 HTTPS Task API 提交/轮询/取消，校验 snapshot、精确文件与 todos、trace 工具
+  run 计数、原生摘要、Continue-As-New History 全链，以及 LangSmith Workflow / Activity /
+  ChatOpenAI 拓扑；真实运行不能替换仓库内固定 profile 或 case manifest。
+- Task Bearer 与 LangSmith read key 只从私有单行文件读取；两个客户端都拒绝环境代理和重定向。
+  trace 内容字段必须为空；provider usage 或 cost 缺失时立即归类 `inconclusive`，不按零处理。
+- 私有完整结果和可分享 receipt 分离写入 mode 0700 新目录，文件为 mode 0600；receipt 只含
+  ID、计数、哈希和已批准环境标签，不含 prompt、凭据、模型正文或远端响应正文。
+
+当前环境没有外部 approval、provider/LangSmith 凭据或已部署目标，P0 profile 也明确
+`execution_authorized=false`。因此本轮没有发起真实 Task、模型调用、费用或远端 trace，
+也没有生成通过 receipt；P1.4 保持未完成。门禁合同与操作边界见
+[PRODUCTION_PROVIDER_ACCEPTANCE](docs/PRODUCTION_PROVIDER_ACCEPTANCE.md)。
+
+内置 imagegen 基于 canonical 底图生成[本轮门禁图](../docs/audits/agent-server-production-p1-4-gate-2026-11-10.png)；
+[两阶段精确提示词](../docs/audits/agent-server-production-p1-4-gate-2026-11-10.prompt.txt)与
+[视觉检查](../docs/audits/agent-server-production-p1-4-gate-2026-11-10.md)一并保留。图中 P1.4
+是无连接线的 repo-only 审阅注释，不是运行时节点；本轮没有架构部件增删，canonical raster、
+README Mermaid 与 architecture JSON/HTML 均保持不变。
+
+| 本轮 Gate | 结果 | 边界 |
+| --- | --- | --- |
+| P1.4 聚焦回归 | **19 passed in 0.03s** | 固定 case、三重授权、私有凭据、直连 HTTPS、精确结果/History/trace/usage/cost 与 fail-closed 分类 |
+| 离线合同检查 | **ready / live not authorized** | 1 个固定 case；profile 明确 `execution_authorized=false`，unknown usage 必须停止并标记 inconclusive |
+| 独立模块 pytest | **674 passed in 3.76s** | 串行；最大 RSS 195.3 MiB |
+| 根 Python pytest | **2256 passed / 28 skipped / 104 warnings**，75.04 秒 | 最终串行重跑；此前同轮 timed 重跑最大 RSS 353.4 MiB；保留既有 skipped/warnings |
+| Python invariants | **77 modules checked** | 原 `python/mini_loop` 范围 |
+| Root guard mutation harness | **383 / 383 load-bearing** | unmodified baseline 全部通过，每个突变测试调用均失败并被捕获；新增 P1.4 工具由其 19 项聚焦测试覆盖 |
+| 依赖锁 | **通过** | `uv lock --check --offline`，105 packages；首次从无 `pyproject.toml` 的根目录调用被拒，随后从模块目录正确重跑 |
+| 架构静态一致性 | **通过** | JSON/HTML 未改；83 components / 110 connections；JSON component/connection ID 与 HTML element ID 均无重复 |
+| Imagegen / diff / outline | **通过** | 1375 × 1144 迭代图已目视检查；源图和迭代图 SHA-256 已记录；最终空白检查见提交前门禁 |
 
 ## P1.3 Trace 与用量
 

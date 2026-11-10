@@ -89,4 +89,5 @@ Temporal History 保留期，不是永久业务台账；过期后只有权威核
 
 P0 仍有四项未满足条件：配置并记录具体 Temporal 供应商/地域/namespace；指定 Temporal、
 TLS 与备份运营负责人；指定 M1 独立复核人；批准真实 provider 费用与凭据使用。在这些条件
-满足并记录前，P0 和 M1 都不能结束。
+满足并记录前，P0 和 M1 都不能结束。P1.4 的固定用例、外部短期 approval 与 receipt
+格式见 [真实 provider 验收合同](PRODUCTION_PROVIDER_ACCEPTANCE.md)；验收器就绪不关闭上述条件。

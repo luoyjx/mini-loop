@@ -1,0 +1,32 @@
+Initial edit prompt
+===================
+
+Use case: infographic-diagram. Edit the supplied complete mini-loop layered architecture diagram in place for the P1.4 delivery evidence dated 2026-11-10.
+
+Preserve the entire original canvas, aspect ratio, title, dark navy/cyan cyberpunk blueprint style, every L1-L5 layer, the right-side boundary explanation, the standard Agent Server lane, the Temporal experiment lane, the Go personal-assistant lane, all existing arrows and all existing orange date badges. Do not add, remove, rename, reconnect, or reposition any runtime component. In particular, preserve the bottom independent Task container lane exactly as the runtime topology: client → stateless Task API → Temporal Workflow History → TaskWorkflow/Worker → model Activity/ChatOpenAI, plus the existing LangSmith trace box.
+
+Add only a compact evidence callout overlay adjacent to, but visually outside, the independent Task container lane. It must look like a repo-only review annotation, not a runtime node, service, scheduler, queue, database, budget store, or network hop. Connect the callout to the existing Task lane and existing LangSmith box with thin dotted orange review leader lines that have no directional arrowheads.
+
+The callout title must be exactly:
+“P1.4 真实 Provider 验收门禁”
+
+Inside it, use these short readable lines:
+“外部短期审批 · clean commit / immutable image”
+“固定合成用例 · plan / files / subagents / summary / CAN”
+“HTTPS Task API + read-only trace query”
+“tokens / cost unknown → inconclusive + cancel”
+“不是部署节点 · 不持久化预算”
+
+Add one prominent red-orange status badge exactly:
+“本轮未执行真实调用”
+
+Keep all existing architecture labels as legible as possible. Do not imply that P1.4 passed. Do not depict provider credentials, prompts, model output, receipts, real spend, remote TTL proof, production HA, or an embedded Temporal deployment. No watermark. Output the entire edited diagram, not a crop, at the original proportions.
+
+Repair prompt
+=============
+
+Use case: infographic-diagram repair. Make exactly one visual correction to the supplied P1.4 mini-loop architecture evidence image.
+
+Remove the two orange dotted curved leader lines that currently rise from the bottom P1.4 callout toward the row above. Erase both dotted curves completely and fill their former pixels with the matching dark navy background. Do not draw replacement lines or arrows.
+
+Keep the complete bottom callout box, its title, all five bullet lines, and the red-orange “本轮未执行真实调用” badge unchanged. Keep every runtime component, every original architecture connector, every label, every layer, the right boundary column, all existing date badges, canvas dimensions, colors, typography and layout unchanged. The bottom P1.4 callout must remain a clearly separate repo-only evidence annotation and must not look connected to the Go demo lane or any runtime component. No other edits. No watermark. Output the entire image, not a crop.

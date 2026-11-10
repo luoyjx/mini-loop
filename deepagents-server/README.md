@@ -253,6 +253,12 @@ Task API 与 Worker 的 Temporal Client 还安装同一显式 LangSmith plugin�
 缺失 token usage 记为 unknown。该诊断副本的 pilot 保留策略为 30 天且不替代 Temporal，
 完整合同见 [Task tracing](docs/TASK_TRACING.md)。
 
+仓库验收工具另提供 P1.4 真实 provider gate：固定一个合成规划/文件/子代理/摘要/CAN
+用例，逐项核对 Task snapshot、完整 Run 链、trace、tokens 与 cost。提交本身保持
+`execution_authorized=false`；只有外部短期 approval、clean commit/immutable image、
+显式消费确认和 file-backed 凭据同时存在才会联网。当前无授权真实 receipt，详见
+[真实 provider 验收合同](docs/PRODUCTION_PROVIDER_ACCEPTANCE.md)。
+
 此前组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
 后的恢复。对应结果是历史基线，镜像和实验范围见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。
 源码按 HTTP、任务编排、Temporal 后端与仓库验收工具分工；本轮进一步删除尚未生产

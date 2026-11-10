@@ -271,9 +271,9 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-10**, baseline `d6761a4`.
+Architecture review: **2026-11-10**, baseline `72f2306`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records P1.3 complete. The controlled research/artifact pilot keeps Temporal
+now records the P1.4 live-provider harness ready but its real execution unauthorized. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
 records one `runtime.py:TaskWorkflow` implementation, one Worker registration,
 the `TaskWorkflowV2` / `task-v2` / snapshot schema 2 wire identity and bounded
@@ -289,8 +289,8 @@ removed before SDK enqueue, missing usage is unknown, and
 the declared pilot retention is 30 days. This diagnostic trace is neither durable task
 state nor a second executor. Historical V1/V2 runs remain evidence of their original source baseline,
 not current compatibility. The
-[iteration illustration](docs/audits/agent-server-production-p1-3-2026-11-10.png)
-marks the redacted trace and usage path without inventing a second authority.
+[iteration illustration](docs/audits/agent-server-production-p1-4-gate-2026-11-10.png)
+marks the repo-only approval/result/trace acceptance path without claiming a real provider run.
 
 The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
@@ -1285,7 +1285,7 @@ by `proposal-<id>`, and a LaunchAgent generator. The first demo (`c65073a`) kept
 mock mail and calendar in the daemon's own SQLite file.
 
 Earlier Task structure baseline: **2026-10-17**, `2b85676` plus the
-single Task runtime cleanup. The P1.3 review baseline is `d6761a4`. API, Worker and Temporal deployment roles are unchanged;
+single Task runtime cleanup. The P1.4 gate review baseline is `72f2306`. API, Worker and Temporal deployment roles are unchanged;
 the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
 `protocol.py` defines stable errors, identities and the operation interface,
@@ -1317,6 +1317,12 @@ Workflow/Activity/model timing plus validated usage metadata; prompt/tool inputs
 outputs, error text, serialized/runtime/event/attachment fields and owner are excluded
 before enqueue, and absent usage is explicitly unknown.
 Its declared 30-day policy still requires backend TTL verification. The shared TLS settings remain explicit.
+Repository-only `tooling.acceptance.live_provider` can inspect an already-provisioned
+HTTPS Task deployment and the dedicated trace project against one fixed synthetic case.
+It requires a short-lived external approval, a clean commit and immutable image,
+file-backed credentials and explicit spend acknowledgement; the committed profile
+remains non-authorizing. This observer is not deployed with API/Worker and does not
+become task state, scheduling authority or a durable budget service.
 Signal handling explicitly wakes an idle event loop; Worker drain and hard-deadline
 budgets stay unchanged; library callers retain process ownership. No owner Memory is
 installed. The standard Agent Server profile,
@@ -1883,6 +1889,11 @@ outputs, exception text, serializer/runtime fields, events and attachments are r
 before enqueue; missing usage is `unknown`.
 The 30-day pilot retention value is a validated deployment declaration, not remote
 TTL enforcement, and trace availability never changes Temporal outcomes.
+The P1.4 repository harness adds no runtime node: after external approval it reads
+the existing HTTPS API and trace project, checks exact synthetic files/todos,
+Continue-As-New History, trace privacy, tokens and cost, then writes a private result
+and content-free receipt. No approval, endpoint or credential is currently present,
+so this review proves the fail-closed gate and fixed case only, not a live run.
 The container stop budget is 20 seconds, longer than the existing 15-second Worker
 hard deadline. A local container replacement test cannot establish multi-host
 fault domains or production Temporal/database availability.

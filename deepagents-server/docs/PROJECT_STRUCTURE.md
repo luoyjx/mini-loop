@@ -41,6 +41,7 @@ deepagents-server/
 │   ├── paths.py                     仓库根、fixture 等路径的集中定义
 │   ├── build_task_bundle.py         固定依赖及源文件一致性审计、构建上下文
 │   └── acceptance/
+│       ├── live_provider.py         P1.4 外部审批、真实 Task/trace/费用验收器
 │       ├── scenarios/              各故障场景的执行流程
 │       ├── support/                子进程、资源预算、Docker/Temporal 辅助
 │       └── fixtures/               离线模型、测试 Worker 与观察器
@@ -105,6 +106,7 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 | Workflow / 工具执行行为 | `runtime.py`、`checkpoint.py`、`summarization.py` | 当前只维护一份实现；变更须核对当前持久格式与 replay，不为未部署的迭代累积兼容版本 |
 | Worker 退出行为 | `lifecycle.py` 与 `worker.py` | library `serve` 不接管宿主信号；CLI 才拥有强退责任 |
 | 新故障验收场景 | `tooling/acceptance/scenarios/`；共用设施放 `support/` | 离线模型与故障注入留在 `fixtures/`，不进入生产输入或 wheel |
+| 真实 provider 验收 | `tooling/acceptance/live_provider.py`；`docs/PRODUCTION_PROVIDER_CASES.json` | 提交配置不授权消费；要求外部短期 approval、HTTPS、file-backed 凭据与 clean commit；输出私有 result 和脱敏 receipt |
 | 生产验收目标 | `docs/PRODUCTION_ACCEPTANCE_PROFILE.json`、`tooling/acceptance/production_profile.py` | 配置与校验不等于运行通过，不能授权 provider 消费或部署资源 |
 | 打包规则 | `tooling/build_task_bundle.py`、`Dockerfile.task` | wheel 源文件和锁文件一致性；不从测试目录拼装生产包 |
 

@@ -161,6 +161,13 @@ API 只向容器网络 expose 8123，没有固定 host port、`container_name` �
 不是任务权威或成功条件。完整合同和 waterfall 检查见
 [Task trace 与模型用量](docs/TASK_TRACING.md)。
 
+真实 provider 预发布检查不是容器启动默认路径。仓库内
+`tooling.acceptance.live_provider` 只连接已 provision 的 HTTPS Task API 与专用
+LangSmith project；提交中的 profile 和 approval 示例均不授权消费。实际运行必须使用
+仓库外 mode 0600 approval/token/key、clean commit 和不可变镜像，并把私有结果与脱敏
+receipt 写到新建的 mode 0700 目录。命令、预算停止条件和未验证边界见
+[P1.4 真实 provider 验收](docs/PRODUCTION_PROVIDER_ACCEPTANCE.md)。
+
 Worker 没有网络依赖 liveness probe；短暂断链交由 SDK 重连，避免通过反复重启放大
 网络故障。launcher 为 Worker 默认生成 `hostname:pid` identity，显式 `--identity`
 仍由实际 parser 接收。日志 READY 与 `mini_loop_task_worker_polling=1` 只证明 SDK Worker
