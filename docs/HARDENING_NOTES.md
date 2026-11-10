@@ -1,5 +1,23 @@
 # Hardening notes
 
+## 2026-11-10 Task submission uncertainty and bounded provider retries
+
+The Task API already returned an explicit unknown outcome when a Start RPC did not
+return, but unit doubles could not prove the hardest case: Temporal accepted the
+Workflow and the HTTP response was then lost. The repository-only acceptance proxy
+now consumes a complete upstream 202 before disconnecting its client. Reconciliation
+uses the deterministic owner/idempotency-key Task ID and a second API replica; the
+same request must report reuse and Temporal must still count exactly one Workflow.
+Changed content remains 409 and foreign-owner operations remain indistinguishable 404s.
+
+Provider failures have two retry owners unless one is disabled. The production Task
+Worker therefore keeps SDK `max_retries=0`; a controlled fixture records exactly one
+provider-boundary call for each Temporal Activity attempt. The real-process gate pins
+429 to attempts 1/2 fail and 3 succeed, timeout to three failures and terminal failure,
+and disconnect to one failure then success. Records must retain one native Activity
+identity and never exceed attempt 3. This is offline fault evidence, not a claim about
+real-provider transport, billing, trace, or rate-limit behavior.
+
 ## 2026-10-15 native IDNA admission and fixed Unicode data
 
 Provider IDNA is now a native port using project-owned RFC3492 Punycode,

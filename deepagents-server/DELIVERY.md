@@ -1,10 +1,54 @@
 # Deep Agents Server delivery — 2026-11-10
 
-当前生产化迭代以 `72f2306` 为审阅基线，P1.4 交付见下节。2026-10-17 的单 runtime
+当前生产化迭代以 `36cb193` 为审阅基线，P1.5/P1.6 交付见下节。2026-10-17 的单 runtime
 迭代以 `2b85676` 为基线：按用户明确的未生产使用前提，移除早期 Task V1，
 收敛为唯一 `runtime.py:TaskWorkflow`；不新增依赖。下文的历史
 验收保留各自源码、镜像、run_id 和资源范围，不由本轮清理追认。需求对应关系见
 [TASK_ACCEPTANCE](docs/TASK_ACCEPTANCE.md)，部署入口见 [TASK_DEPLOYMENT](TASK_DEPLOYMENT.md)。
+
+## P1.5 受控失败与 P1.6 协议边界
+
+- 生产 Worker 继续固定 `ChatOpenAI(max_retries=0)`；仓库专用 fixture 在首次模型边界、
+  工具副作用发生前注入 429、timeout 或 disconnect，并为每个 Temporal Activity attempt
+  原子写一条不含 prompt/凭据的私有记录。
+- 一次性 TCP 代理完整读取 API 的上游 202 后关闭客户端连接、不返回响应字节。客户端
+  实际得到 `RemoteProtocolError`，随后仅按 owner/key 派生的稳定 Task ID 从第二个 API
+  查询并重试，不从丢失的响应恢复身份。
+- 真实本地 Temporal 场景还覆盖同 key 不同内容 409、foreign owner 的 read/result/events/
+  cancel 全部 404，以及 release/cancel 并发后的双副本终态收敛。工具只在仓库运行，不打入
+  wheel，也不新增生产入口、服务或依赖。
+
+运行 `3e97b269404349dab08dd964253d4dfc` 在 10.49 秒内通过三组检查。429 为
+`failed, failed, succeeded`（3 attempts，2009.1 ms），timeout 为三次失败后终态 failed
+（3027.4 ms），disconnect 在第二次成功（1016.7 ms）。响应丢失后的重试为
+`reused=true` 且原生 Workflow 计数为 1；取消/完成竞争最终在两个 API 都为 cancelled，
+Workflow 计数仍为 1。owned process-tree RSS 峰值 634.9 MiB，最低系统空闲 93%，20 次
+采样，全部进程已清理。完整边界见
+[合同](docs/TASK_PROTOCOL_FAILURE_ACCEPTANCE.md)与
+[脱敏证据](docs/task-protocol-failure-evidence.json)。
+
+内置 imagegen 在 canonical 底图上只增加无连线的橙色 repo-only 注释；
+[迭代图](../docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.png)、
+[精确提示词](../docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.prompt.txt)和
+[视觉检查](../docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.md)已保存。
+本轮没有架构部件增删，README Mermaid、architecture JSON/HTML 和 canonical base
+保持不变。
+
+本次没有真实 provider 调用、token/cost 或 LangSmith waterfall，因此 P1.5 的真实
+provider 部分和 P1.4 继续未完成；本地结果也不证明生产 HA、永久幂等或外部副作用
+exactly-once。
+
+| 本轮 Gate | 结果 | 边界 |
+| --- | --- | --- |
+| P1.5/P1.6 聚焦回归 | **42 passed in 0.85s** | fixture、response-loss 代理、preflight、Worker/结构/部署合同 |
+| 真实本地 Temporal 场景 | **3 组通过，10.49s** | 两个 API、生产 Workflow、离线 fault fixture；不访问真实 provider |
+| 独立模块 pytest | **679 passed in 4.02s** | 串行；未新增依赖 |
+| 根 Python pytest | **2256 passed / 28 skipped / 104 warnings**，75.02 秒 | 串行；保留既有 skipped/warnings |
+| Python invariants | **77 modules checked** | 原 `python/mini_loop` 范围 |
+| Root guard mutation harness | **383 / 383 load-bearing** | passing baseline 全部通过，每个突变测试调用均失败并被捕获 |
+| 依赖锁 | **通过** | `uv lock --check --offline`，105 packages |
+| 架构静态一致性 | **通过** | canonical JSON/HTML 未改；83 components / 110 connections，ID 无重复 |
+| Imagegen / outline / diff | **通过** | 1375 × 1144 迭代图已目视检查；Markdown outline 与 `git diff --check` 通过 |
 
 ## P1.4 真实 provider 验收门禁（未执行）
 

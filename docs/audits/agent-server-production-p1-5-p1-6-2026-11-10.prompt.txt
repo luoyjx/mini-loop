@@ -1,0 +1,12 @@
+Use case: infographic-diagram
+Asset type: repository architecture iteration audit image
+Input image: the supplied mini-loop layered architecture PNG is the edit target and canonical visual base.
+Primary request: preserve the entire existing architecture diagram exactly, and add one clearly separated repository-only acceptance annotation for the current P1.5/P1.6 change.
+Composition/framing: keep the original canvas, title, five main layers, Deep Agents Server band, Temporal prototype band, Task Server band, Go demo band, all arrows, labels, icons, colors, and positions unchanged. Add a compact orange outlined callout immediately above or beside the existing bottom "Task Server" band, without covering existing text.
+Text (verbatim): "2026-11-10  P1.5 CONTROLLED FAULTS + P1.6 PROTOCOL BOUNDARY"
+Text (verbatim): "repo-only harness • no runtime node"
+Text (verbatim): "429 / timeout / disconnect ≤ 3 attempts"
+Text (verbatim): "lost 202 → stable Task ID → 1 Workflow"
+Text (verbatim): "cancel / complete race → one terminal state"
+Style/medium: match the existing dark navy technical infographic, cyan architecture outlines, and orange change-highlighting language.
+Constraints: change only by adding the orange annotation; preserve all existing content and geometry; the annotation must be visually disconnected from production runtime arrows; do not add any service box, deployed component, connection line, proxy node, fixture node, provider claim, or topology change; no watermark; no extra text.

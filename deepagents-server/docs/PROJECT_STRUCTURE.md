@@ -134,6 +134,8 @@ HTTP 与实际 service 通过操作接口连接；`backend` 复用纯协议定�
 `tests/` 验证协议、HTTP、后端、Workflow 适配以及验收设施自身的合同。
 `tooling/acceptance/scenarios/` 运行真实服务和故障流程，输出单独的验收收据；
 单元测试通过不能替代真实 Temporal 的恢复实验。
+其中 `task_protocol_failures.py` 使用仓库专用模型 fixture 和一次性 response-loss
+代理验证 P1.5/P1.6；它们不打入 wheel，也不能从 Task HTTP 输入选择。
 
 已有完整环境可以直接运行 `.venv/bin/python -m pytest -q`。安装或同步环境时需区分
 标准 profile 和显式 `temporal` extra，避免不带 extra 的同步移除已有 SDK。

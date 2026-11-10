@@ -17,6 +17,13 @@
 费用和资源停止条件。这些是待执行门槛，不是已通过 SLO；目标 Temporal 环境仍未 provision，
 真实 provider 消费也未授权，因而仍不能声明已满足某个生产等级。
 
+2026-11-10 当前源码另完成一次 P1.5/P1.6 本地真实进程运行：受控 429/超时/断连
+严格停在 3/3/2 个 Activity attempts；Start 的上游 202 被代理完整读取后丢弃，另一
+API 可按确定性 Task ID 查询，同 key 重试只保留一个 Workflow。冲突、越权和
+cancel/complete 竞争均通过。详见[合同](TASK_PROTOCOL_FAILURE_ACCEPTANCE.md)与
+[脱敏证据](task-protocol-failure-evidence.json)。这不属于下方 2026-10-16 历史组合
+验收，也不证明真实 provider、生产 HA、永久幂等或外部副作用 exactly-once。
+
 | 用户要求 | 应当看到的权威证据 | 历史证据与状态 | 边界 |
 | --- | --- | --- | --- |
 | 多个任务同时运行 | 多项已接受任务，至少两个 Worker Activity 同时执行，溢出项在持久队列等待，最终各自完成 | 历史 rollout：12 Task/3 owner/3 Worker，原生观察 3 活动/9 排队并全部完成；容器基线：2 API/2 Worker 的两 Task 强杀替换后完成。该次 6 Task/3 owner，两个原生模型 Activity 同时在门控处运行，另外四项首 Activity 为原生 SCHEDULED；全栈冷停后六项全部完成 | 不给定生产并发承诺；进程槽不是全局/owner 配额 |

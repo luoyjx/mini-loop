@@ -259,6 +259,12 @@ Task API 与 Worker 的 Temporal Client 还安装同一显式 LangSmith plugin�
 显式消费确认和 file-backed 凭据同时存在才会联网。当前无授权真实 receipt，详见
 [真实 provider 验收合同](docs/PRODUCTION_PROVIDER_ACCEPTANCE.md)。
 
+P1.5 的受控部分和 P1.6 协议边界另由本地真实进程场景覆盖：固定 429/timeout/
+disconnect 的 Activity attempt 序列，完整读取上游 202 后丢弃客户端响应，再从另一
+API 查询并同 key 对账，同时验证冲突、越权和取消/完成竞态。结果见
+[受控失败与协议边界验收](docs/TASK_PROTOCOL_FAILURE_ACCEPTANCE.md)。该 fixture 不可
+由生产输入选择，且不替代仍待授权的真实 provider 集成。
+
 此前组合验收复用 `08b4333` 的已验证镜像，检查运行任务与排队任务共同经历全栈冷停
 后的恢复。对应结果是历史基线，镜像和实验范围见 [验收矩阵](docs/TASK_ACCEPTANCE.md)。
 源码按 HTTP、任务编排、Temporal 后端与仓库验收工具分工；本轮进一步删除尚未生产

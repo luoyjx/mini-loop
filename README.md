@@ -271,9 +271,9 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-10**, baseline `72f2306`.
+Architecture review: **2026-11-10**, baseline `36cb193`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
-now records the P1.4 live-provider harness ready but its real execution unauthorized. The controlled research/artifact pilot keeps Temporal
+now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
 records one `runtime.py:TaskWorkflow` implementation, one Worker registration,
 the `TaskWorkflowV2` / `task-v2` / snapshot schema 2 wire identity and bounded
@@ -1285,7 +1285,7 @@ by `proposal-<id>`, and a LaunchAgent generator. The first demo (`c65073a`) kept
 mock mail and calendar in the daemon's own SQLite file.
 
 Earlier Task structure baseline: **2026-10-17**, `2b85676` plus the
-single Task runtime cleanup. The P1.4 gate review baseline is `72f2306`. API, Worker and Temporal deployment roles are unchanged;
+single Task runtime cleanup. The P1.5/P1.6 review baseline is `36cb193`. API, Worker and Temporal deployment roles are unchanged;
 the Worker no longer registers the obsolete V1 Task Workflow.
 Within the Task API process, `http.py` handles ASGI and authentication,
 `protocol.py` defines stable errors, identities and the operation interface,
@@ -1894,6 +1894,17 @@ the existing HTTPS API and trace project, checks exact synthetic files/todos,
 Continue-As-New History, trace privacy, tokens and cost, then writes a private result
 and content-free receipt. No approval, endpoint or credential is currently present,
 so this review proves the fail-closed gate and fixed case only, not a live run.
+The P1.5/P1.6 repository-only harness likewise adds no deployed node. A private local
+Temporal service, two actual APIs and the production Workflow exercised bounded 429,
+timeout and disconnect attempts, then a one-shot proxy proved an upstream 202 could be
+lost before deterministic Task-ID reconciliation. Same-key retry retained one Workflow;
+conflicting content returned 409, foreign-owner operations returned 404, and a
+cancel/complete race converged across both replicas. The model fault fixture is not
+selectable by HTTP or the production CLI, and this evidence makes no real-provider claim.
+The [iteration architecture image](docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.png),
+[exact prompt](docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.prompt.txt), and
+[visual audit](docs/audits/agent-server-production-p1-5-p1-6-2026-11-10.md) mark this
+repository-only evidence path without changing the canonical topology.
 The container stop budget is 20 seconds, longer than the existing 15-second Worker
 hard deadline. A local container replacement test cannot establish multi-host
 fault domains or production Temporal/database availability.

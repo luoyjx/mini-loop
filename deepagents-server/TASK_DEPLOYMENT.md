@@ -168,6 +168,11 @@ LangSmith project；提交中的 profile 和 approval 示例均不授权消费�
 receipt 写到新建的 mode 0700 目录。命令、预算停止条件和未验证边界见
 [P1.4 真实 provider 验收](docs/PRODUCTION_PROVIDER_ACCEPTANCE.md)。
 
+仓库还提供 `tooling.acceptance.scenarios.task_protocol_failures`，只在私有本地 Temporal
+和离线 Worker fixture 中运行 P1.5 受控故障及 P1.6 协议边界。它不属于容器启动路径，
+不新增生产端口或 provider 选择参数；范围与脱敏结果见
+[P1.5/P1.6 验收](docs/TASK_PROTOCOL_FAILURE_ACCEPTANCE.md)。
+
 Worker 没有网络依赖 liveness probe；短暂断链交由 SDK 重连，避免通过反复重启放大
 网络故障。launcher 为 Worker 默认生成 `hostname:pid` identity，显式 `--identity`
 仍由实际 parser 接收。日志 READY 与 `mini_loop_task_worker_polling=1` 只证明 SDK Worker

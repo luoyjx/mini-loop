@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import time
 from typing import Any
 
 from langchain_core.language_models import BaseChatModel
@@ -28,6 +29,48 @@ from mini_loop_deepagents.task_server.worker import serve
 def barrier_paths(directory: Path, workflow_id: str) -> tuple[Path, Path]:
     stem = hashlib.sha256(workflow_id.encode()).hexdigest()
     return directory / f"{stem}.blocked.json", directory / f"{stem}.release"
+
+
+FAULT_PREFIXES = {
+    "fault:rate-limit:": "rate-limit",
+    "fault:timeout:": "timeout",
+    "fault:disconnect:": "disconnect",
+    "fault:race:": "race",
+}
+
+
+class ControlledHTTPError(RuntimeError):
+    status_code = 429
+
+    def __init__(self) -> None:
+        super().__init__("controlled provider rate limit")
+        self.response = type("ControlledResponse", (), {"headers": {"retry-after-ms": "100"}})()
+
+
+def fault_mode(label: str) -> str | None:
+    return next((mode for prefix, mode in FAULT_PREFIXES.items() if label.startswith(prefix)), None)
+
+
+def record_attempt(directory: Path, mode: str, phase: str, outcome: str) -> None:
+    info = activity.info()
+    identity = "\0".join((info.workflow_id, info.workflow_run_id, info.activity_id, str(info.attempt)))
+    name = hashlib.sha256(identity.encode()).hexdigest() + ".attempt.json"
+    value = {
+        "workflow_id": info.workflow_id,
+        "run_id": info.workflow_run_id,
+        "activity_id": info.activity_id,
+        "attempt": info.attempt,
+        "mode": mode,
+        "phase": phase,
+        "outcome": outcome,
+        "pid": os.getpid(),
+        "observed_monotonic_ns": time.monotonic_ns(),
+    }
+    temporary = directory / (name + f".{os.getpid()}.tmp")
+    descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(descriptor, "w") as stream:
+        json.dump(value, stream, sort_keys=True)
+    os.replace(temporary, directory / name)
 
 
 class TaskFixtureModel(BaseChatModel):
@@ -68,7 +111,27 @@ class TaskFixtureModel(BaseChatModel):
     async def _agenerate(self, messages: list[BaseMessage], stop: Any = None,
                          run_manager: Any = None, **kwargs: Any) -> ChatResult:
         reply, should_block = self._reply(messages)
-        if should_block:
+        label = next(message.content for message in messages
+                     if message.type == "human" and isinstance(message.content, str))
+        mode = fault_mode(label)
+        if mode is not None:
+            directory = Path(self.barrier_directory)
+            directory.mkdir(parents=True, exist_ok=True)
+            info = activity.info()
+            phase = "initial" if not any(message.type == "tool" for message in messages) else "continued"
+            failure = (
+                (mode == "rate-limit" and phase == "initial" and info.attempt <= 2)
+                or (mode == "timeout" and phase == "initial" and info.attempt <= 3)
+                or (mode == "disconnect" and phase == "initial" and info.attempt == 1)
+            )
+            record_attempt(directory, mode, phase, "failed" if failure else "succeeded")
+            if failure:
+                if mode == "rate-limit":
+                    raise ControlledHTTPError()
+                if mode == "timeout":
+                    raise TimeoutError("controlled provider timeout")
+                raise ConnectionError("controlled provider disconnect")
+        if should_block and mode not in {"rate-limit", "timeout", "disconnect"}:
             info = activity.info()
             directory = Path(self.barrier_directory)
             directory.mkdir(parents=True, exist_ok=True)

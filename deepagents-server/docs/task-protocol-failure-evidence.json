@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-10",
+  "source_baseline": "36cb19339ce9d6f21d7cf1b47d90c52d392bd67a",
+  "run_id": "3e97b269404349dab08dd964253d4dfc",
+  "status": "passed",
+  "seconds": 10.49,
+  "cleanup_confirmed": true,
+  "scope": "private local Temporal, controlled provider fixture, and real HTTP Task APIs",
+  "production_provider_acceptance": false,
+  "temporal_binary_sha256": "33c298d41f6eefebf01a28a3511f444480e939e21d3518cb0c12a4abad467c4b",
+  "supplied_checksum_verified": true,
+  "controlled_provider_faults": {
+    "sdk_nested_retry": "disabled in production worker (max_retries=0)",
+    "fixture_provider_calls_per_activity_attempt": 1,
+    "rate_limit": {
+      "attempts": ["1:failed", "2:failed", "3:succeeded"],
+      "terminal_status": "succeeded",
+      "elapsed_first_to_last_ms": 2009.1
+    },
+    "timeout": {
+      "attempts": ["1:failed", "2:failed", "3:failed"],
+      "terminal_status": "failed",
+      "elapsed_first_to_last_ms": 3027.4
+    },
+    "disconnect": {
+      "attempts": ["1:failed", "2:succeeded"],
+      "terminal_status": "succeeded",
+      "elapsed_first_to_last_ms": 1016.7
+    }
+  },
+  "lost_start_response": {
+    "upstream_status": 202,
+    "client_error": "RemoteProtocolError",
+    "deterministic_task_id_matched": true,
+    "retry_reused": true,
+    "native_temporal_workflow_count": 1,
+    "conflicting_content_status": 409,
+    "foreign_owner_statuses": [404, 404, 404, 404]
+  },
+  "cancel_complete_race": {
+    "cancel_acknowledgement": "accepted_while_running",
+    "terminal_status": "cancelled",
+    "native_temporal_workflow_count": 1,
+    "replica_terminal_statuses": ["cancelled", "cancelled"]
+  },
+  "resources": {
+    "peak_owned_tree_rss_mib": 634.9,
+    "minimum_observed_memory_free_percent": 93,
+    "resource_samples": 20,
+    "owned_process_cleanup": {
+      "temporal": 0,
+      "worker": -15,
+      "api_a": -15,
+      "api_b": -15
+    }
+  },
+  "excluded_claims": [
+    "real provider behavior",
+    "production cluster HA",
+    "permanent idempotency",
+    "external-tool exactly-once",
+    "provider billing totals"
+  ]
+}
