@@ -3,16 +3,18 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"},
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "dbaf48affe5889ebfc991208b28480853c4c53c2"},
     "viewBox": [1600, 760]
   },
   "components": [
     {"id": "channel", "type": "external", "label": "Channel / Web", "sublabel": "incoming messages", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/assistant/server.go"}]},
+    {"id": "remoteSvc", "type": "external", "label": "Remote Services", "sublabel": "Bot API · REST · IMAP/SMTP", "pos": [30, 80], "size": [170, 68], "sources": [{"path": "go/assistant/telegram.go"}, {"path": "go/assistant/discord.go"}, {"path": "go/assistant/imap.go"}]},
+    {"id": "remote", "type": "backend", "label": "Remote Channels", "sublabel": "Telegram · Discord · email", "pos": [250, 80], "size": [170, 68], "sources": [{"path": "go/assistant/remote.go"}, {"path": "go/assistant/email.go"}]},
     {"id": "store", "type": "database", "label": "Assistant Store", "sublabel": "tasks + messages + facts", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "go/assistant/store.go"}]},
     {"id": "router", "type": "frontend", "label": "Router / Triage", "sublabel": "intent + admission", "pos": [484, 300], "size": [170, 68], "sources": [{"path": "go/assistant/router.go"}, {"path": "go/assistant/triage.go"}]},
     {"id": "workers", "type": "backend", "label": "Assistant Workers", "sublabel": "task execution", "pos": [700, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tasks.go"}]},
@@ -27,6 +29,8 @@
   ],
   "connections": [
     {"id": "ingest", "from": "channel", "to": "store", "variant": "emphasis"},
+    {"id": "remoteChat", "from": "remote", "to": "store", "label": "chat in / lines out", "fromSide": "bottom", "toSide": "top", "variant": "emphasis", "labelAt": [400, 224]},
+    {"id": "remoteCall", "from": "remote", "to": "remoteSvc", "fromSide": "left", "toSide": "right", "variant": "dashed"},
     {"id": "route", "from": "store", "to": "router", "variant": "emphasis"},
     {"id": "dispatch", "from": "router", "to": "workers", "variant": "emphasis"},
     {"id": "act", "from": "workers", "to": "tools", "variant": "security"},

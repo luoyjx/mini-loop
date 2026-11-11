@@ -233,6 +233,12 @@ Mac. The canvas grows to 6300 px, and three connections are added.
   border at x=12. The left margin carries the health board's "problems" label, and
   every inner corridor would cross the scheduler's `calendar_list` edge.
 
+The focused personal-assistant view under `docs/architecture/`, added upstream by
+`99c5721`, gains the same two nodes: Remote Channels above the store, with a
+"chat in / lines out" edge into it, and Remote Services to its left. The view was
+regenerated with Archify (9/9, 0 errors, 0 warnings) and its 1800 px preview
+re-rendered.
+
 The layered base image was edited once with imagegen and serves as the new base
 and this iteration's highlight. In the bottom band:
 
