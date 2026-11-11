@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Go Personal Assistant",
+    "subtitle": "消息入口、路由、Worker、工具、连接器与后台作业",
+    "output": "docs/architecture/personal-assistant.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"},
+    "viewBox": [1600, 760]
+  },
+  "components": [
+    {"id": "channel", "type": "external", "label": "Channel / Web", "sublabel": "incoming messages", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/assistant/server.go"}]},
+    {"id": "store", "type": "database", "label": "Assistant Store", "sublabel": "tasks + messages + facts", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "go/assistant/store.go"}]},
+    {"id": "router", "type": "frontend", "label": "Router / Triage", "sublabel": "intent + admission", "pos": [484, 300], "size": [170, 68], "sources": [{"path": "go/assistant/router.go"}, {"path": "go/assistant/triage.go"}]},
+    {"id": "workers", "type": "backend", "label": "Assistant Workers", "sublabel": "task execution", "pos": [700, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tasks.go"}]},
+    {"id": "tools", "type": "security", "label": "Assistant Tools", "sublabel": "controlled effects", "pos": [910, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tools.go"}]},
+    {"id": "connector", "type": "backend", "label": "MCP Connector", "sublabel": "external integration", "pos": [1130, 300], "size": [170, 68], "sources": [{"path": "go/assistant/connector.go"}]},
+    {"id": "mock", "type": "external", "label": "Mock MCP", "sublabel": "deterministic acceptance", "pos": [1350, 300], "size": [170, 68], "sources": [{"path": "go/assistant/mockmcp.go"}]},
+    {"id": "model", "type": "external", "label": "Assistant Model", "sublabel": "reasoning + response", "pos": [700, 80], "size": [170, 68], "sources": [{"path": "go/assistant/model.go"}]},
+    {"id": "retrieval", "type": "backend", "label": "Retrieval & Facts", "sublabel": "embed · search · recall", "pos": [910, 80], "size": [170, 68], "sources": [{"path": "go/assistant/retrieval.go"}, {"path": "go/assistant/facts.go"}]},
+    {"id": "poller", "type": "backend", "label": "Channel Poller", "sublabel": "background ingress", "pos": [1130, 80], "size": [170, 68], "sources": [{"path": "go/assistant/poller.go"}]},
+    {"id": "scheduler", "type": "backend", "label": "Scheduler", "sublabel": "jobs + routines", "pos": [250, 520], "size": [170, 68], "sources": [{"path": "go/assistant/jobs.go"}, {"path": "go/assistant/routines.go"}]},
+    {"id": "outbox", "type": "database", "label": "Outbox", "sublabel": "durable delivery", "pos": [484, 520], "size": [170, 68], "sources": [{"path": "go/assistant/outbox.go"}]}
+  ],
+  "connections": [
+    {"id": "ingest", "from": "channel", "to": "store", "variant": "emphasis"},
+    {"id": "route", "from": "store", "to": "router", "variant": "emphasis"},
+    {"id": "dispatch", "from": "router", "to": "workers", "variant": "emphasis"},
+    {"id": "act", "from": "workers", "to": "tools", "variant": "security"},
+    {"id": "connect", "from": "tools", "to": "connector", "variant": "security"},
+    {"id": "accept", "from": "connector", "to": "mock"},
+    {"id": "reason", "from": "workers", "to": "model"},
+    {"id": "recall", "from": "retrieval", "to": "model"},
+    {"id": "poll", "from": "poller", "to": "connector", "variant": "dashed"},
+    {"id": "schedule", "from": "scheduler", "to": "store"},
+    {"id": "enqueue", "from": "store", "to": "outbox"},
+    {"id": "deliver", "from": "outbox", "to": "connector", "fromSide": "bottom", "toSide": "bottom", "via": [[569, 650], [1215, 650]]}
+  ]
+}

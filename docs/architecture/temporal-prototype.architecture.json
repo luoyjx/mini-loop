@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Temporal Prototype",
+    "subtitle": "默认关闭的实验路径 · 确定性 Workflow 与 Fixture",
+    "output": "docs/architecture/temporal-prototype.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"},
+    "viewBox": [1500, 720]
+  },
+  "components": [
+    {"id": "application", "type": "external", "label": "Prototype Runner", "sublabel": "explicit opt-in", "pos": [250, 80], "size": [180, 68], "sources": [{"path": "deepagents-server/TEMPORAL_PROTOTYPE.md"}]},
+    {"id": "client", "type": "frontend", "label": "Temporal Client", "sublabel": "start + await result", "pos": [250, 300], "size": [180, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/temporal_prototype/client.py"}]},
+    {"id": "history", "type": "database", "label": "Temporal History", "sublabel": "durable event log", "pos": [500, 300], "size": [180, 68]},
+    {"id": "workflow", "type": "backend", "label": "Prototype Workflow", "sublabel": "deterministic orchestration", "pos": [750, 300], "size": [180, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/temporal_prototype/workflow.py"}]},
+    {"id": "activity", "type": "backend", "label": "Model Activity", "sublabel": "side-effect boundary", "pos": [1000, 300], "size": [180, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py"}]},
+    {"id": "fixture", "type": "external", "label": "Model Fixture", "sublabel": "deterministic acceptance", "pos": [1250, 300], "size": [180, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/temporal_prototype/model_fixture.py"}]},
+    {"id": "memory", "type": "database", "label": "Memory Activity", "sublabel": "prototype state", "pos": [1000, 520], "size": [180, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/temporal_prototype/activities.py"}]}
+  ],
+  "connections": [
+    {"id": "launch", "from": "application", "to": "client", "variant": "dashed"},
+    {"id": "start", "from": "client", "to": "history", "variant": "emphasis"},
+    {"id": "replay", "from": "history", "to": "workflow", "variant": "emphasis"},
+    {"id": "call", "from": "workflow", "to": "activity", "variant": "emphasis"},
+    {"id": "fixtureCall", "from": "activity", "to": "fixture"},
+    {"id": "memoryCall", "from": "activity", "to": "memory"}
+  ]
+}

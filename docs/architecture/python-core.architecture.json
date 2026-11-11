@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Python Core Runtime",
+    "subtitle": "入口、权限、会话、Agent 与工具执行",
+    "output": "docs/architecture/python-core.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/luoyjx/mini-loop",
+      "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"
+    },
+    "viewBox": [1500, 760]
+  },
+  "components": [
+    {"id": "clients", "type": "external", "label": "CLI / HTTP Clients", "sublabel": "requests + credentials", "pos": [30, 300], "size": [170, 68]},
+    {"id": "entry", "type": "frontend", "label": "Public Entry", "sublabel": "CLI · server · transport", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "python/mini_loop/__main__.py"}, {"path": "python/mini_loop/server.py"}]},
+    {"id": "authority", "type": "security", "label": "Authority", "sublabel": "auth · permissions · secrets", "pos": [470, 300], "size": [170, 68], "sources": [{"path": "python/mini_loop/auth.py"}, {"path": "python/mini_loop/permissions.py"}]},
+    {"id": "manager", "type": "backend", "label": "Manager", "sublabel": "ownership + orchestration", "pos": [704, 300], "size": [170, 68], "sources": [{"path": "python/mini_loop/manager.py"}]},
+    {"id": "session", "type": "backend", "label": "Session", "sublabel": "serialized runtime state", "pos": [938, 300], "size": [170, 68], "sources": [{"path": "python/mini_loop/session.py"}]},
+    {"id": "agent", "type": "backend", "label": "Agent Loop", "sublabel": "decide · act · observe", "pos": [1168, 300], "size": [170, 68], "sources": [{"path": "python/mini_loop/agent.py"}]},
+    {"id": "context", "type": "backend", "label": "Run Context", "sublabel": "prompt + memory + limits", "pos": [1168, 80], "size": [170, 68], "sources": [{"path": "python/mini_loop/run_context.py"}]},
+    {"id": "provider", "type": "external", "label": "Model Provider", "sublabel": "real or deterministic fake", "pos": [938, 80], "size": [170, 68], "sources": [{"path": "python/mini_loop/providers.py"}, {"path": "python/mini_loop/fake_llm.py"}]},
+    {"id": "policy", "type": "security", "label": "Tool Policy", "sublabel": "admission + approval", "pos": [1168, 520], "size": [170, 68], "sources": [{"path": "python/mini_loop/tool_policy.py"}, {"path": "python/mini_loop/approvals.py"}]},
+    {"id": "backends", "type": "backend", "label": "Tool Backends", "sublabel": "sandbox · MCP · actions", "pos": [938, 520], "size": [170, 68], "sources": [{"path": "python/mini_loop/tools.py"}, {"path": "python/mini_loop/sandbox.py"}, {"path": "python/mini_loop/mcp.py"}]},
+    {"id": "state", "type": "database", "label": "Persistent State", "sublabel": "storage · trajectory · memory", "pos": [704, 520], "size": [170, 68], "sources": [{"path": "python/mini_loop/storage.py"}, {"path": "python/mini_loop/trajectory.py"}]},
+    {"id": "coordination", "type": "backend", "label": "Coordination", "sublabel": "tasks · subagents · teams", "pos": [470, 520], "size": [170, 68], "sources": [{"path": "python/mini_loop/tasks.py"}, {"path": "python/mini_loop/subagents.py"}, {"path": "python/mini_loop/teams.py"}]}
+  ],
+  "connections": [
+    {"id": "request", "from": "clients", "to": "entry", "variant": "emphasis"},
+    {"id": "authenticate", "from": "entry", "to": "authority", "variant": "security"},
+    {"id": "authorize", "from": "authority", "to": "manager", "variant": "security"},
+    {"id": "route", "from": "manager", "to": "session", "variant": "emphasis"},
+    {"id": "run", "from": "session", "to": "agent", "variant": "emphasis"},
+    {"id": "compose", "from": "agent", "to": "context"},
+    {"id": "infer", "from": "context", "to": "provider"},
+    {"id": "admit", "from": "agent", "to": "policy", "variant": "security"},
+    {"id": "execute", "from": "policy", "to": "backends", "variant": "security"},
+    {"id": "persist", "from": "session", "to": "state"},
+    {"id": "delegate", "from": "manager", "to": "coordination"}
+  ]
+}

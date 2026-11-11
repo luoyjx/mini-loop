@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Deep Agents Server",
+    "subtitle": "标准异步服务路径 · API、队列、Worker 与图执行",
+    "output": "docs/architecture/deepagents-server.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"},
+    "viewBox": [1600, 760]
+  },
+  "components": [
+    {"id": "clients", "type": "external", "label": "Chat / Jobs Clients", "sublabel": "HTTP requests", "pos": [30, 300], "size": [170, 68]},
+    {"id": "auth", "type": "security", "label": "Bearer Auth", "sublabel": "shared request gate", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/auth.py"}]},
+    {"id": "server", "type": "frontend", "label": "Agent Server", "sublabel": "LangGraph API", "pos": [470, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/langgraph.json"}]},
+    {"id": "redis", "type": "database", "label": "Redis Queue", "sublabel": "async dispatch", "pos": [690, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/compose.yaml"}]},
+    {"id": "worker", "type": "backend", "label": "Agent Worker", "sublabel": "job execution", "pos": [910, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/jobs.py"}]},
+    {"id": "graph", "type": "backend", "label": "Deep Agent Graph", "sublabel": "plan + tools + memory", "pos": [1130, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/graph.py"}]},
+    {"id": "provider", "type": "external", "label": "Model Provider", "sublabel": "server configured", "pos": [1350, 300], "size": [170, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/config.py"}]},
+    {"id": "dev", "type": "external", "label": "Local Dev", "sublabel": "direct graph path", "pos": [470, 80], "size": [170, 68]},
+    {"id": "persistence", "type": "database", "label": "Postgres", "sublabel": "threads + checkpoints", "pos": [470, 520], "size": [170, 68], "sources": [{"path": "deepagents-server/compose.yaml"}]},
+    {"id": "files", "type": "database", "label": "Filesystem", "sublabel": "workspace + artifacts", "pos": [1130, 520], "size": [170, 68], "sources": [{"path": "deepagents-server/Dockerfile"}]}
+  ],
+  "connections": [
+    {"id": "request", "from": "clients", "to": "auth", "variant": "security"},
+    {"id": "authorized", "from": "auth", "to": "server", "variant": "security"},
+    {"id": "enqueue", "from": "server", "to": "redis", "variant": "emphasis"},
+    {"id": "dispatch", "from": "redis", "to": "worker", "variant": "emphasis"},
+    {"id": "execute", "from": "worker", "to": "graph", "variant": "emphasis"},
+    {"id": "infer", "from": "graph", "to": "provider"},
+    {"id": "local", "from": "dev", "to": "server", "variant": "dashed"},
+    {"id": "persist", "from": "server", "to": "persistence"},
+    {"id": "artifacts", "from": "graph", "to": "files"}
+  ]
+}

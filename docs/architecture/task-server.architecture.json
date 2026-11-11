@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Temporal Task Server",
+    "subtitle": "当前生产路径 · 单一 Workflow · History 权威",
+    "output": "docs/architecture/task-server.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/luoyjx/mini-loop",
+      "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"
+    },
+    "viewBox": [1500, 720]
+  },
+  "components": [
+    {"id": "client", "type": "external", "label": "Task Clients", "sublabel": "Bearer + Idempotency-Key", "pos": [40, 300], "size": [160, 68], "sources": [{"path": "deepagents-server/TASK_SERVER.md"}]},
+    {"id": "api", "type": "frontend", "label": "Task API", "sublabel": "auth · Start · query · cancel", "pos": [270, 300], "size": [180, 70], "tag": "stateless", "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/http.py"}, {"path": "deepagents-server/src/mini_loop_deepagents/task_server/service.py"}]},
+    {"id": "history", "type": "database", "label": "Temporal History", "sublabel": "Task truth · Run chain · events", "pos": [520, 300], "size": [190, 70], "tag": "retention-bounded", "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/backend/history.py"}]},
+    {"id": "process", "type": "backend", "label": "Worker Process", "sublabel": "poll · drain · hard deadline", "pos": [780, 80], "size": [190, 68], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/worker.py"}, {"path": "deepagents-server/src/mini_loop_deepagents/task_server/lifecycle.py"}]},
+    {"id": "workflow", "type": "backend", "label": "TaskWorkflow", "sublabel": "runtime.py · CAN · saver", "pos": [780, 300], "size": [190, 70], "tag": "single implementation", "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/runtime.py"}]},
+    {"id": "trace", "type": "external", "label": "LangSmith Trace", "sublabel": "redacted · usage or unknown", "pos": [1040, 80], "size": [190, 68], "tag": "diagnostic only", "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/tracing.py"}]},
+    {"id": "activity", "type": "backend", "label": "Model Activity", "sublabel": "attempt · retry · usage", "pos": [1040, 300], "size": [190, 70], "sources": [{"path": "deepagents-server/src/mini_loop_deepagents/task_server/worker.py"}]},
+    {"id": "model", "type": "external", "label": "ChatOpenAI", "sublabel": "Worker-owned model + key", "pos": [1300, 300], "size": [160, 68]}
+  ],
+  "connections": [
+    {"id": "submit", "from": "client", "to": "api", "label": "HTTPS", "variant": "security"},
+    {"id": "start", "from": "api", "to": "history", "label": "Start", "variant": "emphasis"},
+    {"id": "dispatch", "from": "history", "to": "workflow", "variant": "emphasis"},
+    {"id": "modelCall", "from": "workflow", "to": "activity", "variant": "emphasis"},
+    {"id": "providerCall", "from": "activity", "to": "model"},
+    {"id": "workerOwns", "from": "process", "to": "workflow", "label": "register", "labelAt": [875, 162]},
+    {"id": "activityTrace", "from": "activity", "to": "trace", "label": "redacted trace", "variant": "dashed"},
+    {"id": "continue", "from": "workflow", "to": "history", "label": "CAN + checkpoint", "variant": "emphasis", "fromSide": "bottom", "toSide": "bottom", "via": [[875, 470], [615, 470]], "labelAt": [745, 486]}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Authority", "items": ["Temporal History is Task, Run, result, and event authority", "The API confirms Start before HTTP 202", "LangSmith is diagnostic, never a second executor"]},
+    {"dot": "amber", "title": "Deployment Boundaries", "items": ["API and Worker use one immutable image with role-specific secrets", "HTTP input cannot select provider or fixture", "SDK retry is disabled; Temporal owns Activity retries"]}
+  ]
+}

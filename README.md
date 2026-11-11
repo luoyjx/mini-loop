@@ -271,7 +271,7 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-10**, baseline `36cb193`.
+Architecture review: **2026-11-11**, baseline `16ee882`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -296,6 +296,23 @@ The [layered architecture base image](docs/mini-loop-layered-architecture.png)
 summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
+Because that canonical overview is intentionally comprehensive, detailed reading
+now uses six focused, scalable views: [Python core](docs/architecture/python-core.html),
+[Go runtime](docs/architecture/go-runtime.html),
+[Deep Agents server](docs/architecture/deepagents-server.html),
+[Temporal prototype](docs/architecture/temporal-prototype.html),
+[current Task server](docs/architecture/task-server.html), and
+[Go personal assistant](docs/architecture/personal-assistant.html). The
+[focused-view index](docs/architecture/README.md) also provides 1800 px PNG
+previews and editable Archify specifications. This presentation split does not
+change topology, ownership, authority, persistence, public entry points, or
+feature defaults; the Mermaid below and the interactive system map remain the
+canonical whole-system model. The
+[split-view iteration illustration](docs/audits/architecture-split-2026-11-11.png)
+adds numbered navigation to the unchanged base image; its
+[exact ImageGen prompt](docs/audits/architecture-split-2026-11-11.prompt.txt)
+and [delivery evidence](docs/audits/architecture-split-2026-11-11.md) are saved
+with the repository.
 The [current Task server architecture](docs/audits/task-server-single-runtime-2026-10-17.png)
 shows the independent Agent Server layers and this iteration's Python module
 boundaries. The [source reading guide](deepagents-server/docs/PROJECT_STRUCTURE.md)

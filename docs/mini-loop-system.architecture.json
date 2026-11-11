@@ -2518,6 +2518,7 @@
       "from": "tsModelActivity",
       "to": "tsTrace",
       "label": "redacted spans + usage",
+      "labelAt": [2070, 4590],
       "variant": "dashed"
     },
     {
@@ -2527,17 +2528,18 @@
       "label": "redacted Start context",
       "variant": "dashed",
       "fromSide": "bottom",
-      "toSide": "top",
+      "toSide": "bottom",
       "via": [
         [
           730,
-          4410
+          4620
         ],
         [
           2275,
-          4410
+          4620
         ]
-      ]
+      ],
+      "labelAt": [1500, 4635]
     },
     {
       "id": "tsContinue",

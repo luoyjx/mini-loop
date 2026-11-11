@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop · Go Runtime & Acceptance",
+    "subtitle": "CLI、托管运行、上下文、工具门禁与子代理",
+    "output": "docs/architecture/go-runtime.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "16ee882d9761d9b2c81e17214821da97e6e443b8"},
+    "viewBox": [1500, 760]
+  },
+  "components": [
+    {"id": "entry", "type": "external", "label": "miniloop CLI", "sublabel": "Go public entry", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/cmd/miniloop/main.go"}]},
+    {"id": "managed", "type": "frontend", "label": "Managed Runtime", "sublabel": "startup + lifecycle", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "go/launcher/app.go"}]},
+    {"id": "session", "type": "backend", "label": "Agent Session", "sublabel": "turn ownership", "pos": [470, 300], "size": [170, 68], "sources": [{"path": "go/agent/manager.go"}]},
+    {"id": "context", "type": "backend", "label": "AST Context", "sublabel": "bounded repository view", "pos": [690, 300], "size": [170, 68], "sources": [{"path": "go/astcontext/snapshot.go"}]},
+    {"id": "provider", "type": "external", "label": "Model / Fake", "sublabel": "acceptance-selectable", "pos": [910, 300], "size": [170, 68]},
+    {"id": "gate", "type": "security", "label": "Tool Gate", "sublabel": "policy + sandbox", "pos": [690, 520], "size": [170, 68], "sources": [{"path": "go/sandbox/policy.go"}]},
+    {"id": "tools", "type": "backend", "label": "Tool Backends", "sublabel": "bash · files · resources", "pos": [910, 520], "size": [170, 68], "sources": [{"path": "go/sandbox/sandbox.go"}, {"path": "go/userresources/resolver.go"}]},
+    {"id": "actions", "type": "backend", "label": "Actions", "sublabel": "typed results + evidence", "pos": [1130, 520], "size": [170, 68], "sources": [{"path": "go/protocol/bash_execution.go"}]},
+    {"id": "children", "type": "backend", "label": "Child Agents", "sublabel": "delegated execution", "pos": [690, 80], "size": [170, 68], "sources": [{"path": "go/teams/protocols.go"}]},
+    {"id": "approvals", "type": "security", "label": "Approvals", "sublabel": "authority-bearing grants", "pos": [910, 80], "size": [170, 68], "sources": [{"path": "go/agent/approvals.go"}]},
+    {"id": "archives", "type": "database", "label": "Evidence Archives", "sublabel": "trajectory + improvement", "pos": [1130, 80], "size": [170, 68], "sources": [{"path": "go/trajectory/store.go"}, {"path": "go/improvement/archive.go"}]}
+  ],
+  "connections": [
+    {"id": "start", "from": "entry", "to": "managed", "variant": "emphasis"},
+    {"id": "open", "from": "managed", "to": "session", "variant": "emphasis"},
+    {"id": "snapshot", "from": "session", "to": "context"},
+    {"id": "infer", "from": "context", "to": "provider"},
+    {"id": "admit", "from": "context", "to": "gate", "variant": "security"},
+    {"id": "execute", "from": "gate", "to": "tools", "variant": "security"},
+    {"id": "record", "from": "tools", "to": "actions"},
+    {"id": "delegate", "from": "context", "to": "children"},
+    {"id": "approve", "from": "children", "to": "approvals", "variant": "security"},
+    {"id": "archive", "from": "approvals", "to": "archives"}
+  ]
+}
