@@ -6,7 +6,9 @@
 Python contract. They run a loopback-only demo of a proactive personal agent.
 It has a SQLite trigger queue, a routine scheduler, thread-subscribed worker
 sessions, a proposal outbox that only a human can release, and an append-only
-ledger. The channel is a simulated web page.
+ledger. The main channel is a loopback web page; opt-in remote channels add a
+private chat with the owner's Telegram bot, a DM with the owner's Discord bot, or
+email.
 
 Mail and calendar live in a simulated MCP server, the `mock-mcp` subcommand, which
 runs as a child process with its own `world.db`. The daemon reaches it only through
@@ -56,6 +58,15 @@ facts about people (manager, employer, role) come from the contact table, the in
 the calendar and a nightly extraction from the user's chat; a new value closes the
 old one, `memory_search` lists the current facts first and marks memories that
 state a replaced value.
+
+Remote channels (all default off) join the page's chat thread. Telegram uses the
+Bot API's `getUpdates` long poll, Discord reads the bot's DM over REST without a
+gateway, and email reads the assistant's own mailbox over IMAP, read-only, and sends
+with `net/smtp`; no dependency is added. Each checks the owner's account on every
+message, and a mail must also pass DKIM or DMARC for the owner's domain. The
+assistant's lines are copied out in order and held while paused, a reply to a
+question's message answers it, and approvals stay on the page. Tokens and the
+mailbox password come only from the environment.
 
 The demo wires the existing `SessionManager`, `ToolGate`, `memory`, `sqlitestate`,
 `mcp` and `secrets` packages. It is the first non-test importer of `sqlitestate`.

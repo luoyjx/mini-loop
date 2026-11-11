@@ -3,7 +3,9 @@
 // simulated mail/calendar MCP server in a child process, routines, a proposal
 // outbox and a simulated channel web page.
 //
-//	miniloop-assistant [flags]                run the daemon (spawns mock-mcp)
+//	miniloop-assistant [flags]                run the daemon (spawns mock-mcp);
+//	                                          -telegram-chat, -discord-user and
+//	                                          -email-owner add remote channels
 //	miniloop-assistant mock-mcp -data DIR     the simulated MCP server on stdio
 //	miniloop-assistant launchd-plist [flags]  print a macOS LaunchAgent plist
 package main
@@ -90,6 +92,72 @@ type daemonFlags struct {
 	addr, data, model, modelID  *string
 	embed, embedURL, embedModel *string
 	workers                     *int
+	remote                      remoteFlags
+}
+
+// remoteFlags configure the remote channels. Each is off until its account
+// flag is set; tokens and the mailbox password come only from the
+// environment, so they never appear in a process listing or a plist.
+type remoteFlags struct {
+	telegramChat                                *int64
+	telegramAPI, discordUser, discordAPI        *string
+	emailOwner, emailUser, emailIMAP, emailSMTP *string
+	emailAuthServ                               *string
+}
+
+// Environment variables holding the remote channels' secrets. Their names
+// match the credential patterns the MCP child's environment is scrubbed of.
+const (
+	envTelegramToken = "MINILOOP_TELEGRAM_TOKEN"
+	envDiscordToken  = "MINILOOP_DISCORD_TOKEN"
+	envEmailPassword = "MINILOOP_EMAIL_PASSWORD"
+)
+
+func bindRemoteFlags(flags *flag.FlagSet) remoteFlags {
+	return remoteFlags{
+		telegramChat:  flags.Int64("telegram-chat", 0, "your Telegram user ID: talk to the assistant in a private chat with your bot ("+envTelegramToken+")"),
+		telegramAPI:   flags.String("telegram-api", assistant.DefaultTelegramAPI, "Telegram Bot API server"),
+		discordUser:   flags.String("discord-user", "", "your Discord user ID: talk to the assistant in a DM with your bot ("+envDiscordToken+")"),
+		discordAPI:    flags.String("discord-api", assistant.DefaultDiscordAPI, "Discord REST API base URL"),
+		emailOwner:    flags.String("email-owner", "", "your address: the only sender the email channel accepts, and where it replies ("+envEmailPassword+")"),
+		emailUser:     flags.String("email-user", "", "the assistant's own mailbox address, used to log in and send"),
+		emailIMAP:     flags.String("email-imap", "", "IMAP server host:port of the assistant's mailbox (TLS, e.g. imap.gmail.com:993)"),
+		emailSMTP:     flags.String("email-smtp", "", "SMTP server host:port (465 TLS or STARTTLS, e.g. smtp.gmail.com:587)"),
+		emailAuthServ: flags.String("email-authserv", "", "receiving server whose Authentication-Results header is trusted (mx.google.com for Gmail)"),
+	}
+}
+
+// any reports whether any remote channel is configured.
+func (r remoteFlags) any() bool {
+	return *r.telegramChat != 0 || *r.discordUser != "" || *r.emailOwner != ""
+}
+
+// channels builds the configured remote channels.
+func (r remoteFlags) channels(env environment) ([]assistant.RemoteChannel, error) {
+	channels := []assistant.RemoteChannel{}
+	if *r.telegramChat != 0 {
+		telegram, err := assistant.NewTelegram(env.getenv(envTelegramToken), *r.telegramChat, *r.telegramAPI)
+		if err != nil {
+			return nil, err
+		}
+		channels = append(channels, telegram)
+	}
+	if *r.discordUser != "" {
+		discord, err := assistant.NewDiscord(env.getenv(envDiscordToken), *r.discordUser, *r.discordAPI)
+		if err != nil {
+			return nil, err
+		}
+		channels = append(channels, discord)
+	}
+	if *r.emailOwner != "" {
+		email, err := assistant.NewEmailChannel(assistant.EmailConfig{IMAP: *r.emailIMAP, SMTP: *r.emailSMTP, User: *r.emailUser,
+			Password: env.getenv(envEmailPassword), Owner: *r.emailOwner, AuthServ: *r.emailAuthServ})
+		if err != nil {
+			return nil, err
+		}
+		channels = append(channels, email)
+	}
+	return channels, nil
 }
 
 func bindDaemonFlags(flags *flag.FlagSet, env environment) daemonFlags {
@@ -102,6 +170,7 @@ func bindDaemonFlags(flags *flag.FlagSet, env environment) daemonFlags {
 		embed:      flags.String("embed", assistant.EmbedOff, "memory search embeddings: off (lexical legs only) or ollama (a local Ollama server)"),
 		embedURL:   flags.String("embed-url", assistant.DefaultEmbedURL, "Ollama base URL for -embed ollama; memory text is sent there"),
 		embedModel: flags.String("embed-model", assistant.DefaultEmbedModel, "embedding model for -embed ollama"),
+		remote:     bindRemoteFlags(flags),
 	}
 }
 
@@ -143,6 +212,9 @@ func runDaemon(ctx context.Context, args []string, env environment, std streams)
 	}
 	config := assistant.Config{DataDir: data, Log: std.err, Workers: *options.workers}
 	if config.Embedder, err = options.embedder(); err != nil {
+		return fail(err)
+	}
+	if config.Remotes, err = options.remote.channels(env); err != nil {
 		return fail(err)
 	}
 	switch *options.model {
@@ -200,7 +272,11 @@ func runDaemon(ctx context.Context, args []string, env environment, std streams)
 	if config.Embedder != nil {
 		embed = config.Embedder.Model() + " @ " + config.Embedder.Endpoint()
 	}
-	fmt.Fprintf(std.err, "mini-loop assistant demo on http://%s (model=%s, data=%s, mcp=%s over %s, %d tools, embed=%s)\n", listener.Addr(), app.ModelLabel, data, connector.Server(), connector.Transport(), tools, embed)
+	channels := []string{"page"}
+	for _, remote := range config.Remotes {
+		channels = append(channels, remote.Name())
+	}
+	fmt.Fprintf(std.err, "mini-loop assistant demo on http://%s (model=%s, data=%s, mcp=%s over %s, %d tools, embed=%s, channels=%s)\n", listener.Addr(), app.ModelLabel, data, connector.Server(), connector.Transport(), tools, embed, strings.Join(channels, ","))
 	select {
 	case <-ctx.Done():
 	case err = <-served:
@@ -265,6 +341,11 @@ func runPlist(args []string, env environment, std streams) int {
 		// launchd does not read shell profiles, and a plist is no place for an
 		// API key; a keychain-backed secret source is future work.
 		return fail(errors.New("launchd-plist supports -model scripted only; run -model anthropic from a shell"))
+	}
+	if options.remote.any() {
+		// The channels' tokens live in the environment, which launchd does
+		// not have; a keychain-backed secret source is future work.
+		return fail(errors.New("launchd-plist takes no remote channel flags; run Telegram, Discord or email from a shell"))
 	}
 	program := *binary
 	if program == "" {

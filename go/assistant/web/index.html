@@ -98,6 +98,10 @@ tr.expired td.fact-object { text-decoration: line-through; }
 .task .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .badge.mcp { background: var(--ok-soft); color: var(--ok); }
 .badge.mcp.down { background: var(--bad-soft); color: var(--bad); }
+#remotes { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+#remote-note { margin: 0; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+.badge.remote { background: var(--ok-soft); color: var(--ok); }
+.badge.remote.down { background: var(--bad-soft); color: var(--bad); }
 .banner { margin: 0 0 12px; padding: 8px 10px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; word-break: break-word; }
 form.compose { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); }
 form.compose input { flex: 1; }
@@ -143,6 +147,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   <span class="badge" id="model">model …</span>
   <span class="badge mcp" id="mcp" title="邮件和日历只经过这个 MCP server">MCP …</span>
   <span class="badge" id="workers" title="不同 thread 的事件并行处理，同一 thread 按顺序处理；另留一个槽位只跑你发的消息">worker …</span>
+  <span id="remotes"></span>
   <button id="pause" title="暂停后邮件照常收录，但不派工、不发信、不跑定时检查">暂停处理</button>
   <div class="legend" title="图中 6 个组件在 demo 里的位置">
     <span>持久运行 · SQLite 守护进程</span><span>集成 · 模拟 MCP 邮件/日历</span><span>记忆 · memory_search/remember</span>
@@ -153,6 +158,7 @@ td.mono, span.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 <main>
   <section class="card" aria-label="模拟信道">
     <h2>模拟 IM 信道 <small>助理只通过 Router 在这里说话</small></h2>
+    <p class="hint" id="remote-note" hidden></p>
     <div id="messages" aria-live="polite"></div>
     <div class="quick" id="quick"></div>
     <form class="compose" id="compose">
@@ -284,6 +290,22 @@ function proposalCard(p) {
     actions);
 }
 
+const remoteLabel = { telegram: "Telegram", discord: "Discord", email: "邮件" };
+
+// renderRemotes shows each remote channel in the header; a failing receive
+// or send turns its badge red, with the error in the tooltip.
+function renderRemotes() {
+  const remotes = state.remotes || [];
+  $("remotes").replaceChildren(...remotes.map((r) => {
+    const failing = r.receive_error || r.send_error;
+    const detail = [r.account, "收到 " + r.received + " 条" + (r.refused ? "，拒收 " + r.refused + " 条" : ""), "发出 " + r.sent + " 条",
+      r.receive_error ? "收消息失败：" + r.receive_error : "", r.send_error ? "发消息失败：" + r.send_error : ""].filter(Boolean).join("\n");
+    return el("span", { class: "badge remote" + (failing ? " down" : ""), title: detail }, r.label + (failing ? " · 异常" : " · 已连接"));
+  }));
+  $("remote-note").hidden = !remotes.length;
+  $("remote-note").textContent = "你在 " + remotes.map((r) => r.label).join("、") + " 发的消息也进这里，助理的话同步过去；批准只能在这个页面上做。";
+}
+
 function renderChannel() {
   const box = $("messages");
   const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
@@ -291,7 +313,7 @@ function renderChannel() {
   box.replaceChildren(...state.channel.map((m) => {
     if (m.proposal_id && proposals.has(m.proposal_id)) return proposalCard(proposals.get(m.proposal_id));
     return el("div", { class: "msg " + m.role }, m.text,
-      el("span", { class: "meta" }, time(m.created_at) + (m.trigger_id ? " · 触发器 #" + m.trigger_id : "")));
+      el("span", { class: "meta" }, time(m.created_at) + (m.source ? " · 来自 " + (remoteLabel[m.source] || m.source) : "") + (m.trigger_id ? " · 触发器 #" + m.trigger_id : "")));
   }));
   if (nearBottom) box.scrollTop = box.scrollHeight;
 }
@@ -394,6 +416,7 @@ function render() {
   $("mcp").classList.toggle("down", !!integration.error);
   $("workers").textContent = "worker " + state.workers.running + "/" + state.workers.capacity + " 运行中" + (state.workers.reserved ? " · 另留 " + state.workers.reserved + " 个给你" : "");
   renderAttention();
+  renderRemotes();
   const activeTasks = state.tasks.filter((task) => task.status === "active").length;
   $("tasks-tab").textContent = activeTasks ? "任务（" + activeTasks + "）" : "任务";
   $("tasks").replaceChildren(...(state.tasks.length ? state.tasks.map(taskCard) : [el("div", { class: "empty" }, "还没有任务。试试：经理来信，或在信道里说「1 分钟后提醒我 喝水」。")]));

@@ -50,13 +50,14 @@ func startAppWith(t *testing.T, dir string, clock *fixedClock, wrap func(mcpCall
 }
 
 // appOptions overrides the test daemon's MCP caller, model, worker count,
-// embedder or, when clock is nil, its time source.
+// embedder, remote channels or, when clock is nil, its time source.
 type appOptions struct {
 	wrap     func(mcpCaller) mcpCaller
 	provider agent.Provider
 	workers  int
 	now      func() time.Time
 	embedder Embedder
+	remotes  []RemoteChannel
 }
 
 func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) (*App, func()) {
@@ -87,7 +88,7 @@ func launchApp(t *testing.T, dir string, clock *fixedClock, options appOptions) 
 	if wrap != nil {
 		caller = wrap(caller)
 	}
-	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: provider, Model: ScriptedModelID, Now: now, Workers: workers, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second, Embedder: options.embedder})
+	app, err := NewApp(ctx, Config{DataDir: dir, Connector: NewConnector(caller, "in-process"), Provider: provider, Model: ScriptedModelID, Now: now, Workers: workers, SchedulerTick: time.Hour, PollInterval: time.Hour, LeaseTTL: 2 * time.Second, Embedder: options.embedder, Remotes: options.remotes})
 	if err != nil {
 		t.Fatal(errors.Join(err, world.Close()))
 	}

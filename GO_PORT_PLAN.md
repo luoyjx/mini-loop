@@ -23059,3 +23059,54 @@ dependency was added.
 - disambiguation of same-name people, or facts beyond the five predicates;
 - facts read from memory files (they carry no time and may come from mail);
 - a real channel, real MCP servers or a Python counterpart.
+
+## Go-only slice — assistant demo: remote channels (2026-11-11)
+
+Code baseline: `16ee882` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory`, `go/agent` and `go/mcp` are
+unchanged; no dependency was added.
+
+**Go evidence:**
+
+- `RemoteChannel` (`remote.go`) is one messaging service that talks to the owner
+  only. `Bridge` runs a receive loop and a delivery loop per channel.
+  - `Store.ReceiveRemote` commits accepted lines, dedupe links by service message
+    ID (`remote_links`) and the receive cursor in one transaction.
+  - Lines join the chat thread tagged with `channel.source`. A reply to a delivered
+    question line answers that question through the shared `answerQuestion`.
+  - `RemotePending`, `SentRemote` and `SkipRemote` copy assistant and system lines
+    in channel order behind a delivery cursor; delivery waits while paused.
+  - A first start begins at the service's head and the channel's head.
+- The router's run context names the chat line's source (`web-sim` or the channel)
+  for explicit-human chat turns.
+- `Telegram` (`getUpdates` long poll, `sendMessage`) accepts only the configured
+  private chat. `Discord` opens the DM and reads it over REST every three seconds,
+  with no gateway. `EmailChannel` reads the inbox with a small read-only IMAP
+  client (`EXAMINE`, `UID SEARCH`, `BODY.PEEK[]`) and sends with `net/smtp`. A mail
+  needs From to be the owner and the topmost `Authentication-Results` from
+  `-email-authserv` to show `dmarc=pass` or `dkim=pass` for the owner's domain.
+- `miniloop-assistant` takes `-telegram-chat`, `-discord-user` and `-email-*`
+  flags. Secrets come only from `MINILOOP_TELEGRAM_TOKEN`, `MINILOOP_DISCORD_TOKEN`
+  and `MINILOOP_EMAIL_PASSWORD`, which the MCP child's scrubbing already withholds.
+  `launchd-plist` refuses the flags.
+- Tests cover:
+  - the bridge with a fake channel: head start, refusals, dedupe, cursor, order,
+    pause, a failed send retried, a refused line skipped, and a reply answering an
+    open question but not an answered one;
+  - an end-to-end run with the scripted model and two fake channels;
+  - fake Bot API, Discord REST, IMAP and SMTP servers, including token scrubbing,
+    error classification, forged headers below the trusted one, MIME parts, quoted
+    replies and charsets;
+  - CLI refusals.
+
+**Not claimed:**
+
+- a run against real Telegram, Discord or mail accounts: the live check used local
+  fakes of those services;
+- approving proposals from a remote channel, group chats, attachments, webhooks or
+  a Discord gateway connection;
+- exactly-once delivery: a crash after a service accepted a line sends it again;
+- real MCP mail and calendar servers or a Python counterpart.

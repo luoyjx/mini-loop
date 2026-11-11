@@ -195,6 +195,8 @@ type ChannelMessage struct {
 	ProposalID *int64      `json:"proposal_id,omitempty"`
 	TriggerID  int64       `json:"trigger_id,omitempty"`
 	CreatedAt  time.Time   `json:"created_at"`
+	// Source is the remote channel a user line came from; "" is the page.
+	Source string `json:"source,omitempty"`
 }
 
 type LedgerKind string
@@ -225,6 +227,8 @@ const (
 	LedgerWatchdog LedgerKind = "watchdog"
 	// LedgerMemory records the nightly consolidation.
 	LedgerMemory LedgerKind = "memory"
+	// LedgerRemote records what remote channels received and refused.
+	LedgerRemote LedgerKind = "remote"
 )
 
 // LedgerEntry ties an effect to the trigger, session, gate action and the

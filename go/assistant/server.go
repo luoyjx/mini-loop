@@ -60,6 +60,7 @@ type StateView struct {
 	Retrieval     string           `json:"retrieval"`
 	Vectors       *VectorStatus    `json:"vectors,omitempty"`
 	Integration   IntegrationView  `json:"integration"`
+	Remotes       []RemoteStatus   `json:"remotes"`
 	Workers       WorkersView      `json:"workers"`
 	Channel       []ChannelMessage `json:"channel"`
 	Proposals     []Proposal       `json:"proposals"`
@@ -194,7 +195,7 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
 		AgentTools: []string{MCPMailList, MCPMailRead, MCPCalendarList, MCPCalendarGet},
 		DaemonOnly: []string{MCPMailPoll + "（poller）", MCPCalendarList + "（scheduler：日程临近）", MCPMailSend + "（outbox）", MCPCalendarRespond + "（outbox）", MCPSimDeliver + " / " + MCPSimAddEvent + "（模拟器）"},
-	}, Workers: WorkersView{Capacity: app.Router.Capacity(), Reserved: app.Router.Reserved()}, Router: app.Router.Stats()}
+	}, Workers: WorkersView{Capacity: app.Router.Capacity(), Reserved: app.Router.Reserved()}, Router: app.Router.Stats(), Remotes: app.Remotes()}
 	if since, paused := app.Store.Paused(); paused {
 		view.Paused = &since
 	}

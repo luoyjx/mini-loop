@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child and opt-in Telegram / Discord / email channels",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      6100
+      6300
     ],
     "views": [
       {
@@ -1320,6 +1320,36 @@
         76
       ],
       "tag": "manager / employer / role timeline"
+    },
+    {
+      "id": "paRemote",
+      "type": "backend",
+      "label": "Remote channel bridges",
+      "sublabel": "Telegram / Discord / email · opt-in, default off",
+      "pos": [
+        70,
+        5650
+      ],
+      "size": [
+        300,
+        76
+      ],
+      "tag": "owner checked per message / approvals on page"
+    },
+    {
+      "id": "paRemoteSvc",
+      "type": "external",
+      "label": "Telegram / Discord / mail servers",
+      "sublabel": "outside the Mac · secrets from env only",
+      "pos": [
+        70,
+        6150
+      ],
+      "size": [
+        300,
+        76
+      ],
+      "tag": "Bot API / REST / IMAP + SMTP"
     }
   ],
   "boundaries": [
@@ -1447,7 +1477,8 @@
         "paConsolidator",
         "paSearch",
         "paEmbed",
-        "paFacts"
+        "paFacts",
+        "paRemote"
       ],
       "pad": 50
     }
@@ -2802,6 +2833,52 @@
       "label": "facts / outdated",
       "fromSide": "bottom",
       "toSide": "right"
+    },
+    {
+      "id": "paRemoteChat",
+      "from": "paRemote",
+      "to": "paStore",
+      "label": "chat in / lines out",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [
+        [
+          12,
+          5688
+        ],
+        [
+          12,
+          4884
+        ],
+        [
+          700,
+          4884
+        ]
+      ],
+      "labelAt": [
+        620,
+        4884
+      ]
+    },
+    {
+      "id": "paRemoteCall",
+      "from": "paRemote",
+      "to": "paRemoteSvc",
+      "label": "poll / send",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        220,
+        5940
+      ]
+    },
+    {
+      "id": "paRemoteFailures",
+      "from": "paRemote",
+      "to": "paHealth",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
     }
   ],
   "cards": [
@@ -3069,14 +3146,15 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline 4a6b87e plus the 2026-11-02 time-bounded-facts iteration (D9): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory and go/agent are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
-        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.",
+        "Review baseline 16ee882 plus the 2026-11-11 remote-channel iteration (D10): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added (net/http, a small IMAP client and net/smtp). cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
         "Batches and reports: the router claims a thread's due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.",
         "Admission and preparation: rules grade mail by contact and address. A known contact writing to the user is explicit; a known contact copying the user or a stranger writing to the user is an inferred candidate that passes one tool-less triage call (handle / observe / ignore); a stranger copying the user is archived. Observe mode, the default, records even a handle verdict on the candidates tab until the user hands it over or ignores it; auto mode runs the worker; a failed triage records. prepare_start queues a durable job that the Preparer runs one at a time in an untrusted session limited to read tools; the result returns as a job.done trigger on the starting thread. Jobs can be stopped, are requeued after restart and wait while paused.",
         "Watchdog: each task check is snapshotted, and every scheduler tick runs the agent stuck detector over the snapshots. Three checks with the same check and note, or six that alternate, flag the task once in the ledger, the channel and the attention list (no_progress); a check that makes progress clears the flag. Router decision counters and the 300-event acceptance stream report are process-local.",
         "Memory and profile: the read-only lookup tool reads one assistant.db record by ref (trigger-, task-, proposal-, question-, job-, thread:, session:) and names the refs one hop away. The 23:30 nightly routine first adds recipients of sent mail as contacts (never senders), reads the meeting window from the calendar, removes duplicate memories (explicit and feedback kept) and rebuilds the profile; the worker then remembers the preferences the user stated in that day's chat. The profile (manager, frequent contacts, meeting window, preferences) is reference data in every worker prompt. Workers search memory with memory_search: BM25 over the memory text with Chinese split into two-character tokens, BM25 over model-written aliases (one tool-less call in the nightly run for new or changed memories, keyed by name and text) and the go/memory substring search, merged by reciprocal rank fusion (k=60); new sessions no longer get the built-in recall, and each turn's prompt carries up to three memories related to its events. On a fixed 24-memory, 44-query set, hits in the top 3 rise from 12 (substring) to 22 (BM25) and 39 (all legs, with author-written aliases). -embed ollama (default off) adds a fourth, semantic leg: memories are embedded through Ollama /api/embed (qwen3-embedding:0.6b by default, loopback by default), vectors are kept in assistant.db keyed by name, text and model and re-embedded when a memory changes, and hits need cosine at least 0.35. When Ollama fails, search falls back to the lexical legs and three failures in a row reach the attention list; at start the daemon syncs and probes once. The prefetch keeps only keyword or alias hits, or semantic hits at 0.45 or more. With the real model, all four legs find 44 of 44 and the semantic leg alone 43; 1 of 8 no-answer questions is prefetched; both floors were chosen on this set. With embeddings on, memory text and queries go to the -embed-url server. Time-bounded facts (entities, aliases, facts with valid_from, valid_to and superseded_by) come from the contact table (work domain, the 经理 contact), known contacts' inbox mail and meetings, and one tool-less nightly extraction from what the user said in the channel; strangers never become entities. manager, works_at and role keep one current value on a timeline, and a weaker source (domain < contact table < user) never replaces a stronger current fact. The profile's manager line is a view of the current fact; memory_search lists the facts a question is about first, a fifth leg ranks memories naming the people asked about, memories stating a replaced value carry an outdated note, and each turn's prompt carries up to four facts. On 11 time-sensitive questions the top memory is current for 5 and stale for 5, the first fact current for 11, with the offline model's extraction rules.",
         "Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.",
+        "Remote channels (default off): -telegram-chat (a private chat with the owner's bot, getUpdates long poll), -discord-user (the bot's DM over REST every 3 s, no gateway) and -email-owner with -email-user/-email-imap/-email-smtp/-email-authserv (the assistant's own mailbox: IMAP EXAMINE + BODY.PEEK every 30 s, SMTP send). Secrets come only from MINILOOP_TELEGRAM_TOKEN, MINILOOP_DISCORD_TOKEN and MINILOOP_EMAIL_PASSWORD; the MCP child never sees them and launchd-plist refuses the flags. Only the owner's account is accepted; a mail also needs dmarc=pass or dkim=pass for the owner's domain in the topmost Authentication-Results header from -email-authserv. Accepted lines, dedupe links and the cursor commit together; lines join the chat thread with explicit-human authority, and a reply to a question's message answers it. Assistant and system lines are copied to each channel in order, at least once, held while paused; a line the service refuses is skipped and recorded. Approval cards point to the page; nothing is approved remotely. Copied lines leave the machine through those services.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
         "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."
       ]

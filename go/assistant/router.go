@@ -354,7 +354,7 @@ func (r *Router) dispatch(ctx context.Context, batch []Trigger) {
 			stats.Merged += len(kept) - 1
 		}
 	})
-	run, err := r.runContext(lead)
+	run, err := r.runContext(ctx, lead)
 	if err != nil {
 		r.retry(ctx, kept, err)
 		return
@@ -617,13 +617,19 @@ func (r *Router) sessionFor(ctx context.Context, trigger Trigger) (*agent.Manage
 	return session, "新建 worker 并订阅 thread " + string(trigger.Thread), nil
 }
 
-// runContext: the user typing in the channel is explicit human authority;
-// everything else carries external content and runs untrusted.
-func (r *Router) runContext(trigger Trigger) (agent.RunContext, error) {
+// runContext: the user typing in the channel is explicit human authority,
+// on the loopback page or on a remote channel that checked the owner's
+// account; everything else carries external content and runs untrusted. The
+// run context names where the lead message came from.
+func (r *Router) runContext(ctx context.Context, trigger Trigger) (agent.RunContext, error) {
 	if trigger.Kind != TriggerChat {
 		return agent.DefaultRunContext()
 	}
-	actor, channel := agent.ActorID(Owner), "web-sim"
+	source, err := r.store.ChatSource(ctx, trigger.Ref)
+	if err != nil {
+		return agent.RunContext{}, err
+	}
+	actor, channel := agent.ActorID(Owner), firstNonEmpty(source, "web-sim")
 	return agent.ExplicitHumanRunContext(agent.HumanRunConfig{ActorID: &actor, Channel: &channel})
 }
 

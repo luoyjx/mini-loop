@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</p>
+      <p class="subtitle">Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child and opt-in Telegram / Discord / email channels</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron","goTeams","goPythonParser"],"note":"Explicit native SQLite; goals restore disarmed. Syntax/public/private/variable audits grant no authority. Final port acceptance open."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4544,9 +4544,9 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 6100" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 6300" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child</desc>
+        <desc id="archify-diagram-description">Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child and opt-in Telegram / Discord / email channels</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4708,6 +4708,9 @@
         <path data-edge-from="paSearch" data-edge-to="paEmbed" data-edge-label="/api/embed" data-edge-key="107" data-edge-id="paEmbedCall" data-composition-points="2200,5650;2200,5476" d="M 2200 5650 L 2200 5476" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paConsolidator" data-edge-to="paFacts" data-edge-label="facts" data-edge-key="108" data-edge-id="paFactsWrite" data-composition-points="1710,5726;1710,5813;1960,5813;1960,5900" d="M 1710 5726 L 1710 5805 Q 1710 5813 1718 5813 L 1952 5813 Q 1960 5813 1960 5821 L 1960 5900" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="paSearch" data-edge-to="paFacts" data-edge-label="facts / outdated" data-edge-key="109" data-edge-id="paFactsRead" data-composition-points="2200,5726;2200,5750;2154,5750;2154,5938;2130,5938" d="M 2200 5726 L 2200 5742 Q 2200 5750 2192 5750 L 2162 5750 Q 2154 5750 2154 5758 L 2154 5930 Q 2154 5938 2146 5938 L 2130 5938" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paRemote" data-edge-to="paStore" data-edge-label="chat in / lines out" data-edge-key="110" data-edge-id="paRemoteChat" data-composition-points="70,5688;12,5688;12,4884;700,4884;700,4900" d="M 70 5688 L 20 5688 Q 12 5688 12 5680 L 12 4892 Q 12 4884 20 4884 L 692 4884 Q 700 4884 700 4892 L 700 4900" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paRemote" data-edge-to="paRemoteSvc" data-edge-label="poll / send" data-edge-key="111" data-edge-id="paRemoteCall" data-composition-points="220,5726;220,6150" d="M 220 5726 L 220 6150" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="paRemote" data-edge-to="paHealth" data-edge-key="112" data-edge-id="paRemoteFailures" data-composition-points="220,5650;220,5476" d="M 220 5650 L 220 5476" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5755,6 +5758,31 @@
         <text data-detail="fine" x="1960" y="5968" class="t-database" font-size="7" text-anchor="middle">manager / employer / role timeline</text>
         </g>
 
+        <g id="node-paRemote" data-node-id="paRemote" data-node-label="Remote channel bridges" tabindex="0" role="button" aria-label="Focus Remote channel bridges, Telegram / Discord / email · opt-in, default off, go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Telegram / Discord / email · opt-in, default off" data-node-tag="owner checked per message / approvals on page" data-node-context="go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac">
+          <title>Remote channel bridges · Telegram / Discord / email · opt-in, default off · go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac · owner checked per message / approvals on page</title>
+          <rect x="70" y="5650" width="300" height="76" rx="6" class="c-mask"/>
+          <rect x="70" y="5650" width="300" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(76 5656) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="220" y="5686" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Remote channel bridges</text>
+        <text data-detail="context" x="220" y="5702" class="t-muted" font-size="9" text-anchor="middle">Telegram / Discord / email · opt-in, default off</text>
+        <text data-detail="fine" x="220" y="5718" class="t-backend" font-size="7" text-anchor="middle">owner checked per message / approvals on page</text>
+        </g>
+
+        <g id="node-paRemoteSvc" data-node-id="paRemoteSvc" data-node-label="Telegram / Discord / mail servers" tabindex="0" role="button" aria-label="Focus Telegram / Discord / mail servers, outside the Mac · secrets from env only, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="outside the Mac · secrets from env only" data-node-tag="Bot API / REST / IMAP + SMTP" data-node-context="Architecture component">
+          <title>Telegram / Discord / mail servers · outside the Mac · secrets from env only · Architecture component · Bot API / REST / IMAP + SMTP</title>
+          <rect x="70" y="6150" width="300" height="76" rx="6" class="c-mask"/>
+          <rect x="70" y="6150" width="300" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(76 6156) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="220" y="6186" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Telegram / Discord / mail servers</text>
+        <text data-detail="context" x="220" y="6202" class="t-muted" font-size="9" text-anchor="middle">outside the Mac · secrets from env only</text>
+        <text data-detail="fine" x="220" y="6218" class="t-external" font-size="7" text-anchor="middle">Bot API / REST / IMAP + SMTP</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -6073,37 +6101,46 @@
           <rect x="2133.6" y="5730" width="86.8" height="14" rx="3" class="c-mask"/>
           <text x="2177" y="5740" class="t-muted" font-size="8" text-anchor="middle">facts / outdated</text>
         </g>
+        <g data-detail="context" data-edge-from="paRemote" data-edge-to="paStore" data-edge-label="chat in / lines out" data-edge-key="110" data-edge-id="paRemoteChat">
+          <rect x="569.4" y="4874" width="101.2" height="14" rx="3" class="c-mask"/>
+          <text x="620" y="4884" class="t-muted" font-size="8" text-anchor="middle">chat in / lines out</text>
+        </g>
+        <g data-detail="context" data-edge-from="paRemote" data-edge-to="paRemoteSvc" data-edge-label="poll / send" data-edge-key="111" data-edge-id="paRemoteCall">
+          <rect x="188.6" y="5930" width="62.8" height="14" rx="3" class="c-mask"/>
+          <text x="220" y="5940" class="t-muted" font-size="8" text-anchor="middle">poll / send</text>
+        </g>
+
 
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="6071" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="6271" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="6076" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="6084" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="6276" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="6284" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="6076" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="6084" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="6276" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="6284" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="6076" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="6084" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="6276" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="6284" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="6076" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="6084" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="6276" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="6284" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="6076" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="6084" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="6276" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="6284" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="6076" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="6084" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="6276" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="6284" class="t-muted" font-size="8">Database</text>
           </g>
           <g data-legend-kind="cloud">
-            <rect x="674" y="6076" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
-            <text x="694" y="6084" class="t-muted" font-size="8">Cloud</text>
+            <rect x="674" y="6276" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
+            <text x="694" y="6284" class="t-muted" font-size="8">Cloud</text>
           </g>
         </g>
       </svg>
@@ -6579,14 +6616,15 @@
           <h3>Opt-in Go personal-assistant demo</h3>
         </div>
         <ul>
-          <li>&bull; Review baseline 4a6b87e plus the 2026-11-02 time-bounded-facts iteration (D9): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory and go/agent are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
-          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.</li>
+          <li>&bull; Review baseline 16ee882 plus the 2026-11-11 remote-channel iteration (D10): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added (net/http, a small IMAP client and net/smtp). cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.</li>
+          <li>&bull; Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child&#39;s world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.</li>
           <li>&bull; Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread&#39;s subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.</li>
           <li>&bull; Batches and reports: the router claims a thread&#39;s due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.</li>
           <li>&bull; Admission and preparation: rules grade mail by contact and address. A known contact writing to the user is explicit; a known contact copying the user or a stranger writing to the user is an inferred candidate that passes one tool-less triage call (handle / observe / ignore); a stranger copying the user is archived. Observe mode, the default, records even a handle verdict on the candidates tab until the user hands it over or ignores it; auto mode runs the worker; a failed triage records. prepare_start queues a durable job that the Preparer runs one at a time in an untrusted session limited to read tools; the result returns as a job.done trigger on the starting thread. Jobs can be stopped, are requeued after restart and wait while paused.</li>
           <li>&bull; Watchdog: each task check is snapshotted, and every scheduler tick runs the agent stuck detector over the snapshots. Three checks with the same check and note, or six that alternate, flag the task once in the ledger, the channel and the attention list (no_progress); a check that makes progress clears the flag. Router decision counters and the 300-event acceptance stream report are process-local.</li>
           <li>&bull; Memory and profile: the read-only lookup tool reads one assistant.db record by ref (trigger-, task-, proposal-, question-, job-, thread:, session:) and names the refs one hop away. The 23:30 nightly routine first adds recipients of sent mail as contacts (never senders), reads the meeting window from the calendar, removes duplicate memories (explicit and feedback kept) and rebuilds the profile; the worker then remembers the preferences the user stated in that day&#39;s chat. The profile (manager, frequent contacts, meeting window, preferences) is reference data in every worker prompt. Workers search memory with memory_search: BM25 over the memory text with Chinese split into two-character tokens, BM25 over model-written aliases (one tool-less call in the nightly run for new or changed memories, keyed by name and text) and the go/memory substring search, merged by reciprocal rank fusion (k=60); new sessions no longer get the built-in recall, and each turn&#39;s prompt carries up to three memories related to its events. On a fixed 24-memory, 44-query set, hits in the top 3 rise from 12 (substring) to 22 (BM25) and 39 (all legs, with author-written aliases). -embed ollama (default off) adds a fourth, semantic leg: memories are embedded through Ollama /api/embed (qwen3-embedding:0.6b by default, loopback by default), vectors are kept in assistant.db keyed by name, text and model and re-embedded when a memory changes, and hits need cosine at least 0.35. When Ollama fails, search falls back to the lexical legs and three failures in a row reach the attention list; at start the daemon syncs and probes once. The prefetch keeps only keyword or alias hits, or semantic hits at 0.45 or more. With the real model, all four legs find 44 of 44 and the semantic leg alone 43; 1 of 8 no-answer questions is prefetched; both floors were chosen on this set. With embeddings on, memory text and queries go to the -embed-url server. Time-bounded facts (entities, aliases, facts with valid_from, valid_to and superseded_by) come from the contact table (work domain, the 经理 contact), known contacts&#39; inbox mail and meetings, and one tool-less nightly extraction from what the user said in the channel; strangers never become entities. manager, works_at and role keep one current value on a timeline, and a weaker source (domain &lt; contact table &lt; user) never replaces a stronger current fact. The profile&#39;s manager line is a view of the current fact; memory_search lists the facts a question is about first, a fifth leg ranks memories naming the people asked about, memories stating a replaced value carry an outdated note, and each turn&#39;s prompt carries up to four facts. On 11 time-sensitive questions the top memory is current for 5 and stale for 5, the first fact current for 11, with the offline model&#39;s extraction rules.</li>
           <li>&bull; Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.</li>
+          <li>&bull; Remote channels (default off): -telegram-chat (a private chat with the owner&#39;s bot, getUpdates long poll), -discord-user (the bot&#39;s DM over REST every 3 s, no gateway) and -email-owner with -email-user/-email-imap/-email-smtp/-email-authserv (the assistant&#39;s own mailbox: IMAP EXAMINE + BODY.PEEK every 30 s, SMTP send). Secrets come only from MINILOOP_TELEGRAM_TOKEN, MINILOOP_DISCORD_TOKEN and MINILOOP_EMAIL_PASSWORD; the MCP child never sees them and launchd-plist refuses the flags. Only the owner&#39;s account is accepted; a mail also needs dmarc=pass or dkim=pass for the owner&#39;s domain in the topmost Authentication-Results header from -email-authserv. Accepted lines, dedupe links and the cursor commit together; lines join the chat thread with explicit-human authority, and a reply to a question&#39;s message answers it. Assistant and system lines are copied to each channel in order, at least once, held while paused; a line the service refuses is skipped and recorded. Approval cards point to the page; nothing is approved remotely. Copied lines leave the machine through those services.</li>
           <li>&bull; Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-&lt;id&gt;, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.</li>
           <li>&bull; Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep.</li>
         </ul>

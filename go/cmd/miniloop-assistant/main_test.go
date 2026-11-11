@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"flag"
 	"io"
 	"os"
 	"os/exec"
@@ -60,6 +61,10 @@ func TestRunRefusesUnsafeStartup(t *testing.T) {
 		"anthropic without secret": {"-addr", "127.0.0.1:0", "-model", "anthropic", "-data", t.TempDir()},
 		"unknown model":            {"-addr", "127.0.0.1:0", "-model", "gpt", "-data", t.TempDir()},
 		"mock-mcp without data":    {"mock-mcp"},
+		"telegram without token":   {"-addr", "127.0.0.1:0", "-data", t.TempDir(), "-telegram-chat", "42"},
+		"discord without token":    {"-addr", "127.0.0.1:0", "-data", t.TempDir(), "-discord-user", "1001"},
+		"email without password": {"-addr", "127.0.0.1:0", "-data", t.TempDir(), "-email-owner", "me@owner.example", "-email-user", "bot@bot.example",
+			"-email-imap", "imap.bot.example:993", "-email-smtp", "smtp.bot.example:587", "-email-authserv", "mx.bot.example"},
 	}
 	for name, args := range cases {
 		var stderr bytes.Buffer
@@ -157,6 +162,8 @@ func TestLaunchdPlistRefusesUnsafeInstalls(t *testing.T) {
 		"non-loopback":     {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-addr", "0.0.0.0:8790"},
 		"unknown embed":    {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-embed", "cloud"},
 		"bad embed url":    {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-embed", "ollama", "-embed-url", "localhost:11434"},
+		"telegram":         {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-telegram-chat", "42"},
+		"email":            {"launchd-plist", "-binary", "/usr/local/bin/miniloop-assistant", "-email-owner", "me@owner.example"},
 	}
 	for name, args := range cases {
 		var out, stderr bytes.Buffer
@@ -186,5 +193,36 @@ func TestLaunchdPlistCarriesTheEmbeddingFlags(t *testing.T) {
 		if !strings.Contains(on, want) {
 			t.Errorf("plist lacks %q:\n%s", want, on)
 		}
+	}
+}
+
+// Remote channels take their accounts from flags and their secrets only from
+// the environment.
+func TestRemoteFlagsBuildTheChannels(t *testing.T) {
+	flags := flag.NewFlagSet("test", flag.ContinueOnError)
+	remote := bindRemoteFlags(flags)
+	if err := flags.Parse(nil); err != nil {
+		t.Fatal(err)
+	}
+	env := testEnvironment(t)
+	if channels, err := remote.channels(env); err != nil || len(channels) != 0 || remote.any() {
+		t.Fatalf("no channel by default: %v %v", channels, err)
+	}
+	if err := flags.Parse([]string{"-telegram-chat", "42", "-discord-user", "1001", "-email-owner", "me@owner.example", "-email-user", "bot@bot.example",
+		"-email-imap", "imap.bot.example:993", "-email-smtp", "smtp.bot.example:587", "-email-authserv", "mx.bot.example"}); err != nil {
+		t.Fatal(err)
+	}
+	secrets := map[string]string{envTelegramToken: "1:t", envDiscordToken: "d", envEmailPassword: "p"}
+	env.getenv = func(name string) string { return secrets[name] }
+	channels, err := remote.channels(env)
+	if err != nil || len(channels) != 3 || !remote.any() {
+		t.Fatalf("channels %v %v", channels, err)
+	}
+	names := []string{}
+	for _, channel := range channels {
+		names = append(names, channel.Name())
+	}
+	if strings.Join(names, ",") != "telegram,discord,email" {
+		t.Fatalf("names %v", names)
 	}
 }

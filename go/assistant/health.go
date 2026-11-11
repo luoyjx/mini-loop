@@ -22,11 +22,25 @@ const (
 )
 
 var healthLabels = map[HealthComponent]string{
-	HealthMailPoll: "收信轮询（MCP mail_poll）",
-	HealthCalendar: "日程查看（MCP calendar_list）",
-	HealthOutbox:   "发件箱（MCP 发送）",
-	HealthWorker:   "worker 模型调用",
-	HealthEmbed:    "语义检索（本地嵌入模型）",
+	HealthMailPoll:                      "收信轮询（MCP mail_poll）",
+	HealthCalendar:                      "日程查看（MCP calendar_list）",
+	HealthOutbox:                        "发件箱（MCP 发送）",
+	HealthWorker:                        "worker 模型调用",
+	HealthEmbed:                         "语义检索（本地嵌入模型）",
+	remoteHealth(RemoteTelegram, false): "Telegram 收消息",
+	remoteHealth(RemoteTelegram, true):  "Telegram 发消息",
+	remoteHealth(RemoteDiscord, false):  "Discord 收消息",
+	remoteHealth(RemoteDiscord, true):   "Discord 发消息",
+	remoteHealth(RemoteEmail, false):    "邮件信道收信（IMAP）",
+	remoteHealth(RemoteEmail, true):     "邮件信道发信（SMTP）",
+}
+
+// remoteHealth names a remote channel's receive or send loop.
+func remoteHealth(name string, send bool) HealthComponent {
+	if send {
+		return HealthComponent(name + "_send")
+	}
+	return HealthComponent(name + "_receive")
 }
 
 // HealthProblem is a component that failed at least healthThreshold times in

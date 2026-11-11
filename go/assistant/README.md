@@ -2,7 +2,9 @@
 
 `go/assistant` and `go/cmd/miniloop-assistant` form an opt-in demo. They show how the
 Go runtime can grow into a proactive personal agent that runs on your own Mac. The
-channel is a simulated local web page. Mail and calendar come from a simulated MCP
+main channel is a local web page. Opt-in [remote channels](#remote-channels) let
+you talk to the same assistant from a private chat with your Telegram bot, a DM
+with your Discord bot, or email. Mail and calendar come from a simulated MCP
 server that the daemon starts as a child process. Workers can follow a piece of
 work to completion: they create durable tasks, schedule their own checks, and the
 daemon wakes them until each task is done. The page tries to take as little of
@@ -29,6 +31,7 @@ go run ./cmd/miniloop-assistant              # http://127.0.0.1:8790, offline sc
 go run ./cmd/miniloop-assistant -data /tmp/pa -addr 127.0.0.1:8791
 ANTHROPIC_API_KEY=... go run ./cmd/miniloop-assistant -model anthropic -model-id <model>
 go run ./cmd/miniloop-assistant -embed ollama     # adds local semantic memory search
+MINILOOP_TELEGRAM_TOKEN=... go run ./cmd/miniloop-assistant -telegram-chat <your user ID>
 ```
 
 The listener must be a loopback address because the page has no authentication.
@@ -85,10 +88,11 @@ rm ~/Library/LaunchAgents/dev.mini-loop.assistant.plist            # uninstall
 
 `launchd-plist` accepts the daemon's `-addr`, `-data`, `-workers` and `-embed*`
 flags, plus `-label`, `-binary` and `-log`. launchd does not start Ollama; with
-`-embed ollama`, keep the Ollama app or server running, or search stays lexical. It refuses three things: a `go run` binary, a
-non-loopback address, and `-model anthropic`. A plist is no place for an API key, and
-a Keychain-backed credential source is a later roadmap step. Run the real model from a
-shell for now.
+`-embed ollama`, keep the Ollama app or server running, or search stays lexical. It
+refuses four things: a `go run` binary, a non-loopback address, `-model anthropic`
+and the remote channel flags. A plist is no place for an API key or a bot token, and
+a Keychain-backed credential source is a later roadmap step. Run the real model and
+remote channels from a shell for now.
 
 ## Try it
 
@@ -172,12 +176,91 @@ shell for now.
     - A 07:00 brief missed earlier the same day runs once. This also applies after the
       Mac wakes from sleep.
     - A second daemon on the same `-data` refuses to start while the first runs.
+17. With a [remote channel](#remote-channels) on, send your bot **记住 周五下午不安排会**.
+    The line appears on the page as **来自 Telegram** and the reply comes back to the
+    bot, and to every other remote channel. Click **同事来问**: the question reaches the
+    bot with **（直接回复这条消息即可回答）**. Reply to that message with **周三上午**:
+    the answer goes back to Dave's worker, which drafts the reply. The approval card
+    reaches the bot too, but you approve it on the page.
+
+## Remote channels
+
+Remote channels are off by default. Each one connects the assistant to one person,
+you, on a service you already use. They share the page's conversation:
+
+- **Inbound**: your messages join the page's chat thread, tagged with where they
+  came from, and run with the same explicit human authority as typing on the page.
+  A reply to a question's message answers that question, exactly as **回答** does.
+- **Outbound**: the assistant's lines and the system's lines (not your own) are
+  copied to every enabled channel, in channel order. An approval card arrives with
+  **（到本机助理网页批准或拒绝；这里不能批准）**: approvals stay on the loopback page.
+- **Pause**: while you pause, your messages are still recorded and copying waits.
+
+| Channel | Turn it on | Secret (environment only) | Reads | Accepts only |
+|---|---|---|---|---|
+| Telegram | `-telegram-chat <your user ID>` | `MINILOOP_TELEGRAM_TOKEN` | `getUpdates` long poll, 25 s | Your private chat with the bot: chat ID and sender ID equal your user ID |
+| Discord | `-discord-user <your user ID>` | `MINILOOP_DISCORD_TOKEN` | The DM over REST, every 3 s | Messages in the bot's DM with you, by your user ID |
+| Email | `-email-owner`, `-email-user`, `-email-imap`, `-email-smtp`, `-email-authserv` | `MINILOOP_EMAIL_PASSWORD` | The inbox over IMAP, read-only, every 30 s | Mail from your address that the receiving server authenticated for your domain |
+
+Setting each service up:
+
+- **Telegram**: create a bot with @BotFather and copy its token. Open a chat with
+  the bot and send it anything. Find your user ID, for example with @userinfobot.
+  Use a bot no other program polls: Telegram serves one `getUpdates` reader per bot,
+  and a second one, or a webhook, makes both fail with 409. `-telegram-api` points
+  at a self-hosted Bot API server.
+- **Discord**: in the Developer Portal, create an application and a bot and copy the
+  token. Invite the bot to a server you are in; it needs no permissions there. Allow
+  DMs from members of that server, then turn on Developer Mode to copy your user ID.
+  The daemon opens the DM itself. It reads the DM over REST every three seconds
+  instead of holding a gateway WebSocket, so no dependency is added. Bots read DM
+  text without the privileged message-content intent.
+- **Email**: give the assistant a mailbox of its own, for example a new Gmail account
+  with an app password, and write to it from your usual address:
+
+  ```sh
+  MINILOOP_EMAIL_PASSWORD=... go run ./cmd/miniloop-assistant \
+    -email-owner you@example.com -email-user assistant@gmail.com \
+    -email-imap imap.gmail.com:993 -email-smtp smtp.gmail.com:587 \
+    -email-authserv mx.google.com
+  ```
+
+  From is easy to forge, so a mail counts as yours only when two things hold. Its
+  From is `-email-owner`. Its topmost `Authentication-Results` header names the
+  `-email-authserv` server and shows `dmarc=pass` for your domain, or `dkim=pass`
+  signed by it. That header is the one the receiving server prepends; headers below
+  it may come from the sender. Other mail is refused and counted in the ledger.
+  - The channel uses `EXAMINE` and `BODY.PEEK[]`, so nothing in the mailbox is
+    marked read, moved or deleted.
+  - It reads up to 20 new messages per poll, refuses any over 256 KB, and takes the
+    first plain-text part, or the HTML part's text.
+  - It drops the quoted original and your signature. A body that is not UTF-8 is
+    refused with a note asking for UTF-8.
+  - Each assistant line is one mail to you, and replying to one answers its
+    question.
+  - IMAP uses TLS. SMTP uses TLS on port 465 and requires STARTTLS on any other
+    port. Both run in plain text only to a loopback host, such as a local mail
+    bridge.
+
+Durability and status:
+
+- **Receiving**: each receive commits your messages, their dedupe links and the
+  service cursor in one transaction. A message seen again is skipped by its
+  service ID, so a crash neither loses nor repeats one. A channel's first start
+  begins at the service's newest message, so older messages are not replayed.
+- **Sending**: a line is marked delivered right after the service accepted it. A
+  crash in between sends it once more. A failed send stops the round so order holds.
+  A line the service refuses for its content (HTTP 400, or SMTP 5xx after `DATA`)
+  is skipped and recorded instead of blocking the rest.
+- **Status**: the header shows a badge per channel, red while receiving or sending
+  fails. Three failures in a row put the channel on **需要你处理**. The ledger's
+  `remote` rows record what each channel received and refused, and lines skipped.
 
 ## Processes and data
 
 | Process | Owns | Talks to |
 |---|---|---|
-| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel, ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP |
+| `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel (each user line tagged with its source), ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP; with remote channels, the Telegram Bot API and Discord's REST API over HTTPS, and the assistant's mail servers over IMAP and SMTP |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
@@ -523,15 +606,34 @@ facts.
 | Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the facts and memories related to its events. Time-bounded facts about people come from the contact table, the inbox, the calendar and a nightly extraction from your chat. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `facts.go`, `lookup.go`, `nightly.go`, `profile.go` |
-| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go` |
+| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too, whether typed on the page or sent from a remote channel. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake and remote channel intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go`, `remote.go`, `telegram.go`, `discord.go`, `email.go`, `imap.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
-| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult` |
+| Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. Remote rows record what remote channels received and refused, and lines a service refused. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult`, `remote.go` |
 
 ## Boundaries
 
-- The MCP server and its data are simulated. There is no real mailbox or calendar,
-  no OAuth and no push notification. The connector speaks only the stdio transport
-  that `go/mcp` already has.
+- The MCP server and its data are simulated. There is no real mailbox or calendar
+  for the assistant to manage, no OAuth and no push notification. The connector
+  speaks only the stdio transport that `go/mcp` already has. The email remote
+  channel is a conversation with you, not the managed mailbox.
+- A remote channel message from your account has the same authority as typing on
+  the page. Someone who controls your Telegram or Discord account, or can send mail
+  that your `-email-authserv` server marks DKIM- or DMARC-aligned with your domain,
+  can chat as you, answer questions and cancel tasks. They cannot approve: decisions
+  are only on the loopback page. The email check trusts the topmost
+  `Authentication-Results` header, so `-email-authserv` must name a server that adds
+  one to every incoming mail.
+- Remote channels send text off the machine. Your messages and the assistant's
+  lines, which can quote mail subjects, names and your schedule, pass through
+  Telegram, Discord or your mail provider. Tokens and the mailbox password come
+  only from the environment, are withheld from the MCP child, and are never put in
+  a plist. The Telegram token sits in the request path and is replaced by
+  `<token>` in every error.
+- Remote channels poll. There are no webhooks, because the daemon listens only on
+  loopback, and no Discord gateway. A line reaches a channel at least once: a crash
+  after the service accepted it, or partway through a line split into several
+  messages, sends it again. Attachments, images, voice and group chats are refused
+  or ignored.
 - The daemon does not register MCP tools in the agent catalogue. It declares risk on
   its own typed wrappers and keeps `mail_poll` and the effect tools out of model
   reach. The core rule that pins registered MCP tools to `external` is unchanged.

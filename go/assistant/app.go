@@ -36,6 +36,9 @@ type Config struct {
 	LeaseTTL      time.Duration
 	// Embedder adds the dense retrieval leg; nil keeps memory search lexical.
 	Embedder Embedder
+	// Remotes are the real messaging channels the owner also talks through
+	// (Telegram, Discord, email); none by default, leaving only the page.
+	Remotes []RemoteChannel
 }
 
 type App struct {
@@ -49,9 +52,11 @@ type App struct {
 	Manager   *agent.SessionManager
 	// Memory is the owner's memory, shared with the workers' remember tool;
 	// Search ranks it for memory_search, the per-turn prefetch and the page.
-	Memory     *memory.ScopedStore
-	Search     *MemorySearch
-	Health     *Health
+	Memory *memory.ScopedStore
+	Search *MemorySearch
+	Health *Health
+	// Bridges connect the remote channels, one per channel.
+	Bridges    []*Bridge
 	ModelLabel string
 
 	now     clock
@@ -175,16 +180,25 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	outbox.health = health
 	poller := NewPoller(store, config.Connector, router, now, config.PollInterval, config.Log)
 	poller.health = health
+	bridges := []*Bridge{}
+	seen := map[string]bool{}
+	for _, remote := range config.Remotes {
+		if seen[remote.Name()] {
+			return nil, errors.Join(fmt.Errorf("remote channel %s configured twice", remote.Name()), manager.Stop(ctx))
+		}
+		seen[remote.Name()] = true
+		bridges = append(bridges, NewBridge(remote, store, router.Wake, health, now, config.Log))
+	}
 	return &App{
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
 		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Memory: owned, Search: search, Health: health,
-		ModelLabel: label, now: now, states: states, release: release,
+		Bridges: bridges, ModelLabel: label, now: now, states: states, release: release,
 	}, nil
 }
 
 // Start runs the dispatcher, scheduler (routines, task checks, event
-// reminders, watchdog), mail poller, outbox and preparation runner until ctx
-// ends.
+// reminders, watchdog), mail poller, outbox, preparation runner and each
+// remote channel's receive and delivery loops until ctx ends.
 // The first poll runs before Start returns, so a first-time daemon pins its
 // mail cursor to the service's head before anything else can deliver.
 func (app *App) Start(ctx context.Context) {
@@ -192,6 +206,9 @@ func (app *App) Start(ctx context.Context) {
 	loops := []func(context.Context){app.Router.Run, app.Scheduler.Run, app.Poller.Run, app.Outbox.Run, app.Preparer.Run}
 	if app.Search.vectors != nil {
 		loops = append(loops, app.warmVectors)
+	}
+	for _, bridge := range app.Bridges {
+		loops = append(loops, bridge.ReceiveLoop, bridge.DeliverLoop)
 	}
 	app.wg.Add(len(loops))
 	for _, loop := range loops {
@@ -235,7 +252,19 @@ func (app *App) SetPaused(ctx context.Context, paused bool) (bool, error) {
 	app.Outbox.Wake()
 	app.Scheduler.Wake()
 	app.Preparer.Wake()
+	for _, bridge := range app.Bridges {
+		bridge.Wake()
+	}
 	return true, nil
+}
+
+// Remotes is the page's view of the remote channels.
+func (app *App) Remotes() []RemoteStatus {
+	statuses := make([]RemoteStatus, 0, len(app.Bridges))
+	for _, bridge := range app.Bridges {
+		statuses = append(statuses, bridge.Status())
+	}
+	return statuses
 }
 
 // Attention is everything that waits for the user: the store's items, then

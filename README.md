@@ -271,7 +271,9 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-11**, baseline `16ee882`.
+Architecture review: **2026-11-11**, baseline `99c5721` plus the D10 remote
+channels of the opt-in Go personal assistant (Telegram, Discord and email; see
+the Go personal-assistant baseline below).
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -1222,59 +1224,58 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-02**, `4a6b87e` plus the
-time-bounded-facts iteration of the opt-in Go personal-assistant demo (D9, the
-third of three retrieval steps). `go/assistant` and `go/cmd/miniloop-assistant`
-remain a Go addition with no Python counterpart. `cmd/miniloop`, the Python runtime
-and both Deep Agents lanes keep their defaults. The `go/memory` and `go/agent`
-packages are unchanged; no dependency was added.
+Current architecture review baseline: **2026-11-11**, `16ee882` plus the
+remote-channel iteration of the opt-in Go personal-assistant demo (D10).
+`go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with no Python
+counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents lanes keep
+their defaults. The `go/memory`, `go/agent` and `go/mcp` packages are unchanged;
+no dependency was added (Telegram and Discord use `net/http`, email a small IMAP
+client and `net/smtp`).
 
-- **Facts**: `assistant.db` gains entities (people and organizations), their
-  aliases (names and addresses) and facts. A fact has a start, an end and the fact
-  that replaced it. Three predicates hold one value at a time (manager, employer,
-  role); a new value closes the old one. Mail and meeting interactions keep the
-  latest five per person.
-- **Sources**: facts that need no model come from:
-  - the contact table: each contact is an entity, a work domain is the employer,
-    and the contact marked 经理 is the manager;
-  - the inbox and the calendar: which threads and meetings a contact started.
-
-  Strangers never become entities. The nightly consolidation also asks the model
-  once, without tools, for manager, employer and role facts in what the user said
-  in the channel since the last run. A fact starts when the user said it. A failed
-  request is retried the next night.
-- **Precedence**: an earlier fact slots into the timeline. A newer value from a
-  weaker source never replaces a current one: the user's word beats the contact
-  table, which beats an address domain.
-- **Use**:
-  - the profile's manager line is a view of the current fact and the one before;
-  - `memory_search` lists the facts a question is about first, with their
-    validity;
-  - a fifth leg ranks memories that name the people asked about, or the current
-    manager for "my boss";
-  - a memory stating a replaced value carries an `outdated` note;
-  - each turn's prompt carries up to four facts about its events;
-  - the page lists the facts, struck through once replaced.
-- **Evaluation**: a fixed time-sensitive set of 11 questions over two months of
-  changes. The top memory states the current value for 5 and a replaced value for
-  5. The first fact is current for 11 of 11, and all 8 stale memories in the top 3
-  are marked. The chat lines use the phrasings the offline model's extraction rules
-  cover, so the fact figure is optimistic; extraction by a real model is
-  unmeasured. The D7 and D8 measurements are unchanged.
-- **Unchanged**: workers still cannot send. Effects still go only through approved
-  proposals and the outbox, and the channel, mail and calendar remain simulated.
+- **Channels**: besides the loopback page, the owner can talk to the assistant from
+  a private chat with a Telegram bot (`-telegram-chat`), a DM with a Discord bot
+  (`-discord-user`) or a mailbox (`-email-owner` with `-email-user`, `-email-imap`,
+  `-email-smtp` and `-email-authserv`). All are off by default. Secrets come only
+  from `MINILOOP_TELEGRAM_TOKEN`, `MINILOOP_DISCORD_TOKEN` and
+  `MINILOOP_EMAIL_PASSWORD`.
+- **Inbound**: Telegram is read with a `getUpdates` long poll. Discord's DM is read
+  over REST every three seconds, without a gateway WebSocket. The inbox is read over
+  IMAP every 30 seconds, read-only (`EXAMINE`, `BODY.PEEK[]`).
+  - Only the owner's account is accepted. A mail also needs a DKIM or DMARC pass
+    for the owner's domain in the topmost `Authentication-Results` header from
+    `-email-authserv`.
+  - Each receive commits the lines, the dedupe links and the cursor in one
+    transaction.
+  - Lines join the chat thread tagged with their source and run with
+    explicit-human authority, like typing on the page.
+  - A reply to a question's message answers that question.
+  - A first start begins at the newest message.
+- **Outbound**: every assistant and system line is copied to each channel in order,
+  at least once.
+  - Delivery waits while paused.
+  - A line the service refuses for its content is skipped and recorded.
+  - Approval cards say approval happens on the page; nothing can be approved
+    remotely.
+- **Status**: the page shows a badge per channel and tags remote lines. Three
+  failures in a row reach the attention list, and the ledger's `remote` rows record
+  receipts, refusals and skipped lines. `launchd-plist` refuses the channel flags,
+  and the Telegram token is replaced by `<token>` in errors.
+- **Unchanged**: workers still cannot send mail, and effects still go only through
+  approved proposals and the outbox. The managed mail and calendar remain simulated.
 
 See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
 
-Previous architecture review baseline: **2026-11-02**, `66fe1f6` plus the
-local-embedding iteration (D8). `-embed ollama` (default off) added a semantic
-leg through a local Ollama server, with vectors in `assistant.db`, a lexical
-fallback and a health entry. With `qwen3-embedding:0.6b` the semantic leg alone
-found 43 of 44 queries and all four legs 44. Before that, `28b0dc5` added the
-memory-retrieval iteration (D7). `memory_search` replaced the built-in recall for
-new worker sessions. It ranked memories by BM25 with Chinese bigrams, BM25 over
-nightly aliases and the substring search, merged by rank. Each turn's prompt carried
-up to three related memories, and a fixed set measured 39 of 44 queries found.
+Previous architecture review baseline: **2026-11-02**, `4a6b87e` plus the
+time-bounded-facts iteration (D9). `assistant.db` gained entities, aliases and
+facts with a start, an end and the fact that replaced them. Facts came from the
+contact table, the inbox, the calendar and one nightly tool-less extraction from
+the user's chat; the user's word beat the contact table, which beat an address
+domain. `memory_search` listed the facts first, a fifth leg ranked memories naming
+the people asked about, and replaced values were marked outdated. On 11
+time-sensitive questions the first fact was current for 11. Before that, `66fe1f6`
+added local embeddings (D8: semantic leg alone 43 of 44, all legs 44) and `28b0dc5`
+added the memory-retrieval iteration (D7: BM25 with Chinese bigrams, nightly
+aliases and substring merged by rank, 39 of 44).
 Before that, `75ba6b4` added the
 long-term-memory iteration (P6). `lookup` followed refs across local records, a
 nightly "夜间整理" routine learned contacts from sent mail, read the meeting window,
@@ -1565,8 +1566,8 @@ flowchart LR
         TSActivity -. redacted spans + usage .-> TSTrace
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status"]
-        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text<br/>memory vectors · keyed by memory name + text + model<br/>entities · aliases · facts with valid_from / valid_to / superseded_by"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status<br/>remote channel badges · source of each remote line"]
+        PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text<br/>memory vectors · keyed by memory name + text + model<br/>entities · aliases · facts with valid_from / valid_to / superseded_by<br/>remote links by service message ID · receive and delivery cursors per remote channel"]
         PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
         PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
@@ -1575,6 +1576,8 @@ flowchart LR
         PASearch["Memory search · derived, Markdown memory stays the authority<br/>BM25 with Chinese bigrams · BM25 over aliases · go/memory substring<br/>semantic leg with -embed ollama (default off): cosine ≥ 0.35 · lexical fallback<br/>entity leg: people named, current manager for "my boss"<br/>reciprocal rank fusion k=60 · facts listed first · outdated notes<br/>memory_search tool · per-turn prefetch of up to 4 facts and 3 memories"]
         PAFacts["Facts · derived, in assistant.db<br/>people and organizations known by names and addresses · strangers never become entities<br/>manager / employer / role: one current value, a timeline with replaced values<br/>user's word > contact table > address domain · profile manager line is a view"]
         PAEmbed["Ollama · local embedding server · opt-in<br/>qwen3-embedding:0.6b · loopback by default<br/>started by the owner, not by the daemon or launchd"]
+        PARemote["Remote channel bridges · opt-in · default off<br/>Telegram getUpdates long poll · Discord DM over REST · email IMAP read-only + SMTP<br/>owner's account checked per message · email: From + DKIM/DMARC from -email-authserv<br/>lines + dedupe links + cursor in one transaction · a reply to a question answers it<br/>copies assistant lines in order, at least once · held while paused · approvals stay on the page"]
+        PARemoteSvc["Telegram Bot API · Discord REST · the assistant's IMAP / SMTP servers<br/>external services · tokens and password from the environment only"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
         PAConnector["Connector · go/mcp stdio client<br/>startup contract check · typed args / results<br/>credential-shaped env withheld · child restarted on next call"]
@@ -1613,6 +1616,10 @@ flowchart LR
         PAOutbox -. transport failures in a row .-> PAHealth
         PARouter -. model failures in a row .-> PAHealth
         PAHealth -. problems on attention list .-> PAChannel
+        PARemote -->|owner's lines as explicit-human chat or answers · links · cursor| PAStore
+        PAStore -->|assistant lines after the delivery cursor| PARemote
+        PARemote -->|getUpdates / sendMessage · DM read / post · IMAP EXAMINE + BODY.PEEK / SMTP| PARemoteSvc
+        PARemote -. receive or send failures in a row .-> PAHealth
         PAConnector -->|stdio JSON-RPC tools/call| PAMock
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel
@@ -1695,6 +1702,16 @@ surface. It is meant to run on the owner's own Mac.
   separate child process with its own `world.db`. The daemon never opens that file
   and reaches it only through MCP `tools/call`. With `-embed ollama`, a local Ollama
   server the owner starts computes embeddings; the daemon does not start or stop it.
+- **Remote channels**: `-telegram-chat`, `-discord-user` and `-email-owner` (all
+  default off) connect the chat thread to the owner's Telegram bot chat, Discord DM
+  or a mailbox. Each bridge checks the owner's account on every message; for email,
+  From plus a DKIM or DMARC pass in the topmost `Authentication-Results` header from
+  `-email-authserv`. Accepted lines run as explicit-human chat, as on the page, and a
+  reply to a question's message answers it. Assistant lines are copied out in order,
+  at least once, and held while paused. Approvals stay on the loopback page. Tokens
+  and the mailbox password come only from the environment, the MCP child never
+  sees them, and `launchd-plist` refuses the flags. Copied lines leave the machine
+  through those services.
 - **Triggers**: triggers are claimed per thread, so a claim never runs while another
   trigger of the same thread is running; the due triggers of one trust class that
   queued up meanwhile are claimed together and handled in one turn. The user's chat
@@ -4088,7 +4105,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), opt-in remote channels (Telegram bot chat, Discord DM, email over IMAP and SMTP) that join the chat thread and copy the assistant's lines out, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

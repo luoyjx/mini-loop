@@ -135,33 +135,44 @@ func (s *Store) AnswerQuestion(ctx context.Context, id int64, answer, actor stri
 	var answered Question
 	var trigger int64
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		q, err := scanQuestion(tx.QueryRowContext(ctx, `SELECT `+questionColumns+` FROM questions WHERE id=?`, id))
-		if errors.Is(err, sql.ErrNoRows) {
-			return ErrUnknownRef
-		}
-		if err != nil {
-			return err
-		}
-		if q.Status != QuestionOpen {
-			return fmt.Errorf("question #%d is %s: %w", id, q.Status, ErrNotActionable)
-		}
-		if _, err := tx.ExecContext(ctx, `UPDATE questions SET status=?, answer=?, answered_at=? WHERE id=? AND status=?`, string(QuestionAnswered), answer, millis(now), id, string(QuestionOpen)); err != nil {
-			return err
-		}
-		if err := undismiss(ctx, tx, QuestionRef(id)); err != nil {
-			return err
-		}
-		if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleUser, Text: fmt.Sprintf("回答提问 #%d：%s", id, answer), TriggerID: q.TriggerID}, now); err != nil {
-			return err
-		}
-		if trigger, err = enqueueTrigger(ctx, tx, Trigger{Kind: TriggerAnswer, Thread: q.Thread, Ref: QuestionRef(id), Summary: truncateRunes(answer, MaxChatRunes)}, now); err != nil {
-			return err
-		}
-		q.Status, q.Answer, q.AnsweredAt = QuestionAnswered, answer, &now
-		answered = q
-		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerControl, Actor: actor, TriggerID: trigger, Thread: q.Thread, SessionID: q.SessionID, Detail: fmt.Sprintf("回答提问 #%d，交回 thread %s 的 worker", id, q.Thread)})
+		var err error
+		answered, trigger, _, err = answerQuestion(ctx, tx, id, answer, actor, "", now)
+		return err
 	})
 	return answered, trigger, err
+}
+
+// answerQuestion is AnswerQuestion inside the caller's transaction; source
+// tags the answer's channel line with the remote channel it came from. It
+// also returns that channel line.
+func answerQuestion(ctx context.Context, tx *sql.Tx, id int64, answer, actor, source string, now time.Time) (Question, int64, int64, error) {
+	q, err := scanQuestion(tx.QueryRowContext(ctx, `SELECT `+questionColumns+` FROM questions WHERE id=?`, id))
+	if errors.Is(err, sql.ErrNoRows) {
+		return Question{}, 0, 0, ErrUnknownRef
+	}
+	if err != nil {
+		return Question{}, 0, 0, err
+	}
+	if q.Status != QuestionOpen {
+		return Question{}, 0, 0, fmt.Errorf("question #%d is %s: %w", id, q.Status, ErrNotActionable)
+	}
+	if _, err := tx.ExecContext(ctx, `UPDATE questions SET status=?, answer=?, answered_at=? WHERE id=? AND status=?`, string(QuestionAnswered), answer, millis(now), id, string(QuestionOpen)); err != nil {
+		return Question{}, 0, 0, err
+	}
+	if err := undismiss(ctx, tx, QuestionRef(id)); err != nil {
+		return Question{}, 0, 0, err
+	}
+	message, err := postChannel(ctx, tx, ChannelMessage{Role: RoleUser, Text: fmt.Sprintf("回答提问 #%d：%s", id, answer), TriggerID: q.TriggerID, Source: source}, now)
+	if err != nil {
+		return Question{}, 0, 0, err
+	}
+	trigger, err := enqueueTrigger(ctx, tx, Trigger{Kind: TriggerAnswer, Thread: q.Thread, Ref: QuestionRef(id), Summary: truncateRunes(answer, MaxChatRunes)}, now)
+	if err != nil {
+		return Question{}, 0, 0, err
+	}
+	q.Status, q.Answer, q.AnsweredAt = QuestionAnswered, answer, &now
+	err = appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerControl, Actor: actor, TriggerID: trigger, Thread: q.Thread, SessionID: q.SessionID, Detail: fmt.Sprintf("回答提问 #%d，交回 thread %s 的 worker", id, q.Thread)})
+	return q, trigger, message, err
 }
 
 // questionID parses a QuestionRef.

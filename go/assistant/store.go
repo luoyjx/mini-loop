@@ -56,7 +56,11 @@ CREATE TABLE IF NOT EXISTS proposals(
 	receipt TEXT NOT NULL DEFAULT '', last_error TEXT NOT NULL DEFAULT '');
 CREATE TABLE IF NOT EXISTS channel(
 	id INTEGER PRIMARY KEY AUTOINCREMENT, role TEXT NOT NULL, text TEXT NOT NULL,
-	proposal_id INTEGER, trigger_id INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
+	proposal_id INTEGER, trigger_id INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL,
+	source TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS remote_links(
+	source TEXT NOT NULL, external_id TEXT NOT NULL, message_id INTEGER NOT NULL,
+	direction TEXT NOT NULL, created_at INTEGER NOT NULL, PRIMARY KEY(source, external_id));
 CREATE TABLE IF NOT EXISTS ledger(
 	id INTEGER PRIMARY KEY AUTOINCREMENT, at INTEGER NOT NULL, kind TEXT NOT NULL,
 	actor TEXT NOT NULL, trigger_id INTEGER NOT NULL DEFAULT 0, thread TEXT NOT NULL DEFAULT '',
@@ -126,7 +130,9 @@ type addedColumn struct{ table, column, definition string }
 // addedColumns upgrades older data directories: the first demo's proposals
 // table predates the outbox, settled_at (when a proposal was sent or finally
 // failed) arrived with the attention list, and admitted (a candidate the user
-// handed to a worker) with admission grading. The first demo's old mail and
+// handed to a worker) with admission grading, and the channel's source (the
+// remote channel a user line came from) with remote channels. The first
+// demo's old mail and
 // calendar tables are left in place and unused.
 var addedColumns = []addedColumn{
 	{"proposals", "attempts", "INTEGER NOT NULL DEFAULT 0"},
@@ -135,6 +141,7 @@ var addedColumns = []addedColumn{
 	{"proposals", "last_error", "TEXT NOT NULL DEFAULT ''"},
 	{"proposals", "settled_at", "INTEGER NOT NULL DEFAULT 0"},
 	{"triggers", "admitted", "INTEGER NOT NULL DEFAULT 0"},
+	{"channel", "source", "TEXT NOT NULL DEFAULT ''"},
 }
 
 // addColumns adds each missing column in place.
@@ -644,7 +651,7 @@ func postChannel(ctx context.Context, q queryer, message ChannelMessage, now tim
 	if message.ProposalID != nil {
 		proposal = sql.NullInt64{Int64: *message.ProposalID, Valid: true}
 	}
-	result, err := q.ExecContext(ctx, `INSERT INTO channel(role,text,proposal_id,trigger_id,created_at) VALUES(?,?,?,?,?)`, string(message.Role), message.Text, proposal, message.TriggerID, millis(now))
+	result, err := q.ExecContext(ctx, `INSERT INTO channel(role,text,proposal_id,trigger_id,created_at,source) VALUES(?,?,?,?,?,?)`, string(message.Role), message.Text, proposal, message.TriggerID, millis(now), message.Source)
 	if err != nil {
 		return 0, err
 	}
@@ -673,7 +680,7 @@ func (s *Store) PostAll(ctx context.Context, messages []ChannelMessage, now time
 }
 
 func (s *Store) Channel(ctx context.Context, limit int) ([]ChannelMessage, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT id,role,text,proposal_id,trigger_id,created_at FROM (SELECT * FROM channel ORDER BY id DESC LIMIT ?) ORDER BY id`, limit)
+	rows, err := s.db.QueryContext(ctx, `SELECT id,role,text,proposal_id,trigger_id,created_at,source FROM (SELECT * FROM channel ORDER BY id DESC LIMIT ?) ORDER BY id`, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -684,7 +691,7 @@ func (s *Store) Channel(ctx context.Context, limit int) ([]ChannelMessage, error
 		var role string
 		var proposal sql.NullInt64
 		var created int64
-		if err := rows.Scan(&m.ID, &role, &m.Text, &proposal, &m.TriggerID, &created); err != nil {
+		if err := rows.Scan(&m.ID, &role, &m.Text, &proposal, &m.TriggerID, &created, &m.Source); err != nil {
 			return nil, err
 		}
 		m.Role, m.CreatedAt = ChannelRole(role), fromMillis(created)
@@ -876,18 +883,42 @@ func (s *Store) IngestMail(ctx context.Context, batch []InboundMail, cursor int6
 	return ingested, err
 }
 
-// ChatFromUser records the user's channel message and enqueues it.
+// ChatFromUser records the user's message typed on the page and enqueues it.
 func (s *Store) ChatFromUser(ctx context.Context, text string, now time.Time) (int64, error) {
 	var id int64
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		message, err := postChannel(ctx, tx, ChannelMessage{Role: RoleUser, Text: text}, now)
-		if err != nil {
-			return err
-		}
-		id, err = enqueueTrigger(ctx, tx, Trigger{Kind: TriggerChat, Thread: ChatThread, Ref: fmt.Sprintf("channel-%d", message), Summary: truncateRunes(text, MaxChatRunes)}, now)
+		var err error
+		_, id, err = chatFromUser(ctx, tx, text, "", now)
 		return err
 	})
 	return id, err
+}
+
+// chatFromUser posts the user's line, tagged with the remote channel it came
+// from ("" for the page), and enqueues it on the chat thread. It returns the
+// channel message and the trigger.
+func chatFromUser(ctx context.Context, q queryer, text, source string, now time.Time) (int64, int64, error) {
+	message, err := postChannel(ctx, q, ChannelMessage{Role: RoleUser, Text: text, Source: source}, now)
+	if err != nil {
+		return 0, 0, err
+	}
+	trigger, err := enqueueTrigger(ctx, q, Trigger{Kind: TriggerChat, Thread: ChatThread, Ref: chatRef(message), Summary: truncateRunes(text, MaxChatRunes)}, now)
+	return message, trigger, err
+}
+
+// chatRef names a chat trigger's channel message.
+func chatRef(message int64) string { return fmt.Sprintf("channel-%d", message) }
+
+// ChatSource is where a chat trigger's message came from: "" for the page,
+// or a remote channel's name.
+func (s *Store) ChatSource(ctx context.Context, ref string) (string, error) {
+	id, err := strconv.ParseInt(strings.TrimPrefix(ref, "channel-"), 10, 64)
+	if err != nil || !strings.HasPrefix(ref, "channel-") {
+		return "", fmt.Errorf("not a chat ref: %q", ref)
+	}
+	var source string
+	err = s.db.QueryRowContext(ctx, `SELECT source FROM channel WHERE id=?`, id).Scan(&source)
+	return source, err
 }
 
 // MaxChatRunes bounds one channel message; the trigger keeps the full text.
