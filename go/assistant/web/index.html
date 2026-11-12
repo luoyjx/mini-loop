@@ -254,8 +254,23 @@ function toast(text) {
   const t = $("toast"); t.textContent = text; t.classList.add("show");
   clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
 }
+// A fleet link carries the owner's token in its fragment, which the browser
+// never sends to the server: keep it for this tab and drop it from the
+// address bar. A local daemon needs none. API paths are relative, so the same
+// page works at a daemon's / and a fleet's /t/{id}/.
+const token = (() => {
+  const key = "miniloop-token:" + location.pathname;
+  const match = location.hash.match(/(?:^#|&)token=([^&]+)/);
+  const given = match ? decodeURIComponent(match[1]) : "";
+  if (match) history.replaceState(null, "", location.pathname + location.search);
+  try {
+    if (given) sessionStorage.setItem(key, given);
+    return sessionStorage.getItem(key) || "";
+  } catch (e) { return given; }
+})();
+function headers(extra) { return Object.assign(token ? { Authorization: "Bearer " + token } : {}, extra || {}); }
 async function post(path, body) {
-  const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+  const response = await fetch(path, { method: "POST", headers: headers({ "Content-Type": "application/json" }), body: JSON.stringify(body || {}) });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.error || response.statusText);
   return data;
@@ -264,7 +279,11 @@ async function post(path, body) {
 let state = null, lastJSON = "";
 async function refresh() {
   try {
-    const response = await fetch("/api/state", { cache: "no-store" });
+    const response = await fetch("api/state", { cache: "no-store", headers: headers() });
+    if (!response.ok) {
+      if (response.status === 401 && !refresh.warned) { refresh.warned = true; toast("这个链接缺少有效的访问令牌"); }
+      return;
+    }
     const text = await response.text();
     if (text === lastJSON) return;
     lastJSON = text; state = JSON.parse(text); render();
@@ -341,7 +360,7 @@ async function act(path, done) {
 }
 function needActions(item) {
   const id = item.ref.slice(item.ref.indexOf("-") + 1);
-  const dismiss = el("button", { onclick: () => act("/api/attention/" + item.ref + "/dismiss", "已移出待处理") }, "知道了");
+  const dismiss = el("button", { onclick: () => act("api/attention/" + item.ref + "/dismiss", "已移出待处理") }, "知道了");
   switch (item.kind) {
     case "approval": return [
       el("button", { class: "primary", onclick: () => decide(id, "approve") }, "批准发送"),
@@ -351,11 +370,11 @@ function needActions(item) {
         el("input", { name: "text", required: true, maxlength: "2000", placeholder: "你的回答", "aria-label": "回答", "data-q": id }),
         el("button", { class: "primary", type: "submit" }, "回答")), dismiss];
     case "send_failed": return [
-      el("button", { class: "primary", onclick: () => act("/api/proposals/" + id + "/retry", "已交回发件箱重试（同一幂等键）") }, "重试发送"), dismiss];
+      el("button", { class: "primary", onclick: () => act("api/proposals/" + id + "/retry", "已交回发件箱重试（同一幂等键）") }, "重试发送"), dismiss];
     case "task_handoff": return [
       el("button", { class: "primary", onclick: () => taskAction(id, "resume") }, "再跟进一轮"), dismiss];
     case "trigger_failed": return [
-      el("button", { class: "primary", onclick: () => act("/api/triggers/" + id + "/retry", "已重新排队") }, "重新处理"), dismiss];
+      el("button", { class: "primary", onclick: () => act("api/triggers/" + id + "/retry", "已重新排队") }, "重新处理"), dismiss];
     case "no_progress": return [
       el("button", { class: "primary", onclick: () => taskAction(id, "wake") }, "立即检查"),
       el("button", { onclick: () => taskAction(id, "cancel") }, "取消任务"), dismiss];
@@ -393,11 +412,11 @@ async function answer(event, id) {
   event.preventDefault();
   const text = new FormData(event.target).get("text").trim();
   if (!text) return;
-  try { await post("/api/questions/" + id + "/answer", { text }); toast("已交回这个 thread 的 worker"); refresh(); }
+  try { await post("api/questions/" + id + "/answer", { text }); toast("已交回这个 thread 的 worker"); refresh(); }
   catch (e) { toast(e.message); }
 }
 async function setPaused(paused) {
-  try { await post("/api/pause", { paused }); toast(paused ? "已暂停处理" : "已恢复处理，正在补上积压"); refresh(); }
+  try { await post("api/pause", { paused }); toast(paused ? "已暂停处理" : "已恢复处理，正在补上积压"); refresh(); }
   catch (e) { toast(e.message); }
 }
 
@@ -429,10 +448,10 @@ function render() {
     el("div", {}, "仅守护进程调用：" + integration.daemon_only.join("、")));
   renderChannel();
   $("presets").replaceChildren(...state.presets.map((p) =>
-    el("button", { onclick: () => post("/api/simulate", { preset: p.id }).then(() => toast("已投递：" + p.label)).catch((e) => toast(e.message)) }, p.label)));
+    el("button", { onclick: () => post("api/simulate", { preset: p.id }).then(() => toast("已投递：" + p.label)).catch((e) => toast(e.message)) }, p.label)));
   $("routines").replaceChildren(...state.routines.map((r) => el("div", { class: "list-item" },
     el("div", {}, el("b", {}, r.name), " 每天 " + String(r.hour).padStart(2, "0") + ":" + String(r.minute).padStart(2, "0"),
-      el("button", { style: "margin-left:10px", onclick: () => post("/api/routines/" + r.id + "/run").then(() => toast("已触发：" + r.name)).catch((e) => toast(e.message)) }, "立即运行")),
+      el("button", { style: "margin-left:10px", onclick: () => post("api/routines/" + r.id + "/run").then(() => toast("已触发：" + r.name)).catch((e) => toast(e.message)) }, "立即运行")),
     el("div", { class: "sub" }, "最近时段：" + (r.last_slot || "从未") + " · " + r.prompt))));
   $("inbox").replaceChildren(...[mailList(state.inbox)].flat());
   $("sent").replaceChildren(...[mailList(state.sent)].flat());
@@ -462,7 +481,7 @@ function jobCard(job) {
     el("div", {}, el("span", { class: "title" }, "准备 #" + job.id + " · " + job.goal), " ", el("span", { class: "chip " + job.status }, jobLabel[job.status] || job.status)),
     job.result ? el("div", { class: "sub" }, "结果：" + job.result) : null,
     el("div", { class: "sub" }, "thread " + job.thread + " · 由触发器 #" + job.trigger_id + " 的 worker " + short(job.session_id) + " 发起 · " + dateTime(job.created_at)),
-    open ? el("div", { class: "actions" }, el("button", { onclick: () => act("/api/jobs/" + job.id + "/stop", "已停止准备任务") }, "停止")) : null);
+    open ? el("div", { class: "actions" }, el("button", { onclick: () => act("api/jobs/" + job.id + "/stop", "已停止准备任务") }, "停止")) : null);
 }
 
 // renderAdmission draws the candidate mode, router counters, observed
@@ -472,15 +491,15 @@ function renderAdmission() {
   $("candidates-tab").textContent = candidates.length ? "候选（" + candidates.length + "）" : "候选";
   $("mode").replaceChildren(...[["observe", "观察"], ["auto", "自动"]].map(([value, label]) =>
     el("button", { class: mode === value ? "on" : "", "aria-pressed": mode === value ? "true" : "false",
-      onclick: () => mode === value ? null : post("/api/candidates/mode", { mode: value }).then(() => { toast("推断候选：" + label + "模式"); refresh(); }).catch((e) => toast(e.message)) }, label)));
+      onclick: () => mode === value ? null : post("api/candidates/mode", { mode: value }).then(() => { toast("推断候选：" + label + "模式"); refresh(); }).catch((e) => toast(e.message)) }, label)));
   const stats = state.router || {};
   $("stats").replaceChildren(el("span", {}, "本次启动以来"), ...statLabel.map(([key, label]) => el("span", {}, label + " ", el("b", {}, stats[key] || 0))));
   $("candidates").replaceChildren(...(candidates.length ? candidates.map((t) => el("div", { class: "list-item" },
     el("div", {}, el("b", {}, t.summary.slice(0, 80)), " ", el("span", { class: "chip observed" }, "触发器 #" + t.id)),
     el("div", { class: "sub" }, t.decision + " · " + dateTime(t.updated_at) + " · thread " + t.thread),
     el("div", { class: "actions" },
-      el("button", { class: "primary", onclick: () => act("/api/candidates/" + t.id + "/handle", "已交给 worker（跳过分诊）") }, "交给 worker"),
-      el("button", { onclick: () => act("/api/candidates/" + t.id + "/ignore", "已忽略") }, "忽略"))))
+      el("button", { class: "primary", onclick: () => act("api/candidates/" + t.id + "/handle", "已交给 worker（跳过分诊）") }, "交给 worker"),
+      el("button", { onclick: () => act("api/candidates/" + t.id + "/ignore", "已忽略") }, "忽略"))))
     : [el("div", { class: "empty" }, "没有候选。试试：经理群发（你在抄送里），或 IT 钓鱼邮件。")]));
   const jobs = state.jobs || [];
   $("jobs").replaceChildren(...(jobs.length ? jobs.map(jobCard) : [el("div", { class: "empty" }, "还没有后台准备任务。试试：供应商账单。")]));
@@ -539,7 +558,7 @@ $("memory-search").addEventListener("submit", async (event) => {
   const q = event.target.q.value.trim();
   if (!q) { $("memory-hits").replaceChildren(); return; }
   try {
-    const response = await fetch("/api/memory/search?q=" + encodeURIComponent(q), { cache: "no-store" });
+    const response = await fetch("api/memory/search?q=" + encodeURIComponent(q), { cache: "no-store", headers: headers() });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || response.statusText);
     const hits = result.hits || [], facts = result.facts || [];
@@ -551,12 +570,12 @@ $("memory-search").addEventListener("submit", async (event) => {
 
 async function taskAction(id, action) {
   const done = { wake: "已安排立即检查", cancel: "已取消任务", resume: "已恢复跟进，马上检查" }[action];
-  try { await post("/api/tasks/" + id + "/" + action); toast(done); refresh(); }
+  try { await post("api/tasks/" + id + "/" + action); toast(done); refresh(); }
   catch (e) { toast(e.message); }
 }
 
 async function decide(id, decision) {
-  try { await post("/api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，发件箱正在经 MCP 发出" : "已拒绝"); refresh(); }
+  try { await post("api/proposals/" + id + "/" + decision); toast(decision === "approve" ? "已批准，发件箱正在经 MCP 发出" : "已拒绝"); refresh(); }
   catch (e) { toast(e.message); }
 }
 
@@ -565,19 +584,19 @@ $("compose").addEventListener("submit", async (event) => {
   const input = $("text"), text = input.value.trim();
   if (!text) return;
   input.value = "";
-  try { await post("/api/chat", { text }); refresh(); } catch (e) { toast(e.message); input.value = text; }
+  try { await post("api/chat", { text }); refresh(); } catch (e) { toast(e.message); input.value = text; }
 });
 $("custom").addEventListener("submit", async (event) => {
   event.preventDefault();
   const form = new FormData(event.target);
   try {
-    await post("/api/simulate/custom", { from: form.get("from"), from_name: form.get("from_name"), subject: form.get("subject"), body: form.get("body"), bulk: form.get("bulk") === "on", cc: form.get("cc") === "on" });
+    await post("api/simulate/custom", { from: form.get("from"), from_name: form.get("from_name"), subject: form.get("subject"), body: form.get("body"), bulk: form.get("bulk") === "on", cc: form.get("cc") === "on" });
     event.target.reset(); toast("已投递自定义来信"); refresh();
   } catch (e) { toast(e.message); }
 });
 $("pause").addEventListener("click", () => setPaused(!state || !state.paused));
 $("book-event").addEventListener("click", () =>
-  post("/api/simulate/event", {}).then((r) => toast("已加日程，" + time(r.start).slice(0, 5) + " 开始")).catch((e) => toast(e.message)));
+  post("api/simulate/event", {}).then((r) => toast("已加日程，" + time(r.start).slice(0, 5) + " 开始")).catch((e) => toast(e.message)));
 $("quick").replaceChildren(...["今天日程", "收件箱", "晨报", "1 分钟后提醒我 喝水", "进行中的任务", "我的经理是谁", "记住 周三下午不开会", "以后周五下午尽量不安排会", "追溯 trigger-1"].map((text) =>
   el("button", { onclick: () => { $("text").value = text; $("text").focus(); } }, text)));
 $("tabs").addEventListener("click", (event) => {
@@ -585,8 +604,11 @@ $("tabs").addEventListener("click", (event) => {
   for (const b of $("tabs").children) b.classList.toggle("active", b === button);
   for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.id === "pane-" + button.dataset.pane);
 });
+// A hidden tab stops polling, so a page left open costs the server nothing
+// and a fleet can put the assistant to sleep.
 refresh();
-setInterval(refresh, 1500);
+setInterval(() => { if (!document.hidden) refresh(); }, 1500);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
 </script>
 </body>
 </html>

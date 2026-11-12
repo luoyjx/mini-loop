@@ -39,6 +39,9 @@ type Config struct {
 	// Remotes are the real messaging channels the owner also talks through
 	// (Telegram, Discord, email); none by default, leaving only the page.
 	Remotes []RemoteChannel
+	// Admission is set by a host that runs many assistants in one process
+	// (see Fleet) to bound the model work this one starts; nil for a daemon.
+	Admission Admission
 }
 
 type App struct {
@@ -126,7 +129,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 	if err = refreshProfile(ctx, store, owned, now()); err != nil {
 		return nil, fmt.Errorf("profile: %w", err)
 	}
-	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit})
+	router := NewRouter(RouterConfig{Store: store, Connector: config.Connector, Rules: DefaultRules(), Now: now, Log: config.Log, Workers: config.Workers, TurnLimit: config.TurnLimit, Admission: config.Admission})
 	router.triage = &Triage{provider: observeProvider(config.Provider), model: config.Model}
 	router.consolidator = NewConsolidator(store, config.Connector, owned, now)
 	router.consolidator.aliaser = &Aliaser{provider: observeProvider(config.Provider), model: config.Model}

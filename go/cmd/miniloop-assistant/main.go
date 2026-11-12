@@ -8,6 +8,9 @@
 //	                                          -email-owner add remote channels
 //	miniloop-assistant mock-mcp -data DIR     the simulated MCP server on stdio
 //	miniloop-assistant launchd-plist [flags]  print a macOS LaunchAgent plist
+//	miniloop-assistant fleet [flags]          host many owners' assistants
+//	                                          behind per-tenant tokens
+//	                                          (MINILOOP_FLEET_ADMIN_TOKEN)
 package main
 
 import (
@@ -69,6 +72,8 @@ func run(ctx context.Context, args []string, env environment, std streams) int {
 			return runMockMCP(ctx, args[1:], std)
 		case "launchd-plist":
 			return runPlist(args[1:], env, std)
+		case "fleet":
+			return runFleet(ctx, args[1:], env, std)
 		}
 	}
 	return runDaemon(ctx, args, env, std)
@@ -185,6 +190,33 @@ func (options daemonFlags) embedder() (assistant.Embedder, error) {
 	return nil, fmt.Errorf("unknown -embed %q", *options.embed)
 }
 
+// chooseModel builds the -model choice. Credentials come only from the
+// environment.
+func chooseModel(model, modelID string, env environment) (agent.Provider, string, string, error) {
+	switch model {
+	case "scripted":
+		return &assistant.ScriptedModel{}, assistant.ScriptedModelID, "scripted（离线脚本）", nil
+	case "anthropic":
+		key, token := env.getenv("ANTHROPIC_API_KEY"), env.getenv("ANTHROPIC_AUTH_TOKEN")
+		if key == "" && token == "" {
+			return nil, "", "", errors.New("-model anthropic needs ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN")
+		}
+		client, err := provider.New(provider.Config{APIKey: key, AuthToken: token, BaseURL: env.getenv("ANTHROPIC_BASE_URL")})
+		if err != nil {
+			return nil, "", "", err
+		}
+		id := modelID
+		if id == "" {
+			id = env.getenv("MODEL_ID")
+		}
+		if id == "" {
+			id = agent.DefaultModel
+		}
+		return client, id, "", nil
+	}
+	return nil, "", "", fmt.Errorf("unknown -model %q", model)
+}
+
 func parse(flags *flag.FlagSet, args []string) (int, bool) {
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
@@ -217,28 +249,8 @@ func runDaemon(ctx context.Context, args []string, env environment, std streams)
 	if config.Remotes, err = options.remote.channels(env); err != nil {
 		return fail(err)
 	}
-	switch *options.model {
-	case "scripted":
-		config.Provider, config.Model, config.ModelLabel = &assistant.ScriptedModel{}, assistant.ScriptedModelID, "scripted（离线脚本）"
-	case "anthropic":
-		key, token := env.getenv("ANTHROPIC_API_KEY"), env.getenv("ANTHROPIC_AUTH_TOKEN")
-		if key == "" && token == "" {
-			return fail(errors.New("-model anthropic needs ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN"))
-		}
-		client, err := provider.New(provider.Config{APIKey: key, AuthToken: token, BaseURL: env.getenv("ANTHROPIC_BASE_URL")})
-		if err != nil {
-			return fail(err)
-		}
-		id := *options.modelID
-		if id == "" {
-			id = env.getenv("MODEL_ID")
-		}
-		if id == "" {
-			id = agent.DefaultModel
-		}
-		config.Provider, config.Model = client, id
-	default:
-		return fail(fmt.Errorf("unknown -model %q", *options.model))
+	if config.Provider, config.Model, config.ModelLabel, err = chooseModel(*options.model, *options.modelID, env); err != nil {
+		return fail(err)
 	}
 	// The mock MCP server is this same binary in a child process with its own
 	// database; the daemon talks to it only over stdio JSON-RPC.

@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"flag"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -224,5 +226,99 @@ func TestRemoteFlagsBuildTheChannels(t *testing.T) {
 	}
 	if strings.Join(names, ",") != "telegram,discord,email" {
 		t.Fatalf("names %v", names)
+	}
+}
+
+const testAdminToken = "fleet-admin-token-for-tests-0123"
+
+func fleetEnvironment(t *testing.T, admin string) environment {
+	env := testEnvironment(t)
+	env.getenv = func(name string) string {
+		if name == envFleetAdminToken {
+			return admin
+		}
+		return ""
+	}
+	return env
+}
+
+func TestFleetRefusesUnsafeStartup(t *testing.T) {
+	cases := map[string]struct {
+		admin string
+		args  []string
+	}{
+		"no admin token":           {"", []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
+		"short admin token":        {"short", []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
+		"plain http on network":    {testAdminToken, []string{"fleet", "-addr", "0.0.0.0:0", "-data", t.TempDir()}},
+		"cert without key":         {testAdminToken, []string{"fleet", "-addr", "0.0.0.0:0", "-tls-cert", "cert.pem", "-data", t.TempDir()}},
+		"anthropic without secret": {testAdminToken, []string{"fleet", "-addr", "127.0.0.1:0", "-model", "anthropic", "-data", t.TempDir()}},
+	}
+	for name, c := range cases {
+		var stderr bytes.Buffer
+		if code := run(context.Background(), c.args, fleetEnvironment(t, c.admin), streams{strings.NewReader(""), io.Discard, &stderr}); code != 1 || !strings.Contains(stderr.String(), "miniloop-assistant:") {
+			t.Errorf("%s: code=%d stderr=%q", name, code, stderr.String())
+		}
+	}
+}
+
+// The fleet serves the admin API and a tenant's page and API behind their
+// tokens, and stops cleanly.
+func TestFleetServesTenantsUntilCancelled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	stderr := &lockedBuffer{}
+	data := t.TempDir()
+	done := make(chan int, 1)
+	go func() {
+		done <- run(ctx, []string{"fleet", "-addr", "127.0.0.1:0", "-data", data}, fleetEnvironment(t, testAdminToken), streams{strings.NewReader(""), io.Discard, stderr})
+	}()
+	deadline := time.Now().Add(20 * time.Second)
+	var base string
+	for base == "" {
+		if time.Now().After(deadline) {
+			t.Fatalf("fleet did not start: %q", stderr.String())
+		}
+		if _, rest, ok := strings.Cut(stderr.String(), "fleet on "); ok {
+			base, _, _ = strings.Cut(rest, " ")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	request := func(method, path, token, body string) (int, string) {
+		t.Helper()
+		req, err := http.NewRequest(method, base+path, strings.NewReader(body))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if body != "" {
+			req.Header.Set("Content-Type", "application/json")
+		}
+		if token != "" {
+			req.Header.Set("Authorization", "Bearer "+token)
+		}
+		response, err := http.DefaultClient.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer response.Body.Close()
+		payload, _ := io.ReadAll(response.Body)
+		return response.StatusCode, string(payload)
+	}
+	code, body := request(http.MethodPost, "/admin/tenants", testAdminToken, `{"id":"alice"}`)
+	var created struct{ Token string }
+	if err := json.Unmarshal([]byte(body), &created); code != http.StatusCreated || err != nil || created.Token == "" {
+		t.Fatalf("create tenant: %d %s", code, body)
+	}
+	if code, _ := request(http.MethodGet, "/t/alice/api/state", "", ""); code != http.StatusUnauthorized {
+		t.Fatalf("state without token: %d", code)
+	}
+	if code, body := request(http.MethodGet, "/t/alice/api/state", created.Token, ""); code != http.StatusOK || !strings.Contains(body, `"channel"`) {
+		t.Fatalf("state with token: %d", code)
+	}
+	cancel()
+	if code := <-done; code != 0 {
+		t.Fatalf("code=%d stderr=%q", code, stderr.String())
+	}
+	if !strings.Contains(stderr.String(), "model=scripted") {
+		t.Fatalf("startup line names the shared model: %q", stderr.String())
 	}
 }

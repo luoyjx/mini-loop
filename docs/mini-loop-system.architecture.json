@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child and opt-in Telegram / Discord / email channels",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child, opt-in Telegram / Discord / email channels and an opt-in multi-tenant fleet host",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -1070,7 +1070,7 @@
       "id": "paChannel",
       "type": "frontend",
       "label": "Simulated channel page",
-      "sublabel": "cmd/miniloop-assistant / loopback only",
+      "sublabel": "cmd/miniloop-assistant / loopback or fleet token",
       "pos": [
         70,
         4900
@@ -1079,7 +1079,7 @@
         300,
         76
       ],
-      "tag": "attention / candidates / memory search / pause / cards"
+      "tag": "attention / candidates / memory search / pause / cards / relative API paths"
     },
     {
       "id": "paStore",
@@ -1154,7 +1154,7 @@
         300,
         76
       ],
-      "tag": "catch-up / watchdog / nightly 23:30"
+      "tag": "catch-up, not before install / watchdog / nightly 23:30"
     },
     {
       "id": "paPoller",
@@ -1350,6 +1350,21 @@
         76
       ],
       "tag": "Bot API / REST / IMAP + SMTP"
+    },
+    {
+      "id": "paFleet",
+      "type": "security",
+      "label": "Fleet host",
+      "sublabel": "fleet subcommand · opt-in, default off",
+      "pos": [
+        1030,
+        4740
+      ],
+      "size": [
+        340,
+        76
+      ],
+      "tag": "one App per tenant / sleeps idle / turn gate + daily quota"
     }
   ],
   "boundaries": [
@@ -1459,7 +1474,7 @@
     },
     {
       "kind": "region",
-      "label": "go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac",
+      "label": "go/assistant · opt-in personal-assistant demo (Go addition) / default-off / own Mac or opt-in fleet host",
       "wraps": [
         "paChannel",
         "paStore",
@@ -1478,7 +1493,8 @@
         "paSearch",
         "paEmbed",
         "paFacts",
-        "paRemote"
+        "paRemote",
+        "paFleet"
       ],
       "pad": 50
     }
@@ -2549,7 +2565,10 @@
       "from": "tsModelActivity",
       "to": "tsTrace",
       "label": "redacted spans + usage",
-      "labelAt": [2070, 4590],
+      "labelAt": [
+        2070,
+        4590
+      ],
       "variant": "dashed"
     },
     {
@@ -2570,7 +2589,10 @@
           4620
         ]
       ],
-      "labelAt": [1500, 4635]
+      "labelAt": [
+        1500,
+        4635
+      ]
     },
     {
       "id": "tsContinue",
@@ -2879,6 +2901,28 @@
       "variant": "dashed",
       "fromSide": "top",
       "toSide": "bottom"
+    },
+    {
+      "id": "paFleetSleep",
+      "from": "paFleet",
+      "to": "paStore",
+      "label": "tenant API / Standby / sleep",
+      "variant": "security",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "paFleetGate",
+      "from": "paRouter",
+      "to": "paFleet",
+      "label": "turn slot / quota",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        1290,
+        4858
+      ]
     }
   ],
   "cards": [
@@ -3146,7 +3190,7 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline 16ee882 plus the 2026-11-11 remote-channel iteration (D10): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added (net/http, a small IMAP client and net/smtp). cmd/miniloop defaults are unchanged; the page binds loopback only and has no authentication.",
+        "Review baseline 4d7f982 plus the 2026-11-12 fleet-host iteration (D11): go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the single-owner daemon's page binds loopback only and has no authentication. D10 added the opt-in remote channels (net/http, a small IMAP client and net/smtp).",
         "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
         "Batches and reports: the router claims a thread's due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify.",
@@ -3156,7 +3200,8 @@
         "Attention and control: one list shows drafts to approve, failed sends, handed-back tasks, triggers failed in the last 24 hours and components that failed three times in a row (in-memory health board fed by the poller, calendar watch, outbox and worker turns). Pause holds dispatch, sending and the scheduler but not mail intake; chat is claimed first on one reserved slot. A model failure or round exhaustion is a failed turn, not a channel message; refusals and 4xx rejections are not retried.",
         "Remote channels (default off): -telegram-chat (a private chat with the owner's bot, getUpdates long poll), -discord-user (the bot's DM over REST every 3 s, no gateway) and -email-owner with -email-user/-email-imap/-email-smtp/-email-authserv (the assistant's own mailbox: IMAP EXAMINE + BODY.PEEK every 30 s, SMTP send). Secrets come only from MINILOOP_TELEGRAM_TOKEN, MINILOOP_DISCORD_TOKEN and MINILOOP_EMAIL_PASSWORD; the MCP child never sees them and launchd-plist refuses the flags. Only the owner's account is accepted; a mail also needs dmarc=pass or dkim=pass for the owner's domain in the topmost Authentication-Results header from -email-authserv. Accepted lines, dedupe links and the cursor commit together; lines join the chat thread with explicit-human authority, and a reply to a question's message answers it. Assistant and system lines are copied to each channel in order, at least once, held while paused; a line the service refuses is skipped and recorded. Approval cards point to the page; nothing is approved remotely. Copied lines leave the machine through those services.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
-        "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep."
+        "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep. A routine slot that passed before a fresh install is marked taken instead of caught up.",
+        "Fleet host (default off): miniloop-assistant fleet hosts many owners' assistants in one process and needs MINILOOP_FLEET_ADMIN_TOKEN. Each tenant is an unchanged App on its own directory (tenants/<shard>/<id>/, created on the first request); fleet.db keeps the token hash, state, next wake, last visit and model use per day, and daemon.lock in the root refuses a second fleet. /t/{id}/ needs that tenant's bearer token (401 for an unknown tenant too), /admin/ the admin token; non-loopback listening needs TLS or -behind-tls-proxy; 20 requests/s per tenant. An assistant is open only while its owner uses it or something is due: once quiet and its owner gone -idle (2 min) it sleeps, writing its next routine slot, task check, reminder or approved effect to the registry; a waker opens due tenants, an owner's request evicts the least recently used quiet tenant at -max-active, and tenants open at a crash are due at once. A fleet-wide turn gate (-turns, a quarter kept for chat) is asked before each claim; a tenant over -daily-calls is held until the next day and its chat gets 429. Owners away 7 days are no longer woken and after 30 days their directory is archived to one .tar.gz, restored on the next request. Measured with 1000 tenants and the scripted model: 2.9 ms/s idle CPU for all asleep versus 1.0 ms/s per resident assistant, 312 KB per sleeping tenant, 15 KB archived. Single process only: no remote channels, embeddings, per-tenant time zones, sharding or object storage."
       ]
     }
   ]

@@ -271,9 +271,9 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-11**, baseline `99c5721` plus the D10 remote
-channels of the opt-in Go personal assistant (Telegram, Discord and email; see
-the Go personal-assistant baseline below).
+Architecture review: **2026-11-12**, baseline `4d7f982` plus the D11 fleet host
+of the opt-in Go personal assistant (many owners' assistants in one process,
+asleep while idle; see the Go personal-assistant baseline below).
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -1224,48 +1224,62 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-11**, `16ee882` plus the
-remote-channel iteration of the opt-in Go personal-assistant demo (D10).
+Current architecture review baseline: **2026-11-12**, `4d7f982` plus the
+fleet-host iteration of the opt-in Go personal-assistant demo (D11).
 `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with no Python
 counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents lanes keep
-their defaults. The `go/memory`, `go/agent` and `go/mcp` packages are unchanged;
-no dependency was added (Telegram and Discord use `net/http`, email a small IMAP
-client and `net/smtp`).
+their defaults, and the single-owner daemon keeps its defaults. `go/memory`,
+`go/agent` and `go/mcp` are unchanged, and no dependency was added.
 
-- **Channels**: besides the loopback page, the owner can talk to the assistant from
-  a private chat with a Telegram bot (`-telegram-chat`), a DM with a Discord bot
-  (`-discord-user`) or a mailbox (`-email-owner` with `-email-user`, `-email-imap`,
-  `-email-smtp` and `-email-authserv`). All are off by default. Secrets come only
-  from `MINILOOP_TELEGRAM_TOKEN`, `MINILOOP_DISCORD_TOKEN` and
-  `MINILOOP_EMAIL_PASSWORD`.
-- **Inbound**: Telegram is read with a `getUpdates` long poll. Discord's DM is read
-  over REST every three seconds, without a gateway WebSocket. The inbox is read over
-  IMAP every 30 seconds, read-only (`EXAMINE`, `BODY.PEEK[]`).
-  - Only the owner's account is accepted. A mail also needs a DKIM or DMARC pass
-    for the owner's domain in the topmost `Authentication-Results` header from
-    `-email-authserv`.
-  - Each receive commits the lines, the dedupe links and the cursor in one
-    transaction.
-  - Lines join the chat thread tagged with their source and run with
-    explicit-human authority, like typing on the page.
-  - A reply to a question's message answers that question.
-  - A first start begins at the newest message.
-- **Outbound**: every assistant and system line is copied to each channel in order,
-  at least once.
-  - Delivery waits while paused.
-  - A line the service refuses for its content is skipped and recorded.
-  - Approval cards say approval happens on the page; nothing can be approved
-    remotely.
-- **Status**: the page shows a badge per channel and tags remote lines. Three
-  failures in a row reach the attention list, and the ledger's `remote` rows record
-  receipts, refusals and skipped lines. `launchd-plist` refuses the channel flags,
-  and the Telegram token is replaced by `<token>` in errors.
-- **Unchanged**: workers still cannot send mail, and effects still go only through
-  approved proposals and the outbox. The managed mail and calendar remain simulated.
+- **Fleet host**: `miniloop-assistant fleet` hosts many owners' assistants in one
+  process. It is off by default and needs `MINILOOP_FLEET_ADMIN_TOKEN`.
+  - Each tenant is an unchanged single-owner App on its own directory
+    (`tenants/<shard>/<id>/`). Tenants share no tables.
+  - `fleet.db` keeps one row per tenant: token hash, state, next wake, last visit
+    and model use per day.
+  - A tenant's files are created on its owner's first request.
+  - `daemon.lock` in the fleet's root refuses a second fleet on the same directory.
+- **Sleep and wake**: an assistant is open only while its owner uses it or it
+  has work due.
+  - It sleeps once it is quiet and its owner has been gone `-idle` (2 minutes).
+    The fleet then writes its next timer (routine, task check, event reminder,
+    approved effect) to the registry.
+  - A waker opens due tenants. Owners' requests evict the least recently used quiet
+    assistant at `-max-active`, and the waker never evicts.
+  - A sleeping tenant holds no goroutines, memory or open files. Its directory
+    keeps no WAL files.
+  - Tenants left open by a crash are made due at once.
+- **Model budget**: one fleet-wide gate bounds concurrent turns (`-turns`) and
+  keeps chat slots; routers and the preparer ask for a slot before claiming, so
+  waiting work keeps its attempts. Every call is metered per tenant and day.
+  A tenant over `-daily-calls` is held until the next day, its chat is refused
+  with 429 and the owner is told once.
+- **Storage**: owners away for `-dormant-after` (7 days) are no longer woken.
+  Owners away for `-archive-after` (30 days) have their directory compressed into
+  one file, which is restored on the next request.
+- **Edge**: `/t/{id}/` needs that tenant's bearer token, and `/admin/` needs the
+  admin token.
+  - The shared page reads the token from the link's fragment and uses relative API
+    paths. It stops polling in a hidden tab.
+  - Non-loopback listening needs `-tls-cert/-tls-key` or `-behind-tls-proxy`.
+  - Requests are limited to 20/s per tenant.
+- **Daemon change**: a routine slot that passed before an assistant was installed is
+  no longer caught up, so a new install in the evening runs no morning brief.
+- **Not in the fleet**: remote channels, embeddings, per-tenant time zones,
+  multiple nodes, object storage, self-service sign-up and pushed state. Mail and
+  calendar stay the simulated world, one per tenant.
 
-See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md).
+See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md) and the
+[D11 audit](docs/audits/go-assistant-fleet-2026-11-12.md).
 
-Previous architecture review baseline: **2026-11-02**, `4a6b87e` plus the
+Previous architecture review baseline: **2026-11-11**, `16ee882` plus the
+remote-channel iteration (D10). The owner could also talk to the assistant from a
+private Telegram bot chat, a Discord DM or a mailbox, all off by default. Secrets
+came only from the environment, and only the owner's account was accepted (mail also
+needed DKIM or DMARC from `-email-authserv`). Owner lines joined the chat thread with
+explicit-human authority. Assistant lines were copied out in order, at least once,
+and held while paused. Approval stayed on the loopback page.
+Before that, `4a6b87e` added the
 time-bounded-facts iteration (D9). `assistant.db` gained entities, aliases and
 facts with a start, an end and the fact that replaced them. Facts came from the
 contact table, the inbox, the calendar and one nightly tool-less extraction from
@@ -1566,9 +1580,9 @@ flowchart LR
         TSActivity -. redacted spans + usage .-> TSTrace
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>loopback only · no authentication<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status<br/>remote channel badges · source of each remote line"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>daemon: loopback only · no authentication · fleet: one tenant's routes behind its token<br/>relative API paths · a hidden tab stops polling<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status<br/>remote channel badges · source of each remote line"]
         PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text<br/>memory vectors · keyed by memory name + text + model<br/>entities · aliases · facts with valid_from / valid_to / superseded_by<br/>remote links by service message ID · receive and delivery cursors per remote channel"]
-        PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
+        PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · not for slots before the install · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
         PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
         PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>memory_search: ranked owner memories · replaces built-in recall for new sessions<br/>no send tool · replaces Bash / file catalogue"]
@@ -1577,6 +1591,7 @@ flowchart LR
         PAFacts["Facts · derived, in assistant.db<br/>people and organizations known by names and addresses · strangers never become entities<br/>manager / employer / role: one current value, a timeline with replaced values<br/>user's word > contact table > address domain · profile manager line is a view"]
         PAEmbed["Ollama · local embedding server · opt-in<br/>qwen3-embedding:0.6b · loopback by default<br/>started by the owner, not by the daemon or launchd"]
         PARemote["Remote channel bridges · opt-in · default off<br/>Telegram getUpdates long poll · Discord DM over REST · email IMAP read-only + SMTP<br/>owner's account checked per message · email: From + DKIM/DMARC from -email-authserv<br/>lines + dedupe links + cursor in one transaction · a reply to a question answers it<br/>copies assistant lines in order, at least once · held while paused · approvals stay on the page"]
+        PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30"]
         PARemoteSvc["Telegram Bot API · Discord REST · the assistant's IMAP / SMTP servers<br/>external services · tokens and password from the environment only"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
@@ -1621,8 +1636,12 @@ flowchart LR
         PARemote -->|getUpdates / sendMessage · DM read / post · IMAP EXAMINE + BODY.PEEK / SMTP| PARemoteSvc
         PARemote -. receive or send failures in a row .-> PAHealth
         PAConnector -->|stdio JSON-RPC tools/call| PAMock
+        PAFleet -->|owner token checked · tenant API → that tenant's routes| PAChannel
+        PAFleet -->|open on demand · Standby → next wake · close| PAStore
+        PARouter -. turn slot before each claim · held over the daily quota .-> PAFleet
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel
+    Caller -. explicit fleet command + admin token .-> PAFleet
     PARouter -->|untrusted trigger turn / explicit-human chat turn| GoManager
     PAPreparer -->|untrusted session · read tools only| GoManager
     PARouter -->|triage request · no tools| PAModel
@@ -4105,7 +4124,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), opt-in remote channels (Telegram bot chat, Discord DM, email over IMAP and SMTP) that join the chat thread and copy the assistant's lines out, single-daemon data-directory lock and LaunchAgent generator (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), opt-in remote channels (Telegram bot chat, Discord DM, email over IMAP and SMTP) that join the chat thread and copy the assistant's lines out, single-daemon data-directory lock and LaunchAgent generator, and an opt-in multi-tenant fleet host (per-tenant tokens, assistants asleep while idle with their next wake in a registry, a fleet-wide turn gate, daily call quotas, dormancy and cold archives) (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

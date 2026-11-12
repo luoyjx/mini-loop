@@ -174,6 +174,13 @@ func (s *Store) ClaimJob(ctx context.Context, now time.Time) (Job, bool, error) 
 	return claimed, found, err
 }
 
+// QueuedJobs counts the jobs waiting for the preparation runner.
+func (s *Store) QueuedJobs(ctx context.Context) (int, error) {
+	var count int
+	err := s.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM jobs WHERE status=?`, string(JobQueued)).Scan(&count)
+	return count, err
+}
+
 // FinishJob settles a running job as done or failed and, in the same
 // transaction, enqueues its job.done trigger on the starting thread. A job the
 // user or its worker cancelled meanwhile stays cancelled and wakes nobody.
@@ -296,6 +303,19 @@ func (p *Preparer) Step(ctx context.Context) bool {
 	}
 	if _, paused := p.store.Paused(); paused {
 		return false
+	}
+	if admission := p.router.admission; admission != nil {
+		// A job is a model turn of its own: it waits for a host slot like
+		// the router's turns, and only when one is queued.
+		queued, err := p.store.QueuedJobs(ctx)
+		if admission.Held() || err != nil || queued == 0 {
+			return false
+		}
+		release, ok := admission.Acquire(ctx, false, nil)
+		if !ok {
+			return false
+		}
+		defer release()
 	}
 	job, ok, err := p.store.ClaimJob(ctx, p.now())
 	if err != nil || !ok {

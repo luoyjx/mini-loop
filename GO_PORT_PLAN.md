@@ -23110,3 +23110,60 @@ unchanged; no dependency was added.
   a Discord gateway connection;
 - exactly-once delivery: a crash after a service accepted a line sends it again;
 - real MCP mail and calendar servers or a Python counterpart.
+
+## Go-only slice — assistant demo: fleet host (2026-11-12)
+
+Code baseline: `4d7f982` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory`, `go/agent` and `go/mcp` are
+unchanged; no dependency was added.
+
+**Go evidence:**
+
+- `Fleet` (`fleet.go`) hosts many single-owner `App`s in one process, one per
+  tenant directory `tenants/<shard>/<id>/`. The registry `fleet.db`
+  (`fleet_registry.go`) keeps each tenant's token hash, state, next wake, last
+  visit and model use per day. `daemon.lock` in the root refuses a second fleet.
+  - A tenant is opened by its owner's request or by the waker when its next wake is
+    due, and put to sleep by the reaper when `Standby.Quiet` holds and its owner
+    has been idle `IdleTTL`.
+  - `App.Standby` (`standby.go`) reports running turns, runnable work and the
+    earliest timer: routine slot, task check, event reminder or approved effect.
+  - At `MaxActive`, an owner's request evicts the least recently used quiet tenant;
+    the waker never evicts. Tenants left active by a crash are due at once.
+- `Admission` (`router.go`, `jobs.go`) lets the router and the preparer ask for a
+  slot before claiming. The fleet's `turnGate` and per-tenant `tenantMeter`
+  (`fleet_budget.go`) bound turns across tenants, keep chat slots, meter every model
+  call and hold a tenant over its daily call quota.
+- `archiveAbsent` and `restore` (`fleet_archive.go`) compress long-absent tenants
+  and restore them on demand; extraction accepts only directories and regular files
+  inside the tenant directory.
+- `Fleet.Handler` (`fleet_http.go`) serves `/t/{id}/` behind a per-tenant bearer
+  token, the admin API behind `MINILOOP_FLEET_ADMIN_TOKEN`, a per-tenant token
+  bucket and a 429 for chat over the quota. `App.routes` and `jsonOnly` are shared
+  with the daemon's `Handler`, which keeps its loopback guard. The page uses
+  relative API paths and reads the token from the link's fragment.
+- `seed.go` and `nightly.go` mark a routine slot that passed before a fresh
+  install as taken, so neither a daemon nor a fleet tenant catches it up.
+- `miniloop-assistant fleet` takes `-max-active`, `-idle`, `-turns`,
+  `-chat-turns`, `-tenant-workers`, `-daily-calls`, `-dormant-after`,
+  `-archive-after`, `-sweep` and TLS flags, and refuses plain HTTP on a
+  non-loopback address unless `-behind-tls-proxy` is given.
+- Tests cover lazy provisioning, sleep until the next timer, routine wake, crash
+  recovery, the second-fleet refusal, LRU eviction, the daily quota, the chat-first
+  gate, the stall valve, dormancy and archive, directory-first restore, archive
+  path containment, per-tenant authentication, the token bucket, the fresh-install
+  slot, CLI refusals and an end-to-end CLI run.
+  `MINILOOP_FLEET_LOAD=<n>` runs an opt-in load measurement.
+
+**Not claimed:**
+
+- multi-node sharding, object-storage replication, self-service sign-up, token
+  rotation or provider push;
+- remote channels, embeddings or per-tenant time zones in fleet mode;
+- isolation beyond separate directories and databases in one process;
+- a run on a cloud host or with a real model: the load measurement used the
+  scripted model on one laptop;
+- real MCP mail and calendar servers or a Python counterpart.

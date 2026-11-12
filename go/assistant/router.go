@@ -55,6 +55,7 @@ type Router struct {
 	log       io.Writer
 	workers   int
 	limit     time.Duration
+	admission Admission
 
 	manager *agent.SessionManager
 	wake    chan struct{}
@@ -85,6 +86,24 @@ type RouterConfig struct {
 	Log       io.Writer
 	Workers   int
 	TurnLimit time.Duration
+	// Admission is the host's limit on what this router may start; nil means
+	// the router's own worker slots are the only limit.
+	Admission Admission
+}
+
+// Admission lets a host that runs many assistants in one process bound the
+// model work each of them starts. The router and the preparation runner ask
+// before they claim, so work the host does not admit stays queued and keeps
+// its attempts.
+type Admission interface {
+	// Held reports that this assistant may start no model work for now, for
+	// example because its budget for the day is spent. Turns already running
+	// finish.
+	Held() bool
+	// Acquire waits for one of the host's turn slots. chat says the turn
+	// will be the user's chat, which may also use the slots the host keeps
+	// free for chat. ok is false when ctx ended or interrupt fired first.
+	Acquire(ctx context.Context, chat bool, interrupt <-chan struct{}) (release func(), ok bool)
 }
 
 func NewRouter(config RouterConfig) *Router {
@@ -100,7 +119,7 @@ func NewRouter(config RouterConfig) *Router {
 	if config.TurnLimit <= 0 {
 		config.TurnLimit = defaultTurnLimit
 	}
-	return &Router{store: config.Store, connector: config.Connector, rules: config.Rules, now: config.Now, log: config.Log, workers: config.Workers, limit: config.TurnLimit, wake: make(chan struct{}, 1), bindings: map[agent.SessionID]turnBinding{}, reports: map[agent.SessionID]Report{}}
+	return &Router{store: config.Store, connector: config.Connector, rules: config.Rules, now: config.Now, log: config.Log, workers: config.Workers, limit: config.TurnLimit, admission: config.Admission, wake: make(chan struct{}, 1), bindings: map[agent.SessionID]turnBinding{}, reports: map[agent.SessionID]Report{}}
 }
 
 // RouterStats counts the router's decisions since the process started.
@@ -228,13 +247,10 @@ func (r *Router) Run(ctx context.Context) {
 		if !ok {
 			return
 		}
-		var batch []Trigger
-		var err error
-		if _, paused := r.store.Paused(); !paused {
-			batch, err = r.store.ClaimBatch(ctx, r.now(), chatOnly)
-		}
+		batch, free, err := r.claim(ctx, chatOnly)
+		release := func() { free(); <-slot }
 		if err != nil || len(batch) == 0 {
-			<-slot
+			release()
 			if err != nil && ctx.Err() == nil {
 				fmt.Fprintf(r.log, "assistant: claim trigger: %v\n", err)
 			}
@@ -249,10 +265,49 @@ func (r *Router) Run(ctx context.Context) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			defer func() { <-slot }()
+			defer release()
 			r.dispatch(ctx, batch)
 			r.Wake()
 		}()
+	}
+}
+
+// claim takes the next batch unless the user paused processing or the host
+// holds this assistant. Under a host it first asks for a turn slot, and only
+// when something is runnable, so an idle assistant occupies none; release
+// gives that slot back. While it waits for a slot an enqueue interrupts it,
+// so a chat message that arrives behind queued background work is seen and
+// takes a chat slot.
+func (r *Router) claim(ctx context.Context, chatOnly bool) ([]Trigger, func(), error) {
+	release := func() {}
+	for {
+		if _, paused := r.store.Paused(); paused {
+			return nil, release, nil
+		}
+		if r.admission == nil {
+			batch, err := r.store.ClaimBatch(ctx, r.now(), chatOnly)
+			return batch, release, err
+		}
+		if r.admission.Held() {
+			return nil, release, nil
+		}
+		chat, err := r.store.Runnable(ctx, r.now(), true)
+		ready := chat
+		if err == nil && !chat && !chatOnly {
+			ready, err = r.store.Runnable(ctx, r.now(), false)
+		}
+		if err != nil || !ready {
+			return nil, release, err
+		}
+		free, ok := r.admission.Acquire(ctx, chat, r.wake)
+		if !ok {
+			if ctx.Err() != nil {
+				return nil, release, ctx.Err()
+			}
+			continue
+		}
+		batch, err := r.store.ClaimBatch(ctx, r.now(), chatOnly || chat)
+		return batch, free, err
 	}
 }
 

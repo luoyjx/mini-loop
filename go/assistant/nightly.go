@@ -35,6 +35,9 @@ func (s *Store) seedNightly(ctx context.Context, now time.Time) error {
 		if _, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO routines(id,name,hour,minute,prompt,enabled) VALUES(?,?,?,?,?,1)`, string(NightlyRoutine.ID), NightlyRoutine.Name, NightlyRoutine.Hour, NightlyRoutine.Minute, NightlyRoutine.Prompt); err != nil {
 			return err
 		}
+		if err := skipPassedSlot(ctx, tx, NightlyRoutine, now); err != nil {
+			return err
+		}
 		return s.setMeta(ctx, tx, nightlySeedKey, now.Format(time.RFC3339))
 	})
 }

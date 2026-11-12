@@ -472,3 +472,32 @@ func TestHandlerRefusesForeignHostsAndFormPosts(t *testing.T) {
 		}
 	}
 }
+
+// A routine slot that passed before the assistant was installed was not
+// missed: a new install in the evening runs no morning brief or nightly
+// consolidation until their next slots.
+func TestFreshInstallSkipsSlotsThatPassedBeforeIt(t *testing.T) {
+	clock := newClock()
+	clock.Set(time.Date(2026, 11, 2, 23, 47, 0, 0, time.Local))
+	dir := t.TempDir()
+	app, stop := startApp(t, dir, clock)
+	ctx := context.Background()
+	if fired := app.Scheduler.Due(ctx); fired != 0 {
+		t.Fatalf("slots before the install are not caught up, fired %d", fired)
+	}
+	if triggers := settle(t, app.Store); len(triggers) != 0 {
+		t.Fatalf("no routine ran: %+v", triggers)
+	}
+	standby, err := app.Standby(ctx, 24*time.Hour)
+	if err != nil || !standby.Timer.Equal(time.Date(2026, 11, 3, 7, 0, 0, 0, time.Local)) {
+		t.Fatalf("the next timer is tomorrow's brief: %+v %v", standby, err)
+	}
+	stop()
+	clock.Set(time.Date(2026, 11, 3, 7, 5, 0, 0, time.Local))
+	app, _ = startApp(t, dir, clock)
+	app.Scheduler.Due(ctx)
+	triggers := settle(t, app.Store)
+	if len(triggers) != 1 || triggers[0].Kind != TriggerRoutine || strings.Contains(triggers[0].Summary, "补跑") {
+		t.Fatalf("the next day's brief runs on time: %+v", triggers)
+	}
+}

@@ -20,6 +20,18 @@ const (
 var MorningBrief = Routine{ID: "morning-brief", Name: "晨报", Hour: 7, Minute: 0, Enabled: true,
 	Prompt: "汇总今天的日程、近 24 小时的邮件（重点是经理来信）和待回复邀约，不超过 100 字。"}
 
+// skipPassedSlot marks today's slot of a routine just installed as taken
+// when its time has already passed: a slot older than the install was not
+// missed, so a new assistant does not catch it up (and spend a model turn
+// on a morning brief in the evening).
+func skipPassedSlot(ctx context.Context, tx *sql.Tx, routine Routine, now time.Time) error {
+	if now.Before(dayAt(now, 0, routine.Hour, routine.Minute)) {
+		return nil
+	}
+	_, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO routine_runs(routine_id,slot,trigger_id,catchup,created_at) VALUES(?,?,0,0,?)`, string(routine.ID), now.Format(slotLayout), millis(now))
+	return err
+}
+
 func dayAt(now time.Time, offset, hour, minute int) time.Time {
 	return time.Date(now.Year(), now.Month(), now.Day()+offset, hour, minute, 0, 0, now.Location())
 }
@@ -40,6 +52,9 @@ func (s *Store) Seed(ctx context.Context, now time.Time) error {
 	}
 	return s.inTx(ctx, func(tx *sql.Tx) error {
 		if _, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO routines(id,name,hour,minute,prompt,enabled) VALUES(?,?,?,?,?,1)`, string(MorningBrief.ID), MorningBrief.Name, MorningBrief.Hour, MorningBrief.Minute, MorningBrief.Prompt); err != nil {
+			return err
+		}
+		if err := skipPassedSlot(ctx, tx, MorningBrief, now); err != nil {
 			return err
 		}
 		if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: "这是模拟信道。右侧的“外部世界”通过模拟 MCP server 投递邮件或邀约，助理轮询发现后处理；起草的对外动作会以卡片出现在这里，等你批准后才经 MCP 发出。"}, now); err != nil {

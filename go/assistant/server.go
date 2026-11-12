@@ -120,12 +120,24 @@ type errorResponse struct {
 // requests must name a loopback host (DNS-rebinding guard), and writes must be
 // same-origin JSON (simple cross-site forms cannot set that content type).
 func (app *App) Handler() http.Handler {
+	mux := app.routes()
+	mux.HandleFunc("GET /{$}", serveIndex)
+	return guard(mux)
+}
+
+// serveIndex serves the page. It holds no owner data: everything it shows
+// comes from the API, so a fleet serves it without a credential.
+func serveIndex(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'")
+	w.Header().Set("Referrer-Policy", "no-referrer")
+	_, _ = w.Write(indexHTML)
+}
+
+// routes is the API under /api, without the transport guard: the daemon puts
+// guard in front of it, a fleet its own authentication and jsonOnly.
+func (app *App) routes() *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'")
-		_, _ = w.Write(indexHTML)
-	})
 	mux.HandleFunc("GET /api/state", app.handleState)
 	mux.HandleFunc("POST /api/chat", app.handleChat)
 	mux.HandleFunc("POST /api/simulate", app.handleSimulate)
@@ -142,10 +154,11 @@ func (app *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/pause", app.handlePause)
 	mux.HandleFunc("POST /api/routines/{id}/run", app.handleRoutine)
 	mux.HandleFunc("GET /api/memory/search", app.handleMemorySearch)
-	return guard(mux)
+	return mux
 }
 
 func guard(next http.Handler) http.Handler {
+	next = jsonOnly(next)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		host := r.Host
 		if h, _, err := net.SplitHostPort(host); err == nil {
@@ -156,6 +169,14 @@ func guard(next http.Handler) http.Handler {
 			writeJSON(w, http.StatusForbidden, errorResponse{"loopback host required"})
 			return
 		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+// jsonOnly lets a write through only as same-origin JSON within the body
+// limit: a simple cross-site form cannot set that content type.
+func jsonOnly(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			media, _, _ := mime.ParseMediaType(r.Header.Get("Content-Type"))
 			if media != "application/json" || r.Header.Get("Sec-Fetch-Site") == "cross-site" {

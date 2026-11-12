@@ -18,7 +18,8 @@ a short triage and by default waits for you under **候选** instead of starting
 work. Workers can prepare material in a background read-only session, and a
 watchdog flags tasks whose checks stop making progress. Workers can trace a piece of
 work through its records, and a nightly routine consolidates memory into a short
-profile that every worker sees.
+profile that every worker sees. An opt-in [fleet host](#many-owners-the-fleet-host)
+runs many owners' assistants in one process and lets each sleep while it is idle.
 The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
@@ -256,12 +257,110 @@ Durability and status:
   fails. Three failures in a row put the channel on **需要你处理**. The ledger's
   `remote` rows record what each channel received and refused, and lines skipped.
 
+## Many owners: the fleet host
+
+The daemon above serves one owner on one Mac. `miniloop-assistant fleet` hosts
+many owners' assistants in one process, the way a cloud service would. It is off
+by default, and the single-owner daemon does not change.
+
+```sh
+cd go
+export MINILOOP_FLEET_ADMIN_TOKEN=$(openssl rand -hex 24)   # at least 24 characters
+go run ./cmd/miniloop-assistant fleet                        # http://127.0.0.1:8791
+curl -s -X POST http://127.0.0.1:8791/admin/tenants \
+  -H "Authorization: Bearer $MINILOOP_FLEET_ADMIN_TOKEN" \
+  -H 'Content-Type: application/json' -d '{"id":"alice"}'
+# {"id":"alice","token":"…","link":"/t/alice/#token=…"}
+```
+
+Open the returned link on the fleet's address. The token is shown only once.
+The fleet stores its SHA-256 hash, not the token. The token rides in the
+fragment, which browsers do not send. The page moves it into the tab's
+`sessionStorage`, removes it from the address bar and sends it as a bearer token.
+It is the same page as the daemon's, with relative API paths.
+
+Each tenant is an unchanged single-owner assistant on its own directory,
+`<data>/tenants/<shard>/<id>/`, with its own `assistant.db`, `agent.db`, memory and
+simulated world. Tenants share no tables. `<data>/fleet.db` keeps one row per
+tenant: token hash, state, next wake, last visit and model calls and tokens per day.
+
+| Path | Credential | Does |
+|---|---|---|
+| `GET /t/{id}/` | none | The page. It carries no tenant data |
+| `/t/{id}/api/…` | that tenant's token | The daemon's API for that tenant. Opens the assistant if it sleeps |
+| `POST /admin/tenants` | admin token | Creates a tenant, `{"id": …}` or `{}` for a random ID, and returns its token once |
+| `GET /admin/tenants?after=&limit=` | admin token | Lists tenants by ID, without tokens |
+| `GET`, `DELETE /admin/tenants/{id}` | admin token | Shows a tenant with today's model use, or deletes its row, directory and archive |
+| `GET /admin/stats` | admin token | Open assistants, turns in use and waiting, wakes, sleeps, evictions, refusals, stalls, archives and model calls |
+| `GET /healthz` | none | `ok` |
+
+An unknown tenant and a wrong token both get 401, so IDs cannot be probed. A full
+fleet answers 503 with `Retry-After`, and a tenant over 20 requests per second
+(bursts of 40) gets 429.
+
+### What it costs
+
+Model tokens cost the most, then compute, then storage. The fleet saves on each:
+
+| Resource | Single-owner daemon | Fleet |
+|---|---|---|
+| Model calls | Every turn runs as soon as a worker is free | One gate bounds turns across all tenants (`-turns`) and keeps a quarter for owners' chat. Routers and the preparer ask for a slot before they claim work, so waiting work keeps its attempts. Every call is metered per tenant and day. A tenant over `-daily-calls` is held until the next day, its chat gets 429 with the time it reopens, and its owner is told once. Owners away for `-dormant-after` are no longer woken, so routines stop spending on them |
+| Compute and memory | Always open: 8 goroutines, the scheduler, poller, router and outbox ticking | Open only while its owner uses it or something is due. It sleeps once it is quiet (no turn running, no work runnable, nothing due before its next timer) and its owner has been gone `-idle`. Before closing, the fleet writes the earliest of its next routine slot, task check, event reminder and approved effect into the registry. A waker opens due tenants. At `-max-active`, an owner's request evicts the least recently used quiet assistant; the waker never evicts and leaves an eighth of the room to owners |
+| Storage | One open directory with WAL files | Nothing on disk until the owner's first request. A sleeping tenant's databases are checkpointed, so no WAL files remain. Owners away for `-archive-after` have their directory compressed into one `.tar.gz`, restored on their next request |
+
+Two guards keep a tenant from being lost or holding a slot forever. If its owner has
+gone and for 10 minutes it is neither quiet nor running or waiting for a turn, for
+example work it can see but never claims, it is closed and not woken for 5
+minutes. A tenant left open when the process crashed is due at once on the next
+start, so its work continues.
+
+Fresh installs no longer catch up routine slots that passed before the install.
+This applies to the daemon too. Without it, every tenant created in the evening
+ran a morning brief and the nightly consolidation at once.
+
+### Flags
+
+| Flag | Default | Meaning |
+|---|---|---|
+| `-addr` | `127.0.0.1:8791` | A non-loopback address needs `-tls-cert` and `-tls-key`, or `-behind-tls-proxy` |
+| `-data` | `<config dir>/mini-loop/fleet` | `fleet.db` and `tenants/` |
+| `-model`, `-model-id` | `scripted` | Shared by every tenant, as for the daemon |
+| `-max-active` | 256 | Assistants open at once. Each takes about 13 file descriptors |
+| `-idle` | 2m | How long an assistant stays open after its owner's last request |
+| `-turns`, `-chat-turns` | 8, a quarter | Model turns at once across all tenants, and how many of them are kept for chat |
+| `-tenant-workers` | 2 | Concurrent turns of one tenant |
+| `-daily-calls` | 200 | Model calls per tenant per day; 0 is unlimited |
+| `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
+| `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long; 0 never |
+| `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources without push |
+
+### Measured
+
+`MINILOOP_FLEET_LOAD=1000 go test -run TestFleetLoad -v ./assistant` creates 1000
+tenants. 32 clients then open each tenant's state, chat once and leave, with
+`-max-active 64`, `-idle 500ms` and the scripted model. The resident row keeps
+50 single-owner assistants open, as 50 daemons would. Numbers are from an Apple
+silicon laptop with `GOMAXPROCS=2`.
+
+| | Resident (per assistant) | Fleet, 1000 tenants |
+|---|---|---|
+| Idle CPU | 1.0 ms/s each, so about one core per 1000 | 2.9 ms/s for all 1000 asleep |
+| Goroutines | 8 each | 4 above the start once all sleep |
+| Open assistants | all | at most 64, 0 after the run |
+| Disk | 808 KB open, with WAL | 312 KB asleep, 15 KB archived, 0 before the first request |
+| Model calls | — | 2 per tenant, both for its one chat turn. Before the fresh-install fix: 9, with a catch-up brief and the nightly routine |
+| Latency | — | Waking a sleeping tenant p50 351 ms, p99 950 ms under load. A warm read p50 0.5 ms. Restoring an archived tenant p50 5 ms |
+
+No request got 503. The Go heap is not returned to the system at once: RSS stayed
+87 MB above the start after every tenant slept.
+
 ## Processes and data
 
 | Process | Owns | Talks to |
 |---|---|---|
 | `miniloop-assistant` daemon | `assistant.db`: triggers, mail cursor and ingested IDs, subscriptions, tasks, event reminders, proposals, workers' questions, channel (each user line tagged with its source), ledger, pause switch, dismissed attention items, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors. `agent.db`: transcripts, action journal, leases. `memory/`. `daemon.lock`, held while the daemon runs | The page over loopback HTTP; the child over stdio JSON-RPC; with `-embed ollama`, the Ollama server over HTTP; with remote channels, the Telegram Bot API and Discord's REST API over HTTPS, and the assistant's mail servers over IMAP and SMTP |
 | `miniloop-assistant mock-mcp` child | `mock-mcp/world.db`: mailbox, calendar, effect receipts by idempotency key | Only the daemon, through stdin and stdout |
+| `miniloop-assistant fleet` (opt-in) | `fleet.db`: tenants (token hash, state, next wake, last visit) and model use per tenant and day. `tenants/<shard>/<id>/`: each tenant's own `assistant.db`, `agent.db`, `memory/` and `mock-mcp/world.db`, or `<id>.tar.gz` while archived. `daemon.lock` in the fleet's root while it runs, so a second fleet or a daemon there is refused, and in each open tenant's directory | Owners over HTTP with their tokens, the operator over the admin API, each open tenant's simulated world in process instead of a child |
 
 If the child dies, the next MCP call restarts it. If the daemon dies, the child's
 stdin closes and the child exits.
@@ -603,7 +702,7 @@ facts.
 
 | Part | In this demo | Code |
 |---|---|---|
-| Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). | `app.go`, `store.go`, `cmd/miniloop-assistant` |
+| Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). The opt-in fleet host runs many owners' assistants in one process and keeps each asleep while it has nothing to do. | `app.go`, `store.go`, `standby.go`, `fleet*.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the facts and memories related to its events. Time-bounded facts about people come from the contact table, the inbox, the calendar and a nightly extraction from your chat. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `facts.go`, `lookup.go`, `nightly.go`, `profile.go` |
 | Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too, whether typed on the page or sent from a remote channel. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake and remote channel intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go`, `remote.go`, `telegram.go`, `discord.go`, `email.go`, `imap.go` |
@@ -684,3 +783,19 @@ facts.
   the new mock world does not have. Approving one fails with the server's refusal.
 - The process-local `ApprovalBroker` is not used for these effects. Its 300s timeout
   and its restart behavior are unchanged.
+- The fleet host is one process on one machine. Multi-node sharding, replication
+  of tenant directories to object storage, self-service sign-up and provider
+  webhooks are design only. Every tenant uses the fleet's time zone and model, and
+  none has remote channels or embeddings. Mail and calendar stay the simulated
+  world, one per tenant.
+- A fleet tenant's token has the authority of typing on that tenant's page,
+  including approval. Anyone holding the link holds the token until the admin
+  deletes the tenant; there is no rotation yet. Admin and tenant tokens come only
+  from the environment and the admin API. The fleet does not rate-limit
+  unauthenticated requests or keep a request's limit across sleep, so put it
+  behind a proxy that limits by address.
+- A sleeping tenant wakes only for timers it recorded. New mail in a real mailbox
+  would need `-sweep` or a push from the provider. The page still polls the whole
+  state every 1.5 s while visible; an ETag or pushed changes would cut that.
+- The quota counts model calls, not tokens. A held tenant still accepts reads and
+  approvals, and its queued work runs the next day.
