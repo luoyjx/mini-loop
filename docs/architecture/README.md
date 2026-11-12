@@ -17,7 +17,7 @@ authority boundaries.
 | Deep Agents server | Authenticated API, queue, worker, graph and persistence | [HTML](deepagents-server.html) | [PNG](deepagents-server.png) | [JSON](deepagents-server.architecture.json) |
 | Temporal prototype | Default-off prototype workflow, activities and fixture | [HTML](temporal-prototype.html) | [PNG](temporal-prototype.png) | [JSON](temporal-prototype.architecture.json) |
 | Current Task server | Production API, Temporal History, Workflow, Activity and trace | [HTML](task-server.html) | [PNG](task-server.png) | [JSON](task-server.architecture.json) |
-| Go personal assistant | Channel, remote channels, store, routing, workers, tools and connector | [HTML](personal-assistant.html) | [PNG](personal-assistant.png) | [JSON](personal-assistant.architecture.json) |
+| Go personal assistant | Channel, remote channels, fleet host, store, routing, workers, tools and connector | [HTML](personal-assistant.html) | [PNG](personal-assistant.png) | [JSON](personal-assistant.architecture.json) |
 
 Use the HTML artifacts for zooming, path tracing, light/dark themes and export.
 Use the PNGs for quick previews in Markdown or review tools. Regenerate each
@@ -34,3 +34,10 @@ personal-assistant view was revalidated against revision
 `dbaf48affe5889ebfc991208b28480853c4c53c2`. It passed all nine checks with zero
 errors and zero warnings. Its 1800 px PNG was re-rendered from a 900 px
 dark-theme viewport at 2x.
+
+After D11 added the opt-in multi-tenant fleet host, the Go personal-assistant
+view was revalidated against revision
+`bb03f225bb64d695f07355e299b37897bbd962c8`. It passed all nine checks with zero
+errors and zero warnings, and Archify verified its 23 source references at that
+revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
+2x.
