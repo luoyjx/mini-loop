@@ -209,8 +209,23 @@ func decode[T any](r *http.Request) (T, error) {
 	return value, nil
 }
 
+// handleState answers the page. The tag is read before the state is built,
+// so a change made meanwhile shows up as a newer tag on the next poll.
 func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	tag, err := app.stateTag(ctx)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	tag, answered, err := app.notModified(w, r, tag)
+	if answered {
+		return
+	}
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
 	now := app.now()
 	view := StateView{Model: app.ModelLabel, Now: now, Presets: Presets, Integration: IntegrationView{
 		Server: app.Connector.Server(), Transport: app.Connector.Transport(),
@@ -220,7 +235,6 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 	if since, paused := app.Store.Paused(); paused {
 		view.Paused = &since
 	}
-	var err error
 	steps := []func() error{
 		func() error { view.Attention, err = app.Attention(ctx); return err },
 		func() error { view.Channel, err = app.Store.Channel(ctx, 200); return err },
@@ -267,6 +281,7 @@ func (app *App) handleState(w http.ResponseWriter, r *http.Request) {
 	if view.Integration.Error == "" {
 		view.Integration.Error = app.Poller.LastError()
 	}
+	w.Header().Set("ETag", tag)
 	writeJSON(w, http.StatusOK, view)
 }
 
@@ -309,6 +324,7 @@ func (app *App) delivered(w http.ResponseWriter, mail DeliveredMail, err error) 
 		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
 		return
 	}
+	app.worldChanged()
 	app.Poller.Wake()
 	writeJSON(w, http.StatusAccepted, deliveredResponse{mail.ID})
 }
@@ -326,6 +342,7 @@ func (app *App) handleEvent(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, errorResponse{err.Error()})
 		return
 	}
+	app.worldChanged()
 	app.Scheduler.Wake()
 	writeJSON(w, http.StatusAccepted, bookedResponse{event.ID, event.Start})
 }

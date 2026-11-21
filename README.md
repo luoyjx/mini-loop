@@ -271,9 +271,10 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-12**, baseline `4d7f982` plus the D11 fleet host
-of the opt-in Go personal assistant (many owners' assistants in one process,
-asleep while idle; see the Go personal-assistant baseline below).
+Architecture review: **2026-11-21**, baseline `0bdd2a8` plus D12 of the opt-in Go
+personal assistant: a push that wakes a sleeping fleet tenant, a long-poll
+subscription for the page and a turn outcome committed in one transaction (see
+the Go personal-assistant baseline below).
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -1224,52 +1225,56 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-12**, `4d7f982` plus the
-fleet-host iteration of the opt-in Go personal-assistant demo (D11).
-`go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with no Python
-counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents lanes keep
-their defaults, and the single-owner daemon keeps its defaults. `go/memory`,
-`go/agent` and `go/mcp` are unchanged, and no dependency was added.
+Current architecture review baseline: **2026-11-21**, `0bdd2a8` plus D12 of the
+opt-in Go personal-assistant demo. It compares the assistant with two published
+server diagrams, Grok Bot and DeepSeek's SuperAgent prototype, and fills three
+gaps. `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with
+no Python counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents
+lanes keep their defaults. `go/memory`, `go/agent` and `go/mcp` are unchanged,
+and no dependency was added.
 
-- **Fleet host**: `miniloop-assistant fleet` hosts many owners' assistants in one
-  process. It is off by default and needs `MINILOOP_FLEET_ADMIN_TOKEN`.
-  - Each tenant is an unchanged single-owner App on its own directory
-    (`tenants/<shard>/<id>/`). Tenants share no tables.
-  - `fleet.db` keeps one row per tenant: token hash, state, next wake, last visit
-    and model use per day.
-  - A tenant's files are created on its owner's first request.
-  - `daemon.lock` in the fleet's root refuses a second fleet on the same directory.
-- **Sleep and wake**: an assistant is open only while its owner uses it or it
-  has work due.
-  - It sleeps once it is quiet and its owner has been gone `-idle` (2 minutes).
-    The fleet then writes its next timer (routine, task check, event reminder,
-    approved effect) to the registry.
-  - A waker opens due tenants. Owners' requests evict the least recently used quiet
-    assistant at `-max-active`, and the waker never evicts.
-  - A sleeping tenant holds no goroutines, memory or open files. Its directory
-    keeps no WAL files.
-  - Tenants left open by a crash are made due at once.
-- **Model budget**: one fleet-wide gate bounds concurrent turns (`-turns`) and
-  keeps chat slots; routers and the preparer ask for a slot before claiming, so
-  waiting work keeps its attempts. Every call is metered per tenant and day.
-  A tenant over `-daily-calls` is held until the next day, its chat is refused
-  with 429 and the owner is told once.
-- **Storage**: owners away for `-dormant-after` (7 days) are no longer woken.
-  Owners away for `-archive-after` (30 days) have their directory compressed into
-  one file, which is restored on the next request.
-- **Edge**: `/t/{id}/` needs that tenant's bearer token, and `/admin/` needs the
-  admin token.
-  - The shared page reads the token from the link's fragment and uses relative API
-    paths. It stops polling in a hidden tab.
-  - Non-loopback listening needs `-tls-cert/-tls-key` or `-behind-tls-proxy`.
-  - Requests are limited to 20/s per tenant.
-- **Daemon change**: a routine slot that passed before an assistant was installed is
-  no longer caught up, so a new install in the evening runs no morning brief.
-- **Not in the fleet**: remote channels, embeddings, per-tenant time zones,
-  multiple nodes, object storage, self-service sign-up and pushed state. Mail and
-  calendar stay the simulated world, one per tenant.
+- **Push into the fleet**: with `MINILOOP_FLEET_PUSH_TOKEN` set, `POST /push/{id}`
+  says that a tenant may have new mail. It carries no content.
+  - An open tenant polls at once.
+  - A sleeping or closing tenant's next wake becomes now, and pushes coalesce.
+  - A tenant never opened or dormant is not woken.
+  - The push token is optional, comes only from the environment, and must differ
+    from the admin token. No provider is connected to it yet.
+- **Page subscription**: `GET api/state` answers with an `ETag`. With
+  `If-None-Match` and `?wait=25` the request is held until the state changes, or
+  answered 304.
+  - The tag is the store's version from `total_changes()`, a counter of simulator
+    writes and a hash of in-memory status.
+  - An unchanged check costs 6 µs instead of a 664 µs, 30.7 KB state build.
+  - A held poll keeps a fleet tenant open, and it returns at once when the daemon
+    or fleet stops.
+- **Turn settlement**: a turn's channel lines, the end of every trigger in its
+  batch, its task-check snapshots and its ledger rows are one transaction.
+  - Before, a crash between the writes posted the reply and left the trigger
+    running, so the restart posted it again.
+  - Triggers settle only while still running. A failed commit writes nothing and
+    retries the batch.
+- **Unchanged and still design only**: step-level replay of a turn, a sandbox per
+  user apart from the orchestrator, parallel preparation, OAuth connectors, and
+  several nodes. The daemon still polls mail.
 
-See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md) and the
+See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md), the
+[D12 audit](docs/audits/go-assistant-push-settle-2026-11-21.md) and the
+comparison table in [go/assistant/README.md](go/assistant/README.md#compared-with-hosted-agent-services).
+
+Previous architecture review baseline: **2026-11-12**, `4d7f982` plus the
+fleet-host iteration (D11). `miniloop-assistant fleet` hosted many owners'
+assistants in one process, off by default and behind `MINILOOP_FLEET_ADMIN_TOKEN`.
+Each tenant was an unchanged single-owner App on its own directory, and `fleet.db`
+kept each tenant's token hash, state, next wake, last visit and model use per day.
+An assistant was open only while its owner used it or work was due; a waker
+opened due tenants and LRU eviction applied at `-max-active`. One fleet-wide gate
+bounded turns and kept chat slots, every call was metered, and a tenant over
+`-daily-calls` was held until the next day. Owners away 7 days were no longer
+woken, and those away 30 days were archived. `/t/{id}/` needed that tenant's
+bearer token and `/admin/` the admin token. A fresh install no longer caught up
+routine slots that had passed. A sleeping tenant woke only for its own timers, and
+the page polled the whole state every 1.5 s. See the
 [D11 audit](docs/audits/go-assistant-fleet-2026-11-12.md).
 
 Previous architecture review baseline: **2026-11-11**, `16ee882` plus the
@@ -1580,10 +1585,10 @@ flowchart LR
         TSActivity -. redacted spans + usage .-> TSTrace
     end
     subgraph GoAssistant["go/assistant · opt-in personal-assistant demo · Go addition · default-off"]
-        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>daemon: loopback only · no authentication · fleet: one tenant's routes behind its token<br/>relative API paths · a hidden tab stops polling<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status<br/>remote channel badges · source of each remote line"]
+        PAChannel["cmd/miniloop-assistant · simulated channel page<br/>daemon: loopback only · no authentication · fleet: one tenant's routes behind its token<br/>relative API paths · long poll with ETag and If-None-Match · a hidden tab stops it<br/>attention list · question answers · pause switch · chat · approval cards · task board · ledger view<br/>candidates tab · observe / auto mode · preparation jobs · contacts · profile and memories<br/>memory search box · aliases · legs and similarity per hit · vector index status<br/>remote channel badges · source of each remote line"]
         PAStore["assistant.db · SQLite · data dir held by one daemon<br/>trigger queue · mail cursor + ingested IDs · thread subscriptions<br/>durable tasks · event reminders · proposal outbox · open questions · channel log · append-only ledger<br/>pause switch · dismissed attention items<br/>contacts · candidate mode · preparation jobs · task-check snapshots · watchdog flags · user profile<br/>memory search aliases · keyed by memory name + text<br/>memory vectors · keyed by memory name + text + model<br/>entities · aliases · facts with valid_from / valid_to / superseded_by<br/>remote links by service message ID · receive and delivery cursors per remote channel"]
         PAScheduler["Scheduler · routines · task checks · event reminders<br/>claim + trigger in one transaction · task fallback check + six-check budget<br/>catch-up after downtime, sleep or pause · not for slots before the install · claims nothing while paused<br/>watchdog each tick: stuck detector over task-check snapshots<br/>nightly consolidation routine 23:30"]
-        PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer"]
+        PARouter["Assistant Router<br/>rule fast path + admission grade (known contact × addressed) · triage model for inferred candidates<br/>observe mode records · auto mode runs · failed triage records · decision counters in memory<br/>parallel workers across threads · per-thread batch claims, one turn per batch<br/>chat first + one reserved chat slot · claims nothing while paused<br/>model failure or round exhaustion = failed turn · subscribed worker reuse<br/>acts on worker report: notify / ask / quiet · sole channel writer<br/>one settlement per turn: lines · trigger end · check snapshots · ledger"]
         PAHealth["Health board · in memory<br/>three failures in a row → attention problem · success clears"]
         PATools["Agent tools · typed extensions<br/>MCP mail / calendar reads as read risk · propose_* drafts · task_* on own thread<br/>report: the turn's notify / ask / quiet result<br/>prepare_start / prepare_stop: background preparation jobs<br/>lookup: chain recall over assistant.db refs, next-hop IDs<br/>memory_search: ranked owner memories · replaces built-in recall for new sessions<br/>no send tool · replaces Bash / file catalogue"]
         PAConsolidator["Nightly consolidation · before the 夜间整理 turn<br/>recipients of sent mail → contacts · meeting window from the calendar<br/>duplicate memories removed · profile rebuilt · idempotent<br/>search aliases for new or changed memories · one model call, no tools · failure retried next night<br/>facts from contacts, inbox and calendar · fact extraction from the user's chat · one model call, no tools"]
@@ -1591,7 +1596,8 @@ flowchart LR
         PAFacts["Facts · derived, in assistant.db<br/>people and organizations known by names and addresses · strangers never become entities<br/>manager / employer / role: one current value, a timeline with replaced values<br/>user's word > contact table > address domain · profile manager line is a view"]
         PAEmbed["Ollama · local embedding server · opt-in<br/>qwen3-embedding:0.6b · loopback by default<br/>started by the owner, not by the daemon or launchd"]
         PARemote["Remote channel bridges · opt-in · default off<br/>Telegram getUpdates long poll · Discord DM over REST · email IMAP read-only + SMTP<br/>owner's account checked per message · email: From + DKIM/DMARC from -email-authserv<br/>lines + dedupe links + cursor in one transaction · a reply to a question answers it<br/>copies assistant lines in order, at least once · held while paused · approvals stay on the page"]
-        PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30"]
+        PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30<br/>POST /push/{id} with the optional push token: poll now, wake now or defer · no content"]
+        PAPush["Mail provider notification relay · outside the fleet · not connected yet<br/>knows which tenant owns a mailbox · push token from its environment"]
         PARemoteSvc["Telegram Bot API · Discord REST · the assistant's IMAP / SMTP servers<br/>external services · tokens and password from the environment only"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
         PAModel["ScriptedModel offline default<br/>-model anthropic opt-in"]
@@ -1600,13 +1606,14 @@ flowchart LR
         PAOutbox["Outbox · sole effect caller<br/>approved → sent / failed · key proposal-id<br/>refusal fails · transport retries · resumes after restart or resume · user retry"]
         PAMock["mock-mcp child process · simulated MCP server<br/>world.db mail / calendar · idempotent effects<br/>sim_* tools stand in for the outside world"]
         PAChannel -->|chat · answer · pause / resume · retry / resume / dismiss<br/>hand over / ignore candidate · mode · stop job| PAStore
-        PAStore -->|attention items| PAChannel
+        PAStore -->|attention items · held poll answered on change| PAChannel
         PAChannel -. simulator delivery .-> PAConnector
         PAScheduler -->|claim slot / due task / reminder + enqueue| PAStore
         PAScheduler -->|calendar_list upcoming events| PAConnector
         PAPoller -->|mail_poll| PAConnector
         PAPoller -->|enqueue trigger + advance cursor| PAStore
         PAStore -->|claim one thread's batch| PARouter
+        PARouter -->|settle in one transaction: lines · triggers · checks · ledger| PAStore
         PATools -->|reads| PAConnector
         PATools -->|append pending proposal / create or schedule task / queue job| PAStore
         PAStore -->|claim queued job| PAPreparer
@@ -1639,6 +1646,8 @@ flowchart LR
         PAFleet -->|owner token checked · tenant API → that tenant's routes| PAChannel
         PAFleet -->|open on demand · Standby → next wake · close| PAStore
         PARouter -. turn slot before each claim · held over the daily quota .-> PAFleet
+        PAPush -. push for one tenant · wake hint only .-> PAFleet
+        PAFleet -->|open tenant: PollOnce · asleep: next wake now| PAPoller
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel
     Caller -. explicit fleet command + admin token .-> PAFleet

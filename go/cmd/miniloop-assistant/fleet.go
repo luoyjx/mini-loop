@@ -19,7 +19,10 @@ const (
 	// required: a fleet without one could not be managed, and one with an
 	// empty token would be open to anyone.
 	envFleetAdminToken = "MINILOOP_FLEET_ADMIN_TOKEN"
-	minAdminToken      = 24
+	// envFleetPushToken, when set, opens POST /push/{id} for the mail and
+	// calendar provider's push bridge. It can only wake tenants.
+	envFleetPushToken = "MINILOOP_FLEET_PUSH_TOKEN"
+	minAdminToken     = 24
 )
 
 // runFleet hosts many owners' assistants in one process. Each owner reaches
@@ -52,6 +55,13 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	if len(admin) < minAdminToken {
 		return fail(fmt.Errorf("fleet needs %s of at least %d characters for its admin API", envFleetAdminToken, minAdminToken))
 	}
+	push := env.getenv(envFleetPushToken)
+	switch {
+	case push != "" && len(push) < minAdminToken:
+		return fail(fmt.Errorf("%s must have at least %d characters", envFleetPushToken, minAdminToken))
+	case push != "" && push == admin:
+		return fail(fmt.Errorf("%s must differ from %s", envFleetPushToken, envFleetAdminToken))
+	}
 	if (*tlsCert == "") != (*tlsKey == "") {
 		return fail(errors.New("-tls-cert and -tls-key go together"))
 	}
@@ -80,7 +90,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	}
 	fleet.Start()
 	server := &http.Server{
-		Handler: fleet.Handler(admin), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second,
+		Handler: fleet.Handler(admin, push), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second,
 		WriteTimeout: time.Minute, IdleTimeout: 2 * time.Minute, MaxHeaderBytes: 64 << 10,
 	}
 	served := make(chan error, 1)
@@ -95,7 +105,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	if label == "" {
 		label = config.Model
 	}
-	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, max-active=%d, turns=%d, daily-calls=%d)\n", scheme, listener.Addr(), label, root, *maxActive, *turns, *dailyCalls)
+	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t)\n", scheme, listener.Addr(), label, root, *maxActive, *turns, *dailyCalls, push != "")
 	select {
 	case <-ctx.Done():
 	case err = <-served:

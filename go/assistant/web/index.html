@@ -276,18 +276,44 @@ async function post(path, body) {
   return data;
 }
 
-let state = null, lastJSON = "";
+let state = null, lastJSON = "", stateTag = "";
+// load fetches the state. With signal it is the page's long poll: it sends
+// the last tag and the server holds the request until something changes, or
+// answers 304 after 25 s. It reports whether the server answered normally.
+async function load(signal) {
+  const extra = signal && stateTag ? { "If-None-Match": stateTag } : {};
+  const response = await fetch(signal && stateTag ? "api/state?wait=25" : "api/state", { cache: "no-store", headers: headers(extra), signal });
+  if (response.status === 304) return true;
+  if (!response.ok) {
+    if (response.status === 401 && !load.warned) { load.warned = true; toast("这个链接缺少有效的访问令牌"); }
+    return false;
+  }
+  stateTag = response.headers.get("ETag") || "";
+  const text = await response.text();
+  if (text !== lastJSON) { lastJSON = text; state = JSON.parse(text); render(); }
+  return true;
+}
 async function refresh() {
+  try { await load(); } catch (e) { /* daemon restarting: keep the last view */ }
+}
+// watch keeps one long poll open while the tab is visible and backs off
+// while the server is away or refuses. A hidden tab aborts it, so a page
+// left in the background holds nothing open and a fleet can put the
+// assistant to sleep.
+async function watch() {
+  if (watch.running || document.hidden) return;
+  watch.running = true;
+  let failures = 0;
   try {
-    const response = await fetch("api/state", { cache: "no-store", headers: headers() });
-    if (!response.ok) {
-      if (response.status === 401 && !refresh.warned) { refresh.warned = true; toast("这个链接缺少有效的访问令牌"); }
-      return;
+    while (!document.hidden) {
+      watch.abort = new AbortController();
+      let ok = false;
+      try { ok = await load(watch.abort.signal); } catch (e) { ok = false; }
+      if (document.hidden) break;
+      failures = ok ? 0 : failures + 1;
+      if (failures) await new Promise((resolve) => setTimeout(resolve, Math.min(30000, 1000 * 2 ** Math.min(failures, 5))));
     }
-    const text = await response.text();
-    if (text === lastJSON) return;
-    lastJSON = text; state = JSON.parse(text); render();
-  } catch (e) { /* daemon restarting: keep the last view */ }
+  } finally { watch.running = false; watch.abort = null; }
 }
 
 function proposalCard(p) {
@@ -604,11 +630,10 @@ $("tabs").addEventListener("click", (event) => {
   for (const b of $("tabs").children) b.classList.toggle("active", b === button);
   for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.id === "pane-" + button.dataset.pane);
 });
-// A hidden tab stops polling, so a page left open costs the server nothing
-// and a fleet can put the assistant to sleep.
-refresh();
-setInterval(() => { if (!document.hidden) refresh(); }, 1500);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+watch();
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { if (watch.abort) watch.abort.abort(); } else watch();
+});
 </script>
 </body>
 </html>

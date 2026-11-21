@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -32,6 +33,12 @@ type Store struct {
 	// milliseconds; 0 while running). The data-directory lock makes this
 	// process its only writer.
 	paused atomic.Int64
+	// changes wakes the page's long polls after a write; Version tells them
+	// whether anything changed. See changes.go.
+	changes   changeFeed
+	versionMu sync.Mutex
+	lastTotal int64
+	base      int64
 }
 
 const schema = `
@@ -233,7 +240,11 @@ func (s *Store) inTx(ctx context.Context, fn func(*sql.Tx) error) error {
 	if err := fn(tx); err != nil {
 		return errors.Join(err, tx.Rollback())
 	}
-	return tx.Commit()
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	s.changes.signal()
+	return nil
 }
 
 // ---- meta ----
@@ -369,11 +380,13 @@ func (s *Store) ClaimBatch(ctx context.Context, now time.Time, chatOnly bool) ([
 
 func (s *Store) FinishTrigger(ctx context.Context, id int64, status TriggerStatus, decision, session string, now time.Time) error {
 	_, err := s.db.ExecContext(ctx, `UPDATE triggers SET status=?, decision=?, session_id=?, updated_at=? WHERE id=?`, string(status), decision, session, millis(now), id)
+	s.changes.signal()
 	return err
 }
 
 func (s *Store) RetryTrigger(ctx context.Context, id int64, notBefore time.Time, decision string, now time.Time) error {
 	_, err := s.db.ExecContext(ctx, `UPDATE triggers SET status=?, decision=?, not_before=?, updated_at=? WHERE id=?`, string(TriggerPending), decision, millis(notBefore), millis(now), id)
+	s.changes.signal()
 	return err
 }
 
@@ -659,6 +672,7 @@ func postChannel(ctx context.Context, q queryer, message ChannelMessage, now tim
 }
 
 func (s *Store) Post(ctx context.Context, message ChannelMessage, now time.Time) (int64, error) {
+	defer s.changes.signal()
 	return postChannel(ctx, s.db, message, now)
 }
 
@@ -721,6 +735,7 @@ func appendLedger(ctx context.Context, q queryer, entry LedgerEntry) error {
 }
 
 func (s *Store) Append(ctx context.Context, entry LedgerEntry) error {
+	defer s.changes.signal()
 	return appendLedger(ctx, s.db, entry)
 }
 

@@ -19,8 +19,10 @@ work. Workers can prepare material in a background read-only session, and a
 watchdog flags tasks whose checks stop making progress. Workers can trace a piece of
 work through its records, and a nightly routine consolidates memory into a short
 profile that every worker sees. An opt-in [fleet host](#many-owners-the-fleet-host)
-runs many owners' assistants in one process and lets each sleep while it is idle.
-The demo has no Python counterpart
+runs many owners' assistants in one process and lets each sleep while it is idle;
+a mail provider's notification can [wake a sleeping one](#new-mail-for-a-sleeping-tenant).
+The page [follows changes](#how-the-page-follows-changes) with a long poll, and
+[each turn ends in one transaction](#how-a-turn-ends). The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
 [docs/PROACTIVE_AGENT_ROADMAP.md](../../docs/PROACTIVE_AGENT_ROADMAP.md).
 
@@ -291,12 +293,44 @@ tenant: token hash, state, next wake, last visit and model calls and tokens per 
 | `POST /admin/tenants` | admin token | Creates a tenant, `{"id": …}` or `{}` for a random ID, and returns its token once |
 | `GET /admin/tenants?after=&limit=` | admin token | Lists tenants by ID, without tokens |
 | `GET`, `DELETE /admin/tenants/{id}` | admin token | Shows a tenant with today's model use, or deletes its row, directory and archive |
-| `GET /admin/stats` | admin token | Open assistants, turns in use and waiting, wakes, sleeps, evictions, refusals, stalls, archives and model calls |
+| `GET /admin/stats` | admin token | Open assistants, turns in use and waiting, wakes, sleeps, evictions, refusals, stalls, archives, pushes and model calls |
+| `POST /push/{id}` | push token, only when `MINILOOP_FLEET_PUSH_TOKEN` is set | Says that tenant may have new mail. It carries no content; see [below](#new-mail-for-a-sleeping-tenant) |
 | `GET /healthz` | none | `ok` |
 
 An unknown tenant and a wrong token both get 401, so IDs cannot be probed. A full
 fleet answers 503 with `Retry-After`, and a tenant over 20 requests per second
 (bursts of 40) gets 429.
+
+### New mail for a sleeping tenant
+
+A sleeping tenant wakes only for timers it recorded, and mail does not arrive on
+a timer. A mail provider can notify the fleet instead, the way Gmail's watch
+and Microsoft Graph's subscriptions call a webhook, through a relay that knows
+which tenant the mailbox belongs to:
+
+```sh
+export MINILOOP_FLEET_PUSH_TOKEN=$(openssl rand -hex 24)   # not the admin token
+curl -s -X POST http://127.0.0.1:8791/push/alice \
+  -H "Authorization: Bearer $MINILOOP_FLEET_PUSH_TOKEN"
+# {"outcome":"scheduled"}
+```
+
+The push is only a hint. Its body is not read, so a forged or replayed push can
+cost at most a wake and a `mail_poll`; the poller's cursor and the ingested IDs
+still decide what is new.
+
+| Tenant | Outcome |
+|---|---|
+| Open | `polled`: the poller runs at once, and new mail wakes the router |
+| Asleep, or closing right now | `scheduled`: its next wake becomes now, and the waker opens it. Pushes coalesce into one wake |
+| Never opened, or dormant | `deferred`: nothing is woken. The owner's next visit polls |
+| Unknown | 404 |
+
+The push token is a separate secret from the environment: at least 24
+characters and different from the admin token, or the fleet refuses to start.
+Without it, `/push/` is not served. The push token reaches no tenant's data,
+and holding it lets someone spend wakes, so it belongs to the relay only. The
+fleet still has no provider connector; real mail stays design-only.
 
 ### What it costs
 
@@ -332,7 +366,10 @@ ran a morning brief and the nightly consolidation at once.
 | `-daily-calls` | 200 | Model calls per tenant per day; 0 is unlimited |
 | `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
 | `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long; 0 never |
-| `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources without push |
+| `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources that cannot push |
+
+`MINILOOP_FLEET_ADMIN_TOKEN` is required. `MINILOOP_FLEET_PUSH_TOKEN` is
+optional and turns on `/push/{id}`.
 
 ### Measured
 
@@ -353,6 +390,63 @@ silicon laptop with `GOMAXPROCS=2`.
 
 No request got 503. The Go heap is not returned to the system at once: RSS stayed
 87 MB above the start after every tenant slept.
+
+## How the page follows changes
+
+The page used to fetch the whole state every 1.5 s while it was visible. Now it
+subscribes with a long poll:
+
+1. `GET api/state` answers with an `ETag`.
+2. The page sends that tag back in `If-None-Match` with `?wait=25`.
+3. The daemon holds the request until the state changes, then answers 200 with the
+   new state, or 304 after 25 seconds.
+
+The tag is cheap to compute. It names the process, the store's version, a counter
+for simulator writes to the outside world, and a hash of what lives in memory:
+health problems, router counters, remote channel status and the poll error.
+The store's version comes from SQLite's `total_changes()` on its one pinned
+connection, so read-only transactions do not change it. Every write signals
+waiting polls at once. A held poll also checks the tag every 2 seconds, for
+changes kept in memory.
+
+A hidden tab stops the poll, and errors back off up to 30 seconds. In the fleet,
+a held poll keeps its tenant open, as a request in flight does, so a visible page
+keeps the assistant awake. A held poll returns at once when the daemon or the
+fleet stops.
+
+Measured with the scripted model on the same laptop as the fleet numbers, with
+six mails and four chats in the state:
+
+| Per poll | Before | Now, nothing changed |
+|---|---|---|
+| Server time | 664 µs, a full state build | 6 µs, a version check |
+| Response | 30.7 KB | 0 bytes, 304 |
+| Idle visible page, per minute | 40 full builds | 2–3 requests, about 30 checks |
+
+`MINILOOP_STATE_COST=1 go test -run TestStatePollCost -v ./assistant` repeats the
+measurement.
+
+## How a turn ends
+
+A turn's end used to be several transactions: the channel lines, each trigger's
+status, the task-check snapshots and the ledger rows. A crash between them could
+leave the reply posted while its trigger was still `running`. The restart then
+requeued the trigger and ran the turn again, and the reply was posted twice. A
+snapshot written twice could look like a stalled check to the watchdog.
+
+`Store.Settle` now commits a turn's whole outcome in one transaction:
+
+- the report line and approval cards, or the question with its lines;
+- every trigger of the batch, only if it is still `running`;
+- each checked task's snapshot, once per trigger;
+- the ledger rows.
+
+The same holds for a trigger the fast path, a state check or the triage settles,
+and for a batch that failed for good. After a crash the outcome is either all
+there or not there at all. If it is not there, the triggers are still running and
+the restart requeues them. The model calls of that turn repeat, as before, and
+proposal keys and card checks keep drafts and cards from repeating. A failed
+commit writes nothing and retries the batch.
 
 ## Processes and data
 
@@ -408,6 +502,8 @@ the worker handles them in one turn and reports once.
 - Drafts, tasks and questions are stamped with the oldest trigger in the batch, so
   a re-run after a crash converges on the same rows.
 - If the turn fails, the whole batch is retried or failed together.
+- The turn's outcome is committed in one transaction; see
+  [How a turn ends](#how-a-turn-ends).
 
 A worker says what its turn means for you with the `report` tool, instead of a
 marker in its text:
@@ -702,12 +798,38 @@ facts.
 
 | Part | In this demo | Code |
 |---|---|---|
-| Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). The opt-in fleet host runs many owners' assistants in one process and keeps each asleep while it has nothing to do. | `app.go`, `store.go`, `standby.go`, `fleet*.go`, `cmd/miniloop-assistant` |
+| Own computer | One long-running daemon on your Mac, optionally under launchd. Durable state is described in [Processes and data](#processes-and-data). The page follows changes with a long poll. The opt-in fleet host runs many owners' assistants in one process, keeps each asleep while it has nothing to do and wakes one on a push. | `app.go`, `store.go`, `changes.go`, `standby.go`, `fleet*.go`, `cmd/miniloop-assistant` |
 | Integrations | Mail and calendar exist only behind the simulated MCP server. Worker tools are typed wrappers with declared risk: `mail_list`, `mail_read`, `calendar_list`, `task_list` (read); `propose_email`, `propose_invite_response` (write: draft only); `task_create`, `task_schedule`, `task_complete` (write: local task board); `report` (write: the turn's result, acted on by the router); `prepare_start`, `prepare_stop` (write: local preparation queue); `lookup`, `memory_search` (read: local records, owner memory). The custom catalogue replaces the Bash and file tools. | `world.go`, `mockmcp.go`, `connector.go`, `tools.go` |
 | Memory | The existing `remember` tool on an owner-scoped `memory.Store`; workers search it with `memory_search` (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and, with `-embed ollama`, local embeddings, fused by rank), and each prompt carries the facts and memories related to its events. Time-bounded facts about people come from the contact table, the inbox, the calendar and a nightly extraction from your chat. Facts are seeded on first start. `lookup` follows a piece of work through `assistant.db`. The nightly routine consolidates contacts, the meeting window, duplicate memories and search aliases into a profile shown in every worker prompt. | `seed.go`, `retrieval.go`, `aliases.go`, `embed.go`, `facts.go`, `lookup.go`, `nightly.go`, `profile.go` |
-| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too, whether typed on the page or sent from a remote channel. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. The pause switch holds all of it except mail intake and remote channel intake. | `poller.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go`, `remote.go`, `telegram.go`, `discord.go`, `email.go`, `imap.go` |
+| Routines and triggers | The poller turns new mail into trigger rows, and channel chat becomes trigger rows too, whether typed on the page or sent from a remote channel. Rules form the fast path and grade mail by contact and address; the triage decides inferred candidates. A Preparer runs background preparation jobs, and the watchdog checks task progress on each scheduler tick. Thread subscriptions route follow-ups to the same worker. The scheduler claims the daily brief's slots, due task checks and upcoming-event reminders, each exactly once. Different threads run on parallel workers (`-workers`, default 4, plus one slot for your chat); one thread runs in order, and what queued up on it meanwhile runs as one batch. A turn's lines, the end of its triggers, its task-check snapshots and its ledger rows are one transaction. In the fleet, a push wakes a sleeping tenant's poller. The pause switch holds all of it except mail intake and remote channel intake. | `poller.go`, `settle.go`, `rules.go`, `contacts.go`, `triage.go`, `router.go`, `jobs.go`, `routines.go`, `tasks.go`, `watchdog.go`, `control.go`, `remote.go`, `telegram.go`, `discord.go`, `email.go`, `imap.go` |
 | Approval gates | Workers can only append pending proposals. A human decision moves a proposal from `pending` to `approved` or `denied`. The outbox alone executes approved proposals through MCP and moves them to `sent` or `failed`. | `store.go: DecideProposal`, `outbox.go`, `server.go` |
 | Audit log | Append-only ledger rows. The chain is: trigger (poller, channel or scheduler) → rule → route → gated tool call (`action_id`) → proposal → decision (actor) → effect (MCP tool, receipt, key, replay) or failed attempt. Task rows record creation, rescheduling, checks brought forward (with the reason), completion, cancellation, hand-over and resumption. Control rows record pause, resume, retries, dismissals, answers, candidate decisions and mode switches. Report rows record each worker's report and its final text. Triage rows record each verdict with its reason and grade; job rows record queueing, completion, failure and cancellation; watchdog rows record each flag. Remote rows record what remote channels received and refused, and lines a service refused. | `store.go`, `tasks.go`, `control.go`, `router.go: OnResult`, `remote.go` |
+
+## Compared with hosted agent services
+
+Two published server diagrams were compared with this demo on 2026-11-21: Grok
+Bot (event driven, durable execution, orchestration separate from tool compute)
+and DeepSeek's SuperAgent prototype (a domain state machine, transactional
+enqueue, recoverable execution). Both are concept diagrams, not code, so the
+comparison is by role.
+
+| Their part | Here | Status |
+|---|---|---|
+| Channels and source adapters, with ingress dedupe | The page, remote bridges and the mail poller; ingested mail IDs and remote links dedupe | Same |
+| Webhook ingress | The daemon polls. The fleet takes `POST /push/{id}` as a wake hint | Push added on 2026-11-21; no provider connector |
+| A queue per conversation | The trigger table: one thread in order, threads in parallel, chat first with a reserved slot | Same |
+| Engine: a state change and its follow-up work in one transaction | Mail and cursor, slot and trigger, approval and outbox, question and lines were already one transaction. A turn's end now is too | Turn end added on 2026-11-21 |
+| Effects executor: dedupe key, bounded concurrency, backoff | The outbox: proposal-ID key, one effect at a time, growing backoff, refusals fail at once | Same |
+| Startup recovery: pending effects, interrupted work, reused sessions | Approved proposals resume; running triggers are requeued and re-run on the thread's restored session | Re-run, not resumed step by step |
+| Durable execution of each step | Durable rows and idempotent effects. A crash repeats the turn's model calls | Step replay is design only |
+| Orchestration separate from tool compute, a sandbox per user | Effects go only through the MCP connector, a child process for the daemon. Workers have no shell. The fleet runs each tenant's simulated world in process | A sandbox per user is design only |
+| Helpers running in parallel | The Preparer runs one read-only job at a time | Design only |
+| A shared, metered model service | One provider, the fleet's turn gate and daily quota | Same |
+| Client subscriptions | Long poll with `ETag` | Added on 2026-11-21 |
+| A model-driven router session | Rules and a tool-less triage call; the router is code | Different by design |
+| Session log | `agent.db` transcripts and the ledger | Same |
+| Replies to the source channel | Lines go to the page and every enabled remote channel; owner lines carry their source | One owner sees one conversation, by design |
+| OAuth connectors, several nodes, sharding | Simulated MCP, one process | Design only |
 
 ## Boundaries
 
@@ -769,9 +891,10 @@ facts.
   preference line, which is why the profile is marked as reference data.
 - Task checks are ordinary untrusted triggers. A task cannot grant a worker any
   ability it does not already have, and a task check can only draft.
-- A re-run after a crash may repeat model calls. Proposal dedupe keys and card checks
-  keep it from duplicating drafts or channel cards. Outbox idempotency keys keep it
-  from duplicating sends.
+- A re-run after a crash may repeat model calls. A turn's outcome is one
+  transaction, so the reply is posted once. Proposal dedupe keys and card checks
+  keep a re-run from duplicating drafts or channel cards. Outbox idempotency keys
+  keep it from duplicating sends.
 - One daemon per data directory: `daemon.lock` is an advisory `flock`, released by
   the kernel when the process exits. It is taken on macOS and Linux only. The mock
   MCP child starts before the lock is checked, so a refused second daemon briefly
@@ -794,8 +917,12 @@ facts.
   from the environment and the admin API. The fleet does not rate-limit
   unauthenticated requests or keep a request's limit across sleep, so put it
   behind a proxy that limits by address.
-- A sleeping tenant wakes only for timers it recorded. New mail in a real mailbox
-  would need `-sweep` or a push from the provider. The page still polls the whole
-  state every 1.5 s while visible; an ETag or pushed changes would cut that.
+- A sleeping tenant wakes for timers it recorded and for a push. The push is only
+  a hint; nothing connects a real provider's notifications to it yet, and whoever
+  holds the push token can spend wakes. Without push, a real mailbox would need
+  `-sweep`.
+- The page's long poll answers within 2 seconds of a change kept in memory, and
+  at once for store writes. A visible fleet page keeps its tenant open. One held
+  poll per visible page uses one connection and one goroutine.
 - The quota counts model calls, not tokens. A held tenant still accepts reads and
   approvals, and its queued work runs the next day.

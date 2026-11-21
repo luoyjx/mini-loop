@@ -47,9 +47,11 @@ type Fleet struct {
 	drained *sync.Cond
 	tenants map[TenantID]*tenant
 	closed  bool
-	run     context.Context
-	stop    context.CancelFunc
-	wg      sync.WaitGroup
+	// kick runs the waker at once, after a push made a sleeping tenant due.
+	kick chan struct{}
+	run  context.Context
+	stop context.CancelFunc
+	wg   sync.WaitGroup
 }
 
 // FleetConfig sizes a fleet. Zero values take the defaults noted per field;
@@ -138,7 +140,7 @@ const (
 )
 
 type fleetCounters struct {
-	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures atomic.Int64
+	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures, pushes atomic.Int64
 }
 
 // tenant is one open (or opening, or closing) assistant. Fields other than
@@ -161,6 +163,9 @@ type tenant struct {
 	touched time.Time
 	opened  time.Time
 	closing bool
+	// pushed records a push that arrived while the tenant was closing; it
+	// is made due again once it sleeps.
+	pushed bool
 	// unquiet is when the reaper first saw the tenant busy with nothing
 	// running and nothing waiting for a turn; only the reaper uses it.
 	unquiet time.Time
@@ -240,7 +245,7 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	run, stop := context.WithCancel(context.Background())
 	fleet := &Fleet{
 		config: config, registry: registry, unlock: unlock, gate: newTurnGate(config.Turns, config.ChatTurns),
-		now: config.Now, log: log, tenants: map[TenantID]*tenant{}, run: run, stop: stop,
+		now: config.Now, log: log, tenants: map[TenantID]*tenant{}, run: run, stop: stop, kick: make(chan struct{}, 1),
 	}
 	fleet.drained = sync.NewCond(&fleet.mu)
 	return fleet, nil
@@ -265,7 +270,8 @@ func (f *Fleet) Start() {
 	loops := []struct {
 		every time.Duration
 		step  func(context.Context)
-	}{{f.config.WakeTick, f.wakeDue}, {f.config.ReapTick, f.reap}, {f.config.JanitorTick, f.janitor}}
+		kick  <-chan struct{}
+	}{{f.config.WakeTick, f.wakeDue, f.kick}, {f.config.ReapTick, f.reap, nil}, {f.config.JanitorTick, f.janitor, nil}}
 	f.wg.Add(len(loops))
 	for _, loop := range loops {
 		go func() {
@@ -277,6 +283,8 @@ func (f *Fleet) Start() {
 				case <-f.run.Done():
 					return
 				case <-ticker.C:
+					loop.step(f.run)
+				case <-loop.kick:
 					loop.step(f.run)
 				}
 			}
@@ -626,8 +634,14 @@ func (f *Fleet) hibernate(t *tenant, floor time.Time) {
 	f.counters.hibernations.Add(1)
 	f.mu.Lock()
 	delete(f.tenants, t.id)
+	pushed := t.pushed
 	f.mu.Unlock()
 	close(t.gone)
+	if pushed {
+		if _, err := f.nudge(ctx, t.id); err != nil && !errors.Is(err, ErrTenantUnknown) {
+			fmt.Fprintf(f.log, "fleet: wake %s after a push: %v\n", t.id, err)
+		}
+	}
 }
 
 // nextWake is when a closed assistant must run again: its earliest timer or
@@ -784,6 +798,99 @@ func (f *Fleet) wakeDue(ctx context.Context) {
 	})
 }
 
+// ---- push ----
+
+// PushOutcome says what a provider's push did to a tenant.
+type PushOutcome string
+
+const (
+	// PushPolled: the assistant was open and polled its mailbox at once.
+	PushPolled PushOutcome = "polled"
+	// PushScheduled: it sleeps and the waker opens it now.
+	PushScheduled PushOutcome = "scheduled"
+	// PushDeferred: it was never opened or its owner is dormant, so it is
+	// not woken; it catches up from its cursor when its owner returns.
+	PushDeferred PushOutcome = "deferred"
+)
+
+// Push tells a tenant that its mailbox or calendar changed. The push carries
+// no content: the assistant reads what changed through its own connector, so
+// a forged push can wake a tenant but cannot put anything in it. Repeated
+// pushes coalesce: an open assistant polls once more, and a sleeping one is
+// due now, which it already is after the first. The poller's mail cursor and
+// ingested IDs remove duplicates.
+func (f *Fleet) Push(ctx context.Context, id TenantID) (PushOutcome, error) {
+	if !id.Valid() {
+		return "", ErrTenantUnknown
+	}
+	f.counters.pushes.Add(1)
+	for {
+		f.mu.Lock()
+		if f.closed {
+			f.mu.Unlock()
+			return "", ErrFleetClosed
+		}
+		t := f.tenants[id]
+		switch {
+		case t == nil:
+			f.mu.Unlock()
+			return f.nudge(ctx, id)
+		case t.closing:
+			// Its next wake is being recorded from state that does not
+			// include this change; hibernate makes it due again.
+			t.pushed = true
+			f.mu.Unlock()
+			return PushScheduled, nil
+		}
+		select {
+		case <-t.ready:
+		default:
+			// Still opening: its first poll may have run before this change.
+			ready := t.ready
+			f.mu.Unlock()
+			select {
+			case <-ctx.Done():
+				return "", ctx.Err()
+			case <-ready:
+			}
+			continue
+		}
+		// Holding a reference keeps the reaper from closing it before the
+		// poll has turned the new mail into work it can see.
+		t.refs++
+		f.mu.Unlock()
+		_, err := t.app.Poller.PollOnce(ctx)
+		t.app.Scheduler.Wake()
+		f.release(t)
+		return PushPolled, err
+	}
+}
+
+// nudge makes a sleeping tenant due now, unless it was never opened or its
+// owner is dormant, and runs the waker.
+func (f *Fleet) nudge(ctx context.Context, id TenantID) (PushOutcome, error) {
+	now := f.now()
+	var cutoff time.Time
+	if f.config.DormantAfter > 0 {
+		cutoff = now.Add(-f.config.DormantAfter)
+	}
+	due, err := f.registry.nudge(ctx, id, now, cutoff)
+	if err != nil {
+		return "", err
+	}
+	if !due {
+		if _, ok, err := f.registry.get(ctx, id); err != nil || !ok {
+			return "", errors.Join(err, ErrTenantUnknown)
+		}
+		return PushDeferred, nil
+	}
+	select {
+	case f.kick <- struct{}{}:
+	default:
+	}
+	return PushScheduled, nil
+}
+
 // janitor stops waking dormant tenants and archives long-absent ones.
 func (f *Fleet) janitor(ctx context.Context) {
 	now := f.now()
@@ -818,6 +925,7 @@ type FleetStats struct {
 	Archives     int64               `json:"archives"`
 	Retired      int64               `json:"retired"`
 	WakeFailures int64               `json:"wake_failures"`
+	Pushes       int64               `json:"pushes"`
 	// ModelCalls counts calls since the process started; Today sums every
 	// tenant's use on the current local day from the registry.
 	ModelCalls int64       `json:"model_calls"`
@@ -842,7 +950,7 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 		Turns: f.config.Turns, TurnsInUse: f.gate.inUse(), TurnsWaiting: f.gate.waiting.Load(),
 		Activations: c.activations.Load(), Hibernations: c.hibernations.Load(), Evictions: c.evictions.Load(),
 		Rejections: c.rejections.Load(), Stalls: c.stalls.Load(), Restores: c.restores.Load(),
-		Archives: c.archives.Load(), Retired: c.retired.Load(), WakeFailures: c.wakeFailures.Load(),
+		Archives: c.archives.Load(), Retired: c.retired.Load(), WakeFailures: c.wakeFailures.Load(), Pushes: c.pushes.Load(),
 		ModelCalls: f.calls.Load(), Today: today,
 	}, nil
 }

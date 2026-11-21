@@ -266,7 +266,7 @@ func TestFleetHoldsATenantOverItsDailyQuota(t *testing.T) {
 	clock := newClock()
 	fleet := openFleet(t, clock, func(c *FleetConfig) { c.DailyCalls = 1 })
 	token := createTenant(t, fleet, "alice")
-	handler := fleet.Handler("")
+	handler := fleet.Handler("", "")
 	if code, body := tenantCall(handler, http.MethodPost, "/t/alice/api/chat", token, `{"text":"今天日程"}`); code != http.StatusAccepted && code != http.StatusOK {
 		t.Fatalf("chat %d %s", code, body)
 	}
@@ -330,7 +330,7 @@ func TestFleetGateLetsChatPassQueuedBackgroundWork(t *testing.T) {
 		t.Fatal("the background slot is free")
 	}
 	mail := deliver(t, app, PresetFriend)
-	if code, body := tenantCall(fleet.Handler(""), http.MethodPost, "/t/alice/api/chat", token, `{"text":"今天日程"}`); code != http.StatusAccepted && code != http.StatusOK {
+	if code, body := tenantCall(fleet.Handler("", ""), http.MethodPost, "/t/alice/api/chat", token, `{"text":"今天日程"}`); code != http.StatusAccepted && code != http.StatusOK {
 		t.Fatalf("chat %d %s", code, body)
 	}
 	waitFor(t, "the chat reply", func() bool {
@@ -429,7 +429,7 @@ func TestFleetRetiresAndArchivesAbsentTenants(t *testing.T) {
 	clock := newClock()
 	fleet := openFleet(t, clock, func(c *FleetConfig) { c.DormantAfter = 3 * 24 * time.Hour; c.ArchiveAfter = 7 * 24 * time.Hour })
 	token := createTenant(t, fleet, "alice")
-	handler := fleet.Handler("")
+	handler := fleet.Handler("", "")
 	if code, body := tenantCall(handler, http.MethodPost, "/t/alice/api/chat", token, `{"text":"记住 周三下午不开会"}`); code != http.StatusAccepted && code != http.StatusOK {
 		t.Fatalf("chat %d %s", code, body)
 	}
@@ -557,7 +557,7 @@ func TestFleetHTTPAuthenticatesEveryTenantRequest(t *testing.T) {
 	clock := newClock()
 	fleet := openFleet(t, clock, nil)
 	const admin = "admin-token-for-the-fleet-test"
-	handler := fleet.Handler(admin)
+	handler := fleet.Handler(admin, "")
 	if code, _ := tenantCall(handler, http.MethodPost, "/admin/tenants", "", `{"id":"alice"}`); code != http.StatusUnauthorized {
 		t.Fatalf("admin without token: %d", code)
 	}
@@ -594,7 +594,7 @@ func TestFleetHTTPAuthenticatesEveryTenantRequest(t *testing.T) {
 			t.Errorf("%s %s token=%q: %d, want %d (%s)", c.method, c.path, c.token, code, c.want, body)
 		}
 	}
-	if _, page := tenantCall(handler, http.MethodGet, "/t/alice/", "", ""); strings.Contains(page, "alice") || !strings.Contains(page, `fetch("api/state"`) {
+	if _, page := tenantCall(handler, http.MethodGet, "/t/alice/", "", ""); strings.Contains(page, "alice") || !strings.Contains(page, `"api/state"`) || strings.Contains(page, `"/api/`) {
 		t.Fatal("the page is the shared one, with relative API paths")
 	}
 	if code, _ := tenantCall(handler, http.MethodDelete, "/admin/tenants/alice", admin, ""); code != http.StatusNoContent {
@@ -603,7 +603,7 @@ func TestFleetHTTPAuthenticatesEveryTenantRequest(t *testing.T) {
 	if code, _ := tenantCall(handler, http.MethodGet, "/t/alice/api/state", created.Token, ""); code != http.StatusUnauthorized || exists(fleet.dir("alice")) {
 		t.Fatalf("a deleted tenant's token stops working and its files are gone: %d", code)
 	}
-	if code, _ := tenantCall(fleet.Handler(""), http.MethodGet, "/admin/stats", admin, ""); code != http.StatusNotFound {
+	if code, _ := tenantCall(fleet.Handler("", ""), http.MethodGet, "/admin/stats", admin, ""); code != http.StatusNotFound {
 		t.Fatalf("no admin token, no admin API: %d", code)
 	}
 }

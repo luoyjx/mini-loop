@@ -25,12 +25,14 @@ const (
 // Handler serves the fleet. Owners use /t/{id}/ with the bearer token
 // CreateTenant returned; the page itself carries no tenant data and is served
 // without it, and reads the token from the link's fragment. Operators use
-// /admin/ with adminToken; an empty adminToken disables the admin API.
+// /admin/ with adminToken; an empty adminToken disables the admin API. The
+// mail and calendar provider's push bridge uses POST /push/{id} with
+// pushToken, which can only wake tenants; an empty pushToken disables it.
 // /healthz answers without a credential.
 //
 // Unlike a daemon's Handler it does not require a loopback host: a fleet is
 // meant to be reached over the network, behind TLS.
-func (f *Fleet) Handler(adminToken string) http.Handler {
+func (f *Fleet) Handler(adminToken, pushToken string) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
@@ -61,6 +63,9 @@ func (f *Fleet) Handler(adminToken string) http.Handler {
 		handle("GET /admin/tenants/{tenant}", f.handleGetTenant)
 		handle("DELETE /admin/tenants/{tenant}", f.handleDeleteTenant)
 		handle("GET /admin/stats", f.handleStats)
+	}
+	if pushToken != "" {
+		mux.Handle("POST /push/{tenant}", requireToken(hashToken(pushToken), "miniloop-push", "push token required", http.HandlerFunc(f.handlePush)))
 	}
 	return mux
 }
@@ -120,15 +125,44 @@ func bearer(r *http.Request) string {
 }
 
 func requireAdmin(hash string, next http.Handler) http.Handler {
+	return requireToken(hash, "miniloop-admin", "admin token required", next)
+}
+
+// requireToken lets through same-origin JSON writes that carry the token
+// whose hash is given, compared in constant time.
+func requireToken(hash, realm, refusal string, next http.Handler) http.Handler {
 	next = jsonOnly(next)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if subtle.ConstantTimeCompare([]byte(hashToken(bearer(r))), []byte(hash)) != 1 {
-			w.Header().Set("WWW-Authenticate", `Bearer realm="miniloop-admin"`)
-			writeJSON(w, http.StatusUnauthorized, errorResponse{"admin token required"})
+			w.Header().Set("WWW-Authenticate", `Bearer realm="`+realm+`"`)
+			writeJSON(w, http.StatusUnauthorized, errorResponse{refusal})
 			return
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+type pushResponse struct {
+	Outcome PushOutcome `json:"outcome"`
+}
+
+// handlePush is the provider-facing door for external events. Its body is
+// not read: a push only says that something changed for this tenant.
+func (f *Fleet) handlePush(w http.ResponseWriter, r *http.Request) {
+	outcome, err := f.Push(r.Context(), TenantID(r.PathValue("tenant")))
+	switch {
+	case errors.Is(err, ErrTenantUnknown):
+		writeJSON(w, http.StatusNotFound, errorResponse{err.Error()})
+	case errors.Is(err, ErrFleetClosed):
+		w.Header().Set("Retry-After", "5")
+		writeJSON(w, http.StatusServiceUnavailable, errorResponse{err.Error()})
+	case err != nil && outcome == "":
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+	default:
+		// A failed poll of an open assistant is retried by its own poller
+		// and shows on its health board; the push itself was taken.
+		writeJSON(w, http.StatusAccepted, pushResponse{outcome})
+	}
 }
 
 type createTenantRequest struct {

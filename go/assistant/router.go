@@ -439,14 +439,13 @@ func (r *Router) dispatch(ctx context.Context, batch []Trigger) {
 		return
 	}
 	// The watchdog reads what each checked task said after its check.
+	var checks []TaskCheck
 	for _, event := range input.events {
 		if event.task != nil {
-			if err := r.store.RecordTaskCheck(ctx, event.task.ID, event.trigger.ID, r.now()); err != nil {
-				fmt.Fprintf(r.log, "assistant: record task check %d: %v\n", event.task.ID, err)
-			}
+			checks = append(checks, TaskCheck{Task: event.task.ID, Trigger: event.trigger.ID})
 		}
 	}
-	r.deliver(ctx, kept, string(id), strings.TrimSpace(text), report, reported)
+	r.deliver(ctx, kept, string(id), strings.TrimSpace(text), report, reported, checks)
 	// The nightly turn may have remembered preferences: refresh the profile
 	// lines that come from memory and contacts.
 	for _, event := range input.events {
@@ -469,8 +468,8 @@ type settlement struct {
 func (r *Router) finishWithout(ctx context.Context, trigger Trigger, done settlement) {
 	if done.status == TriggerObserved {
 		r.count(func(stats *RouterStats) { stats.Observed++ })
-		r.finish(ctx, trigger, TriggerObserved, done.reason, "")
-		r.ledger(ctx, LedgerEntry{Kind: LedgerFilter, Actor: "router（分诊）", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: "只记录：" + done.reason})
+		r.settle(ctx, Settlement{Batch: []Trigger{trigger}, Status: TriggerObserved, Decision: done.reason,
+			Ledger: []LedgerEntry{{Kind: LedgerFilter, Actor: "router（分诊）", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: "只记录：" + done.reason}}})
 		return
 	}
 	r.skip(ctx, trigger, done.reason)
@@ -629,8 +628,8 @@ func triggerIDs(batch []Trigger) string {
 
 // skip settles a trigger the fast path or a state check filtered out.
 func (r *Router) skip(ctx context.Context, trigger Trigger, rule string) {
-	r.finish(ctx, trigger, TriggerIgnored, rule, "")
-	r.ledger(ctx, LedgerEntry{Kind: LedgerFilter, Actor: "router（规则）", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: "忽略：" + rule})
+	r.settle(ctx, Settlement{Batch: []Trigger{trigger}, Status: TriggerIgnored, Decision: rule,
+		Ledger: []LedgerEntry{{Kind: LedgerFilter, Actor: "router（规则）", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: "忽略：" + rule}}})
 }
 
 // sessionFor implements subscription routing: a thread with a live or
@@ -692,7 +691,9 @@ func (r *Router) runContext(ctx context.Context, trigger Trigger) (agent.RunCont
 // message; ask posts the question and keeps it on the attention list; quiet
 // posts nothing unless the turn drafted proposals, whose cards still need the
 // user. A turn without a report is delivered as notify with its final text.
-func (r *Router) deliver(ctx context.Context, batch []Trigger, session, text string, report Report, reported bool) {
+// The lines, the triggers' end, the task-check snapshots and the ledger rows
+// are one settlement.
+func (r *Router) deliver(ctx context.Context, batch []Trigger, session, text string, report Report, reported bool, checks []TaskCheck) {
 	lead := batch[0]
 	proposals, err := r.store.ProposalsForTrigger(ctx, lead.ID)
 	if err != nil {
@@ -711,24 +712,25 @@ func (r *Router) deliver(ctx context.Context, batch []Trigger, session, text str
 		id := p.ID
 		cards = append(cards, ChannelMessage{Role: RoleAssistant, Text: "待你批准：" + p.Subject, ProposalID: &id, TriggerID: lead.ID})
 	}
+	done := Settlement{Batch: batch, Status: TriggerDone, Session: session, Checks: checks}
 	if reported {
 		detail := "worker 汇报 " + string(report.Outcome) + "：" + truncateRunes(firstNonEmpty(report.Question, report.Message, report.Reason), 160)
 		if text != "" {
 			detail += "；最终回复（只记账）：" + truncateRunes(text, 120)
 		}
-		r.ledger(ctx, LedgerEntry{Kind: LedgerReport, Actor: "worker", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: detail})
+		done.Ledger = append(done.Ledger, LedgerEntry{Kind: LedgerReport, Actor: "worker", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: detail})
 	} else {
 		report = Report{Outcome: ReportNotify, Message: text}
 		if lead.Kind != TriggerChat {
-			r.ledger(ctx, LedgerEntry{Kind: LedgerReport, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: "worker 没有调用 report：最终回复按 notify 发到信道"})
+			done.Ledger = append(done.Ledger, LedgerEntry{Kind: LedgerReport, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: "worker 没有调用 report：最终回复按 notify 发到信道"})
 		}
 	}
-	now := r.now()
 	switch report.Outcome {
 	case ReportQuiet:
 		if len(cards) == 0 {
-			r.finishBatch(ctx, batch, TriggerQuiet, report.Reason, session)
-			r.ledger(ctx, LedgerEntry{Kind: LedgerChannel, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: "worker 选择保持安静：" + report.Reason})
+			done.Status, done.Decision = TriggerQuiet, report.Reason
+			done.Ledger = append(done.Ledger, LedgerEntry{Kind: LedgerChannel, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: "worker 选择保持安静：" + report.Reason})
+			r.settle(ctx, done)
 			return
 		}
 		report.Message = fmt.Sprintf("起草了 %d 个提案，等你批准。", len(cards))
@@ -737,39 +739,32 @@ func (r *Router) deliver(ctx context.Context, batch []Trigger, session, text str
 		if report.Message != "" {
 			line = report.Message + "\n" + line
 		}
-		messages := append([]ChannelMessage{{Role: RoleAssistant, Text: line, TriggerID: lead.ID}}, cards...)
-		question, _, err := r.store.AskQuestion(ctx, Question{TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Text: report.Question}, messages, now)
-		if err != nil {
-			r.retry(ctx, batch, err)
-			return
-		}
-		r.finishBatch(ctx, batch, TriggerDone, fmt.Sprintf("向用户提问 #%d，等待回答", question.ID), session)
+		done.Messages = append([]ChannelMessage{{Role: RoleAssistant, Text: line, TriggerID: lead.ID}}, cards...)
+		done.Question = &Question{TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Text: report.Question}
+		r.settle(ctx, done)
 		return
 	}
 	message := strings.TrimSpace(report.Message)
 	if message == "" {
 		message = "（worker 没有给出说明）"
 	}
-	messages := append([]ChannelMessage{{Role: RoleAssistant, Text: truncateRunes(message, maxChannelRunes), TriggerID: lead.ID}}, cards...)
-	posted, err := r.store.PostAll(ctx, messages, now)
-	if err != nil {
-		r.retry(ctx, batch, err)
-		return
-	}
-	r.finishBatch(ctx, batch, TriggerDone, fmt.Sprintf("已发到信道 %d 条（含 %d 个待批准提案）", posted, len(cards)), session)
-	r.ledger(ctx, LedgerEntry{Kind: LedgerChannel, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: fmt.Sprintf("向信道发送 %d 条消息", posted)})
+	done.Messages = append([]ChannelMessage{{Role: RoleAssistant, Text: truncateRunes(message, maxChannelRunes), TriggerID: lead.ID}}, cards...)
+	done.Decision = fmt.Sprintf("已发到信道 %d 条（含 %d 个待批准提案）", len(done.Messages), len(cards))
+	done.Ledger = append(done.Ledger, LedgerEntry{Kind: LedgerChannel, Actor: "router", TriggerID: lead.ID, Thread: lead.Thread, SessionID: session, Detail: fmt.Sprintf("向信道发送 %d 条消息", len(done.Messages))})
+	r.settle(ctx, done)
 }
 
-// finishBatch settles every trigger of a turn with the lead's outcome.
-func (r *Router) finishBatch(ctx context.Context, batch []Trigger, status TriggerStatus, decision, session string) {
-	lead := batch[0]
-	if len(batch) == 1 {
-		r.finish(ctx, lead, status, decision, session)
-		return
-	}
-	r.finish(ctx, lead, status, fmt.Sprintf("%s（这一回合合并了 %d 个触发器）", decision, len(batch)), session)
-	for _, follower := range batch[1:] {
-		r.finish(ctx, follower, status, fmt.Sprintf("并入触发器 #%d 的回合：%s", lead.ID, decision), session)
+// settle commits a turn's outcome even while the daemon stops, since the turn
+// already ran. A failed commit wrote nothing, so the batch is retried; a batch
+// settled elsewhere is left alone.
+func (r *Router) settle(ctx context.Context, done Settlement) {
+	_, err := r.store.Settle(context.WithoutCancel(ctx), done, r.now())
+	switch {
+	case err == nil:
+	case errors.Is(err, errSettled):
+		fmt.Fprintf(r.log, "assistant: settle: %v\n", err)
+	default:
+		r.retry(ctx, done.Batch, fmt.Errorf("settle: %w", err))
 	}
 }
 
@@ -802,14 +797,14 @@ func (r *Router) retry(ctx context.Context, batch []Trigger, cause error) {
 		}
 		return
 	}
-	for _, trigger := range batch {
-		r.finish(ctx, trigger, TriggerFailed, cause.Error(), trigger.SessionID)
-	}
 	what := fmt.Sprintf("触发器 #%d", lead.ID)
 	if len(batch) > 1 {
 		what = "触发器 " + triggerIDs(batch)
 	}
-	_, _ = r.store.Post(ctx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("%s 处理失败：%s", what, truncateRunes(cause.Error(), 160)), TriggerID: lead.ID}, now)
+	notice := ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("%s 处理失败：%s", what, truncateRunes(cause.Error(), 160)), TriggerID: lead.ID}
+	if err := r.store.FailBatch(context.WithoutCancel(ctx), batch, cause.Error(), notice, now); err != nil {
+		fmt.Fprintf(r.log, "assistant: fail %s: %v\n", what, err)
+	}
 }
 
 // permanent reports a failure that running the same turn again cannot fix:
@@ -927,12 +922,6 @@ func failedTurn(records []agent.SessionEventRecord, after agent.EventSequence, p
 		}
 	}
 	return nil
-}
-
-func (r *Router) finish(ctx context.Context, trigger Trigger, status TriggerStatus, decision, session string) {
-	if err := r.store.FinishTrigger(context.WithoutCancel(ctx), trigger.ID, status, decision, session, r.now()); err != nil {
-		fmt.Fprintf(r.log, "assistant: finish trigger %d: %v\n", trigger.ID, err)
-	}
 }
 
 func (r *Router) ledger(ctx context.Context, entry LedgerEntry) {

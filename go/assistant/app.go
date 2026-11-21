@@ -7,6 +7,7 @@ import (
 	"io"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/agent"
@@ -66,6 +67,13 @@ type App struct {
 	states  *sqlitestate.Store
 	release func() error
 	wg      sync.WaitGroup
+	// epoch, world and halt serve the page's long poll (changes.go): epoch
+	// tells this process's tags from an earlier one's, world counts
+	// simulator writes the store does not see, and halt closes when the
+	// loops stop so held polls return.
+	epoch string
+	world atomic.Int64
+	halt  chan struct{}
 }
 
 // lockFile is the data directory's single-daemon lock.
@@ -196,6 +204,7 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 		Store: store, Connector: config.Connector, Router: router, Scheduler: scheduler,
 		Poller: poller, Outbox: outbox, Preparer: preparer, Manager: manager, Memory: owned, Search: search, Health: health,
 		Bridges: bridges, ModelLabel: label, now: now, states: states, release: release,
+		epoch: randomHex(4), halt: make(chan struct{}),
 	}, nil
 }
 
@@ -213,6 +222,7 @@ func (app *App) Start(ctx context.Context) {
 	for _, bridge := range app.Bridges {
 		loops = append(loops, bridge.ReceiveLoop, bridge.DeliverLoop)
 	}
+	loops = append(loops, func(ctx context.Context) { <-ctx.Done(); close(app.halt) })
 	app.wg.Add(len(loops))
 	for _, loop := range loops {
 		go func() { defer app.wg.Done(); loop(ctx) }()

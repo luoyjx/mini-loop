@@ -23167,3 +23167,58 @@ unchanged; no dependency was added.
 - a run on a cloud host or with a real model: the load measurement used the
   scripted model on one laptop;
 - real MCP mail and calendar servers or a Python counterpart.
+
+## Go-only slice — assistant demo: push, long poll and turn settlement (2026-11-21)
+
+Code baseline: `0bdd2a8` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory`, `go/agent` and `go/mcp` are
+unchanged; no dependency was added.
+
+**Go evidence:**
+
+- `Fleet.Push` (`fleet.go`) and `registry.nudge` (`fleet_registry.go`) take a
+  content-free push for one tenant:
+  - an open tenant runs `Poller.PollOnce` and wakes its scheduler;
+  - a sleeping tenant's next wake becomes now and the waker is kicked;
+  - a tenant that is closing is nudged after its hibernation;
+  - a new or dormant tenant is deferred.
+- `Fleet.Handler(admin, push)` (`fleet_http.go`) serves `POST /push/{tenant}` only
+  when a push token is configured, behind the same constant-time bearer check
+  as the admin API. `FleetStats` counts pushes.
+- `miniloop-assistant fleet` reads `MINILOOP_FLEET_PUSH_TOKEN` and refuses one
+  shorter than 24 characters or equal to the admin token.
+- `changes.go` adds the page's long poll:
+  - `Store.Version` (SQLite `total_changes()` on the pinned connection, never
+    going back) and a `changeFeed` signalled by every committed write;
+  - `App.stateTag` (process epoch, store version, simulator counter, a hash of
+    in-memory status) and `awaitChange`, bounded by 25 s, a 2 s recheck, the
+    client's context and `App.halt`.
+  `handleState` answers `If-None-Match` with 304 or holds it with `?wait=`. The
+  page uses one visible-only loop with backoff.
+- `settle.go` adds `Store.Settle` and `Store.FailBatch`. A turn's channel lines
+  or question, the end of each trigger still `running`, its task-check snapshots
+  (once per trigger) and its ledger rows are one transaction. The router's
+  `deliver`, `skip`, observed candidates and final failures use it; a failed
+  commit retries the batch.
+- Tests:
+  - `changes_test.go`: 304s, stale tags, the bounded wait, a wake on chat, a
+    simulator event and a held fleet poll released by `Close`;
+  - push authentication, outcomes, coalescing and a single ingest of the pushed
+    mail;
+  - CLI refusals and an end-to-end push;
+  - `settle_test.go`: a fault injected into the trigger update leaves no reply,
+    and exactly one reply follows once the fault is gone. The same test fails
+    against the previous router.
+  - `MINILOOP_STATE_COST=1` runs an opt-in cost measurement.
+
+**Not claimed:**
+
+- a connection to a real provider's notifications (Gmail watch, Graph
+  subscriptions) or a relay;
+- step-level replay inside a turn: a crash still repeats the turn's model calls;
+- a sandbox per user, parallel preparation, OAuth connectors or several nodes;
+- server-sent events or WebSockets: the page uses a long poll;
+- a Python counterpart.

@@ -95,35 +95,41 @@ func (s *Store) Question(ctx context.Context, id int64) (Question, bool, error) 
 
 // AskQuestion records a worker's question with the turn's channel messages in
 // one transaction. It is idempotent per lead trigger: a re-run after a crash
-// returns the question it already asked and posts nothing new.
+// returns the question it already asked and posts nothing new. A turn's end
+// asks through Settle, which also settles its triggers.
 func (s *Store) AskQuestion(ctx context.Context, q Question, messages []ChannelMessage, now time.Time) (Question, bool, error) {
 	var asked Question
 	created := false
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
-		existing, err := scanQuestion(tx.QueryRowContext(ctx, `SELECT `+questionColumns+` FROM questions WHERE trigger_id=?`, q.TriggerID))
-		if err == nil {
-			asked = existing
-			return nil
-		}
-		if !errors.Is(err, sql.ErrNoRows) {
-			return err
-		}
-		inserted, err := tx.ExecContext(ctx, `INSERT INTO questions(trigger_id,thread,session_id,text,status,created_at) VALUES(?,?,?,?,?,?)`, q.TriggerID, string(q.Thread), q.SessionID, q.Text, string(QuestionOpen), millis(now))
-		if err != nil {
-			return err
-		}
-		if q.ID, err = inserted.LastInsertId(); err != nil {
-			return err
-		}
-		for _, message := range messages {
-			if _, err := postChannel(ctx, tx, message, now); err != nil {
-				return err
-			}
-		}
-		q.Status, q.CreatedAt, asked, created = QuestionOpen, now, q, true
-		return appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerReport, Actor: "router", TriggerID: q.TriggerID, Thread: q.Thread, SessionID: q.SessionID, Detail: fmt.Sprintf("worker 提问 #%d：%s", q.ID, truncateRunes(q.Text, 120))})
+		var err error
+		asked, created, err = askQuestion(ctx, tx, q, messages, now)
+		return err
 	})
 	return asked, created, err
+}
+
+func askQuestion(ctx context.Context, tx *sql.Tx, q Question, messages []ChannelMessage, now time.Time) (Question, bool, error) {
+	existing, err := scanQuestion(tx.QueryRowContext(ctx, `SELECT `+questionColumns+` FROM questions WHERE trigger_id=?`, q.TriggerID))
+	if err == nil {
+		return existing, false, nil
+	}
+	if !errors.Is(err, sql.ErrNoRows) {
+		return Question{}, false, err
+	}
+	inserted, err := tx.ExecContext(ctx, `INSERT INTO questions(trigger_id,thread,session_id,text,status,created_at) VALUES(?,?,?,?,?,?)`, q.TriggerID, string(q.Thread), q.SessionID, q.Text, string(QuestionOpen), millis(now))
+	if err != nil {
+		return Question{}, false, err
+	}
+	if q.ID, err = inserted.LastInsertId(); err != nil {
+		return Question{}, false, err
+	}
+	for _, message := range messages {
+		if _, err := postChannel(ctx, tx, message, now); err != nil {
+			return Question{}, false, err
+		}
+	}
+	q.Status, q.CreatedAt = QuestionOpen, now
+	return q, true, appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerReport, Actor: "router", TriggerID: q.TriggerID, Thread: q.Thread, SessionID: q.SessionID, Detail: fmt.Sprintf("worker 提问 #%d：%s", q.ID, truncateRunes(q.Text, 120))})
 }
 
 // AnswerQuestion records the user's answer: open → answered, the answer as

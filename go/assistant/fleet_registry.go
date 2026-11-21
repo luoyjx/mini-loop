@@ -223,6 +223,19 @@ func (r *registry) due(ctx context.Context, now, cutoff time.Time, limit int) ([
 	return r.ids(ctx, `SELECT id FROM tenants WHERE next_wake>0 AND next_wake<=? AND active=0 AND last_seen>=? ORDER BY next_wake LIMIT ?`, millis(now), unixOrZero(cutoff), limit)
 }
 
+// nudge makes a sleeping tenant due at now unless it is due already. A tenant
+// that was never opened, or whose owner was last seen before cutoff, is left
+// alone. It reports whether the tenant is due.
+func (r *registry) nudge(ctx context.Context, id TenantID, now, cutoff time.Time) (bool, error) {
+	result, err := r.db.ExecContext(ctx, `UPDATE tenants SET next_wake=CASE WHEN next_wake BETWEEN 1 AND ? THEN next_wake ELSE ? END
+		WHERE id=? AND active=0 AND state<>? AND last_seen>=?`, millis(now), millis(now), string(id), string(TenantNew), unixOrZero(cutoff))
+	if err != nil {
+		return false, err
+	}
+	affected, err := result.RowsAffected()
+	return affected == 1, err
+}
+
 // postpone moves a sleeping tenant's wake time, for one that failed to open.
 func (r *registry) postpone(ctx context.Context, id TenantID, next time.Time) error {
 	_, err := r.db.ExecContext(ctx, `UPDATE tenants SET next_wake=? WHERE id=? AND active=0`, millis(next), string(id))

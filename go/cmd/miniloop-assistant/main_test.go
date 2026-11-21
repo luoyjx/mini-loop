@@ -229,13 +229,23 @@ func TestRemoteFlagsBuildTheChannels(t *testing.T) {
 	}
 }
 
-const testAdminToken = "fleet-admin-token-for-tests-0123"
+const (
+	testAdminToken = "fleet-admin-token-for-tests-0123"
+	testPushToken  = "fleet-push-token-for-tests-45678"
+)
 
 func fleetEnvironment(t *testing.T, admin string) environment {
+	return fleetEnvironmentWith(t, admin, "")
+}
+
+func fleetEnvironmentWith(t *testing.T, admin, push string) environment {
 	env := testEnvironment(t)
 	env.getenv = func(name string) string {
-		if name == envFleetAdminToken {
+		switch name {
+		case envFleetAdminToken:
 			return admin
+		case envFleetPushToken:
+			return push
 		}
 		return ""
 	}
@@ -246,16 +256,19 @@ func TestFleetRefusesUnsafeStartup(t *testing.T) {
 	cases := map[string]struct {
 		admin string
 		args  []string
+		push  string
 	}{
-		"no admin token":           {"", []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
-		"short admin token":        {"short", []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
-		"plain http on network":    {testAdminToken, []string{"fleet", "-addr", "0.0.0.0:0", "-data", t.TempDir()}},
-		"cert without key":         {testAdminToken, []string{"fleet", "-addr", "0.0.0.0:0", "-tls-cert", "cert.pem", "-data", t.TempDir()}},
-		"anthropic without secret": {testAdminToken, []string{"fleet", "-addr", "127.0.0.1:0", "-model", "anthropic", "-data", t.TempDir()}},
+		"short push token":          {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, push: "short"},
+		"push token is admin token": {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, push: testAdminToken},
+		"no admin token":            {admin: "", args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
+		"short admin token":         {admin: "short", args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
+		"plain http on network":     {admin: testAdminToken, args: []string{"fleet", "-addr", "0.0.0.0:0", "-data", t.TempDir()}},
+		"cert without key":          {admin: testAdminToken, args: []string{"fleet", "-addr", "0.0.0.0:0", "-tls-cert", "cert.pem", "-data", t.TempDir()}},
+		"anthropic without secret":  {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-model", "anthropic", "-data", t.TempDir()}},
 	}
 	for name, c := range cases {
 		var stderr bytes.Buffer
-		if code := run(context.Background(), c.args, fleetEnvironment(t, c.admin), streams{strings.NewReader(""), io.Discard, &stderr}); code != 1 || !strings.Contains(stderr.String(), "miniloop-assistant:") {
+		if code := run(context.Background(), c.args, fleetEnvironmentWith(t, c.admin, c.push), streams{strings.NewReader(""), io.Discard, &stderr}); code != 1 || !strings.Contains(stderr.String(), "miniloop-assistant:") {
 			t.Errorf("%s: code=%d stderr=%q", name, code, stderr.String())
 		}
 	}
@@ -270,7 +283,7 @@ func TestFleetServesTenantsUntilCancelled(t *testing.T) {
 	data := t.TempDir()
 	done := make(chan int, 1)
 	go func() {
-		done <- run(ctx, []string{"fleet", "-addr", "127.0.0.1:0", "-data", data}, fleetEnvironment(t, testAdminToken), streams{strings.NewReader(""), io.Discard, stderr})
+		done <- run(ctx, []string{"fleet", "-addr", "127.0.0.1:0", "-data", data}, fleetEnvironmentWith(t, testAdminToken, testPushToken), streams{strings.NewReader(""), io.Discard, stderr})
 	}()
 	deadline := time.Now().Add(20 * time.Second)
 	var base string
@@ -313,6 +326,12 @@ func TestFleetServesTenantsUntilCancelled(t *testing.T) {
 	}
 	if code, body := request(http.MethodGet, "/t/alice/api/state", created.Token, ""); code != http.StatusOK || !strings.Contains(body, `"channel"`) {
 		t.Fatalf("state with token: %d", code)
+	}
+	if code, _ := request(http.MethodPost, "/push/alice", created.Token, `{}`); code != http.StatusUnauthorized {
+		t.Fatalf("an owner's token cannot push: %d", code)
+	}
+	if code, body := request(http.MethodPost, "/push/alice", testPushToken, `{}`); code != http.StatusAccepted || !strings.Contains(body, `"polled"`) {
+		t.Fatalf("push to the open tenant: %d %s", code, body)
 	}
 	cancel()
 	if code := <-done; code != 0 {

@@ -209,7 +209,7 @@ func measureFleet(t *testing.T, report *FleetLoadReport, n int) {
 	f := &report.Fleet
 	f.Tenants, f.MaxActive, f.Clients = n, maxActive, clients
 	f.UntouchedDiskBytes = dirSize(t, filepath.Join(root, "tenants"))
-	handler := fleet.Handler("")
+	handler := fleet.Handler("", "")
 	var requests, rejected atomic.Int64
 	call := func(method, path, token, payload string) (int, string) {
 		requests.Add(1)
