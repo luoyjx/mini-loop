@@ -39,8 +39,20 @@ type TenantRecord struct {
 	LastSeen    *time.Time  `json:"last_seen,omitempty"`
 	NextWake    *time.Time  `json:"next_wake,omitempty"`
 	Activations int         `json:"activations"`
+	// Shard names the database that holds the tenant's data, when the fleet
+	// keeps tenants in a database; empty until the tenant is first opened and
+	// while it is archived.
+	Shard string `json:"shard,omitempty"`
 
 	tokenHash string
+	// archive names the tenant's object in the archive store while it is
+	// archived there.
+	archive string
+}
+
+// holds reports whether place is where the tenant's data is.
+func (r TenantRecord) holds(place string) bool {
+	return place == r.Shard || (r.State == TenantCold && r.archive != "" && place == archiveAt(r.archive))
 }
 
 // TenantUsage is one tenant's model use on one local day.
@@ -65,13 +77,13 @@ type registry struct{ db *fleetDB }
 
 func (r *registry) Close() error { return r.db.Close() }
 
-const tenantColumns = `id,token_hash,state,created_at,last_seen,next_wake,active,activations`
+const tenantColumns = `id,token_hash,state,created_at,last_seen,next_wake,active,activations,shard,archive`
 
 func scanTenant(row interface{ Scan(...any) error }) (TenantRecord, error) {
 	var record TenantRecord
 	var id, state string
 	var created, seen, wake int64
-	if err := row.Scan(&id, &record.tokenHash, &state, &created, &seen, &wake, &record.Active, &record.Activations); err != nil {
+	if err := row.Scan(&id, &record.tokenHash, &state, &created, &seen, &wake, &record.Active, &record.Activations, &record.Shard, &record.archive); err != nil {
 		return TenantRecord{}, err
 	}
 	record.ID, record.State, record.CreatedAt = TenantID(id), TenantState(state), fromMillis(created)
@@ -106,29 +118,45 @@ func (r *registry) get(ctx context.Context, id TenantID) (TenantRecord, bool, er
 }
 
 // remove deletes a tenant's rows unless a live node other than node holds
-// it, and reports whether the tenant row went.
-func (r *registry) remove(ctx context.Context, id TenantID, node string, alive time.Time) (bool, error) {
+// it, and reports whether the tenant row went. The tenant's data is in other
+// places, which no transaction here reaches: each is written down as a
+// leftover in the same transaction and returned, so that it goes even if this
+// node stops before it has removed it.
+func (r *registry) remove(ctx context.Context, id TenantID, node string, alive, now time.Time) (bool, []leftover, error) {
 	tx, err := r.db.begin(ctx, false)
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
-	result, err := tx.ExecContext(ctx, `DELETE FROM tenants WHERE id=? AND NOT EXISTS (
-		SELECT 1 FROM placements p JOIN nodes n ON n.id=p.node WHERE p.tenant_id=? AND p.node<>? AND n.beat>=?)`,
-		string(id), string(id), node, millis(alive))
-	if err != nil {
-		return false, errors.Join(err, tx.Rollback())
+	fail := func(err error) (bool, []leftover, error) { return false, nil, errors.Join(err, tx.Rollback()) }
+	var shard, archive string
+	var born int64
+	err = tx.QueryRowContext(ctx, `DELETE FROM tenants WHERE id=? AND NOT EXISTS (
+		SELECT 1 FROM placements p JOIN nodes n ON n.id=p.node WHERE p.tenant_id=? AND p.node<>? AND n.beat>=?)
+		RETURNING shard, created_at, archive`, string(id), string(id), node, millis(alive)).Scan(&shard, &born, &archive)
+	removed := err == nil
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return fail(err)
 	}
-	// The tenant's usage and its data in the vault go with it.
-	for _, table := range []string{"usage", "vault_heads", "vault_files", "vault_pages"} {
-		if _, err := tx.ExecContext(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND NOT EXISTS (SELECT 1 FROM tenants WHERE id=?)`, string(id), string(id)); err != nil {
-			return false, errors.Join(err, tx.Rollback())
+	// Usage a winding-down turn recorded after the tenant went goes too.
+	if _, err := tx.ExecContext(ctx, `DELETE FROM usage WHERE tenant_id=? AND NOT EXISTS (SELECT 1 FROM tenants WHERE id=?)`, string(id), string(id)); err != nil {
+		return fail(err)
+	}
+	left := []leftover{}
+	if removed && shard != "" {
+		left = append(left, leftover{id: id, born: born, place: shard})
+		if _, err := tx.ExecContext(ctx, `UPDATE shards SET tenants=tenants-1 WHERE name=?`, shard); err != nil {
+			return fail(err)
 		}
 	}
-	removed, err := result.RowsAffected()
-	if err != nil {
-		return false, errors.Join(err, tx.Rollback())
+	if removed && archive != "" {
+		left = append(left, leftover{id: id, born: born, place: archiveAt(archive)})
 	}
-	return removed == 1, tx.Commit()
+	for _, l := range left {
+		if err := discard(ctx, tx, l, now); err != nil {
+			return fail(err)
+		}
+	}
+	return removed, left, tx.Commit()
 }
 
 // list pages through the tenants in ID order, after the given ID.
@@ -256,6 +284,14 @@ func (r *registry) archivable(ctx context.Context, cutoff time.Time, limit int) 
 	return r.ids(ctx, `SELECT id FROM tenants WHERE state=? AND active=0 AND last_seen<? ORDER BY last_seen LIMIT ?`, string(TenantWarm), millis(cutoff), limit)
 }
 
+// freezable lists sleeping tenants with data in a shard whose owner was last
+// seen before cutoff and that are not due to wake before soon. A tenant that
+// is about to run would only be read back.
+func (r *registry) freezable(ctx context.Context, cutoff, soon time.Time, limit int) ([]TenantID, error) {
+	return r.ids(ctx, `SELECT id FROM tenants WHERE state=? AND active=0 AND last_seen<? AND shard<>'' AND (next_wake=0 OR next_wake>?)
+		ORDER BY last_seen LIMIT ?`, string(TenantWarm), millis(cutoff), millis(soon), limit)
+}
+
 // archived marks a tenant cold unless it was opened meanwhile.
 func (r *registry) archived(ctx context.Context, id TenantID) (bool, error) {
 	result, err := r.db.ExecContext(ctx, `UPDATE tenants SET state=? WHERE id=? AND active=0 AND state=?`, string(TenantCold), string(id), string(TenantWarm))
@@ -283,9 +319,9 @@ func (r *registry) ids(ctx context.Context, query string, args ...any) ([]Tenant
 	return ids, rows.Err()
 }
 
-func (r *registry) addUsage(ctx context.Context, id TenantID, day string, input, output int) error {
-	_, err := r.db.ExecContext(ctx, `INSERT INTO usage(tenant_id,day,calls,input_tokens,output_tokens) VALUES(?,?,1,?,?)
-		ON CONFLICT(tenant_id,day) DO UPDATE SET calls=usage.calls+1, input_tokens=usage.input_tokens+excluded.input_tokens, output_tokens=usage.output_tokens+excluded.output_tokens`, string(id), day, input, output)
+func (r *registry) addUsage(ctx context.Context, id TenantID, day string, calls, input, output int) error {
+	_, err := r.db.ExecContext(ctx, `INSERT INTO usage(tenant_id,day,calls,input_tokens,output_tokens) VALUES(?,?,?,?,?)
+		ON CONFLICT(tenant_id,day) DO UPDATE SET calls=usage.calls+excluded.calls, input_tokens=usage.input_tokens+excluded.input_tokens, output_tokens=usage.output_tokens+excluded.output_tokens`, string(id), day, calls, input, output)
 	return err
 }
 
@@ -296,6 +332,30 @@ func (r *registry) usage(ctx context.Context, id TenantID, day string) (TenantUs
 		return usage, nil
 	}
 	return usage, err
+}
+
+// pruneUsage drops the usage rows of days before day, oldest first and one
+// day to a statement: a fleet that turns retention on late has years of rows,
+// and one statement for all of them would hold its locks for as long. What a
+// pass leaves, the next takes.
+func (r *registry) pruneUsage(ctx context.Context, day string) error {
+	for range 16 {
+		var oldest sql.NullString
+		if err := r.db.QueryRowContext(ctx, `SELECT MIN(day) FROM usage`).Scan(&oldest); err != nil {
+			return err
+		}
+		if !oldest.Valid || oldest.String >= day {
+			return nil
+		}
+		// Every tenant's row for one day: more than the default allows.
+		drop, cancel := context.WithTimeout(ctx, 5*time.Minute)
+		_, err := r.db.ExecContext(drop, `DELETE FROM usage WHERE day=?`, oldest.String)
+		cancel()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // usageTotal sums every tenant's use on one day.

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"sync"
 	"time"
 )
 
@@ -40,6 +41,14 @@ import (
 //   - In a database (see vault), the nodes share nothing else. Each has a
 //     directory of its own as a cache, and what stops a node that was wrongly
 //     taken for dead is the vault, which refuses its checkpoints.
+//
+// The nodes judge each other's heartbeats by one clock, the registry
+// database's, so their own clocks need not agree. A node that cannot reach
+// the registry cannot tell the others it is alive, and they cannot take its
+// tenants either, since that too goes through the registry. With a vault
+// such a node keeps its tenants open for RegistryGrace: a registry that
+// fails over to a standby is back in less. When the registry answers again
+// the node takes its tenants back unless another node holds them.
 
 // hopHeader marks a request another node passed on. It is never passed on
 // again, so two nodes that disagree cannot bounce a request between them.
@@ -67,9 +76,9 @@ type NodeInfo struct {
 // ---- registry ----
 
 func (r *registry) beat(ctx context.Context, node, addr string, started, now time.Time, open, maxActive int) error {
-	_, err := r.db.ExecContext(ctx, `INSERT INTO nodes(id,addr,started,beat,open,max_active) VALUES(?,?,?,?,?,?)
-		ON CONFLICT(id) DO UPDATE SET addr=excluded.addr, beat=excluded.beat, open=excluded.open, max_active=excluded.max_active`,
-		node, addr, millis(started), millis(now), open, maxActive)
+	_, err := r.db.ExecContext(ctx, `INSERT INTO nodes(id,addr,started,beat,open,max_active,version) VALUES(?,?,?,?,?,?,?)
+		ON CONFLICT(id) DO UPDATE SET addr=excluded.addr, beat=excluded.beat, open=excluded.open, max_active=excluded.max_active, version=excluded.version`,
+		node, addr, millis(started), millis(now), open, maxActive, fleetVersion)
 	return err
 }
 
@@ -190,8 +199,34 @@ func (r *registry) nodes(ctx context.Context, alive time.Time) ([]NodeInfo, erro
 // clustered reports whether other nodes may share the data directory.
 func (f *Fleet) clustered() bool { return f.config.Advertise != "" }
 
+// clusterNow is the time by the registry database's clock, which is what
+// heartbeats are written and judged by.
+func (f *Fleet) clusterNow() time.Time { return f.now().Add(time.Duration(f.skew.Load())) }
+
+// syncClock measures how far this node's clock is from the registry's. A
+// failed reading keeps the last one.
+func (f *Fleet) syncClock(ctx context.Context) {
+	if f.clock == nil {
+		return
+	}
+	asked := f.now()
+	there, err := f.clock(ctx)
+	if err != nil {
+		return
+	}
+	// The answer was read somewhere between asking and now.
+	f.skew.Store(int64(there.Sub(asked.Add(f.now().Sub(asked) / 2))))
+}
+
 // alive is the oldest heartbeat of a live node.
-func (f *Fleet) alive() time.Time { return f.now().Add(-f.config.NodeTTL) }
+func (f *Fleet) alive() time.Time { return f.clusterNow().Add(-f.config.NodeTTL) }
+
+// reactivate marks a tenant this node kept open through an outage as open
+// again; a node that took the outage for the node's death marked it closed.
+func (r *registry) reactivate(ctx context.Context, id TenantID) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE tenants SET active=1, next_wake=0 WHERE id=?`, string(id))
+	return err
+}
 
 func checkAdvertise(address string) error {
 	parsed, err := url.Parse(address)
@@ -213,28 +248,42 @@ func nodeTransport() http.RoundTripper {
 
 // heartbeat tells the other nodes this one is alive and takes over what dead
 // nodes held. A node that could not beat for longer than NodeTTL may have
-// been taken for dead itself, so it closes its tenants; any the others did
-// not take are simply due again.
+// been taken for dead itself. Nodes that share a directory then close their
+// tenants, whose files the new holders wait for. Nodes with a vault keep them
+// open while the registry is away, up to RegistryGrace, and once it answers
+// keep those that no other node took.
 func (f *Fleet) heartbeat(ctx context.Context) {
+	// A registry that does not answer must not hold the heartbeat past the
+	// time the others give a node.
+	running := ctx
+	ctx, cancel := context.WithTimeout(ctx, f.config.NodeTTL)
+	defer cancel()
+	f.syncClock(ctx)
 	now := f.now()
 	f.mu.Lock()
 	open := len(f.tenants)
 	f.mu.Unlock()
-	err := f.registry.beat(ctx, f.node, f.config.Advertise, f.started, now, open, f.config.MaxActive)
+	err := f.registry.beat(ctx, f.node, f.config.Advertise, f.started, f.clusterNow(), open, f.config.MaxActive)
 	f.beatMu.Lock()
 	gap := now.Sub(f.lastBeat)
 	if err == nil {
 		f.lastBeat = now
 	}
 	f.beatMu.Unlock()
-	if err != nil && ctx.Err() == nil {
+	if err != nil && running.Err() == nil {
 		fmt.Fprintf(f.log, "fleet: heartbeat: %v\n", err)
 	}
-	if gap > f.config.NodeTTL {
+	switch {
+	case gap <= f.config.NodeTTL:
+	case f.vault == nil || gap > f.config.RegistryGrace:
 		if fenced := f.fence(); fenced > 0 {
 			f.counters.fences.Add(1)
 			fmt.Fprintf(f.log, "fleet: no heartbeat for %v; closed %d tenants the other nodes may have taken\n", gap.Round(time.Second), fenced)
 		}
+	case err == nil:
+		kept, lost := f.reclaim(ctx)
+		f.counters.outages.Add(1)
+		fmt.Fprintf(f.log, "fleet: the registry was away for %v; kept %d tenants open and gave up %d that another node took\n", gap.Round(time.Second), kept, lost)
 	}
 	if err != nil {
 		return
@@ -246,11 +295,45 @@ func (f *Fleet) heartbeat(ctx context.Context) {
 	f.takeOver(ctx)
 }
 
+// reclaim takes back the placement of every tenant this node kept open
+// through a registry outage, and gives up the tenants another node holds
+// now. That node became their writer in the vault, so nothing this node did
+// to them since its last checkpoint was stored or left the node.
+func (f *Fleet) reclaim(ctx context.Context) (kept, lost int) {
+	f.mu.Lock()
+	open := []*tenant{}
+	for _, t := range f.tenants {
+		if t.app != nil && !t.closing {
+			open = append(open, t)
+		}
+	}
+	f.mu.Unlock()
+	for _, t := range open {
+		claimed, err := f.registry.claim(ctx, t.id, f.node, f.now(), f.alive())
+		if err == nil && claimed {
+			err = f.registry.reactivate(ctx, t.id)
+		}
+		switch {
+		case err != nil:
+			// Still unsure; its next checkpoint tells.
+			fmt.Fprintf(f.log, "fleet: take %s back after the outage: %v\n", t.id, err)
+		case claimed:
+			kept++
+		default:
+			lost++
+			f.lose(t, errFenced)
+		}
+	}
+	return kept, lost
+}
+
 // takeOver makes the tenants of dead nodes due and wakes the waker.
 func (f *Fleet) takeOver(ctx context.Context) {
 	recovered, err := f.registry.recoverOrphans(ctx, f.now(), f.alive())
 	if err != nil {
-		if ctx.Err() == nil {
+		// Another node doing the same at this moment is no failure; the next
+		// heartbeat looks again.
+		if ctx.Err() == nil && !conflicted(err) {
 			fmt.Fprintf(f.log, "fleet: take over dead nodes: %v\n", err)
 		}
 		return
@@ -324,6 +407,7 @@ func (f *Fleet) forward(w http.ResponseWriter, r *http.Request, addr string) {
 		return
 	}
 	f.counters.forwards.Add(1)
+	id := TenantID(r.PathValue("tenant"))
 	proxy := &httputil.ReverseProxy{
 		Rewrite: func(p *httputil.ProxyRequest) {
 			p.SetURL(target)
@@ -331,7 +415,15 @@ func (f *Fleet) forward(w http.ResponseWriter, r *http.Request, addr string) {
 			p.Out.Header.Set(hopHeader, f.node)
 		},
 		Transport: f.transport,
+		ModifyResponse: func(response *http.Response) error {
+			if response.StatusCode == http.StatusServiceUnavailable {
+				// It may not hold the tenant any more; ask the registry next time.
+				f.routes.forget(id)
+			}
+			return nil
+		},
 		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err error) {
+			f.routes.forget(id)
 			if r.Context().Err() == nil {
 				fmt.Fprintf(f.log, "fleet: pass %s on to %s: %v\n", r.URL.Path, addr, err)
 			}
@@ -339,6 +431,52 @@ func (f *Fleet) forward(w http.ResponseWriter, r *http.Request, addr string) {
 		},
 	}
 	proxy.ServeHTTP(w, r)
+}
+
+// routeCache remembers which node holds a tenant and the hash of its owner's
+// token, for routeTTL. The node a request is passed on to checks the token
+// itself and opens the tenant if it does not hold it after all, so an entry
+// that has gone stale costs a request nothing but the detour.
+type routeCache struct {
+	mu      sync.Mutex
+	entries map[TenantID]route
+}
+
+type route struct {
+	addr, token string
+	until       time.Time
+}
+
+const (
+	routeTTL = 3 * time.Second
+	// routeMax bounds the cache; when it is full it starts over.
+	routeMax = 1 << 16
+)
+
+func (c *routeCache) get(id TenantID, now time.Time) (route, bool) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	found, ok := c.entries[id]
+	if ok && now.After(found.until) {
+		delete(c.entries, id)
+		return route{}, false
+	}
+	return found, ok
+}
+
+func (c *routeCache) put(id TenantID, addr, token string, now time.Time) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.entries == nil || len(c.entries) >= routeMax {
+		c.entries = map[TenantID]route{}
+	}
+	c.entries[id] = route{addr: addr, token: token, until: now.Add(routeTTL)}
+}
+
+func (c *routeCache) forget(id TenantID) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	delete(c.entries, id)
 }
 
 // overflow finds where an owner's request can go when this node is full: the

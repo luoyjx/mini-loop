@@ -272,6 +272,49 @@ func TestFleetRefusesADatabaseItCannotUseWithoutPrintingIt(t *testing.T) {
 	}
 }
 
+// The shards' URLs and the archive store's keys come from the environment
+// only, and nothing the fleet prints when it cannot use them repeats them.
+func TestFleetReadsShardsAndArchiveKeysFromTheEnvironmentWithoutPrintingThem(t *testing.T) {
+	shards, err := parseShards(" s1=postgres://fleet@pg1/fleet\n\ts2=postgres://fleet@pg2/fleet?sslmode=verify-full ")
+	if err != nil || len(shards) != 2 || shards["s2"] != "postgres://fleet@pg2/fleet?sslmode=verify-full" {
+		t.Fatalf("pairs separated by white space: %v %v", shards, err)
+	}
+	if shards, err := parseShards(""); err != nil || len(shards) != 0 {
+		t.Fatalf("no shards: %v %v", shards, err)
+	}
+	const secret = "hunter2secret"
+	unreachable := "postgres://fleet:" + secret + "@127.0.0.1:1/fleet?connect_timeout=1"
+	cases := map[string]struct {
+		set  map[string]string
+		args []string
+		want string
+	}{
+		"a pair without a name":     {set: map[string]string{envFleetShards: "=" + unreachable}, want: envFleetShards},
+		"a pair without a URL":      {set: map[string]string{envFleetShards: "s1"}, want: envFleetShards},
+		"a name twice":              {set: map[string]string{envFleetShards: "s1=" + unreachable + " s1=" + unreachable}, want: "twice"},
+		"shards without a database": {set: map[string]string{envFleetShards: "s1=" + unreachable}, want: envFleetDatabase},
+		"an archive without a database": {args: []string{"-archive-store", "s3://bucket/fleet"},
+			set: map[string]string{envFleetArchiveKeyID: "AKIDEXAMPLE", envFleetArchiveSecret: secret}, want: envFleetDatabase},
+		"a database that is away": {set: map[string]string{envFleetDatabase: unreachable, envFleetShards: "s1=" + unreachable}, want: "127.0.0.1:1"},
+	}
+	for name, c := range cases {
+		env := fleetEnvironmentWith(t, testAdminToken, "")
+		inner := env.getenv
+		env.getenv = func(name string) string {
+			if value, ok := c.set[name]; ok {
+				return value
+			}
+			return inner(name)
+		}
+		var stderr bytes.Buffer
+		args := append([]string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, c.args...)
+		code := run(context.Background(), args, env, streams{strings.NewReader(""), io.Discard, &stderr})
+		if code != 1 || !strings.Contains(stderr.String(), c.want) || strings.Contains(stderr.String(), secret) {
+			t.Errorf("%s: code=%d stderr=%q", name, code, stderr.String())
+		}
+	}
+}
+
 func TestFleetRefusesUnsafeStartup(t *testing.T) {
 	cases := map[string]struct {
 		admin string

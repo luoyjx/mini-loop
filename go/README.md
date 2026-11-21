@@ -14,7 +14,9 @@ optional push token lets a mail notification wake one, and with `-advertise`
 several fleet processes serve one data directory. With
 `MINILOOP_FLEET_DATABASE_URL` the fleet keeps its registry and the tenants'
 files in PostgreSQL through `github.com/jackc/pgx/v5`, and a node's directory
-is a cache. The page follows changes
+is a cache. The tenants' pages can then be spread over several databases
+(`MINILOOP_FLEET_SHARD_URLS`), and absent owners' tenants moved to a directory
+or an S3-compatible bucket (`-archive-store`). The page follows changes
 with a long poll, and each worker turn's outcome is committed in one transaction.
 
 Mail and calendar live in a simulated MCP server, the `mock-mcp` subcommand, which

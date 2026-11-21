@@ -283,17 +283,17 @@ func TestVaultRefusesANodeThatLostTheTenant(t *testing.T) {
 	if b.opened("alice") == nil || a.opened("alice") == nil {
 		t.Fatal("both nodes have the tenant open for a moment; no file lock is shared between their disks")
 	}
-	// The placement alone stops the stalled node, before the holder has
-	// written anything.
+	// The holder became the tenant's writer when it opened it, which alone
+	// stops the stalled node, before the holder has written anything.
 	say(t, a.Fleet, "alice", "written by the stalled node")
 	if _, err := stalled.ship(context.Background()); !errors.Is(err, errFenced) {
-		t.Fatalf("a checkpoint without the placement: %v", err)
+		t.Fatalf("a checkpoint from a node that is not the writer: %v", err)
 	}
 	stalled.lost = false
 	say(t, b.Fleet, "alice", "stored by the second node")
 	checkpoint(t, b.Fleet, "alice")
 	// A checkpoint number that moved under a node is refused even while the
-	// node holds the placement.
+	// node is the writer.
 	held := b.opened("alice").replica
 	if _, err := b.registry.db.ExecContext(context.Background(), `UPDATE vault_heads SET seq=seq+1 WHERE tenant_id=?`, "alice"); err != nil {
 		t.Fatal(err)
@@ -577,7 +577,7 @@ func TestRegistryOnEitherEngine(t *testing.T) {
 	if err := r.activated(ctx, "ann"); err != nil {
 		t.Fatal(err)
 	}
-	if removed, err := r.remove(ctx, "ann", "n2", alive); err != nil || removed {
+	if removed, _, err := r.remove(ctx, "ann", "n2", alive, now); err != nil || removed {
 		t.Fatalf("a tenant another live node holds is not removed: %t %v", removed, err)
 	}
 	later := now.Add(time.Hour)
@@ -621,7 +621,7 @@ func TestRegistryOnEitherEngine(t *testing.T) {
 		t.Fatalf("counts: %v %v", counts, err)
 	}
 	day := now.Format(slotLayout)
-	if err := errors.Join(r.addUsage(ctx, "ann", day, 10, 3), r.addUsage(ctx, "ann", day, 5, 2), r.addUsage(ctx, "ben", day, 1, 1)); err != nil {
+	if err := errors.Join(r.addUsage(ctx, "ann", day, 1, 10, 3), r.addUsage(ctx, "ann", day, 1, 5, 2), r.addUsage(ctx, "ben", day, 1, 1, 1)); err != nil {
 		t.Fatal(err)
 	}
 	if usage, err := r.usage(ctx, "ann", day); err != nil || usage.Calls != 2 || usage.InputTokens != 15 || usage.OutputTokens != 5 {
@@ -659,7 +659,7 @@ func TestRegistryOnEitherEngine(t *testing.T) {
 	if err := r.unplace(ctx, "ben", "n1"); err != nil {
 		t.Fatal(err)
 	}
-	if removed, err := r.remove(ctx, "ann", "n1", alive); err != nil || !removed {
+	if removed, left, err := r.remove(ctx, "ann", "n1", alive, now); err != nil || !removed || len(left) != 0 {
 		t.Fatalf("remove: %t %v", removed, err)
 	}
 	if usage, _ := r.usage(ctx, "ann", day); usage.Calls != 0 {

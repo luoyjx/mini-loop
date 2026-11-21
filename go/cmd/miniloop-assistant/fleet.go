@@ -28,8 +28,33 @@ const (
 	// postgres://user:password@host:5432/name. It carries a password, so it
 	// is read from the environment and never printed.
 	envFleetDatabase = "MINILOOP_FLEET_DATABASE_URL"
-	minAdminToken    = 24
+	// envFleetShards, when set, names more PostgreSQL databases for the
+	// tenants' data, as name=URL pairs separated by white space:
+	// "s1=postgres://... s2=postgres://...". The URLs carry passwords.
+	envFleetShards = "MINILOOP_FLEET_SHARD_URLS"
+	// The keys that sign requests to an S3 archive store (-archive-store),
+	// and the session token of temporary ones.
+	envFleetArchiveKeyID   = "MINILOOP_FLEET_ARCHIVE_ACCESS_KEY_ID"
+	envFleetArchiveSecret  = "MINILOOP_FLEET_ARCHIVE_SECRET_ACCESS_KEY"
+	envFleetArchiveSession = "MINILOOP_FLEET_ARCHIVE_SESSION_TOKEN"
+	minAdminToken          = 24
 )
+
+// parseShards reads envFleetShards. It never echoes a URL.
+func parseShards(value string) (map[string]string, error) {
+	shards := map[string]string{}
+	for _, pair := range strings.Fields(value) {
+		name, address, ok := strings.Cut(pair, "=")
+		if !ok || name == "" || address == "" {
+			return nil, fmt.Errorf("%s must hold name=URL pairs separated by white space", envFleetShards)
+		}
+		if _, twice := shards[name]; twice {
+			return nil, fmt.Errorf("%s names shard %q twice", envFleetShards, name)
+		}
+		shards[name] = address
+	}
+	return shards, nil
+}
 
 // runFleet hosts many owners' assistants in one process. Each owner reaches
 // /t/{id}/ with the token the admin API issued; an assistant runs only while
@@ -48,7 +73,16 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	tenantWorkers := flags.Int("tenant-workers", 2, "concurrent turns of one tenant")
 	dailyCalls := flags.Int("daily-calls", 200, "model calls per tenant per day; 0 is unlimited")
 	dormant := flags.Duration("dormant-after", 7*24*time.Hour, "stop waking a tenant whose owner has been away this long; 0 keeps waking")
-	archive := flags.Duration("archive-after", 30*24*time.Hour, "compress the data of a tenant whose owner has been away this long, or with "+envFleetDatabase+" drop this node's cached copy of it; 0 never")
+	archive := flags.Duration("archive-after", 30*24*time.Hour, "move the data of a tenant whose owner has been away this long to the cheapest place: a compressed file, or with "+envFleetDatabase+" the -archive-store; 0 never")
+	archiveStore := flags.String("archive-store", "", "with "+envFleetDatabase+", where archived tenants go: file:///directory, https://host/bucket/prefix of an S3-compatible store, or s3://bucket/prefix (keys in "+envFleetArchiveKeyID+" and "+envFleetArchiveSecret+")")
+	archiveRegion := flags.String("archive-region", "us-east-1", "the region an S3 -archive-store signs for")
+	cacheAfter := flags.Duration("cache-after", 0, "with "+envFleetDatabase+", drop this node's copy of a tenant it has not opened for this long (default -archive-after)")
+	cacheMB := flags.Int64("cache-max-mb", 0, "with "+envFleetDatabase+", drop the copies opened longest ago once they take more than this many MiB; 0 is no bound")
+	usageRetention := flags.Duration("usage-retention", 0, "drop per-day usage rows older than this; 0 keeps them")
+	databaseConns := flags.Int("database-conns", 8, "connections this node keeps to each PostgreSQL database; all nodes together must fit its max_connections")
+	registryGrace := flags.Duration("registry-grace", 0, "with "+envFleetDatabase+", how long a node that cannot reach the registry keeps its tenants open (default 12 times -node-ttl)")
+	janitorTick := flags.Duration("janitor-tick", 10*time.Minute, "how often dormant tenants are retired, absent ones archived, leftover copies removed and this node's cache trimmed")
+	leaveWait := flags.Duration("leave-wait", 0, "on shutdown, answer /readyz with 503 for this long before closing, so a load balancer stops sending requests first")
 	sweep := flags.Duration("sweep", 0, "wake each sleeping tenant at least this often (for mail without push); 0 relies on its timers")
 	advertise := flags.String("advertise", "", "this node's base URL as the other nodes reach it, such as http://10.0.0.3:8791; setting it lets several fleet processes share -data and pass requests to each other")
 	nodeTTL := flags.Duration("node-ttl", 10*time.Second, "with -advertise, how long a node may miss its heartbeat before the others take its tenants")
@@ -87,10 +121,21 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 		TenantWorkers: *tenantWorkers, DailyCalls: *dailyCalls, DormantAfter: *dormant, ArchiveAfter: *archive, Sweep: *sweep,
 		Advertise: strings.TrimSuffix(*advertise, "/"), NodeTTL: *nodeTTL,
 		Database: env.getenv(envFleetDatabase), Checkpoint: *checkpoint,
+		JanitorTick: *janitorTick, CacheAfter: *cacheAfter, CacheBytes: *cacheMB << 20, UsageRetention: *usageRetention, DatabaseConns: *databaseConns, RegistryGrace: *registryGrace,
+		Archive: assistant.ArchiveStore{
+			URL: *archiveStore, Region: *archiveRegion, AccessKeyID: env.getenv(envFleetArchiveKeyID),
+			SecretAccessKey: env.getenv(envFleetArchiveSecret), SessionToken: env.getenv(envFleetArchiveSession),
+		},
+	}
+	if config.Shards, err = parseShards(env.getenv(envFleetShards)); err != nil {
+		return fail(err)
+	}
+	if config.Database == "" && (len(config.Shards) > 0 || config.Archive.URL != "") {
+		return fail(fmt.Errorf("%s and -archive-store need %s", envFleetShards, envFleetDatabase))
 	}
 	store := "data directory"
 	if config.Database != "" {
-		store = "postgres"
+		store = fmt.Sprintf("postgres (%d shards, archive store=%t)", len(config.Shards), config.Archive.URL != "")
 	}
 	if config.Provider, config.Model, config.ModelLabel, err = chooseModel(*model, *modelID, env); err != nil {
 		return fail(err)
@@ -123,6 +168,13 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, tenants in=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t, advertise=%q)\n", scheme, listener.Addr(), label, root, store, *maxActive, *turns, *dailyCalls, push != "", config.Advertise)
 	select {
 	case <-ctx.Done():
+		// Tell the load balancer first, and close once it has stopped
+		// sending requests here.
+		fleet.Leave()
+		select {
+		case <-time.After(*leaveWait):
+		case err = <-served:
+		}
 	case err = <-served:
 	}
 	shutdown, done := context.WithTimeout(context.Background(), 10*time.Second)

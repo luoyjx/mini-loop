@@ -23362,3 +23362,132 @@ Linux CI harness's module inventory.
 - a run of the Linux acceptance workflow with the new module inventory: only
   the inventory check itself was run against `go.mod` and `go.sum`;
 - a Python counterpart.
+
+## Go-only slice — assistant demo: shards, tiers and what a lost node can change (2026-11-21)
+
+Code baseline: `7ffcac2` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`. `go/go.mod` and `go/go.sum` are unchanged.
+
+- `fleet_shards.go`: with `FleetConfig.Shards` (`MINILOOP_FLEET_SHARD_URLS`) the
+  tenants' pages are spread over several PostgreSQL databases. The registry
+  database is the reserved shard `home`.
+  - `tenants.shard` names a tenant's shard; `registry.assign` gives a new
+    tenant the open shard with the fewest tenants. A shard is `open`, `closed`,
+    `draining` or `retired` (`Fleet.SetShard`, `GET` and `POST /admin/shards`).
+    One new to an existing fleet joins `closed`, the last open one cannot be
+    closed, and one is retired only with no tenants and no leftovers. A node
+    refuses to start without the URL of a shard the registry knows.
+  - `Fleet.drain` moves up to 8 sleeping tenants of a draining shard per pass.
+    `vault.move` empties the target, copies from one read snapshot into one
+    transaction (`copyTenant`), then `registry.moved` names the new shard, then
+    the old copy goes.
+  - Each `shard` connects lazily and has a breaker: three database troubles in
+    a row (`dbTrouble`) and it is not asked for 5 s (`errShardDown`), so a
+    request for one of its tenants is answered 503 at once.
+- The fence is in the shard. `take` makes the node the writer in the tenant's
+  `vault_heads` row; `replica.push` begins with an update that needs that
+  writer and the checkpoint number the node last wrote. `born` (the tenant's
+  creation time) keeps a deleted tenant's data from a later tenant of the same
+  name, and `mark` names a checkpoint, because numbers start again when a
+  tenant's data is written anew.
+- `fleet_cold.go`: with `FleetConfig.Archive` (`-archive-store`) a tenant whose
+  owner has been away `ArchiveAfter` and that is not due within 24 hours
+  (`registry.freezable`) is written from its shard into one gzip tar object
+  (`vault.freeze`), and read back by the node that next opens it
+  (`replica.thaw`).
+  - `coldStore` is a directory (`dirStore`) or an S3-compatible bucket
+    (`s3Store`): PUT, GET and DELETE of one object, signed with AWS Signature
+    Version 4 by `crypto/hmac` and `crypto/sha256`. No dependency was added.
+  - While the registry says `cold` the object is the tenant's data, and the
+    shard is emptied before the tenant is read back into it. Each archiving
+    writes an object under a new name (`tenants.archive`).
+  - A node's copies are a cache: `sweepCache` drops those not opened for
+    `CacheAfter` and, oldest first, those beyond `CacheBytes`, never an open
+    tenant's.
+- Leftovers: a copy that must go is a row in the registry's `garbage` table
+  (`intend`, `discard`) from before it exists until it is gone. `Fleet.collect`
+  removes what is written down while it holds the tenant.
+- A node taken for dead in the middle of a step changes nothing when it goes
+  on:
+  - `registry.moved`, `frozen` and `thawed` carry `heldBy`: the statement
+    changes the tenant's row only if the node's placement is still there;
+  - `purge` removes a shard's copy only while the node is its writer, and
+    `Fleet.clean` makes itself the writer (`vault.seize`) and reads the
+    registry again before it removes anything.
+- Registry outage: `Fleet.heartbeat` keeps open tenants for `RegistryGrace`
+  (12 × `NodeTTL`) while the registry does not answer, and `reclaim` then keeps
+  those no other node took. `serveTenant` answers 503, not 401, when a token
+  cannot be checked. Model use the registry could not take is kept
+  (`Fleet.count`) and recorded when it answers (`settleUsage`). Heartbeats are written and judged by the registry
+  database's clock (`syncClock`, `clusterNow`).
+- `fleet_db.go`: numbered schema steps recorded in `fleet_meta` under a
+  transaction-scoped advisory lock; a newer schema is refused
+  (`errNewerSchema`); shards and the archive store are refused while a node
+  from before them is alive. Every statement has a default deadline of 20 s
+  (`timely`), and transfers one that grows with the tenant (`bounded`).
+  PostgreSQL URLs may name several hosts; connections per database are bounded
+  by `DatabaseConns` (8).
+- Each stored file has a SHA-256 (`vault_files.sum`), checked when a tenant is
+  read from a shard (`errCorrupt`).
+- A close whose last checkpoint could not be stored marks the node's copy
+  `Ahead`; the same node goes on from it unless another node wrote the tenant
+  first.
+- `/readyz` answers 503 once `Fleet.Leave` was called (`-leave-wait`);
+  `/admin/metrics` gives the counters in the Prometheus text format;
+  forwarded requests use a 3 s route cache that holds the checked token's
+  hash; `-usage-retention` drops old usage rows a day at a time.
+- Tests (`fleet_shards_test.go`, `fleet_cold_test.go`; on SQLite files by
+  default and on PostgreSQL schemas when `MINILOOP_TEST_POSTGRES` is set):
+  - tenants spread over shards with no pages in the registry database; a
+    shard that is away holds up only its tenants; a new shard waits to be
+    opened; draining moves tenants and the shard is retired;
+  - a move stopped after the copy is undone and one stopped after the registry
+    was told is completed, and neither while the mover may still be at it;
+  - a deleted tenant leaves nothing in its shard, also when a tenant of the
+    same name exists again;
+  - a damaged or missing page is refused; a copy with the right number and
+    another checkpoint's name is not reused;
+  - absent tenants go to the archive store and back; one due soon stays; the
+    archive is read again after a reading back that did not finish; an S3
+    bucket served by a test server that checks every signature, and the
+    worked example from the Signature Version 4 documentation;
+  - `TestNodeTakenForDeadChangesNothingWhenItGoesOn` holds a node up at eight
+    points of a move, an archiving, a reading back and a removal while the
+    other node takes the tenant, and each time finds everything that was
+    written and no copy left over;
+  - a registry outage with open tenants kept, given up and timed out; the
+    registry's clock; the in-place upgrade from the tables before shards; the
+    cache budget; changes kept when a close could not store them.
+- Two `miniloop-assistant fleet` processes were run against a PostgreSQL 16
+  registry, two more PostgreSQL 16 servers as shards and a Garage v1.0.1
+  bucket: tenants spread 2 and 2 with no pages in the registry database; with
+  one shard's server paused, writes to the other shard's tenants took 23 and
+  43 ms and its own got 503; with the registry's server paused for 21 s, 24 of
+  24 writes to open tenants were stored and the 24 model calls were recorded
+  as 25; a holder killed with `SIGKILL` was replaced after `NodeTTL`; both
+  nodes were killed and started at the same moment five times and started
+  every time; a shard was drained and retired; four tenants were archived as
+  88.5 KB of objects for 1.49 MB of files and one was read back in 62 ms.
+- That run found one defect the tests had not: two nodes started at the same
+  moment both clear the rows of the nodes that stopped before, PostgreSQL ends
+  one of the two transactions with a serialization failure, and that node
+  exited. A node now leaves the clearing to the other and starts;
+  `TestNodesThatStartTogetherAllStart` starts six at once on PostgreSQL.
+
+**Not claimed:**
+
+- a sharded registry: it is one database with a row per tenant;
+- balancing by size: new tenants go to the shard with the fewest tenants, and
+  tenants move only out of a draining shard;
+- repair of damaged pages, or reconciliation of databases restored to
+  different moments;
+- an open tenant moved while it is open: it moves once it sleeps;
+- refreshed or role-based credentials for the archive store: static keys and
+  an optional session token;
+- a run against Amazon S3, a PostgreSQL failover, a connection pooler, more
+  than two nodes, separate machines or any load: one laptop, PostgreSQL 16 and
+  Garage v1.0.1 in containers, a paused container standing in for an outage;
+- mixed versions with shards or the archive store on: nodes from before them
+  must be stopped first;
+- continuing a turn at the step it reached, trimming of a tenant's history,
+  and a Python counterpart: all as before.

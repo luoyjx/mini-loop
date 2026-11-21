@@ -383,7 +383,10 @@ What this needs and does not give:
   push tokens. Traffic between nodes uses the advertised URL; use `https` or a
   private network.
 - **Clocks.** A node is alive while its heartbeat is newer than `-node-ttl` by
-  the reader's clock, so the nodes' clocks must agree to well within that.
+  the reader's clock, so nodes that share a directory must agree about the time
+  to well within that. With a PostgreSQL registry the nodes read that
+  database's clock instead (see
+  [Shards, the archive and outages](#shards-the-archive-and-outages)).
 
 Without `-advertise` the fleet holds its directory alone, as before, and a
 cluster node and a single fleet refuse to start beside each other.
@@ -408,20 +411,21 @@ from and where its changes go:
 | Table | What it holds |
 |---|---|
 | `tenants`, `usage`, `nodes`, `placements` | The registry, as before |
-| `vault_heads` | One row per tenant: the number of its last checkpoint, the node that wrote it, and its size |
-| `vault_files`, `vault_pages` | The tenant's files as 4 KiB pages, one row per page, each stored once |
+| `vault_heads` | One row per tenant: the number and name of its last checkpoint, the node that may write it, its size, and the tenant's creation time |
+| `vault_files`, `vault_pages` | The tenant's files as 4 KiB pages, one row per page, each stored once, and each file's SHA-256 |
 
 | Event | What happens |
 |---|---|
-| A node opens a tenant | It claims the placement. If its cached copy is marked as closed cleanly at the vault's current checkpoint, it uses the copy; otherwise it deletes the copy and reads the tenant from the vault |
+| A node opens a tenant | It claims the placement and writes itself into the tenant's head row as the writer. If its cached copy is marked as closed at the vault's current checkpoint, it uses the copy; otherwise it deletes the copy and reads the tenant from the vault, checking every file against its SHA-256 |
 | The tenant is open | Every `-checkpoint` (2s) the node stores what changed: one transaction replaces the changed pages and advances the checkpoint number, so the vault always holds one complete state. Nothing is written when nothing changed |
 | An owner's write (`POST`) | The answer is held until a checkpoint has stored the write. If it cannot be stored the owner gets 503 and retries; an owner who got an answer never sees the write undone |
 | An approved effect | The outbox sends it only after a checkpoint has stored the approval. The proposal's ID is the idempotency key, so a node that stops after the send and before the next checkpoint leads to a second send that the connector absorbs |
 | The tenant sleeps | The last checkpoint is stored before the placement is given up, and the copy is marked clean |
 | A node is killed | After `-node-ttl` another node claims the tenant and reads its last checkpoint. Triggers that were running are queued again and run in the same worker session, which holds the transcript up to that checkpoint. Drafts and tasks the first run made are not made twice |
-| A node stalls and is taken for dead | No lock is shared between the nodes' disks, so for a moment two nodes may run the tenant. The vault settles it: a checkpoint is refused unless the node holds the placement and the checkpoint number is the one it last wrote. The stalled node's writes are answered 503, it sends no effects, and it closes the tenant |
-| The tenant is deleted | Its rows go in the same transaction as its registry row. A cached copy elsewhere is never reused: it carries the deleted tenant's creation time |
-| An owner stays away for `-archive-after` | Nothing is archived. Each node drops its cached copy; the next open reads the vault |
+| A node stalls and is taken for dead | No lock is shared between the nodes' disks, so for a moment two nodes may run the tenant. The vault settles it: a checkpoint is refused unless the head row names the node as the writer and the checkpoint number is the one it last wrote. The stalled node's writes are answered 503, it sends no effects, and it closes the tenant |
+| The tenant is deleted | Its registry row goes, and in the same transaction its data is written down as a leftover. The data is removed at once, or by the janitor if the database it is in does not answer. Neither a cached copy nor stored data is ever taken for a later tenant with the same name: both carry the deleted tenant's creation time |
+| An owner stays away for `-archive-after` | With `-archive-store` the tenant moves to the archive (next section). Without one nothing is archived |
+| A node has not opened a tenant for `-cache-after`, or its copies take more than `-cache-max-mb` | The node drops its copy, oldest first and never an open tenant's; the next open reads the vault |
 
 The databases are read through SQLite's backup interface, from snapshots that
 are checked to be of one instant: if any of the tenant's databases was
@@ -450,10 +454,10 @@ compression, and about 1.5 to 3 times after PostgreSQL compresses the pages.
 
 What this needs and does not give:
 
-- **A PostgreSQL the nodes can reach.** It holds everything, so its
-  availability is the fleet's. While it cannot be reached, owners' writes get
-  503, and after `-node-ttl` the nodes close their tenants. Backups and
-  failover are PostgreSQL's own; use a managed or replicated instance.
+- **A PostgreSQL the nodes can reach.** Backups and failover are PostgreSQL's
+  own; use a managed or replicated instance. A URL may name several hosts
+  (`postgres://u:p@a:5432,b:5432/fleet?target_session_attrs=read-write`).
+  What happens while a database cannot be reached is in the next section.
 - **Pages, not rows.** The registry and model usage are ordinary rows. A
   tenant's mail, tasks and transcripts are SQLite pages: they cannot be queried
   across tenants in SQL. Moving them to rows would mean porting about 40 tables
@@ -472,13 +476,116 @@ What this needs and does not give:
   yet. The node keeps a second copy of each file to compare with, and one more
   SQLite connection per database while the tenant is open.
 - **A request that reaches the wrong node** costs a few registry statements
-  before it is passed on. Route by the tenant in the path where the load
-  balancer can.
+  the first time. The node then remembers for 3 seconds where the tenant is
+  and whose token it checked, and passes that owner's requests on without the
+  registry. Route by the tenant in the path where the load balancer can.
 - **No migration.** A fleet that starts with a database starts empty; tenants
   in a data directory are not copied in.
 - Tested with two nodes on one laptop against PostgreSQL 16, through
   `github.com/jackc/pgx/v5`. Not run across machines, with a replicated
   database, or under load.
+
+### Shards, the archive and outages
+
+One database for every tenant's pages stops being enough before the registry
+does: a tenant is a row of a few hundred bytes in the registry and hundreds of
+kilobytes in the vault. So the tenants' data can be spread over several
+databases and, for the tenants nobody needs, moved out of databases
+altogether. A tenant's data is in one of three places:
+
+| Place | What is there | It stays while |
+|---|---|---|
+| The disk of a node (`-data`) | A copy of the tenants the node opened | The copy is younger than `-cache-after` and the copies fit in `-cache-max-mb`. It is a cache |
+| A shard: a PostgreSQL database | The tenant's files as pages | The tenant is in use, or no archive store is configured |
+| The archive store: a directory or an S3 bucket | One `.tar.gz` object per tenant | Its owner has been away `-archive-after` and nothing is due to wake it within a day |
+
+```sh
+export MINILOOP_FLEET_DATABASE_URL=postgres://fleet:...@registry.internal:5432/fleet
+export MINILOOP_FLEET_SHARD_URLS="s1=postgres://fleet:...@pg1.internal:5432/fleet s2=postgres://fleet:...@pg2.internal:5432/fleet"
+export MINILOOP_FLEET_ARCHIVE_ACCESS_KEY_ID=... MINILOOP_FLEET_ARCHIVE_SECRET_ACCESS_KEY=...
+miniloop-assistant fleet -advertise https://10.0.0.3:8791 -archive-store s3://my-bucket/fleet -archive-region eu-west-1 ...
+```
+
+The registry database keeps one row per tenant, which names the tenant's
+shard. Every statement about a tenant's data goes to that one shard.
+
+| Event | What happens |
+|---|---|
+| A tenant is first opened | It gets the open shard with the fewest tenants |
+| A shard is added to the environment | It joins `closed` and takes no tenants. Once every node has been restarted with it, `POST /admin/shards/{name}` with `{"state":"open"}` opens it. A node that was not given a shard the registry knows does not start |
+| A shard is set to `draining` | Each node moves up to 8 of the shard's sleeping tenants every 5 seconds to the open shards. A move copies the tenant in one transaction per side, then points the registry at the new shard, then removes the old copy. An open tenant waits until it sleeps |
+| A shard is empty | `retired` takes it out for good; nodes then start without its URL |
+| A shard does not answer | Every statement has a deadline (20 seconds, or longer by the tenant's size). After three failures in a row the node leaves the shard alone for 5 seconds at a time. Opening one of its tenants then fails at once with 503, and the tenants of other shards are not held up. A node starts without it |
+| A tenant is closed while its shard is away | Its last changes stay in the node's copy, marked as ahead of the vault. If that node opens it next it goes on from there; if another node wrote the tenant first, the copy is replaced |
+| The registry does not answer | Open tenants stay open for `-registry-grace` (2 minutes): nobody can take them without the registry either. With shards their checkpoints and their owners' writes go on. Requests for sleeping tenants get 503, not 401. Model calls made meanwhile are counted in memory and recorded when the registry is back. Then a node keeps the tenants no other node took and gives up the rest |
+| An owner is away `-archive-after` | A node writes the tenant's files from the shard into one compressed object, stores it under a name no earlier archive had, marks the tenant `cold` in the registry and then removes its rows from the shard |
+| A cold tenant is needed | The node that opens it empties the tenant's place in a shard, unpacks the object, stores it as the tenant's first checkpoint there, marks the tenant `warm` and deletes the object |
+| A step stops half way | A copy that must go (the shard a tenant moved from, the archive of a tenant that was read back, an archive or a copy the registry was never told of, everything of a deleted tenant) is a row in the registry's `garbage` table from before the copy exists until it is gone. The janitor removes what is written down, and never while a node holds the tenant |
+| A node is taken for dead in the middle of a move, an archiving, a reading back or a removal | What it does when it goes on changes nothing. The registry changes where a tenant's data is only in a statement that also finds the node's placement, and a shard lets a node remove a copy only while that node is the copy's writer, which it stops being when another node opens the tenant there or moves it there. An old archive's name is never used again, so removing it late cannot remove a newer one |
+| A node's clock is wrong | With PostgreSQL, heartbeats are written and judged by the registry database's clock |
+| Nodes start at the same moment | Each clears the rows of the nodes that stopped before, and PostgreSQL lets one of them do it. The others are told that the rows changed under them, leave it to that one and start; the heartbeat clears what is left |
+| A node is about to stop | `/readyz` answers 503 for `-leave-wait` before the node closes, so the load balancer stops sending requests first |
+| The software is upgraded | The tables are changed by numbered steps the first node of the new version runs. A node refuses a database that a later version has changed. Shards and the archive store cannot be turned on while a node from before them is running |
+
+`GET /admin/shards` lists the shards with their state and tenant count, and
+whether this node has each one's URL and finds it down. `GET /admin/metrics`
+gives the counters of `/admin/stats` in the Prometheus text format, read from
+the registry at most every 10 seconds.
+
+Measured:
+
+| | |
+|---|---|
+| One tenant, in its shard and archived | 312 KB of files, 15 KB as an object |
+| Four tenants after a few turns each, archived to a Garage v1.0.1 bucket | 1.49 MB of files, 88.5 KB in four objects. Their shard went from 376 page rows to 0 |
+| An archived tenant's owner returns | 200 in 62 ms from the other node, with the tenant's history; the object is gone from the bucket |
+| A shard's server paused (packets dropped), two nodes | Writes to tenants of the other shard: 23 ms and 43 ms. Writes to its own tenants: 503 after 5 s, 8 s and 5 s (15 s for the first in an earlier run), and after 14 ms once the node left the shard alone. After it was resumed the next write took 114 ms |
+| The registry's server paused for 21 s, two nodes | 24 of 24 writes to open tenants were answered 202 and stored. A request for a sleeping tenant got 503 after 20 s, the statement deadline (after 5 s, the connection timeout, when it came later in the pause). Afterwards both nodes had kept their tenants and closed none. The 24 model calls made meanwhile were recorded as 25 |
+| A node killed with `kill -9` while it held a tenant in a shard | The other node answered 503 for about 9 s (`-node-ttl` was 10 s) and then 200, with the tenant's history and the last request |
+| Both nodes killed with `kill -9` and started at the same moment, five times | Both were ready every time |
+| A shard with 2 of 4 tenants drained | Both moved within one pass; the shard went from 191 page rows to 0 and was retired, and the nodes then started without its URL |
+| A node stopped with `-leave-wait 2s` | `/readyz` answered 503 at once while a tenant's request to the node was still answered 200; the node closed after the wait |
+
+What this needs and does not give:
+
+- **The registry is one database.** It is not sharded: it holds a row per
+  tenant, a row per tenant and day of use (dropped after `-usage-retention`),
+  and the nodes' rows. Its availability is still the fleet's for everything but
+  the tenants that are open.
+- **Each shard is as available as its PostgreSQL.** A shard that is lost for
+  good takes its tenants with it; replicate and back up each one.
+- **Databases restored to different moments are not reconciled.** If the
+  registry is restored to before a tenant was moved or archived, its row
+  points where the data no longer is. Restore the registry last, or all of them
+  to the same moment.
+- **Nothing balances shards by size.** New tenants go to the shard with the
+  fewest tenants, and tenants move only out of a draining shard.
+- **Damage is found, not repaired.** A tenant whose stored pages do not match
+  their checksum does not open, and `/admin/stats` counts it. The node that
+  last closed it may still have a good copy.
+- **Model use during a registry outage is kept in memory.** A node that stops
+  before the registry is back loses the counts it kept, and says how many in
+  its log. A count whose statement timed out is recorded again later, so it
+  may be counted twice: in the run above one of the two nodes counted one
+  call twice.
+- **The registry has no breaker.** A request that needs it while it does not
+  answer waits for the statement deadline (20 seconds) or the connect timeout
+  (5 seconds) before its 503.
+- **A write answered 503 may still have been kept.** The node had applied it
+  and could not store it in time; if the node stays up the next checkpoint
+  stores it. A client that sends it again makes it twice. Chat has no
+  idempotency key.
+- **The archive store's keys are static.** A session token can be given, but
+  nothing renews it or reads a cloud role. An object is sent in one request,
+  which S3 allows up to 5 GB; a tenant may be 4 GiB.
+- **Connections.** Each node keeps up to `-database-conns` (8) to the registry
+  and to each shard it has used. All nodes' pools must fit each server's
+  `max_connections`. It was not tried behind a connection pooler.
+- The S3 requests match the worked example in Amazon's Signature Version 4
+  documentation and were run against Garage v1.0.1. They were not run against
+  Amazon S3 itself or other providers. Everything in the table above ran on one
+  laptop with the databases in containers. Nothing here was load tested, and
+  no PostgreSQL failover was performed: a paused server stands in for one.
 
 ### What it costs
 
@@ -513,16 +620,28 @@ ran a morning brief and the nightly consolidation at once.
 | `-tenant-workers` | 2 | Concurrent turns of one tenant |
 | `-daily-calls` | 200 | Model calls per tenant per day; 0 is unlimited |
 | `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
-| `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long, or with a database drop this node's cached copy; 0 never |
+| `-archive-after` | 720h | Move the data of a tenant whose owner has been away this long to the cheapest place: one compressed file beside its directory, or with a database the `-archive-store`; 0 never |
+| `-archive-store`, `-archive-region` | empty, `us-east-1` | With a database, where archived tenants go: `file:///directory`, the base URL of an S3-compatible bucket with any prefix, or `s3://bucket/prefix` |
+| `-cache-after`, `-cache-max-mb` | `-archive-after`, 0 | With a database, drop this node's copy of a tenant it has not opened for this long, and the copies opened longest ago beyond this size; 0 MiB is no bound |
+| `-usage-retention` | 0 | Drop per-day usage rows older than this; 0 keeps them |
+| `-janitor-tick` | 10m | How often dormant tenants are retired, absent ones archived, leftover copies removed and the cache trimmed |
 | `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources that cannot push |
 | `-advertise` | empty | This node's base URL as the other nodes reach it. Setting it lets several fleet processes share `-data` |
 | `-node-ttl` | 10s | With `-advertise`, how long a node may miss its heartbeat before the others take its tenants |
 | `-checkpoint` | 2s | With a database, how often an open tenant's changes are stored |
+| `-registry-grace` | 12 × `-node-ttl` | With a database, how long a node that cannot reach the registry keeps its tenants open |
+| `-database-conns` | 8 | Connections this node keeps to each PostgreSQL database |
+| `-leave-wait` | 0 | On shutdown, answer `/readyz` with 503 for this long before closing |
 
 `MINILOOP_FLEET_ADMIN_TOKEN` is required. `MINILOOP_FLEET_PUSH_TOKEN` is
 optional and turns on `/push/{id}`. `MINILOOP_FLEET_DATABASE_URL` is optional
-and keeps the tenants in PostgreSQL; it holds a password, so it is read only
-from the environment and never printed.
+and keeps the tenants in PostgreSQL. `MINILOOP_FLEET_SHARD_URLS` is optional
+and names more databases for the tenants' data, as `name=URL` pairs separated
+by white space. `MINILOOP_FLEET_ARCHIVE_ACCESS_KEY_ID`,
+`MINILOOP_FLEET_ARCHIVE_SECRET_ACCESS_KEY` and, for temporary keys,
+`MINILOOP_FLEET_ARCHIVE_SESSION_TOKEN` sign the requests to an S3 archive
+store. The URLs hold passwords and the keys are secrets, so all of them are
+read only from the environment and never printed.
 
 ### Measured
 

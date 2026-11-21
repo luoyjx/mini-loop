@@ -3,8 +3,9 @@ package assistant
 import (
 	"bytes"
 	"context"
-	"database/sql"
+	"crypto/sha256"
 	"database/sql/driver"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,6 +16,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -35,9 +37,13 @@ import (
 //   - The databases are read through SQLite's backup interface from read
 //     snapshots that are checked to be of the same instant, so the queue, the
 //     sessions and the mock world agree with each other in every checkpoint.
-//   - A checkpoint is refused unless the node still holds the tenant's
-//     placement and the sequence number is the one it last wrote. A node the
-//     others took for dead cannot write over the tenant's new holder.
+//   - A checkpoint is refused unless the tenant's head row still names the
+//     node as its writer and the sequence number is the one it last wrote. A
+//     node the others took for dead cannot write over the tenant's new
+//     holder, which became the writer when it opened the tenant.
+//   - Every file is stored with its SHA-256, and a node that reads a tenant
+//     checks each file against it, so pages that were lost or mixed up stop
+//     the tenant from opening instead of opening as a damaged database.
 //
 // What is in the vault is what survives a node. The fleet checkpoints an open
 // tenant every Checkpoint interval, so a crash loses at most that much of a
@@ -65,22 +71,44 @@ var (
 
 type vaultCounters struct {
 	checkpoints, pages, bytes, pulls, pulledBytes, reuses atomic.Int64
+	moves, purges, freezes, thaws, corrupt, cacheDrops    atomic.Int64
+	// frozenBytes is what the archived tenants' files held, archiveBytes what
+	// their archives hold.
+	frozenBytes, archiveBytes atomic.Int64
 }
 
+// vault is where the fleet keeps its tenants' data: the shards (see shard),
+// and the archive store for the tenants nobody has needed for long (see
+// coldStore).
 type vault struct {
-	db       *fleetDB
+	registry *registry
+	shards   map[string]*shard
+	cold     coldStore
 	now      func() time.Time
+	// tmp holds archives on their way to or from the archive store.
+	tmp      string
 	counters vaultCounters
+	// pause runs between the steps of a change to where a tenant's data is;
+	// tests use it to hold the node up at the worst moment.
+	pause func(step string)
 }
 
 // vaultHead is the note a node leaves in its copy of a tenant: which
 // checkpoint the copy matches and whether it was closed cleanly. Born is the
 // tenant's creation time, so the copy of a deleted tenant is never taken for
-// a new tenant with the same name.
+// a new tenant with the same name. Mark names the checkpoint: sequence
+// numbers start again when a tenant's data is written anew, and a shard
+// restored from a backup counts on from an older one. Bytes is roughly what
+// the copy takes on the node's disk.
 type vaultHead struct {
-	Seq   int64 `json:"seq"`
-	Born  int64 `json:"born"`
-	Clean bool  `json:"clean"`
+	Seq   int64  `json:"seq"`
+	Born  int64  `json:"born"`
+	Mark  string `json:"mark,omitempty"`
+	Bytes int64  `json:"bytes,omitempty"`
+	Clean bool   `json:"clean"`
+	// Ahead marks a copy that was closed in order but whose last changes
+	// could not be stored: it is the vault's checkpoint and more.
+	Ahead bool `json:"ahead,omitempty"`
 }
 
 func headPath(dir string) string { return filepath.Join(dir, vaultDir, "head.json") }
@@ -122,13 +150,20 @@ func replaceFile(path string, content io.Reader) error {
 // replica is one open tenant's link to the vault.
 type replica struct {
 	vault *vault
+	shard *shard
 	id    TenantID
 	node  string
 	dir   string
 	born  int64
+	// archive names the object an archived tenant is read back from.
+	archive string
 
 	mu  sync.Mutex
 	seq int64
+	// mark names the checkpoint the vault holds; total is the size of the
+	// tenant's files there.
+	mark  string
+	total int64
 	// lost is set once the vault refused this node; nothing more is written.
 	lost bool
 	// known is every file the vault holds for the tenant; stamps remembers
@@ -178,34 +213,70 @@ func (s *vaultSource) release() error {
 
 // attach makes the node's copy of a tenant match the vault and returns the
 // link that keeps the vault up to date. It reports whether the copy had to be
-// read from the vault. The caller holds the tenant's placement.
-func (v *vault) attach(ctx context.Context, id TenantID, node, dir string, born time.Time) (*replica, bool, error) {
-	r := &replica{vault: v, id: id, node: node, dir: dir, born: millis(born), known: map[string]bool{}, stamps: map[string]fileStamp{}, sources: map[string]*vaultSource{}}
-	var remote int64
-	err := v.db.QueryRowContext(ctx, `SELECT seq FROM vault_heads WHERE tenant_id=?`, string(id)).Scan(&remote)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+// read from the vault. The caller holds the tenant's placement and read
+// record after it took it, so the row says where the tenant's data is.
+func (v *vault) attach(ctx context.Context, record TenantRecord, node, dir string) (*replica, bool, error) {
+	id, name, archived := record.ID, record.Shard, record.State == TenantCold
+	if name == "" {
+		var err error
+		if name, err = v.registry.assign(ctx, id); err != nil {
+			return nil, false, fmt.Errorf("find a shard for tenant %s: %w", id, err)
+		}
+	}
+	shard, err := v.shard(name)
+	if err != nil {
 		return nil, false, err
 	}
+	r := &replica{vault: v, shard: shard, id: id, node: node, dir: dir, born: millis(record.CreatedAt), archive: record.archive, known: map[string]bool{}, stamps: map[string]fileStamp{}, sources: map[string]*vaultSource{}}
+	// From here on this node is the tenant's writer, and what the head says
+	// stays true until the node writes it. An archived tenant's shard is
+	// emptied: the archive is its data.
+	var head held
+	err = shard.do(ctx, func(db *fleetDB) (err error) {
+		head, err = take(ctx, db, id, node, r.born, archived, v.now())
+		return err
+	})
+	if err != nil {
+		return nil, false, fmt.Errorf("take tenant %s in shard %s: %w", id, name, err)
+	}
+	r.seq, r.mark = head.seq, head.mark
 	local, ok := readHead(dir)
 	pulled := false
-	if ok && local.Clean && local.Born == r.born && local.Seq == remote && remote > 0 {
-		// The copy is what this node last wrote and nobody wrote since.
+	switch {
+	case archived:
+		if err := r.thaw(ctx); err != nil {
+			return nil, false, errors.Join(fmt.Errorf("read tenant %s back from the archive: %w", id, err), r.closeSources())
+		}
+		pulled = true
+	case ok && (local.Clean || local.Ahead) && local.Born == r.born && r.seq > 0 && local.Seq == r.seq && local.Mark == r.mark && r.mark != "":
+		// The copy is what this node last wrote and nobody wrote since. One
+		// that is ahead holds changes the vault lacks; the next checkpoint
+		// stores them.
 		if err := r.loadKnown(); err != nil {
 			return nil, false, err
 		}
-		r.seq = remote
+		r.total = head.bytes
 		v.counters.reuses.Add(1)
-	} else {
-		if err := r.pull(ctx); err != nil {
-			return nil, false, fmt.Errorf("read tenant %s from the vault: %w", id, err)
+	default:
+		if err := r.pull(ctx, head.bytes); err != nil {
+			if errors.Is(err, errCorrupt) {
+				v.counters.corrupt.Add(1)
+			}
+			return nil, false, fmt.Errorf("read tenant %s from shard %s: %w", id, name, err)
 		}
 		pulled = r.seq > 0
 	}
 	// Until it is closed cleanly the copy may be ahead of the vault.
-	if err := writeHead(dir, vaultHead{Seq: r.seq, Born: r.born}); err != nil {
-		return nil, false, err
+	if err := writeHead(dir, r.head(false)); err != nil {
+		return nil, false, errors.Join(err, r.closeSources())
 	}
 	return r, pulled, nil
+}
+
+// head is the note for the node's copy. The copy holds each file twice, as
+// the tenant uses it and as the vault has it.
+func (r *replica) head(clean bool) vaultHead {
+	return vaultHead{Seq: r.seq, Born: r.born, Mark: r.mark, Bytes: 2 * r.total, Clean: clean}
 }
 
 func (r *replica) base(rel string) string {
@@ -246,75 +317,56 @@ func safeRel(rel string) bool {
 
 // pull replaces the node's copy with the vault's state: every file is
 // written to the directory and, as the image later checkpoints are compared
-// with, to base. One snapshot transaction reads it all.
-func (r *replica) pull(ctx context.Context) error {
+// with, to base. One snapshot transaction reads it all, in the time size
+// bytes take.
+func (r *replica) pull(ctx context.Context, size int64) error {
+	ctx, cancel := bounded(ctx, size)
+	defer cancel()
 	if err := os.RemoveAll(r.dir); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(filepath.Join(r.dir, vaultDir), 0o700); err != nil {
 		return err
 	}
-	tx, err := r.vault.db.begin(ctx, true)
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-	var seq int64
-	err = tx.QueryRowContext(ctx, `SELECT seq FROM vault_heads WHERE tenant_id=?`, string(r.id)).Scan(&seq)
-	if errors.Is(err, sql.ErrNoRows) {
+	if r.seq == 0 {
 		return nil
 	}
-	if err != nil {
-		return err
-	}
-	type stored struct {
-		path string
-		size int64
-	}
-	rows, err := tx.QueryContext(ctx, `SELECT path,size FROM vault_files WHERE tenant_id=? ORDER BY path`, string(r.id))
-	if err != nil {
-		return err
-	}
-	files := []stored{}
-	var total int64
-	for rows.Next() {
-		var file stored
-		if err := rows.Scan(&file.path, &file.size); err != nil {
-			rows.Close()
+	return r.shard.do(ctx, func(db *fleetDB) error {
+		tx, err := db.begin(ctx, true)
+		if err != nil {
 			return err
 		}
-		files = append(files, file)
-		total += file.size
-	}
-	if err := errors.Join(rows.Err(), rows.Close()); err != nil {
-		return err
-	}
-	if total > maxArchiveBytes {
-		return errors.New("the tenant is larger than a tenant may be")
-	}
-	for _, file := range files {
-		if !safeRel(file.path) || file.size < 0 {
-			return fmt.Errorf("stored file %q is not inside the tenant's directory", file.path)
+		defer tx.Rollback()
+		var seq int64
+		if err := tx.QueryRowContext(ctx, `SELECT seq FROM vault_heads WHERE tenant_id=? AND node=?`, string(r.id), r.node).Scan(&seq); err != nil || seq != r.seq {
+			// Another node became the writer since this one did.
+			return errors.Join(err, errFenced)
 		}
-		if err := r.pullFile(ctx, tx, file.path, file.size); err != nil {
-			return fmt.Errorf("%s: %w", file.path, err)
+		files, total, err := storedFiles(ctx, tx, r.id)
+		if err != nil {
+			return err
 		}
-		r.known[file.path] = true
-	}
-	r.seq = seq
-	r.vault.counters.pulls.Add(1)
-	r.vault.counters.pulledBytes.Add(total)
-	return nil
+		for _, file := range files {
+			if err := r.pullFile(ctx, tx, file); err != nil {
+				return fmt.Errorf("%s: %w", file.path, err)
+			}
+			r.known[file.path] = true
+		}
+		r.total = total
+		r.vault.counters.pulls.Add(1)
+		r.vault.counters.pulledBytes.Add(total)
+		return nil
+	})
 }
 
-func (r *replica) pullFile(ctx context.Context, tx *fleetTx, rel string, size int64) (err error) {
+func (r *replica) pullFile(ctx context.Context, tx *fleetTx, stored storedFile) (err error) {
 	outputs := make([]*os.File, 0, 2)
 	defer func() {
 		for _, file := range outputs {
 			err = errors.Join(err, file.Close())
 		}
 	}()
-	for _, path := range []string{filepath.Join(r.dir, filepath.FromSlash(rel)), r.base(rel)} {
+	for _, path := range []string{filepath.Join(r.dir, filepath.FromSlash(stored.path)), r.base(stored.path)} {
 		if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
 			return err
 		}
@@ -324,36 +376,14 @@ func (r *replica) pullFile(ctx context.Context, tx *fleetTx, rel string, size in
 		}
 		outputs = append(outputs, file)
 	}
-	rows, err := tx.QueryContext(ctx, `SELECT idx,data FROM vault_pages WHERE tenant_id=? AND path=? ORDER BY idx`, string(r.id), rel)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-	var written int64
-	for want := 0; rows.Next(); want++ {
-		var idx int
-		var data []byte
-		if err := rows.Scan(&idx, &data); err != nil {
-			return err
-		}
-		// Every page but the last is full, and none is missing.
-		if idx != want || len(data) == 0 || len(data) > vaultPage || written%vaultPage != 0 {
-			return errors.New("its stored pages are not contiguous")
-		}
+	return storedPages(ctx, tx, r.id, stored, func(_ int, data []byte) error {
 		for _, file := range outputs {
 			if _, err := file.Write(data); err != nil {
 				return err
 			}
 		}
-		written += int64(len(data))
-	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-	if written != size {
-		return fmt.Errorf("its stored pages hold %d bytes of %d", written, size)
-	}
-	return nil
+		return nil
+	})
 }
 
 // ---- reading the tenant's files ----
@@ -542,6 +572,7 @@ type vaultPageData struct {
 type vaultFile struct {
 	path  string
 	size  int64
+	sum   string
 	pages []vaultPageData
 	// image is the file the pages were read from, which becomes the base
 	// image once they are stored; moved says it may be renamed there.
@@ -550,7 +581,7 @@ type vaultFile struct {
 }
 
 // compare reads a file against its base image and returns the pages that
-// differ. changed is false when the two are the same.
+// differ and the file's checksum. changed is false when the two are the same.
 func (r *replica) compare(rel, image string) (file vaultFile, changed bool, err error) {
 	file = vaultFile{path: rel, image: image}
 	current, err := os.Open(image)
@@ -570,6 +601,8 @@ func (r *replica) compare(rel, image string) (file vaultFile, changed bool, err 
 		return file, false, err
 	}
 	page, old := make([]byte, vaultPage), make([]byte, vaultPage)
+	digest := sha256.New()
+	defer func() { file.sum = hex.EncodeToString(digest.Sum(nil)) }()
 	for idx := 0; ; idx++ {
 		n, err := io.ReadFull(current, page)
 		if err != nil && !errors.Is(err, io.ErrUnexpectedEOF) && !errors.Is(err, io.EOF) {
@@ -578,6 +611,7 @@ func (r *replica) compare(rel, image string) (file vaultFile, changed bool, err 
 		if n == 0 {
 			break
 		}
+		digest.Write(page[:n])
 		m, _ := io.ReadFull(previous, old)
 		if !bytes.Equal(page[:n], old[:m]) {
 			file.pages = append(file.pages, vaultPageData{idx: idx, data: bytes.Clone(page[:n])})
@@ -713,86 +747,72 @@ func (r *replica) ship(ctx context.Context) (bool, error) {
 	return written, nil
 }
 
-// push writes one checkpoint. The first statement takes the placement row, so
-// a node that claims the tenant waits for this checkpoint or makes it fail.
-func (r *replica) push(ctx context.Context, delta *vaultDelta) (err error) {
-	tx, err := r.vault.db.begin(ctx, false)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			err = errors.Join(err, tx.Rollback())
-		}
-	}()
-	id := string(r.id)
-	held, err := tx.ExecContext(ctx, `UPDATE placements SET since=since WHERE tenant_id=? AND node=?`, id, r.node)
-	if err != nil {
-		return err
-	}
-	if count, err := held.RowsAffected(); err != nil || count != 1 {
-		return errors.Join(err, errFenced)
-	}
-	var seq int64
-	err = tx.QueryRowContext(ctx, `SELECT seq FROM vault_heads WHERE tenant_id=?`, id).Scan(&seq)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
-		return err
-	}
-	if seq != r.seq {
-		return errFenced
-	}
-	next := r.seq + 1
-	var pages, size int64
+// push writes one checkpoint. The first statement takes the tenant's head row
+// and advances it, and changes nothing unless the head still names this node
+// as the writer at the checkpoint the node last wrote: a node that took the
+// tenant waits for this checkpoint or makes it fail.
+func (r *replica) push(ctx context.Context, delta *vaultDelta) error {
+	var changed int64
 	for _, file := range delta.files {
-		if _, err = tx.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq) VALUES(?,?,?,?)
-			ON CONFLICT(tenant_id,path) DO UPDATE SET size=excluded.size, seq=excluded.seq`, id, file.path, file.size, next); err != nil {
+		changed += int64(len(file.pages)) * vaultPage
+	}
+	ctx, cancel := bounded(ctx, changed)
+	defer cancel()
+	next, mark := r.seq+1, randomHex(8)
+	var pages, size int64
+	err := r.shard.do(ctx, func(db *fleetDB) (err error) {
+		tx, err := db.begin(ctx, false)
+		if err != nil {
 			return err
 		}
-		if _, err = tx.ExecContext(ctx, `DELETE FROM vault_pages WHERE tenant_id=? AND path=? AND idx>=?`, id, file.path, (file.size+vaultPage-1)/vaultPage); err != nil {
-			return err
+		defer func() {
+			if err != nil {
+				err = errors.Join(err, tx.Rollback())
+			}
+		}()
+		id := string(r.id)
+		if ours, err := tx.affected(ctx, `UPDATE vault_heads SET seq=?, mark=?, at=? WHERE tenant_id=? AND node=? AND seq=?`,
+			next, mark, millis(r.vault.now()), id, r.node, r.seq); err != nil || !ours {
+			return errors.Join(err, errFenced)
 		}
-		for batch := range slices.Chunk(file.pages, vaultBatch) {
-			query := strings.Builder{}
-			query.WriteString(`INSERT INTO vault_pages(tenant_id,path,idx,data) VALUES `)
-			args := make([]any, 0, 4*len(batch))
-			for i, page := range batch {
-				if i > 0 {
-					query.WriteByte(',')
+		pages, size = 0, 0
+		for _, file := range delta.files {
+			if _, err = tx.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum) VALUES(?,?,?,?,?)
+				ON CONFLICT(tenant_id,path) DO UPDATE SET size=excluded.size, seq=excluded.seq, sum=excluded.sum`, id, file.path, file.size, next, file.sum); err != nil {
+				return err
+			}
+			if _, err = tx.ExecContext(ctx, `DELETE FROM vault_pages WHERE tenant_id=? AND path=? AND idx>=?`, id, file.path, (file.size+vaultPage-1)/vaultPage); err != nil {
+				return err
+			}
+			for batch := range slices.Chunk(file.pages, vaultBatch) {
+				if err = insertPages(ctx, tx, r.id, file.path, batch); err != nil {
+					return err
 				}
-				query.WriteString(`(?,?,?,?)`)
-				args = append(args, id, file.path, page.idx, page.data)
-				size += int64(len(page.data))
-			}
-			query.WriteString(` ON CONFLICT(tenant_id,path,idx) DO UPDATE SET data=excluded.data`)
-			if _, err = tx.ExecContext(ctx, query.String(), args...); err != nil {
-				return err
-			}
-			pages += int64(len(batch))
-		}
-	}
-	for _, rel := range delta.gone {
-		for _, table := range []string{"vault_files", "vault_pages"} {
-			if _, err = tx.ExecContext(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND path=?`, id, rel); err != nil {
-				return err
+				for _, page := range batch {
+					size += int64(len(page.data))
+				}
+				pages += int64(len(batch))
 			}
 		}
-	}
-	if err = tx.QueryRowContext(ctx, `SELECT CAST(COALESCE(SUM(size),0) AS BIGINT) FROM vault_files WHERE tenant_id=?`, id).Scan(&delta.total); err != nil {
-		return err
-	}
-	now := millis(r.vault.now())
-	if seq == 0 {
-		_, err = tx.ExecContext(ctx, `INSERT INTO vault_heads(tenant_id,seq,node,at,bytes) VALUES(?,?,?,?,?)`, id, next, r.node, now, delta.total)
-	} else {
-		_, err = tx.ExecContext(ctx, `UPDATE vault_heads SET seq=?, node=?, at=?, bytes=? WHERE tenant_id=?`, next, r.node, now, delta.total, id)
-	}
+		for _, rel := range delta.gone {
+			for _, table := range []string{"vault_files", "vault_pages"} {
+				if _, err = tx.ExecContext(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND path=?`, id, rel); err != nil {
+					return err
+				}
+			}
+		}
+		if err = tx.QueryRowContext(ctx, `SELECT CAST(COALESCE(SUM(size),0) AS BIGINT) FROM vault_files WHERE tenant_id=?`, id).Scan(&delta.total); err != nil {
+			return err
+		}
+		if _, err = tx.ExecContext(ctx, `UPDATE vault_heads SET bytes=? WHERE tenant_id=?`, delta.total, id); err != nil {
+			return err
+		}
+		return tx.Commit()
+	})
 	if err != nil {
 		return err
 	}
-	if err = tx.Commit(); err != nil {
-		return err
-	}
-	r.seq = next
+	r.seq, r.mark, r.total = next, mark, delta.total
 	r.vault.counters.checkpoints.Add(1)
 	r.vault.counters.pages.Add(pages)
 	r.vault.counters.bytes.Add(size)
@@ -836,7 +856,7 @@ func (r *replica) promote(delta *vaultDelta) error {
 			}
 		}
 	}
-	return writeHead(r.dir, vaultHead{Seq: r.seq, Born: r.born})
+	return writeHead(r.dir, r.head(false))
 }
 
 func (r *replica) closeSources() error {
@@ -849,7 +869,8 @@ func (r *replica) closeSources() error {
 }
 
 // seal stores the last checkpoint of a tenant whose App is closed and marks
-// the node's copy as matching the vault, so the node may reuse it.
+// the node's copy as matching the vault, or as ahead of it when the vault
+// could not be written, so the node may reuse it.
 func (r *replica) seal(ctx context.Context) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -857,11 +878,22 @@ func (r *replica) seal(ctx context.Context) error {
 		return errors.Join(errFenced, r.closeSources(), removeIfExists(headPath(r.dir)))
 	}
 	_, err := r.ship(ctx)
-	err = errors.Join(err, r.closeSources())
-	if err != nil {
-		return err
+	closed := r.closeSources()
+	switch {
+	case errors.Is(err, errFenced) || errors.Is(err, errCacheBroken):
+		return errors.Join(err, closed, removeIfExists(headPath(r.dir)))
+	case err != nil && closed == nil:
+		// The vault did not take the last changes. The tenant's files were
+		// closed in order and the images of what the vault has are intact,
+		// so if nobody writes the tenant before this node opens it again,
+		// it goes on from here and nothing is lost.
+		head := r.head(false)
+		head.Ahead = true
+		return errors.Join(err, writeHead(r.dir, head))
+	case err != nil || closed != nil:
+		return errors.Join(err, closed)
 	}
-	return writeHead(r.dir, vaultHead{Seq: r.seq, Born: r.born, Clean: true})
+	return writeHead(r.dir, r.head(true))
 }
 
 // abandon closes the link without storing anything: the copy is read from
@@ -990,15 +1022,25 @@ func (f *Fleet) serveStored(w http.ResponseWriter, r *http.Request, t *tenant, h
 	held.release(w)
 }
 
-// sweepCache drops this node's copies of tenants it last closed before
-// cutoff. The vault has them, so the next open reads them from there.
-func (f *Fleet) sweepCache(ctx context.Context, cutoff time.Time) {
+// sweepCache bounds this node's copies of tenants. A copy the node last
+// closed before cutoff goes (a zero cutoff keeps them all), and then the
+// oldest closed copies go until the copies fit in budget bytes (zero is no
+// bound). The vault has every one of them, so the next open reads the tenant
+// from there.
+func (f *Fleet) sweepCache(ctx context.Context, cutoff time.Time, budget int64) {
+	type cached struct {
+		id    TenantID
+		dir   string
+		at    time.Time
+		bytes int64
+	}
 	root := filepath.Join(f.config.DataDir, "tenants")
 	shards, err := os.ReadDir(root)
 	if err != nil {
 		return
 	}
-	dropped := 0
+	copies := []cached{}
+	var total int64
 	for _, shard := range shards {
 		entries, err := os.ReadDir(filepath.Join(root, shard.Name()))
 		if err != nil {
@@ -1007,9 +1049,6 @@ func (f *Fleet) sweepCache(ctx context.Context, cutoff time.Time) {
 		for _, entry := range entries {
 			id := TenantID(entry.Name())
 			dir := filepath.Join(root, shard.Name(), entry.Name())
-			if ctx.Err() != nil || dropped == 64 {
-				return
-			}
 			if !entry.IsDir() || !id.Valid() || dir != f.dir(id) {
 				continue
 			}
@@ -1019,37 +1058,42 @@ func (f *Fleet) sweepCache(ctx context.Context, cutoff time.Time) {
 					continue
 				}
 			}
-			if info.ModTime().After(cutoff) {
-				continue
-			}
-			f.mu.Lock()
-			if _, open := f.tenants[id]; open || f.closed {
-				f.mu.Unlock()
-				continue
-			}
-			hold := &tenant{id: id, closing: true, gone: make(chan struct{})}
-			f.tenants[id] = hold
-			f.mu.Unlock()
-			// The placement keeps a node that shares this directory from
-			// opening the copy while it goes; a deleted tenant has no row to
-			// place and its copy goes too.
-			err = f.place(ctx, id)
-			if err == nil || errors.Is(err, ErrTenantUnknown) {
-				if removed := os.RemoveAll(dir); removed != nil {
-					fmt.Fprintf(f.log, "fleet: drop the cached copy of %s: %v\n", id, removed)
-				} else {
-					dropped++
-				}
-			}
-			if err == nil {
-				if err := f.registry.unplace(context.WithoutCancel(ctx), id, f.node); err != nil {
-					fmt.Fprintf(f.log, "fleet: release %s after dropping its copy: %v\n", id, err)
-				}
-			}
-			f.mu.Lock()
-			delete(f.tenants, id)
-			f.mu.Unlock()
-			close(hold.gone)
+			head, _ := readHead(dir)
+			total += head.Bytes
+			copies = append(copies, cached{id, dir, info.ModTime(), head.Bytes})
 		}
 	}
+	sort.Slice(copies, func(i, j int) bool { return copies[i].at.Before(copies[j].at) })
+	dropped := 0
+	for _, c := range copies {
+		old := !cutoff.IsZero() && !c.at.After(cutoff)
+		if ctx.Err() != nil || dropped == 256 || (!old && (budget <= 0 || total <= budget)) {
+			break
+		}
+		// A tenant that is open here keeps its copy whatever the budget.
+		release, ok := f.reserve(c.id)
+		if !ok {
+			continue
+		}
+		// The placement keeps a node that shares this directory from opening
+		// the copy while it goes; a deleted tenant has no row to place and
+		// its copy goes too.
+		err := f.place(ctx, c.id)
+		if err == nil || errors.Is(err, ErrTenantUnknown) {
+			if removed := os.RemoveAll(c.dir); removed != nil {
+				fmt.Fprintf(f.log, "fleet: drop the cached copy of %s: %v\n", c.id, removed)
+			} else {
+				dropped++
+				total -= c.bytes
+				f.vault.counters.cacheDrops.Add(1)
+			}
+		}
+		if err == nil {
+			if err := f.registry.unplace(context.WithoutCancel(ctx), c.id, f.node); err != nil {
+				fmt.Fprintf(f.log, "fleet: release %s after dropping its copy: %v\n", c.id, err)
+			}
+		}
+		release()
+	}
+	f.cacheBytes.Store(total)
 }

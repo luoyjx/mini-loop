@@ -120,6 +120,14 @@ func TestClusterPassesRequestsToTheHolder(t *testing.T) {
 	if b.opened("alice") != nil || stats(t, b.Fleet).Forwards != 1 {
 		t.Fatalf("it is not opened twice: %+v", stats(t, b.Fleet))
 	}
+	// For a moment the node remembers where the tenant is and whose token it
+	// checked, and passes the owner's next requests on without the registry.
+	b.registry.db.down.Store(true)
+	code, body = tenantCall(b.handler, http.MethodGet, "/t/alice/api/state", alice, "")
+	b.registry.db.down.Store(false)
+	if got := stats(t, b.Fleet); code != http.StatusOK || !strings.Contains(body, `"channel"`) || got.RouteHits != 1 || got.Forwards != 2 {
+		t.Fatalf("a remembered route needs no registry: %d %+v", code, got)
+	}
 	if code, body := tenantCall(b.handler, http.MethodPost, "/push/alice", clusterPush, "{}"); code != http.StatusAccepted || !strings.Contains(body, string(PushPolled)) {
 		t.Fatalf("a push reaches the node that holds the tenant: %d %s", code, body)
 	}
@@ -127,8 +135,9 @@ func TestClusterPassesRequestsToTheHolder(t *testing.T) {
 		t.Fatalf("stats list both nodes: %+v", got)
 	}
 
-	// Once it sleeps, the node the next request reaches opens it.
-	clock.Set(clock.Now().Add(time.Second))
+	// Once it sleeps and the route is forgotten, the node the next request
+	// reaches opens it.
+	clock.Set(clock.Now().Add(routeTTL + time.Second))
 	a.reap(context.Background())
 	if a.opened("alice") != nil || holder(t, a.Fleet, "alice") != "" {
 		t.Fatal("a sleeping tenant is placed nowhere")

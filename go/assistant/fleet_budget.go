@@ -120,12 +120,82 @@ func (m *tenantMeter) record(ctx context.Context, usage protocol.TokenUsage) {
 	}
 	m.mu.Unlock()
 	m.fleet.calls.Add(1)
-	if err := m.fleet.registry.addUsage(context.WithoutCancel(ctx), m.id, day, usage.InputTokens.Metered(), usage.OutputTokens.Metered()); err != nil {
-		fmt.Fprintf(m.fleet.log, "fleet: record usage for %s: %v\n", m.id, err)
-	}
+	m.fleet.count(ctx, usageKey{m.id, day}, usageSum{1, usage.InputTokens.Metered(), usage.OutputTokens.Metered()})
 	if announce && m.post != nil {
 		m.post(fmt.Sprintf("今天的模型额度（%d 次调用）已用完：新的处理会排队，%s 之后继续。批准、拒绝和查看不受影响。", quota, nextDay(now).Format("01-02 15:04")))
 	}
+}
+
+// usageWait bounds how long one model call waits for the registry to take
+// its count.
+const usageWait = 3 * time.Second
+
+type usageKey struct {
+	id  TenantID
+	day string
+}
+
+type usageSum struct{ calls, input, output int }
+
+// count writes model use to the registry, or keeps it until the registry
+// takes it. While any is kept the registry is not asked: one that is away
+// must not hold every model call for usageWait.
+func (f *Fleet) count(ctx context.Context, key usageKey, sum usageSum) {
+	f.owedMu.Lock()
+	owing := len(f.owed) > 0
+	f.owedMu.Unlock()
+	if !owing {
+		write, cancel := context.WithTimeout(context.WithoutCancel(ctx), usageWait)
+		err := f.registry.addUsage(write, key.id, key.day, sum.calls, sum.input, sum.output)
+		cancel()
+		if err == nil {
+			return
+		}
+		fmt.Fprintf(f.log, "fleet: record usage for %s: %v; kept until the registry takes it\n", key.id, err)
+	}
+	f.owedMu.Lock()
+	kept := f.owed[key]
+	f.owed[key] = usageSum{kept.calls + sum.calls, kept.input + sum.input, kept.output + sum.output}
+	f.owedMu.Unlock()
+}
+
+// settleUsage tells the registry the model use it missed. A count stays kept
+// until the registry has taken it, so one the registry took without this node
+// hearing of it is counted twice rather than not at all.
+func (f *Fleet) settleUsage(ctx context.Context) {
+	f.owedMu.Lock()
+	owed := make(map[usageKey]usageSum, len(f.owed))
+	for key, sum := range f.owed {
+		owed[key] = sum
+	}
+	f.owedMu.Unlock()
+	for key, sum := range owed {
+		write, cancel := context.WithTimeout(ctx, usageWait)
+		err := f.registry.addUsage(write, key.id, key.day, sum.calls, sum.input, sum.output)
+		cancel()
+		if err != nil {
+			// Still away; the rest waits with it.
+			return
+		}
+		f.owedMu.Lock()
+		if left := f.owed[key]; left == sum {
+			delete(f.owed, key)
+		} else {
+			f.owed[key] = usageSum{left.calls - sum.calls, left.input - sum.input, left.output - sum.output}
+		}
+		f.owedMu.Unlock()
+	}
+}
+
+// usageOwed is the number of model calls the registry has not been told of.
+func (f *Fleet) usageOwed() int {
+	f.owedMu.Lock()
+	defer f.owedMu.Unlock()
+	calls := 0
+	for _, sum := range f.owed {
+		calls += sum.calls
+	}
+	return calls
 }
 
 // provider wraps the fleet's shared model provider for this tenant; a

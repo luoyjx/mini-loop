@@ -28,7 +28,8 @@ const (
 // /admin/ with adminToken; an empty adminToken disables the admin API. The
 // mail and calendar provider's push bridge uses POST /push/{id} with
 // pushToken, which can only wake tenants; an empty pushToken disables it.
-// /healthz answers without a credential.
+// /healthz answers without a credential while the process runs, and /readyz
+// until the node is about to stop, which is what a load balancer should ask.
 //
 // Unlike a daemon's Handler it does not require a loopback host: a fleet is
 // meant to be reached over the network, behind TLS.
@@ -36,6 +37,18 @@ func (f *Fleet) Handler(adminToken, pushToken string) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		_, _ = w.Write([]byte("ok\n"))
+	})
+	mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, _ *http.Request) {
+		// Only the node's own state: a registry or a shard that is away is
+		// away for every node, and a fleet with no node ready serves nobody,
+		// not even the tenants that are open.
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		if f.leaving.Load() {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			_, _ = w.Write([]byte("leaving\n"))
+			return
+		}
 		_, _ = w.Write([]byte("ok\n"))
 	})
 	mux.HandleFunc("GET /t/{tenant}", func(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +76,9 @@ func (f *Fleet) Handler(adminToken, pushToken string) http.Handler {
 		handle("GET /admin/tenants/{tenant}", f.handleGetTenant)
 		handle("DELETE /admin/tenants/{tenant}", f.handleDeleteTenant)
 		handle("GET /admin/stats", f.handleStats)
+		handle("GET /admin/metrics", f.handleMetrics)
+		handle("GET /admin/shards", f.handleListShards)
+		handle("POST /admin/shards/{shard}", f.handleSetShard)
 	}
 	if pushToken != "" {
 		mux.Handle("POST /push/{tenant}", requireToken(hashToken(pushToken), "miniloop-push", "push token required", http.HandlerFunc(f.handlePush)))
@@ -74,7 +90,18 @@ func (f *Fleet) Handler(adminToken, pushToken string) http.Handler {
 // hands the request to the tenant's own API.
 func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 	id := TenantID(r.PathValue("tenant"))
-	if !f.Authenticate(r.Context(), id, bearer(r)) {
+	if addr, ok := f.routed(r, id); ok {
+		f.forward(w, r, addr)
+		return
+	}
+	known, err := f.authenticate(r.Context(), id, bearer(r))
+	if err != nil && r.Context().Err() == nil {
+		// The registry could not be asked. That is not the owner's token
+		// being wrong, and must not look like it.
+		busy(w, 2)
+		return
+	}
+	if !known {
 		w.Header().Set("WWW-Authenticate", `Bearer realm="miniloop"`)
 		writeJSON(w, http.StatusUnauthorized, errorResponse{"a valid tenant token is required"})
 		return
@@ -84,9 +111,11 @@ func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 	switch {
 	case err == nil:
 	case errors.As(err, &away):
+		// The token was just checked against the registry.
+		f.routes.put(id, away.addr, hashToken(bearer(r)), f.now())
 		f.forward(w, r, away.addr)
 		return
-	case errors.Is(err, errMoving):
+	case errors.Is(err, errMoving), errors.Is(err, errShardDown), errors.Is(err, errNoShard):
 		busy(w, 1)
 		return
 	case errors.Is(err, ErrFleetFull):
@@ -105,6 +134,12 @@ func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusUnauthorized, errorResponse{"a valid tenant token is required"})
 		return
 	case r.Context().Err() != nil:
+		return
+	case dbTrouble(err):
+		// A database that is away is back in a moment or is being failed
+		// over; the owner's client should try again, not give up.
+		fmt.Fprintf(f.log, "fleet: open %s: %v\n", id, err)
+		busy(w, 2)
 		return
 	default:
 		fmt.Fprintf(f.log, "fleet: open %s: %v\n", id, err)
@@ -129,6 +164,27 @@ func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	f.serveStored(w, r, t, http.StripPrefix(prefix, t.handler))
+}
+
+// routed finds where to pass an owner's request on without asking the
+// registry: the node that held the tenant a moment ago, when the request
+// carries the token that was checked then.
+func (f *Fleet) routed(r *http.Request, id TenantID) (string, bool) {
+	if !f.clustered() || r.Header.Get(hopHeader) != "" {
+		return "", false
+	}
+	known, ok := f.routes.get(id, f.now())
+	if !ok || subtle.ConstantTimeCompare([]byte(hashToken(bearer(r))), []byte(known.token)) != 1 {
+		return "", false
+	}
+	f.mu.Lock()
+	_, here := f.tenants[id]
+	f.mu.Unlock()
+	if here {
+		return "", false
+	}
+	f.counters.routeHits.Add(1)
+	return known.addr, true
 }
 
 func bearer(r *http.Request) string {
@@ -264,6 +320,119 @@ func (f *Fleet) handleStats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, stats)
+}
+
+func (f *Fleet) handleListShards(w http.ResponseWriter, r *http.Request) {
+	shards, err := f.Shards(r.Context())
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	writeJSON(w, http.StatusOK, shardsResponse{shards})
+}
+
+type shardsResponse struct {
+	Shards []ShardInfo `json:"shards"`
+}
+
+type setShardRequest struct {
+	State ShardState `json:"state"`
+}
+
+func (f *Fleet) handleSetShard(w http.ResponseWriter, r *http.Request) {
+	var request setShardRequest
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		writeJSON(w, http.StatusBadRequest, errorResponse{"invalid JSON body"})
+		return
+	}
+	err := f.SetShard(r.Context(), r.PathValue("shard"), request.State)
+	switch {
+	case errors.Is(err, ErrShardUnknown):
+		writeJSON(w, http.StatusNotFound, errorResponse{err.Error()})
+	case err != nil:
+		writeJSON(w, http.StatusConflict, errorResponse{err.Error()})
+	default:
+		f.handleListShards(w, r)
+	}
+}
+
+// metricsTTL is how long one reading of the metrics is served. Counting the
+// registry's tenants reads every row, and a scraper asks every few seconds.
+const metricsTTL = 10 * time.Second
+
+// handleMetrics writes the fleet's counters in the Prometheus text format.
+func (f *Fleet) handleMetrics(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+	f.metrics.mu.Lock()
+	defer f.metrics.mu.Unlock()
+	if f.metrics.text != "" && time.Since(f.metrics.at) < metricsTTL {
+		_, _ = w.Write([]byte(f.metrics.text))
+		return
+	}
+	stats, err := f.Stats(r.Context())
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, errorResponse{err.Error()})
+		return
+	}
+	var out strings.Builder
+	gauge := func(name, help string, value int64) {
+		fmt.Fprintf(&out, "# HELP miniloop_fleet_%s %s\n# TYPE miniloop_fleet_%s gauge\nminiloop_fleet_%s %d\n", name, help, name, name, value)
+	}
+	counter := func(name, help string, value int64) {
+		fmt.Fprintf(&out, "# HELP miniloop_fleet_%s_total %s\n# TYPE miniloop_fleet_%s_total counter\nminiloop_fleet_%s_total %d\n", name, help, name, name, value)
+	}
+	gauge("active_tenants", "Assistants open on this node.", int64(stats.Active))
+	gauge("max_active_tenants", "Assistants this node may have open.", int64(stats.MaxActive))
+	gauge("turns_in_use", "Model turns running on this node.", int64(stats.TurnsInUse))
+	gauge("turns_waiting", "Loops waiting for a model turn on this node.", stats.TurnsWaiting)
+	gauge("leftovers", "Copies of tenants' data written down to be removed.", int64(stats.Leftovers))
+	gauge("usage_owed", "Model calls this node has still to record in the registry.", int64(stats.UsageOwed))
+	gauge("cache_bytes", "What this node's copies of tenants took at the last sweep.", stats.CacheBytes)
+	fmt.Fprint(&out, "# HELP miniloop_fleet_tenants Tenants in the registry by where their data is.\n# TYPE miniloop_fleet_tenants gauge\n")
+	for _, state := range []TenantState{TenantNew, TenantWarm, TenantCold} {
+		fmt.Fprintf(&out, "miniloop_fleet_tenants{state=%q} %d\n", string(state), stats.Tenants[state])
+	}
+	alive := 0
+	for _, node := range stats.Nodes {
+		if node.Alive {
+			alive++
+		}
+	}
+	gauge("nodes_alive", "Nodes whose heartbeat is current.", int64(alive))
+	fmt.Fprint(&out, "# HELP miniloop_fleet_shard_tenants Tenants whose data is in the shard.\n# TYPE miniloop_fleet_shard_tenants gauge\n")
+	for _, shard := range stats.Shards {
+		fmt.Fprintf(&out, "miniloop_fleet_shard_tenants{shard=%q,state=%q} %d\n", shard.Name, string(shard.State), shard.Tenants)
+	}
+	fmt.Fprint(&out, "# HELP miniloop_fleet_shard_down Whether the shard failed this node's last statements.\n# TYPE miniloop_fleet_shard_down gauge\n")
+	for _, shard := range stats.Shards {
+		down := 0
+		if shard.Down {
+			down = 1
+		}
+		fmt.Fprintf(&out, "miniloop_fleet_shard_down{shard=%q} %d\n", shard.Name, down)
+	}
+	for _, c := range []struct {
+		name, help string
+		value      int64
+	}{
+		{"activations", "Assistants opened.", stats.Activations}, {"hibernations", "Assistants put to sleep.", stats.Hibernations},
+		{"evictions", "Quiet assistants closed to make room.", stats.Evictions}, {"rejections", "Opens refused because the node was full.", stats.Rejections},
+		{"stalls", "Assistants closed for staying busy without progress.", stats.Stalls}, {"wake_failures", "Due tenants that failed to open.", stats.WakeFailures},
+		{"pushes", "Pushes received.", stats.Pushes}, {"forwards", "Requests passed on to another node.", stats.Forwards},
+		{"route_hits", "Requests passed on without asking the registry.", stats.RouteHits}, {"takeovers", "Tenants recovered from stopped nodes.", stats.Takeovers},
+		{"fences", "Times this node closed its tenants after missing heartbeats.", stats.Fences}, {"outages", "Registry outages this node kept its tenants open through.", stats.Outages},
+		{"abandons", "Tenants given up because the vault refused a checkpoint.", stats.Abandons}, {"checkpoints", "Checkpoints written.", stats.Checkpoints},
+		{"checkpoint_bytes", "Bytes of pages written in checkpoints.", stats.CheckpointBytes}, {"vault_pulls", "Tenants read from the vault.", stats.VaultPulls},
+		{"vault_pulled_bytes", "Bytes of tenants read from the vault.", stats.VaultPulledBytes}, {"cache_reuses", "Opens that reused the node's copy.", stats.CacheReuses},
+		{"cache_drops", "Copies of tenants dropped from the node.", stats.CacheDrops}, {"moves", "Tenants moved between shards.", stats.Moves},
+		{"purges", "Leftover copies removed.", stats.Purges}, {"corrupt", "Tenants whose stored pages failed their checksum.", stats.Corrupt},
+		{"frozen", "Tenants moved to the archive store.", stats.Frozen}, {"thawed", "Tenants read back from the archive store.", stats.Thawed},
+		{"model_calls", "Model calls made.", stats.ModelCalls},
+	} {
+		counter(c.name, c.help, c.value)
+	}
+	f.metrics.text, f.metrics.at = out.String(), time.Now()
+	_, _ = w.Write([]byte(f.metrics.text))
 }
 
 // tokenBucket limits one owner's request rate.
