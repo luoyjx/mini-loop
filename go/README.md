@@ -11,7 +11,10 @@ private chat with the owner's Telegram bot, a DM with the owner's Discord bot, o
 email. The opt-in `fleet` subcommand hosts many owners' assistants in one process
 behind per-tenant tokens and keeps each asleep while it has nothing to do; an
 optional push token lets a mail notification wake one, and with `-advertise`
-several fleet processes serve one data directory. The page follows changes
+several fleet processes serve one data directory. With
+`MINILOOP_FLEET_DATABASE_URL` the fleet keeps its registry and the tenants'
+files in PostgreSQL through `github.com/jackc/pgx/v5`, and a node's directory
+is a cache. The page follows changes
 with a long poll, and each worker turn's outcome is committed in one transaction.
 
 Mail and calendar live in a simulated MCP server, the `mock-mcp` subcommand, which

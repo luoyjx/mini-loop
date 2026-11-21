@@ -28,6 +28,13 @@ HOST_SHA = "f19801fac73814395621a7b1995bfe4e38ed04cd32357b3b04ec035742562c13"
 G5 = "docs/audits/go-persistence-required-recipe-ledger-2026-10-14.json"
 G5_SHA = "df1fd9ca53f60e9a6fffa92a69d2b360ad5987b020458d7a93f9c9eb0a120312"
 MODULE = "github.com/luoyjx/mini-loop/go"
+# go.mod's requirements, direct then indirect, as bootstrap.py records them.
+APPROVED_MODULES = [
+    "github.com/jackc/pgx/v5@v5.7.6", "github.com/mattn/go-sqlite3@v1.14.52",
+    "github.com/jackc/pgpassfile@v1.0.0", "github.com/jackc/pgservicefile@v0.0.0-20240606120523-5a60cdf6a761",
+    "github.com/jackc/puddle/v2@v2.2.2", "golang.org/x/crypto@v0.37.0", "golang.org/x/sync@v0.13.0",
+    "golang.org/x/text@v0.24.0",
+]
 PACKAGE_SUFFIXES = """agent astcontext audit background benchmark cmd/miniloop cmd/miniloop-audit cmd/traceview
 config cron decisions diagnostics dotenv durable efficiency httpapi identity improvement internal/commandenv
 internal/fnmatch internal/jsonsyntax internal/jsonvalue internal/punycode internal/pytext launcher mcp memory
@@ -392,7 +399,8 @@ def bootstrap_evidence(api):
         require(api.check_ref(boot["module_inputs"][name]).read_bytes() == (api.repo / "go" / name).read_bytes(), "module input differs")
     modules = boot["modules"]
     require(modules["approved_module"] == "github.com/mattn/go-sqlite3" and modules["version"] == "v1.14.52"
-            and modules["manifest"], "public module preparation changed dependencies")
+            and modules["approved"] == APPROVED_MODULES and modules["manifest"],
+            "public module preparation changed dependencies")
     if not api.artifact_check:
         module_root = api.local(modules["path"])
         for name, item in modules["manifest"].items():
@@ -417,6 +425,7 @@ def bootstrap_evidence(api):
     node = node_evidence(api, boot, image, commands)
     return image, {"bootstrap": api.ref(bootstrap_path), "image": api.ref(image_path), "base_images": image["base_images"],
                    "probes": image["probes"], "node": node, "wheel_count": 22, "module": "github.com/mattn/go-sqlite3@v1.14.52",
+                   "modules": APPROVED_MODULES,
                    "nontransported_file_checks": "Original CI verifies actual Node/wheel/module/cache/workspace/dependency bytes; artifact --check revalidates retained raw proofs only."}
 
 

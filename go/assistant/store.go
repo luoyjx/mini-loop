@@ -390,12 +390,31 @@ func (s *Store) RetryTrigger(ctx context.Context, id int64, notBefore time.Time,
 	return err
 }
 
-// RequeueInterrupted returns triggers a crashed process left running to the
+// RequeueInterrupted returns triggers a stopped process left running to the
 // queue. Their workers may have produced proposals already; proposal dedupe
-// keys make the re-run converge instead of duplicating drafts.
+// keys make the re-run converge instead of duplicating drafts. A trigger that
+// was already claimed maxAttempts times is failed instead: a turn that takes
+// its process down every time it runs must not be run for ever. It reports how
+// many it requeued.
 func (s *Store) RequeueInterrupted(ctx context.Context, now time.Time) (int64, error) {
 	var count int64
 	err := s.inTx(ctx, func(tx *sql.Tx) error {
+		spent, err := queryTriggers(ctx, tx, `SELECT `+triggerColumns+` FROM triggers WHERE status=? AND attempts>=? ORDER BY id`, string(TriggerRunning), maxAttempts)
+		if err != nil {
+			return err
+		}
+		for _, trigger := range spent {
+			cause := fmt.Sprintf("执行中被中断 %d 次，不再自动重试", trigger.Attempts)
+			if err := settleTrigger(ctx, tx, trigger.ID, TriggerFailed, cause, nil, now); err != nil {
+				return err
+			}
+			if _, err := postChannel(ctx, tx, ChannelMessage{Role: RoleSystem, Text: fmt.Sprintf("触发器 #%d 处理失败：%s", trigger.ID, cause), TriggerID: trigger.ID}, now); err != nil {
+				return err
+			}
+			if err := appendLedger(ctx, tx, LedgerEntry{At: now, Kind: LedgerRecovery, Actor: "daemon", TriggerID: trigger.ID, Thread: trigger.Thread, Detail: cause}); err != nil {
+				return err
+			}
+		}
 		result, err := tx.ExecContext(ctx, `UPDATE triggers SET status=?, decision='进程重启后重新排队', updated_at=? WHERE status=?`, string(TriggerPending), millis(now), string(TriggerRunning))
 		if err != nil {
 			return err
@@ -409,21 +428,25 @@ func (s *Store) RequeueInterrupted(ctx context.Context, now time.Time) (int64, e
 	return count, err
 }
 
-func (s *Store) Triggers(ctx context.Context, limit int) ([]Trigger, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT `+triggerColumns+` FROM triggers ORDER BY id DESC LIMIT ?`, limit)
+func queryTriggers(ctx context.Context, q queryer, query string, args ...any) ([]Trigger, error) {
+	rows, err := q.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	result := []Trigger{}
+	triggers := []Trigger{}
 	for rows.Next() {
 		trigger, err := scanTrigger(rows)
 		if err != nil {
 			return nil, err
 		}
-		result = append(result, trigger)
+		triggers = append(triggers, trigger)
 	}
-	return result, rows.Err()
+	return triggers, rows.Err()
+}
+
+func (s *Store) Triggers(ctx context.Context, limit int) ([]Trigger, error) {
+	return queryTriggers(ctx, s.db, `SELECT `+triggerColumns+` FROM triggers ORDER BY id DESC LIMIT ?`, limit)
 }
 
 // ---- subscriptions ----

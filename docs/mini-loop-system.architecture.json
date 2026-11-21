@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child, opt-in Telegram / Discord / email channels and an opt-in multi-tenant fleet host with push wake-ups and opt-in nodes on one data directory",
+    "subtitle": "Independent Python / Go / standard Agent Server paths; one Task runtime with redacted trace/usage and Temporal authority; opt-in Go personal-assistant demo with a simulated MCP child, opt-in Telegram / Discord / email channels and an opt-in multi-tenant fleet host with push wake-ups, opt-in nodes and opt-in PostgreSQL storage",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -1364,7 +1364,22 @@
         340,
         76
       ],
-      "tag": "App per tenant / sleeps idle / turn gate / push wakes / nodes"
+      "tag": "App per tenant / sleeps idle / turn gate / push wakes / nodes / database"
+    },
+    {
+      "id": "paVault",
+      "type": "database",
+      "label": "PostgreSQL (opt-in)",
+      "sublabel": "MINILOOP_FLEET_DATABASE_URL · run by the operator",
+      "pos": [
+        1530,
+        4740
+      ],
+      "size": [
+        360,
+        76
+      ],
+      "tag": "registry rows / tenant files as 4 KiB pages / fenced checkpoints"
     }
   ],
   "boundaries": [
@@ -1494,7 +1509,8 @@
         "paEmbed",
         "paFacts",
         "paRemote",
-        "paFleet"
+        "paFleet",
+        "paVault"
       ],
       "pad": 50
     }
@@ -2923,6 +2939,15 @@
         1290,
         4858
       ]
+    },
+    {
+      "id": "paFleetVault",
+      "from": "paFleet",
+      "to": "paVault",
+      "label": "checkpoints / registry",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left"
     }
   ],
   "cards": [
@@ -3190,7 +3215,7 @@
       "dot": "cyan",
       "title": "Opt-in Go personal-assistant demo",
       "items": [
-        "Review baseline 23947de plus the second 2026-11-21 iteration (D13), which lets several fleet processes serve one data directory (see Fleet host below). D12 before it compares the assistant with the Grok Bot and DeepSeek SuperAgent server diagrams and filled three gaps: a fleet push, a page long poll and a one-transaction turn settlement. go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the single-owner daemon's page binds loopback only and has no authentication. D10 added the opt-in remote channels (net/http, a small IMAP client and net/smtp).",
+        "Review baseline 36d3ec6 plus the third 2026-11-21 iteration (D14), which keeps the fleet's registry and tenants in PostgreSQL when MINILOOP_FLEET_DATABASE_URL is set, so a node's disk is a cache (see Fleet host below); the Go module gains the approved github.com/jackc/pgx/v5. D13 before it lets several fleet processes serve one data directory. D12 before it compares the assistant with the Grok Bot and DeepSeek SuperAgent server diagrams and filled three gaps: a fleet push, a page long poll and a one-transaction turn settlement. go/assistant and cmd/miniloop-assistant remain a Go addition with no Python counterpart; go/memory, go/agent and go/mcp are unchanged and no dependency was added. cmd/miniloop defaults are unchanged; the single-owner daemon's page binds loopback only and has no authentication. D10 added the opt-in remote channels (net/http, a small IMAP client and net/smtp).",
         "Durable parts: assistant.db (triggers, mail cursor, subscriptions, tasks, event reminders, proposal outbox, open questions, channel, ledger, pause switch, dismissals, contacts, candidate mode, preparation jobs, task-check snapshots, watchdog flags, profile, memory aliases and vectors, entities and facts, remote channel links and cursors), agent.db (sqlitestate transcripts, action journal, leases) and memory/; daemon.lock keeps one daemon per data directory. Mail and calendar live only in the mock-mcp child's world.db, reached through go/mcp stdio tools/call. With -embed ollama, a local Ollama server the owner starts computes embeddings; neither the daemon nor launchd starts it.",
         "Tasks: workers create, reschedule and complete tasks bound to their thread. The scheduler claims due checks with a task.wakeup trigger and a fallback check in one transaction; the thread's subscribed worker resumes. Proposal outcomes bring checks forward; six checks at most, then the user takes over.",
         "Batches and reports: the router claims a thread's due pending triggers of one trust class together and runs the worker once; chat never mixes with untrusted kinds and routine slots run alone. The worker ends with report: notify posts, ask posts one question that waits on the attention list, quiet only writes the ledger. The answer returns to the asking thread as an untrusted user.answer trigger. A turn without a report is delivered as notify. The turn's lines, the end of every trigger in the batch (only while still running), its task-check snapshots and its ledger rows commit in one transaction, so a crash can no longer post a reply whose trigger the restart runs again; a failed commit writes nothing and retries the batch.",
@@ -3201,7 +3226,7 @@
         "Remote channels (default off): -telegram-chat (a private chat with the owner's bot, getUpdates long poll), -discord-user (the bot's DM over REST every 3 s, no gateway) and -email-owner with -email-user/-email-imap/-email-smtp/-email-authserv (the assistant's own mailbox: IMAP EXAMINE + BODY.PEEK every 30 s, SMTP send). Secrets come only from MINILOOP_TELEGRAM_TOKEN, MINILOOP_DISCORD_TOKEN and MINILOOP_EMAIL_PASSWORD; the MCP child never sees them and launchd-plist refuses the flags. Only the owner's account is accepted; a mail also needs dmarc=pass or dkim=pass for the owner's domain in the topmost Authentication-Results header from -email-authserv. Accepted lines, dedupe links and the cursor commit together; lines join the chat thread with explicit-human authority, and a reply to a question's message answers it. Assistant and system lines are copied to each channel in order, at least once, held while paused; a line the service refuses is skipped and recorded. Approval cards point to the page; nothing is approved remotely. Copied lines leave the machine through those services.",
         "Approval gate: workers only append pending proposals; a human decision moves pending to approved/denied, and the single outbox executes approved proposals through MCP with key proposal-<id>, so retries and restarts never double-send. Task checks are untrusted turns and can only draft. MCP data is simulated.",
         "Own computer: default data under the user application-support directory; launchd-plist prints a per-user LaunchAgent restarted on crash. Routine slots, missed task checks and upcoming-event reminders (15 minutes ahead, once per event) survive restarts and sleep. A routine slot that passed before a fresh install is marked taken instead of caught up.",
-        "Fleet host (default off): miniloop-assistant fleet hosts many owners' assistants in one process and needs MINILOOP_FLEET_ADMIN_TOKEN. Each tenant is an unchanged App on its own directory (tenants/<shard>/<id>/, created on the first request); fleet.db keeps the token hash, state, next wake, last visit and model use per day, and daemon.lock in the root refuses a second fleet. /t/{id}/ needs that tenant's bearer token (401 for an unknown tenant too), /admin/ the admin token; non-loopback listening needs TLS or -behind-tls-proxy; 20 requests/s per tenant. An assistant is open only while its owner uses it or something is due: once quiet and its owner gone -idle (2 min) it sleeps, writing its next routine slot, task check, reminder or approved effect to the registry; a waker opens due tenants, an owner's request evicts the least recently used quiet tenant at -max-active, and tenants open at a crash are due at once. A fleet-wide turn gate (-turns, a quarter kept for chat) is asked before each claim; a tenant over -daily-calls is held until the next day and its chat gets 429. Owners away 7 days are no longer woken and after 30 days their directory is archived to one .tar.gz, restored on the next request. Measured with 1000 tenants and the scripted model: 2.9 ms/s idle CPU for all asleep versus 1.0 ms/s per resident assistant, 312 KB per sleeping tenant, 15 KB archived. With the optional MINILOOP_FLEET_PUSH_TOKEN, POST /push/{id} is a content-free wake hint: an open tenant polls at once, a sleeping or closing one has its next wake set to now (pushes coalesce), and a never-opened or dormant one is deferred; no provider is connected to it yet. The page follows changes with a long poll: GET api/state returns an ETag from the store version (total_changes), a simulator counter and an in-memory hash, and If-None-Match with ?wait=25 is held until a change or answered 304 (6 µs instead of a 664 µs, 30.7 KB build); a held poll keeps its tenant open. Not in the fleet: remote channels, embeddings, per-tenant time zones, sharding or object storage. Nodes (only with -advertise): several fleet processes share one data directory on one filesystem with working flock and hold daemon.lock shared. fleet.db gains nodes (address, open tenants, heartbeat every fifth of -node-ttl, 10 s) and placements (the node that holds an open tenant, claimed in one statement before the open and given up with the sleep). A request, push or delete for a tenant another live node holds is passed on once over HTTP with the owner's token checked again, and a full node passes an owner's request to the node with the most room. A node silent for -node-ttl is dead: its tenants become due and another node runs them; a stalled node's tenant directories stay locked until it closes them. There is no copy of the data, the registry is one SQLite file, -max-active and -turns are per node, and nodes on separate disks are design only."
+        "Fleet host (default off): miniloop-assistant fleet hosts many owners' assistants in one process and needs MINILOOP_FLEET_ADMIN_TOKEN. Each tenant is an unchanged App on its own directory (tenants/<shard>/<id>/, created on the first request); fleet.db keeps the token hash, state, next wake, last visit and model use per day, and daemon.lock in the root refuses a second fleet. /t/{id}/ needs that tenant's bearer token (401 for an unknown tenant too), /admin/ the admin token; non-loopback listening needs TLS or -behind-tls-proxy; 20 requests/s per tenant. An assistant is open only while its owner uses it or something is due: once quiet and its owner gone -idle (2 min) it sleeps, writing its next routine slot, task check, reminder or approved effect to the registry; a waker opens due tenants, an owner's request evicts the least recently used quiet tenant at -max-active, and tenants open at a crash are due at once. A fleet-wide turn gate (-turns, a quarter kept for chat) is asked before each claim; a tenant over -daily-calls is held until the next day and its chat gets 429. Owners away 7 days are no longer woken and after 30 days their directory is archived to one .tar.gz, restored on the next request. Measured with 1000 tenants and the scripted model: 2.9 ms/s idle CPU for all asleep versus 1.0 ms/s per resident assistant, 312 KB per sleeping tenant, 15 KB archived. With the optional MINILOOP_FLEET_PUSH_TOKEN, POST /push/{id} is a content-free wake hint: an open tenant polls at once, a sleeping or closing one has its next wake set to now (pushes coalesce), and a never-opened or dormant one is deferred; no provider is connected to it yet. The page follows changes with a long poll: GET api/state returns an ETag from the store version (total_changes), a simulator counter and an in-memory hash, and If-None-Match with ?wait=25 is held until a change or answered 304 (6 µs instead of a 664 µs, 30.7 KB build); a held poll keeps its tenant open. Not in the fleet: remote channels, embeddings, per-tenant time zones, sharding or object storage. Nodes (only with -advertise): several fleet processes share one data directory on one filesystem with working flock and hold daemon.lock shared. fleet.db gains nodes (address, open tenants, heartbeat every fifth of -node-ttl, 10 s) and placements (the node that holds an open tenant, claimed in one statement before the open and given up with the sleep). A request, push or delete for a tenant another live node holds is passed on once over HTTP with the owner's token checked again, and a full node passes an owner's request to the node with the most room. A node silent for -node-ttl is dead: its tenants become due and another node runs them; a stalled node's tenant directories stay locked until it closes them. There is no copy of the data, the registry is one SQLite file, -max-active and -turns are per node, and nodes on separate disks are design only. Database (only with MINILOOP_FLEET_DATABASE_URL, read from the environment and never printed): the registry and every tenant's files live in PostgreSQL and -data is the node's cache, so nodes share nothing else. A tenant is still an unchanged App on SQLite files, open on one node. Every -checkpoint (2 s) and at sleep, one transaction replaces the changed 4 KiB pages (vault_pages) and advances the tenant's checkpoint number (vault_heads); the databases are read from snapshots checked to be of one instant. An owner's write is answered, and an approved effect sent, only after a checkpoint stored it. A checkpoint is refused without the tenant's placement and the number the node last wrote, so a node taken for dead cannot write and closes the tenant. After a node is killed, the node that takes the tenant over reads the last checkpoint and runs the interrupted triggers again in their session; leases a stopped process left are cleared on open, and a trigger interrupted on its fourth run is failed. Measured: 93 KB of pages per turn for 20 KB of new data, 5–7 ms per checkpoint. Limits: pages, not rows; a turn is re-run, not resumed at a step; PostgreSQL's availability is the fleet's; two nodes on one laptop only."
       ]
     }
   ]

@@ -62,6 +62,13 @@ func (n *testNode) crash(t *testing.T) {
 		if err := errors.Join(tenant.app.Close(context.Background()), tenant.extra()); err != nil {
 			t.Fatal(err)
 		}
+		if tenant.replica != nil {
+			// Nothing more reaches the vault, and the copy stays unmarked.
+			<-tenant.synced
+			if err := tenant.replica.closeSources(); err != nil {
+				t.Fatal(err)
+			}
+		}
 	}
 	if err := errors.Join(n.registry.Close(), n.unlock()); err != nil {
 		t.Fatal(err)

@@ -38,6 +38,35 @@ PYTHON_IMAGE = "python:3.11.3-slim@" + PYTHON_MANIFEST
 PYTHON_CONFIG = "sha256:8c1f8aceb3c61797f503382247331e926324957d770dceb460ab0daa8f177f98"
 MODULE = "github.com/mattn/go-sqlite3"
 MODULE_VERSION = "v1.14.52"
+# The PostgreSQL driver the assistant fleet's database needs, approved on
+# 2026-11-21, and what it requires. The rest of go.sum is the go.mod files, and
+# for some the sources, of modules only pgx's own tests use; the build never
+# reads them, and `go mod verify` checks whatever was downloaded.
+DIRECT_MODULES = (("github.com/jackc/pgx/v5", "v5.7.6"), (MODULE, MODULE_VERSION))
+INDIRECT_MODULES = (
+    ("github.com/jackc/pgpassfile", "v1.0.0"),
+    ("github.com/jackc/pgservicefile", "v0.0.0-20240606120523-5a60cdf6a761"),
+    ("github.com/jackc/puddle/v2", "v2.2.2"),
+    ("golang.org/x/crypto", "v0.37.0"),
+    ("golang.org/x/sync", "v0.13.0"),
+    ("golang.org/x/text", "v0.24.0"),
+)
+TEST_ONLY_SUMS = (
+    ("github.com/davecgh/go-spew", "v1.1.0/go.mod"),
+    ("github.com/davecgh/go-spew", "v1.1.1"),
+    ("github.com/davecgh/go-spew", "v1.1.1/go.mod"),
+    ("github.com/pmezard/go-difflib", "v1.0.0"),
+    ("github.com/pmezard/go-difflib", "v1.0.0/go.mod"),
+    ("github.com/stretchr/objx", "v0.1.0/go.mod"),
+    ("github.com/stretchr/testify", "v1.3.0/go.mod"),
+    ("github.com/stretchr/testify", "v1.7.0/go.mod"),
+    ("github.com/stretchr/testify", "v1.8.1"),
+    ("github.com/stretchr/testify", "v1.8.1/go.mod"),
+    ("gopkg.in/check.v1", "v0.0.0-20161208181325-20d25e280405/go.mod"),
+    ("gopkg.in/yaml.v3", "v3.0.0-20200313102051-9f266ea9e77c/go.mod"),
+    ("gopkg.in/yaml.v3", "v3.0.1"),
+    ("gopkg.in/yaml.v3", "v3.0.1/go.mod"),
+)
 MEMORY = 3 * 1024 * 1024 * 1024
 LABEL = "io.mini-loop.go-port.bootstrap"
 NODE_VERSION = "v22.23.3"
@@ -340,11 +369,15 @@ def module_inputs(repo: Path, out: Path) -> dict:
     folder.mkdir()
     module_text = (repo / "go/go.mod").read_text()
     lines = [line.strip() for line in module_text.splitlines() if line.strip()]
-    require(lines == ["module github.com/luoyjx/mini-loop/go", "go 1.23", f"require {MODULE} {MODULE_VERSION}"],
-            "review the changed Go dependency inventory before CI preparation")
+    expected = (["module github.com/luoyjx/mini-loop/go", "go 1.23.0", "require ("]
+                + [f"{name} {version}" for name, version in DIRECT_MODULES] + [")", "require ("]
+                + [f"{name} {version} // indirect" for name, version in INDIRECT_MODULES] + [")"])
+    require(lines == expected, "review the changed Go dependency inventory before CI preparation")
     sums = [line.split() for line in (repo / "go/go.sum").read_text().splitlines() if line.strip()]
-    require(len(sums) == 2 and {(row[0], row[1]) for row in sums} ==
-            {(MODULE, MODULE_VERSION), (MODULE, MODULE_VERSION + "/go.mod")}
+    built = DIRECT_MODULES + INDIRECT_MODULES
+    inventory = ({(name, version) for name, version in built} | {(name, version + "/go.mod") for name, version in built}
+                 | set(TEST_ONLY_SUMS))
+    require(len(sums) == len(inventory) and {(row[0], row[1]) for row in sums} == inventory
             and all(len(row) == 3 and row[2].startswith("h1:") for row in sums), "unexpected Go sum inventory")
     for name in ("go.mod", "go.sum"):
         shutil.copyfile(repo / "go" / name, folder / name)
@@ -431,6 +464,7 @@ def bootstrap(repo: Path, out: Path, checked: dict) -> int:
                                         "GOPROXY": "https://proxy.golang.org", "GOSUMDB": "sum.golang.org",
                                         "GOPRIVATE": "", "GONOPROXY": "", "GONOSUMDB": ""})
         record["modules"] = {"path": str(modules), "approved_module": MODULE, "version": MODULE_VERSION,
+                             "approved": [f"{name}@{version}" for name, version in DIRECT_MODULES + INDIRECT_MODULES],
                              "source": "fresh public proxy download verified by committed go.sum; no uploaded local cache",
                              "gate_mount_policy": "read-only with GOPROXY=off/GOSUMDB=off and --network=none",
                              "manifest": module_manifest(modules)}

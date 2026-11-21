@@ -24,6 +24,8 @@ import (
 // A Fleet hosts many owners' assistants in one process. Each tenant is an
 // unchanged single-owner App on its own data directory, so tenants share no
 // tables and one tenant's data can be moved, archived or deleted as a unit.
+// With a database the directory is a cache and the tenant's data lives in
+// the vault, where any node can read it.
 // The fleet keeps only the assistants that have something to do in memory:
 // an owner's request opens one, and once it is quiet and its owner has gone
 // it is closed again and its next due time is written to the registry, where
@@ -36,6 +38,9 @@ import (
 type Fleet struct {
 	config   FleetConfig
 	registry *registry
+	// vault keeps the tenants' data in the fleet's database; nil keeps it in
+	// the data directory only.
+	vault    *vault
 	unlock   func() error
 	gate     *turnGate
 	now      func() time.Time
@@ -47,6 +52,9 @@ type Fleet struct {
 	drained *sync.Cond
 	tenants map[TenantID]*tenant
 	closed  bool
+	// unrecorded holds tenants this node closed while the registry could not
+	// be written, with when each must wake; the heartbeat records them.
+	unrecorded map[TenantID]time.Time
 	// kick runs the waker at once, after a push made a sleeping tenant due.
 	// node names this process in the registry; a restart is a new node.
 	node      string
@@ -64,7 +72,8 @@ type Fleet struct {
 // FleetConfig sizes a fleet. Zero values take the defaults noted per field;
 // DailyCalls, DormantAfter, ArchiveAfter and Sweep stay off at zero.
 type FleetConfig struct {
-	// DataDir holds fleet.db and tenants/<shard>/<id>/.
+	// DataDir holds fleet.db and tenants/<shard>/<id>/; with Database it
+	// holds only this node's copies of the tenants it opened.
 	DataDir string
 	// Provider is the model shared by every tenant; Model names it.
 	Provider   agent.Provider
@@ -97,7 +106,9 @@ type FleetConfig struct {
 	// for this long; its next request wakes it again. Zero keeps waking.
 	DormantAfter time.Duration
 	// ArchiveAfter compresses the data directory of a tenant whose owner
-	// has been absent this long into one file; zero never archives.
+	// has been absent this long into one file; zero never archives. With
+	// Database nothing is archived: a node drops its copy of a tenant it has
+	// not opened for this long.
 	ArchiveAfter time.Duration
 	// Sweep wakes a sleeping tenant at least this often, for connectors
 	// that cannot announce new mail; zero relies on the tenant's own timers.
@@ -124,6 +135,20 @@ type FleetConfig struct {
 	// beats (default a fifth of NodeTTL).
 	NodeTTL  time.Duration
 	BeatTick time.Duration
+
+	// Database is the URL of a PostgreSQL database, such as
+	// postgres://user:password@host:5432/name. Set, the registry and every
+	// tenant's data live there and DataDir is only this node's cache, so
+	// nodes need no shared disk. Empty, both live in DataDir.
+	Database string
+	// Checkpoint is how often an open tenant's changes are copied to the
+	// database (default 2s); a node that is lost loses at most this much of
+	// a running turn. It applies only with Database.
+	Checkpoint time.Duration
+	// registryDir and offload are for tests: a SQLite registry in a directory
+	// of its own, and tenants kept in it the way they are kept in PostgreSQL.
+	registryDir string
+	offload     bool
 
 	// The rest is passed to every tenant's App unchanged.
 	SchedulerTick time.Duration
@@ -158,7 +183,7 @@ const (
 )
 
 type fleetCounters struct {
-	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures, pushes, forwards, takeovers, fences atomic.Int64
+	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures, pushes, forwards, takeovers, fences, abandons atomic.Int64
 }
 
 // tenant is one open (or opening, or closing) assistant. Fields other than
@@ -176,6 +201,10 @@ type tenant struct {
 	extra   func() error
 	token   string
 	limiter *tokenBucket
+	// replica copies the tenant to the vault; synced closes when its
+	// checkpoint loop has stopped. Both are nil without a vault.
+	replica *replica
+	synced  chan struct{}
 
 	refs    int
 	touched time.Time
@@ -224,7 +253,7 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	}{
 		{&config.IdleTTL, 2 * time.Minute}, {&config.StallAfter, 10 * time.Minute}, {&config.StallBackoff, 5 * time.Minute},
 		{&config.WakeTick, time.Second}, {&config.ReapTick, 5 * time.Second}, {&config.JanitorTick, 10 * time.Minute},
-		{&config.NodeTTL, 10 * time.Second},
+		{&config.NodeTTL, 10 * time.Second}, {&config.Checkpoint, 2 * time.Second},
 	}
 	for _, d := range durations {
 		if *d.value <= 0 {
@@ -263,15 +292,23 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	if err != nil {
 		return nil, err
 	}
-	registry, err := openRegistry(ctx, filepath.Join(config.DataDir, "fleet.db"))
+	home := config.DataDir
+	if config.registryDir != "" {
+		home = config.registryDir
+	}
+	database, err := openFleetDB(ctx, home, config.Database)
 	if err != nil {
 		return nil, errors.Join(fmt.Errorf("open fleet registry: %w", err), unlock())
 	}
+	registry := &registry{database}
 	run, stop := context.WithCancel(context.Background())
 	fleet := &Fleet{
 		config: config, registry: registry, unlock: unlock, gate: newTurnGate(config.Turns, config.ChatTurns),
-		now: config.Now, log: &lockedWriter{w: config.Log}, tenants: map[TenantID]*tenant{}, run: run, stop: stop, kick: make(chan struct{}, 1),
+		now: config.Now, log: &lockedWriter{w: config.Log}, tenants: map[TenantID]*tenant{}, unrecorded: map[TenantID]time.Time{}, run: run, stop: stop, kick: make(chan struct{}, 1),
 		node: randomHex(8), started: config.Now(), lastBeat: config.Now(), transport: nodeTransport(),
+	}
+	if config.Database != "" || config.offload {
+		fleet.vault = &vault{db: database, now: config.Now}
 	}
 	fleet.drained = sync.NewCond(&fleet.mu)
 	if err := fleet.join(ctx); err != nil {
@@ -640,7 +677,17 @@ func (f *Fleet) open(ctx context.Context, t *tenant) (err error) {
 		}
 	}()
 	dir := f.dir(t.id)
-	if err := f.restore(record, dir); err != nil {
+	var link *replica
+	if f.vault != nil {
+		if link, _, err = f.vault.attach(ctx, t.id, f.node, dir, record.CreatedAt); err != nil {
+			return err
+		}
+		defer func() {
+			if err != nil {
+				err = errors.Join(err, link.abandon())
+			}
+		}()
+	} else if err := f.restore(record, dir); err != nil {
 		return fmt.Errorf("restore tenant %s: %w", t.id, err)
 	}
 	if err := os.MkdirAll(dir, 0o700); err != nil {
@@ -680,7 +727,16 @@ func (f *Fleet) open(ctx context.Context, t *tenant) (err error) {
 		return errors.Join(err, app.Close(ctx), extra())
 	}
 	run, cancel := context.WithCancel(f.run)
+	if link != nil {
+		t.replica, t.synced = link, make(chan struct{})
+		// An approved effect leaves the node only after the approval is in
+		// the vault.
+		app.Outbox.durable = func(ctx context.Context) error { return f.barrier(ctx, t) }
+	}
 	app.Start(run)
+	if link != nil {
+		go f.checkpoints(run, t)
+	}
 	t.app, t.meter, t.handler, t.cancel, t.extra = app, meter, jsonOnly(app.routes()), cancel, extra
 	t.token, t.limiter, t.opened = record.tokenHash, newTokenBucket(tenantRate, tenantBurst, time.Now()), now
 	f.counters.activations.Add(1)
@@ -693,6 +749,9 @@ func (f *Fleet) open(ctx context.Context, t *tenant) (err error) {
 func (f *Fleet) hibernate(t *tenant, floor time.Time) {
 	t.cancel()
 	t.app.Wait()
+	if t.synced != nil {
+		<-t.synced
+	}
 	f.mu.Lock()
 	for t.refs > 0 {
 		f.drained.Wait()
@@ -708,14 +767,28 @@ func (f *Fleet) hibernate(t *tenant, floor time.Time) {
 	if err := errors.Join(t.app.Close(ctx), t.extra()); err != nil {
 		fmt.Fprintf(f.log, "fleet: close %s: %v\n", t.id, err)
 	}
+	if t.replica != nil {
+		// The last checkpoint goes in before the placement is given up. If
+		// it fails the vault keeps the one before, and the node's copy is
+		// read from the vault again before anyone uses it.
+		if err := t.replica.seal(ctx); err != nil && !errors.Is(err, errFenced) {
+			fmt.Fprintf(f.log, "fleet: store %s: %v\n", t.id, err)
+		}
+	}
 	// When another node took the tenant for dead its row is that node's now,
 	// and it wakes the tenant itself.
-	if _, err := f.registry.hibernated(ctx, t.id, f.node, next, touched); err != nil {
-		fmt.Fprintf(f.log, "fleet: record sleep of %s: %v\n", t.id, err)
+	_, unrecorded := f.registry.hibernated(ctx, t.id, f.node, next, touched)
+	if unrecorded != nil {
+		fmt.Fprintf(f.log, "fleet: record sleep of %s: %v\n", t.id, unrecorded)
 	}
 	f.counters.hibernations.Add(1)
 	f.mu.Lock()
 	delete(f.tenants, t.id)
+	if unrecorded != nil {
+		// The registry still says this node runs it, so nobody would wake
+		// it. The heartbeat writes the record once the registry answers.
+		f.unrecorded[t.id] = next
+	}
 	pushed := t.pushed
 	f.mu.Unlock()
 	close(t.gone)
@@ -801,6 +874,7 @@ func (f *Fleet) evict(ctx context.Context) bool {
 // reap puts to sleep every open assistant whose owner has gone and that has
 // nothing to do, and closes one that stays busy without making progress.
 func (f *Fleet) reap(ctx context.Context) {
+	f.recordSleeps(ctx)
 	now := f.now()
 	f.mu.Lock()
 	candidates := []*tenant{}
@@ -839,6 +913,39 @@ func (f *Fleet) reap(ctx context.Context) {
 		}
 		f.hibernate(t, floor)
 	})
+}
+
+// recordSleeps writes the sleep of every tenant that was closed while the
+// registry could not be written. It holds the tenant's slot meanwhile, so a
+// request that opens the tenant waits and then finds a consistent row.
+func (f *Fleet) recordSleeps(ctx context.Context) {
+	f.mu.Lock()
+	pending := make([]TenantID, 0, len(f.unrecorded))
+	for id := range f.unrecorded {
+		pending = append(pending, id)
+	}
+	f.mu.Unlock()
+	for _, id := range pending {
+		f.mu.Lock()
+		next, waiting := f.unrecorded[id]
+		if _, open := f.tenants[id]; open || !waiting || f.closed {
+			// Opened here again: the row is right as it is.
+			delete(f.unrecorded, id)
+			f.mu.Unlock()
+			continue
+		}
+		hold := &tenant{id: id, closing: true, gone: make(chan struct{})}
+		f.tenants[id] = hold
+		f.mu.Unlock()
+		_, err := f.registry.hibernated(ctx, id, f.node, next, time.Time{})
+		f.mu.Lock()
+		delete(f.tenants, id)
+		if err == nil {
+			delete(f.unrecorded, id)
+		}
+		f.mu.Unlock()
+		close(hold.gone)
+	}
 }
 
 // wakeDue opens the sleeping tenants whose time has come, oldest first, up
@@ -993,7 +1100,13 @@ func (f *Fleet) janitor(ctx context.Context) {
 		}
 		f.counters.retired.Add(int64(retired))
 	}
-	if f.config.ArchiveAfter > 0 {
+	switch {
+	case f.config.ArchiveAfter <= 0:
+	case f.vault != nil:
+		// The vault has the tenants; an absent one costs this node only its
+		// cached copy, which is dropped instead of archived.
+		f.sweepCache(ctx, time.Now().Add(-f.config.ArchiveAfter))
+	default:
 		f.archiveAbsent(ctx, now.Add(-f.config.ArchiveAfter))
 	}
 }
@@ -1027,6 +1140,20 @@ type FleetStats struct {
 	Forwards  int64      `json:"forwards"`
 	Takeovers int64      `json:"takeovers"`
 	Fences    int64      `json:"fences"`
+	// Database is the engine of the fleet's database. With a vault, the
+	// rest counts this node's traffic with it: checkpoints written and their
+	// pages and bytes, tenants read from it and their bytes, opens that
+	// reused the node's cached copy, and tenants the node gave up because
+	// the vault refused its checkpoint.
+	Database         string `json:"database"`
+	Vault            bool   `json:"vault"`
+	Checkpoints      int64  `json:"checkpoints"`
+	CheckpointPages  int64  `json:"checkpoint_pages"`
+	CheckpointBytes  int64  `json:"checkpoint_bytes"`
+	VaultPulls       int64  `json:"vault_pulls"`
+	VaultPulledBytes int64  `json:"vault_pulled_bytes"`
+	CacheReuses      int64  `json:"cache_reuses"`
+	Abandons         int64  `json:"abandons"`
 	// ModelCalls counts calls since the process started; Today sums every
 	// tenant's use on the current local day from the registry.
 	ModelCalls int64       `json:"model_calls"`
@@ -1050,7 +1177,7 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 	active := len(f.tenants)
 	f.mu.Unlock()
 	c := &f.counters
-	return FleetStats{
+	stats := FleetStats{
 		Tenants: counts, Active: active, MaxActive: f.config.MaxActive,
 		Turns: f.config.Turns, TurnsInUse: f.gate.inUse(), TurnsWaiting: f.gate.waiting.Load(),
 		Activations: c.activations.Load(), Hibernations: c.hibernations.Load(), Evictions: c.evictions.Load(),
@@ -1058,7 +1185,14 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 		Archives: c.archives.Load(), Retired: c.retired.Load(), WakeFailures: c.wakeFailures.Load(), Pushes: c.pushes.Load(),
 		Node: f.node, Nodes: nodes, Forwards: c.forwards.Load(), Takeovers: c.takeovers.Load(), Fences: c.fences.Load(),
 		ModelCalls: f.calls.Load(), Today: today,
-	}, nil
+		Database: f.registry.db.Engine(), Vault: f.vault != nil, Abandons: c.abandons.Load(),
+	}
+	if f.vault != nil {
+		v := &f.vault.counters
+		stats.Checkpoints, stats.CheckpointPages, stats.CheckpointBytes = v.checkpoints.Load(), v.pages.Load(), v.bytes.Load()
+		stats.VaultPulls, stats.VaultPulledBytes, stats.CacheReuses = v.pulls.Load(), v.pulledBytes.Load(), v.reuses.Load()
+	}
+	return stats, nil
 }
 
 // ---- helpers ----

@@ -23272,3 +23272,93 @@ Code baseline: `23947de` plus changes to `go/assistant` and
 - authentication between nodes beyond the shared data directory and tokens;
 - availability during `NodeTTL` after a node is killed;
 - a Python counterpart.
+
+## Go-only slice — assistant demo: the fleet's state in PostgreSQL (2026-11-21)
+
+Code baseline: `36d3ec6` plus changes to `go/assistant`,
+`go/cmd/miniloop-assistant`, one method in `go/sqlitestate`, `go/go.mod` and the
+Linux CI harness's module inventory.
+
+- `fleet_db.go`: the fleet's database is `fleet.db` or, with
+  `FleetConfig.Database` (`MINILOOP_FLEET_DATABASE_URL`), PostgreSQL through
+  `database/sql` and pgx. The registry's statements are written once for both
+  engines: `?` placeholders are numbered for PostgreSQL, times are `BIGINT`
+  milliseconds, and `INSERT OR IGNORE`, the scalar `MAX` and untyped insert
+  parameters were replaced by portable forms. `recoverOrphans` runs as a
+  snapshot transaction, which in PostgreSQL fails instead of writing over a row
+  a node changed meanwhile. The database URL is never printed.
+- `fleet_vault.go` keeps the tenants' files in the database, so a node's
+  directory is a cache:
+  - `vault_heads` (checkpoint number), `vault_files` and `vault_pages` (4 KiB
+    pages, each stored once). A checkpoint is one transaction that replaces the
+    changed pages and advances the number;
+  - the tenant's databases are read through SQLite's backup interface from read
+    snapshots; `replica.cut` checks, with each database's `data_version`, that
+    none was committed to between the first snapshot and the last, and reads
+    again otherwise. Plain files are compared after the databases;
+  - `replica.push` first takes the tenant's placement row and compares the
+    checkpoint number, and refuses the checkpoint when either is not this
+    node's (`errFenced`);
+  - `vault.attach` reuses the node's copy only when it was closed cleanly at
+    the vault's current checkpoint by this tenant (the copy records the
+    tenant's creation time); otherwise the copy is deleted and read from the
+    vault in one snapshot transaction.
+- `Fleet` checkpoints an open tenant every `Checkpoint` (2 s) and seals it at
+  sleep before the placement is given up. `serveStored` holds the answer to
+  every non-GET tenant request until a checkpoint has stored it, and
+  `Outbox.durable` does the same before an effect is executed. A node whose
+  checkpoint is refused closes the tenant without writing (`Fleet.lose`).
+- With a database nothing is archived: the janitor drops this node's copies of
+  tenants it last closed before `ArchiveAfter` (`sweepCache`). `registry.remove`
+  deletes a tenant's vault rows with its row.
+- `Fleet.recordSleeps`: a sleep the registry could not record is recorded by
+  the reaper once the registry answers, so the tenant is woken again.
+- `NewApp` calls `sqlitestate.Store.ClearLeases` after it has the directory's
+  lock. A lease left by a stopped process no longer fails the first re-run of
+  the turns that process was running.
+- `Store.RequeueInterrupted` fails a trigger that was already claimed
+  `maxAttempts` (4) times instead of queueing it again, and tells the owner.
+- `FleetStats` adds `database`, `vault`, `checkpoints`, `checkpoint_pages`,
+  `checkpoint_bytes`, `vault_pulls`, `vault_pulled_bytes`, `cache_reuses` and
+  `abandons`. The command adds `-checkpoint`.
+- Tests (`fleet_vault_test.go`; nodes with separate data directories, on a
+  SQLite file by default and on PostgreSQL when `MINILOOP_TEST_POSTGRES` is
+  set):
+  - a tenant written on one node, slept, read from the vault on another, and
+    the first node's own copy reused only while it is current;
+  - only changed pages stored, nothing for an unchanged tenant, shrunk and
+    removed files followed;
+  - a killed node: the checkpointed state survives, later writes do not, and
+    an acknowledged write is among what survives;
+  - a turn killed between two model calls is run again on the other node in
+    the same session, with one draft;
+  - a node taken for dead is refused by the placement and, separately, by the
+    checkpoint number; its write is answered 503 and it closes the tenant;
+  - a commit that lands between two snapshots makes the checkpoint read again;
+  - the outbox waits for the approval to be stored; a deleted tenant leaves no
+    rows and its stale copy is not reused; the registry's statements on both
+    engines; a missed sleep record; the interruption limit.
+- Two `miniloop-assistant fleet` processes with separate directories were run
+  against PostgreSQL 16: the holder was killed with `SIGKILL` right after it
+  accepted mail, the other node answered 503 until the TTL and then served the
+  tenant with that mail's turn done; the first node came back, the second was
+  stopped cleanly, and the first read the tenant from the vault.
+- `TestVaultReport` (opt-in) measures 93 KB of pages written per turn for 20 KB
+  of new data, 5–7 ms per checkpoint, and 1.06 MB of PostgreSQL tables for
+  three tenants of about 0.54 MB each.
+
+**Not claimed:**
+
+- tenant data as rows: it is SQLite pages, and cannot be queried across
+  tenants;
+- continuing a turn at the step it reached: an interrupted turn is run again
+  from its start in its session;
+- nodes on separate machines, a replicated database, more than two nodes or
+  any load: one laptop, PostgreSQL in a container;
+- availability while PostgreSQL cannot be reached, or during `NodeTTL` after a
+  node is killed;
+- migration of an existing data directory into the database;
+- trimming of a tenant's history, or a size limit per tenant;
+- a run of the Linux acceptance workflow with the new module inventory: only
+  the inventory check itself was run against `go.mod` and `go.sum`;
+- a Python counterpart.

@@ -98,3 +98,23 @@ func (s *Store) LeaseHolder(ctx context.Context, id agent.SessionID) (agent.Leas
 	}
 	return agent.LeaseOwner(owner.String), true, nil
 }
+
+// ClearLeases drops every session's lease and reports how many it dropped. It
+// is for a caller that holds the database alone by other means, such as a
+// lock on its directory, right after opening it: a lease it finds then was
+// left by a process that stopped without releasing it, and waiting for it to
+// expire would only delay the sessions that process was running. It is not
+// part of agent.LeaseStore, and it must not be used while another process may
+// be writing the database.
+func (s *Store) ClearLeases(ctx context.Context) (int64, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if err := s.ready(ctx); err != nil {
+		return 0, err
+	}
+	result, err := s.conn.ExecContext(ctx, "UPDATE sessions SET lease_owner=NULL, lease_until=0 WHERE lease_owner IS NOT NULL")
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}

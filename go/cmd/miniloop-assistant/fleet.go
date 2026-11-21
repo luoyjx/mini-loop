@@ -23,7 +23,12 @@ const (
 	// envFleetPushToken, when set, opens POST /push/{id} for the mail and
 	// calendar provider's push bridge. It can only wake tenants.
 	envFleetPushToken = "MINILOOP_FLEET_PUSH_TOKEN"
-	minAdminToken     = 24
+	// envFleetDatabase, when set, is the URL of the PostgreSQL database that
+	// holds the registry and every tenant's data, such as
+	// postgres://user:password@host:5432/name. It carries a password, so it
+	// is read from the environment and never printed.
+	envFleetDatabase = "MINILOOP_FLEET_DATABASE_URL"
+	minAdminToken    = 24
 )
 
 // runFleet hosts many owners' assistants in one process. Each owner reaches
@@ -33,7 +38,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	flags := flag.NewFlagSet("miniloop-assistant fleet", flag.ContinueOnError)
 	flags.SetOutput(std.err)
 	addr := flags.String("addr", defaultFleetAddr, "listen address; a non-loopback address needs -tls-cert/-tls-key or -behind-tls-proxy")
-	data := flags.String("data", defaultFleetDir(env), "fleet data directory (fleet.db and tenants/)")
+	data := flags.String("data", defaultFleetDir(env), "fleet data directory (fleet.db and tenants/); with "+envFleetDatabase+" only this node's cache")
 	model := flags.String("model", "scripted", "scripted (offline) or anthropic (reads ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN / ANTHROPIC_BASE_URL); shared by every tenant")
 	modelID := flags.String("model-id", "", "model ID for -model anthropic (default MODEL_ID or the agent default)")
 	maxActive := flags.Int("max-active", 256, "assistants open at once; the rest sleep with their next due time in the registry")
@@ -43,10 +48,11 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	tenantWorkers := flags.Int("tenant-workers", 2, "concurrent turns of one tenant")
 	dailyCalls := flags.Int("daily-calls", 200, "model calls per tenant per day; 0 is unlimited")
 	dormant := flags.Duration("dormant-after", 7*24*time.Hour, "stop waking a tenant whose owner has been away this long; 0 keeps waking")
-	archive := flags.Duration("archive-after", 30*24*time.Hour, "compress the data of a tenant whose owner has been away this long; 0 never")
+	archive := flags.Duration("archive-after", 30*24*time.Hour, "compress the data of a tenant whose owner has been away this long, or with "+envFleetDatabase+" drop this node's cached copy of it; 0 never")
 	sweep := flags.Duration("sweep", 0, "wake each sleeping tenant at least this often (for mail without push); 0 relies on its timers")
 	advertise := flags.String("advertise", "", "this node's base URL as the other nodes reach it, such as http://10.0.0.3:8791; setting it lets several fleet processes share -data and pass requests to each other")
 	nodeTTL := flags.Duration("node-ttl", 10*time.Second, "with -advertise, how long a node may miss its heartbeat before the others take its tenants")
+	checkpoint := flags.Duration("checkpoint", 2*time.Second, "with "+envFleetDatabase+", how often an open tenant's changes are copied to the database; a node that is lost loses at most this much of a running turn")
 	tlsCert := flags.String("tls-cert", "", "TLS certificate file")
 	tlsKey := flags.String("tls-key", "", "TLS private key file")
 	behindProxy := flags.Bool("behind-tls-proxy", false, "serve plain HTTP on a non-loopback address because a proxy in front terminates TLS")
@@ -80,6 +86,11 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 		DataDir: root, Log: std.err, MaxActive: *maxActive, IdleTTL: *idle, Turns: *turns, ChatTurns: *chatTurns,
 		TenantWorkers: *tenantWorkers, DailyCalls: *dailyCalls, DormantAfter: *dormant, ArchiveAfter: *archive, Sweep: *sweep,
 		Advertise: strings.TrimSuffix(*advertise, "/"), NodeTTL: *nodeTTL,
+		Database: env.getenv(envFleetDatabase), Checkpoint: *checkpoint,
+	}
+	store := "data directory"
+	if config.Database != "" {
+		store = "postgres"
 	}
 	if config.Provider, config.Model, config.ModelLabel, err = chooseModel(*model, *modelID, env); err != nil {
 		return fail(err)
@@ -109,7 +120,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	if label == "" {
 		label = config.Model
 	}
-	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t, advertise=%q)\n", scheme, listener.Addr(), label, root, *maxActive, *turns, *dailyCalls, push != "", config.Advertise)
+	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, tenants in=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t, advertise=%q)\n", scheme, listener.Addr(), label, root, store, *maxActive, *turns, *dailyCalls, push != "", config.Advertise)
 	select {
 	case <-ctx.Done():
 	case err = <-served:

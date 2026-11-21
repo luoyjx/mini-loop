@@ -271,10 +271,12 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-21**, baseline `23947de` plus D13 of the opt-in Go
-personal assistant: with `-advertise`, several fleet processes serve one data
-directory, pass requests on to the node that holds a tenant and take over a
-stopped node's tenants (see the Go personal-assistant baseline below).
+Architecture review: **2026-11-21**, baseline `36d3ec6` plus D14 of the opt-in Go
+personal assistant: with `MINILOOP_FLEET_DATABASE_URL`, the fleet keeps its
+registry and every tenant's files in PostgreSQL as checkpoints, so a node's
+disk is a cache and nodes need no shared filesystem (see the Go
+personal-assistant baseline below). The Go module gains one approved
+dependency for it, `github.com/jackc/pgx/v5`.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -1225,7 +1227,51 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-21**, `23947de` plus D13 of the
+Current architecture review baseline: **2026-11-21**, `36d3ec6` plus D14 of the
+opt-in Go personal-assistant demo. It moves the fleet's durable state off the
+nodes. `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with
+no Python counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents
+lanes keep their defaults, and a fleet without `MINILOOP_FLEET_DATABASE_URL`
+keeps everything in its data directory as before. The Go module gains
+`github.com/jackc/pgx/v5` v5.7.6, approved by the user on 2026-11-21, and the
+six modules it requires.
+
+- **Database**: with `MINILOOP_FLEET_DATABASE_URL`, the registry and every
+  tenant's data live in PostgreSQL, and `-data` is the node's cache. The URL
+  holds a password, so it is read only from the environment and never printed.
+  - The registry's statements are written once for both engines.
+  - A tenant is still an unchanged App on a directory of SQLite files, open on
+    one node at a time.
+- **Checkpoints**: while a tenant is open, the node stores what changed every
+  `-checkpoint` (2 s) and when it sleeps.
+  - One transaction replaces the changed 4 KiB pages and advances the
+    tenant's checkpoint number, so the database always holds one complete
+    state.
+  - The tenant's databases are read from snapshots checked to be of one
+    instant.
+- **Nothing the outside saw is undone**: an owner's write is answered, and an
+  approved effect is sent, only after a checkpoint has stored it.
+- **A node the others took for dead cannot write**: a checkpoint needs the
+  tenant's placement and the checkpoint number the node last wrote. No shared
+  file lock is needed.
+- **A turn survives its node**: the node that takes the tenant over reads the
+  last checkpoint, queues the interrupted triggers again and runs them in the
+  same worker session.
+  - Session leases a stopped process left are cleared when a directory is
+    opened, for the daemon too. Before, the first re-run failed on the lease
+    and waited out a 20 s backoff.
+  - A trigger interrupted on its fourth run is failed and the owner is told.
+- **Limits**: tenant data is stored as pages, not rows, so it cannot be queried
+  across tenants. A turn is run again from its start, not resumed at a step.
+  PostgreSQL's availability is the fleet's. Measured: 93 KB of pages written
+  per turn for 20 KB of new data, and 5–7 ms per checkpoint. Run with two
+  nodes on one laptop; not across machines or under load.
+
+See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md), the
+[D14 audit](docs/audits/go-assistant-fleet-database-2026-11-21.md) and
+[go/assistant/README.md](go/assistant/README.md#tenants-in-a-database).
+
+Previous architecture review baseline: **2026-11-21**, `23947de` plus D13 of the
 opt-in Go personal-assistant demo. It lets the fleet grow by adding processes.
 `go/assistant` and `go/cmd/miniloop-assistant` remain a Go addition with no
 Python counterpart. `cmd/miniloop`, the Python runtime and both Deep Agents
@@ -1628,8 +1674,9 @@ flowchart LR
         PAFacts["Facts · derived, in assistant.db<br/>people and organizations known by names and addresses · strangers never become entities<br/>manager / employer / role: one current value, a timeline with replaced values<br/>user's word > contact table > address domain · profile manager line is a view"]
         PAEmbed["Ollama · local embedding server · opt-in<br/>qwen3-embedding:0.6b · loopback by default<br/>started by the owner, not by the daemon or launchd"]
         PARemote["Remote channel bridges · opt-in · default off<br/>Telegram getUpdates long poll · Discord DM over REST · email IMAP read-only + SMTP<br/>owner's account checked per message · email: From + DKIM/DMARC from -email-authserv<br/>lines + dedupe links + cursor in one transaction · a reply to a question answers it<br/>copies assistant lines in order, at least once · held while paused · approvals stay on the page"]
-        PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30<br/>POST /push/{id} with the optional push token: poll now, wake now or defer · no content<br/>-advertise · opt-in: fleet.db nodes (heartbeat) + placements (holder of an open tenant) · claim before open"]
-        PAFleetPeer["other fleet nodes · only with -advertise · same data directory<br/>one filesystem with working flock · identical processes · no copy of the data"]
+        PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30<br/>POST /push/{id} with the optional push token: poll now, wake now or defer · no content<br/>-advertise · opt-in: fleet.db nodes (heartbeat) + placements (holder of an open tenant) · claim before open<br/>MINILOOP_FLEET_DATABASE_URL · opt-in: registry and tenants in PostgreSQL · the data directory is this node's cache"]
+        PAFleetPeer["other fleet nodes · only with -advertise · identical processes<br/>same data directory: one filesystem with working flock · no copy of the data<br/>or the same database and a cache directory each"]
+        PAVault["PostgreSQL · only with MINILOOP_FLEET_DATABASE_URL · run by the operator<br/>registry rows: tenants · usage · nodes · placements<br/>vault_heads · vault_files · vault_pages: each tenant's files as 4 KiB pages, one complete state<br/>a checkpoint is one transaction · refused without the placement and the last checkpoint number"]
         PAPush["Mail provider notification relay · outside the fleet · not connected yet<br/>knows which tenant owns a mailbox · push token from its environment"]
         PARemoteSvc["Telegram Bot API · Discord REST · the assistant's IMAP / SMTP servers<br/>external services · tokens and password from the environment only"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
@@ -1681,6 +1728,7 @@ flowchart LR
         PARouter -. turn slot before each claim · held over the daily quota .-> PAFleet
         PAPush -. push for one tenant · wake hint only .-> PAFleet
     PAFleet -. either way: request, push or delete for a tenant the other holds · passed on once over HTTP · token checked again<br/>stopped node: its tenants due after node-ttl .-> PAFleetPeer
+    PAFleet -. opt-in: registry statements · changed pages every 2 s, at sleep, before an owner's write is answered and before an approved effect is sent<br/>whole tenant read on open when the node's copy is not current .-> PAVault
         PAFleet -->|open tenant: PollOnce · asleep: next wake now| PAPoller
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel
@@ -4167,7 +4215,7 @@ separate acceptance.
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `deepagents-server/` | Independent opt-in Deep Agents graph on standard LangGraph Agent Server, with its own environment, lock, authentication and deployment configuration |
 | `go/audit/`, `go/cmd/miniloop-audit/` | Typed remote health audit and standalone CLI |
-| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), opt-in remote channels (Telegram bot chat, Discord DM, email over IMAP and SMTP) that join the chat thread and copy the assistant's lines out, single-daemon data-directory lock and LaunchAgent generator, and an opt-in multi-tenant fleet host (per-tenant tokens, assistants asleep while idle with their next wake in a registry, a fleet-wide turn gate, daily call quotas, dormancy and cold archives; with `-advertise`, several fleet processes on one data directory) (Go addition) |
+| `go/assistant/`, `go/cmd/miniloop-assistant/` | Opt-in proactive personal-assistant demo for the owner's Mac: SQLite triggers, routines, durable tasks with self-scheduled checks, upcoming-event reminders, mail poller, proposal outbox executed through a simulated mail/calendar MCP child process, ledger, simulated channel page with an attention list and pause switch, per-thread trigger batches, structured worker reports with questions for the user, contact-based admission grading with a triage call for inferred candidates (observe by default), read-only background preparation jobs, a task-progress watchdog, chain recall over local records, a nightly memory consolidation with a structured user profile, ranked memory search (BM25 with Chinese bigrams, nightly aliases, substring, people named in the question and an optional local-embedding leg through Ollama, fused by rank) with a per-turn prefetch, time-bounded facts about people (contact table, inbox, calendar and a nightly extraction from the user's chat, with replaced values kept as history), opt-in remote channels (Telegram bot chat, Discord DM, email over IMAP and SMTP) that join the chat thread and copy the assistant's lines out, single-daemon data-directory lock and LaunchAgent generator, and an opt-in multi-tenant fleet host (per-tenant tokens, assistants asleep while idle with their next wake in a registry, a fleet-wide turn gate, daily call quotas, dormancy and cold archives; with `-advertise`, several fleet processes on one data directory; with `MINILOOP_FLEET_DATABASE_URL`, the registry and the tenants' files in PostgreSQL as checkpoints and each node's directory a cache) (Go addition) |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/identity/` | Streamed native executable fingerprint and shared process identity; success-only cache and wall-clock uptime |
 | `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |

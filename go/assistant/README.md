@@ -371,10 +371,9 @@ What this needs and does not give:
 
 - **One filesystem with working locks.** The registry and the tenants'
   directories are files the nodes share. That means one host, or a cluster
-  filesystem that honours `flock`. SQLite's WAL mode does not work over NFS. To
-  run nodes on machines without such a filesystem, the registry needs a network
-  database and tenant directories need a snapshot store. Both are design-only
-  and need a dependency this module does not have.
+  filesystem that honours `flock`. SQLite's WAL mode does not work over NFS.
+  Nodes on separate machines keep the tenants in a database instead (see
+  [Tenants in a database](#tenants-in-a-database)).
 - **No copy of the data.** A lost disk loses the tenants on it.
 - **The registry is one file.** Every node writes its heartbeat, placements and
   model usage to it. It was not measured with more than two nodes.
@@ -388,6 +387,98 @@ What this needs and does not give:
 
 Without `-advertise` the fleet holds its directory alone, as before, and a
 cluster node and a single fleet refuse to start beside each other.
+
+### Tenants in a database
+
+On servers a node's disk is not a place to keep data: the machine can be
+replaced at any time. Set `MINILOOP_FLEET_DATABASE_URL` to a PostgreSQL URL and
+the fleet keeps the registry and every tenant's data in that database. `-data`
+is then only the node's cache, and the nodes share nothing but the database.
+
+```sh
+export MINILOOP_FLEET_ADMIN_TOKEN=...          # the same on every node
+export MINILOOP_FLEET_DATABASE_URL=postgres://fleet:...@db.internal:5432/fleet?sslmode=verify-full
+miniloop-assistant fleet -addr 10.0.0.3:8791 -advertise https://10.0.0.3:8791 -data /var/cache/fleet -tls-cert ... -tls-key ...
+```
+
+A tenant is still an unchanged single-owner assistant on a directory of SQLite
+files, open on one node at a time. What changes is where the directory comes
+from and where its changes go:
+
+| Table | What it holds |
+|---|---|
+| `tenants`, `usage`, `nodes`, `placements` | The registry, as before |
+| `vault_heads` | One row per tenant: the number of its last checkpoint, the node that wrote it, and its size |
+| `vault_files`, `vault_pages` | The tenant's files as 4 KiB pages, one row per page, each stored once |
+
+| Event | What happens |
+|---|---|
+| A node opens a tenant | It claims the placement. If its cached copy is marked as closed cleanly at the vault's current checkpoint, it uses the copy; otherwise it deletes the copy and reads the tenant from the vault |
+| The tenant is open | Every `-checkpoint` (2s) the node stores what changed: one transaction replaces the changed pages and advances the checkpoint number, so the vault always holds one complete state. Nothing is written when nothing changed |
+| An owner's write (`POST`) | The answer is held until a checkpoint has stored the write. If it cannot be stored the owner gets 503 and retries; an owner who got an answer never sees the write undone |
+| An approved effect | The outbox sends it only after a checkpoint has stored the approval. The proposal's ID is the idempotency key, so a node that stops after the send and before the next checkpoint leads to a second send that the connector absorbs |
+| The tenant sleeps | The last checkpoint is stored before the placement is given up, and the copy is marked clean |
+| A node is killed | After `-node-ttl` another node claims the tenant and reads its last checkpoint. Triggers that were running are queued again and run in the same worker session, which holds the transcript up to that checkpoint. Drafts and tasks the first run made are not made twice |
+| A node stalls and is taken for dead | No lock is shared between the nodes' disks, so for a moment two nodes may run the tenant. The vault settles it: a checkpoint is refused unless the node holds the placement and the checkpoint number is the one it last wrote. The stalled node's writes are answered 503, it sends no effects, and it closes the tenant |
+| The tenant is deleted | Its rows go in the same transaction as its registry row. A cached copy elsewhere is never reused: it carries the deleted tenant's creation time |
+| An owner stays away for `-archive-after` | Nothing is archived. Each node drops its cached copy; the next open reads the vault |
+
+The databases are read through SQLite's backup interface, from snapshots that
+are checked to be of one instant: if any of the tenant's databases was
+committed to between the first snapshot and the last, the checkpoint reads
+again. The queue, the sessions and the simulated mailbox therefore agree with
+each other in every checkpoint. Plain files (memory) are read after the
+databases.
+
+Measured with `MINILOOP_VAULT_REPORT=1 go test -run TestVaultReport -v
+./assistant`, for one tenant doing 12 turns (8 chat, 4 mail) with the scripted
+model, against PostgreSQL 16 in a container on the same laptop:
+
+| | |
+|---|---|
+| A tenant opened once | 304 KB in 5 files, 76 pages |
+| The same tenant after 12 turns | 542 KB: about 20 KB of new data per turn |
+| Written per turn, checkpoints at owners' writes and at sleep only | 93 KB in 23 pages |
+| Written per turn, also after every turn | 121 KB |
+| Written per turn, also during the turn every few milliseconds | 188 KB |
+| One checkpoint | p50 5–7 ms, p99 10 ms |
+| Opening a sleeping tenant | 11 ms from the node's copy, 18 ms from the vault |
+| In PostgreSQL | Three such tenants take 1.06 MB of table space for about 1.6 MB of files. The whole run wrote 4.8 MB of pages and produced 1.5 MB of write-ahead log |
+
+So a page-sized unit costs 5 to 9 times the new data per turn before
+compression, and about 1.5 to 3 times after PostgreSQL compresses the pages.
+
+What this needs and does not give:
+
+- **A PostgreSQL the nodes can reach.** It holds everything, so its
+  availability is the fleet's. While it cannot be reached, owners' writes get
+  503, and after `-node-ttl` the nodes close their tenants. Backups and
+  failover are PostgreSQL's own; use a managed or replicated instance.
+- **Pages, not rows.** The registry and model usage are ordinary rows. A
+  tenant's mail, tasks and transcripts are SQLite pages: they cannot be queried
+  across tenants in SQL. Moving them to rows would mean porting about 40 tables
+  and the agent's session store.
+- **A lost node costs up to `-node-ttl` of availability and up to
+  `-checkpoint` of work.** A turn that was running is run again from its start
+  in its session; it does not continue at the step it reached. A trigger that
+  is interrupted on its fourth run is failed and the owner is told, so a turn
+  that takes its node down cannot be run for ever.
+- **Reads can run ahead.** A page may show up to `-checkpoint` of state that a
+  lost node then takes with it. Writes that were answered and effects that
+  were sent are never among it.
+- **Cost grows with the tenant.** A checkpoint copies each changed database
+  locally before it compares pages, and an open from the vault reads the whole
+  tenant. Tenants here are hundreds of kilobytes; nothing trims their history
+  yet. The node keeps a second copy of each file to compare with, and one more
+  SQLite connection per database while the tenant is open.
+- **A request that reaches the wrong node** costs a few registry statements
+  before it is passed on. Route by the tenant in the path where the load
+  balancer can.
+- **No migration.** A fleet that starts with a database starts empty; tenants
+  in a data directory are not copied in.
+- Tested with two nodes on one laptop against PostgreSQL 16, through
+  `github.com/jackc/pgx/v5`. Not run across machines, with a replicated
+  database, or under load.
 
 ### What it costs
 
@@ -414,7 +505,7 @@ ran a morning brief and the nightly consolidation at once.
 | Flag | Default | Meaning |
 |---|---|---|
 | `-addr` | `127.0.0.1:8791` | A non-loopback address needs `-tls-cert` and `-tls-key`, or `-behind-tls-proxy` |
-| `-data` | `<config dir>/mini-loop/fleet` | `fleet.db` and `tenants/` |
+| `-data` | `<config dir>/mini-loop/fleet` | `fleet.db` and `tenants/`; with a database, only this node's cache |
 | `-model`, `-model-id` | `scripted` | Shared by every tenant, as for the daemon |
 | `-max-active` | 256 | Assistants open at once. Each takes about 13 file descriptors |
 | `-idle` | 2m | How long an assistant stays open after its owner's last request |
@@ -422,13 +513,16 @@ ran a morning brief and the nightly consolidation at once.
 | `-tenant-workers` | 2 | Concurrent turns of one tenant |
 | `-daily-calls` | 200 | Model calls per tenant per day; 0 is unlimited |
 | `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
-| `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long; 0 never |
+| `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long, or with a database drop this node's cached copy; 0 never |
 | `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources that cannot push |
 | `-advertise` | empty | This node's base URL as the other nodes reach it. Setting it lets several fleet processes share `-data` |
 | `-node-ttl` | 10s | With `-advertise`, how long a node may miss its heartbeat before the others take its tenants |
+| `-checkpoint` | 2s | With a database, how often an open tenant's changes are stored |
 
 `MINILOOP_FLEET_ADMIN_TOKEN` is required. `MINILOOP_FLEET_PUSH_TOKEN` is
-optional and turns on `/push/{id}`.
+optional and turns on `/push/{id}`. `MINILOOP_FLEET_DATABASE_URL` is optional
+and keeps the tenants in PostgreSQL; it holds a password, so it is read only
+from the environment and never printed.
 
 ### Measured
 
@@ -879,7 +973,7 @@ comparison is by role.
 | A queue per conversation | The trigger table: one thread in order, threads in parallel, chat first with a reserved slot | Same |
 | Engine: a state change and its follow-up work in one transaction | Mail and cursor, slot and trigger, approval and outbox, question and lines were already one transaction. A turn's end now is too | Turn end added on 2026-11-21 |
 | Effects executor: dedupe key, bounded concurrency, backoff | The outbox: proposal-ID key, one effect at a time, growing backoff, refusals fail at once | Same |
-| Startup recovery: pending effects, interrupted work, reused sessions | Approved proposals resume; running triggers are requeued and re-run on the thread's restored session | Re-run, not resumed step by step |
+| Startup recovery: pending effects, interrupted work, reused sessions | Approved proposals resume; running triggers are requeued and re-run on the thread's restored session, at once: leases a stopped process left are cleared when the directory is opened. A trigger interrupted on its fourth run is failed | Re-run, not resumed step by step |
 | Durable execution of each step | Durable rows and idempotent effects. A crash repeats the turn's model calls | Step replay is design only |
 | Orchestration separate from tool compute, a sandbox per user | Effects go only through the MCP connector, a child process for the daemon. Workers have no shell. The fleet runs each tenant's simulated world in process | A sandbox per user is design only |
 | Helpers running in parallel | The Preparer runs one read-only job at a time | Design only |
@@ -888,7 +982,8 @@ comparison is by role.
 | A model-driven router session | Rules and a tool-less triage call; the router is code | Different by design |
 | Session log | `agent.db` transcripts and the ledger | Same |
 | Replies to the source channel | Lines go to the page and every enabled remote channel; owner lines carry their source | One owner sees one conversation, by design |
-| Several nodes | With `-advertise`, fleet processes share one data directory: a placement row per open tenant, requests passed on to the holder, a dead node's tenants taken over | Added on 2026-11-21 for one shared filesystem; nodes on separate disks are design only |
+| Several nodes | With `-advertise`, fleet processes share one data directory: a placement row per open tenant, requests passed on to the holder, a dead node's tenants taken over | Added on 2026-11-21 for one shared filesystem |
+| State off the node | With `MINILOOP_FLEET_DATABASE_URL`, the registry and the tenants' files live in PostgreSQL as checkpoints; a node's disk is a cache | Added on 2026-11-21. Pages, not rows; a turn is re-run, not resumed step by step |
 | OAuth connectors, sharding by region | Simulated MCP | Design only |
 
 ## Boundaries
@@ -968,9 +1063,10 @@ comparison is by role.
   and its restart behavior are unchanged.
 - The fleet host is one process by default. With `-advertise` several processes
   share one data directory, which needs one filesystem with working locks (see
-  [Several nodes](#several-nodes)). Nodes on separate disks, replication of
-  tenant directories to object storage, self-service sign-up and provider
-  webhooks are design only. Every tenant uses the fleet's time zone and model, and
+  [Several nodes](#several-nodes)), or one PostgreSQL database with a cache
+  directory each (see [Tenants in a database](#tenants-in-a-database)).
+  Tenant data as database rows, object storage, trimming of old history,
+  self-service sign-up and provider webhooks are design only. Every tenant uses the fleet's time zone and model, and
   none has remote channels or embeddings. Mail and calendar stay the simulated
   world, one per tenant.
 - A fleet tenant's token has the authority of typing on that tenant's page,

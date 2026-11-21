@@ -56,40 +56,12 @@ var (
 	ErrTenantUnknown = errors.New("tenant not found")
 )
 
-// The registry is the fleet's only shared database. A row holds what the
-// fleet needs while the tenant itself is closed: the credential hash, when to
-// wake it, when its owner was last here, and where its data is. active marks a
-// tenant this process opened, so a crash can be told from a clean sleep.
-const registrySchema = `
-CREATE TABLE IF NOT EXISTS tenants(
-	id TEXT PRIMARY KEY, token_hash TEXT NOT NULL, state TEXT NOT NULL,
-	created_at INTEGER NOT NULL, last_seen INTEGER NOT NULL DEFAULT 0,
-	next_wake INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 0,
-	activations INTEGER NOT NULL DEFAULT 0) WITHOUT ROWID;
-CREATE INDEX IF NOT EXISTS tenants_wake ON tenants(next_wake) WHERE next_wake>0;
-CREATE INDEX IF NOT EXISTS tenants_idle ON tenants(last_seen) WHERE state='warm';
-CREATE TABLE IF NOT EXISTS usage(
-	tenant_id TEXT NOT NULL, day TEXT NOT NULL, calls INTEGER NOT NULL DEFAULT 0,
-	input_tokens INTEGER NOT NULL DEFAULT 0, output_tokens INTEGER NOT NULL DEFAULT 0,
-	PRIMARY KEY(tenant_id, day)) WITHOUT ROWID;
-CREATE INDEX IF NOT EXISTS tenants_active ON tenants(id) WHERE active=1;
-CREATE TABLE IF NOT EXISTS nodes(
-	id TEXT PRIMARY KEY, addr TEXT NOT NULL, started INTEGER NOT NULL, beat INTEGER NOT NULL,
-	open INTEGER NOT NULL DEFAULT 0, max_active INTEGER NOT NULL DEFAULT 0) WITHOUT ROWID;
-CREATE TABLE IF NOT EXISTS placements(
-	tenant_id TEXT PRIMARY KEY, node TEXT NOT NULL, since INTEGER NOT NULL) WITHOUT ROWID;
-CREATE INDEX IF NOT EXISTS placements_node ON placements(node);
-`
-
-type registry struct{ db *sql.DB }
-
-func openRegistry(ctx context.Context, path string) (*registry, error) {
-	db, err := openSQLite(ctx, path, registrySchema)
-	if err != nil {
-		return nil, err
-	}
-	return &registry{db}, nil
-}
+// The registry is the part of the fleet's database every node reads. A row
+// holds what the fleet needs while the tenant itself is closed: the credential
+// hash, when to wake it, when its owner was last here, and where its data is.
+// active marks a tenant some node opened, so a crash can be told from a clean
+// sleep.
+type registry struct{ db *fleetDB }
 
 func (r *registry) Close() error { return r.db.Close() }
 
@@ -115,7 +87,7 @@ func scanTenant(row interface{ Scan(...any) error }) (TenantRecord, error) {
 }
 
 func (r *registry) create(ctx context.Context, id TenantID, tokenHash string, now time.Time) error {
-	result, err := r.db.ExecContext(ctx, `INSERT OR IGNORE INTO tenants(id,token_hash,state,created_at) VALUES(?,?,?,?)`, string(id), tokenHash, string(TenantNew), millis(now))
+	result, err := r.db.ExecContext(ctx, `INSERT INTO tenants(id,token_hash,state,created_at) VALUES(?,?,?,?) ON CONFLICT DO NOTHING`, string(id), tokenHash, string(TenantNew), millis(now))
 	if err != nil {
 		return err
 	}
@@ -136,7 +108,7 @@ func (r *registry) get(ctx context.Context, id TenantID) (TenantRecord, bool, er
 // remove deletes a tenant's rows unless a live node other than node holds
 // it, and reports whether the tenant row went.
 func (r *registry) remove(ctx context.Context, id TenantID, node string, alive time.Time) (bool, error) {
-	tx, err := r.db.BeginTx(ctx, nil)
+	tx, err := r.db.begin(ctx, false)
 	if err != nil {
 		return false, err
 	}
@@ -146,8 +118,11 @@ func (r *registry) remove(ctx context.Context, id TenantID, node string, alive t
 	if err != nil {
 		return false, errors.Join(err, tx.Rollback())
 	}
-	if _, err := tx.ExecContext(ctx, `DELETE FROM usage WHERE tenant_id=? AND NOT EXISTS (SELECT 1 FROM tenants WHERE id=?)`, string(id), string(id)); err != nil {
-		return false, errors.Join(err, tx.Rollback())
+	// The tenant's usage and its data in the vault go with it.
+	for _, table := range []string{"usage", "vault_heads", "vault_files", "vault_pages"} {
+		if _, err := tx.ExecContext(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND NOT EXISTS (SELECT 1 FROM tenants WHERE id=?)`, string(id), string(id)); err != nil {
+			return false, errors.Join(err, tx.Rollback())
+		}
 	}
 	removed, err := result.RowsAffected()
 	if err != nil {
@@ -208,7 +183,7 @@ func (r *registry) hibernated(ctx context.Context, id TenantID, node string, nex
 	if !next.IsZero() {
 		wake = millis(next)
 	}
-	tx, err := r.db.BeginTx(ctx, nil)
+	tx, err := r.db.begin(ctx, false)
 	if err != nil {
 		return false, err
 	}
@@ -220,7 +195,7 @@ func (r *registry) hibernated(ctx context.Context, id TenantID, node string, nex
 	if err != nil || held != 1 {
 		return false, errors.Join(err, tx.Rollback())
 	}
-	if _, err := tx.ExecContext(ctx, `UPDATE tenants SET active=0, next_wake=?, last_seen=MAX(last_seen,?) WHERE id=?`, wake, unixOrZero(seen), string(id)); err != nil {
+	if _, err := tx.ExecContext(ctx, `UPDATE tenants SET active=0, next_wake=?, last_seen=CASE WHEN last_seen>? THEN last_seen ELSE ? END WHERE id=?`, wake, unixOrZero(seen), unixOrZero(seen), string(id)); err != nil {
 		return false, errors.Join(err, tx.Rollback())
 	}
 	return true, tx.Commit()
@@ -234,7 +209,7 @@ func unixOrZero(t time.Time) int64 {
 }
 
 func (r *registry) seen(ctx context.Context, id TenantID, at time.Time) error {
-	_, err := r.db.ExecContext(ctx, `UPDATE tenants SET last_seen=MAX(last_seen,?) WHERE id=?`, millis(at), string(id))
+	_, err := r.db.ExecContext(ctx, `UPDATE tenants SET last_seen=CASE WHEN last_seen>? THEN last_seen ELSE ? END WHERE id=?`, millis(at), millis(at), string(id))
 	return err
 }
 
@@ -310,7 +285,7 @@ func (r *registry) ids(ctx context.Context, query string, args ...any) ([]Tenant
 
 func (r *registry) addUsage(ctx context.Context, id TenantID, day string, input, output int) error {
 	_, err := r.db.ExecContext(ctx, `INSERT INTO usage(tenant_id,day,calls,input_tokens,output_tokens) VALUES(?,?,1,?,?)
-		ON CONFLICT(tenant_id,day) DO UPDATE SET calls=calls+1, input_tokens=input_tokens+excluded.input_tokens, output_tokens=output_tokens+excluded.output_tokens`, string(id), day, input, output)
+		ON CONFLICT(tenant_id,day) DO UPDATE SET calls=usage.calls+1, input_tokens=usage.input_tokens+excluded.input_tokens, output_tokens=usage.output_tokens+excluded.output_tokens`, string(id), day, input, output)
 	return err
 }
 
@@ -326,6 +301,6 @@ func (r *registry) usage(ctx context.Context, id TenantID, day string) (TenantUs
 // usageTotal sums every tenant's use on one day.
 func (r *registry) usageTotal(ctx context.Context, day string) (TenantUsage, error) {
 	usage := TenantUsage{Day: day}
-	err := r.db.QueryRowContext(ctx, `SELECT COALESCE(SUM(calls),0),COALESCE(SUM(input_tokens),0),COALESCE(SUM(output_tokens),0) FROM usage WHERE day=?`, day).Scan(&usage.Calls, &usage.InputTokens, &usage.OutputTokens)
+	err := r.db.QueryRowContext(ctx, `SELECT CAST(COALESCE(SUM(calls),0) AS BIGINT),CAST(COALESCE(SUM(input_tokens),0) AS BIGINT),CAST(COALESCE(SUM(output_tokens),0) AS BIGINT) FROM usage WHERE day=?`, day).Scan(&usage.Calls, &usage.InputTokens, &usage.OutputTokens)
 	return usage, err
 }

@@ -128,7 +128,7 @@ func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	http.StripPrefix(prefix, t.handler).ServeHTTP(w, r)
+	f.serveStored(w, r, t, http.StripPrefix(prefix, t.handler))
 }
 
 func bearer(r *http.Request) string {

@@ -444,6 +444,64 @@ func TestInterruptedTriggersRequeueAndProposalsDedupe(t *testing.T) {
 	}
 }
 
+// A turn that stops its process every time it runs is given up after
+// maxAttempts claims, and the user is told; other interrupted triggers are
+// requeued as before.
+func TestATriggerInterruptedTooOftenIsFailed(t *testing.T) {
+	ctx := context.Background()
+	store, err := OpenStore(ctx, t.TempDir()+"/assistant.db")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer store.Close()
+	now := newClock().Now()
+	poison, err := store.ChatFromUser(ctx, "这一条每次都让进程崩溃", now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		batch, err := store.ClaimBatch(ctx, now, false)
+		if err != nil || len(batch) != 1 || batch[0].ID != poison || batch[0].Attempts != attempt {
+			t.Fatalf("claim %d: %+v %v", attempt, batch, err)
+		}
+		if attempt == maxAttempts {
+			break
+		}
+		if count, err := store.RequeueInterrupted(ctx, now); err != nil || count != 1 {
+			t.Fatalf("interruption %d requeues it: %d %v", attempt, count, err)
+		}
+	}
+	mails, _, err := presetMail(PresetManager, 7, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := store.IngestMail(ctx, []InboundMail{{Seq: 7, Mail: mails[0]}}, 7, now); err != nil {
+		t.Fatal(err)
+	}
+	innocent, err := store.ClaimBatch(ctx, now, false)
+	if err != nil || len(innocent) != 1 {
+		t.Fatal(innocent, err)
+	}
+	if count, err := store.RequeueInterrupted(ctx, now); err != nil || count != 1 {
+		t.Fatalf("only the other trigger is requeued: %d %v", count, err)
+	}
+	triggers, _ := store.Triggers(ctx, 10)
+	if got := triggerByID(t, triggers, poison); got.Status != TriggerFailed || !strings.Contains(got.Decision, "不再自动重试") {
+		t.Fatalf("the trigger is failed: %+v", got)
+	}
+	if got := triggerByID(t, triggers, innocent[0].ID); got.Status != TriggerPending {
+		t.Fatalf("the other trigger waits to run again: %+v", got)
+	}
+	channel, _ := store.Channel(ctx, 10)
+	told := false
+	for _, message := range channel {
+		told = told || (message.Role == RoleSystem && message.TriggerID == poison && strings.Contains(message.Text, "处理失败"))
+	}
+	if !told {
+		t.Fatalf("the user is told: %+v", channel)
+	}
+}
+
 func TestHandlerRefusesForeignHostsAndFormPosts(t *testing.T) {
 	clock := newClock()
 	app, _ := startApp(t, t.TempDir(), clock)

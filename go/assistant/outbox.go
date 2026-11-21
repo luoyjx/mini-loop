@@ -33,6 +33,9 @@ type Outbox struct {
 	// health counts transport failures in a row; a refusal proves the server
 	// answers (nil records nothing).
 	health *Health
+	// durable, when set, must succeed before an effect is executed: a host
+	// that keeps the store elsewhere uses it to store the approval first.
+	durable func(context.Context) error
 }
 
 func NewOutbox(store *Store, connector *Connector, now clock, log io.Writer) *Outbox {
@@ -87,6 +90,14 @@ func (o *Outbox) Step(ctx context.Context) bool {
 	}
 	if !ok {
 		return false
+	}
+	if o.durable != nil {
+		if err := o.durable(ctx); err != nil {
+			if ctx.Err() == nil {
+				fmt.Fprintf(o.log, "assistant: outbox holds #%d until its approval is stored: %v\n", p.ID, err)
+			}
+			return false
+		}
 	}
 	receipt, err := o.execute(ctx, p)
 	if ctx.Err() != nil {

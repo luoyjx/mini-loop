@@ -123,6 +123,13 @@ func NewApp(ctx context.Context, config Config) (app *App, err error) {
 		return nil, fmt.Errorf("open agent state: %w", err)
 	}
 	closers = append(closers, states.Close)
+	// The directory's lock makes this process the only one on agent.db, so
+	// a lease found there belongs to a process that stopped without
+	// releasing it. Waiting for it to expire would fail the first run of
+	// every turn that process left unfinished.
+	if _, err = states.ClearLeases(ctx); err != nil {
+		return nil, fmt.Errorf("clear stale session leases: %w", err)
+	}
 	memories, err := memory.NewStore(ctx, filepath.Join(config.DataDir, "memory"), nil)
 	if err != nil {
 		return nil, fmt.Errorf("open memory: %w", err)

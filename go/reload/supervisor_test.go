@@ -56,7 +56,7 @@ func testSupervisorRecovery(t *testing.T, profile *ObserverProfile) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = os.WriteFile(filepath.Join(root, "go.mod"), []byte(fmt.Sprintf("module reload.fixture\n\ngo 1.23\n\nrequire github.com/luoyjx/mini-loop/go v0.0.0\nreplace github.com/luoyjx/mini-loop/go => %q\n", module)), 0600); err != nil {
+	if err = os.WriteFile(filepath.Join(root, "go.mod"), []byte(fmt.Sprintf("module reload.fixture\n\ngo 1.23.0\n\nrequire github.com/luoyjx/mini-loop/go v0.0.0\nreplace github.com/luoyjx/mini-loop/go => %q\n", module)), 0600); err != nil {
 		t.Fatal(err)
 	}
 	generation := 0

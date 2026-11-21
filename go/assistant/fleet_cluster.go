@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Several fleet processes can serve one data directory. Every node is the
+// Several fleet processes can serve the same tenants. Every node is the
 // same: it takes any request, opens any tenant and runs the same loops, so
 // capacity grows by starting another node behind the load balancer. A tenant
 // is still open in one place at a time. The registry says where:
@@ -29,11 +29,17 @@ import (
 // wakes them first runs them; their turns were not settled, so their triggers
 // are requeued the way a restart requeues them.
 //
-// The registry is a file the nodes share, and so are the tenants' directories.
-// The nodes therefore need one filesystem with working file locks: the same
-// host, or a cluster filesystem that honours flock. An App locks its tenant's
-// directory while it is open, which is what stops two nodes from running one
-// tenant even when the heartbeats are wrong about who is alive.
+// What the nodes must share depends on where the fleet keeps its data:
+//
+//   - In the data directory, the registry is a file and so are the tenants'
+//     directories. The nodes need one filesystem with working file locks: the
+//     same host, or a cluster filesystem that honours flock. An App locks its
+//     tenant's directory while it is open, which is what stops two nodes from
+//     running one tenant even when the heartbeats are wrong about who is
+//     alive.
+//   - In a database (see vault), the nodes share nothing else. Each has a
+//     directory of its own as a cache, and what stops a node that was wrongly
+//     taken for dead is the vault, which refuses its checkpoints.
 
 // hopHeader marks a request another node passed on. It is never passed on
 // again, so two nodes that disagree cannot bounce a request between them.
@@ -82,7 +88,7 @@ func (r *registry) leave(ctx context.Context, node string, others bool) error {
 // other live node holds it.
 func (r *registry) claim(ctx context.Context, id TenantID, node string, now, alive time.Time) (bool, error) {
 	result, err := r.db.ExecContext(ctx, `INSERT INTO placements(tenant_id,node,since)
-		SELECT ?,?,? WHERE EXISTS (SELECT 1 FROM tenants WHERE id=?)
+		SELECT CAST(? AS TEXT),CAST(? AS TEXT),CAST(? AS BIGINT) WHERE EXISTS (SELECT 1 FROM tenants WHERE id=?)
 		ON CONFLICT(tenant_id) DO UPDATE SET node=excluded.node, since=excluded.since
 		WHERE placements.node=excluded.node OR NOT EXISTS (SELECT 1 FROM nodes WHERE id=placements.node AND beat>=?)`,
 		string(id), node, millis(now), string(id), millis(alive))
@@ -133,7 +139,10 @@ func (r *registry) stale(ctx context.Context, alive time.Time) (bool, error) {
 // A placement is written before a tenant is marked open and removed with the
 // mark, so an open tenant without a live placement is never a running one.
 func (r *registry) recoverOrphans(ctx context.Context, now, alive time.Time) (int, error) {
-	tx, err := r.db.BeginTx(ctx, nil)
+	// A snapshot transaction: a node that claims one of these tenants while
+	// this runs makes it fail, and the next heartbeat tries again, instead of
+	// marking a tenant that node just opened as closed.
+	tx, err := r.db.begin(ctx, true)
 	if err != nil {
 		return 0, err
 	}

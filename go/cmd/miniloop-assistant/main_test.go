@@ -252,6 +252,26 @@ func fleetEnvironmentWith(t *testing.T, admin, push string) environment {
 	return env
 }
 
+// A database URL the fleet cannot use is refused without repeating it: it
+// holds a password.
+func TestFleetRefusesADatabaseItCannotUseWithoutPrintingIt(t *testing.T) {
+	for _, address := range []string{"mysql://fleet:hunter2secret@db.internal/fleet", "postgres://fleet:hunter2secret@", "hunter2secret"} {
+		env := fleetEnvironmentWith(t, testAdminToken, "")
+		inner := env.getenv
+		env.getenv = func(name string) string {
+			if name == envFleetDatabase {
+				return address
+			}
+			return inner(name)
+		}
+		var stderr bytes.Buffer
+		code := run(context.Background(), []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, env, streams{strings.NewReader(""), io.Discard, &stderr})
+		if code != 1 || !strings.Contains(stderr.String(), "database URL") || strings.Contains(stderr.String(), "hunter2secret") {
+			t.Errorf("%q: code=%d stderr=%q", address, code, stderr.String())
+		}
+	}
+}
+
 func TestFleetRefusesUnsafeStartup(t *testing.T) {
 	cases := map[string]struct {
 		admin string
