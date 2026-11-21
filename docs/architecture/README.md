@@ -57,3 +57,11 @@ opt-in nodes and cites `fleet_cluster.go`. The view passed all nine checks with
 zero errors and zero warnings, and Archify verified its 26 source references at
 that revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme
 viewport at 2x, and no node's text leaves its box.
+
+After D14 put the fleet's registry and tenants in PostgreSQL, the Go
+personal-assistant view was revalidated against revision
+`97391eb305d0ec38e9db8b52bcbff59df0055405`. It gains an opt-in PostgreSQL node,
+citing `fleet_db.go` and `fleet_vault.go`, and a dashed checkpoint edge from
+the Fleet Host. The view passed all nine checks with zero errors and zero
+warnings. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
+2x, and no node's text leaves its box.

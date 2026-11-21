@@ -3,49 +3,547 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点）与推送唤醒、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点、可把状态存进 PostgreSQL）与推送唤醒、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "5721b3c118ab7faf00178039315c56264b60192b"},
-    "viewBox": [1600, 760]
+    "repository": {
+      "url": "https://github.com/luoyjx/mini-loop",
+      "revision": "97391eb305d0ec38e9db8b52bcbff59df0055405"
+    },
+    "viewBox": [
+      1600,
+      760
+    ]
   },
   "components": [
-    {"id": "channel", "type": "external", "label": "Channel / Web", "sublabel": "long poll · tenant token", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/assistant/server.go"}, {"path": "go/assistant/changes.go"}]},
-    {"id": "remoteSvc", "type": "external", "label": "Remote Services", "sublabel": "Bot API · REST · IMAP/SMTP", "pos": [30, 80], "size": [170, 68], "sources": [{"path": "go/assistant/telegram.go"}, {"path": "go/assistant/discord.go"}, {"path": "go/assistant/imap.go"}]},
-    {"id": "remote", "type": "backend", "label": "Remote Channels", "sublabel": "Telegram · Discord · email", "pos": [250, 80], "size": [170, 68], "sources": [{"path": "go/assistant/remote.go"}, {"path": "go/assistant/email.go"}]},
-    {"id": "store", "type": "database", "label": "Assistant Store", "sublabel": "tasks + messages + facts", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "go/assistant/store.go"}]},
-    {"id": "router", "type": "frontend", "label": "Router / Triage", "sublabel": "admission · one-tx settle", "pos": [484, 300], "size": [170, 68], "sources": [{"path": "go/assistant/router.go"}, {"path": "go/assistant/triage.go"}, {"path": "go/assistant/settle.go"}]},
-    {"id": "workers", "type": "backend", "label": "Assistant Workers", "sublabel": "task execution", "pos": [700, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tasks.go"}]},
-    {"id": "tools", "type": "security", "label": "Assistant Tools", "sublabel": "controlled effects", "pos": [910, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tools.go"}]},
-    {"id": "connector", "type": "backend", "label": "MCP Connector", "sublabel": "external integration", "pos": [1130, 300], "size": [170, 68], "sources": [{"path": "go/assistant/connector.go"}]},
-    {"id": "mock", "type": "external", "label": "Mock MCP", "sublabel": "deterministic acceptance", "pos": [1350, 300], "size": [170, 68], "sources": [{"path": "go/assistant/mockmcp.go"}]},
-    {"id": "model", "type": "external", "label": "Assistant Model", "sublabel": "reasoning + response", "pos": [700, 80], "size": [170, 68], "sources": [{"path": "go/assistant/model.go"}]},
-    {"id": "retrieval", "type": "backend", "label": "Retrieval & Facts", "sublabel": "embed · search · recall", "pos": [910, 80], "size": [170, 68], "sources": [{"path": "go/assistant/retrieval.go"}, {"path": "go/assistant/facts.go"}]},
-    {"id": "poller", "type": "backend", "label": "Channel Poller", "sublabel": "background ingress", "pos": [1130, 80], "size": [170, 68], "sources": [{"path": "go/assistant/poller.go"}]},
-    {"id": "scheduler", "type": "backend", "label": "Scheduler", "sublabel": "jobs + routines", "pos": [250, 520], "size": [170, 68], "sources": [{"path": "go/assistant/jobs.go"}, {"path": "go/assistant/routines.go"}]},
-    {"id": "fleet", "type": "security", "label": "Fleet Host", "sublabel": "sleep · push · opt-in nodes", "pos": [484, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet.go"}, {"path": "go/assistant/fleet_cluster.go"}, {"path": "go/assistant/fleet_budget.go"}]},
-    {"id": "push", "type": "external", "label": "Push Relay", "sublabel": "wake hint · no content", "pos": [1350, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet_http.go"}]},
-    {"id": "outbox", "type": "database", "label": "Outbox", "sublabel": "durable delivery", "pos": [484, 520], "size": [170, 68], "sources": [{"path": "go/assistant/outbox.go"}]}
+    {
+      "id": "channel",
+      "type": "external",
+      "label": "Channel / Web",
+      "sublabel": "long poll · tenant token",
+      "pos": [
+        30,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/server.go"
+        },
+        {
+          "path": "go/assistant/changes.go"
+        }
+      ]
+    },
+    {
+      "id": "remoteSvc",
+      "type": "external",
+      "label": "Remote Services",
+      "sublabel": "Bot API · REST · IMAP/SMTP",
+      "pos": [
+        30,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/telegram.go"
+        },
+        {
+          "path": "go/assistant/discord.go"
+        },
+        {
+          "path": "go/assistant/imap.go"
+        }
+      ]
+    },
+    {
+      "id": "remote",
+      "type": "backend",
+      "label": "Remote Channels",
+      "sublabel": "Telegram · Discord · email",
+      "pos": [
+        250,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/remote.go"
+        },
+        {
+          "path": "go/assistant/email.go"
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "Assistant Store",
+      "sublabel": "tasks + messages + facts",
+      "pos": [
+        250,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/store.go"
+        }
+      ]
+    },
+    {
+      "id": "router",
+      "type": "frontend",
+      "label": "Router / Triage",
+      "sublabel": "admission · one-tx settle",
+      "pos": [
+        484,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/router.go"
+        },
+        {
+          "path": "go/assistant/triage.go"
+        },
+        {
+          "path": "go/assistant/settle.go"
+        }
+      ]
+    },
+    {
+      "id": "workers",
+      "type": "backend",
+      "label": "Assistant Workers",
+      "sublabel": "task execution",
+      "pos": [
+        700,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/tasks.go"
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "security",
+      "label": "Assistant Tools",
+      "sublabel": "controlled effects",
+      "pos": [
+        910,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/tools.go"
+        }
+      ]
+    },
+    {
+      "id": "connector",
+      "type": "backend",
+      "label": "MCP Connector",
+      "sublabel": "external integration",
+      "pos": [
+        1130,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/connector.go"
+        }
+      ]
+    },
+    {
+      "id": "mock",
+      "type": "external",
+      "label": "Mock MCP",
+      "sublabel": "deterministic acceptance",
+      "pos": [
+        1350,
+        300
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/mockmcp.go"
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "type": "external",
+      "label": "Assistant Model",
+      "sublabel": "reasoning + response",
+      "pos": [
+        700,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/model.go"
+        }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "Retrieval & Facts",
+      "sublabel": "embed · search · recall",
+      "pos": [
+        910,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/retrieval.go"
+        },
+        {
+          "path": "go/assistant/facts.go"
+        }
+      ]
+    },
+    {
+      "id": "poller",
+      "type": "backend",
+      "label": "Channel Poller",
+      "sublabel": "background ingress",
+      "pos": [
+        1130,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/poller.go"
+        }
+      ]
+    },
+    {
+      "id": "scheduler",
+      "type": "backend",
+      "label": "Scheduler",
+      "sublabel": "jobs + routines",
+      "pos": [
+        250,
+        520
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/jobs.go"
+        },
+        {
+          "path": "go/assistant/routines.go"
+        }
+      ]
+    },
+    {
+      "id": "fleet",
+      "type": "security",
+      "label": "Fleet Host",
+      "sublabel": "sleep · push · opt-in nodes",
+      "pos": [
+        484,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/fleet.go"
+        },
+        {
+          "path": "go/assistant/fleet_cluster.go"
+        },
+        {
+          "path": "go/assistant/fleet_budget.go"
+        }
+      ]
+    },
+    {
+      "id": "vault",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "opt-in · registry + pages",
+      "pos": [
+        30,
+        520
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/fleet_db.go"
+        },
+        {
+          "path": "go/assistant/fleet_vault.go"
+        }
+      ]
+    },
+    {
+      "id": "push",
+      "type": "external",
+      "label": "Push Relay",
+      "sublabel": "wake hint · no content",
+      "pos": [
+        1350,
+        80
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/fleet_http.go"
+        }
+      ]
+    },
+    {
+      "id": "outbox",
+      "type": "database",
+      "label": "Outbox",
+      "sublabel": "durable delivery",
+      "pos": [
+        484,
+        520
+      ],
+      "size": [
+        170,
+        68
+      ],
+      "sources": [
+        {
+          "path": "go/assistant/outbox.go"
+        }
+      ]
+    }
   ],
   "connections": [
-    {"id": "ingest", "from": "channel", "to": "store", "variant": "emphasis"},
-    {"id": "remoteChat", "from": "remote", "to": "store", "label": "chat in / lines out", "fromSide": "bottom", "toSide": "top", "variant": "emphasis", "labelAt": [335, 236]},
-    {"id": "remoteCall", "from": "remote", "to": "remoteSvc", "fromSide": "left", "toSide": "right", "variant": "dashed"},
-    {"id": "route", "from": "store", "to": "router", "variant": "emphasis"},
-    {"id": "dispatch", "from": "router", "to": "workers", "variant": "emphasis"},
-    {"id": "act", "from": "workers", "to": "tools", "variant": "security"},
-    {"id": "connect", "from": "tools", "to": "connector", "variant": "security"},
-    {"id": "accept", "from": "connector", "to": "mock"},
-    {"id": "reason", "from": "workers", "to": "model"},
-    {"id": "recall", "from": "retrieval", "to": "model"},
-    {"id": "poll", "from": "poller", "to": "connector", "variant": "dashed"},
-    {"id": "schedule", "from": "scheduler", "to": "store"},
-    {"id": "enqueue", "from": "store", "to": "outbox"},
-    {"id": "fleetGate", "from": "router", "to": "fleet", "label": "turn slot / quota", "fromSide": "top", "toSide": "bottom", "variant": "dashed"},
-    {"id": "fleetSleep", "from": "fleet", "to": "store", "label": "open / Standby / sleep", "variant": "security"},
-    {"id": "pushWake", "from": "push", "to": "fleet", "label": "POST /push · wake hint", "fromSide": "top", "toSide": "top", "variant": "dashed", "via": [[1435, 40], [569, 40]], "labelAt": [1000, 40]},
-    {"id": "deliver", "from": "outbox", "to": "connector", "fromSide": "bottom", "toSide": "bottom", "via": [[569, 650], [1215, 650]]}
+    {
+      "id": "ingest",
+      "from": "channel",
+      "to": "store",
+      "variant": "emphasis"
+    },
+    {
+      "id": "remoteChat",
+      "from": "remote",
+      "to": "store",
+      "label": "chat in / lines out",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "emphasis",
+      "labelAt": [
+        335,
+        236
+      ]
+    },
+    {
+      "id": "remoteCall",
+      "from": "remote",
+      "to": "remoteSvc",
+      "fromSide": "left",
+      "toSide": "right",
+      "variant": "dashed"
+    },
+    {
+      "id": "route",
+      "from": "store",
+      "to": "router",
+      "variant": "emphasis"
+    },
+    {
+      "id": "dispatch",
+      "from": "router",
+      "to": "workers",
+      "variant": "emphasis"
+    },
+    {
+      "id": "act",
+      "from": "workers",
+      "to": "tools",
+      "variant": "security"
+    },
+    {
+      "id": "connect",
+      "from": "tools",
+      "to": "connector",
+      "variant": "security"
+    },
+    {
+      "id": "accept",
+      "from": "connector",
+      "to": "mock"
+    },
+    {
+      "id": "reason",
+      "from": "workers",
+      "to": "model"
+    },
+    {
+      "id": "recall",
+      "from": "retrieval",
+      "to": "model"
+    },
+    {
+      "id": "poll",
+      "from": "poller",
+      "to": "connector",
+      "variant": "dashed"
+    },
+    {
+      "id": "schedule",
+      "from": "scheduler",
+      "to": "store"
+    },
+    {
+      "id": "enqueue",
+      "from": "store",
+      "to": "outbox"
+    },
+    {
+      "id": "fleetGate",
+      "from": "router",
+      "to": "fleet",
+      "label": "turn slot / quota",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    },
+    {
+      "id": "fleetSleep",
+      "from": "fleet",
+      "to": "store",
+      "label": "open / Standby / sleep",
+      "variant": "security"
+    },
+    {
+      "id": "fleetVault",
+      "from": "fleet",
+      "to": "vault",
+      "label": "checkpoints",
+      "fromSide": "left",
+      "toSide": "left",
+      "variant": "dashed",
+      "via": [
+        [
+          452,
+          114
+        ],
+        [
+          452,
+          56
+        ],
+        [
+          14,
+          56
+        ],
+        [
+          14,
+          554
+        ]
+      ],
+      "labelAt": [
+        230,
+        56
+      ]
+    },
+    {
+      "id": "pushWake",
+      "from": "push",
+      "to": "fleet",
+      "label": "POST /push · wake hint",
+      "fromSide": "top",
+      "toSide": "top",
+      "variant": "dashed",
+      "via": [
+        [
+          1435,
+          40
+        ],
+        [
+          569,
+          40
+        ]
+      ],
+      "labelAt": [
+        1000,
+        40
+      ]
+    },
+    {
+      "id": "deliver",
+      "from": "outbox",
+      "to": "connector",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [
+        [
+          569,
+          650
+        ],
+        [
+          1215,
+          650
+        ]
+      ]
+    }
   ]
 }
