@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点、可把状态存进 PostgreSQL）与推送唤醒、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点；状态可存进 PostgreSQL，可分片，冷租户可归档）与推送唤醒、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/luoyjx/mini-loop",
-      "revision": "97391eb305d0ec38e9db8b52bcbff59df0055405"
+      "revision": "6b57d05b4f814bf85aaf26ccdffe676ab0d2a67c"
     },
     "viewBox": [
       1600,
@@ -317,8 +317,8 @@
     {
       "id": "vault",
       "type": "database",
-      "label": "PostgreSQL",
-      "sublabel": "opt-in · registry + pages",
+      "label": "Fleet Storage",
+      "sublabel": "opt-in · shards + archive",
       "pos": [
         30,
         520
@@ -329,10 +329,13 @@
       ],
       "sources": [
         {
-          "path": "go/assistant/fleet_db.go"
+          "path": "go/assistant/fleet_vault.go"
         },
         {
-          "path": "go/assistant/fleet_vault.go"
+          "path": "go/assistant/fleet_shards.go"
+        },
+        {
+          "path": "go/assistant/fleet_cold.go"
         }
       ]
     },
@@ -478,7 +481,7 @@
       "id": "fleetVault",
       "from": "fleet",
       "to": "vault",
-      "label": "checkpoints",
+      "label": "checkpoints · tiers",
       "fromSide": "left",
       "toSide": "left",
       "variant": "dashed",

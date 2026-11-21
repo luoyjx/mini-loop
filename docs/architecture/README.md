@@ -65,3 +65,14 @@ citing `fleet_db.go` and `fleet_vault.go`, and a dashed checkpoint edge from
 the Fleet Host. The view passed all nine checks with zero errors and zero
 warnings. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
 2x, and no node's text leaves its box.
+
+After D15 spread the tenants' pages over shards and moved absent tenants to an
+archive store, the Go personal-assistant view was revalidated against revision
+`6b57d05b4f814bf85aaf26ccdffe676ab0d2a67c`. The PostgreSQL node is now Fleet
+Storage, "opt-in · shards + archive", and cites `fleet_vault.go`,
+`fleet_shards.go` and `fleet_cold.go`: a node may cite three files, so
+`fleet_db.go` is no longer among them. Its edge from the Fleet Host reads
+"checkpoints · tiers". The view passed all nine checks with zero errors and
+zero warnings, and Archify verified its 29 source references at that revision.
+Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at 2x, and no
+node's text leaves its box.
