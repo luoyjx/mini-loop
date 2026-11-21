@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点；状态可存进 PostgreSQL，可分片，冷租户可归档）与推送唤醒、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点；状态可存进 PostgreSQL，可分片，冷租户和大文件进归档存储）与推送唤醒、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/luoyjx/mini-loop",
-      "revision": "6b57d05b4f814bf85aaf26ccdffe676ab0d2a67c"
+      "revision": "22b59f5cc513a174c0828cd5548da7fc0ac60f98"
     },
     "viewBox": [
       1600,

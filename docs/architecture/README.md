@@ -76,3 +76,13 @@ Storage, "opt-in · shards + archive", and cites `fleet_vault.go`,
 zero warnings, and Archify verified its 29 source references at that revision.
 Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at 2x, and no
 node's text leaves its box.
+
+After D16 kept the bulk of a tenant's large files in the archive store, the Go
+personal-assistant view was revalidated against revision
+`22b59f5cc513a174c0828cd5548da7fc0ac60f98`. Only its subtitle changed: cold
+tenants and large files go to the archive store. Fleet Storage keeps its three
+sources, and its edge from the Fleet Host, "checkpoints · tiers", now covers the
+tier by size as well as by age. The view passed all nine checks with zero
+errors and zero warnings, and Archify verified its 29 source references at that
+revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
+2x, and no node's text leaves its box.
