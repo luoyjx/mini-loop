@@ -3,12 +3,12 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、远程信道、多租户 fleet 与推送唤醒、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、多租户 fleet（可多节点）与推送唤醒、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "2e4d0619093acdbe70df418e08fa3668bd360796"},
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "5721b3c118ab7faf00178039315c56264b60192b"},
     "viewBox": [1600, 760]
   },
   "components": [
@@ -25,7 +25,7 @@
     {"id": "retrieval", "type": "backend", "label": "Retrieval & Facts", "sublabel": "embed · search · recall", "pos": [910, 80], "size": [170, 68], "sources": [{"path": "go/assistant/retrieval.go"}, {"path": "go/assistant/facts.go"}]},
     {"id": "poller", "type": "backend", "label": "Channel Poller", "sublabel": "background ingress", "pos": [1130, 80], "size": [170, 68], "sources": [{"path": "go/assistant/poller.go"}]},
     {"id": "scheduler", "type": "backend", "label": "Scheduler", "sublabel": "jobs + routines", "pos": [250, 520], "size": [170, 68], "sources": [{"path": "go/assistant/jobs.go"}, {"path": "go/assistant/routines.go"}]},
-    {"id": "fleet", "type": "security", "label": "Fleet Host", "sublabel": "tenants sleep · push wakes", "pos": [484, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet.go"}, {"path": "go/assistant/fleet_budget.go"}, {"path": "go/assistant/standby.go"}]},
+    {"id": "fleet", "type": "security", "label": "Fleet Host", "sublabel": "sleep · push · opt-in nodes", "pos": [484, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet.go"}, {"path": "go/assistant/fleet_cluster.go"}, {"path": "go/assistant/fleet_budget.go"}]},
     {"id": "push", "type": "external", "label": "Push Relay", "sublabel": "wake hint · no content", "pos": [1350, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet_http.go"}]},
     {"id": "outbox", "type": "database", "label": "Outbox", "sublabel": "durable delivery", "pos": [484, 520], "size": [170, 68], "sources": [{"path": "go/assistant/outbox.go"}]}
   ],

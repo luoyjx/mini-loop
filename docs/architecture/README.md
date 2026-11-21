@@ -49,3 +49,11 @@ dashed wake-hint edge to the fleet host. It passed all nine checks with zero
 errors and zero warnings, and Archify verified its 26 source references at that
 revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
 2x, and no node's text leaves its box.
+
+After D13 let several fleet processes serve one data directory, the Go
+personal-assistant view was revalidated against revision
+`5721b3c118ab7faf00178039315c56264b60192b`. The Fleet Host node names the
+opt-in nodes and cites `fleet_cluster.go`. The view passed all nine checks with
+zero errors and zero warnings, and Archify verified its 26 source references at
+that revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme
+viewport at 2x, and no node's text leaves its box.
