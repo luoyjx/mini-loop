@@ -72,6 +72,13 @@ CREATE TABLE IF NOT EXISTS usage(
 	tenant_id TEXT NOT NULL, day TEXT NOT NULL, calls INTEGER NOT NULL DEFAULT 0,
 	input_tokens INTEGER NOT NULL DEFAULT 0, output_tokens INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY(tenant_id, day)) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS tenants_active ON tenants(id) WHERE active=1;
+CREATE TABLE IF NOT EXISTS nodes(
+	id TEXT PRIMARY KEY, addr TEXT NOT NULL, started INTEGER NOT NULL, beat INTEGER NOT NULL,
+	open INTEGER NOT NULL DEFAULT 0, max_active INTEGER NOT NULL DEFAULT 0) WITHOUT ROWID;
+CREATE TABLE IF NOT EXISTS placements(
+	tenant_id TEXT PRIMARY KEY, node TEXT NOT NULL, since INTEGER NOT NULL) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS placements_node ON placements(node);
 `
 
 type registry struct{ db *sql.DB }
@@ -126,17 +133,27 @@ func (r *registry) get(ctx context.Context, id TenantID) (TenantRecord, bool, er
 	return record, err == nil, err
 }
 
-func (r *registry) remove(ctx context.Context, id TenantID) error {
+// remove deletes a tenant's rows unless a live node other than node holds
+// it, and reports whether the tenant row went.
+func (r *registry) remove(ctx context.Context, id TenantID, node string, alive time.Time) (bool, error) {
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
-		return err
+		return false, err
 	}
-	for _, statement := range []string{`DELETE FROM tenants WHERE id=?`, `DELETE FROM usage WHERE tenant_id=?`} {
-		if _, err := tx.ExecContext(ctx, statement, string(id)); err != nil {
-			return errors.Join(err, tx.Rollback())
-		}
+	result, err := tx.ExecContext(ctx, `DELETE FROM tenants WHERE id=? AND NOT EXISTS (
+		SELECT 1 FROM placements p JOIN nodes n ON n.id=p.node WHERE p.tenant_id=? AND p.node<>? AND n.beat>=?)`,
+		string(id), string(id), node, millis(alive))
+	if err != nil {
+		return false, errors.Join(err, tx.Rollback())
 	}
-	return tx.Commit()
+	if _, err := tx.ExecContext(ctx, `DELETE FROM usage WHERE tenant_id=? AND NOT EXISTS (SELECT 1 FROM tenants WHERE id=?)`, string(id), string(id)); err != nil {
+		return false, errors.Join(err, tx.Rollback())
+	}
+	removed, err := result.RowsAffected()
+	if err != nil {
+		return false, errors.Join(err, tx.Rollback())
+	}
+	return removed == 1, tx.Commit()
 }
 
 // list pages through the tenants in ID order, after the given ID.
@@ -182,15 +199,31 @@ func (r *registry) activated(ctx context.Context, id TenantID) error {
 	return err
 }
 
-// hibernated records a clean sleep: when to wake the tenant (zero for never)
-// and when its owner was last here.
-func (r *registry) hibernated(ctx context.Context, id TenantID, next, seen time.Time) error {
+// hibernated records a clean sleep: it gives up the node's placement and
+// writes when to wake the tenant (zero for never) and when its owner was last
+// here. It reports false, and writes nothing, when the node no longer holds
+// the tenant: the others took it for dead and one of them owns the row now.
+func (r *registry) hibernated(ctx context.Context, id TenantID, node string, next, seen time.Time) (bool, error) {
 	wake := int64(0)
 	if !next.IsZero() {
 		wake = millis(next)
 	}
-	_, err := r.db.ExecContext(ctx, `UPDATE tenants SET active=0, next_wake=?, last_seen=MAX(last_seen,?) WHERE id=?`, wake, unixOrZero(seen), string(id))
-	return err
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return false, err
+	}
+	result, err := tx.ExecContext(ctx, `DELETE FROM placements WHERE tenant_id=? AND node=?`, string(id), node)
+	if err != nil {
+		return false, errors.Join(err, tx.Rollback())
+	}
+	held, err := result.RowsAffected()
+	if err != nil || held != 1 {
+		return false, errors.Join(err, tx.Rollback())
+	}
+	if _, err := tx.ExecContext(ctx, `UPDATE tenants SET active=0, next_wake=?, last_seen=MAX(last_seen,?) WHERE id=?`, wake, unixOrZero(seen), string(id)); err != nil {
+		return false, errors.Join(err, tx.Rollback())
+	}
+	return true, tx.Commit()
 }
 
 func unixOrZero(t time.Time) int64 {
@@ -198,18 +231,6 @@ func unixOrZero(t time.Time) int64 {
 		return 0
 	}
 	return millis(t)
-}
-
-// recoverActive finds tenants a previous process left open (it crashed or was
-// killed) and makes them due now, so their loops requeue what was
-// interrupted.
-func (r *registry) recoverActive(ctx context.Context, now time.Time) (int, error) {
-	result, err := r.db.ExecContext(ctx, `UPDATE tenants SET active=0, next_wake=? WHERE active=1`, millis(now))
-	if err != nil {
-		return 0, err
-	}
-	affected, err := result.RowsAffected()
-	return int(affected), err
 }
 
 func (r *registry) seen(ctx context.Context, id TenantID, at time.Time) error {

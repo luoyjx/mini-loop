@@ -14231,3 +14231,60 @@ unchanged; no dependency was added.
 - a sandbox per user, parallel preparation, OAuth connectors or several nodes;
 - server-sent events or WebSockets: the page uses a long poll;
 - a Python counterpart.
+
+## Go-only slice — assistant demo: fleet nodes on one data directory (2026-11-21)
+
+Code baseline: `23947de` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory`, `go/agent` and `go/mcp` are
+unchanged; no dependency was added. A fleet without `-advertise` behaves as
+before.
+
+**Go evidence:**
+
+- `fleet_cluster.go` lets several fleet processes serve one data directory when
+  `FleetConfig.Advertise` (`-advertise`) is set:
+  - `fleet.db` gains `nodes` (address, open tenants, heartbeat) and `placements`
+    (the node that holds a tenant);
+  - `registry.claim` is one statement: it places a tenant on a node when the
+    tenant exists and no other live node holds it. `Fleet.open` claims before it
+    opens and gives the claim up when the open fails;
+  - `registry.hibernated` removes the placement and records the sleep in one
+    transaction, and writes nothing when the node no longer holds the tenant;
+  - `Fleet.heartbeat` beats every fifth of `NodeTTL` (10 s). `recoverOrphans`
+    makes the tenants of dead nodes due and removes those nodes; it also
+    replaces the start-up recovery of a single fleet;
+  - a node that did not beat for longer than `NodeTTL` closes its tenants
+    (`Fleet.fence`).
+- `fleet_http.go` passes a tenant request, a push or a delete on to the holder
+  through `httputil.ReverseProxy`, once (`X-Miniloop-Fleet-Hop`). A full node
+  passes an owner's request to the node with the most room.
+- `lock_unix.go`: cluster nodes hold the data directory's lock shared, a single
+  fleet or a daemon holds it exclusively, so the two modes exclude each other.
+- `FleetStats` adds `node`, `nodes`, `forwards`, `takeovers` and `fences`.
+- Tests (`fleet_cluster_test.go`, two fleets on one directory, reaching each
+  other over real HTTP):
+  - a request, push and delete passed on to the holder, and a wrong token
+    refused before anything is passed on;
+  - a stopped node's tenant made due after `NodeTTL` and run by the other node;
+  - a stalled node: the directory lock keeps the other node out until the
+    stalled one beats again and closes its tenants;
+  - overflow from a full node, and no second hop;
+  - eight due tenants woken by two wakers at once, each opened exactly once;
+  - mutual exclusion with a single fleet, and refused advertise addresses.
+- Two `miniloop-assistant fleet` processes were also run on one directory and
+  the holder killed with `SIGKILL`: 503 until the TTL, then 200 from the other.
+
+**Not claimed:**
+
+- nodes on machines without a shared filesystem that honours `flock`: that
+  needs a network registry and a snapshot store, and a dependency;
+- a copy of the data, or survival of a lost disk;
+- a measurement with more than two nodes, or of the shared registry's write
+  rate under many nodes;
+- a global `-max-active` or `-turns`: both are per node;
+- authentication between nodes beyond the shared data directory and tokens;
+- availability during `NodeTTL` after a node is killed;
+- a Python counterpart.

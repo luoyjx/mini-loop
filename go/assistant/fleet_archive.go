@@ -48,8 +48,15 @@ func (f *Fleet) archiveAbsent(ctx context.Context, cutoff time.Time) {
 		hold := &tenant{id: id, closing: true, gone: make(chan struct{})}
 		f.tenants[id] = hold
 		f.mu.Unlock()
-		if err := f.archive(ctx, id); err != nil {
-			fmt.Fprintf(f.log, "fleet: archive %s: %v\n", id, err)
+		// The placement keeps the other nodes from opening it meanwhile; a
+		// request for it is passed on here and waits for the slot.
+		if err := f.place(ctx, id); err == nil {
+			if err := f.archive(ctx, id); err != nil {
+				fmt.Fprintf(f.log, "fleet: archive %s: %v\n", id, err)
+			}
+			if err := f.registry.unplace(context.WithoutCancel(ctx), id, f.node); err != nil {
+				fmt.Fprintf(f.log, "fleet: release %s after archiving: %v\n", id, err)
+			}
 		}
 		f.mu.Lock()
 		delete(f.tenants, id)

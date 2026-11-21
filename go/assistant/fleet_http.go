@@ -80,11 +80,26 @@ func (f *Fleet) serveTenant(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	t, err := f.acquire(r.Context(), id, true)
+	var away *elsewhere
 	switch {
 	case err == nil:
-	case errors.Is(err, ErrFleetFull), errors.Is(err, ErrFleetClosed):
-		w.Header().Set("Retry-After", "5")
-		writeJSON(w, http.StatusServiceUnavailable, errorResponse{"the service is busy; try again shortly"})
+	case errors.As(err, &away):
+		f.forward(w, r, away.addr)
+		return
+	case errors.Is(err, errMoving):
+		busy(w, 1)
+		return
+	case errors.Is(err, ErrFleetFull):
+		// Another node may hold it or have room; the owner should not have
+		// to know which node the load balancer picked.
+		if addr, ok := f.overflow(r.Context(), id); ok && r.Header.Get(hopHeader) == "" {
+			f.forward(w, r, addr)
+			return
+		}
+		busy(w, 5)
+		return
+	case errors.Is(err, ErrFleetClosed):
+		busy(w, 5)
 		return
 	case errors.Is(err, ErrTenantUnknown):
 		writeJSON(w, http.StatusUnauthorized, errorResponse{"a valid tenant token is required"})
@@ -150,7 +165,10 @@ type pushResponse struct {
 // not read: a push only says that something changed for this tenant.
 func (f *Fleet) handlePush(w http.ResponseWriter, r *http.Request) {
 	outcome, err := f.Push(r.Context(), TenantID(r.PathValue("tenant")))
+	var away *elsewhere
 	switch {
+	case errors.As(err, &away):
+		f.forward(w, r, away.addr)
 	case errors.Is(err, ErrTenantUnknown):
 		writeJSON(w, http.StatusNotFound, errorResponse{err.Error()})
 	case errors.Is(err, ErrFleetClosed):
@@ -224,7 +242,12 @@ func (f *Fleet) handleGetTenant(w http.ResponseWriter, r *http.Request) {
 
 func (f *Fleet) handleDeleteTenant(w http.ResponseWriter, r *http.Request) {
 	err := f.DeleteTenant(context.WithoutCancel(r.Context()), TenantID(r.PathValue("tenant")))
+	var away *elsewhere
 	switch {
+	case errors.As(err, &away):
+		f.forward(w, r, away.addr)
+	case errors.Is(err, errMoving):
+		busy(w, 1)
 	case errors.Is(err, ErrTenantUnknown):
 		writeJSON(w, http.StatusNotFound, errorResponse{err.Error()})
 	case err != nil:

@@ -1,13 +1,13 @@
 Edit the supplied complete mini-loop layered architecture diagram. This is a repository architecture update dated 2026-11-21. Keep everything above the very bottom band exactly as it is: the title, the Chinese typography, the dark navy background, the cyan/violet borders, every L1-L5 layer, the right boundary column with its six numbered items, the deepagents-server band, the Temporal experiment band and the Task container band with its LangSmith trace box and its orange 2026-10-17 badge. Do not move, resize or reword anything outside the very bottom band.
 
 Inside the very bottom band, keep the band size, the band title '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 本机 Mac 或多租户 fleet' and the left-to-right flow of five boxes with their arrows and icons. Change only these texts and highlights:
-- Box 1 stays '本机网页 / 远程信道 / fleet'; its small line becomes exactly '长轮询订阅变化 · 推送唤醒租户'. Keep its chat-bubble icon.
-- Box 2 stays 'assistant.db × 每个租户'; its small line becomes exactly '回合结果一个事务提交'.
+- Box 1 stays '本机网页 / 远程信道 / fleet'; its small line becomes exactly '长轮询 · 推送唤醒 · fleet 可多节点'. Keep its chat-bubble icon.
+- Box 2 stays 'assistant.db × 每个租户'; its small line stays '回合结果一个事务提交'.
 - Box 3 stays 'Router + Worker + Preparer' with small line '全局回合闸门 · 每日调用额度 · 分诊'.
 - Box 4 stays 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'.
 - Box 5 stays 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'.
-- The thin strip at the bottom of the band becomes three items separated by dots, exact text: '推送只是唤醒提示' · '没变化不取完整状态' · '回合结果一个事务，崩溃不重发'. Keep it fully visible inside the canvas.
-- The orange badge at the top right of the band becomes, exact text: '2026-11-21：推送唤醒 · 长轮询 · 一个事务'.
-- Put the subtle orange outline glow on boxes 1 and 2, marking them as this iteration's change; boxes 3, 4 and 5 have no glow.
+- The thin strip at the bottom of the band becomes three items separated by dots, exact text: '租户同一时间只在一个节点打开' · '请求转给持有它的节点' · '节点停了由别的节点接手'. Keep it fully visible inside the canvas.
+- The orange badge at the top right of the band becomes, exact text: '2026-11-21：fleet 多节点 · 加进程扩容'.
+- Put the subtle orange outline glow on box 1 only, marking it as this iteration's change; boxes 2, 3, 4 and 5 have the same plain border and no glow.
 
-Do not draw a cloud provider logo, Gmail or Outlook logos, a webhook provider, Kubernetes, a load balancer, several servers, virtual machines or sandboxes, Temporal, a message queue, WebSockets, a shared multi-tenant database, approval buttons in the remote channels, management of a real mailbox or a Python counterpart. Do not add services, databases or metrics. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.
+Do not draw a cloud provider logo, Gmail or Outlook logos, a webhook provider, Kubernetes, a load balancer, extra server or node boxes, virtual machines or sandboxes, Temporal, a message queue, WebSockets, a shared multi-tenant database, approval buttons in the remote channels, management of a real mailbox or a Python counterpart. Do not add services, databases or metrics. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.

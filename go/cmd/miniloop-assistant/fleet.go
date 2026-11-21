@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/assistant"
@@ -44,6 +45,8 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	dormant := flags.Duration("dormant-after", 7*24*time.Hour, "stop waking a tenant whose owner has been away this long; 0 keeps waking")
 	archive := flags.Duration("archive-after", 30*24*time.Hour, "compress the data of a tenant whose owner has been away this long; 0 never")
 	sweep := flags.Duration("sweep", 0, "wake each sleeping tenant at least this often (for mail without push); 0 relies on its timers")
+	advertise := flags.String("advertise", "", "this node's base URL as the other nodes reach it, such as http://10.0.0.3:8791; setting it lets several fleet processes share -data and pass requests to each other")
+	nodeTTL := flags.Duration("node-ttl", 10*time.Second, "with -advertise, how long a node may miss its heartbeat before the others take its tenants")
 	tlsCert := flags.String("tls-cert", "", "TLS certificate file")
 	tlsKey := flags.String("tls-key", "", "TLS private key file")
 	behindProxy := flags.Bool("behind-tls-proxy", false, "serve plain HTTP on a non-loopback address because a proxy in front terminates TLS")
@@ -76,6 +79,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	config := assistant.FleetConfig{
 		DataDir: root, Log: std.err, MaxActive: *maxActive, IdleTTL: *idle, Turns: *turns, ChatTurns: *chatTurns,
 		TenantWorkers: *tenantWorkers, DailyCalls: *dailyCalls, DormantAfter: *dormant, ArchiveAfter: *archive, Sweep: *sweep,
+		Advertise: strings.TrimSuffix(*advertise, "/"), NodeTTL: *nodeTTL,
 	}
 	if config.Provider, config.Model, config.ModelLabel, err = chooseModel(*model, *modelID, env); err != nil {
 		return fail(err)
@@ -105,7 +109,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	if label == "" {
 		label = config.Model
 	}
-	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t)\n", scheme, listener.Addr(), label, root, *maxActive, *turns, *dailyCalls, push != "")
+	fmt.Fprintf(std.err, "mini-loop assistant fleet on %s://%s (model=%s, data=%s, max-active=%d, turns=%d, daily-calls=%d, push=%t, advertise=%q)\n", scheme, listener.Addr(), label, root, *maxActive, *turns, *dailyCalls, push != "", config.Advertise)
 	select {
 	case <-ctx.Done():
 	case err = <-served:

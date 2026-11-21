@@ -10,7 +10,8 @@ ledger. The main channel is a loopback web page; opt-in remote channels add a
 private chat with the owner's Telegram bot, a DM with the owner's Discord bot, or
 email. The opt-in `fleet` subcommand hosts many owners' assistants in one process
 behind per-tenant tokens and keeps each asleep while it has nothing to do; an
-optional push token lets a mail notification wake one. The page follows changes
+optional push token lets a mail notification wake one, and with `-advertise`
+several fleet processes serve one data directory. The page follows changes
 with a long poll, and each worker turn's outcome is committed in one transaction.
 
 Mail and calendar live in a simulated MCP server, the `mock-mcp` subcommand, which

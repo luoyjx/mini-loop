@@ -20,7 +20,8 @@ watchdog flags tasks whose checks stop making progress. Workers can trace a piec
 work through its records, and a nightly routine consolidates memory into a short
 profile that every worker sees. An opt-in [fleet host](#many-owners-the-fleet-host)
 runs many owners' assistants in one process and lets each sleep while it is idle;
-a mail provider's notification can [wake a sleeping one](#new-mail-for-a-sleeping-tenant).
+a mail provider's notification can [wake a sleeping one](#new-mail-for-a-sleeping-tenant),
+and [several fleet processes](#several-nodes) can share one data directory.
 The page [follows changes](#how-the-page-follows-changes) with a long poll, and
 [each turn ends in one transaction](#how-a-turn-ends). The demo has no Python counterpart
 and does not change `cmd/miniloop` defaults. The roadmap is in
@@ -332,6 +333,62 @@ Without it, `/push/` is not served. The push token reaches no tenant's data,
 and holding it lets someone spend wakes, so it belongs to the relay only. The
 fleet still has no provider connector; real mail stays design-only.
 
+### Several nodes
+
+One fleet process is bounded by `-max-active` and `-turns`. With `-advertise`,
+several processes serve one `-data` directory, and capacity grows by starting
+another one behind the load balancer. Every node is the same: it takes any
+request, opens any tenant and runs the same waker, reaper and janitor. The
+nodes are not stateless, but nothing has to know which node holds what.
+
+```sh
+export MINILOOP_FLEET_ADMIN_TOKEN=...   # the same on every node
+miniloop-assistant fleet -addr 127.0.0.1:8791 -advertise http://127.0.0.1:8791 -data /srv/fleet &
+miniloop-assistant fleet -addr 127.0.0.1:8792 -advertise http://127.0.0.1:8792 -data /srv/fleet &
+```
+
+A tenant is still open in one place at a time. The registry says where:
+
+| Table | What it holds |
+|---|---|
+| `nodes` | One row per running node: its address, how many tenants it has open, and a heartbeat written every fifth of `-node-ttl` |
+| `placements` | The node that holds a tenant. A node writes the row before it opens the tenant and removes it in the transaction that records the tenant's sleep |
+
+| Event | What happens |
+|---|---|
+| A request reaches the node that holds the tenant, or the tenant sleeps | That node serves it, opening the tenant if needed |
+| A request, push or delete reaches another node | It is passed on to the holder over HTTP. The owner's token travels with it and the holder checks it again, so nodes need no credential of their own |
+| The node is full and cannot evict | An owner's request is passed to the node with the most room |
+| A tenant is due | Every node's waker reads the same due list. The claim is one SQL statement, so one node opens it and the others skip it |
+| A node closes | It puts its tenants to sleep and leaves the registry. They are due at once and another node wakes them: a rolling restart |
+| A node is killed | After `-node-ttl` without a heartbeat the others make its tenants due and one of them runs each. Unsettled turns are requeued, as after a restart. Until then, requests for those tenants get 503 with `Retry-After` |
+| A node stalls and is taken for dead | Its tenants' directories stay locked, so no other node can open them. When it beats again it sees how long it was silent, closes its tenants, and another node takes them |
+
+A request is passed on once. A node that gets a passed-on request for a tenant it
+cannot serve answers 503 instead of passing it on again.
+
+What this needs and does not give:
+
+- **One filesystem with working locks.** The registry and the tenants'
+  directories are files the nodes share. That means one host, or a cluster
+  filesystem that honours `flock`. SQLite's WAL mode does not work over NFS. To
+  run nodes on machines without such a filesystem, the registry needs a network
+  database and tenant directories need a snapshot store. Both are design-only
+  and need a dependency this module does not have.
+- **No copy of the data.** A lost disk loses the tenants on it.
+- **The registry is one file.** Every node writes its heartbeat, placements and
+  model usage to it. It was not measured with more than two nodes.
+- **Per node, not global:** `-max-active`, `-turns` and the counters in
+  `/admin/stats`. `-daily-calls` is per tenant across all nodes.
+- **Nodes trust each other.** They share the data directory and the admin and
+  push tokens. Traffic between nodes uses the advertised URL; use `https` or a
+  private network.
+- **Clocks.** A node is alive while its heartbeat is newer than `-node-ttl` by
+  the reader's clock, so the nodes' clocks must agree to well within that.
+
+Without `-advertise` the fleet holds its directory alone, as before, and a
+cluster node and a single fleet refuse to start beside each other.
+
 ### What it costs
 
 Model tokens cost the most, then compute, then storage. The fleet saves on each:
@@ -367,6 +424,8 @@ ran a morning brief and the nightly consolidation at once.
 | `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
 | `-archive-after` | 720h | Compress the data of a tenant whose owner has been away this long; 0 never |
 | `-sweep` | 0 | Wake each sleeping tenant at least this often, for mail sources that cannot push |
+| `-advertise` | empty | This node's base URL as the other nodes reach it. Setting it lets several fleet processes share `-data` |
+| `-node-ttl` | 10s | With `-advertise`, how long a node may miss its heartbeat before the others take its tenants |
 
 `MINILOOP_FLEET_ADMIN_TOKEN` is required. `MINILOOP_FLEET_PUSH_TOKEN` is
 optional and turns on `/push/{id}`.
@@ -829,7 +888,8 @@ comparison is by role.
 | A model-driven router session | Rules and a tool-less triage call; the router is code | Different by design |
 | Session log | `agent.db` transcripts and the ledger | Same |
 | Replies to the source channel | Lines go to the page and every enabled remote channel; owner lines carry their source | One owner sees one conversation, by design |
-| OAuth connectors, several nodes, sharding | Simulated MCP, one process | Design only |
+| Several nodes | With `-advertise`, fleet processes share one data directory: a placement row per open tenant, requests passed on to the holder, a dead node's tenants taken over | Added on 2026-11-21 for one shared filesystem; nodes on separate disks are design only |
+| OAuth connectors, sharding by region | Simulated MCP | Design only |
 
 ## Boundaries
 
@@ -906,8 +966,10 @@ comparison is by role.
   the new mock world does not have. Approving one fails with the server's refusal.
 - The process-local `ApprovalBroker` is not used for these effects. Its 300s timeout
   and its restart behavior are unchanged.
-- The fleet host is one process on one machine. Multi-node sharding, replication
-  of tenant directories to object storage, self-service sign-up and provider
+- The fleet host is one process by default. With `-advertise` several processes
+  share one data directory, which needs one filesystem with working locks (see
+  [Several nodes](#several-nodes)). Nodes on separate disks, replication of
+  tenant directories to object storage, self-service sign-up and provider
   webhooks are design only. Every tenant uses the fleet's time zone and model, and
   none has remote channels or embeddings. Mail and calendar stay the simulated
   world, one per tenant.

@@ -260,6 +260,7 @@ func TestFleetRefusesUnsafeStartup(t *testing.T) {
 	}{
 		"short push token":          {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, push: "short"},
 		"push token is admin token": {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}, push: testAdminToken},
+		"advertise is not a URL":    {admin: testAdminToken, args: []string{"fleet", "-addr", "127.0.0.1:0", "-advertise", "10.0.0.3:8791", "-data", t.TempDir()}},
 		"no admin token":            {admin: "", args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
 		"short admin token":         {admin: "short", args: []string{"fleet", "-addr", "127.0.0.1:0", "-data", t.TempDir()}},
 		"plain http on network":     {admin: testAdminToken, args: []string{"fleet", "-addr", "0.0.0.0:0", "-data", t.TempDir()}},

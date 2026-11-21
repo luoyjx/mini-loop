@@ -48,6 +48,13 @@ type Fleet struct {
 	tenants map[TenantID]*tenant
 	closed  bool
 	// kick runs the waker at once, after a push made a sleeping tenant due.
+	// node names this process in the registry; a restart is a new node.
+	node      string
+	started   time.Time
+	transport http.RoundTripper
+	beatMu    sync.Mutex
+	lastBeat  time.Time
+
 	kick chan struct{}
 	run  context.Context
 	stop context.CancelFunc
@@ -107,6 +114,17 @@ type FleetConfig struct {
 	ReapTick    time.Duration
 	JanitorTick time.Duration
 
+	// Advertise is this node's base URL as the other nodes reach it, such as
+	// http://10.0.0.3:8791. Setting it lets several fleet processes share
+	// DataDir: each passes on requests for tenants another one holds. Empty,
+	// the fleet holds DataDir alone.
+	Advertise string
+	// NodeTTL is how long a node may go without a heartbeat before the
+	// others take its tenants (default 10s); BeatTick is how often a node
+	// beats (default a fifth of NodeTTL).
+	NodeTTL  time.Duration
+	BeatTick time.Duration
+
 	// The rest is passed to every tenant's App unchanged.
 	SchedulerTick time.Duration
 	PollInterval  time.Duration
@@ -140,7 +158,7 @@ const (
 )
 
 type fleetCounters struct {
-	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures, pushes atomic.Int64
+	activations, hibernations, evictions, rejections, stalls, restores, archives, retired, wakeFailures, pushes, forwards, takeovers, fences atomic.Int64
 }
 
 // tenant is one open (or opening, or closing) assistant. Fields other than
@@ -206,11 +224,25 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	}{
 		{&config.IdleTTL, 2 * time.Minute}, {&config.StallAfter, 10 * time.Minute}, {&config.StallBackoff, 5 * time.Minute},
 		{&config.WakeTick, time.Second}, {&config.ReapTick, 5 * time.Second}, {&config.JanitorTick, 10 * time.Minute},
+		{&config.NodeTTL, 10 * time.Second},
 	}
 	for _, d := range durations {
 		if *d.value <= 0 {
 			*d.value = d.def
 		}
+	}
+	if config.BeatTick <= 0 {
+		config.BeatTick = config.NodeTTL / 5
+	}
+	if config.BeatTick >= config.NodeTTL {
+		return nil, fmt.Errorf("fleet nodes must beat (%v) more often than they are given up (%v)", config.BeatTick, config.NodeTTL)
+	}
+	take := lockDataDir
+	if config.Advertise != "" {
+		if err := checkAdvertise(config.Advertise); err != nil {
+			return nil, err
+		}
+		take = shareDataDir
 	}
 	if config.Now == nil {
 		config.Now = time.Now
@@ -224,9 +256,10 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	if err := os.MkdirAll(filepath.Join(config.DataDir, "tenants"), 0o700); err != nil {
 		return nil, err
 	}
-	// Two fleets on one directory would wake, archive and delete the same
-	// tenants; the same lock also keeps a daemon off the fleet's root.
-	unlock, err := lockDataDir(config.DataDir)
+	// Two fleets that do not know of each other would wake, archive and
+	// delete the same tenants; the same lock also keeps a daemon off the
+	// fleet's root. The nodes of a cluster hold it shared.
+	unlock, err := take(config.DataDir)
 	if err != nil {
 		return nil, err
 	}
@@ -234,21 +267,41 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	if err != nil {
 		return nil, errors.Join(fmt.Errorf("open fleet registry: %w", err), unlock())
 	}
-	log := &lockedWriter{w: config.Log}
-	recovered, err := registry.recoverActive(ctx, config.Now())
-	if err != nil {
-		return nil, errors.Join(err, registry.Close(), unlock())
-	}
-	if recovered > 0 {
-		fmt.Fprintf(log, "fleet: %d tenants were open when the last process stopped; waking them\n", recovered)
-	}
 	run, stop := context.WithCancel(context.Background())
 	fleet := &Fleet{
 		config: config, registry: registry, unlock: unlock, gate: newTurnGate(config.Turns, config.ChatTurns),
-		now: config.Now, log: log, tenants: map[TenantID]*tenant{}, run: run, stop: stop, kick: make(chan struct{}, 1),
+		now: config.Now, log: &lockedWriter{w: config.Log}, tenants: map[TenantID]*tenant{}, run: run, stop: stop, kick: make(chan struct{}, 1),
+		node: randomHex(8), started: config.Now(), lastBeat: config.Now(), transport: nodeTransport(),
 	}
 	fleet.drained = sync.NewCond(&fleet.mu)
+	if err := fleet.join(ctx); err != nil {
+		stop()
+		return nil, errors.Join(err, registry.Close(), unlock())
+	}
 	return fleet, nil
+}
+
+// join enters the node in the registry and makes the tenants that a stopped
+// node left open due now, so whatever it interrupted runs again. A fleet
+// that holds the directory alone knows every other node has stopped.
+func (f *Fleet) join(ctx context.Context) error {
+	if !f.clustered() {
+		if err := f.registry.leave(ctx, f.node, true); err != nil {
+			return err
+		}
+	}
+	if err := f.registry.beat(ctx, f.node, f.config.Advertise, f.started, f.started, 0, f.config.MaxActive); err != nil {
+		return err
+	}
+	recovered, err := f.registry.recoverOrphans(ctx, f.started, f.alive())
+	if err != nil {
+		return err
+	}
+	if recovered > 0 {
+		f.counters.takeovers.Add(int64(recovered))
+		fmt.Fprintf(f.log, "fleet: %d tenants were open when a node stopped; waking them\n", recovered)
+	}
+	return nil
 }
 
 // MockTenantConnect gives a tenant the in-process mock mail and calendar,
@@ -265,13 +318,20 @@ func MockTenantConnect(ctx context.Context, _ TenantID, dir string, now func() t
 	return NewConnector(client, "in-process"), world.Close, nil
 }
 
-// Start runs the waker, the reaper and the janitor until Close.
+// Start runs the waker, the reaper and the janitor until Close, and in a
+// cluster the heartbeat.
 func (f *Fleet) Start() {
-	loops := []struct {
+	type loop struct {
 		every time.Duration
 		step  func(context.Context)
 		kick  <-chan struct{}
-	}{{f.config.WakeTick, f.wakeDue, f.kick}, {f.config.ReapTick, f.reap, nil}, {f.config.JanitorTick, f.janitor, nil}}
+	}
+	loops := []loop{{f.config.WakeTick, f.wakeDue, f.kick}, {f.config.ReapTick, f.reap, nil}, {f.config.JanitorTick, f.janitor, nil}}
+	if f.clustered() {
+		// A fleet that holds its directory alone has nobody to tell, and an
+		// idle one should not write to its registry every few seconds.
+		loops = append(loops, loop{f.config.BeatTick, f.heartbeat, nil})
+	}
 	f.wg.Add(len(loops))
 	for _, loop := range loops {
 		go func() {
@@ -329,7 +389,9 @@ func (f *Fleet) Close() error {
 			<-wait
 		}
 	}
-	return errors.Join(f.registry.Close(), f.unlock())
+	leave, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	return errors.Join(f.registry.leave(leave, f.node, false), f.registry.Close(), f.unlock())
 }
 
 // ---- tenants ----
@@ -370,16 +432,25 @@ func (f *Fleet) Tenants(ctx context.Context, after TenantID, limit int) ([]Tenan
 }
 
 // DeleteTenant removes a tenant and all its data. Requests already inside it
-// finish first; later ones find no tenant.
+// finish first; later ones find no tenant. A tenant that another node holds
+// is not removed here: the error names that node, which must close it first.
 func (f *Fleet) DeleteTenant(ctx context.Context, id TenantID) error {
 	if !id.Valid() {
 		return ErrTenantUnknown
 	}
-	if _, ok, err := f.registry.get(ctx, id); err != nil || !ok {
-		return errors.Join(err, ErrTenantUnknown)
-	}
-	if err := f.registry.remove(ctx, id); err != nil {
+	removed, err := f.registry.remove(ctx, id, f.node, f.alive())
+	if err != nil {
 		return err
+	}
+	if !removed {
+		if _, ok, err := f.registry.get(ctx, id); err != nil || !ok {
+			return errors.Join(err, ErrTenantUnknown)
+		}
+		node, addr, held, err := f.registry.holder(ctx, id, f.alive())
+		if err != nil || !held {
+			return errors.Join(err, errMoving)
+		}
+		return &elsewhere{node: node, addr: addr}
 	}
 	for {
 		f.mu.Lock()
@@ -403,7 +474,8 @@ func (f *Fleet) DeleteTenant(ctx context.Context, id TenantID) error {
 	}
 	// Usage a winding-down turn recorded after the first removal goes too.
 	dir := f.dir(id)
-	return errors.Join(f.registry.remove(ctx, id), os.RemoveAll(dir), removeIfExists(archivePath(dir)))
+	_, err = f.registry.remove(ctx, id, f.node, f.alive())
+	return errors.Join(err, f.registry.unplace(ctx, id, f.node), os.RemoveAll(dir), removeIfExists(archivePath(dir)))
 }
 
 // Authenticate checks an owner's bearer token in constant time, against the
@@ -559,6 +631,14 @@ func (f *Fleet) open(ctx context.Context, t *tenant) (err error) {
 	if err != nil || !ok {
 		return errors.Join(err, ErrTenantUnknown)
 	}
+	if err := f.place(ctx, t.id); err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			err = errors.Join(err, f.registry.unplace(ctx, t.id, f.node))
+		}
+	}()
 	dir := f.dir(t.id)
 	if err := f.restore(record, dir); err != nil {
 		return fmt.Errorf("restore tenant %s: %w", t.id, err)
@@ -628,7 +708,9 @@ func (f *Fleet) hibernate(t *tenant, floor time.Time) {
 	if err := errors.Join(t.app.Close(ctx), t.extra()); err != nil {
 		fmt.Fprintf(f.log, "fleet: close %s: %v\n", t.id, err)
 	}
-	if err := f.registry.hibernated(ctx, t.id, next, touched); err != nil {
+	// When another node took the tenant for dead its row is that node's now,
+	// and it wakes the tenant itself.
+	if _, err := f.registry.hibernated(ctx, t.id, f.node, next, touched); err != nil {
 		fmt.Fprintf(f.log, "fleet: record sleep of %s: %v\n", t.id, err)
 	}
 	f.counters.hibernations.Add(1)
@@ -784,7 +866,10 @@ func (f *Fleet) wakeDue(ctx context.Context) {
 	parallel(due, fleetParallel, func(id TenantID) {
 		t, err := f.acquire(ctx, id, false)
 		if err != nil {
-			if errors.Is(err, ErrFleetFull) || errors.Is(err, ErrFleetClosed) || ctx.Err() != nil {
+			var away *elsewhere
+			if errors.Is(err, ErrFleetFull) || errors.Is(err, ErrFleetClosed) || ctx.Err() != nil ||
+				errors.As(err, &away) || errors.Is(err, errMoving) || errors.Is(err, ErrTenantUnknown) {
+				// Another node woke it first, or it was deleted meanwhile.
 				return
 			}
 			f.counters.wakeFailures.Add(1)
@@ -882,6 +967,13 @@ func (f *Fleet) nudge(ctx context.Context, id TenantID) (PushOutcome, error) {
 		if _, ok, err := f.registry.get(ctx, id); err != nil || !ok {
 			return "", errors.Join(err, ErrTenantUnknown)
 		}
+		// Open on another node: that node must poll, so the caller passes
+		// the push on.
+		if node, addr, held, err := f.registry.holder(ctx, id, f.alive()); err != nil {
+			return "", err
+		} else if held && node != f.node {
+			return "", &elsewhere{node: node, addr: addr}
+		}
 		return PushDeferred, nil
 	}
 	select {
@@ -926,6 +1018,15 @@ type FleetStats struct {
 	Retired      int64               `json:"retired"`
 	WakeFailures int64               `json:"wake_failures"`
 	Pushes       int64               `json:"pushes"`
+	// Node is this process; the counters above are its own. Nodes lists
+	// every node in the registry. Forwards counts requests passed on to
+	// another node, Takeovers tenants recovered from stopped nodes, Fences
+	// the times this node closed its tenants after missing heartbeats.
+	Node      string     `json:"node"`
+	Nodes     []NodeInfo `json:"nodes"`
+	Forwards  int64      `json:"forwards"`
+	Takeovers int64      `json:"takeovers"`
+	Fences    int64      `json:"fences"`
 	// ModelCalls counts calls since the process started; Today sums every
 	// tenant's use on the current local day from the registry.
 	ModelCalls int64       `json:"model_calls"`
@@ -941,6 +1042,10 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 	if err != nil {
 		return FleetStats{}, err
 	}
+	nodes, err := f.Nodes(ctx)
+	if err != nil {
+		return FleetStats{}, err
+	}
 	f.mu.Lock()
 	active := len(f.tenants)
 	f.mu.Unlock()
@@ -951,6 +1056,7 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 		Activations: c.activations.Load(), Hibernations: c.hibernations.Load(), Evictions: c.evictions.Load(),
 		Rejections: c.rejections.Load(), Stalls: c.stalls.Load(), Restores: c.restores.Load(),
 		Archives: c.archives.Load(), Retired: c.retired.Load(), WakeFailures: c.wakeFailures.Load(), Pushes: c.pushes.Load(),
+		Node: f.node, Nodes: nodes, Forwards: c.forwards.Load(), Takeovers: c.takeovers.Load(), Fences: c.fences.Load(),
 		ModelCalls: f.calls.Load(), Today: today,
 	}, nil
 }
