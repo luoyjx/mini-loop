@@ -76,6 +76,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	archive := flags.Duration("archive-after", 30*24*time.Hour, "move the data of a tenant whose owner has been away this long to the cheapest place: a compressed file, or with "+envFleetDatabase+" the -archive-store; 0 never")
 	archiveStore := flags.String("archive-store", "", "with "+envFleetDatabase+", where archived tenants go: file:///directory, https://host/bucket/prefix of an S3-compatible store, or s3://bucket/prefix (keys in "+envFleetArchiveKeyID+" and "+envFleetArchiveSecret+")")
 	archiveRegion := flags.String("archive-region", "us-east-1", "the region an S3 -archive-store signs for")
+	largeKB := flags.Int64("large-file-kb", 1024, "with -archive-store, keep the bulk of a tenant's file of this many KiB or more as one object in the store and only its changed pages in the database; 0 keeps every file in the database")
 	cacheAfter := flags.Duration("cache-after", 0, "with "+envFleetDatabase+", drop this node's copy of a tenant it has not opened for this long (default -archive-after)")
 	cacheMB := flags.Int64("cache-max-mb", 0, "with "+envFleetDatabase+", drop the copies opened longest ago once they take more than this many MiB; 0 is no bound")
 	usageRetention := flags.Duration("usage-retention", 0, "drop per-day usage rows older than this; 0 keeps them")
@@ -122,6 +123,7 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 		Advertise: strings.TrimSuffix(*advertise, "/"), NodeTTL: *nodeTTL,
 		Database: env.getenv(envFleetDatabase), Checkpoint: *checkpoint,
 		JanitorTick: *janitorTick, CacheAfter: *cacheAfter, CacheBytes: *cacheMB << 20, UsageRetention: *usageRetention, DatabaseConns: *databaseConns, RegistryGrace: *registryGrace,
+		LargeFile: *largeKB << 10,
 		Archive: assistant.ArchiveStore{
 			URL: *archiveStore, Region: *archiveRegion, AccessKeyID: env.getenv(envFleetArchiveKeyID),
 			SecretAccessKey: env.getenv(envFleetArchiveSecret), SessionToken: env.getenv(envFleetArchiveSession),
@@ -133,9 +135,16 @@ func runFleet(ctx context.Context, args []string, env environment, std streams) 
 	if config.Database == "" && (len(config.Shards) > 0 || config.Archive.URL != "") {
 		return fail(fmt.Errorf("%s and -archive-store need %s", envFleetShards, envFleetDatabase))
 	}
+	if *largeKB < 0 || *largeKB > 1<<30 {
+		return fail(errors.New("-large-file-kb is 0 (off) or a size in KiB up to 1 TiB"))
+	}
 	store := "data directory"
 	if config.Database != "" {
-		store = fmt.Sprintf("postgres (%d shards, archive store=%t)", len(config.Shards), config.Archive.URL != "")
+		large := "off"
+		if config.Archive.URL != "" && config.LargeFile > 0 {
+			large = fmt.Sprintf("%d KiB", *largeKB)
+		}
+		store = fmt.Sprintf("postgres (%d shards, archive store=%t, large files in the store from %s)", len(config.Shards), config.Archive.URL != "", large)
 	}
 	if config.Provider, config.Model, config.ModelLabel, err = chooseModel(*model, *modelID, env); err != nil {
 		return fail(err)

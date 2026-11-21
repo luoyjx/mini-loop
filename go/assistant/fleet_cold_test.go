@@ -219,9 +219,9 @@ func TestArchiveIsTheTruthWhileATenantIsCold(t *testing.T) {
 	}
 	source, _ := fleet.vault.shards["s1"].use(ctx)
 	target, _ := fleet.vault.shards["s2"].use(ctx)
-	head, err := take(ctx, source, "alice", fleet.node, born, false, clock.Now())
+	head, _, _, err := take(ctx, source, "alice", fleet.node, born, false, clock.Now(), nil)
 	if err == nil {
-		_, err = take(ctx, target, "alice", fleet.node, born, true, clock.Now())
+		_, _, _, err = take(ctx, target, "alice", fleet.node, born, true, clock.Now(), nil)
 	}
 	if err == nil {
 		err = copyTenant(ctx, source, target, "alice", fleet.node, head, clock.Now())

@@ -448,9 +448,9 @@ func TestMoveLeftHalfDoneIsCompletedOrUndone(t *testing.T) {
 		}
 		source, _ := a.vault.shards[from].use(ctx)
 		target, _ := a.vault.shards[to].use(ctx)
-		head, err := take(ctx, source, id, a.node, born, false, now)
+		head, _, _, err := take(ctx, source, id, a.node, born, false, now, nil)
 		if err == nil {
-			_, err = take(ctx, target, id, a.node, born, true, now)
+			_, _, _, err = take(ctx, target, id, a.node, born, true, now, nil)
 		}
 		if err == nil {
 			err = copyTenant(ctx, source, target, id, a.node, head, now)

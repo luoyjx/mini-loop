@@ -496,8 +496,9 @@ altogether. A tenant's data is in one of three places:
 | Place | What is there | It stays while |
 |---|---|---|
 | The disk of a node (`-data`) | A copy of the tenants the node opened | The copy is younger than `-cache-after` and the copies fit in `-cache-max-mb`. It is a cache |
-| A shard: a PostgreSQL database | The tenant's files as pages | The tenant is in use, or no archive store is configured |
-| The archive store: a directory or an S3 bucket | One `.tar.gz` object per tenant | Its owner has been away `-archive-after` and nothing is due to wake it within a day |
+| A shard: a PostgreSQL database | The tenant's files as pages; of a large file, only the pages that differ from its object | The tenant is in use, or no archive store is configured |
+| The archive store: a directory or an S3 bucket | One object per large file of a tenant in a shard (`-large-file-kb`, 1 MiB) | The file is at least half that size. A rewritten file gets a new object |
+| The archive store | One `.tar.gz` object per archived tenant, large files included | Its owner has been away `-archive-after` and nothing is due to wake it within a day |
 
 ```sh
 export MINILOOP_FLEET_DATABASE_URL=postgres://fleet:...@registry.internal:5432/fleet
@@ -525,7 +526,28 @@ shard. Every statement about a tenant's data goes to that one shard.
 | A node's clock is wrong | With PostgreSQL, heartbeats are written and judged by the registry database's clock |
 | Nodes start at the same moment | Each clears the rows of the nodes that stopped before, and PostgreSQL lets one of them do it. The others are told that the rows changed under them, leave it to that one and start; the heartbeat clears what is left |
 | A node is about to stop | `/readyz` answers 503 for `-leave-wait` before the node closes, so the load balancer stops sending requests first |
-| The software is upgraded | The tables are changed by numbered steps the first node of the new version runs. A node refuses a database that a later version has changed. Shards and the archive store cannot be turned on while a node from before them is running |
+| The software is upgraded | The tables are changed by numbered steps the first node of the new version runs. A node refuses a database that a later version has changed. Shards and the archive store cannot be turned on while a node from before them is running, and large files cannot be kept in the store while a node from before them is: start the new nodes with `-large-file-kb 0` until the old ones have stopped. An old node that is still running keeps using the databases it has opened, but refuses a shard it opens only after a new node has updated it, and so its requests for that shard's tenants fail: stop the old nodes soon after the new ones are up |
+
+#### Large files
+
+A shard keeps a file as rows of 4 KiB pages. That is cheap when a little of
+it changes and dear when there is a lot of it: every page is a row with an
+index entry, and it is written to the database's log, copied to standbys and
+backups, and vacuumed. With an archive store, a file of `-large-file-kb` (1024)
+or more keeps its bulk as one object in the store, and the shard keeps only
+the pages that differ from it.
+
+| Event | What happens |
+|---|---|
+| A file reaches `-large-file-kb` | The next checkpoint writes it to the store as one object and keeps none of its pages in the shard. The file's row names the object, with its size and SHA-256 |
+| A few pages of it change, as in a database | The checkpoint writes only those pages, over the object |
+| The pages over its object, or the pages one checkpoint changes, come to more than a quarter of it, as in a file that is rewritten whole or a database that has grown by a quarter | The checkpoint writes it to the store as a new object, removes its pages and then the old object. Pages changed again and again count once |
+| It shrinks below half of `-large-file-kb`, or large files are turned off | It goes back to pages and its object is removed |
+| A node reads the tenant | It reads the object, writes the pages over it and checks the whole file's SHA-256. An object that is missing or not the one written means the tenant does not open, as with a damaged page |
+| The store or the registry does not answer at a checkpoint | The file's changes go to the shard as pages, and `large_fallbacks` counts it. A checkpoint waits for one request to the store at most 5 s and 1 s for each MiB it sends, and never more than half the time it has, so the shard is still written. After the store failed it, a node's checkpoints do not ask the store for 30 s; the objects they no longer name are left written down for the janitor. A tenant with large files cannot be opened without the store |
+| A tenant moves to another shard | Its rows are copied; both copies name the same objects, which stay |
+| A tenant is archived | Its large files go into the archive whole, and their objects are removed. When it is read back they become new objects |
+| An object may be left unused (a checkpoint failed after it was written, a copy that named it was removed, a node was taken for dead in between) | It is a row in the registry's `garbage` table before the step that could leave it so. The janitor removes it unless the tenant's data names it, and looks only after it holds the tenant and has made itself the tenant's writer in its shard, so a checkpoint by a node taken for dead cannot come to name it afterwards. An object is never written twice: each has a name of its own |
 
 `GET /admin/shards` lists the shards with their state and tenant count, and
 whether this node has each one's URL and finds it down. `GET /admin/metrics`
@@ -545,6 +567,33 @@ Measured:
 | Both nodes killed with `kill -9` and started at the same moment, five times | Both were ready every time |
 | A shard with 2 of 4 tenants drained | Both moved within one pass; the shard went from 191 page rows to 0 and was retired, and the nodes then started without its URL |
 | A node stopped with `-leave-wait 2s` | `/readyz` answered 503 at once while a tenant's request to the node was still answered 200; the node closed after the wait |
+
+Measured for large files, with PostgreSQL 16 and a Garage v1.0.1 bucket.
+`MINILOOP_LARGE_FILE_REPORT=1 go test -run TestLargeFileReport -v` gives one
+tenant an 8 MiB SQLite database changed three rows at a time 24 times, and a
+2 MiB attachment rewritten whole 4 times:
+
+| | Large files in the shard | From 1 MiB in the store |
+|---|---|---|
+| Page rows the shard holds at the end | 2,643 | 148 |
+| Page bytes the shard holds / `vault_pages` table size | 10.8 MB / 20.7 MB | 0.60 MB / 0.31 MB |
+| PostgreSQL WAL written | 18.9 MB | 0.26 MB |
+| Objects written to the store / held at the end | 0 / 0 | 6 (18.9 MB) / 2 (10.5 MB) |
+| Checkpoint after a change of three rows, p50 / p99 | 27.7 / 36.1 ms | 26.5 / 31.5 ms |
+| Checkpoint after the attachment was rewritten, p50 | 40 ms | 47 ms |
+| Opening the tenant on another node | 72 ms | 71 ms |
+
+Two `miniloop-assistant fleet` processes with `-large-file-kb 64`, two
+PostgreSQL 16 shards and the bucket, from empty databases:
+
+| | |
+|---|---|
+| A node of the previous version is running | A node with large files on refuses to start and says why; with `-large-file-kb 0` it starts and serves the old node's tenants. The old node, started again, refuses the database the new one has updated |
+| A new tenant's databases (72 and 196 KiB) | Objects from the first checkpoint; the shard keeps 21 page rows (75 KB) for the tenant |
+| 40 chat messages of 1,990 letters to one tenant; the same with large files off | Answered 202, median 23 ms and slowest 67 ms (off: 22 and 35 ms). The shard then holds 19 page rows, 66 KB, for the tenant (off: 750 rows, 3.06 MB). Its databases grew to 2.4 MiB and 536 KiB; the node wrote 31 objects (11.8 MB) for its three tenants in that time |
+| The bucket's server paused while 10 messages were sent | All 10 answered 202, median 37 ms; one waited 7.5 s for the store. No shard was taken for down. The changes went as pages, and 30 s after the store was back the node wrote objects again |
+| The node that held the tenant killed with `kill -9` | The other node answered 503 for about 10 s and then 200, with the last message, reading the tenant's two objects |
+| The three tenants archived and read back | Their 6 objects were removed and 3 archives remained; the tenant read back had 2 new objects. After they were deleted the bucket was empty and no garbage rows remained |
 
 What this needs and does not give:
 
@@ -575,6 +624,16 @@ What this needs and does not give:
   and could not store it in time; if the node stays up the next checkpoint
   stores it. A client that sends it again makes it twice. Chat has no
   idempotency key.
+- **Large files tier by file, not by row.** A row inside a tenant's
+  database is bounded by the input limits (2000 characters for a chat
+  message, 256 KiB for a mail, 4 MiB for an IMAP literal) and is never stored apart from its
+  database; a database that grows past `-large-file-kb` is. A tenant with large
+  files needs the archive store to open, and every node needs the same store
+  and the same `-large-file-kb`: a node with large files off moves them back
+  to pages when it next writes them. A file that keeps growing is written to
+  the store again each time it has grown by a quarter, whole: in the run
+  above the node sent 11.8 MB for databases that ended at 2.9 MiB. A higher
+  `-large-file-kb` sends less and keeps more in the shard.
 - **The archive store's keys are static.** A session token can be given, but
   nothing renews it or reads a cloud role. An object is sent in one request,
   which S3 allows up to 5 GB; a tenant may be 4 GiB.
@@ -622,6 +681,7 @@ ran a morning brief and the nightly consolidation at once.
 | `-dormant-after` | 168h | Stop waking a tenant whose owner has been away this long; 0 keeps waking |
 | `-archive-after` | 720h | Move the data of a tenant whose owner has been away this long to the cheapest place: one compressed file beside its directory, or with a database the `-archive-store`; 0 never |
 | `-archive-store`, `-archive-region` | empty, `us-east-1` | With a database, where archived tenants go: `file:///directory`, the base URL of an S3-compatible bucket with any prefix, or `s3://bucket/prefix` |
+| `-large-file-kb` | 1024 | With `-archive-store`, keep the bulk of a tenant's file of this many KiB or more as one object in the store, and only its changed pages in the shard; 0 keeps every file in the shard. Give every node the same value |
 | `-cache-after`, `-cache-max-mb` | `-archive-after`, 0 | With a database, drop this node's copy of a tenant it has not opened for this long, and the copies opened longest ago beyond this size; 0 MiB is no bound |
 | `-usage-retention` | 0 | Drop per-day usage rows older than this; 0 keeps them |
 | `-janitor-tick` | 10m | How often dormant tenants are retired, absent ones archived, leftover copies removed and the cache trimmed |

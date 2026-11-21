@@ -1,0 +1,13 @@
+Edit the supplied complete mini-loop layered architecture diagram. This is a repository architecture update dated 2026-11-21. Keep everything above the very bottom band exactly as it is: the title, the Chinese typography, the dark navy background, the cyan/violet borders, every L1-L5 layer, the right boundary column with its six numbered items, the deepagents-server band, the Temporal experiment band and the Task container band with its LangSmith trace box and its orange 2026-10-17 badge. Do not move, resize or reword anything outside the very bottom band.
+
+Inside the very bottom band, keep the band size, the band title '独立可选 Demo · Go 个人助理 · go/assistant · 默认关闭 · 本机 Mac 或多租户 fleet' and the left-to-right flow of five boxes with their arrows and icons. Change only these texts:
+- Box 1 stays '本机网页 / 远程信道 / fleet' with small line '长轮询 · 推送唤醒 · fleet 可多节点'. Keep its chat-bubble icon and its plain border.
+- Box 2 stays 'assistant.db × 每个租户'; its small line becomes exactly '可选：分片 · 冷归档 · 大文件进归档存储'. Keep its database icon and keep the subtle orange outline glow on this box only, marking it as this iteration's change.
+- Box 3 stays 'Router + Worker + Preparer' with small line '全局回合闸门 · 每日调用额度 · 分诊'.
+- Box 4 stays 'MCP 连接器' with small line 'go/mcp stdio 客户端 · 启动时校验工具'.
+- Box 5 stays 'mock-mcp 子进程' with small line '模拟邮件/日历 MCP server · world.db'.
+- The thin strip at the bottom of the band becomes three items separated by dots, exact text: '热：节点缓存' · '温：PostgreSQL 分片 · 小文件和改动的页' · '冷：归档存储 · 归档租户和大文件主体'. Keep it fully visible inside the canvas.
+- The orange badge at the top right of the band becomes, exact text: '2026-11-21：按大小分层 · 大文件主体进归档存储'. The two characters after 按大小 are 分层 (divide into layers; 层 as in the title's 分层架构), not 分屋.
+- Boxes 1, 3, 4 and 5 have the same plain border and no glow.
+
+Do not draw a cloud provider logo, a PostgreSQL elephant logo, an S3 or bucket logo, Gmail or Outlook logos, a webhook provider, Kubernetes, a load balancer, extra server, node, database or storage boxes, virtual machines or sandboxes, Temporal, a message queue, WebSockets, approval buttons in the remote channels, management of a real mailbox or a Python counterpart. Do not add services or metrics. Keep the small lines of boxes 3, 4 and 5 character for character as they are in the supplied image: '全局回合闸门 · 每日调用额度 · 分诊', 'go/mcp stdio 客户端 · 启动时校验工具', '模拟邮件/日历 MCP server · world.db'. Render the Chinese characters crisply and legibly. Output the entire edited diagram, not a crop. This image is both the updated canonical raster base and this iteration's highlighted delivery diagram.

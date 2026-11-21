@@ -338,11 +338,7 @@ func (v *vault) freeze(ctx context.Context, record TenantRecord, node string) er
 		return err
 	}
 	id, born := record.ID, millis(record.CreatedAt)
-	var head held
-	err = shard.do(ctx, func(db *fleetDB) (err error) {
-		head, err = take(ctx, db, id, node, born, false, v.now())
-		return err
-	})
+	head, err := v.take(ctx, shard, id, node, born, false)
 	if err != nil {
 		return err
 	}
@@ -360,7 +356,7 @@ func (v *vault) freeze(ctx context.Context, record TenantRecord, node string) er
 	digest := sha256.New()
 	var total int64
 	err = shard.do(ctx, func(db *fleetDB) (err error) {
-		total, err = writeStored(ctx, db, id, node, head.seq, io.MultiWriter(file, digest))
+		total, err = v.writeStored(ctx, db, id, born, node, head.seq, io.MultiWriter(file, digest))
 		return err
 	})
 	if err != nil {
@@ -405,9 +401,10 @@ func (v *vault) freeze(ctx context.Context, record TenantRecord, node string) er
 }
 
 // writeStored writes what a shard holds of a tenant as a gzip tar, from one
-// snapshot, and returns the size of the files. The caller's deadline bounds
-// it.
-func writeStored(ctx context.Context, db *fleetDB, id TenantID, node string, seq int64, into io.Writer) (int64, error) {
+// snapshot, and returns the size of the files. A large file is read from its
+// object and pages into the archive, which then holds all of the tenant. The
+// caller's deadline bounds it.
+func (v *vault) writeStored(ctx context.Context, db *fleetDB, id TenantID, born int64, node string, seq int64, into io.Writer) (int64, error) {
 	tx, err := db.begin(ctx, true)
 	if err != nil {
 		return 0, err
@@ -427,15 +424,36 @@ func writeStored(ctx context.Context, db *fleetDB, id TenantID, node string, seq
 		if err := archive.WriteHeader(&tar.Header{Typeflag: tar.TypeReg, Name: file.path, Size: file.size, Mode: 0o600}); err != nil {
 			return 0, err
 		}
-		err := storedPages(ctx, tx, id, file, func(_ int, data []byte) error {
-			_, err := archive.Write(data)
-			return err
-		})
-		if err != nil {
+		if err := v.archiveFile(ctx, tx, id, born, file, archive); err != nil {
 			return 0, fmt.Errorf("%s: %w", file.path, err)
 		}
 	}
 	return total, errors.Join(archive.Close(), zipper.Close())
+}
+
+// archiveFile writes one stored file into an archive. A large file is put
+// together in a file of the node's first, as only that can be written out of
+// order.
+func (v *vault) archiveFile(ctx context.Context, tx *fleetTx, id TenantID, born int64, file storedFile, archive io.Writer) error {
+	if file.base == "" {
+		return storedPages(ctx, tx, id, file, func(_ int, data []byte) error {
+			_, err := archive.Write(data)
+			return err
+		})
+	}
+	whole, discard, err := v.transit("file-*")
+	if err != nil {
+		return err
+	}
+	defer discard()
+	if err := v.writeFile(ctx, tx, id, born, file, whole); err != nil {
+		return err
+	}
+	if _, err := whole.Seek(0, io.SeekStart); err != nil {
+		return err
+	}
+	_, err = io.Copy(archive, whole)
+	return err
 }
 
 // thaw reads an archived tenant back: the archive is unpacked as the node's

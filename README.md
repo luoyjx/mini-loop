@@ -271,14 +271,12 @@ separate:
 
 ## Architecture
 
-Architecture review: **2026-11-21**, baseline `7ffcac2` plus D15 of the opt-in Go
-personal assistant: a fleet that keeps its tenants in PostgreSQL can spread
-them over several databases (shards) and move the tenants of absent owners to
-an archive store, a directory or an S3-compatible bucket. Open tenants stay
-served while the registry database cannot be reached, and a node that was
-taken for dead in the middle of a move or an archiving can change nothing when
-it goes on (see the Go personal-assistant baseline below). No dependency was
-added: the S3 requests are signed with the standard library.
+Architecture review: **2026-11-21**, baseline `1d55b3c` plus D16 of the opt-in Go
+personal assistant: with an archive store, a tenant's file of `-large-file-kb`
+(1 MiB) or more keeps its bulk as one object in the store, and its shard keeps
+only the pages that differ from it. Tiering is by file, not by row: a row is
+already bounded by the input limits (see the Go personal-assistant baseline
+below). No dependency was added.
 The [Agent Server production execution plan](docs/AGENT_SERVER_PRODUCTION_EXECUTION_PLAN.md)
 now records the P1.4 live-provider harness ready but its real execution unauthorized, plus the passed P1.5 controlled-fault and P1.6 protocol-boundary run. The controlled research/artifact pilot keeps Temporal
 as its only scheduling authority, while the [current Task protocol](deepagents-server/docs/CURRENT_TASK_PROTOCOL.md)
@@ -1229,7 +1227,53 @@ The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
-Current architecture review baseline: **2026-11-21**, `7ffcac2` plus D15 of the
+Current architecture review baseline: **2026-11-21**, `1d55b3c` plus D16 of the
+opt-in Go personal-assistant demo. It tiers a tenant's data by size as D15
+tiered it by age: a file that grows past `-large-file-kb` (1024 KiB) keeps its
+bulk as one object in the archive store, and its shard keeps only the pages
+that differ from it. It needs `MINILOOP_FLEET_DATABASE_URL` and
+`-archive-store`; `-large-file-kb 0` turns it off. No dependency was added.
+
+- **What goes where**: a file reaching the size is written to the store as one
+  object, under a name no other object has. A database that changes a few
+  pages at a time goes on writing only those pages, over the object. Once the
+  pages over the object, or the pages one checkpoint changes, come to more
+  than a quarter of the file, it becomes a new object and its pages go. A file
+  that shrinks below half the size goes back to pages.
+- **Reading**: the object, then the pages over it, then the whole file's
+  SHA-256. A missing or changed object keeps the tenant closed.
+- **The store may be away**: a checkpoint waits for one request to it at most
+  5 s and 1 s per MiB, and never more than half its own time; the changes go
+  as pages. After a failure the node does not ask the store from a checkpoint
+  for 30 s. Store trouble does not count against the shard.
+- **No object lost or left over**: every object that may end up unused is a
+  row in the registry's `garbage` table before the step that could leave it
+  so. The janitor holds the tenant and makes itself the tenant's writer in its
+  shard before it checks whether the object is still named. Data removed from
+  a shard writes its objects down first.
+- **With the tenant**: a move copies the rows and both copies name the same
+  objects; an archiving puts the file whole into the tar and removes its
+  objects; reading back makes new ones.
+- **Upgrade**: shard schema step 3 adds four columns. A node with large files
+  on refuses to start while a node of D15 is running; one with
+  `-large-file-kb 0` runs beside it. A D15 node refuses a database a D16 node
+  has updated, also a shard it opens only afterwards.
+- **Measured** on PostgreSQL 16 and Garage v1.0.1: an 8 MiB database changed
+  24 times and a 2 MiB attachment rewritten 4 times wrote 0.26 MB of WAL
+  instead of 18.9 MB and left 148 page rows instead of 2,643, with checkpoints
+  as fast as before. Two processes from empty databases: an upgrade from the
+  D15 binary, a paused bucket (writes answered, median 37 ms, one at 7.5 s), a
+  killed node, archiving and removal with no object left.
+- **Limits**: a file that keeps growing is written whole again at each quarter
+  it grows (11.8 MB sent for databases that ended at 2.9 MiB with a 64 KiB
+  size). The 30 s cooldown is per node. Every node needs the same store and
+  the same size. Not run against Amazon S3 or under load.
+
+See the [proactive agent roadmap](docs/PROACTIVE_AGENT_ROADMAP.md), the
+[D16 audit](docs/audits/go-assistant-fleet-large-files-2026-11-21.md) and
+[go/assistant/README.md](go/assistant/README.md#large-files).
+
+Previous architecture review baseline: **2026-11-21**, `7ffcac2` plus D15 of the
 opt-in Go personal-assistant demo. It keeps the fleet's database fast and
 affordable as tenants grow, and closes the gaps a fleet of several nodes and
 several databases opens. `go/assistant` and `go/cmd/miniloop-assistant` remain a
@@ -1736,8 +1780,8 @@ flowchart LR
         PAFleet["miniloop-assistant fleet · opt-in · default off · one App per tenant directory<br/>fleet.db: token hash · state · next wake · last visit · calls and tokens per day<br/>/t/{id}/ bearer token per tenant · /admin/ token from the environment · TLS off loopback<br/>opened by its owner or a due wake · sleeps when quiet and its owner gone · LRU eviction at max-active<br/>fleet-wide turn gate with chat slots · daily call quota · dormant after 7 days · archived after 30<br/>POST /push/{id} with the optional push token: poll now, wake now or defer · no content<br/>-advertise · opt-in: fleet.db nodes (heartbeat) + placements (holder of an open tenant) · claim before open<br/>MINILOOP_FLEET_DATABASE_URL · opt-in: registry and tenants in PostgreSQL · the data directory is this node's cache<br/>with it: open tenants kept through a registry outage for -registry-grace · /readyz · /admin/metrics · /admin/shards<br/>janitor: moves tenants out of draining shards · archives absent owners' tenants · removes leftover copies · trims the cache"]
         PAFleetPeer["other fleet nodes · only with -advertise · identical processes<br/>same data directory: one filesystem with working flock · no copy of the data<br/>or the same database and a cache directory each"]
         PAVault["PostgreSQL registry · only with MINILOOP_FLEET_DATABASE_URL · run by the operator<br/>tenants (shard, archive) · usage · nodes · placements · shards · garbage · fleet_meta (schema step)<br/>the nodes' clock · also the shard named home: tenants' pages when no other shard is configured"]
-        PAShards["PostgreSQL shards · only with MINILOOP_FLEET_SHARD_URLS · run by the operator<br/>vault_heads (writer, checkpoint number and name) · vault_files (SHA-256) · vault_pages: each tenant's files as 4 KiB pages<br/>open / closed / draining / retired · a checkpoint is one transaction, refused unless the node is the tenant's writer"]
-        PAArchive["Archive store · only with -archive-store · run by the operator<br/>a directory or an S3-compatible bucket · one gzip tar object per archived tenant<br/>keys from the environment · requests signed with Signature Version 4"]
+        PAShards["PostgreSQL shards · only with MINILOOP_FLEET_SHARD_URLS · run by the operator<br/>vault_heads (writer, checkpoint number and name) · vault_files (SHA-256, object, pages over it) · vault_pages: each tenant's files as 4 KiB pages<br/>a file of -large-file-kb or more: only the pages that differ from its object<br/>open / closed / draining / retired · a checkpoint is one transaction, refused unless the node is the tenant's writer"]
+        PAArchive["Archive store · only with -archive-store · run by the operator<br/>a directory or an S3-compatible bucket · one gzip tar object per archived tenant<br/>one object per large file of an open tenant, under a name of its own · goes when nothing names it<br/>keys from the environment · requests signed with Signature Version 4"]
         PAPush["Mail provider notification relay · outside the fleet · not connected yet<br/>knows which tenant owns a mailbox · push token from its environment"]
         PARemoteSvc["Telegram Bot API · Discord REST · the assistant's IMAP / SMTP servers<br/>external services · tokens and password from the environment only"]
         PAPreparer["Preparer · one job at a time<br/>fresh session · mail / calendar / task reads only · untrusted<br/>result → job.done trigger on the starting thread<br/>stop · requeued after restart · claims nothing while paused"]
@@ -1791,7 +1835,7 @@ flowchart LR
     PAFleet -. either way: request, push or delete for a tenant the other holds · passed on once over HTTP · token checked again<br/>stopped node: its tenants due after node-ttl .-> PAFleetPeer
     PAFleet -. opt-in: registry statements · heartbeat by the database's clock · where each tenant's data is, changed only by the node that holds the tenant .-> PAVault
     PAFleet -. opt-in: changed pages every 2 s, at sleep, before an owner's write is answered and before an approved effect is sent<br/>whole tenant read on open when the node's copy is not current · moves between shards · three failures: left alone 5 s .-> PAShards
-    PAFleet -. opt-in: owner away for archive-after and not due within a day: shard → one object · read back on the next open .-> PAArchive
+    PAFleet -. opt-in: owner away for archive-after and not due within a day: shard → one object · read back on the next open<br/>large files: a new object when a quarter changed · read before the pages over it · checkpoint waits at most half its time .-> PAArchive
         PAFleet -->|open tenant: PollOnce · asleep: next wake now| PAPoller
     end
     Caller -. explicit demo command or LaunchAgent .-> PAChannel

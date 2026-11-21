@@ -388,6 +388,7 @@ func (f *Fleet) handleMetrics(w http.ResponseWriter, r *http.Request) {
 	gauge("leftovers", "Copies of tenants' data written down to be removed.", int64(stats.Leftovers))
 	gauge("usage_owed", "Model calls this node has still to record in the registry.", int64(stats.UsageOwed))
 	gauge("cache_bytes", "What this node's copies of tenants took at the last sweep.", stats.CacheBytes)
+	gauge("large_file_bytes", "The size from which a file keeps its bulk in the archive store; 0 when none does.", stats.LargeFile)
 	fmt.Fprint(&out, "# HELP miniloop_fleet_tenants Tenants in the registry by where their data is.\n# TYPE miniloop_fleet_tenants gauge\n")
 	for _, state := range []TenantState{TenantNew, TenantWarm, TenantCold} {
 		fmt.Fprintf(&out, "miniloop_fleet_tenants{state=%q} %d\n", string(state), stats.Tenants[state])
@@ -427,6 +428,11 @@ func (f *Fleet) handleMetrics(w http.ResponseWriter, r *http.Request) {
 		{"cache_drops", "Copies of tenants dropped from the node.", stats.CacheDrops}, {"moves", "Tenants moved between shards.", stats.Moves},
 		{"purges", "Leftover copies removed.", stats.Purges}, {"corrupt", "Tenants whose stored pages failed their checksum.", stats.Corrupt},
 		{"frozen", "Tenants moved to the archive store.", stats.Frozen}, {"thawed", "Tenants read back from the archive store.", stats.Thawed},
+		{"objects_stored", "Large files written to the archive store.", stats.ObjectsStored},
+		{"object_bytes", "Bytes of large files written to the archive store.", stats.ObjectBytes},
+		{"objects_read", "Large files read from the archive store.", stats.ObjectsRead},
+		{"objects_removed", "Objects of large files removed from the archive store.", stats.ObjectsRemoved},
+		{"large_fallbacks", "Large files a checkpoint stored as pages because the store or the registry failed, or the store had failed within 30 seconds.", stats.LargeFallbacks},
 		{"model_calls", "Model calls made.", stats.ModelCalls},
 	} {
 		counter(c.name, c.help, c.value)

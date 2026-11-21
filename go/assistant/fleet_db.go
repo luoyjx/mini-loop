@@ -198,7 +198,8 @@ func (t *fleetTx) affected(ctx context.Context, query string, args ...any) (bool
 // or could not serve, as opposed to an answer the caller did not want. Only
 // trouble counts against a shard's health.
 func dbTrouble(err error) bool {
-	if err == nil || errors.Is(err, context.Canceled) {
+	if err == nil || errors.Is(err, context.Canceled) || errors.Is(err, errInStore) {
+		// The archive store's trouble is not the database's.
 		return false
 	}
 	var local *fs.PathError
@@ -240,8 +241,12 @@ func conflicted(err error) bool {
 // byte-string type.
 
 // fleetVersion is what a node of this build writes in its row. The nodes of
-// an earlier build write nothing there, which reads as zero.
-const fleetVersion = 2
+// an earlier build write nothing there, which reads as zero. Version 2 knows
+// shards and the archive store, version 3 large files kept in the store.
+const (
+	fleetVersion = 3
+	shardVersion = 2
+)
 
 var registrySteps = [][]string{
 	{
@@ -302,6 +307,16 @@ var vaultSteps = [][]string{
 		`ALTER TABLE vault_heads ADD COLUMN born BIGINT NOT NULL DEFAULT 0`,
 		`ALTER TABLE vault_heads ADD COLUMN mark TEXT NOT NULL DEFAULT ''`,
 		`ALTER TABLE vault_files ADD COLUMN sum TEXT NOT NULL DEFAULT ''`,
+	},
+	{
+		// A large file keeps its bulk as one object in the archive store:
+		// base names it, base_size and base_sum are its length and SHA-256,
+		// and the file's pages are then only those that differ from it, of
+		// which overlay counts.
+		`ALTER TABLE vault_files ADD COLUMN base TEXT NOT NULL DEFAULT ''`,
+		`ALTER TABLE vault_files ADD COLUMN base_size BIGINT NOT NULL DEFAULT 0`,
+		`ALTER TABLE vault_files ADD COLUMN base_sum TEXT NOT NULL DEFAULT ''`,
+		`ALTER TABLE vault_files ADD COLUMN overlay BIGINT NOT NULL DEFAULT 0`,
 	},
 }
 

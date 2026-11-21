@@ -94,7 +94,8 @@ type Fleet struct {
 }
 
 // FleetConfig sizes a fleet. Zero values take the defaults noted per field;
-// DailyCalls, DormantAfter, ArchiveAfter and Sweep stay off at zero.
+// DailyCalls, DormantAfter, ArchiveAfter, LargeFile and Sweep stay off at
+// zero.
 type FleetConfig struct {
 	// DataDir holds fleet.db and tenants/<shard>/<id>/; with Database it
 	// holds only this node's copies of the tenants it opened.
@@ -193,6 +194,11 @@ type FleetConfig struct {
 	// Archive is where tenants go after ArchiveAfter; it applies only with
 	// Database. See ArchiveStore.
 	Archive ArchiveStore
+	// LargeFile is the size from which one of a tenant's files keeps its
+	// bulk as an object in the archive store, and its shard holds only the
+	// pages changed since; zero keeps every file in the shard. It applies
+	// only with Database and Archive. See fleet_files.go.
+	LargeFile int64
 	// RegistryGrace is how long a node that cannot reach the registry keeps
 	// its tenants open (default 12 times NodeTTL). A registry that fails
 	// over to a standby is away for less, and the tenants' checkpoints, which
@@ -339,6 +345,12 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 	if !stored && (len(config.Shards) > 0 || len(config.shardDirs) > 0 || config.Archive.URL != "") {
 		return nil, errors.New("shards and an archive store need the fleet's database")
 	}
+	if config.LargeFile < 0 {
+		return nil, errors.New("the large file size cannot be negative")
+	}
+	if config.Archive.URL == "" {
+		config.LargeFile = 0
+	}
 	take := lockDataDir
 	if config.Advertise != "" {
 		if err := checkAdvertise(config.Advertise); err != nil {
@@ -415,12 +427,23 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 			// the registry database, whatever the tenant's row says. This
 			// is asked before the shards are entered in the registry, so a
 			// refused start leaves the fleet as it was.
-			old, err := registry.outdated(ctx, fleet.alive())
+			old, err := registry.outdated(ctx, fleet.alive(), shardVersion)
 			if err != nil {
 				return fail(err)
 			}
 			if old > 0 {
 				return fail(fmt.Errorf("%d running nodes are of a version that knows neither shards nor the archive store; stop them before turning either on", old))
+			}
+		}
+		if config.LargeFile > 0 {
+			// A node from before large files reads a file's pages as the
+			// whole file, and could not open a tenant that has one.
+			old, err := registry.outdated(ctx, fleet.alive(), fleetVersion)
+			if err != nil {
+				return fail(err)
+			}
+			if old > 0 {
+				return fail(fmt.Errorf("%d running nodes are of a version that keeps every file in its shard; stop them before keeping large files in the archive store, or start this node with large files off", old))
 			}
 		}
 		if fleet.vault, err = openVault(ctx, config, registry); err != nil {
@@ -437,7 +460,7 @@ func OpenFleet(ctx context.Context, config FleetConfig) (*Fleet, error) {
 // shards other than home are only named here; each is connected to when a
 // tenant in it is first needed.
 func openVault(ctx context.Context, config FleetConfig, registry *registry) (*vault, error) {
-	v := &vault{registry: registry, now: config.Now, tmp: filepath.Join(config.DataDir, "transit"), shards: map[string]*shard{
+	v := &vault{registry: registry, now: config.Now, tmp: filepath.Join(config.DataDir, "transit"), largeFile: config.LargeFile, shards: map[string]*shard{
 		homeShard: {name: homeShard, db: registry.db, cooldown: shardCooldown},
 	}}
 	at := map[string]databaseAt{}
@@ -1409,6 +1432,19 @@ type FleetStats struct {
 	ArchiveBytes int64  `json:"archive_bytes"`
 	CacheBytes   int64  `json:"cache_bytes"`
 	CacheDrops   int64  `json:"cache_drops"`
+	// LargeFile is the size from which a tenant's file keeps its bulk in
+	// the archive store, zero when none does. ObjectsStored counts the
+	// objects this node wrote there for large files and ObjectBytes their
+	// bytes, ObjectsRead the ones it read back and ObjectsRemoved the ones
+	// it removed. LargeFallbacks counts the times a large file went to its
+	// shard as pages because the store or the registry did not answer, or
+	// the store had failed this node within the last 30 seconds.
+	LargeFile      int64 `json:"large_file"`
+	ObjectsStored  int64 `json:"objects_stored"`
+	ObjectBytes    int64 `json:"object_bytes"`
+	ObjectsRead    int64 `json:"objects_read"`
+	ObjectsRemoved int64 `json:"objects_removed"`
+	LargeFallbacks int64 `json:"large_fallbacks"`
 	// Outages counts the times this node kept its tenants open through a
 	// registry it could not reach, and RouteHits the requests it passed on
 	// without asking the registry where to.
@@ -1458,6 +1494,8 @@ func (f *Fleet) Stats(ctx context.Context) (FleetStats, error) {
 		stats.Moves, stats.Purges, stats.Corrupt = v.moves.Load(), v.purges.Load(), v.corrupt.Load()
 		stats.Frozen, stats.Thawed, stats.FrozenBytes, stats.ArchiveBytes = v.freezes.Load(), v.thaws.Load(), v.frozenBytes.Load(), v.archiveBytes.Load()
 		stats.CacheBytes, stats.CacheDrops = f.cacheBytes.Load(), v.cacheDrops.Load()
+		stats.LargeFile, stats.ObjectsStored, stats.ObjectBytes = f.vault.largeFile, v.objectPuts.Load(), v.objectBytes.Load()
+		stats.ObjectsRead, stats.ObjectsRemoved, stats.LargeFallbacks = v.objectGets.Load(), v.objectRemoves.Load(), v.fallbacks.Load()
 		if f.vault.cold != nil {
 			stats.ArchiveStore = f.vault.cold.String()
 		}

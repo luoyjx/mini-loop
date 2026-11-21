@@ -403,10 +403,10 @@ func (r *registry) movable(ctx context.Context, shard string, after TenantID, li
 	return r.ids(ctx, `SELECT id FROM tenants WHERE shard=? AND id>? AND active=0 ORDER BY id LIMIT ?`, shard, string(after), limit)
 }
 
-// outdated counts the live nodes of a build that does not know shards.
-func (r *registry) outdated(ctx context.Context, alive time.Time) (int, error) {
+// outdated counts the live nodes of a build before version.
+func (r *registry) outdated(ctx context.Context, alive time.Time, version int) (int, error) {
 	var count int
-	err := r.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM nodes WHERE beat>=? AND version<?`, millis(alive), fleetVersion).Scan(&count)
+	err := r.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM nodes WHERE beat>=? AND version<?`, millis(alive), version).Scan(&count)
 	return count, err
 }
 
@@ -510,10 +510,16 @@ type held struct {
 // this tenant (born differs) is the data of a deleted one and is removed;
 // reset removes whatever is there, for a tenant whose data is about to be
 // written anew.
-func take(ctx context.Context, db *fleetDB, id TenantID, node string, born int64, reset bool, now time.Time) (head held, err error) {
+//
+// Removing data that refers to objects in the archive store takes two
+// transactions: the first makes node the writer, so nothing comes to refer
+// to more objects after it, and returns the objects referred to, which the
+// caller writes down before it calls again (see vault.take); noted are those
+// written down already.
+func take(ctx context.Context, db *fleetDB, id TenantID, node string, born int64, reset bool, now time.Time, noted map[string]bool) (head held, unnoted []string, owner int64, err error) {
 	tx, err := db.begin(ctx, false)
 	if err != nil {
-		return held{}, err
+		return held{}, nil, 0, err
 	}
 	defer func() {
 		if err != nil {
@@ -523,22 +529,38 @@ func take(ctx context.Context, db *fleetDB, id TenantID, node string, born int64
 	tenant := string(id)
 	if _, err = tx.ExecContext(ctx, `INSERT INTO vault_heads(tenant_id,seq,node,at,bytes,born,mark) VALUES(?,0,?,?,0,?,'')
 		ON CONFLICT(tenant_id) DO UPDATE SET node=excluded.node`, tenant, node, millis(now), born); err != nil {
-		return head, err
+		return head, nil, 0, err
 	}
 	var stored int64
 	if err = tx.QueryRowContext(ctx, `SELECT seq,born,mark,bytes FROM vault_heads WHERE tenant_id=?`, tenant).Scan(&head.seq, &stored, &head.mark, &head.bytes); err != nil {
-		return head, err
+		return head, nil, 0, err
 	}
 	switch {
 	case reset || (stored != 0 && stored != born):
+		owner = stored
+		if owner == 0 {
+			owner = born
+		}
+		tokens, err := fileObjects(ctx, tx, id, owner)
+		if err != nil {
+			return head, nil, 0, err
+		}
+		for _, token := range tokens {
+			if !noted[token] {
+				unnoted = append(unnoted, token)
+			}
+		}
+		if len(unnoted) > 0 {
+			return head, unnoted, owner, tx.Commit()
+		}
 		for _, table := range []string{"vault_files", "vault_pages"} {
 			if _, err = tx.ExecContext(ctx, `DELETE FROM `+table+` WHERE tenant_id=?`, tenant); err != nil {
-				return head, err
+				return head, nil, 0, err
 			}
 		}
 		head = held{}
 		if _, err = tx.ExecContext(ctx, `UPDATE vault_heads SET seq=0, bytes=0, born=?, mark='' WHERE tenant_id=?`, born, tenant); err != nil {
-			return head, err
+			return head, nil, 0, err
 		}
 	case stored == 0 || (head.seq > 0 && head.mark == ""):
 		// Written by a node from before these columns, which removed a
@@ -547,10 +569,10 @@ func take(ctx context.Context, db *fleetDB, id TenantID, node string, born int64
 			head.mark = randomHex(8)
 		}
 		if _, err = tx.ExecContext(ctx, `UPDATE vault_heads SET born=?, mark=? WHERE tenant_id=?`, born, head.mark, tenant); err != nil {
-			return head, err
+			return head, nil, 0, err
 		}
 	}
-	return head, tx.Commit()
+	return head, nil, 0, tx.Commit()
 }
 
 // purge removes one tenant's data from a shard while node is its writer
@@ -586,11 +608,18 @@ func purge(ctx context.Context, db *fleetDB, id TenantID, born int64, node strin
 	return tx.Commit()
 }
 
-// storedFile is one of a tenant's files as a shard holds it.
+// storedFile is one of a tenant's files as a shard holds it. A large file
+// keeps its bulk as the object base names in the archive store, of baseSize
+// bytes whose SHA-256 is baseSum, and its pages are then only the overlay
+// pages that differ from it (see fleet_files.go).
 type storedFile struct {
-	path string
-	size int64
-	sum  string
+	path     string
+	size     int64
+	sum      string
+	base     string
+	baseSize int64
+	baseSum  string
+	overlay  int64
 }
 
 // errCorrupt means what a shard holds for a file is not the file that was
@@ -599,8 +628,8 @@ var errCorrupt = errors.New("the stored pages are not the file that was stored")
 
 // storedFiles lists a tenant's files inside a transaction, in path order,
 // with their total size.
-func storedFiles(ctx context.Context, tx *fleetTx, id TenantID) ([]storedFile, int64, error) {
-	rows, err := tx.QueryContext(ctx, `SELECT path,size,sum FROM vault_files WHERE tenant_id=? ORDER BY path`, string(id))
+func storedFiles(ctx context.Context, q queryer, id TenantID) ([]storedFile, int64, error) {
+	rows, err := q.QueryContext(ctx, `SELECT path,size,sum,base,base_size,base_sum,overlay FROM vault_files WHERE tenant_id=? ORDER BY path`, string(id))
 	if err != nil {
 		return nil, 0, err
 	}
@@ -609,11 +638,14 @@ func storedFiles(ctx context.Context, tx *fleetTx, id TenantID) ([]storedFile, i
 	var total int64
 	for rows.Next() {
 		var file storedFile
-		if err := rows.Scan(&file.path, &file.size, &file.sum); err != nil {
+		if err := rows.Scan(&file.path, &file.size, &file.sum, &file.base, &file.baseSize, &file.baseSum, &file.overlay); err != nil {
 			return nil, 0, err
 		}
 		if !safeRel(file.path) || file.size < 0 {
 			return nil, 0, fmt.Errorf("stored file %q is not inside the tenant's directory", file.path)
+		}
+		if file.base != "" && !tokenPattern.MatchString(file.base) {
+			return nil, 0, fmt.Errorf("%w: %s names no object the fleet writes", errCorrupt, file.path)
 		}
 		files = append(files, file)
 		total += file.size
@@ -630,8 +662,8 @@ func storedFiles(ctx context.Context, tx *fleetTx, id TenantID) ([]storedFile, i
 // storedPages hands one stored file's pages to write in order. It fails with
 // errCorrupt unless the pages are contiguous, every page but the last is
 // full, they hold the file's size and they match its checksum.
-func storedPages(ctx context.Context, tx *fleetTx, id TenantID, file storedFile, write func(idx int, data []byte) error) error {
-	rows, err := tx.QueryContext(ctx, `SELECT idx,data FROM vault_pages WHERE tenant_id=? AND path=? ORDER BY idx`, string(id), file.path)
+func storedPages(ctx context.Context, q queryer, id TenantID, file storedFile, write func(idx int, data []byte) error) error {
+	rows, err := q.QueryContext(ctx, `SELECT idx,data FROM vault_pages WHERE tenant_id=? AND path=? ORDER BY idx`, string(id), file.path)
 	if err != nil {
 		return err
 	}
@@ -731,22 +763,14 @@ func (v *vault) move(ctx context.Context, record TenantRecord, node string, to *
 	if err := v.registry.intend(ctx, leftover{id, born, to.name}, v.now()); err != nil {
 		return err
 	}
-	var head held
-	err = from.do(ctx, func(db *fleetDB) (err error) {
-		head, err = take(ctx, db, id, node, born, false, v.now())
-		return err
-	})
+	head, err := v.take(ctx, from, id, node, born, false)
 	if err != nil {
 		return err
 	}
 	// Both sides of the copy get the time the tenant's size takes.
 	ctx, cancel := bounded(ctx, 2*head.bytes)
 	defer cancel()
-	err = to.do(ctx, func(db *fleetDB) error {
-		_, err := take(ctx, db, id, node, born, true, v.now())
-		return err
-	})
-	if err != nil {
+	if _, err := v.take(ctx, to, id, node, born, true); err != nil {
 		return err
 	}
 	source, err := from.use(ctx)
@@ -807,11 +831,18 @@ func copyTenant(ctx context.Context, source, target *fleetDB, id TenantID, node 
 		return errors.Join(err, errFenced)
 	}
 	for _, file := range files {
-		if _, err = write.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum) VALUES(?,?,?,?,?)`, string(id), file.path, file.size, seq, file.sum); err != nil {
+		if _, err = write.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum,base,base_size,base_sum,overlay) VALUES(?,?,?,?,?,?,?,?,?)`,
+			string(id), file.path, file.size, seq, file.sum, file.base, file.baseSize, file.baseSum, file.overlay); err != nil {
 			return err
 		}
+		// A large file's object stays where it is: both copies refer to it,
+		// and the old one's going does not take it along (see vault.letGo).
+		pages := storedPages
+		if file.base != "" {
+			pages = overlayPages
+		}
 		batch := make([]vaultPageData, 0, vaultBatch)
-		err = storedPages(ctx, read, id, file, func(idx int, data []byte) error {
+		err = pages(ctx, read, id, file, func(idx int, data []byte) error {
 			batch = append(batch, vaultPageData{idx: idx, data: slices.Clone(data)})
 			if len(batch) < vaultBatch {
 				return nil
@@ -880,6 +911,19 @@ func (v *vault) clean(ctx context.Context, l leftover, node string) error {
 		if err != nil {
 			return err
 		}
+		// The objects of the copy's large files are written down before
+		// the rows that refer to them go.
+		var tokens []string
+		err = s.do(ctx, func(db *fleetDB) (err error) {
+			tokens, err = fileObjects(ctx, db, l.id, l.born)
+			return err
+		})
+		if err == nil {
+			err = v.note(ctx, l.id, l.born, tokens)
+		}
+		if err != nil {
+			return err
+		}
 		err = s.do(ctx, func(db *fleetDB) error {
 			// Removing a tenant's pages takes the time its size takes.
 			var size int64
@@ -893,6 +937,13 @@ func (v *vault) clean(ctx context.Context, l leftover, node string) error {
 		if err != nil {
 			return err
 		}
+		v.counters.purges.Add(1)
+		v.at("purged")
+		if err := v.registry.cleaned(ctx, l); err != nil {
+			return err
+		}
+		v.letGo(ctx, l, tokens)
+		return nil
 	}
 	v.counters.purges.Add(1)
 	return v.registry.cleaned(ctx, l)
@@ -1049,14 +1100,16 @@ func (f *Fleet) collect(ctx context.Context) {
 		return
 	}
 	// One line per place and pass, not one per tenant, while a place is away.
-	// Every archive has a place of its own in the one archive store.
+	// Every archive and every large file's object has a place of its own in
+	// the one archive store.
 	failed := map[string]error{}
 	for _, l := range left {
 		if ctx.Err() != nil {
 			return
 		}
 		where := l.place
-		if _, archived := archiveMark(where); archived {
+		_, archived := archiveMark(where)
+		if _, object := fileToken(where); archived || object {
 			where = "the archive store"
 		}
 		if _, skip := failed[where]; skip {
@@ -1092,6 +1145,9 @@ func (f *Fleet) collect(ctx context.Context) {
 // seen in the registry, and whoever takes it there after is the copy's writer
 // and the removal is refused.
 func (f *Fleet) clean(ctx context.Context, l leftover) error {
+	if token, object := fileToken(l.place); object {
+		return f.cleanFile(ctx, l, token)
+	}
 	live := func() (bool, error) {
 		record, ok, err := f.registry.get(ctx, l.id)
 		return ok && millis(record.CreatedAt) == l.born && record.holds(l.place), err

@@ -75,6 +75,9 @@ type vaultCounters struct {
 	// frozenBytes is what the archived tenants' files held, archiveBytes what
 	// their archives hold.
 	frozenBytes, archiveBytes atomic.Int64
+	// The objects of large files: written and their bytes, read, removed,
+	// and the times a large file went as pages instead.
+	objectPuts, objectBytes, objectGets, objectRemoves, fallbacks atomic.Int64
 }
 
 // vault is where the fleet keeps its tenants' data: the shards (see shard),
@@ -86,8 +89,14 @@ type vault struct {
 	cold     coldStore
 	now      func() time.Time
 	// tmp holds archives on their way to or from the archive store.
-	tmp      string
-	counters vaultCounters
+	tmp string
+	// largeFile is the size from which a file keeps its bulk in cold; zero
+	// when none does.
+	largeFile int64
+	counters  vaultCounters
+	// storeDown is when, in v.now's nanoseconds, this node next asks the
+	// store from a checkpoint after it failed (see storeAway).
+	storeDown atomic.Int64
 	// pause runs between the steps of a change to where a tenant's data is;
 	// tests use it to hold the node up at the worst moment.
 	pause func(step string)
@@ -167,9 +176,11 @@ type replica struct {
 	// lost is set once the vault refused this node; nothing more is written.
 	lost bool
 	// known is every file the vault holds for the tenant; stamps remembers
-	// the plain files as they were when last compared.
+	// the plain files as they were when last compared; layout is how the
+	// shard keeps the files that have an object in the archive store.
 	known   map[string]bool
 	stamps  map[string]fileStamp
+	layout  map[string]storedFile
 	sources map[string]*vaultSource
 	// between runs after each database's snapshot is taken; tests use it to
 	// commit at the worst moment.
@@ -227,15 +238,11 @@ func (v *vault) attach(ctx context.Context, record TenantRecord, node, dir strin
 	if err != nil {
 		return nil, false, err
 	}
-	r := &replica{vault: v, shard: shard, id: id, node: node, dir: dir, born: millis(record.CreatedAt), archive: record.archive, known: map[string]bool{}, stamps: map[string]fileStamp{}, sources: map[string]*vaultSource{}}
+	r := &replica{vault: v, shard: shard, id: id, node: node, dir: dir, born: millis(record.CreatedAt), archive: record.archive, known: map[string]bool{}, stamps: map[string]fileStamp{}, layout: map[string]storedFile{}, sources: map[string]*vaultSource{}}
 	// From here on this node is the tenant's writer, and what the head says
 	// stays true until the node writes it. An archived tenant's shard is
 	// emptied: the archive is its data.
-	var head held
-	err = shard.do(ctx, func(db *fleetDB) (err error) {
-		head, err = take(ctx, db, id, node, r.born, archived, v.now())
-		return err
-	})
+	head, err := v.take(ctx, shard, id, node, r.born, archived)
 	if err != nil {
 		return nil, false, fmt.Errorf("take tenant %s in shard %s: %w", id, name, err)
 	}
@@ -254,6 +261,13 @@ func (v *vault) attach(ctx context.Context, record TenantRecord, node, dir strin
 		// stores them.
 		if err := r.loadKnown(); err != nil {
 			return nil, false, err
+		}
+		err := shard.do(ctx, func(db *fleetDB) (err error) {
+			r.layout, err = layouts(ctx, db, id)
+			return err
+		})
+		if err != nil {
+			return nil, false, errors.Join(fmt.Errorf("read how shard %s keeps tenant %s: %w", name, id, err), r.closeSources())
 		}
 		r.total = head.bytes
 		v.counters.reuses.Add(1)
@@ -351,6 +365,7 @@ func (r *replica) pull(ctx context.Context, size int64) error {
 				return fmt.Errorf("%s: %w", file.path, err)
 			}
 			r.known[file.path] = true
+			r.layout[file.path] = file
 		}
 		r.total = total
 		r.vault.counters.pulls.Add(1)
@@ -359,31 +374,25 @@ func (r *replica) pull(ctx context.Context, size int64) error {
 	})
 }
 
+// pullFile writes one stored file to the directory and, as the image the
+// next checkpoint is compared with, to base.
 func (r *replica) pullFile(ctx context.Context, tx *fleetTx, stored storedFile) (err error) {
-	outputs := make([]*os.File, 0, 2)
-	defer func() {
-		for _, file := range outputs {
-			err = errors.Join(err, file.Close())
-		}
-	}()
-	for _, path := range []string{filepath.Join(r.dir, filepath.FromSlash(stored.path)), r.base(stored.path)} {
-		if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
-			return err
-		}
-		file, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600)
-		if err != nil {
-			return err
-		}
-		outputs = append(outputs, file)
+	path := filepath.Join(r.dir, filepath.FromSlash(stored.path))
+	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+		return err
 	}
-	return storedPages(ctx, tx, r.id, stored, func(_ int, data []byte) error {
-		for _, file := range outputs {
-			if _, err := file.Write(data); err != nil {
-				return err
-			}
-		}
-		return nil
-	})
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_RDWR, 0o600)
+	if err != nil {
+		return err
+	}
+	defer func() { err = errors.Join(err, file.Close()) }()
+	if err := r.vault.writeFile(ctx, tx, r.id, r.born, stored, file); err != nil {
+		return err
+	}
+	if _, err := file.Seek(0, io.SeekStart); err != nil {
+		return err
+	}
+	return replaceFile(r.base(stored.path), file)
 }
 
 // ---- reading the tenant's files ----
@@ -578,6 +587,12 @@ type vaultFile struct {
 	// image once they are stored; moved says it may be renamed there.
 	image string
 	moved bool
+	// object names the new object that holds the file now, and whole says a
+	// file that had one goes back to pages, all of them (see stage). overlay
+	// counts the pages of a file with an object once they are stored.
+	object  string
+	whole   bool
+	overlay int64
 }
 
 // compare reads a file against its base image and returns the pages that
@@ -628,6 +643,9 @@ type vaultDelta struct {
 	files []vaultFile
 	gone  []string
 	total int64
+	// added are the objects the checkpoint refers to anew, dropped those it
+	// stops referring to.
+	added, dropped []string
 }
 
 // checkpoint stores what changed since the last one. It reports whether the
@@ -713,7 +731,15 @@ func (r *replica) ship(ctx context.Context) (bool, error) {
 		if r.known[rel] && r.stamps[rel] == stamp {
 			continue
 		}
-		file, changed, err := r.compare(rel, path)
+		image := path
+		if r.tiered(rel, info.Size()) {
+			if image, err = r.pin(rel, path); errors.Is(err, os.ErrNotExist) {
+				continue
+			} else if err != nil {
+				return false, err
+			}
+		}
+		file, changed, err := r.compare(rel, image)
 		if errors.Is(err, os.ErrNotExist) {
 			continue
 		}
@@ -721,18 +747,29 @@ func (r *replica) ship(ctx context.Context) (bool, error) {
 			return false, err
 		}
 		stamps[rel] = stamp
-		if changed {
+		switch {
+		case changed:
+			file.moved = image != path
 			delta.files = append(delta.files, file)
+		case image != path:
+			if err := os.Remove(image); err != nil {
+				return false, err
+			}
 		}
 	}
 	written := len(delta.files) > 0 || len(delta.gone) > 0
 	if written {
+		if err := r.stage(ctx, &delta); err != nil {
+			return false, err
+		}
 		if err := r.push(ctx, &delta); err != nil {
 			if errors.Is(err, errFenced) {
 				r.lost = true
 			}
+			r.unstage(ctx, &delta)
 			return false, err
 		}
+		r.settle(ctx, &delta)
 		if err := r.promote(&delta); err != nil {
 			r.lost = true
 			return false, errors.Join(errCacheBroken, err)
@@ -776,12 +813,24 @@ func (r *replica) push(ctx context.Context, delta *vaultDelta) error {
 			return errors.Join(err, errFenced)
 		}
 		pages, size = 0, 0
-		for _, file := range delta.files {
-			if _, err = tx.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum) VALUES(?,?,?,?,?)
+		for i := range delta.files {
+			file := &delta.files[i]
+			// Pages past the end go, and all of them when the file's bulk
+			// is a new object or it has just left its object.
+			keep := (file.size + vaultPage - 1) / vaultPage
+			if file.object != "" || file.whole {
+				keep = 0
+				if _, err = tx.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum,base,base_size,base_sum,overlay) VALUES(?,?,?,?,?,?,?,?,0)
+					ON CONFLICT(tenant_id,path) DO UPDATE SET size=excluded.size, seq=excluded.seq, sum=excluded.sum,
+					base=excluded.base, base_size=excluded.base_size, base_sum=excluded.base_sum, overlay=0`,
+					id, file.path, file.size, next, file.sum, file.object, objectSize(file), objectSum(file)); err != nil {
+					return err
+				}
+			} else if _, err = tx.ExecContext(ctx, `INSERT INTO vault_files(tenant_id,path,size,seq,sum) VALUES(?,?,?,?,?)
 				ON CONFLICT(tenant_id,path) DO UPDATE SET size=excluded.size, seq=excluded.seq, sum=excluded.sum`, id, file.path, file.size, next, file.sum); err != nil {
 				return err
 			}
-			if _, err = tx.ExecContext(ctx, `DELETE FROM vault_pages WHERE tenant_id=? AND path=? AND idx>=?`, id, file.path, (file.size+vaultPage-1)/vaultPage); err != nil {
+			if _, err = tx.ExecContext(ctx, `DELETE FROM vault_pages WHERE tenant_id=? AND path=? AND idx>=?`, id, file.path, keep); err != nil {
 				return err
 			}
 			for batch := range slices.Chunk(file.pages, vaultBatch) {
@@ -792,6 +841,14 @@ func (r *replica) push(ctx context.Context, delta *vaultDelta) error {
 					size += int64(len(page.data))
 				}
 				pages += int64(len(batch))
+			}
+			if file.object == "" && !file.whole && r.layout[file.path].base != "" {
+				if err = tx.QueryRowContext(ctx, `SELECT COUNT(*) FROM vault_pages WHERE tenant_id=? AND path=?`, id, file.path).Scan(&file.overlay); err != nil {
+					return err
+				}
+				if _, err = tx.ExecContext(ctx, `UPDATE vault_files SET overlay=? WHERE tenant_id=? AND path=?`, file.overlay, id, file.path); err != nil {
+					return err
+				}
 			}
 		}
 		for _, rel := range delta.gone {
@@ -842,6 +899,15 @@ func (r *replica) promote(delta *vaultDelta) error {
 			}
 		}
 		r.known[file.path] = true
+		switch layout := r.layout[file.path]; {
+		case file.object != "":
+			r.layout[file.path] = storedFile{path: file.path, size: file.size, sum: file.sum, base: file.object, baseSize: file.size, baseSum: file.sum}
+		case file.whole || layout.base == "":
+			delete(r.layout, file.path)
+		default:
+			layout.size, layout.sum, layout.overlay = file.size, file.sum, file.overlay
+			r.layout[file.path] = layout
+		}
 	}
 	for _, rel := range delta.gone {
 		if err := removeIfExists(r.base(rel)); err != nil {
@@ -849,6 +915,7 @@ func (r *replica) promote(delta *vaultDelta) error {
 		}
 		delete(r.known, rel)
 		delete(r.stamps, rel)
+		delete(r.layout, rel)
 		if source, ok := r.sources[rel]; ok {
 			delete(r.sources, rel)
 			if err := source.close(); err != nil {

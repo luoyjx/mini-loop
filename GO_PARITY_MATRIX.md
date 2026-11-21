@@ -14526,3 +14526,85 @@ in place.
   must be stopped first;
 - continuing a turn at the step it reached, trimming of a tenant's history,
   and a Python counterpart: all as before.
+
+## Go-only slice — assistant demo: large files in the archive store (2026-11-21)
+
+Code baseline: `1d55b3c` plus changes to `go/assistant` and
+`go/cmd/miniloop-assistant`. `go/go.mod` and `go/go.sum` are unchanged.
+
+**Python contract:** none. This is still a labeled Go addition. No Python module,
+fixture or exported contract changes. `go/memory`, `go/agent`, `go/mcp` and
+`go/sqlitestate` are unchanged, and no dependency was added. A fleet without
+`FleetConfig.Archive`, or with `FleetConfig.LargeFile` 0, keeps every file as
+pages; its shards are brought up to date in place.
+
+**Go evidence:**
+
+- `fleet_files.go`: with `FleetConfig.Archive` and `FleetConfig.LargeFile`
+  (`-large-file-kb`, 1024 KiB by default, 0 off) a tenant's file of that size
+  or more keeps its bulk as one object in the archive store, and its shard keeps
+  only the pages that differ from it.
+  - Shard schema step 3 gives `vault_files` the object's token, size and
+    SHA-256 and the count of pages over it. `fileKey` names an object
+    `<tenant>.<born>.<token>.file` with a token of its own.
+  - `replica.stage` decides before a checkpoint's transaction whether each
+    changed file goes as pages, as a new object (`store`), or back to pages. A
+    new object is written when the file has none, or when the pages over the
+    object — the count the last checkpoint took — or the pages this checkpoint
+    changes come to more than a quarter of the file (`rebaseShare`). Below half
+    the size, or with large files off, a file goes back to pages.
+  - `replica.settle` removes the objects a written checkpoint no longer names;
+    `unstage` writes a failed checkpoint's objects down again.
+  - `vault.writeFile` reads the object, then the pages over it
+    (`overlayPages`), then checks the whole file's SHA-256; a missing or changed
+    object is `errCorrupt`.
+- The store may be away. `storeContext` bounds one request at `storeWait` (5 s)
+  and a second per MiB, never more than half the time left. After a failure
+  (`storeFailed`) the node's checkpoints do not ask the store for
+  `storeCooldown` (30 s), and the file's changes go as pages
+  (`large_fallbacks`). `errInStore` does not count as shard trouble.
+- Every object that may end up unnamed is a registry `garbage` row
+  (`~file/<token>`, `fileAt`) before the step that could leave it so.
+  `Fleet.cleanFile` holds the tenant and makes itself the writer in its shard
+  before it checks `referenced`; `vault.take` and removals write the objects
+  of the data they remove down first (`note`); `letGo` settles them.
+- A move copies the new columns, so both copies name the same objects; an
+  archiving puts a large file whole into the tar and removes its objects; a
+  reading back writes new ones.
+- `fleetVersion` 3: a node with large files on refuses to start while a node of
+  an earlier version is alive; with `-large-file-kb 0` it runs beside it.
+- `/admin/stats` and `/admin/metrics` add `large_file`, `objects_stored`,
+  `object_bytes`, `objects_read`, `objects_removed` and `large_fallbacks`.
+- Tests (`fleet_files_test.go`; SQLite by default, PostgreSQL with
+  `MINILOOP_TEST_POSTGRES`): an object and no pages, one page for one changed
+  page, a rewrite making a new object, shrinking back to pages; objects that
+  follow a move, an archiving, a reading back and a removal exactly; pages and
+  no shard trouble while the store fails or hangs, and no request within the
+  cooldown; a changed or missing object and a damaged page over it refused;
+  objects written down before shard data goes; a node held up before and after
+  storing its object while another takes the tenant; the version gate; the
+  same pages changed again not making a new object.
+- Report (`MINILOOP_LARGE_FILE_REPORT=1`, PostgreSQL 16 and Garage v1.0.1): an
+  8 MiB database changed 24 times and a 2 MiB attachment rewritten 4 times left
+  148 page rows instead of 2,643 and wrote 0.26 MB of WAL instead of 18.9 MB,
+  with checkpoints as fast (p50 26.5 against 27.7 ms).
+- Two `miniloop-assistant fleet` processes from empty databases at
+  `-large-file-kb 64`: an upgrade from the D15 binary; 40 long messages left 19
+  page rows (66 KB) instead of 750 (3.06 MB) and sent 31 objects (11.8 MB);
+  with the bucket's container paused 10 of 10 writes were answered, one after
+  7.5 s, and no shard was taken for down; a killed node, archiving and removal
+  left no object. That run found two defects the tests had not, both fixed
+  with tests: a hanging store used up a checkpoint's time and tripped the
+  shard's breaker, and the same pages were counted twice toward a new object.
+
+**Not claimed:**
+
+- a tier by row: rows are bounded by the input limits; the tier is by file;
+- a policy other than a quarter: a growing file is written whole again each
+  time it grows a quarter;
+- a tenant with a large file opened without the store, or nodes with different
+  stores or sizes;
+- a D15 node beside a D16 node for long: it refuses a database the new node
+  updated;
+- a run against Amazon S3, separate machines or any load, and a Python
+  counterpart.
