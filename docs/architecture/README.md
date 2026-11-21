@@ -41,3 +41,11 @@ view was revalidated against revision
 errors and zero warnings, and Archify verified its 23 source references at that
 revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
 2x.
+
+After D12 added the push relay, the long-poll page and one-transaction turn
+settlement, the Go personal-assistant view was revalidated against revision
+`2e4d0619093acdbe70df418e08fa3668bd360796`. It gained a Push Relay node and a
+dashed wake-hint edge to the fleet host. It passed all nine checks with zero
+errors and zero warnings, and Archify verified its 26 source references at that
+revision. Its 1800 px PNG was re-rendered from a 900 px dark-theme viewport at
+2x, and no node's text leaves its box.

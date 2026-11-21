@@ -3,20 +3,20 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop · Go Personal Assistant",
-    "subtitle": "消息入口、远程信道、多租户 fleet、路由、Worker、工具、连接器与后台作业",
+    "subtitle": "消息入口、远程信道、多租户 fleet 与推送唤醒、路由、Worker、工具、连接器与后台作业",
     "output": "docs/architecture/personal-assistant.html",
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "bb03f225bb64d695f07355e299b37897bbd962c8"},
+    "repository": {"url": "https://github.com/luoyjx/mini-loop", "revision": "2e4d0619093acdbe70df418e08fa3668bd360796"},
     "viewBox": [1600, 760]
   },
   "components": [
-    {"id": "channel", "type": "external", "label": "Channel / Web", "sublabel": "loopback or tenant token", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/assistant/server.go"}]},
+    {"id": "channel", "type": "external", "label": "Channel / Web", "sublabel": "long poll · tenant token", "pos": [30, 300], "size": [170, 68], "sources": [{"path": "go/assistant/server.go"}, {"path": "go/assistant/changes.go"}]},
     {"id": "remoteSvc", "type": "external", "label": "Remote Services", "sublabel": "Bot API · REST · IMAP/SMTP", "pos": [30, 80], "size": [170, 68], "sources": [{"path": "go/assistant/telegram.go"}, {"path": "go/assistant/discord.go"}, {"path": "go/assistant/imap.go"}]},
     {"id": "remote", "type": "backend", "label": "Remote Channels", "sublabel": "Telegram · Discord · email", "pos": [250, 80], "size": [170, 68], "sources": [{"path": "go/assistant/remote.go"}, {"path": "go/assistant/email.go"}]},
     {"id": "store", "type": "database", "label": "Assistant Store", "sublabel": "tasks + messages + facts", "pos": [250, 300], "size": [170, 68], "sources": [{"path": "go/assistant/store.go"}]},
-    {"id": "router", "type": "frontend", "label": "Router / Triage", "sublabel": "intent + admission", "pos": [484, 300], "size": [170, 68], "sources": [{"path": "go/assistant/router.go"}, {"path": "go/assistant/triage.go"}]},
+    {"id": "router", "type": "frontend", "label": "Router / Triage", "sublabel": "admission · one-tx settle", "pos": [484, 300], "size": [170, 68], "sources": [{"path": "go/assistant/router.go"}, {"path": "go/assistant/triage.go"}, {"path": "go/assistant/settle.go"}]},
     {"id": "workers", "type": "backend", "label": "Assistant Workers", "sublabel": "task execution", "pos": [700, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tasks.go"}]},
     {"id": "tools", "type": "security", "label": "Assistant Tools", "sublabel": "controlled effects", "pos": [910, 300], "size": [170, 68], "sources": [{"path": "go/assistant/tools.go"}]},
     {"id": "connector", "type": "backend", "label": "MCP Connector", "sublabel": "external integration", "pos": [1130, 300], "size": [170, 68], "sources": [{"path": "go/assistant/connector.go"}]},
@@ -25,7 +25,8 @@
     {"id": "retrieval", "type": "backend", "label": "Retrieval & Facts", "sublabel": "embed · search · recall", "pos": [910, 80], "size": [170, 68], "sources": [{"path": "go/assistant/retrieval.go"}, {"path": "go/assistant/facts.go"}]},
     {"id": "poller", "type": "backend", "label": "Channel Poller", "sublabel": "background ingress", "pos": [1130, 80], "size": [170, 68], "sources": [{"path": "go/assistant/poller.go"}]},
     {"id": "scheduler", "type": "backend", "label": "Scheduler", "sublabel": "jobs + routines", "pos": [250, 520], "size": [170, 68], "sources": [{"path": "go/assistant/jobs.go"}, {"path": "go/assistant/routines.go"}]},
-    {"id": "fleet", "type": "security", "label": "Fleet Host", "sublabel": "tenants sleep when idle", "pos": [484, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet.go"}, {"path": "go/assistant/fleet_budget.go"}, {"path": "go/assistant/standby.go"}]},
+    {"id": "fleet", "type": "security", "label": "Fleet Host", "sublabel": "tenants sleep · push wakes", "pos": [484, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet.go"}, {"path": "go/assistant/fleet_budget.go"}, {"path": "go/assistant/standby.go"}]},
+    {"id": "push", "type": "external", "label": "Push Relay", "sublabel": "wake hint · no content", "pos": [1350, 80], "size": [170, 68], "sources": [{"path": "go/assistant/fleet_http.go"}]},
     {"id": "outbox", "type": "database", "label": "Outbox", "sublabel": "durable delivery", "pos": [484, 520], "size": [170, 68], "sources": [{"path": "go/assistant/outbox.go"}]}
   ],
   "connections": [
@@ -44,6 +45,7 @@
     {"id": "enqueue", "from": "store", "to": "outbox"},
     {"id": "fleetGate", "from": "router", "to": "fleet", "label": "turn slot / quota", "fromSide": "top", "toSide": "bottom", "variant": "dashed"},
     {"id": "fleetSleep", "from": "fleet", "to": "store", "label": "open / Standby / sleep", "variant": "security"},
+    {"id": "pushWake", "from": "push", "to": "fleet", "label": "POST /push · wake hint", "fromSide": "top", "toSide": "top", "variant": "dashed", "via": [[1435, 40], [569, 40]], "labelAt": [1000, 40]},
     {"id": "deliver", "from": "outbox", "to": "connector", "fromSide": "bottom", "toSide": "bottom", "via": [[569, 650], [1215, 650]]}
   ]
 }
